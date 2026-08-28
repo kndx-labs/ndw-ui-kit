@@ -1,0 +1,141 @@
+name: Sync design tokens
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # runs daily at 6:00 AM UTC
+  workflow_dispatch:      # allows manual triggering for testing
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.SYNC_SOURCE_TOKEN }}
+
+      # -------------------------------------------------------
+      # Find the latest commit in the source repo with message "<foobar>"
+      # -------------------------------------------------------
+      - name: Find latest matching commit in source repo
+        id: find_commit
+        env:
+          SYNC_SOURCE_REPO: ${{ vars.SYNC_SOURCE_REPO }}
+          SYNC_SOURCE_TOKEN: ${{ secrets.SYNC_SOURCE_TOKEN }}
+        run: |
+          PAGE=1
+          MATCH_SHA=""
+          while [ -z "$MATCH_SHA" ] && [ $PAGE -le 10 ]; do
+            RESPONSE=$(curl -s \
+              -H "Authorization: Bearer $SYNC_SOURCE_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/$SYNC_SOURCE_REPO/commits?per_page=100&page=$PAGE")
+
+            MATCH_SHA=$(echo "$RESPONSE" | jq -r '
+              map(select(.commit.message | contains("update")))
+              | first
+              | .sha // ""
+            ')
+            PAGE=$((PAGE + 1))
+          done
+
+          if [ -z "$MATCH_SHA" ]; then
+            echo "No commit with message update found."
+            echo "found=false" >> $GITHUB_OUTPUT
+          else
+            echo "Found commit: $MATCH_SHA"
+            echo "sha=$MATCH_SHA" >> $GITHUB_OUTPUT
+            echo "found=true" >> $GITHUB_OUTPUT
+          fi
+
+      # -------------------------------------------------------
+      # Compare with the last processed commit SHA
+      # (stored in .github/last-synced-sha in this repo)
+      # -------------------------------------------------------
+      - name: Check if already processed
+        id: check_processed
+        if: steps.find_commit.outputs.found == 'true'
+        run: |
+          LAST_SHA=""
+          if [ -f ".github/last-synced-sha" ]; then
+            LAST_SHA=$(cat .github/last-synced-sha)
+          fi
+
+          NEW_SHA="${{ steps.find_commit.outputs.sha }}"
+
+          if [ "$LAST_SHA" == "$NEW_SHA" ]; then
+            echo "Commit $NEW_SHA already processed. Nothing to do."
+            echo "should_sync=false" >> $GITHUB_OUTPUT
+          else
+            echo "New commit $NEW_SHA found. Will sync."
+            echo "should_sync=true" >> $GITHUB_OUTPUT
+          fi
+
+      # -------------------------------------------------------
+      # Copy files from source repo/data/ to scripts/data/figma-vars/
+      # Copy files from source repo/icons/ to scripts/data/icons/
+      # -------------------------------------------------------
+      - name: Checkout source repo at matching commit
+        if: steps.check_processed.outputs.should_sync == 'true'
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ vars.SYNC_SOURCE_REPO }}
+          ref: ${{ steps.find_commit.outputs.sha }}
+          token: ${{ secrets.SYNC_SOURCE_TOKEN }}
+          path: _ndw_ui_kit_tmp
+
+      - name: Copy files
+        if: steps.check_processed.outputs.should_sync == 'true'
+        env:
+          SYNC_SOURCE_VARIABLES_FILE: ${{ secrets.SYNC_SOURCE_VARIABLES_FILE }}
+        run: |
+          mkdir -p scripts/data/figma-vars
+          rsync -av --delete _ndw_ui_kit_tmp/data/ scripts/data/figma-vars/
+          rsync -av --delete _ndw_ui_kit_tmp/icons/ scripts/data/icons/
+          rm -rf _ndw_ui_kit_tmp
+
+          mv "scripts/data/figma-vars/$SYNC_SOURCE_VARIABLES_FILE" \
+             "scripts/data/figma-vars/design-variables-full.json"
+
+      # -------------------------------------------------------
+      # Convert Figma variables to SCSS (src/lib/styles/)
+      # -------------------------------------------------------
+      - name: Set up Node.js
+        if: steps.check_processed.outputs.should_sync == 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
+      - name: Prepare Yarn 4 via Corepack
+        if: steps.check_processed.outputs.should_sync == 'true'
+        run: |
+          PACKAGE_MANAGER=$(node -p "require('./package.json').packageManager")
+          corepack enable
+          corepack prepare "$PACKAGE_MANAGER" --activate
+
+      - name: Install dependencies
+        if: steps.check_processed.outputs.should_sync == 'true'
+        run: corepack yarn install --immutable
+
+      - name: Run convert-figma-tokens
+        if: steps.check_processed.outputs.should_sync == 'true'
+        run: corepack yarn run convert-figma-tokens
+
+      # -------------------------------------------------------
+      # Commit the copied files, converted tokens, and updated SHA tracker
+      # -------------------------------------------------------
+      - name: Commit changes
+        if: steps.check_processed.outputs.should_sync == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          echo "${{ steps.find_commit.outputs.sha }}" > .github/last-synced-sha
+
+          git add scripts/data/figma-vars/ scripts/data/icons/ src/lib/styles/ .github/last-synced-sha
+          git commit -m "chore(sync): update design tokens"
+          git push

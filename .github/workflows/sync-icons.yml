@@ -1,0 +1,68 @@
+name: Sync icons & pictograms
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # runs daily at 8:00 AM UTC
+  workflow_dispatch:      # allows manual triggering for testing
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      NOTIFY_WEBHOOK_URL: ${{ secrets.NOTIFY_WEBHOOK_URL }}
+      FIGMA_API_KEY: ${{ secrets.FIGMA_API_KEY }}
+      FIGMA_FILE_KEY: ${{ vars.FIGMA_FILE_KEY }}
+      FIGMA_ICONS_NODE_ID: ${{ vars.FIGMA_ICONS_NODE_ID }}
+      FIGMA_PICTOGRAMS_NODE_ID: ${{ vars.FIGMA_PICTOGRAMS_NODE_ID }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.SYNC_SOURCE_TOKEN }}
+
+      # -------------------------------------------------------
+      # Environment setup
+      # -------------------------------------------------------
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
+      - name: Prepare Yarn 4 via Corepack
+        run: |
+          PACKAGE_MANAGER=$(node -p "require('./package.json').packageManager")
+          corepack enable
+          corepack prepare "$PACKAGE_MANAGER" --activate
+
+      - name: Install dependencies
+        run: corepack yarn install --immutable
+
+      # -------------------------------------------------------
+      # Sync icons from Figma
+      # -------------------------------------------------------
+      - name: Sync icons from Figma
+        run: corepack yarn sync-figma-icons
+
+      # -------------------------------------------------------
+      # Preprocess icons and pictograms (with failure notifications)
+      # -------------------------------------------------------
+      - name: Prepare icons
+        run: corepack yarn run prepare-icons --notify
+
+      - name: Prepare pictograms
+        run: corepack yarn run prepare-pictograms --notify
+
+      # -------------------------------------------------------
+      # Commit generated artifacts
+      # -------------------------------------------------------
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add scripts/data/icons/ src/lib/icon-names.ts src/lib/pictogram-names.ts src/lib/assets/
+          git diff --cached --quiet || git commit -m "chore(sync): update icon and pictogram assets"
+          git push

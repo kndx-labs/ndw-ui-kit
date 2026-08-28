@@ -1,0 +1,56 @@
+// Timing button variant: border, background, text, fill animation and state styles.
+// Uses primary CSS custom properties --ndwu-timing-button-primary-*.
+@mixin timing-button-variant() {
+  border: none;
+  background-color: var(--ndwu-timing-button-primary-bg);
+  color: var(--ndwu-timing-button-primary-text);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--ndwu-timing-button-fill, 0%);
+    height: 100%;
+    background-color: var(--ndwu-timing-button-primary-fill-bg);
+    pointer-events: none;
+  }
+
+  &:not(:disabled) {
+    .ndwu-timing-button__icon {
+      color: var(--ndwu-timing-button-primary-icon-color);
+    }
+
+    ndwu-spokes-loader {
+      --ndwu-spokes-loader-color: var(--ndwu-timing-button-primary-icon-color);
+    }
+  }
+
+  &:hover:not(:disabled) {
+    background-color: var(--ndwu-timing-button-primary-hover-bg);
+
+    &::before {
+      background-color: var(--ndwu-timing-button-primary-hover-fill-bg);
+    }
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--ndwu-timing-button-primary-active-bg);
+  }
+
+  &:focus:not(:disabled) {
+    border: 1px solid var(--ndwu-timing-button-primary-focus-border);
+    background-color: var(--ndwu-timing-button-primary-focus-bg);
+    outline: 1px solid var(--ndwu-timing-button-primary-focus-outline);
+  }
+
+  &:disabled {
+    background-color: var(--ndwu-timing-button-primary-disabled-bg);
+    color: var(--ndwu-timing-button-primary-disabled-text);
+    cursor: not-allowed;
+
+    .ndwu-timing-button__icon {
+      color: var(--ndwu-timing-button-primary-disabled-icon-color);
+    }
+  }
+}

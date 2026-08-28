@@ -1,0 +1,56 @@
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
+
+.ndwu-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  border: 1px solid var(--ndwu-empty-state-border);
+  background: var(--ndwu-empty-state-bg);
+
+  &--L {
+    padding: spacing.$spacing-32;
+    border-radius: radius.$radius-L;
+  }
+
+  &--XL {
+    padding: spacing.$spacing-24;
+    border-radius: radius.$radius-XL;
+  }
+
+  &--with-actions {
+    gap: spacing.$spacing-24;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-16;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__title {
+    color: var(--ndwu-empty-state-title-color);
+    font-weight: typography.$fontWeight-XL;
+    font-size: typography.$fontSize-H5;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  &__description {
+    color: var(--ndwu-empty-state-description-color);
+    font-size: typography.$fontSize-H6;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing.$spacing-16;
+    justify-content: center;
+  }
+}

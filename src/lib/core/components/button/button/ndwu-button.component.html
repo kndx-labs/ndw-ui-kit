@@ -1,0 +1,24 @@
+@if (loading()) {
+  <ndwu-spokes-loader
+    class="ndwu-button__loader"
+    [size]="loaderParams().size"
+    [spokeWidth]="loaderParams().spokeWidth"
+    [spokeHeight]="loaderParams().spokeHeight"
+    [spokeOffset]="loaderParams().spokeOffset"
+  />
+}
+
+<span class="ndwu-button__label">
+  @if (icon() && !loading()) {
+    <ndwu-icon
+      class="ndwu-button__icon"
+      name="{{ icon() }}"
+    />
+  }
+
+  @if (label()) {
+    {{ label() | localize }}
+  } @else {
+    <ng-content></ng-content>
+  }
+</span>

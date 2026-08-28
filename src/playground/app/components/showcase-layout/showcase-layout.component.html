@@ -1,0 +1,35 @@
+@if (contentTemplate()) {
+  <div class="showcase-layout">
+    <div class="showcase-layout__mobile-toggle">
+      <app-theme-switcher
+        [theme]="mobileTheme()"
+        (themeChange)="onMobileThemeChange($event)"
+      />
+    </div>
+
+    <div
+      class="theme-column ndwu-theme-light showcase-layout__column-light"
+      [class.showcase-layout__column-light--active]="mobileTheme() === 'light'"
+    >
+      <h2>{{ lightTitleKey() | localize }}</h2>
+      <ng-container
+        [ngTemplateOutlet]="contentTemplate() ?? null"
+        [ngTemplateOutletContext]="lightContext"
+      >
+      </ng-container>
+    </div>
+
+    <div
+      class="theme-column ndwu-theme-dark showcase-layout__column-dark"
+      [class.showcase-layout__column-dark--active]="mobileTheme() === 'dark'"
+    >
+      <h2>{{ darkTitleKey() | localize }}</h2>
+      <ng-container
+        [ngTemplateOutlet]="contentTemplate() ?? null"
+        [ngTemplateOutletContext]="darkContext"
+      >
+      </ng-container>
+    </div>
+  </div>
+}
+

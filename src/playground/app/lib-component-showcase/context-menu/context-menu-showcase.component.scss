@@ -1,0 +1,102 @@
+@use 'styles/colors';
+
+.overview-note {
+  margin-bottom: 0.75rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.context-menu-target {
+  min-height: 160px;
+  padding: 1rem;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: context-menu;
+
+  &__text {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+  }
+}
+
+.context-menu-log {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  &__clear {
+    padding: 4px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    color: #333;
+    font-size: 0.85rem;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #0086CB;
+    }
+  }
+
+  &__empty {
+    margin: 0;
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  &__list {
+    margin: 0;
+    padding-left: 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
+.context-menu-panel {
+  min-width: 180px;
+  padding: 4px 0;
+  background: colors.$gray-0;
+}
+
+.context-menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  color: #333;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: #f0f0f0;
+  }
+
+  &:focus {
+    background: #e3f2fd;
+    outline: none;
+  }
+
+  &__hotkey {
+    margin-left: 12px;
+    color: #888;
+    font-size: 0.8rem;
+  }
+
+  &--danger:hover {
+    background: #ffebee;
+  }
+}

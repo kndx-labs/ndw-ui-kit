@@ -1,0 +1,74 @@
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/padding';
+@use 'styles/typography';
+@use './ndwu-file-upload.mixins' as *;
+
+.ndwu-file-upload-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ndwu-file-upload-surface-color);
+
+  &__body {
+    display: flex;
+    gap: spacing.$spacing-16;
+    justify-content: space-between;
+    align-items: center;
+    padding: padding.$padding-12 padding.$padding-16;
+  }
+
+  &--L {
+    @include header-size((body-min-height: spacing.$spacing-44,
+        body-padding: padding.$padding-8 padding.$padding-16,
+        title-font-size: typography.$fontSize-small,
+      ));
+  }
+
+  &--XL {
+    @include header-size((body-min-height: 52px,
+        body-padding: padding.$padding-12 padding.$padding-16,
+        title-font-size: typography.$fontSize-medium,
+      ));
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-2;
+    min-width: 0;
+  }
+
+  &__title {
+    color: var(--ndwu-file-upload-text-color);
+    font-weight: typography.$fontWeight-XL;
+  }
+
+  &__subtitle {
+    color: var(--ndwu-file-upload-text-muted-color);
+  }
+
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: spacing.$spacing-8;
+    align-items: center;
+  }
+
+  &__toggle {
+    transition: transform 0.2s ease-in-out;
+
+    &--collapsed {
+      transform: rotate(-90deg);
+    }
+  }
+
+  &__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+  }
+}

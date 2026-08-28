@@ -1,0 +1,177 @@
+@use 'styles/colors';
+
+$grid-default-color: colors.$gray-15;
+$grid-accent-color: colors.$gray-20;
+$grid-hour-text-color: colors.$gray-50;
+$grid-day-text-color: colors.$gray-60;
+
+$block-background: colors.$brand-10;
+$block-text-color: colors.$brand-60;
+
+$new-block-background: colors.$brand-20;
+
+$removing-block-background: colors.$gray-30;
+$removing-block-border: colors.$gray-30;
+
+ndwu-schedule-editor:not([hidden]) {
+  display: block;
+}
+
+.ndwu-schedule-editor {
+  min-height: 0;
+
+  &--thumbnail,
+  &--full {
+    overflow: visible;
+  }
+
+  &__svg--scale {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+  }
+
+  &__wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+
+  &__tooltip {
+    position: absolute;
+    z-index: 1;
+    padding: 4px 12px;
+    border-radius: 4px;
+    background: colors.$gray-70;
+    color: colors.$gray-0;
+    font-size: 12px;
+    line-height: 17px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  &__block {
+    pointer-events: none;
+    fill: $block-background;
+  }
+
+  &__grid {
+    pointer-events: none;
+    fill: none;
+    stroke: $grid-default-color;
+    stroke-width: 1px;
+  }
+
+  &__text {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    user-select: none;
+    fill: $grid-day-text-color;
+
+    &--hour {
+      font-weight: 400;
+      fill: $grid-hour-text-color;
+    }
+
+    &--day {
+      font-weight: 500;
+      fill: $grid-day-text-color;
+    }
+
+    &--small {
+      font-size: 11px;
+      line-height: 17px;
+    }
+
+    &--block {
+      fill: $block-text-color;
+    }
+  }
+
+  &--full {
+    .ndwu-schedule-editor__grid {
+      &--accent {
+        stroke: $grid-accent-color;
+      }
+    }
+
+    .ndwu-schedule-editor__grid-slot {
+      opacity: 0;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1;
+        fill: colors.$brand-15;
+      }
+
+      &--selected:hover {
+        fill: colors.$gray-20;
+      }
+
+      &--selected:active {
+        fill: colors.$gray-30;
+      }
+    }
+
+    .ndwu-schedule-editor__block {
+      fill: $block-background;
+
+      &-drag {
+        fill: $new-block-background;
+
+        &--remove {
+          fill: $removing-block-background;
+          stroke: $removing-block-border;
+        }
+      }
+    }
+  }
+
+  &--thumbnail {
+    .ndwu-schedule-editor__grid {
+      &--accent {
+        stroke: $grid-accent-color;
+      }
+    }
+
+    .ndwu-schedule-editor__block {
+      opacity: 0.8;
+    }
+  }
+
+  &--dragging .ndwu-schedule-editor__grid-slot:hover {
+    opacity: 0;
+  }
+}
+
+// Fill mode sizes the SVG from the wrapper and the wrapper from its parent.
+// Never the other way round: deriving a wrapper dimension from the measurement
+// makes the ResizeObserver re-trigger itself, which the browser reports as
+// "ResizeObserver loop completed with undelivered notifications".
+// The wrapper must not take padding — the observer reads `contentRect`, while
+// the tooltip positions against the SVG's border box.
+ndwu-schedule-editor.ndwu-schedule-editor--fill {
+  height: 100%;
+
+  .ndwu-schedule-editor__wrapper {
+    display: block;
+    height: 100%;
+  }
+
+  .ndwu-schedule-editor__svg--fill {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+ndwu-schedule-editor.ndwu-schedule-editor--scale {
+  height: 100%;
+
+  .ndwu-schedule-editor__wrapper {
+    display: block;
+    height: 100%;
+  }
+}

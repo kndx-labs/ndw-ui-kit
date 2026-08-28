@@ -1,0 +1,100 @@
+@use 'styles/mixins';
+
+.index-page {
+  overflow-y: auto;
+  padding: 32px;
+
+  &__header {
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  &__version {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background-color: #f0f0f0;
+    color: #666;
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: #888;
+    font-size: 1rem;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+
+    @media (max-width: 1279px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mixins.mobile() {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.component-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #0086CB;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+    transform: translateY(-2px);
+  }
+
+  &:focus {
+    outline: 2px solid #0086CB;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &__header {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__name {
+    color: #222;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  &__badge {
+    flex-shrink: 0;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background-color: #dcfce7;
+    color: #166534;
+    font-weight: 600;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  &__description {
+    margin: 0;
+    color: #777;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+}

@@ -1,0 +1,108 @@
+@use 'styles/colors' as colors;
+@use 'styles/mixins';
+@use 'styles/padding' as padding;
+@use 'styles/radius' as radius;
+@use 'styles/spacing' as spacing;
+
+.interaction-debug-panel {
+  position: fixed;
+  right: spacing.$spacing-16;
+  bottom: spacing.$spacing-16;
+  z-index: 10;
+  min-width: 220px;
+  max-width: min(280px, calc(100vw - #{spacing.$spacing-32}));
+  padding: spacing.$spacing-12;
+  border: 1px solid colors.$gray-20;
+  border-radius: radius.$radius-L;
+  background: rgb(255 255 255 / 96%);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  color: colors.$gray-80;
+  font-size: 0.85rem;
+  backdrop-filter: blur(4px);
+
+  @include mixins.mobile() {
+    right: spacing.$spacing-12;
+    bottom: spacing.$spacing-12;
+    min-width: 0;
+    max-width: calc(100vw - #{spacing.$spacing-24});
+    padding: 10px;
+    font-size: 0.8rem;
+  }
+
+  &--collapsed {
+    min-width: 0;
+    padding-bottom: 10px;
+  }
+
+  &__header {
+    display: flex;
+    gap: spacing.$spacing-12;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+    user-select: none;
+    touch-action: none;
+  }
+
+  &__title {
+    color: colors.$gray-100;
+    font-weight: 700;
+  }
+
+  &__toggle {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: spacing.$spacing-32;
+    min-height: spacing.$spacing-32;
+    padding: spacing.$spacing-4;
+    border: 1px solid colors.$gray-20;
+    border-radius: radius.$radius-M;
+    background: colors.$gray-0;
+    color: colors.$gray-80;
+    cursor: pointer;
+    touch-action: manipulation;
+
+    &:hover {
+      border-color: colors.$brand-50;
+      color: colors.$brand-50;
+    }
+
+    &:focus {
+      outline: spacing.$spacing-2 solid colors.$brand-50;
+      outline-offset: spacing.$spacing-2;
+    }
+  }
+
+  &__list {
+    display: grid;
+    gap: padding.$padding-6;
+    margin: spacing.$spacing-8 0 0;
+  }
+
+  &__row {
+    display: flex;
+    gap: spacing.$spacing-12;
+    justify-content: space-between;
+    align-items: center;
+
+    dt,
+    dd {
+      margin: 0;
+    }
+
+    dt {
+      color: colors.$gray-50;
+    }
+
+    dd {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  &__value--active {
+    color: colors.$brand-50;
+  }
+}
+

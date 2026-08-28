@@ -1,0 +1,118 @@
+@use 'styles/colors';
+@use 'styles/mixins';
+@use 'styles/spacing';
+@use 'styles/radius';
+@use 'styles/typography';
+@use '../ndwu-modal-mixins' as modal;
+
+:host {
+  @include mixins.mobile() {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+
+    /* stylelint-disable plugin/no-unsupported-browser-features */
+    @supports (max-height: 100dvh) {
+      max-height: 100dvh;
+    }
+    /* stylelint-enable plugin/no-unsupported-browser-features */
+  }
+}
+
+.ndwu-dialog {
+  --dialog-min-width: 300px;
+  --dialog-max-width: 90vw;
+  --dialog-max-height: 90vh;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--dialog-width);
+  min-width: var(--dialog-min-width);
+  max-width: var(--dialog-max-width);
+  height: var(--dialog-height, auto);
+  min-height: var(--dialog-min-height, auto);
+  max-height: var(--dialog-max-height);
+  padding: var(--ndwu-dialog-padding-desktop);
+  border-radius: var(--ndwu-dialog-border-radius);
+  background: var(--ndwu-dialog-bg);
+
+  &:focus {
+    outline: none;
+  }
+
+  &__header {
+    @include modal.ndwu-modal-header();
+  }
+
+  &__title {
+    flex: 1;
+    margin: 0;
+    color: var(--ndwu-dialog-title-color);
+    font-weight: typography.$fontWeight-XL;
+    font-size: typography.$fontSize-H3;
+    line-height: 34px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__close-btn {
+    position: absolute;
+    top: spacing.$spacing-32;
+    right: spacing.$spacing-24;
+  }
+
+  &__blank {
+    width: spacing.$spacing-32;
+  }
+
+  &__description {
+    margin: 0 0 spacing.$spacing-16;
+    color: var(--ndwu-dialog-description-color);
+    font-size: typography.$fontSize-small;
+    line-height: 20px;
+  }
+
+  &__body {
+    flex: 1;
+    min-height: 0;
+  }
+
+  &__footer {
+    @include modal.ndwu-modal-footer();
+  }
+
+  &__loader {
+    @include modal.ndwu-modal-loader();
+  }
+}
+
+@include mixins.mobile() {
+  .ndwu-dialog {
+    box-sizing: border-box;
+    width: unset;
+    min-width: 0;
+    max-width: 100vw;
+    min-height: 0;
+    max-height: 100vh;
+    padding: var(--ndwu-dialog-padding-mobile);
+    border-radius: var(--ndwu-dialog-border-radius) var(--ndwu-dialog-border-radius) 0 0;
+
+    /* stylelint-disable plugin/no-unsupported-browser-features */
+    @supports (height: 100dvh) {
+      max-height: calc(100dvh);
+    }
+    /* stylelint-enable plugin/no-unsupported-browser-features */
+
+    &__close-btn {
+      top: spacing.$spacing-24;
+    }
+
+    &__footer.ndwu-modal__actions {
+      gap: spacing.$spacing-16;
+    }
+  }
+}

@@ -1,0 +1,121 @@
+@use 'styles/fonts';
+@use 'styles/mixins';
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
+
+// Base button layout, typography, transitions.
+@mixin base() {
+  display: inline-flex;
+  gap: spacing.$spacing-8;
+  justify-content: center;
+  align-items: center;
+  border-radius: radius.$radius-L;
+  font-weight: typography.$fontWeight-L;
+  font-family: fonts.$font-family-default;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color 0.2s ease-in-out,
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out,
+    filter 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    filter: drop-shadow(1px 1px 2px -1px #00000024);
+  }
+}
+
+// Button variant: border, background, text and state styles (hover, active, focus, disabled).
+// Uses CSS custom properties --ndwu-button-{variant}-*.
+@mixin variant($name) {
+  border: 1px solid var(--ndwu-button-#{$name}-border);
+  background-color: var(--ndwu-button-#{$name}-bg);
+  color: var(--ndwu-button-#{$name}-text);
+
+  &:not(:disabled) {
+    .ndwu-button__icon {
+      color: var(--ndwu-button-#{$name}-icon-color);
+    }
+
+    ndwu-spokes-loader {
+      --ndwu-spokes-loader-color: var(--ndwu-button-#{$name}-icon-color);
+    }
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--ndwu-button-#{$name}-hover-border);
+    background-color: var(--ndwu-button-#{$name}-hover-bg);
+  }
+
+  &:focus:not(:disabled) {
+    border-color: var(--ndwu-button-#{$name}-focus-border);
+    background-color: var(--ndwu-button-#{$name}-focus-bg);
+    outline: none;
+  }
+
+  &:focus-visible:not(:disabled) {
+    @include mixins.focus-ring(var(--ndwu-button-#{$name}-focus-ring));
+  }
+
+  &:active:not(:disabled) {
+    border-color: var(--ndwu-button-#{$name}-active-border);
+    background-color: var(--ndwu-button-#{$name}-active-bg);
+    color: var(--ndwu-button-#{$name}-active-text);
+
+    .ndwu-button__icon {
+      color: var(--ndwu-button-#{$name}-active-icon-color);
+    }
+  }
+
+  &:disabled {
+    border-color: var(--ndwu-button-#{$name}-disabled-border);
+    background-color: var(--ndwu-button-#{$name}-disabled-bg);
+    color: var(--ndwu-button-#{$name}-disabled-text);
+    cursor: not-allowed;
+
+    .ndwu-button__icon {
+      color: var(--ndwu-button-#{$name}-disabled-icon-color);
+    }
+  }
+}
+
+// Button size: height, padding, font-size, line-height.
+// $name: S | L | XL | XXL
+/* stylelint-disable plugin/no-unsupported-browser-features */
+@mixin size($name) {
+  @if $name == S {
+    min-width: 48px;
+    height: 24px;
+    padding: 6px spacing.$spacing-8;
+    border-radius: radius.$radius-S;
+    font-size: typography.$fontSize-xsmall;
+    line-height: 17px;
+  } @else if $name == L { /* stylelint false positive: 'css-when-else' */
+    gap: 6px;
+    min-width: 64px;
+    height: 32px;
+    padding: spacing.$spacing-8 12px;
+    border-radius: radius.$radius-M;
+    font-size: typography.$fontSize-xsmall;
+    line-height: 17px;
+  } @else if $name == XL { /* stylelint false positive: 'css-when-else' */
+    min-width: 96px;
+    height: 44px;
+    padding: spacing.$spacing-4 spacing.$spacing-16;
+    font-size: typography.$fontSize-medium;
+    line-height: 24px;
+    letter-spacing: typography.$letterSpacing-S;
+  } @else if $name == XXL { /* stylelint false positive: 'css-when-else' */
+    min-width: 120px;
+    height: 56px;
+    padding: spacing.$spacing-8 20px;
+    font-size: typography.$fontSize-medium;
+    line-height: 24px;
+    letter-spacing: typography.$letterSpacing-S;
+  }
+}
+
+/* stylelint-enable plugin/no-unsupported-browser-features */

@@ -1,0 +1,67 @@
+<div class="ndwu-file-upload">
+  @if (multiple()) {
+    <ndwu-file-dropzone
+      [accept]="accept()"
+      [multiple]="true"
+      [disabled]="disabled()"
+      [dropzoneTexts]="dropzoneTexts()"
+      (filesSelected)="onFilesSelected($event)"
+    />
+
+    @if (hasFiles()) {
+      <div class="ndwu-file-upload__card">
+        <ndwu-file-upload-header
+          [files]="files()"
+          [disabled]="disabled()"
+          [headerTitleTexts]="headerTitleTexts()"
+          [headerSubtitleTexts]="headerSubtitleTexts()"
+          [headerActionTexts]="headerActionTexts()"
+          [headerToggleTexts]="headerToggleTexts()"
+          [(isCollapsed)]="isCollapsed"
+          (cancelAll)="onCancelAll()"
+          (retryAll)="onRetryAll()"
+        />
+
+        @if (!isCollapsed()) {
+          <div class="ndwu-file-upload__items">
+            @for (file of files(); track file.id) {
+              <ndwu-file-item
+                [file]="file"
+                [disabled]="disabled()"
+                [statusTexts]="statusTexts()"
+                [actionTexts]="actionTexts()"
+                (remove)="onFileRemove($event)"
+                (retry)="onFileRetry($event)"
+                (fileCancel)="onFileCancel($event)"
+              />
+            }
+          </div>
+        }
+      </div>
+    }
+  } @else {
+    @if (!hasFiles()) {
+      <ndwu-file-dropzone
+        [accept]="accept()"
+        [multiple]="false"
+        [disabled]="disabled()"
+        [dropzoneTexts]="dropzoneTexts()"
+        (filesSelected)="onFilesSelected($event)"
+      />
+    } @else {
+      <div class="ndwu-file-upload__card">
+        @for (file of files(); track file.id) {
+          <ndwu-file-item
+            [file]="file"
+            [disabled]="disabled()"
+            [statusTexts]="statusTexts()"
+            [actionTexts]="actionTexts()"
+            (remove)="onFileRemove($event)"
+            (retry)="onFileRetry($event)"
+            (fileCancel)="onFileCancel($event)"
+          />
+        }
+      </div>
+    }
+  }
+</div>

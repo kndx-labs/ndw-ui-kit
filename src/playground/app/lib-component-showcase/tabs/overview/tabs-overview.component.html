@@ -1,0 +1,161 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    @if (variants.length > 0) {
+      <div class="state-section">
+        <h4>{{ 'tabs-showcase.overview.variant-default' | localize }}</h4>
+        <div class="tabs-row">
+          <div class="tabs-item">
+            <ndwu-tabs
+              [tabs]="exampleTabs"
+              [selectedTabId]="selectedTabId()"
+              [size]="SIZE.L"
+              variant="default"
+              (tabChange)="onTabChange($event)"
+            />
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="tabs-row">
+          <div class="tabs-item">
+            <ndwu-tabs
+              [tabs]="badgeTabs"
+              [selectedTabId]="selectedTabId()"
+              [size]="SIZE.L"
+              variant="default"
+              (tabChange)="onTabChange($event)"
+            />
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="tabs-row">
+          <div class="tabs-item">
+            <ndwu-tabs
+              [tabs]="iconTabs"
+              [selectedTabId]="selectedTabId()"
+              [size]="SIZE.L"
+              variant="default"
+              (tabChange)="onTabChange($event)"
+            />
+          </div>
+        </div>
+      </div>
+    }
+
+  <br/>
+
+  <div class="state-section">
+    <h4>Scroll Mode</h4>
+
+    <span class="size-label">Auto (content width, no scroll)</span>
+    <div class="tabs-row">
+      <div class="tabs-item">
+        <ndwu-tabs
+          [tabs]="scrollableShortExampleTabs"
+          [selectedTabId]="selectedTabId()"
+          [size]="SIZE.L"
+          variant="default"
+          scrollMode="auto"
+          (tabChange)="onTabChange($event)"
+        />
+      </div>
+    </div>
+
+    <br/>
+
+    <span class="size-label">Scrollable (fixed container, horizontal scroll)</span>
+    
+    <div class="tabs-row">
+      <div class="tabs-item">
+        <ndwu-tabs
+          [tabs]="scrollableExampleTabs"
+          [selectedTabId]="selectedTabId()"
+          [size]="SIZE.L"
+          variant="default"
+          scrollMode="scrollable"
+          scrollContainerWidth="368px"
+          (tabChange)="onTabChange($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="state-section">
+    <h4>Tab Width Mode</h4>
+
+    <span class="size-label">Fixed (all tabs same width)</span>
+
+    <div class="tabs-row">
+      <div class="tabs-item">
+        <ndwu-tabs
+          [tabs]="fixedWidthTabs"
+          [selectedTabId]="selectedTabId()"
+          [size]="SIZE.L"
+          variant="default"
+          tabWidthMode="fixed"
+          (tabChange)="onTabChange($event)"
+        />
+      </div>
+    </div>
+
+    <br/>
+
+    <span class="size-label">Mixed (per-tab override)</span>
+    
+    <div class="tabs-row">
+      <div class="tabs-item">
+        <ndwu-tabs
+          [tabs]="mixedWidthTabs"
+          [selectedTabId]="selectedTabId()"
+          [size]="SIZE.L"
+          variant="default"
+          (tabChange)="onTabChange($event)"
+        />
+      </div>
+    </div>
+
+    <br/>
+
+    <span class="size-label">Content (auto width based on label)</span>
+    
+    <div class="tabs-row">
+      <div class="tabs-item">
+        <ndwu-tabs
+          [tabs]="exampleTabs"
+          [selectedTabId]="selectedTabId()"
+          [size]="SIZE.L"
+          variant="default"
+          tabWidthMode="content"
+          (tabChange)="onTabChange($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="state-section">
+    <h4>{{ 'tabs-showcase.overview.variant-bordered' | localize }}</h4>
+    <div class="tabs-row">
+      <div class="tabs-item">
+        <ndwu-tabs
+          [tabs]="exampleTabs"
+          [selectedTabId]="selectedTabId()"
+          [size]="SIZE.XXL"
+          variant="bordered"
+          (tabChange)="onTabChange($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  </ng-template>
+</app-showcase-layout>

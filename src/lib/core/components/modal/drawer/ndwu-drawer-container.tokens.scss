@@ -1,0 +1,11 @@
+@use 'styles/colors';
+@use 'styles/spacing';
+@use 'styles/radius';
+
+$ndwu-drawer-tokens: (
+  drawer-bg: colors.$gray-0,
+  drawer-title-color: colors.$gray-80,
+  drawer-description-color: colors.$gray-80,
+  drawer-border-radius: radius.$radius-XXL,
+  drawer-footer-gap: spacing.$spacing-16,
+);

@@ -1,0 +1,100 @@
+<app-showcase-layout
+  lightTitleKey="icon-showcase.light-theme"
+  darkTitleKey="icon-showcase.dark-theme"
+>
+  <ng-template let-theme="theme" let-idPrefix="idPrefix">
+  <div class="state-section">
+    <h4>{{ 'icon-showcase.some-examples' | localize }}</h4>
+    <div class="icon-group">
+      @for (icon of sampleIcons; track icon) {
+        <div class="icon-item">
+          <ndwu-icon [name]="icon" />
+          <span class="icon-label">{{ icon }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'icon-showcase.icons-with-css-color' | localize }}</h4>
+    @for (colorExample of colorExamples; track colorExample.name) {
+      <div class="color-section">
+        <h4>{{ colorExample.name | localize }}</h4>
+        <div class="icon-group" [class]="colorExample.class">
+          <ndwu-icon [name]="ICON_NAME.ADD_L" />
+          <ndwu-icon [name]="ICON_NAME.CHECK_L" />
+          <ndwu-icon [name]="ICON_NAME.CLOSE_L" />
+          <ndwu-icon [name]="ICON_NAME.SEARCH_L" />
+          <ndwu-icon [name]="ICON_NAME.SETTINGS_L" />
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'icon-showcase.adaptive-icon' | localize }}</h4>
+    <div class="adaptive-example">
+      <div class="adaptive-row">
+        <ndwu-adaptive-icon name="close" />
+        <span class="icon-label">
+          {{ 'icon-showcase.adaptive-default' | localize }}: L
+        </span>
+      </div>
+      <pre class="usage-snippet">&lt;ndwu-adaptive-icon name="close" /&gt;
+
+Unbound: always L. The library owns no breakpoint.
+Bind [adaptiveSize] to make it adapt.</pre>
+    </div>
+
+    <div class="adaptive-example">
+      <div class="adaptive-row">
+        <ndwu-adaptive-icon name="close" [adaptiveSize]="adaptiveSizeFlags" />
+        <span class="icon-label">
+          {{ 'icon-showcase.adaptive-size-flags' | localize }}: {{ adaptiveIsDesktop() ? 'L' : 'S' }}
+        </span>
+        <button type="button" (click)="toggleAdaptiveFlags()">
+          {{ 'icon-showcase.adaptive-toggle' | localize }}
+        </button>
+      </div>
+      <pre class="usage-snippet">flags = &#123;L: isDesktop, S: isMobile&#125;;
+
+&lt;ndwu-adaptive-icon name="close" [adaptiveSize]="flags" /&gt;</pre>
+    </div>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'icon-showcase.configurable-example' | localize }}</h4>
+    <div class="configurable-example">
+      <div class="controls">
+        <div class="control-group">
+          <label [attr.for]="idPrefix + 'icon-select'">{{ 'icon-showcase.icon-name' | localize }}</label>
+          <select
+            [id]="idPrefix + 'icon-select'"
+            [value]="selectedIcon()"
+            (keydown)="handleArrowKeys($event)"
+            (change)="onIconChange($event)"
+            class="icon-select"
+          >
+            @for (icon of allIcons; track icon) {
+              <option [value]="icon">{{ icon }}</option>
+            }
+          </select>
+        </div>
+        <div class="control-group">
+          <label [attr.for]="idPrefix + 'color-picker'">{{ 'icon-showcase.color' | localize }}</label>
+          <input
+            [id]="idPrefix + 'color-picker'"
+            type="color"
+            [value]="selectedColor()"
+            (input)="onColorChange($event)"
+            class="color-picker"
+          />
+        </div>
+      </div>
+      <div class="icon-preview" [style.color]="selectedColor()">
+        <ndwu-icon [name]="selectedIcon()" />
+      </div>
+    </div>
+  </div>
+  </ng-template>
+</app-showcase-layout>

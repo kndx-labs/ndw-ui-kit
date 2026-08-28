@@ -1,0 +1,57 @@
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
+
+.state-section {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-16;
+  margin-bottom: 48px;
+
+  h4 {
+    margin: 0;
+    color: #64748b;
+    font-weight: typography.$fontWeight-XL;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .description {
+    margin: -8px 0 0;
+    color: #94a3b8;
+    font-size: 0.85rem;
+  }
+}
+
+.example-row {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-24;
+  max-width: 600px;
+}
+
+.size-readout {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
+
+  strong {
+    color: #38bdf8;
+    font-size: 1rem;
+  }
+}
+
+.reference-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing.$spacing-16;
+}
+
+.reference-card {
+  overflow: hidden;
+  width: 400px;
+  border: 1px solid var(--ndwu-file-upload-border-color);
+  border-radius: radius.$radius-XL;
+  background-color: var(--ndwu-file-upload-surface-color);
+}

@@ -1,0 +1,12 @@
+<ndwu-file-upload
+  [size]="sizeSvc.size()"
+  [multiple]="multiple()"
+  [accept]="accept()"
+  [maxSizeMB]="maxSizeMB()"
+  [disabled]="isDisabled"
+  [initialFiles]="initialFiles()"
+  [translationTexts]="translationTexts()"
+  (filesChange)="onFilesChange($event)"
+  (uploadRequest)="uploadRequest.emit($event)"
+  (blurred)="onBlur()"
+/>

@@ -1,0 +1,94 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="tooltip-overview">
+      <div class="state-section">
+        <h4>Single-line and multi-line</h4>
+        <p>
+          <ndwu-icon
+            class="tooltip-icon-trigger"
+            [name]="ICON_NAME.INFO_L"
+            ndwuTooltip="Shared with me"
+            tooltipPosition="below"
+          />
+          <ndwu-icon
+            class="tooltip-icon-trigger"
+            [name]="ICON_NAME.INFO_L"
+            [ndwuTooltip]="multilineText"
+            tooltipPosition="below"
+          />
+        </p>
+      </div>
+
+      <div class="state-section">
+        <h4>Tooltip positions</h4>
+        <div class="position-demo">
+          @for (state of positionStates; track state.position + state.align) {
+            <span class="position-demo__label">{{ state.position }} · {{ state.align }}</span>
+
+            <ndwu-icon
+              class="tooltip-icon-trigger"
+              [name]="ICON_NAME.INFO_L"
+              [ndwuTooltip]="multilineText"
+              [tooltipPosition]="state.position"
+              [tooltipAlign]="state.align"
+            />
+          }
+        </div>
+      </div>
+
+      <div class="state-section">
+        <h4>Basic tooltip</h4>
+        <p>
+          <button ndwu-button variant="secondary" ndwuTooltip="This action will delete the item permanently.">
+            Delete
+          </button>
+          <span class="tooltip-demo-inline" ndwuTooltip="Port forwarding allows external access.">Info</span>
+        </p>
+      </div>
+
+      <div class="state-section">
+        <h4>Tooltip bound to an icon</h4>
+        <p>
+          <ndwu-icon
+            [name]="ICON_NAME.INFO_L"
+            ndwuTooltip="This icon provides additional information about the status."
+            class="tooltip-icon-trigger"
+            [showOnTap]="true"
+          />
+        </p>
+      </div>
+
+      <div class="state-section">
+        <h4>Tooltip with custom max width</h4>
+        <p>
+          <button
+            ndwu-button
+            variant="tertiary"
+            ndwuTooltip="This tooltip has a limited width of 200px so longer text will wrap to multiple lines."
+            tooltipMaxWidth="200px"
+          >
+            Limited width tooltip
+          </button>
+        </p>
+      </div>
+
+      <div class="state-section">
+        <h4>Custom delay</h4>
+        <p>
+          <button
+            ndwu-button
+            variant="tertiary"
+            ndwuTooltip="Appears after 500ms, hides after 2000ms"
+            [showDelay]="500"
+            [hideDelay]="2000"
+          >
+            Delayed tooltip
+          </button>
+        </p>
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

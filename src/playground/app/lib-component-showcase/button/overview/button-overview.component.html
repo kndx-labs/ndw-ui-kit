@@ -1,0 +1,94 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>{{ 'button-showcase.button-types' | localize }}</h4>
+      <div class="button-group">
+        @for (variant of TYPES; track variant) {
+          <button
+            ndwu-button
+            [variant]="variant"
+            [label]="'button-showcase.' + variant.toLowerCase()"
+          >
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'button-showcase.with-icon' | localize }}</h4>
+      <div class="button-group">
+        <button
+          ndwu-button
+          [variant]="BUTTON_TYPE.PRIMARY"
+          [icon]="ICON_NAME.ADD_S"
+          [label]="'button-showcase.' + BUTTON_TYPE.PRIMARY"
+        >
+        </button>
+        <button
+          ndwu-button
+          [variant]="BUTTON_TYPE.SECONDARY"
+          [icon]="ICON_NAME.CHECK_S"
+          [label]="'button-showcase.' + BUTTON_TYPE.SECONDARY"
+        >
+        </button>
+        <button
+          ndwu-button
+          [variant]="BUTTON_TYPE.TERTIARY"
+          [icon]="ICON_NAME.CHEVRON_RIGHT_S"
+          [label]="'button-showcase.' + BUTTON_TYPE.TERTIARY"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'button-showcase.sizes' | localize }}</h4>
+      <div class="button-group">
+        @for (size of SIZES; track size) {
+          <button
+            ndwu-button
+            [size]="size"
+            [variant]="BUTTON_TYPE.PRIMARY"
+            [label]="'common.sizes.' + size.toLowerCase()"
+          >
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'button-showcase.loading-state' | localize }}</h4>
+      <div class="button-group">
+        @for (variant of TYPES; track variant) {
+          <button
+            ndwu-button
+            [variant]="variant"
+            [icon]="variant === BUTTON_TYPE.PRIMARY ? ICON_NAME.ADD_S : null"
+            [label]="'button-showcase.' + variant.toLowerCase()"
+            [loading]="isLoading(variant, SIZE.L)"
+            (click)="onButtonClick(variant, SIZE.L)"
+          >
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'button-showcase.disabled-state' | localize }}</h4>
+      <div class="button-group">
+        @for (variant of TYPES.slice(0, 3); track variant) {
+          <button
+            ndwu-button
+            [variant]="variant"
+            [disabled]="true"
+            [label]="'button-showcase.' + variant.toLowerCase() + '-disabled'"
+          >
+          </button>
+        }
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

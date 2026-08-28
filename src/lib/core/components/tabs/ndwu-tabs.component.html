@@ -1,0 +1,15 @@
+@for (tab of tabs(); track tab.id) {
+  <button
+    ndwu-tab-item
+    [label]="tab.label"
+    [selected]="isTabSelected(tab)"
+    [disabled]="tab.disabled ?? false"
+    [size]="size()"
+    [variant]="variant()"
+    [icon]="tab.icon ?? null"
+    [badge]="tab.badge ?? null"
+    [badgeTone]="tab.badgeTone ?? 'blue'"
+    [widthMode]="tab.widthMode ?? tabWidthMode()"
+    (click)="onTabSelect(tab)"
+  ></button>
+}

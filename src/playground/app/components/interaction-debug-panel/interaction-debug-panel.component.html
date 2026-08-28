@@ -1,0 +1,46 @@
+<aside
+  #panel
+  class="interaction-debug-panel"
+  [class.interaction-debug-panel--collapsed]="isCollapsed()"
+  [style.left.px]="position()?.left"
+  [style.top.px]="position()?.top"
+  [style.right]="position() === null ? null : 'auto'"
+  [style.bottom]="position() === null ? null : 'auto'"
+  aria-label="Interaction registry debug panel"
+>
+  <div
+    class="interaction-debug-panel__header"
+    (pointerdown)="onDragStart($event)"
+  >
+    <div class="interaction-debug-panel__title">Interaction debug</div>
+
+    <button
+      type="button"
+      class="interaction-debug-panel__toggle"
+      [attr.aria-expanded]="!isCollapsed()"
+      [attr.aria-label]="isCollapsed() ? 'Expand interaction debug panel' : 'Collapse interaction debug panel'"
+      (click)="toggle()"
+    >
+      <ndwu-icon [name]="isCollapsed() ? ICON_NAME.CHEVRON_UP_S : ICON_NAME.CHEVRON_DOWN_S"/>
+    </button>
+  </div>
+
+  @if (!isCollapsed()) {
+    <dl class="interaction-debug-panel__list">
+      @for (row of statusRows(); track row.label) {
+        <div class="interaction-debug-panel__row">
+          <dt>{{ row.label }}</dt>
+          <dd [class.interaction-debug-panel__value--active]="row.value">
+            {{ row.value ? 'true' : 'false' }}
+          </dd>
+        </div>
+      }
+
+      <div class="interaction-debug-panel__row">
+        <dt>open modals</dt>
+        <dd>{{ openModalCount() }}</dd>
+      </div>
+    </dl>
+  }
+</aside>
+

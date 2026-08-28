@@ -1,0 +1,28 @@
+.state-section {
+  margin-bottom: 16px;
+
+  h4 {
+    margin: 0 0 12px;
+    color: var(--color-gray-70);
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+.tabs-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.tabs-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.size-label {
+  color: var(--color-gray-60);
+  font-size: 12px;
+}

@@ -1,0 +1,7 @@
+// Sandbox layout and controls: shared in _sandbox.scss (loaded from app root).
+
+ndwu-badge {
+  border-color: var(--ndwu-badge-override-border, var(--ndwu-badge-border)) !important;
+  background: var(--ndwu-badge-override-bg, var(--ndwu-badge-bg)) !important;
+  color: var(--ndwu-badge-override-fg, var(--ndwu-badge-fg)) !important;
+}

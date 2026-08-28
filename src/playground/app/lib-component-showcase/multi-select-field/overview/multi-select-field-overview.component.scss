@@ -1,0 +1,30 @@
+.state-section {
+  margin-bottom: 24px;
+}
+
+.state-section__field {
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.overview-note {
+  margin-bottom: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+
+  code {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #f0f0f0;
+    font-size: 0.85em;
+  }
+}
+
+.component-sizes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

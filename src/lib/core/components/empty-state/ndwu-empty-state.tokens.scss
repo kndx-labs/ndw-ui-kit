@@ -1,0 +1,8 @@
+@use 'styles/colors';
+
+$ndwu-empty-state-tokens: (
+  empty-state-bg: colors.$gray-0,
+  empty-state-border: colors.$gray-20,
+  empty-state-title-color: colors.$gray-80,
+  empty-state-description-color: colors.$gray-50,
+);

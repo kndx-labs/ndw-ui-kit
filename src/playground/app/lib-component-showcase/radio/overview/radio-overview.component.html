@@ -1,0 +1,144 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template let-theme="theme" let-idPrefix="idPrefix">
+  <div class="state-section">
+    <h4>{{ 'radio-showcase.default' | localize }}</h4>
+    <form [formGroup]="radioDefault">
+      <ndwu-radio-group
+        [value]="radioDefault.controls.option.value ?? ''"
+        (valueChange)="radioDefault.controls.option.setValue($event)"
+      >
+        <ndwu-radio-button value="option1" label="radio-showcase.option-1" />
+        <ndwu-radio-button value="option2" label="radio-showcase.option-2" />
+      </ndwu-radio-group>
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'common.sizes.l' | localize }}</h4>
+    <form [formGroup]="radioSizeL">
+      <ndwu-radio-group
+        [value]="radioSizeL.controls.option.value ?? ''"
+        (valueChange)="radioSizeL.controls.option.setValue($event)"
+        [size]="SIZE.L"
+      >
+        <ndwu-radio-button
+          value="option1"
+          label="radio-showcase.small-option-1"
+          secondaryText="common.additional-text"
+        />
+        <ndwu-radio-button
+          value="option2"
+          label="radio-showcase.small-option-2"
+          secondaryText="common.additional-text"
+        />
+      </ndwu-radio-group>
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'common.sizes.xl' | localize }}</h4>
+    <form [formGroup]="radioSizeXL">
+      <ndwu-radio-group
+        [value]="radioSizeXL.controls.option.value ?? ''"
+        (valueChange)="radioSizeXL.controls.option.setValue($event)"
+        [size]="SIZE.XL"
+      >
+        <ndwu-radio-button
+          value="option1"
+          label="radio-showcase.option-1"
+          secondaryText="common.additional-text"
+        />
+        <ndwu-radio-button
+          value="option2"
+          label="radio-showcase.option-2"
+          secondaryText="common.additional-text"
+        />
+      </ndwu-radio-group>
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'common.sizes.xxl' | localize }}</h4>
+    <form [formGroup]="radioSizeXXL">
+      <ndwu-radio-group
+        [value]="radioSizeXXL.controls.option.value ?? ''"
+        (valueChange)="radioSizeXXL.controls.option.setValue($event)"
+        [size]="SIZE.XXL"
+      >
+        <ndwu-radio-button
+          value="option1"
+          label="radio-showcase.extra-large-option-1"
+          secondaryText="common.additional-text"
+        />
+        <ndwu-radio-button
+          value="option2"
+          label="radio-showcase.extra-large-option-2"
+          secondaryText="common.additional-text"
+        />
+      </ndwu-radio-group>
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'common.checked' | localize }}</h4>
+    <form [formGroup]="radioChecked">
+      <ndwu-radio-group
+        [value]="radioChecked.controls.option.value ?? ''"
+        (valueChange)="radioChecked.controls.option.setValue($event)"
+      >
+        <ndwu-radio-button value="option1" label="radio-showcase.option-1" />
+        <ndwu-radio-button value="option2" label="radio-showcase.option-2-selected" />
+      </ndwu-radio-group>
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'common.disabled' | localize }}</h4>
+    <form [formGroup]="radioDisabled">
+      <ndwu-radio-group
+        [value]="radioDisabled.controls.option.value ?? ''"
+        (valueChange)="radioDisabled.controls.option.setValue($event)"
+        [disabled]="radioDisabled.controls.option.disabled"
+      >
+        <ndwu-radio-button value="option1" label="radio-showcase.disabled-option-1" />
+        <ndwu-radio-button value="option2" label="radio-showcase.disabled-option-2" />
+      </ndwu-radio-group>
+    </form>
+    <form [formGroup]="radioDisabledChecked">
+      <ndwu-radio-group
+        [value]="radioDisabledChecked.controls.option.value ?? ''"
+        (valueChange)="radioDisabledChecked.controls.option.setValue($event)"
+        [disabled]="radioDisabledChecked.controls.option.disabled"
+      >
+        <ndwu-radio-button value="option1" label="radio-showcase.disabled-option-1" />
+        <ndwu-radio-button value="option2" label="radio-showcase.disabled-checked-option-2" />
+      </ndwu-radio-group>
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'radio-showcase.disabled-with-text' | localize }}</h4>
+    <form [formGroup]="radioDisabledWithText">
+      <ndwu-radio-group
+        [value]="radioDisabledWithText.controls.option.value ?? ''"
+        (valueChange)="radioDisabledWithText.controls.option.setValue($event)"
+        [disabled]="radioDisabledWithText.controls.option.disabled"
+      >
+        <ndwu-radio-button
+          value="option1"
+          label="radio-showcase.disabled-option-1"
+          secondaryText="common.additional-text"
+        />
+        <ndwu-radio-button
+          value="option2"
+          label="radio-showcase.disabled-option-2"
+          secondaryText="common.additional-text"
+        />
+      </ndwu-radio-group>
+    </form>
+  </div>
+  </ng-template>
+</app-showcase-layout>

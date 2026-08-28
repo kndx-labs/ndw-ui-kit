@@ -1,0 +1,30 @@
+@if (errorMessage() || helperMessage()) {
+  <span
+    [class]="{
+      'ndwu-helper-message': true,
+      'ndwu-helper-message--error': status() === 'error',
+      'ndwu-helper-message--success': status() === 'success',
+      'ndwu-helper-message--warning': status() === 'warning',
+    }"
+  >
+    @if (status() === 'error') {
+      <span class="ndwu-helper-message__icon">
+        <ndwu-icon [name]="ICON_NAME.ERROR_XS"/>
+      </span>
+    }
+    @if (status() === 'success') {
+      <span class="ndwu-helper-message__icon">
+        <ndwu-icon [name]="ICON_NAME.SUCCESS_XS"/>
+      </span>
+    }
+    @if (status() === 'warning') {
+      <span class="ndwu-helper-message__icon">
+        <ndwu-icon
+          [name]="ICON_NAME.WARNING_S"
+          stretched="true"
+        />
+      </span>
+    }
+    <span [innerHTML]="(errorMessage() || helperMessage()) | localize:sanitizedValidationData()"></span>
+  </span>
+}

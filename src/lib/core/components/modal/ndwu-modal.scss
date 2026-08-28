@@ -1,0 +1,40 @@
+@use 'styles/mixins' as mixins;
+@use 'styles/spacing';
+@use './ndwu-modal-mixins' as modal-mixins;
+
+// Base classes for [ndwuModalHeader], [ndwuModalFooter], [ndwuModalBody] directives
+.ndwu-modal {
+  &__header {
+    @include modal-mixins.ndwu-modal-header();
+  }
+
+  &__footer {
+    @include modal-mixins.ndwu-modal-footer();
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--ndwu-modal-footer-gap);
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  &__loader {
+    @include modal-mixins.ndwu-modal-loader();
+  }
+
+  &__body {
+    @include modal-mixins.ndwu-modal-body();
+  }
+}
+
+@include mixins.mobile() {
+  .ndwu-modal__actions {
+    gap: spacing.$spacing-16;
+
+    > button {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+  }
+}

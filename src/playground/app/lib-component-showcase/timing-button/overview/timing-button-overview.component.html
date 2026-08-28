@@ -1,0 +1,121 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>{{ 'timing-button-showcase.default' | localize }}</h4>
+      <div class="button-group">
+        @if (timerVisible()) {
+          <button
+            ndwu-timing-button
+            [duration]="5"
+            [width]="'200px'"
+            [leftText]="'timing-button-showcase.primary'"
+            [rightText]="'timing-button-showcase.seconds'"
+            [loading]="timerLoading()"
+            (timerEnd)="onTimerEnd()"
+          >
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'timing-button-showcase.visual-states' | localize }}</h4>
+      <div class="button-group">
+        <div class="state-demo">
+          <button
+            ndwu-timing-button
+            [leftText]="'timing-button-showcase.state-preloading'"
+            [duration]="0"
+            class="demo-preloading"
+          >
+          </button>
+        </div>
+        <div class="state-demo">
+          @if (enabledVisible()) {
+            <button
+              ndwu-timing-button
+              [leftText]="'timing-button-showcase.state-enabled'"
+              [rightText]="'timing-button-showcase.seconds'"
+              [duration]="5"
+              class="demo-enabled"
+              [loading]="enabledLoading()"
+              (timerEnd)="onEnabledTimerEnd()"
+            >
+            </button>
+          }
+        </div>
+        <div class="state-demo">
+          @if (hoverVisible()) {
+            <button
+              ndwu-timing-button
+              [leftText]="'timing-button-showcase.state-hover'"
+              [rightText]="'timing-button-showcase.seconds'"
+              [duration]="5"
+              class="demo-hover"
+              [loading]="hoverLoading()"
+              (timerEnd)="onHoverTimerEnd()"
+            >
+            </button>
+          }
+        </div>
+        <div class="state-demo">
+          @if (focusVisible()) {
+            <button
+              ndwu-timing-button
+              [leftText]="'timing-button-showcase.state-focus'"
+              [rightText]="'timing-button-showcase.seconds'"
+              [duration]="5"
+              class="demo-focus"
+              [loading]="focusLoading()"
+              (timerEnd)="onFocusTimerEnd()"
+            >
+            </button>
+          }
+        </div>
+        <div class="state-demo">
+          <button
+            ndwu-timing-button
+            [leftText]="'timing-button-showcase.state-pressed'"
+            [duration]="0"
+            class="demo-pressed"
+          >
+          </button>
+        </div>
+        <div class="state-demo">
+          <button
+            ndwu-timing-button
+            [disabled]="true"
+            [leftText]="'timing-button-showcase.state-disabled'"
+          >
+          </button>
+        </div>
+        <div class="state-demo">
+          <button
+            ndwu-timing-button
+            [loading]="true"
+            [leftText]="'timing-button-showcase.state-loading'"
+          >
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'timing-button-showcase.sizes' | localize }}</h4>
+      <div class="button-group sizes-group">
+        @for (size of SIZES; track size) {
+          <button
+            ndwu-timing-button
+            [size]="size"
+            [leftText]="'common.sizes.' + size.toLowerCase()"
+            [duration]="0"
+          >
+          </button>
+        }
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

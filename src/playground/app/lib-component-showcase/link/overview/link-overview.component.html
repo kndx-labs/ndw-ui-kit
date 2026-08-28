@@ -1,0 +1,28 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>{{ 'link-showcase.states' | localize }}</h4>
+      <div class="states-list">
+        @for (state of STATES; track state.id) {
+          <div class="states-list__row">
+            <span class="states-list__label">
+              {{ 'link-showcase.' + state.id | localize }}
+            </span>
+            <a
+              ndwu-link
+              href=""
+              [disabled]="state.disabled"
+              [class]="state.cssClass"
+              [external]="state.external"
+            >
+              {{ 'link-showcase.link-label' | localize }}
+            </a>
+          </div>
+        }
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

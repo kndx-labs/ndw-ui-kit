@@ -1,0 +1,58 @@
+<ndwu-form-field [size]="sizeSvc.size()" [readonly]="readonly()">
+  @if (label()) {
+    <ndwu-floating-label
+      [label]="label()"
+      [required]="required()"
+    />
+  }
+
+  <input
+    ndwuInput
+    [type]="inputType()"
+    [value]="inputValue"
+    [attr.value]="inputValue"
+    [placeholder]="placeholder() ? (placeholder() | localize) : ''"
+    [class.ndwu-form-field__input--invalid]="invalid()"
+    [class.ndwu-form-field__input--password]="isPasswordInput()"
+    [class.ndwu-form-field__input--has-right-icon]="hasRightIcon()"
+    [disabled]="isDisabled"
+    [readonly]="readonly()"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+  />
+
+  @if (isPasswordInput()) {
+    <button
+      type="button"
+      class="ndwu-form-field__right-icon ndwu-form-field__password-toggle"
+      ndwuRightIcon
+      (click)="togglePasswordVisibility()"
+      [disabled]="isDisabled"
+      [attr.aria-label]="eyeIconLabel() ? (eyeIconLabel() | localize) : undefined"
+    >
+      <ndwu-icon [name]="eyeIcon()"/>
+    </button>
+  }
+
+  @if (showRightIcon()) {
+    <button
+      type="button"
+      class="ndwu-form-field__right-icon"
+      ndwuRightIcon
+      (click)="onRightIconClick($event)"
+      [disabled]="isDisabled"
+    >
+      <ndwu-icon [name]="rightIcon()!"/>
+    </button>
+  }
+
+  @if (errorMessage() || hint()) {
+    <ndwu-helper-message
+      ndwuHint
+      [status]="errorMessage() ? 'error' : 'default'"
+      [errorMessage]="errorMessage()"
+      [helperMessage]="hint()"
+      [validationData]="validationData()"
+    />
+  }
+</ndwu-form-field>

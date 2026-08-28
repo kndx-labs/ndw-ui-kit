@@ -1,0 +1,77 @@
+@use 'styles/colors';
+
+@mixin ndwu-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--ndwu-modal-header-margin-bottom);
+}
+
+@mixin ndwu-modal-footer {
+  display: flex;
+  gap: var(--ndwu-modal-footer-gap);
+  justify-content: flex-start;
+  margin-top: var(--ndwu-modal-footer-margin-top);
+}
+
+@mixin ndwu-modal-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: inherit;
+  background: colors.$gray-0;
+}
+
+@mixin ndwu-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+// Mobile-only crossfade played when one dialog switches for another
+@keyframes ndwu-modal-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes ndwu-modal-fade-in {
+  from {
+    opacity: 0;
+    visibility: visible;
+    transform: translateY(100vh);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ndwu-modal--fade-out {
+  animation: ndwu-modal-fade-out 300ms ease forwards;
+}
+
+.ndwu-modal--fade-in {
+  animation: ndwu-modal-fade-in 300ms ease forwards;
+}
+
+// Keep (near-)instant rather than removing the animation outright: the close
+// strategy waits on `animationend` to know when to dispose/restore, so the
+// keyframes still need to run — just imperceptibly fast.
+@media (prefers-reduced-motion: reduce) {
+  .ndwu-modal--fade-out,
+  .ndwu-modal--fade-in {
+    animation-duration: 0.01ms;
+  }
+}

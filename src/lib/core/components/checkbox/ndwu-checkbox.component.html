@@ -1,0 +1,27 @@
+<div [class]="rootClass()">
+  <input
+    #checkboxInput
+    type="checkbox"
+    class="ndwu-checkbox__input"
+    [class.ndwu-checkbox__input--no-label]="!label() && !secondaryText()"
+    [class.ndwu-checkbox__input--invalid]="invalid()"
+    [id]="id()"
+    [checked]="checked()"
+    [disabled]="disabled()"
+    [attr.tabindex]="inputTabIndex()"
+    (change)="onCheckboxChange($event)"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
+  />
+
+  @if (label() || secondaryText()) {
+    <label [for]="id()">
+      <ndwu-label-group
+        [label]="label()"
+        [secondaryText]="secondaryText()"
+        [disabled]="disabled()"
+        [size]="sizeSvc.effectiveSize()"
+      />
+    </label>
+  }
+</div>

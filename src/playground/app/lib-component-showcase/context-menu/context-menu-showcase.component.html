@@ -1,0 +1,109 @@
+<div class="context-menu-showcase">
+  <div class="state-section">
+    <h4>Context menu (right-click)</h4>
+    <p class="overview-note">
+      Two right-click targets below demonstrate the two ways to wire a controller factory
+      to <code>ndwuPopoverTrigger</code>. Both open the same menu.
+    </p>
+
+    <!-- Approach 1: [popoverControllerFactory] input — factory is explicit in the template -->
+    <p class="approach-label">
+      <strong>Approach 1 — <code>[popoverControllerFactory]</code> input</strong>
+      <br/>
+      The factory is passed directly as a template binding. Preferred for direct template usage.
+    </p>
+    <div
+      class="context-menu-target"
+      #inputBasedTrigger
+      ndwuPopoverTrigger
+      triggerOn="manual"
+      [popoverControllerFactory]="createDropdownController"
+      (contextmenu)="onInputBasedContextMenu($event)"
+    >
+      <p class="context-menu-target__text">Right-click here (input-based factory)</p>
+    </div>
+
+    <!-- Approach 2: DI token — factory provided at component level, injected implicitly -->
+    <p class="approach-label">
+      <strong>Approach 2 — <code>NDWU_POPOVER_CONTROLLER_FACTORY</code> DI token</strong>
+      <br/>
+      The factory is provided in component <code>providers</code> and injected automatically.
+      Required for <code>hostDirectives</code> wrappers (e.g. <code>ndwuTooltip</code>).
+    </p>
+    <div
+      class="context-menu-target"
+      #diBasedTrigger
+      ndwuPopoverTrigger
+      triggerOn="manual"
+      (contextmenu)="onDiBasedContextMenu($event)"
+    >
+      <p class="context-menu-target__text">Right-click here (DI token factory)</p>
+    </div>
+
+    <div class="context-menu-log">
+      <div class="context-menu-log__header">
+        <strong>Action log</strong>
+        <button type="button" class="context-menu-log__clear" (click)="clearLog()">Clear</button>
+      </div>
+      @if (actionLog().length === 0) {
+        <p class="context-menu-log__empty">No actions yet.</p>
+      } @else {
+        <ul class="context-menu-log__list">
+          @for (entry of actionLog(); track $index) {
+            <li>{{ entry }}</li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+
+  <ng-template #menuTpl let-close="close" let-execute="execute">
+    <div class="context-menu-panel" role="menu">
+      <button
+        type="button"
+        class="context-menu-item"
+        role="menuitem"
+        (click)="execute('cut'); close()"
+      >
+        <span>Cut</span>
+        <span class="context-menu-item__hotkey">Ctrl+X</span>
+      </button>
+      <button
+        type="button"
+        class="context-menu-item"
+        role="menuitem"
+        (click)="execute('copy'); close()"
+      >
+        <span>Copy</span>
+        <span class="context-menu-item__hotkey">Ctrl+C</span>
+      </button>
+      <button
+        type="button"
+        class="context-menu-item"
+        role="menuitem"
+        (click)="execute('paste'); close()"
+      >
+        <span>Paste</span>
+        <span class="context-menu-item__hotkey">Ctrl+V</span>
+      </button>
+      <button
+        type="button"
+        class="context-menu-item"
+        role="menuitem"
+        (click)="execute('selectAll'); close()"
+      >
+        <span>Select All</span>
+        <span class="context-menu-item__hotkey">Ctrl+A</span>
+      </button>
+      <button
+        type="button"
+        class="context-menu-item context-menu-item--danger"
+        role="menuitem"
+        (click)="execute('delete'); close()"
+      >
+        <span>Delete</span>
+        <span class="context-menu-item__hotkey">Del</span>
+      </button>
+    </div>
+  </ng-template>
+</div>

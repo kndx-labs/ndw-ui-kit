@@ -1,0 +1,27 @@
+@if (loading()) {
+  <ndwu-spokes-loader
+    class="ndwu-timing-button__loader"
+    [size]="loaderParams().size"
+    [spokeWidth]="loaderParams().spokeWidth"
+    [spokeHeight]="loaderParams().spokeHeight"
+    [spokeOffset]="loaderParams().spokeOffset"
+  />
+}
+
+<span class="ndwu-timing-button__label" [class.ndwu-timing-button__label--hidden]="loading()">
+  @if (icon()) {
+    <ndwu-icon
+      class="ndwu-timing-button__icon"
+      name="{{ icon() }}"
+    />
+  } @else {
+    {{ leftText() | localize }}
+    @if (state() === 'counting' && !disabled()) {
+      <span class="ndwu-timing-button__timer">{{ timerText() }}</span>
+    }
+    {{ rightText() | localize }}
+    @if (!leftText() && !rightText()) {
+      <ng-content></ng-content>
+    }
+  }
+</span>

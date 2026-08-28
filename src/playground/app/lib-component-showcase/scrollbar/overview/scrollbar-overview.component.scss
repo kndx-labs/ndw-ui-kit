@@ -1,0 +1,139 @@
+.state-section {
+  margin-bottom: 32px;
+}
+
+.section-description {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.scrollbar-flex-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-content: flex-start;
+  height: 180px;
+  padding: 12px;
+  border: 1px solid var(--ndwu-color-gray-30);
+
+  &__item {
+    display: flex;
+    flex: 1 1 160px;
+    align-items: center;
+    min-height: 72px;
+    padding: 12px;
+    border: 1px solid var(--ndwu-color-gray-30);
+    border-radius: 8px;
+  }
+
+  &__item--wide {
+    flex-basis: 100%;
+    min-height: auto;
+  }
+}
+
+.scrollbar-column-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 220px;
+  padding: 12px;
+  border: 1px solid var(--ndwu-color-gray-30);
+
+  &__header,
+  &__footer {
+    padding: 12px;
+    border: 2px solid var(--ndwu-color-gray-30);
+    border-radius: 8px;
+  }
+
+  &__content {
+    display: grid;
+    gap: 8px;
+
+    p {
+      margin: 0;
+      padding: 12px;
+      border: 1px solid var(--ndwu-color-gray-30);
+      border-radius: 8px;
+    }
+  }
+
+  &__footer {
+    position: sticky;
+    bottom: 0;
+    margin-top: auto;
+    background-color: var(--ndwu-color-gray-0);
+    box-shadow: 0 -4px 12px rgb(0 0 0 / 8%);
+  }
+}
+
+.scrollbar-padding-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 180px;
+  border: 1px solid var(--ndwu-color-gray-30);
+
+  &__item {
+    padding: 12px;
+    border: 1px solid var(--ndwu-color-gray-30);
+    border-radius: 8px;
+    background: var(--ndwu-color-gray-10);
+  }
+}
+
+.scrollbar-content-padding-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 180px;
+  border: 1px solid var(--ndwu-color-gray-30);
+
+  &__item {
+    padding: 12px;
+    border: 1px solid var(--ndwu-color-gray-30);
+    border-radius: 8px;
+    background: var(--ndwu-color-gray-10);
+  }
+}
+
+.scrollbar-grow-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+  height: 180px;
+  padding: 12px;
+  border: 1px solid var(--ndwu-color-gray-30);
+
+  &--grow {
+    height: auto;
+  }
+
+  &__toggle {
+    margin-bottom: 12px;
+  }
+
+  &__state {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  p {
+    margin: 0;
+    padding: 12px;
+    border: 1px solid var(--ndwu-color-gray-30);
+    border-radius: 8px;
+  }
+}
+
+// The library frees its own content box for print, but the host height belongs to the call
+// site. Without this reset the demo still occupies 220px of page flow and overlaps whatever
+// follows it, even though its content has visually escaped the box.
+@media print {
+  .scrollbar-column-demo {
+    height: auto;
+  }
+}

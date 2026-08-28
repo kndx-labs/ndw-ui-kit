@@ -1,0 +1,28 @@
+@use 'ndwu-button.mixins' as button-mixins;
+
+// available globally via styles/_components-global.scss
+.ndwu-button-style {
+  @include button-mixins.base();
+
+  @each $variant in (primary, secondary, tertiary, ghost, secondary-negative) {
+    &--#{$variant} {
+      @include button-mixins.variant($variant);
+    }
+  }
+
+  &--S {
+    @include button-mixins.size(S);
+  }
+
+  &--L {
+    @include button-mixins.size(L);
+  }
+
+  &--XL {
+    @include button-mixins.size(XL);
+  }
+
+  &--XXL {
+    @include button-mixins.size(XXL);
+  }
+}

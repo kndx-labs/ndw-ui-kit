@@ -1,0 +1,92 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="section">
+      <h4>Text-only — all tones</h4>
+      <div class="badge-row">
+        @for (tone of tones; track tone) {
+          <ndwu-badge
+            [tone]="tone"
+            [ariaLabel]="`${tone} badge`"
+          >
+            {{ tone }}
+          </ndwu-badge>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Icon + text — all sizes</h4>
+      <div class="badge-row">
+        @for (size of sizes; track size) {
+          <ndwu-badge
+            tone="blue"
+            [size]="size"
+            [icon]="ICON_NAME.BELL_ON_S"
+            [ariaLabel]="`Blue badge with bell icon, size ${size}`"
+          >
+            Size {{ size }}
+          </ndwu-badge>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>All tones with icon</h4>
+      <div class="badge-row">
+        @for (tone of tones; track tone) {
+          <ndwu-badge
+            [tone]="tone"
+            [icon]="ICON_NAME.BELL_ON_S"
+            [ariaLabel]="`${tone} badge with bell icon`"
+          >
+            {{ tone }}
+          </ndwu-badge>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Truncation via maxWidth</h4>
+      <div class="badge-row">
+        <ndwu-badge
+          tone="gray"
+          size="L"
+          maxWidth="120px"
+          ariaLabel="Very long label that truncates here"
+        >
+          Very long label that truncates here
+        </ndwu-badge>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Small number</h4>
+      <div class="badge-row">
+        <ndwu-badge
+          tone="negative"
+          size="L"
+          ariaLabel="1 notification"
+        >
+          1
+        </ndwu-badge>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Large number (auto-width)</h4>
+      <div class="badge-row">
+        <ndwu-badge
+          tone="negative"
+          size="L"
+          ariaLabel="1000 notifications"
+        >
+          1000
+        </ndwu-badge>
+      </div>
+    </div>
+
+  </ng-template>
+</app-showcase-layout>

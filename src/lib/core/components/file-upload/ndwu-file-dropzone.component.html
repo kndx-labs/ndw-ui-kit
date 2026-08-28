@@ -1,0 +1,41 @@
+<div
+  [class]="rootClass()"
+  [attr.aria-disabled]="disabled()"
+  role="button"
+  [tabindex]="disabled() ? '-1' : '0'"
+  (keydown)="onKeydown($event)"
+>
+    <input
+      #fileInput
+      type="file"
+      class="ndwu-file-dropzone__input"
+      [accept]="accept()"
+      [multiple]="multiple()"
+      [disabled]="disabled()"
+      (change)="onInputChange($event)"
+    />
+
+  <div class="ndwu-file-dropzone__content">
+    <ndwu-pictogram
+      class="ndwu-file-dropzone__pictogram"
+      [name]="effectivePictogramName()"
+      [variant]="effectivePictogramVariant()"
+    />
+
+    <div class="ndwu-file-dropzone__instructions">
+      <span class="ndwu-file-dropzone__title">{{ effectiveTexts().title | localize }}</span>
+
+      <span class="ndwu-file-dropzone__hint">{{ effectiveTexts().hint | localize }}</span>
+    </div>
+
+    <button
+      ndwu-button
+      variant="primary"
+      [size]="resolvedSize()"
+      [icon]="ICON_NAME.UPLOAD_S"
+      [label]="effectiveTexts().browse | localize"
+      [disabled]="disabled()"
+      (click)="onClick($event)"
+    ></button>
+  </div>
+</div>

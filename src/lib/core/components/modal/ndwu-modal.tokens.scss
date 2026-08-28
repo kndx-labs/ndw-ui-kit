@@ -1,0 +1,10 @@
+@use 'styles/colors';
+@use 'styles/spacing';
+@use 'styles/padding';
+@use 'styles/radius';
+
+$ndwu-modal-tokens: (
+  modal-header-margin-bottom: spacing.$spacing-16,
+  modal-footer-gap: spacing.$spacing-8,
+  modal-footer-margin-top: spacing.$spacing-24,
+);

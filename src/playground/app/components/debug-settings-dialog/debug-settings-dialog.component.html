@@ -1,0 +1,16 @@
+<div class="debug-settings-dialog__content">
+  <div class="debug-settings-dialog__row">
+    <span class="debug-settings-dialog__label">Show tap areas</span>
+    <ndwu-toggle
+      [checked]="debugService.showTapAreas()"
+      (checkedChange)="debugService.setTapAreas($event)"
+    />
+  </div>
+  <div class="debug-settings-dialog__row">
+    <span class="debug-settings-dialog__label">Show interaction debug panel</span>
+    <ndwu-toggle
+      [checked]="debugService.showInteractionPanel()"
+      (checkedChange)="debugService.setInteractionPanel($event)"
+    />
+  </div>
+</div>

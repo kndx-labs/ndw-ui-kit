@@ -1,0 +1,10 @@
+<span class="ndwu-link__container">
+  <ng-content></ng-content>
+
+  @if (external()) {
+    <ndwu-icon
+      class="ndwu-link__icon"
+      name="{{ icon() }}"
+    />
+  }
+</span>

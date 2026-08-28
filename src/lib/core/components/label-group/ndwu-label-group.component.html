@@ -1,0 +1,15 @@
+@if (label() || secondaryText()) {
+  <span [class]="rootClass()">
+    @if (label()) {
+      <span class="ndwu-label-group__label-text">
+        {{ label() | localize }}
+      </span>
+    }
+
+    @if (secondaryText()) {
+      <span class="ndwu-label-group__secondary-text">
+        {{ secondaryText() | localize }}
+      </span>
+    }
+  </span>
+}

@@ -1,0 +1,16 @@
+<p class="message">
+  {{ 'dialog-showcase.overview.custom-dialogs.confirm-close.message' | localize }}
+</p>
+
+<div
+  *ndwuModalFooter
+  ndwuModalActions
+>
+  <button
+    ndwuButton
+    variant="primary"
+    [label]="'dialog-showcase.overview.common.button-close'"
+    (click)="closeDialog()"
+  >
+  </button>
+</div>

@@ -1,0 +1,21 @@
+# minimal support for 'es2022' targets
+Chrome >= 103
+Firefox >= 102
+Safari >= 15.5
+Edge >= 103
+Opera >= 89
+
+# matches desktop Safari version
+ios >= 15.5
+
+# other browsers
+last 3 major versions
+> 0.5%
+not dead
+
+# explicitly exclude certain mobile browsers
+not kaios > 0
+not op_mini all
+not baidu > 0
+not and_uc > 0
+not and_qq > 0

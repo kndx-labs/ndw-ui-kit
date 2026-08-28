@@ -1,0 +1,179 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template let-theme="theme">
+    <div class="state-section">
+      <h4>{{ 'input-showcase.default' | localize }}</h4>
+      <form [formGroup]="inputDefault">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.email-address"
+          placeholder="input-showcase.enter-email-placeholder"
+          hint="input-showcase.email-hint"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>Compound: ndwu-form-field + ndwu-label + input[ndwuInput]</h4>
+      <form [formGroup]="inputCompound">
+        <ndwu-form-field>
+          <ndwu-floating-label
+            [label]="'input-showcase.email-address' | localize"
+            [required]="false"
+          />
+          <input
+            ndwuInput
+            formControlName="input"
+            [placeholder]="'input-showcase.enter-email-placeholder' | localize"
+          />
+          <ndwu-icon [name]="ICON_NAME.SEARCH_L" ndwuSuffix/>
+
+          <ndwu-helper-message
+            ndwuHint
+            helperMessage="input-showcase.email-hint"
+          />
+        </ndwu-form-field>
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.sizes.l' | localize }}</h4>
+      <form [formGroup]="inputSizeL">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.small-input"
+          placeholder="input-showcase.enter-text-placeholder"
+          [size]="SIZE.L"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.sizes.xxl' | localize }}</h4>
+      <form [formGroup]="inputSizeXXL">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.extra-large-input"
+          placeholder="input-showcase.enter-text-placeholder"
+          [size]="SIZE.XXL"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'input-showcase.with-value' | localize }}</h4>
+      <form [formGroup]="inputWithValue">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.email-address"
+          placeholder="input-showcase.enter-email-placeholder"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.invalid' | localize }}</h4>
+      <form [formGroup]="inputWithIconInvalid">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.invalid-input"
+          placeholder="input-showcase.valid-email-placeholder"
+          hint="input-showcase.validation-error-hint"
+          [rightIcon]="ICON_NAME.SEARCH_L"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.required' | localize }}</h4>
+      <form [formGroup]="inputRequired">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.required-field"
+          placeholder="input-showcase.enter-text-placeholder"
+          [required]="true"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'input-showcase.required-invalid' | localize }}</h4>
+      <form [formGroup]="inputRequiredInvalid">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.required-field"
+          placeholder="input-showcase.valid-email-placeholder"
+          hint="input-showcase.validation-error-hint"
+          [required]="true"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'input-showcase.password' | localize }}</h4>
+      <form [formGroup]="inputPassword">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.password-label"
+          placeholder="input-showcase.enter-password-placeholder"
+          type="password"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'input-showcase.password-required' | localize }}</h4>
+      <form [formGroup]="inputPasswordRequired">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.password-label"
+          placeholder="input-showcase.enter-password-placeholder"
+          type="password"
+          [required]="true"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'input-showcase.with-search-icon' | localize }}</h4>
+      <form [formGroup]="inputWithSearchIcon">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.search-label"
+          placeholder="input-showcase.search-placeholder"
+          [rightIcon]="ICON_NAME.SEARCH_L"
+          (rightIconClicked)="onSearchClick()"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'input-showcase.with-clear-icon' | localize }}</h4>
+      <form [formGroup]="inputWithClearIcon">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.clear-label"
+          placeholder="input-showcase.enter-text-placeholder"
+          [rightIcon]="theme === 'dark' ? ICON_NAME.CLOSE_L : ICON_NAME.CLOSE_S"
+          (rightIconClicked)="onClearClick()"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'input-showcase.readonly' | localize }}</h4>
+      <form [formGroup]="inputReadonly">
+        <ndwu-input-field
+          formControlName="input"
+          label="input-showcase.readonly-label"
+          placeholder="input-showcase.enter-text-placeholder"
+          hint="input-showcase.readonly-hint"
+          [readonly]="true"
+        />
+      </form>
+    </div>
+  </ng-template>
+</app-showcase-layout>
+

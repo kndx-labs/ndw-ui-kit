@@ -1,0 +1,20 @@
+@use 'styles/colors';
+
+$ndwu-timing-button-tokens: (
+  timing-button-primary-fill-bg: colors.$brand-50,
+  timing-button-primary-bg: colors.$brand-40,
+  timing-button-primary-text: colors.$gray-0,
+  timing-button-primary-icon-color: colors.$gray-0,
+  timing-button-primary-hover-bg: colors.$brand-30,
+  timing-button-primary-hover-fill-bg: colors.$brand-50,
+  timing-button-primary-active-bg: colors.$brand-60,
+  timing-button-primary-focus-bg: colors.$brand-40,
+  timing-button-primary-focus-border: colors.$brand-20,
+  timing-button-primary-focus-outline: colors.$brand-20,
+  timing-button-primary-disabled-bg: colors.$gray-40,
+  timing-button-primary-disabled-text: colors.$gray-10,
+  timing-button-primary-disabled-icon-color: colors.$gray-10,
+  timing-button-primary-preloading-bg: colors.$gray-40,
+  timing-button-primary-preloading-text: colors.$gray-10,
+  timing-button-primary-loading-bg: colors.$brand-50,
+);

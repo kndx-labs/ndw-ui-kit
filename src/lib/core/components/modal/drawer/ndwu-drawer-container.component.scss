@@ -1,0 +1,200 @@
+@use 'styles/colors';
+@use 'styles/mixins';
+@use 'styles/spacing';
+@use 'styles/radius';
+@use 'styles/typography';
+@use '../ndwu-modal-mixins' as modal;
+
+.ndwu-drawer {
+  --drawer-width: 700px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: var(--drawer-width);
+  height: 100vh;
+  max-height: 100vh;
+  padding: 0;
+  border-radius: var(--ndwu-drawer-border-radius) 0 0 var(--ndwu-drawer-border-radius);
+  background: var(--ndwu-drawer-bg);
+  animation: ndwu-drawer-slide-in 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  & {
+    @include mixins.mobile() {
+      max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      border-radius: 0;
+
+      /* stylelint-disable plugin/no-unsupported-browser-features */
+      @supports (max-height: 100dvh) {
+        max-height: 100dvh;
+      }
+      /* stylelint-enable plugin/no-unsupported-browser-features */
+    }
+  }
+
+  &--closing {
+    animation: ndwu-drawer-slide-out 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  &--xl {
+    --drawer-width: 1200px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &__header {
+    @include modal.ndwu-modal-header();
+
+    box-sizing: border-box;
+    margin-bottom: 0;
+    padding: spacing.$spacing-32;
+    border-bottom: 1px solid colors.$gray-20;
+  }
+
+  &__header-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: spacing.$spacing-16;
+    min-width: 0;
+    padding-right: spacing.$spacing-24 + spacing.$spacing-12;
+  }
+
+  &__title {
+    flex: 1;
+    margin: 0;
+    color: var(--ndwu-drawer-title-color);
+    font-weight: typography.$fontWeight-XL;
+    font-size: typography.$fontSize-H3;
+    line-height: 34px;
+    letter-spacing: typography.$letterSpacing-XS;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__close-btn {
+    position: absolute;
+    top: spacing.$spacing-32;
+    right: spacing.$spacing-32;
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  &__description {
+    margin: 0;
+    color: var(--ndwu-drawer-description-color);
+    font-size: typography.$fontSize-medium;
+    line-height: 24px;
+    letter-spacing: typography.$letterSpacing-S;
+    text-align: left;
+  }
+
+  &__body {
+    flex: 1;
+    box-sizing: border-box;
+    min-height: 0;
+    padding: spacing.$spacing-32;
+  }
+
+  &__footer {
+    @include modal.ndwu-modal-footer();
+
+    box-sizing: border-box;
+    margin-top: 0;
+    padding: spacing.$spacing-24 spacing.$spacing-32 spacing.$spacing-32;
+    border-top: 1px solid colors.$gray-20;
+  }
+
+  &__footer--default {
+    gap: var(--ndwu-drawer-footer-gap, var(--ndwu-modal-footer-gap));
+
+    button {
+      box-sizing: border-box;
+      min-width: 120px;
+      height: 56px;
+      padding: spacing.$spacing-8 20px;
+    }
+  }
+
+  &__loader {
+    @include modal.ndwu-modal-loader();
+  }
+}
+
+@keyframes ndwu-drawer-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes ndwu-drawer-slide-out {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@include mixins.mobile() {
+  .ndwu-drawer {
+    width: 100vw;
+    padding: 0;
+
+    &__header {
+      margin-bottom: 0;
+      padding: spacing.$spacing-16;
+    }
+
+    &__header-content {
+      gap: spacing.$spacing-12;
+      padding-right: spacing.$spacing-24 + spacing.$spacing-8;
+    }
+
+    &__body {
+      padding: spacing.$spacing-24 spacing.$spacing-16;
+    }
+
+    &__footer {
+      margin-top: 0;
+      padding: spacing.$spacing-16 spacing.$spacing-16 spacing.$spacing-24;
+    }
+
+    &__footer--default {
+      button {
+        box-sizing: border-box;
+        height: 44px;
+        padding: spacing.$spacing-16;
+      }
+    }
+
+    &__close-btn {
+      top: spacing.$spacing-16;
+      right: spacing.$spacing-16;
+
+      &::after {
+        display: none;
+      }
+    }
+
+    &__title {
+      font-size: 18px;
+      line-height: 25px;
+    }
+
+    &__description {
+      font-size: typography.$fontSize-small;
+      line-height: 21px;
+    }
+  }
+}

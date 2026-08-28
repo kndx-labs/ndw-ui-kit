@@ -1,0 +1,29 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./out-tsc/playground",
+    "types": [],
+    "resolveJsonModule": true,
+    "paths": {
+      "@ndw-ui-kit/core": ["./src/lib/public-api.ts"],
+      "@ndw-ui-kit/core/utils": ["./src/lib/utils/index.ts"],
+      "@ndw-ui-kit/core/aria": ["./src/lib/aria/index.ts"],
+      "@ndw-ui-kit/core/l10n": ["./src/lib/l10n/index.ts"],
+      "@ndw-ui-kit/core/popover": ["./src/lib/popover/index.ts"],
+      "@ndw-ui-kit/core/form-field": ["./src/lib/form-field/index.ts"],
+      "@app/*": ["src/playground/app/*"]
+    }
+  },
+  "files": [
+    "src/playground/main.ts"
+  ],
+  "include": [
+    "src/playground/**/*.ts"
+  ],
+  "exclude": [
+    "src/playground/**/*.spec.ts"
+  ]
+}

@@ -1,0 +1,194 @@
+@use 'sass:map';
+@use 'sass:math';
+@use 'styles/spacing';
+@use 'styles/radius';
+@use 'styles/typography';
+@use 'styles/touch-target' as touch-target;
+
+@mixin toggle($config) {
+  $toggle-width: map.get($config, toggle-width);
+  $toggle-height: map.get($config, toggle-height);
+  $knob-size: map.get($config, knob-size);
+  $knob-margin: 2px;
+  $knob-displacement: math.div($toggle-width - 2 * $knob-margin, 2);
+
+  .ndwu-toggle__track {
+    box-sizing: border-box;
+    width: $toggle-width;
+    height: $toggle-height;
+  }
+
+  .ndwu-toggle__knob {
+    left: 2px;
+    width: $knob-size;
+    height: $knob-size;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  .ndwu-toggle__input:checked + .ndwu-toggle__track .ndwu-toggle__knob {
+    transform: translateY(-50%) translateX($knob-displacement);
+  }
+}
+
+.ndwu-toggle {
+  // ── Size modifiers ───────────────────────────────────────────────────────────────
+  $sizes: (
+    'L': (
+      toggle-width: 36px,
+      toggle-height: 20px,
+      knob-size: 16px,
+    ),
+    'XL': (
+      toggle-width: 44px,
+      toggle-height: 24px,
+      knob-size: 20px,
+    ),
+    'XXL': (
+      toggle-width: 44px,
+      toggle-height: 24px,
+      knob-size: 20px,
+      wrapper-gap: spacing.$spacing-12,
+    ),
+  );
+
+  @each $size, $config in $sizes {
+    &--#{$size} {
+      @include toggle($config);
+
+      @if map.get($config, wrapper-gap) {
+        .ndwu-toggle__wrapper {
+          gap: map.get($config, wrapper-gap);
+        }
+      }
+    }
+  }
+
+  // ── Color themes (brand / green) ──────────────────────────────────────────────
+  @each $theme in 'brand', 'green' {
+    &--#{$theme} {
+      .ndwu-toggle__input:not(:disabled, :checked) + .ndwu-toggle__track {
+        background-color: var(--ndwu-toggle-#{$theme}-track-unchecked-bg);
+      }
+
+      .ndwu-toggle__input:not(:disabled, :checked):hover + .ndwu-toggle__track {
+        background-color: var(--ndwu-toggle-#{$theme}-track-unchecked-hover-bg);
+      }
+
+      .ndwu-toggle__input:not(:disabled, :checked):active + .ndwu-toggle__track {
+        background-color: var(--ndwu-toggle-#{$theme}-track-unchecked-active-bg);
+      }
+
+      .ndwu-toggle__input:checked:not(:disabled) + .ndwu-toggle__track {
+        background-color: var(--ndwu-toggle-#{$theme}-track-checked-bg);
+      }
+
+      .ndwu-toggle__input:checked:not(:disabled):hover + .ndwu-toggle__track {
+        background-color: var(--ndwu-toggle-#{$theme}-track-checked-hover-bg);
+      }
+
+      .ndwu-toggle__input:checked:not(:disabled):active + .ndwu-toggle__track {
+        background-color: var(--ndwu-toggle-#{$theme}-track-checked-active-bg);
+      }
+    }
+  }
+
+  & {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+  }
+
+  &__wrapper {
+    display: flex;
+    gap: spacing.$spacing-8;
+    align-items: flex-start;
+
+    &--disabled {
+      pointer-events: none;
+    }
+  }
+
+  &__input-wrapper {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  &__input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+
+    &:disabled + .ndwu-toggle__track {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  &__track {
+    /* stylelint-disable order/order */
+    display: flex;
+    align-items: center;
+    border-radius: 9999px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease-in-out;
+
+    @include touch-target.touch-target-expand();
+    /* stylelint-enable order/order */
+  }
+
+  &__input:disabled + &__track {
+    background-color: var(--ndwu-toggle-track-disabled-bg);
+  }
+
+  &__input:checked:disabled + &__track {
+    background-color: var(--ndwu-toggle-track-checked-disabled-bg);
+  }
+
+  &__knob {
+    position: absolute;
+    top: 50%;
+    border-radius: 50%;
+    background-color: var(--ndwu-toggle-knob-bg);
+    pointer-events: none;
+    transition: transform 0.2s ease-in-out;
+    transform: translateY(-50%);
+  }
+
+  &__input:disabled + &__knob {
+    background-color: var(--ndwu-toggle-disabled-knob-bg);
+  }
+
+  // ── Focus ring (global) ────────────────────────────────────────────────────────
+  .ndwu-toggle__input:focus-visible + .ndwu-toggle__track {
+    box-shadow: 0 0 0 1px white, 0 0 0 3px var(--ndwu-toggle-focus-color);
+  }
+
+  // CSS variables for label-group component
+  ndwu-label-group {
+    --ndwu-label-group-label-color: var(--ndwu-toggle-label-color);
+    --ndwu-label-group-secondary-text-color: var(--ndwu-toggle-secondary-text-color);
+  }
+
+  // Disabled label colors
+  &__wrapper--disabled ndwu-label-group {
+    --ndwu-label-group-label-color: var(--ndwu-toggle-label-disabled-color);
+    --ndwu-label-group-secondary-text-color: var(--ndwu-toggle-secondary-text-disabled-color);
+  }
+
+  // Checked state
+  &--checked {
+    .ndwu-toggle__track {
+      background-color: var(--ndwu-toggle-track-checked-bg);
+    }
+  }
+}

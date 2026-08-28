@@ -1,0 +1,252 @@
+@use 'styles/colors' as colors;
+
+.state-section {
+  margin-bottom: 32px;
+
+  h3 {
+    margin: 0 0 12px;
+    color: colors.$gray-40;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  h4 {
+    margin: 0 0 8px;
+    color: colors.$gray-40;
+    font-weight: 500;
+    font-size: 0.85rem;
+  }
+
+  .ndwu-theme-dark & {
+    h3,
+    h4 {
+      color: colors.$gray-50;
+    }
+  }
+}
+
+.icon-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 16px;
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  border-radius: 4px;
+  background-color: color-mix(in srgb, #{colors.$gray-100} 2%, transparent);
+  transition: background-color 0.2s;
+
+  .ndwu-theme-dark & {
+    background-color: color-mix(in srgb, #{colors.$gray-0} 5%, transparent);
+  }
+
+  &:hover {
+    background-color: color-mix(in srgb, #{colors.$gray-100} 5%, transparent);
+
+    .ndwu-theme-dark & {
+      background-color: color-mix(in srgb, #{colors.$gray-0} 10%, transparent);
+    }
+  }
+
+  ndwu-icon {
+    padding: 4px;
+    border: 1px dashed color-mix(in srgb, #{colors.$gray-100} 20%, transparent);
+    border-radius: 2px;
+
+    .ndwu-theme-dark & {
+      border-color: color-mix(in srgb, #{colors.$gray-0} 20%, transparent);
+    }
+  }
+}
+
+.adaptive-example {
+  margin-bottom: 20px;
+}
+
+.adaptive-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 8px;
+
+  ndwu-adaptive-icon {
+    padding: 12px 0;
+  }
+}
+
+.usage-snippet {
+  overflow-x: auto;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, #{colors.$gray-100} 10%, transparent);
+  border-radius: 4px;
+  background-color: color-mix(in srgb, #{colors.$gray-100} 4%, transparent);
+  color: colors.$gray-100;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+
+  .ndwu-theme-dark & {
+    border-color: color-mix(in srgb, #{colors.$gray-0} 10%, transparent);
+    background-color: color-mix(in srgb, #{colors.$gray-0} 8%, transparent);
+    color: colors.$gray-0;
+  }
+}
+
+.icon-label {
+  font-size: 0.75rem;
+  text-align: center;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+.color-section {
+  margin-bottom: 16px;
+}
+
+.icon-color-primary {
+  color: colors.$brand-50;
+}
+
+.icon-color-success {
+  color: colors.$green-50;
+}
+
+.icon-color-error {
+  color: colors.$red-50;
+}
+
+.configurable-example {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, #{colors.$gray-100} 10%, transparent);
+  border-radius: 8px;
+  background-color: color-mix(in srgb, #{colors.$gray-100} 2%, transparent);
+
+  .ndwu-theme-dark & {
+    border-color: color-mix(in srgb, #{colors.$gray-0} 10%, transparent);
+    background-color: color-mix(in srgb, #{colors.$gray-0} 5%, transparent);
+  }
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+
+  label {
+    color: colors.$gray-40;
+    font-weight: 500;
+    font-size: 0.875rem;
+
+    .ndwu-theme-dark & {
+      color: colors.$gray-50;
+    }
+  }
+}
+
+.icon-select {
+  padding: 8px 12px;
+  border: 1px solid color-mix(in srgb, #{colors.$gray-100} 20%, transparent);
+  border-radius: 4px;
+  background-color: colors.$gray-0;
+  color: colors.$gray-100;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  .ndwu-theme-dark & {
+    border-color: color-mix(in srgb, #{colors.$gray-0} 20%, transparent);
+    background-color: colors.$gray-5;
+    color: colors.$gray-100;
+  }
+
+  &:hover {
+    border-color: color-mix(in srgb, #{colors.$gray-100} 40%, transparent);
+
+    .ndwu-theme-dark & {
+      border-color: color-mix(in srgb, #{colors.$gray-0} 40%, transparent);
+    }
+  }
+
+  &:focus {
+    border-color: colors.$brand-50;
+    box-shadow: 0 0 0 2px color-mix(in srgb, #{colors.$brand-50} 20%, transparent);
+    outline: none;
+  }
+}
+
+.color-picker {
+  width: 100%;
+  height: 40px;
+  padding: 4px;
+  border: 1px solid color-mix(in srgb, #{colors.$gray-100} 20%, transparent);
+  border-radius: 4px;
+  background-color: colors.$gray-0;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  .ndwu-theme-dark & {
+    border-color: color-mix(in srgb, #{colors.$gray-0} 20%, transparent);
+    background-color: colors.$gray-5;
+  }
+
+  &:hover {
+    border-color: color-mix(in srgb, #{colors.$gray-100} 40%, transparent);
+
+    .ndwu-theme-dark & {
+      border-color: color-mix(in srgb, #{colors.$gray-0} 40%, transparent);
+    }
+  }
+
+  &:focus {
+    border-color: colors.$brand-50;
+    box-shadow: 0 0 0 2px color-mix(in srgb, #{colors.$brand-50} 20%, transparent);
+    outline: none;
+  }
+}
+
+.icon-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 120px;
+  padding: 24px;
+  border: 2px dashed color-mix(in srgb, #{colors.$gray-100} 10%, transparent);
+  border-radius: 8px;
+  background-color: color-mix(in srgb, #{colors.$gray-100} 2%, transparent);
+
+  .ndwu-theme-dark & {
+    border-color: color-mix(in srgb, #{colors.$gray-0} 10%, transparent);
+    background-color: color-mix(in srgb, #{colors.$gray-0} 5%, transparent);
+  }
+
+  ndwu-icon {
+    font-size: 4em;
+  }
+}

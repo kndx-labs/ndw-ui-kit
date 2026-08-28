@@ -1,0 +1,73 @@
+@use 'sass:list';
+@use 'styles/padding';
+@use 'styles/spacing';
+@use 'styles/typography';
+@use 'styles/radius';
+
+$sizes: (
+  'S':  (20px, padding.$padding-8,                    typography.$fontSize-xxsmall, 0),
+  'L':  (24px, padding.$padding-6 padding.$padding-8, typography.$fontSize-xsmall,  20px),
+  'XL': (24px, padding.$padding-6 padding.$padding-8, typography.$fontSize-small,   20px),
+);
+
+// Tone list — token names follow --ndwu-badge-{tone}-{bg|border|accent}
+$tones: 'gray', 'negative', 'positive', 'warning', 'blue', 'violet', 'cyan', 'white';
+
+:host {
+  // ── Tone modifiers ─────────────────────────────────────────────────────────
+  @each $tone in $tones {
+    &.ndwu-badge--tone-#{$tone} {
+      --ndwu-badge-bg: var(--ndwu-badge-#{$tone}-bg);
+      --ndwu-badge-border: var(--ndwu-badge-#{$tone}-border);
+      --ndwu-badge-accent: var(--ndwu-badge-#{$tone}-accent);
+    }
+  }
+
+  // ── Size modifiers (pill) ──────────────────────────────────────────────────
+  @each $size, $values in $sizes {
+    &.ndwu-badge--size-#{$size} {
+      --ndwu-badge-icon-size: #{list.nth($values, 4)};
+
+      height: list.nth($values, 1);
+      padding-inline: list.nth($values, 2);
+      font-size: list.nth($values, 3);
+    }
+  }
+
+  display: inline-flex;
+  vertical-align: middle;
+  gap: padding.$padding-6;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-block: padding.$padding-2;
+  border: 1px solid var(--ndwu-badge-border);
+  border-radius: radius.$radius-XXL;
+  background: var(--ndwu-badge-bg);
+  color: var(--ndwu-badge-fg);
+  font-weight: typography.$fontWeight-L;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+
+  &.ndwu-badge--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// ── Inner elements ────────────────────────────────────────────────────────────
+.ndwu-badge__label {
+  overflow: hidden;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ndwu-badge__icon {
+  flex-shrink: 0;
+  width: var(--ndwu-badge-icon-size);
+  height: var(--ndwu-badge-icon-size);
+  color: var(--ndwu-badge-accent);
+}

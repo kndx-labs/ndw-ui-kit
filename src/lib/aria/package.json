@@ -1,0 +1,9 @@
+{
+  "name": "@ndw-ui-kit/core/aria",
+  "ng-package": {
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  }
+}
+

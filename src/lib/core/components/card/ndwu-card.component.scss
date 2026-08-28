@@ -1,0 +1,25 @@
+@use 'styles/typography';
+@use 'styles/padding';
+@use 'styles/radius';
+
+:host:not([hidden]) {
+  display: block;
+  border: 1px solid var(--ndwu-card-border-color);
+  background-color: var(--ndwu-card-bg);
+  color: var(--ndwu-card-color);
+
+  &.ndwu-card--XXL {
+    padding: padding.$padding-32;
+    border-radius: radius.$radius-XL;
+  }
+
+  &.ndwu-card--XL {
+    padding: padding.$padding-24;
+    border-radius: radius.$radius-L;
+  }
+
+  &.ndwu-card--L {
+    padding: padding.$padding-16;
+    border-radius: radius.$radius-L;
+  }
+}

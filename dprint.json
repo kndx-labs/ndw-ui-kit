@@ -1,0 +1,34 @@
+{
+  "typescript": {
+    "lineWidth": 120,
+    "indentWidth": 2,
+    "quoteStyle": "alwaysSingle",
+    "semiColons": "prefer",
+    "useBraces": "always",
+    "trailingCommas": "onlyMultiLine",
+    "bracePosition": "sameLine",
+    "arrowFunction.useParentheses": "maintain",
+    "module.sortImportDeclarations": "maintain",
+    "module.sortExportDeclarations": "maintain",
+    "importDeclaration.sortNamedImports": "caseSensitive",
+    "importDeclaration.spaceSurroundingNamedImports": false,
+    "exportDeclaration.spaceSurroundingNamedExports": false,
+    "spaceSurroundingProperties": false,
+    "objectPattern.preferHanging": true,
+    "objectExpression.preferHanging": true,
+    "typeParameters.preferHanging": "always",
+    "operatorPosition": "nextLine",
+    "conditionalExpression.operatorPosition": "nextLine",
+    "conditionalType.operatorPosition": "nextLine"
+  },
+  "excludes": [
+    "**/node_modules",
+    "**/*-lock.json"
+  ],
+  "plugins": [
+    "https://plugins.dprint.dev/typescript-0.95.11.wasm"
+  ],
+  "includes": [
+    "**/*.{ts,js}"
+  ]
+}

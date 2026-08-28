@@ -1,0 +1,8 @@
+@use 'styles/colors';
+@use 'styles/radius';
+
+$ndwu-styled-listbox-tokens: (
+  styled-listbox-border-color: colors.$gray-20,
+  styled-listbox-border-radius: radius.$radius-M,
+  styled-listbox-bg: colors.$gray-0,
+);

@@ -1,0 +1,6 @@
+@use 'styles/colors';
+
+$ndwu-tooltip-tokens: (
+  tooltip-bg: colors.$gray-70,
+  tooltip-color: colors.$gray-0,
+);

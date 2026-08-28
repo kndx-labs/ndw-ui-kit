@@ -1,0 +1,31 @@
+@use 'sass:map';
+
+// Mixin to convert SCSS maps to CSS custom properties
+// @param {Map} $theme - Map of design tokens to convert to CSS variables
+// @example
+//   $my-theme: (button-bg: #fff, button-text: #000);
+//   @include emit-theme-vars($my-theme);
+//   // Outputs: --ndwu-button-bg: #fff; --ndwu-button-text: #000;
+@mixin emit-theme-vars($theme) {
+  @each $key, $value in $theme {
+    --ndwu-#{$key}: #{$value};
+  }
+}
+
+@mixin emit-color-vars($colors) {
+  @each $key, $value in $colors {
+    #{$key}: #{$value};
+  }
+}
+
+// Mixin to emit token groups (e.g. component tokens or utility tokens)
+// @param {Map} $token-groups - Map of token group modules,
+// where each group exports a flat map of tokens
+// @example
+//   $groups: ('ndwu-input': $ndwu-input-tokens, 'ndwu-focus-tokens': $ndwu-focus-tokens);
+//   @include emit-token-groups($groups);
+@mixin emit-token-groups($token-groups) {
+  @each $group-name, $group-token-map in $token-groups {
+    @include emit-theme-vars($group-token-map);
+  }
+}

@@ -1,0 +1,89 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template let-theme="theme" let-idPrefix="idPrefix">
+    <div class="state-section">
+      <h4>Basic</h4>
+      <form [formGroup]="formBasic">
+        <ndwu-multi-select-field
+          label="Countries"
+          placeholder="Pick countries"
+          [options]="countryOptions"
+          formControlName="countries"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>Disabled</h4>
+      <form [formGroup]="formDisabled">
+        <ndwu-multi-select-field
+          label="Countries"
+          placeholder="Pick countries"
+          [options]="countryOptions"
+          formControlName="countries"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>Required</h4>
+      <form [formGroup]="formRequired">
+        <ndwu-multi-select-field
+          label="Countries"
+          placeholder="Pick countries"
+          [options]="countryOptions"
+          formControlName="countries"
+          required
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>Sizes</h4>
+      <form
+        [formGroup]="formSizes"
+        class="component-sizes"
+      >
+        @for (size of SIZES; track size) {
+          <ndwu-multi-select-field
+            class="state-section__field"
+            [label]="'Country (size: ' + size + ')'"
+            placeholder="Choose country"
+            [size]="size"
+            [options]="countryOptionsLongList"
+            [formControlName]="'countries' + size.toUpperCase()"
+          />
+        }
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>Custom selected options template (ndwuMultiSelectDisplay)</h4>
+      <form [formGroup]="formCustomDisplay">
+        <ndwu-multi-select-field
+          label="Countries"
+          placeholder="Pick countries"
+          [options]="countryOptions"
+          formControlName="countries"
+        >
+          <ng-template
+            ndwuMultiSelectDisplay
+            let-selectedOptions="selectedOptions"
+            let-empty="empty"
+          >
+            @if (empty) {
+              <span>Pick countries</span>
+            } @else {
+              <span>{{ selectedOptions.length }} selected: </span>
+              @for (opt of selectedOptions; track opt.value) {
+                <span>{{ opt.label }}{{ $last ? '' : ', ' }}</span>
+              }
+            }
+          </ng-template>
+        </ndwu-multi-select-field>
+      </form>
+    </div>
+  </ng-template>
+</app-showcase-layout>

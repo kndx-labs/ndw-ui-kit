@@ -1,0 +1,976 @@
+{
+  "app": {
+    "title": "NDW UI Kit Demo",
+    "components": "Components",
+    "navigation": "Navigation",
+    "examples": "Examples",
+    "menu": "Menu",
+    "close-menu": "Close menu",
+    "collapse-sidebar": "Collapse sidebar",
+    "expand-sidebar": "Expand sidebar",
+    "settings": "Settings"
+  },
+  "error": {
+    "ascii-only": "Only numbers and characters from Latin alphabet are allowed",
+    "required": "This field is required",
+    "email": "Please enter a valid email address"
+  },
+  "common": {
+    "label": "Label",
+    "additional-text": "Additional text",
+    "additional-information": "Additional information",
+    "enter-text": "Enter text",
+    "enter-email": "Enter email",
+    "enter-password": "Enter password",
+    "email": "Email",
+    "password": "Password",
+    "disabled": "Disabled",
+    "readonly": "Readonly",
+    "checked": "Checked",
+    "invalid": "Invalid",
+    "required": "Required",
+    "loading": "Loading",
+    "size": "Size",
+    "theme": "Theme",
+    "placeholder": "Placeholder",
+    "value": "Value",
+    "reset": "Reset",
+    "preview": "Preview",
+    "controls": "Controls",
+    "themes": {
+      "light": "Light Theme",
+      "dark": "Dark Theme"
+    },
+    "sizes": {
+      "s": "Size S",
+      "l": "Size L",
+      "xl": "Size XL",
+      "xxl": "Size XXL"
+    }
+  },
+  "timing-button-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "left-text": "Left text",
+      "right-text": "Right text",
+      "tokens-for-type": "Tokens for type={{type}}",
+      "inherit": "Inherit",
+      "duration": "Duration (s)",
+      "state": "State",
+      "timer-end-count": "timerEnd fired:"
+    },
+    "sizes": "Sizes",
+    "default": "Default",
+    "primary": "Primary",
+    "visual-states": "Visual States",
+    "state-preloading": "Preloading",
+    "state-enabled": "Enabled",
+    "state-hover": "Hover",
+    "state-focus": "Focus",
+    "state-pressed": "Pressed",
+    "state-disabled": "Disabled",
+    "state-loading": "Loading",
+    "seconds": "s"
+  },
+  "button-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "btn-type": "Button type",
+      "icon": "Icon",
+      "icon-none": "None",
+      "tokens": "Tokens",
+      "tokens-for-type": "Tokens for type={{type}}",
+      "inherit": "Inherit"
+    },
+    "button-types": "Button Types",
+    "with-icon": "With icon",
+    "sizes": "Sizes",
+    "loading-state": "Loading State",
+    "disabled-state": "Disabled State",
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "tertiary": "Tertiary",
+    "ghost": "Ghost",
+    "secondary-negative": "Secondary Negative",
+    "primary-loading": "Primary Loading",
+    "secondary-loading": "Secondary Loading",
+    "tertiary-loading": "Tertiary Loading",
+    "primary-disabled": "Primary Disabled",
+    "secondary-disabled": "Secondary Disabled",
+    "tertiary-disabled": "Tertiary Disabled"
+  },
+  "icon-button-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "button-variant": {
+        "label": "Button type",
+        "option": {
+          "square": "Square",
+          "round": "Round",
+          "flat": "Flat"
+        }
+      },
+      "icon": "Icon",
+      "tokens": "Tokens",
+      "tokens-for-type": "Tokens for type={{type}}",
+      "inherit": "Inherit"
+    }
+  },
+  "checkbox-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "common": {
+      "secondary-text": "Secondary text"
+    },
+    "sandbox": {
+      "state-title": "State",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "default": "Default (Size XL)",
+    "two-layer": "Two-layer checkboxes",
+    "parent-task": "Parent task",
+    "child-task-1": "Child task 1",
+    "child-task-2": "Child task 2",
+    "child-task-3": "Child task 3",
+    "accept-terms": "Accept terms and conditions",
+    "small-checkbox": "Small checkbox",
+    "extra-large-checkbox": "Extra large checkbox",
+    "newsletter-subscription": "Newsletter subscription",
+    "disabled-checkbox": "Disabled checkbox",
+    "disabled-checked-checkbox": "Disabled checked checkbox",
+    "terms-secondary": "By checking this box, you agree to our terms of service",
+    "newsletter-secondary": "Receive updates and special offers",
+    "disabled-secondary": "This checkbox is disabled",
+    "disabled-checked-secondary": "This checkbox is checked and disabled"
+  },
+  "input-showcase": {
+    "default": "Default (Size XL)",
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "common": {
+      "type": "Type",
+      "type-text": "Text",
+      "type-password": "Password",
+      "right-icon": "Right icon",
+      "right-icon-none": "None",
+      "right-icon-search": "Search",
+      "right-icon-close": "Clear/Close",
+      "hint": "Hint",
+      "width": "Width",
+      "width-stretch": "Stretch to container",
+      "width-fixed": "Fixed (px)",
+      "width-px": "Width (px)",
+      "validator": "Validator",
+      "validator-none": "None",
+      "validator-required": "Required",
+      "validator-email": "Email",
+      "validator-minlength": "Min Length (3)",
+      "validator-pattern": "Pattern (starts with uppercase)"
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address",
+      "minlength": "Minimum length is {{requiredLength}} characters (current: {{actualLength}})",
+      "pattern": "Value must start with an uppercase letter"
+    },
+    "sandbox": {
+      "state-title": "State",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "with-value": "With Value",
+    "required-invalid": "Required Invalid",
+    "email-address": "Email Address",
+    "small-input": "Small Input",
+    "extra-large-input": "Extra Large Input",
+    "disabled-input": "Disabled Input",
+    "invalid-input": "Invalid Input",
+    "required-field": "Required Field",
+    "enter-email-placeholder": "Enter your email",
+    "enter-text-placeholder": "Enter text",
+    "disabled-placeholder": "This is disabled",
+    "valid-email-placeholder": "Enter a valid email",
+    "email-hint": "We'll never share your email with anyone else",
+    "validation-error-hint": "This field has validation errors",
+    "password": "Password",
+    "password-label": "Password",
+    "password-required": "Password Required",
+    "enter-password-placeholder": "Enter your password",
+    "with-search-icon": "With Search Icon",
+    "with-clear-icon": "With Clear Icon",
+    "search-label": "Search",
+    "search-placeholder": "Search...",
+    "clear-label": "Clearable Input",
+    "readonly": "Readonly",
+    "readonly-with-icon": "Readonly with Icon",
+    "readonly-label": "Readonly Field",
+    "readonly-hint": "This field is read-only"
+  },
+  "form-container-showcase": {
+    "size-token-inheritance": "Size token inheritance",
+    "inheritance-description-prefix": "This showcase component provides",
+    "inheritance-description-value": "with",
+    "inheritance-description-suffix": ". The first form container does not set [size], so it inherits that parent size. The second container overrides the inherited context locally.",
+    "inherited-from-parent-token": "Inherited from parent token",
+    "container-inherits-from-showcase": "Container inherits SIZE.XXL from the showcase",
+    "also-inherited-from-parent-token": "Also inherited from parent token",
+    "still-resolves-to-parent-size": "Still resolves to SIZE.XXL",
+    "container-overrides-parent-to-l": "Container overrides parent to L",
+    "uses-local-form-container-size": "Uses the local form-container size",
+    "field-overrides-container-to-xl": "Field overrides container to XL",
+    "uses-nearest-field-level-size": "Uses the nearest field-level size",
+    "order-of-precedence-prefix": "Order of precedence: field",
+    "order-of-precedence-middle": "nearest",
+    "order-of-precedence-suffix": "parent",
+    "order-of-precedence-provider": "provider",
+    "with-disabled-children": "With Disabled Children",
+    "with-invalid-children": "With Invalid Children",
+    "remember-me": "Remember me",
+    "password-disabled": "Password (Disabled)",
+    "disabled-checkbox": "Disabled Checkbox",
+    "email-invalid": "Email (Invalid)",
+    "required-checkbox": "Required Checkbox",
+    "enter-email": "Enter email",
+    "enter-password": "Enter password",
+    "disabled-placeholder": "This is disabled",
+    "valid-email-placeholder": "Enter a valid email",
+    "invalid-email-format": "Invalid email format",
+    "field-required": "This field is required"
+  },
+  "toggle-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "common": {
+      "color": "Color",
+      "color-brand": "Brand",
+      "color-green": "Green",
+      "secondary-text": "Secondary text"
+    },
+    "sandbox": {
+      "state-title": "State",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "default": "Default (Size XL)",
+    "color-themes": "Color Themes",
+    "without-label": "Without Label",
+    "with-label-only": "With Label Only",
+    "with-secondary-text": "With Secondary Text",
+    "enable-notifications": "Enable notifications",
+    "small-toggle": "Small toggle",
+    "extra-large-toggle": "Extra large toggle",
+    "dark-mode-enabled": "Dark mode enabled",
+    "brand-color-blue": "Brand color (blue)",
+    "green-color": "Green color",
+    "brand-color-checked": "Brand color checked",
+    "green-color-checked": "Green color checked",
+    "enable-feature": "Enable feature",
+    "auto-save": "Auto-save",
+    "disabled-toggle": "Disabled toggle",
+    "disabled-checked-toggle": "Disabled checked toggle",
+    "notifications-secondary": "Receive updates about your account activity",
+    "dark-mode-secondary": "Switch between light and dark themes",
+    "auto-save-secondary": "Automatically save your work every 5 minutes",
+    "disabled-secondary": "This toggle is disabled",
+    "disabled-checked-secondary": "This toggle is checked and disabled"
+  },
+  "spokes-loader-showcase": {
+    "tabs": {
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "size": "Size (px)",
+      "spokes": "Spokes",
+      "duration": "Duration (ms)",
+      "spoke-width": "Spoke width",
+      "spoke-height": "Spoke height",
+      "spoke-height-placeholder": "Auto",
+      "spoke-offset": "Spoke offset",
+      "spoke-offset-placeholder": "Auto",
+      "autostart": "Autostart",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    }
+  },
+  "card-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "overview": {
+      "default": "Default",
+      "with-title": "With title",
+      "content": "Card content goes here.",
+      "card-title": "Card title",
+      "card-description": "Card description text goes here."
+    },
+    "sandbox": {
+      "content": "Card content goes here.",
+      "tokens": "Tokens",
+      "inherit": "Inherit",
+      "state": "State",
+      "state-default": "Default",
+      "state-hover": "Hover",
+      "state-focused": "Focused",
+      "state-disabled": "Disabled"
+    }
+  },
+  "radio-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "state-title": "State",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "default": "Default (Size XL)",
+    "option-1": "Option 1",
+    "option-2": "Option 2",
+    "option-3": "Option 3",
+    "small-option-1": "Small option 1",
+    "small-option-2": "Small option 2",
+    "extra-large-option-1": "Extra large option 1",
+    "extra-large-option-2": "Extra large option 2",
+    "option-2-selected": "Option 2 (Selected)",
+    "disabled-option-1": "Disabled option 1",
+    "disabled-option-2": "Disabled option 2",
+    "disabled-checked-option-2": "Disabled checked option 2"
+  },
+  "select-field-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "options-textarea": "Options (one per line)",
+      "hint": "Hint",
+      "state-title": "State"
+    }
+  },
+  "multi-select-field-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "options-textarea": "Options (one per line)",
+      "hint": "Hint",
+      "cancel-label": "Cancel label",
+      "confirm-label": "Confirm label",
+      "state-title": "State"
+    }
+  },
+  "autocomplete-field-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "options-textarea": "Options (one per line)",
+      "hint": "Hint",
+      "no-matches-message": "No matches message"
+    }
+  },
+  "context-menu-showcase": {
+    "tabs": {
+      "overview": "Overview"
+    }
+  },
+  "tooltip-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "text": "Text",
+      "max-width": "Max Width",
+      "position": "Position",
+      "align": "Align",
+      "show-delay": "Show Delay (ms)",
+      "hide-delay": "Hide Delay (ms)",
+      "show-on-tap": "Show on Tap",
+      "tokens": "Tokens",
+      "inherit": "Inherit",
+      "preview-text": "Hover over me"
+    }
+  },
+  "popover-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "overview": {
+      "sections": {
+        "simple-popover": "Simple Popover",
+        "rich-popover": "Rich Popover"
+      },
+      "simple-description": "Popover with text-only content",
+      "rich-description": "Popover with header title, formatted content, and footer buttons",
+      "help-button": "Help",
+      "open-popover": "Open Popover"
+    },
+    "sandbox": {
+      "content": "Content",
+      "title": "Title",
+      "show-header": "Show Header",
+      "show-close": "Show Close Button",
+      "add-button": "+ Add Button",
+      "button-primary": "Primary",
+      "buttons": "Buttons",
+      "tokens": "Tokens",
+      "inherit": "Inherit",
+      "preview-trigger": "Click me"
+    }
+  },
+  "dialog-showcase": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "overview": {
+      "common": {
+        "button-close": "Close",
+        "button-ok": "Ok",
+        "button-cancel": "Cancel",
+        "button-save": "Save"
+      },
+      "sections": {
+        "alert-confirm": "Alert / Confirm dialog",
+        "custom-form": "Custom dialog with a form",
+        "return-result": "Returning result from a dialog",
+        "scrollable": "Scrollable content",
+        "size-control": "Size control",
+        "focus-management": "Focus management",
+        "loading-state": "Loading state",
+        "async-title-description": "Async title and description",
+        "custom-confirmation": "Custom confirmation examples (onCloseHandler$)",
+        "nested-modal": "Nested modal dialogs",
+        "nested-modal-stack": "Nested dialogs kept stacked ('stack')",
+        "nested-modal-none": "Nested dialogs without stacking ('none')",
+        "drawer-dialog-stacking": "Drawer + nested dialog"
+      },
+      "alert": {
+        "button-show": "Show Alert",
+        "status-open": "Alert is opened",
+        "status-closed": "Alert is closed",
+        "dialog": {
+          "title": "Operation Successful",
+          "description": "Your changes have been saved successfully.",
+          "button-got-it": "Got it"
+        }
+      },
+      "confirm": {
+        "button-open": "Delete Item (confirm)",
+        "result-prefix": "Result:",
+        "result": {
+          "confirmed": "Confirmed",
+          "cancelled": "Cancelled"
+        },
+        "dialog": {
+          "title": "Delete Item",
+          "description": "Are you sure you want to delete this item? This action cannot be undone.",
+          "button-confirm": "Delete",
+          "button-cancel": "Cancel"
+        }
+      },
+      "form-dialog": {
+        "button-open": "Open Form Dialog",
+        "submitted": "Submitted: {{name}} - {{email}}",
+        "dialog": {
+          "title": "Contact Form",
+          "description": "Enter your contact information below."
+        },
+        "fields": {
+          "name": {
+            "label": "Name"
+          },
+          "email": {
+            "label": "E-mail"
+          }
+        }
+      },
+      "result-dialog": {
+        "button-open": "Select a User",
+        "selected": "Selected: {{name}}",
+        "dialog": {
+          "title": "Select a User",
+          "description": "Click on a user to select them."
+        }
+      },
+      "scrollable-dialog": {
+        "button-open": "View Terms",
+        "dialog": {
+          "title": "Some long text"
+        }
+      },
+      "size": {
+        "button-small": "Small",
+        "button-narrow": "Narrow",
+        "button-wide": "Wide",
+        "small-dialog": {
+          "title": "Small Dialog",
+          "description": "This is a compact dialog: {{width}}×{{height}}"
+        },
+        "narrow-dialog": {
+          "title": "Narrow Dialog",
+          "description": "Width constrained between 300px and 400px."
+        },
+        "wide-dialog": {
+          "title": "Wide Dialog",
+          "html-heading": "This dialog takes up {{width}} of the viewport width, capped at {{maxWidth}} maximum."
+        }
+      },
+      "focus": {
+        "button-auto-focus-header": "Auto focus on header (default)",
+        "button-no-focus-trap": "No focus trap",
+        "button-auto-focus-first-tabbable": "Auto focus on first tabbable",
+        "button-custom-focus": "Custom focus",
+        "auto-focus-dialog": {
+          "title": "Auto Focus",
+          "description": "The dialog header received focus automatically when this dialog opened."
+        },
+        "no-focus-trap-dialog": {
+          "title": "No Focus Trap",
+          "description": "Focus is not trapped. You can Tab outside this dialog."
+        },
+        "auto-focus-first-tabbable-dialog": {
+          "title": "Auto Focus First Tabbable",
+          "description": "Focus trap is active. The first tabbable element gets focus."
+        },
+        "custom-focus-dialog": {
+          "title": "Custom Focus",
+          "description": "Focus trap is active. The \"Close\" button gets focus."
+        }
+      },
+      "loading": {
+        "button-open": "Simulate async",
+        "dialog": {
+          "title": "Loading State",
+          "description": "Click \"Reload\" to simulate an async operation with loading state.",
+          "button-reload": "Reload"
+        }
+      },
+      "async-title-description": {
+        "button-open": "Open async title/description dialog",
+        "dialog": {
+          "initial-title": "Loading dialog content",
+          "initial-description": "Title and description will update in 2 seconds.",
+          "loaded-title": "Content loaded",
+          "loaded-description": "This title and description were set asynchronously after opening."
+        }
+      },
+      "on-close-handler": {
+        "button-delayed-close": "Delayed close",
+        "button-confirm-to-close": "Confirm to close",
+        "delayed-close-dialog": {
+          "title": "onCloseHandler$ Demo",
+          "description": "Toggle the close delay to see how setCloseHandler() intercepts close events."
+        },
+        "confirm-to-close-dialog": {
+          "title": "Custom confirmation demo #2"
+        }
+      },
+      "custom-dialogs": {
+        "confirm-close": {
+          "message": "Closing this dialog will require confirmation",
+          "confirm-dialog": {
+            "title": "Are you sure?"
+          }
+        },
+        "custom-focus": {
+        },
+        "delayed-close": {
+          "message": "Close delay is active. Clicking \"Close\" will start a 2-second countdown before the dialog closes.",
+          "button-remove-delay": "Remove close delay",
+          "button-add-delay": "Delay close by 2 s"
+        }
+      },
+      "nested-modal": {
+        "description": "Demonstrates opening a dialog from within another dialog. On mobile, the first dialog fades out while the second fades in.",
+        "button-open": "Open nested modal",
+        "parent-dialog": {
+          "title": "Parent Dialog",
+          "description": "This is the parent dialog. Open a nested dialog from here.",
+          "extra-1": "Extra content paragraph one. This makes parent dialog taller and visually distinct from nested dialog.",
+          "extra-2": "Extra content paragraph two. You should see this text slide up when the parent opens on mobile.",
+          "extra-3": "Extra content paragraph three. More text means more height difference between parent and nested dialog.",
+          "extra-4": "Extra content paragraph four. The nested dialog only has one line of description text.",
+          "button-open-nested": "Open Nested Dialog"
+        },
+        "nested-dialog": {
+          "title": "Nested Dialog",
+          "description": "This is a nested dialog opened from the parent."
+        }
+      },
+      "nested-modal-stack": {
+        "description": "The same nested dialog demo, but opened with stackingOnMobile: 'stack'. The nested dialog still fades in, but the first one is left expanded underneath instead of collapsing — so nothing animates out while you go deeper.",
+        "button-open": "Open nested modal with stacking"
+      },
+      "nested-modal-none": {
+        "description": "The same nested dialog demo, but opened with stackingOnMobile: 'none'. On mobile both dialogs open and close instantly, and the first one stays in place instead of fading out — compare it with the section above.",
+        "button-open": "Open nested modal without stacking"
+      },
+      "drawer-dialog-stacking": {
+        "description": "Opening a dialog on top of an already-open drawer on mobile. Only dialogs take part in the switch animation, so the drawer stays put instead of being faded out.",
+        "button-open": "Open Drawer",
+        "drawer": {
+          "title": "Drawer",
+          "description": "Tap the button below to open a dialog on top of this drawer. On mobile, the drawer should stay in place behind it.",
+          "button-open-dialog": "Open Dialog on Top"
+        },
+        "dialog": {
+          "title": "Dialog opened over a drawer",
+          "description": "The drawer beneath is left untouched — it is not treated as a crossfade parent."
+        }
+      }
+    }
+  },
+  "drawer-showcase": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "overview": {
+      "common": {
+        "button-ok": "Ok",
+        "button-cancel": "Cancel",
+        "button-save": "Save"
+      },
+      "sections": {
+        "basic": "Size variants",
+        "content": "Content"
+      },
+      "button-default": "Open Drawer (L)",
+      "button-xl": "Open Drawer (XL)",
+      "button-form": "Open Drawer with Form",
+      "button-scrollable": "Open Drawer with Scrollable Content",
+      "default": {
+        "title": "Drawer (L - 700px)",
+        "description": "This is a standard L-size drawer. It slides in from the right."
+      },
+      "xl": {
+        "title": "Drawer (XL - 1200px)",
+        "description": "This is an XL-size drawer with extra width for complex content."
+      },
+      "form": {
+        "title": "Drawer with Form"
+      },
+      "scrollable": {
+        "title": "Scrollable Content"
+      }
+    }
+  },
+  "icon-showcase": {
+    "light-theme": "Icon Showcase - Light Theme",
+    "dark-theme": "Icon Showcase - Dark Theme",
+    "some-examples": "Some Examples",
+    "icons-with-css-color": "Icons with CSS Color",
+    "configurable-example": "Configurable Example",
+    "icon-name": "Icon Name:",
+    "color": "Color:",
+    "color-default": "Default (Size XL)",
+    "color-primary": "Primary",
+    "color-success": "Success",
+    "color-error": "Error",
+    "adaptive-icon": "Adaptive Icon",
+    "adaptive-default": "Unbound (no library breakpoint)",
+    "adaptive-size-flags": "adaptiveSize map",
+    "adaptive-toggle": "Toggle"
+  },
+  "pictogram-showcase": {
+    "light-theme": "Pictogram Showcase - Light Theme",
+    "dark-theme": "Pictogram Showcase - Dark Theme",
+    "sample-pictograms": "Sample Pictograms",
+    "custom-colors": "Custom Colors",
+    "size-variants": "Size Variants"
+  },
+  "empty-state-showcase": {
+    "light-theme": "Empty State Showcase - Light Theme",
+    "dark-theme": "Empty State Showcase - Dark Theme",
+    "overview": {
+      "xl-error-with-actions": "XL - Error with actions",
+      "xl-success-with-single-action": "XL - Success with single action",
+      "xl-no-data-title-only": "XL - No data (title only)",
+      "l-no-connection-description-only": "L - No connection (description only)",
+      "l-uploading": "L - Uploading",
+      "l-info-with-html": "L - Info with HTML",
+      "failed-to-upload-the-file": "Failed to upload the file",
+      "please-try-again-later": "Please try again later",
+      "upload-complete": "Upload complete",
+      "your-file-has-been-successfully-uploaded": "Your file has been successfully uploaded",
+      "the-list-is-empty": "The list is empty",
+      "no-internet-connection": "No internet connection",
+      "uploading-your-file": "Uploading your file",
+      "this-may-take-a-few-seconds": "This may take a few seconds",
+      "system-automatically-updates": "The system automatically updates on a rolling basis",
+      "cancel": "Cancel",
+      "retry": "Retry",
+      "accept": "Accept"
+    }
+  },
+  "link-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "href": "Href",
+      "state": "State",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "states": "States",
+    "link-label": "https://example.com",
+    "text": "Text",
+    "state-default": "Default",
+    "state-hover": "Hover",
+    "state-pressed": "Pressed",
+    "state-focused": "Focused",
+    "state-visited": "Visited",
+    "state-disabled": "Disabled"
+  },
+  "badge-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "colors": "Colors"
+    }
+  },
+  "tabs-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "overview": {
+      "variant-default": "Default variant",
+      "variant-bordered": "Bordered variant",
+      "tabs-with-icons": "Tabs with icons"
+    }
+  },
+  "user-profile-form-example": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "success": "Profile saved successfully!",
+    "sections": {
+      "personal": "Personal Information",
+      "account": "Account Settings",
+      "role": "Role",
+      "preferences": "Preferences",
+      "notifications": "Notifications",
+      "schedule": "Schedule"
+    },
+    "fields": {
+      "first-name": "First Name",
+      "last-name": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "city": "City",
+      "country": "Country",
+      "role": "Role",
+      "skills": "Skills",
+      "language": "Language",
+      "time-zone": "Time Zone",
+      "dark-mode": "Dark Mode",
+      "dark-mode-hint": "Enable dark theme",
+      "compact-layout": "Compact Layout",
+      "compact-layout-hint": "Use compact form layout",
+      "email-notifications": "Email Notifications",
+      "email-notifications-hint": "Receive notifications via email",
+      "push-notifications": "Push Notifications",
+      "push-notifications-hint": "Receive push notifications",
+      "weekly-digest": "Weekly Digest",
+      "weekly-digest-hint": "Receive weekly summary",
+      "marketing-emails": "Marketing Emails",
+      "marketing-emails-hint": "Receive marketing communications"
+    },
+    "placeholders": {
+      "first-name": "John",
+      "last-name": "Doe",
+      "email": "john.doe@example.com",
+      "phone": "+1 (555) 123-4567",
+      "city": "New York",
+      "country": "United States",
+      "skills": "JavaScript, Angular, TypeScript"
+    },
+    "actions": {
+      "save": "Save",
+      "reset": "Reset"
+    }
+  },
+  "progress-bar-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "value": "Value",
+      "max": "Max",
+      "color": "Color",
+      "mode": "Mode",
+      "disabled": "Disabled"
+    },
+    "sizes": "Sizes",
+    "colors": "Colors",
+    "progress-states": "Progress States",
+    "disabled-state": "Disabled State",
+    "indeterminate": "Indeterminate",
+    "animated": "Animated"
+  },
+  "file-upload": {
+    "dropzone": {
+      "title": "Upload file",
+      "hint": "Drag and drop a file here or",
+      "browse": "Browse file"
+    },
+    "status": {
+      "uploading": "Uploading...",
+      "success": "Uploaded",
+      "error": "Upload failed. Check your connection and try again.",
+      "warning": "Warning",
+      "canceled": "Canceled",
+      "queued": "Queued"
+    },
+    "validation": {
+      "tooLarge": "File exceeds size limit"
+    },
+    "header": {
+      "inProgress": "In progress",
+      "completed": "Done",
+      "failed": "Some items failed",
+      "subtitle": {
+        "completed": "{{completed}} of {{total}} files completed",
+        "canceled": "{{total}} files canceled",
+        "inProgress": "{{progress}}% uploaded"
+      },
+      "expand": "Expand upload list",
+      "collapse": "Collapse upload list",
+      "cancelAll": "Cancel all",
+      "retry": "Retry"
+    },
+    "actions": {
+      "remove": "Remove",
+      "cancel": "Cancel",
+      "retry": "Retry"
+    }
+  },
+  "file-upload-showcase": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "multiple": "Multiple Files",
+    "multiple-description": "Standard multiple file upload with a persistent dropzone. No [size] is set, so it follows its own width: L below 510px, XL above.",
+    "single-xl": "Single File",
+    "single-xl-description": "Dropzone is hidden when a file is selected.",
+    "mixed-states": "Mixed File States",
+    "mixed-states-description": "One upload queue holding every state at once: uploading, uploaded, validation error, server error with retry, warning, canceled and queued.",
+    "file-item-reference": "FileItem Reference (1:1)",
+    "file-item-reference-description": "Standalone FileItem states as separate 400px cards, matching the Figma reference.",
+    "file-item-bar-reference": "FileItemBar Reference (1:1)",
+    "file-item-bar-reference-description": "Standalone FileItem states with a progress bar as separate 400px cards, matching the Figma reference.",
+    "disabled": "Disabled State",
+    "cva-field": "Form Field (CVA)",
+    "cva-field-description": "Drop-in replacement for a file input bound to a reactive form control.",
+    "current-size": "Current size"
+  },
+  "schedule-editor-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "cva": "Sandbox"
+    },
+    "full-mode-desktop-sunday-first": "Full mode (desktop, week starts on Sunday)",
+    "full-mode-desktop": "Full mode (desktop)",
+    "thumbnail-mode-desktop": "Thumbnail mode (desktop)",
+    "full-mode-mobile": "Full mode (mobile)",
+    "weekdays": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "cva": {
+      "mode": "Mode",
+      "mode-full": "Full",
+      "mode-thumbnail": "Thumbnail",
+      "layout": "Layout",
+      "layout-auto": "Auto",
+      "layout-desktop": "Desktop",
+      "layout-mobile": "Mobile",
+      "week-start": "Week starts on",
+      "week-start-monday": "Monday",
+      "week-start-sunday": "Sunday",
+      "scale-to-container": "Scale to container",
+      "current-value": "Current value"
+    }
+  },
+  "notification-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "variant": "Variant",
+      "message": "Message",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "variants": "Variants",
+    "info": "Info notification",
+    "success": "Success notification",
+    "warning": "Warning notification",
+    "error": "Error notification",
+    "default-message": "This is a notification message",
+    "long-text": "Long text, short width",
+    "long-text-message": "This is a very long notification message that contains important information and should wrap to multiple lines when placed in a narrow container with a fixed width of 200 pixels. It demonstrates how the text wraps correctly within the component boundaries.",
+    "html-title": "HTML message",
+    "html-message": "This notification contains <b>bold text</b> and <em>inline HTML</em>."
+  },
+  "password-input-field-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "default": "Default (empty)",
+    "weak-password": "Weak Password",
+    "average-password": "Average Password",
+    "strong-password": "Strong Password",
+    "with-right-icon": "With Right Icon",
+    "standalone-indicator-states": "Standalone Indicator States",
+    "indicator-default": "Default (empty)",
+    "indicator-weak": "Weak",
+    "indicator-average": "Average",
+    "indicator-strong": "Strong",
+    "enter-password-placeholder": "Enter password",
+    "show-password": "Show password",
+    "hide-password": "Hide password",
+    "password-hint": "Use at least 8 characters",
+    "password-weak-hint": "Password is too weak",
+    "password-average-hint": "Password is average",
+    "password-strong-hint": "Password is strong",
+    "sandbox": {
+      "tokens": "Indicator Tokens",
+      "inherit": "Inherit"
+    }
+  }
+}

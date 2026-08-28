@@ -1,0 +1,47 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="schedule-editor-demo">
+      <h3>{{ 'schedule-editor-showcase.full-mode-desktop-sunday-first' | localize }}</h3>
+      <ndwu-schedule-editor-field
+        [(ngModel)]="scheduleValue"
+        [weekDays]="sundayFirstWeekDays"
+        forceLayout="desktop"
+        mode="full"
+      />
+
+      <h3>{{ 'schedule-editor-showcase.full-mode-desktop' | localize }}</h3>
+      <ndwu-schedule-editor-field
+        [(ngModel)]="scheduleValue"
+        [weekDays]="weekDays"
+        forceLayout="desktop"
+        mode="full"
+      />
+
+      <h3>{{ 'schedule-editor-showcase.thumbnail-mode-desktop' | localize }}</h3>
+      <ndwu-schedule-editor-field
+        [(ngModel)]="scheduleValue"
+        [weekDays]="weekDays"
+        forceLayout="desktop"
+        mode="thumbnail"
+      />
+
+      <h3>{{ 'schedule-editor-showcase.full-mode-mobile' | localize }}</h3>
+      <ndwu-schedule-editor-field
+        [(ngModel)]="scheduleValue"
+        [weekDays]="weekDays"
+        forceLayout="mobile"
+        mode="full"
+      />
+
+      <h3>Current value</h3>
+      <pre class="schedule-editor-demo__value">{{ scheduleValue | json }}</pre>
+
+      <h3>V1 actions</h3>
+      <pre class="schedule-editor-demo__value">{{ scheduleActions | json }}</pre>
+
+    </div>
+  </ng-template>
+</app-showcase-layout>

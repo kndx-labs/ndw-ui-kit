@@ -1,0 +1,144 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>{{ 'form-container-showcase.size-token-inheritance' | localize }}</h4>
+      <p class="state-section__description">
+        {{ 'form-container-showcase.inheritance-description-prefix' | localize }}
+        <code>NDWU_SIZE_TOKEN</code>
+        {{ 'form-container-showcase.inheritance-description-value' | localize }}
+        <code>{{ sizeToken() }}</code>
+        {{ 'form-container-showcase.inheritance-description-suffix' | localize }}
+      </p>
+
+      <ndwu-form-container [formGroup]="formContainerInheritance">
+        <ndwu-input-field
+          formControlName="inheritedEmail"
+          label="form-container-showcase.inherited-from-parent-token"
+          placeholder="form-container-showcase.container-inherits-from-showcase"
+        />
+        <ndwu-input-field
+          formControlName="inheritedPassword"
+          label="form-container-showcase.also-inherited-from-parent-token"
+          placeholder="form-container-showcase.still-resolves-to-parent-size"
+        />
+      </ndwu-form-container>
+
+      <ndwu-form-container
+        size="L"
+        [formGroup]="formContainerInheritance"
+      >
+        <ndwu-input-field
+          formControlName="overriddenEmail"
+          label="form-container-showcase.container-overrides-parent-to-l"
+          placeholder="form-container-showcase.uses-local-form-container-size"
+        />
+        <ndwu-input-field
+          formControlName="overriddenPassword"
+          size="XL"
+          label="form-container-showcase.field-overrides-container-to-xl"
+          placeholder="form-container-showcase.uses-nearest-field-level-size"
+        />
+      </ndwu-form-container>
+
+      <p class="state-section__note">
+        {{ 'form-container-showcase.order-of-precedence-prefix' | localize }}
+        <code>[size]</code>
+        ->
+        {{ 'form-container-showcase.order-of-precedence-middle' | localize }}
+        <code>ndwu-form-container</code>
+        ->
+        {{ 'form-container-showcase.order-of-precedence-suffix' | localize }}
+        <code>NDWU_SIZE_TOKEN</code>
+        {{ 'form-container-showcase.order-of-precedence-provider' | localize }}.
+      </p>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.sizes.l' | localize }}</h4>
+      <ndwu-form-container [size]="SIZE.L" [formGroup]="formContainerSizeXL">
+        <ndwu-input-field
+          formControlName="email"
+          label="common.email"
+          placeholder="form-container-showcase.enter-email"
+        />
+        <ndwu-input-field
+          formControlName="password"
+          label="common.password"
+          placeholder="form-container-showcase.enter-password"
+        />
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="form-container-showcase.remember-me"
+        />
+      </ndwu-form-container>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.sizes.xxl' | localize }}</h4>
+      <ndwu-form-container
+        [size]="SIZE.XXL"
+        [formGroup]="formContainerSizeXXL"
+      >
+        <ndwu-input-field
+          formControlName="email"
+          label="common.email"
+          placeholder="form-container-showcase.enter-email"
+        />
+        <ndwu-input-field
+          formControlName="password"
+          label="common.password"
+          placeholder="form-container-showcase.enter-password"
+        />
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="form-container-showcase.remember-me"
+        />
+      </ndwu-form-container>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'form-container-showcase.with-disabled-children' | localize }}</h4>
+      <ndwu-form-container [size]="SIZE.XL" [formGroup]="formContainerWithDisabled">
+        <ndwu-input-field
+          formControlName="email"
+          label="common.email"
+          placeholder="form-container-showcase.enter-email"
+        />
+        <ndwu-input-field
+          formControlName="password"
+          label="form-container-showcase.password-disabled"
+          placeholder="form-container-showcase.disabled-placeholder"
+        />
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="form-container-showcase.disabled-checkbox"
+        />
+      </ndwu-form-container>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'form-container-showcase.with-invalid-children' | localize }}</h4>
+      <ndwu-form-container [size]="SIZE.XL" [formGroup]="formContainerWithInvalid">
+        <ndwu-input-field
+          formControlName="email"
+          label="form-container-showcase.email-invalid"
+          placeholder="form-container-showcase.valid-email-placeholder"
+          hint="form-container-showcase.invalid-email-format"
+        />
+        <ndwu-input-field
+          formControlName="password"
+          label="common.password"
+          placeholder="form-container-showcase.enter-password"
+        />
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="form-container-showcase.required-checkbox"
+          secondaryText="form-container-showcase.field-required"
+        />
+      </ndwu-form-container>
+    </div>
+  </ng-template>
+</app-showcase-layout>

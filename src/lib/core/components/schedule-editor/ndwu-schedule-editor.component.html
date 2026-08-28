@@ -1,0 +1,118 @@
+<div
+  class="ndwu-schedule-editor__wrapper"
+  [ndwuResizeObserver]="true"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMinYMin"
+    [attr.class]="svgClasses()"
+    [attr.viewBox]="svgViewBox()"
+    [attr.width]="svgWidth()"
+    [attr.height]="svgHeight()"
+    (mousemove)="onPointerMove($event)"
+    (mouseup)="onPointerUp()"
+    (mouseleave)="onSvgMouseLeave()"
+    (touchmove)="onPointerMove($event)"
+    (touchend)="onPointerUp()"
+  >
+    <g>
+      @for (line of gridLines(); track line.id) {
+        <line
+          [attr.x1]="line.x1"
+          [attr.x2]="line.x2"
+          [attr.y1]="line.y1"
+          [attr.y2]="line.y2"
+          [attr.class]="line.classes"
+          [attr.stroke-dasharray]="line.dasharray || null"
+        />
+      }
+    </g>
+
+    <g>
+      <rect
+        [attr.x]="gridBorderRect().offset.left"
+        [attr.y]="gridBorderRect().offset.top"
+        [attr.width]="gridBorderRect().gridWidth"
+        [attr.height]="gridBorderRect().gridHeight"
+        class="ndwu-schedule-editor__grid"
+      />
+
+      @for (block of blockRects(); track block.id) {
+        <rect
+          [attr.x]="block.x"
+          [attr.y]="block.y"
+          [attr.width]="block.width"
+          [attr.height]="block.height"
+          class="ndwu-schedule-editor__block"
+        />
+
+        @for (text of block.texts; track $index) {
+          <text
+            [attr.x]="block.textPositions[$index]!.x"
+            [attr.y]="block.textPositions[$index]!.y"
+            [attr.text-anchor]="block.textPositions[$index]!.anchor"
+            alignment-baseline="middle"
+            dominant-baseline="middle"
+            class="ndwu-schedule-editor__text ndwu-schedule-editor__text--small ndwu-schedule-editor__text--block"
+          >
+            {{ text }}
+          </text>
+        }
+      }
+
+      @if (dragPreview(); as drag) {
+        <rect
+          [attr.x]="drag.rect.x"
+          [attr.y]="drag.rect.y"
+          [attr.width]="drag.rect.width"
+          [attr.height]="drag.rect.height"
+          [class]="drag.cssClass"
+        />
+      }
+    </g>
+
+    <g>
+      @for (label of axisLabels(); track label.id) {
+        <text
+          [attr.x]="label.x"
+          [attr.y]="label.y"
+          [attr.text-anchor]="label.anchor"
+          [attr.alignment-baseline]="label.alignment"
+          [attr.dominant-baseline]="label.alignment"
+          [class]="label.cssClass"
+        >
+          {{ label.text }}
+        </text>
+      }
+    </g>
+
+    @if (isFullMode()) {
+      <g>
+        @for (slot of slotRects(); track slot.id) {
+          <rect
+            [attr.x]="slot.x"
+            [attr.y]="slot.y"
+            [attr.width]="slot.width"
+            [attr.height]="slot.height"
+            [class]="slot.cssClass"
+            (mousedown)="onSlotPointerDown($event, slot)"
+            (mouseenter)="onSlotHover($event, slot)"
+            (mousemove)="onSlotMouseMove($event, slot)"
+            (mouseleave)="onSlotMouseLeave()"
+            (touchstart)="onSlotPointerDown($event, slot)"
+          />
+        }
+      </g>
+    }
+  </svg>
+
+  @if (tooltip(); as tooltip) {
+    <div
+      class="ndwu-schedule-editor__tooltip"
+      [style.left.px]="tooltip.x"
+      [style.top.px]="tooltip.y"
+    >
+      {{ tooltip.text }}
+    </div>
+  }
+</div>

@@ -1,0 +1,26 @@
+@use 'styles/colors';
+@use 'styles/spacing';
+
+.custom-slot-dialog {
+  &__header {
+    display: flex;
+    flex-grow: 1;
+    gap: spacing.$spacing-16;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__subtitle {
+    margin: spacing.$spacing-8 0 0;
+    color: colors.$gray-60;
+  }
+
+  &__content {
+    display: grid;
+    gap: spacing.$spacing-16;
+  }
+}

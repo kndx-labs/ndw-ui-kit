@@ -1,0 +1,39 @@
+@use 'styles/typography';
+@use 'styles/spacing';
+@use 'styles/padding' as padding;
+
+.ndwu-helper-message {
+  display: inline-flex;
+  align-items: flex-start;
+  color: var(--ndwu-helper-message-text);
+  font-weight: 400;
+  font-style: normal;
+  font-size: typography.$fontSize-xxsmall;
+  line-height: 17px;
+  letter-spacing: typography.$letterSpacing-L;
+
+  &__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+  }
+
+  &--error {
+    gap: spacing.$spacing-4;
+    padding-top: padding.$padding-2;
+    color: var(--ndwu-helper-message-error);
+  }
+
+  &--success {
+    gap: spacing.$spacing-4;
+    padding-top: padding.$padding-2;
+    color: var(--ndwu-helper-message-success);
+  }
+
+  &--warning {
+    gap: spacing.$spacing-4;
+    padding-top: padding.$padding-2;
+    color: var(--ndwu-helper-message-warning);
+  }
+}

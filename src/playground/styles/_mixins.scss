@@ -1,0 +1,7 @@
+// Usage: @include mobile { /* styles */ }
+// Breakpoint matches `HANDSET_BREAKPOINT` in lib/utils/breakpoints.ts.
+@mixin mobile() {
+  @media (max-width: 599.99px) and (orientation: portrait), (max-width: 959.99px) and (orientation: landscape) {
+    @content;
+  }
+}

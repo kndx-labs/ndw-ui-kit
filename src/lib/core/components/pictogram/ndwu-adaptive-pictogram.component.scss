@@ -1,0 +1,15 @@
+:host {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:host(.ndwu-adaptive-pictogram--stretch) {
+  width: 100%;
+  height: 100%;
+
+  ndwu-pictogram {
+    width: 100%;
+    height: 100%;
+  }
+}

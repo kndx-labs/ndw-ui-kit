@@ -1,0 +1,50 @@
+@use 'styles/mixins';
+
+/// Extends the target element's tap area to $size on mobile via a pseudo-element.
+/// The pseudo-element is position:absolute sized with width/height: max($size, 100%)
+/// and centered via transform, so it extends invisibly beyond the element's
+/// bounding box without affecting layout.
+///
+/// Pointer behavior:
+/// - pointer-events: auto keeps the expanded zone clickable.
+/// - clicks landing on the pseudo-element bubble to the target element.
+/// - therefore this mixin must only be applied to an element that already has
+///   the correct click semantics: a native input/button, a label, or an element
+///   with an explicit click handler.
+///
+/// Stacking behavior:
+/// - isolation: isolate creates a local stacking context on the target.
+/// - the pseudo-element sits at z-index 0 inside that context.
+/// - the target's normal content paints above the transparent pseudo-element.
+///
+/// $size defaults to 44px (WCAG 2.1 minimum touch target).
+/// $pseudo selects the pseudo-element (after by default); pass `before` when the
+/// target already uses ::after for its own content (e.g. a styled checkbox mark).
+@mixin touch-target-expand($size: 44px, $pseudo: after) {
+  @include mixins.mobile() {
+    position: relative;
+    isolation: isolate;
+
+    &::#{$pseudo} {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 0;
+      width: max(#{$size}, 100%);
+      height: max(#{$size}, 100%);
+      pointer-events: auto;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+/// Convenience mixin: applies both touch-action and touch-target-expand.
+/// touch-action: manipulation eliminates the 300ms tap delay on mobile browsers.
+@mixin touchable($touch-size: 44px) {
+  @include touch-target-expand($touch-size);
+
+  /* stylelint-disable plugin/no-unsupported-browser-features */
+  touch-action: manipulation;
+  /* stylelint-enable plugin/no-unsupported-browser-features */
+}

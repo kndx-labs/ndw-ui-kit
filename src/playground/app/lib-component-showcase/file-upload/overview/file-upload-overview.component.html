@@ -1,0 +1,156 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template let-theme="theme" let-idPrefix="idPrefix">
+    <div class="state-section">
+      <h4>{{ 'file-upload-showcase.single-xl' | localize }}</h4>
+      <p class="description">{{ 'file-upload-showcase.single-xl-description' | localize }}</p>
+      <div class="example-row">
+        <ndwu-file-upload
+          #singleUploadRef
+          [multiple]="false"
+          [translationTexts]="translationTexts"
+          (uploadRequest)="onUploadRequestSingle($event)"
+          (filesChange)="onFilesChangedSingle($event)"
+        />
+      </div>
+      <p class="size-readout">
+        {{ 'file-upload-showcase.current-size' | localize }}:
+        <strong>{{ singleUploadRef.effectiveSize() }}</strong>
+      </p>
+    </div>
+
+    <div class="state-section">
+      <h4>Adaptive size vs container width</h4>
+      <p class="description">
+        Left instance has no adaptiveSize: it switches at the 510px container-width threshold.
+        Right instance is flag driven and ignores container width.
+      </p>
+      <div class="example-row">
+        <ndwu-file-upload
+          #intrinsicUploadRef
+          [multiple]="false"
+          [translationTexts]="translationTexts"
+        />
+        <ndwu-file-upload
+          #adaptiveUploadRef
+          [multiple]="false"
+          [adaptiveSize]="fileUploadSizeFlags"
+          [translationTexts]="translationTexts"
+        />
+      </div>
+      <p class="size-readout">
+        container-width: <strong>{{ intrinsicUploadRef.effectiveSize() }}</strong>
+        &nbsp;|&nbsp;
+        flag driven: <strong>{{ adaptiveUploadRef.effectiveSize() }}</strong>
+      </p>
+      <button type="button" (click)="toggleFileUploadFlags()">Toggle desktop/mobile</button>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'file-upload-showcase.cva-field' | localize }}</h4>
+      <p class="description">{{ 'file-upload-showcase.cva-field-description' | localize }}</p>
+      <div class="example-row">
+        <form [formGroup]="fileUploadCvaForm">
+          <ndwu-file-upload-field
+            #cvaUploadRef
+            formControlName="files"
+            [multiple]="false"
+            [maxSizeMB]="5"
+            [translationTexts]="translationTexts"
+            (uploadRequest)="onUploadRequestCva($event)"
+            (filesChange)="onFilesChangedCva($event)"
+          />
+        </form>
+      </div>
+      <p class="size-readout">
+        {{ 'file-upload-showcase.current-size' | localize }}:
+        <strong>{{ cvaUploadRef.effectiveSize() }}</strong>
+      </p>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'file-upload-showcase.file-item-reference' | localize }}</h4>
+      <p class="description">{{ 'file-upload-showcase.file-item-reference-description' | localize }}</p>
+      <div class="reference-row">
+        @for (file of fileItemFiles; track file.id) {
+          <div class="reference-card">
+            <ndwu-file-item
+              [file]="file"
+              [statusTexts]="translationTexts.status"
+              [actionTexts]="translationTexts.action"
+            />
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'file-upload-showcase.file-item-bar-reference' | localize }}</h4>
+      <p class="description">{{ 'file-upload-showcase.file-item-bar-reference-description' | localize }}</p>
+      <div class="reference-row">
+        @for (file of fileItemBarFiles; track file.id) {
+          <div class="reference-card">
+            <ndwu-file-item
+              [file]="file"
+              [statusTexts]="translationTexts.status"
+              [actionTexts]="translationTexts.action"
+            />
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'file-upload-showcase.mixed-states' | localize }}</h4>
+      <p class="description">{{ 'file-upload-showcase.mixed-states-description' | localize }}</p>
+      <div class="example-row">
+        <ndwu-file-upload
+          #mixedUploadRef
+          [multiple]="true"
+          [initialFiles]="mixedStateFiles"
+          [translationTexts]="translationTexts"
+        />
+      </div>
+      <p class="size-readout">
+        {{ 'file-upload-showcase.current-size' | localize }}:
+        <strong>{{ mixedUploadRef.effectiveSize() }}</strong>
+      </p>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'file-upload-showcase.multiple' | localize }}</h4>
+      <p class="description">{{ 'file-upload-showcase.multiple-description' | localize }}</p>
+      <div class="example-row">
+        <ndwu-file-upload
+          #multipleUploadRef
+          [multiple]="true"
+          [maxSizeMB]="5"
+          [translationTexts]="translationTexts"
+          (uploadRequest)="onUploadRequestMultiple($event)"
+          (filesChange)="onFilesChangedMultiple($event)"
+        />
+      </div>
+      <p class="size-readout">
+        {{ 'file-upload-showcase.current-size' | localize }}:
+        <strong>{{ multipleUploadRef.effectiveSize() }}</strong>
+      </p>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'file-upload-showcase.disabled' | localize }}</h4>
+      <div class="example-row">
+        <ndwu-file-upload
+          #disabledUploadRef
+          [disabled]="true"
+          [translationTexts]="translationTexts"
+        />
+      </div>
+      <p class="size-readout">
+        {{ 'file-upload-showcase.current-size' | localize }}:
+        <strong>{{ disabledUploadRef.effectiveSize() }}</strong>
+      </p>
+    </div>
+  </ng-template>
+</app-showcase-layout>

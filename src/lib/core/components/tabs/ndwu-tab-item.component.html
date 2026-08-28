@@ -1,0 +1,20 @@
+@if (effectiveIcon()) {
+  <ndwu-icon
+    class="ndwu-tab-item__icon"
+    [name]="effectiveIcon()!"
+    [stretched]="true"
+    aria-hidden="true"
+  />
+}
+
+<span class="ndwu-tab-item__label">{{ label() | localize }}</span>
+
+@if (badge()) {
+  <ndwu-badge
+    [tone]="effectiveBadgeTone()"
+    [size]="badgeSize()"
+    [disabled]="disabled()"
+  >
+    {{ badge() }}
+  </ndwu-badge>
+}

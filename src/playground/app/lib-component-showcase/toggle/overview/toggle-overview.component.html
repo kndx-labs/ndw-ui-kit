@@ -1,0 +1,142 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template let-theme="theme" let-idPrefix="idPrefix">
+  <div class="state-section">
+    <h4>{{ 'toggle-showcase.default' | localize }}</h4>
+    <form [formGroup]="toggleDefault">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.enable-notifications"
+        secondaryText="toggle-showcase.notifications-secondary"
+      />
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'common.sizes.l' | localize }}</h4>
+    <form [formGroup]="toggleSizeL">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.small-toggle"
+        secondaryText="common.additional-text"
+        [size]="SIZE.L"
+      />
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'common.sizes.xl' | localize }}</h4>
+    <form [formGroup]="toggleSizeXL">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.small-toggle"
+        secondaryText="common.additional-text"
+        [size]="SIZE.XL"
+      />
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'common.sizes.xxl' | localize }}</h4>
+    <form [formGroup]="toggleSizeXXL">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.extra-large-toggle"
+        secondaryText="common.additional-text"
+        [size]="SIZE.XXL"
+      />
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'common.checked' | localize }}</h4>
+    <form [formGroup]="toggleChecked">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.dark-mode-enabled"
+        secondaryText="toggle-showcase.dark-mode-secondary"
+      />
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'toggle-showcase.color-themes' | localize }}</h4>
+    <form [formGroup]="toggleBrand">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.brand-color-blue"
+        [color]="TOGGLE_COLOR.BRAND"
+      />
+    </form>
+    <form [formGroup]="toggleGreen">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.green-color"
+        [color]="TOGGLE_COLOR.GREEN"
+      />
+    </form>
+    <form [formGroup]="toggleBrandChecked">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.brand-color-checked"
+        [color]="TOGGLE_COLOR.BRAND"
+      />
+    </form>
+    <form [formGroup]="toggleGreenChecked">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.green-color-checked"
+        [color]="TOGGLE_COLOR.GREEN"
+      />
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'toggle-showcase.without-label' | localize }}</h4>
+    <form [formGroup]="toggleDefault">
+      <ndwu-toggle-field formControlName="toggle" />
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'toggle-showcase.with-label-only' | localize }}</h4>
+    <form [formGroup]="toggleWithLabel">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.enable-feature"
+      />
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'toggle-showcase.with-secondary-text' | localize }}</h4>
+    <form [formGroup]="toggleWithSecondaryText">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.auto-save"
+        secondaryText="toggle-showcase.auto-save-secondary"
+      />
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'common.disabled' | localize }}</h4>
+    <form [formGroup]="toggleDisabled">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.disabled-toggle"
+        secondaryText="toggle-showcase.disabled-secondary"
+      />
+    </form>
+    <form [formGroup]="toggleDisabledChecked">
+      <ndwu-toggle-field
+        formControlName="toggle"
+        label="toggle-showcase.disabled-checked-toggle"
+        secondaryText="toggle-showcase.disabled-checked-secondary"
+      />
+    </form>
+  </div>
+  </ng-template>
+</app-showcase-layout>

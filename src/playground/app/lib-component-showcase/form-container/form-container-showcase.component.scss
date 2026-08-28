@@ -1,0 +1,26 @@
+.state-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+
+  h3 {
+    margin: 0 0 12px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  &__description,
+  &__note {
+    margin: 0 0 12px;
+    color: inherit;
+  }
+
+  &__note {
+    margin-top: 12px;
+    opacity: 0.8;
+  }
+
+}

@@ -1,0 +1,11 @@
+<div
+  [cdkTrapFocus]="trapFocus"
+  [cdkTrapFocusAutoCapture]="trapFocus"
+  class="ndwu-popover-host__focus-trap"
+  [class.ndwu-popover-host--mobile]="isMobile()"
+>
+  <ng-template cdkPortalOutlet></ng-template>
+  @if (isStringContent) {
+    {{ content }}
+  }
+</div>

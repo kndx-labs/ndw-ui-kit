@@ -1,0 +1,18 @@
+<div class="theme-switcher">
+  <span class="theme-switcher__label">
+    {{ 'common.theme' | localize }}
+  </span>
+
+  <div class="theme-switcher__theme-buttons">
+    @for (themeId of themes(); track themeId) {
+      <button
+        type="button"
+        class="theme-switcher__btn"
+        [class.theme-switcher__btn--active]="theme() === themeId"
+        (click)="selectTheme(themeId)"
+      >
+        {{ getThemeLabelKey(themeId) | localize }}
+      </button>
+    }
+  </div>
+</div>

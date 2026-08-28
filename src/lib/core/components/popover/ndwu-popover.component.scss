@@ -1,0 +1,90 @@
+@use 'styles/typography';
+@use 'styles/spacing';
+@use 'styles/mixins';
+
+.ndwu-popover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  max-width: 400px;
+  max-height: 480px;
+  padding: spacing.$spacing-16;
+  border: 1px solid var(--ndwu-popover-border-color);
+  border-radius: var(--ndwu-popover-border-radius);
+  background: var(--ndwu-popover-bg);
+  color: var(--ndwu-popover-text-color);
+
+  /* stylelint-disable-next-line order/order */
+  @include mixins.mobile() {
+    width: 100vw;
+    max-width: 100vw;
+    max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    border-radius: var(--ndwu-popover-border-radius) var(--ndwu-popover-border-radius) 0 0;
+
+    /* stylelint-disable plugin/no-unsupported-browser-features */
+    @supports (height: 100dvh) {
+      max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    }
+    /* stylelint-enable plugin/no-unsupported-browser-features */
+  }
+}
+
+.ndwu-popover__header {
+  display: flex;
+  gap: spacing.$spacing-8;
+  align-items: center;
+  min-height: 36px;
+  margin-bottom: spacing.$spacing-8;
+
+  /* stylelint-disable-next-line order/order */
+  @include mixins.mobile() {
+    min-height: 0;
+    margin-bottom: spacing.$spacing-16;
+  }
+}
+
+.ndwu-popover__header-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  color: var(--ndwu-popover-header-text-color);
+  font-weight: typography.$fontWeight-XL;
+  font-size: typography.$fontSize-H5;
+  overflow-wrap: break-word;
+}
+
+.ndwu-popover__close {
+  flex-shrink: 0;
+
+  &--floating {
+    position: absolute;
+    top: spacing.$spacing-16;
+    right: spacing.$spacing-16;
+  }
+}
+
+.ndwu-popover__body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  font-size: typography.$fontSize-small;
+  line-height: 20px;
+
+  &--with-floating-close {
+    padding-right: 40px;
+  }
+}
+
+.ndwu-popover__footer {
+  display: flex;
+  flex-shrink: 0;
+  gap: spacing.$spacing-8;
+  justify-content: flex-end;
+  margin-top: spacing.$spacing-16;
+
+  > button {
+    flex: 1 1 0;
+  }
+}

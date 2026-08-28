@@ -1,0 +1,88 @@
+@use 'styles/mixins' as mixins;
+@use 'styles/colors' as colors;
+@use 'styles/padding' as padding;
+@use 'styles/radius' as radius;
+@use 'styles/spacing' as spacing;
+@use 'styles/typography' as typography;
+
+
+.token-list {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.token-list__section-title {
+  margin: 0 0 10px;
+  color: colors.$gray-50;
+  font-weight: 600;
+  font-size: typography.$fontSize-H5;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.token-list__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid colors.$gray-20;
+  border-radius: 8px;
+  background: colors.$gray-0;
+}
+
+.token-list__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.token-list__controls {
+  display: inline-flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.token-list__color {
+  width: 44px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid colors.$gray-20;
+  border-radius: 6px;
+  background: colors.$gray-0;
+  cursor: pointer;
+
+  &:focus {
+    outline: 2px solid colors.$brand-50;
+    outline-offset: 2px;
+  }
+}
+
+.token-list__clear {
+  padding: 8px 10px;
+  border: 1px solid colors.$gray-20;
+  border-radius: 6px;
+  background: colors.$gray-0;
+  color: colors.$gray-80;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  &:hover {
+    border-color: colors.$brand-50;
+  }
+
+  &:focus {
+    outline: 2px solid colors.$brand-50;
+    outline-offset: 2px;
+  }
+}
+
+.token-list__label {
+  color: colors.$gray-80;
+  font-weight: 600;
+  font-size: 0.82rem;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}

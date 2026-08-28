@@ -1,0 +1,87 @@
+<ndwu-form-field
+  [size]="sizeSvc.size()"
+  [ndwuResizeObserver]="true"
+>
+  @if (label()) {
+    <ndwu-floating-label
+      [label]="label()"
+      [required]="required()"
+    />
+  }
+
+  <div
+    ndwuCombobox
+    ndwuComboboxInput
+    ndwuComboboxPopoverBridge
+    [ndwuControlProvider]="this"
+    [readonly]="true"
+    [disabled]="disabled"
+    [ndwuPopoverTrigger]="panelTemplate"
+    [popoverControllerFactory]="dropdownControllerFactory"
+    [triggerOn]="'manual'"
+    [popoverClass]="panelClass()"
+    [popoverTrapFocus]="false"
+    [attr.id]="id"
+    [attr.aria-labelledby]="label() ? formField()?.labelId() : null"
+    [attr.aria-required]="required() ? 'true' : null"
+    [attr.aria-invalid]="invalid() ? 'true' : null"
+    class="ndwu-select-field__trigger ndwu-form-field__input"
+    (focus)="focused.set(true)"
+    (blur)="focused.set(false)"
+  >
+    <span
+      class="ndwu-select-field__trigger-text"
+      [class.ndwu-select-field__trigger-text--placeholder]="empty"
+    >
+      {{ displayText | localize }}
+    </span>
+
+    <ndwu-icon
+      [name]="chevronIcon()"
+      aria-hidden="true"
+      class="ndwu-select-field__trigger-icon"
+    />
+  </div>
+
+  <ng-template #panelTemplate>
+    <ndwu-dropdown-panel
+      [sheet]="isMobileViewport()"
+      [triggerWidth]="triggerWidth()"
+    >
+      @if (isMobileViewport()) {
+        <div ndwuPanelHeader class="ndwu-select-field__panel-header">
+          <span class="ndwu-select-field__panel-label">{{ label() | localize }}</span>
+          <button
+            ndwuIconButton
+            variant="flat"
+            [icon]="ICON_NAME.CLOSE_L"
+            [attr.aria-label]="closeButtonAriaLabel() | localize"
+            class="ndwu-select-field__panel-close"
+            (click)="closePanel()"
+          >
+          </button>
+        </div>
+      }
+      <ndwu-styled-listbox
+        [size]="dropdownSize()"
+        [comboboxRef]="combobox()"
+        [values]="inputValue ? [inputValue] : []"
+        selectionMode="explicit"
+        (valuesChange)="onSelectionChange($event)"
+      >
+        @for (opt of normalizedOptions(); track opt.value) {
+          <ndwu-styled-option [value]="opt.value" [label]="opt.label">
+            {{ opt.label | localize }}
+          </ndwu-styled-option>
+        }
+      </ndwu-styled-listbox>
+    </ndwu-dropdown-panel>
+  </ng-template>
+
+  @if (hint()) {
+    <ndwu-helper-message
+      ndwuHint
+      [helperMessage]="hint()"
+    />
+  }
+</ndwu-form-field>

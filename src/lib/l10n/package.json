@@ -1,0 +1,9 @@
+{
+  "name": "@ndw-ui-kit/core/l10n",
+  "ng-package": {
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  }
+}
+

@@ -1,0 +1,60 @@
+@use 'styles/padding';
+@use 'styles/spacing';
+@use 'styles/typography';
+@use 'styles/fonts';
+@use 'styles/radius';
+
+:host {
+  display: block;
+}
+
+.ndwu-notification {
+  display: flex;
+  gap: spacing.$spacing-12;
+  align-items: flex-start;
+  padding: padding.$padding-12 padding.$padding-16;
+  border-radius: radius.$radius-L;
+
+  &__icon {
+    flex-shrink: 0;
+  }
+
+  &__message {
+    color: var(--ndwu-notification-text);
+    font-size: typography.$fontSize-small;
+    font-family: fonts.$font-family-default;
+    line-height: 20px;
+  }
+
+  &--info {
+    background-color: var(--ndwu-notification-info-bg);
+
+    .ndwu-notification__icon {
+      color: var(--ndwu-notification-info-icon);
+    }
+  }
+
+  &--success {
+    background-color: var(--ndwu-notification-success-bg);
+
+    .ndwu-notification__icon {
+      color: var(--ndwu-notification-success-icon);
+    }
+  }
+
+  &--warning {
+    background-color: var(--ndwu-notification-warning-bg);
+
+    .ndwu-notification__icon {
+      color: var(--ndwu-notification-warning-icon);
+    }
+  }
+
+  &--error {
+    background-color: var(--ndwu-notification-error-bg);
+
+    .ndwu-notification__icon {
+      color: var(--ndwu-notification-error-icon);
+    }
+  }
+}

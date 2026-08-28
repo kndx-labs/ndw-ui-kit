@@ -1,0 +1,56 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "@tsconfig/strictest/tsconfig.json",
+  "compileOnSave": false,
+  "compilerOptions": {
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "@ndw-ui-kit/core": [
+        "src/lib/public-api.ts"
+      ],
+      "@ndw-ui-kit/core/utils": [
+        "src/lib/utils"
+      ],
+      "@ndw-ui-kit/core/aria": [
+        "src/lib/aria/index.ts"
+      ],
+      "@ndw-ui-kit/core/l10n": [
+        "src/lib/l10n/index.ts"
+      ],
+      "@ndw-ui-kit/core/popover": [
+        "src/lib/popover/index.ts"
+      ],
+      "@ndw-ui-kit/core/form-field": [
+        "src/lib/form-field/index.ts"
+      ]
+    },
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./tsconfig.playground.json"
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>Flex wrap layout</h4>
+      <p class="section-description">
+        <code>ndwuScrollbar</code> on a <code>display: flex; flex-wrap: wrap</code> container.
+        Flex children keep their sizing — wide card retains <code>flex-basis: 100%</code>.
+        <code>ndwuScrollbar=XL</code> (default value is <code>L</code>).
+      </p>
+
+      <div
+        class="scrollbar-flex-demo"
+        ndwuScrollbar
+        ndwuScrollbarSize="XL"
+        tabindex="0"
+      >
+        <div class="scrollbar-flex-demo__item scrollbar-flex-demo__item--wide">
+          Flex container + custom scrollbar. Wide card keeps <code>flex-basis: 100%</code>.
+        </div>
+
+        <div class="scrollbar-flex-demo__item">Card 1</div>
+        <div class="scrollbar-flex-demo__item">Card 2</div>
+        <div class="scrollbar-flex-demo__item">Card 3</div>
+        <div class="scrollbar-flex-demo__item">Card 4</div>
+        <div class="scrollbar-flex-demo__item">Card 5</div>
+        <div class="scrollbar-flex-demo__item">Card 6</div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>Flex column + sticky footer + scroll is non-printable</h4>
+      <p class="section-description">
+        <code>ndwuScrollbar</code> on a <code>display: flex; flex-direction: column</code> container.
+        Footer uses <code>position: sticky</code> + <code>margin-top: auto</code> to stay at the bottom.
+        <br/>
+        <br/>
+        <code>ndwuScrollbarPrintable</code> is set to <code>false</code>.
+      </p>
+
+      <div
+        class="scrollbar-column-demo"
+        ndwuScrollbar
+        ndwuScrollbarPrintable="false"
+        tabindex="0"
+      >
+        <div class="scrollbar-column-demo__header">
+          Flex column + sticky footer. Footer keeps bottom alignment and sticks during scroll.
+        </div>
+
+        <div class="scrollbar-column-demo__content">
+          <p>Section grows like modal body content.</p>
+          <p>Custom scrollbar must not break <code>flex-direction: column</code>.</p>
+          <p>Footer uses <code>margin-top: auto</code> + <code>position: sticky</code>.</p>
+          <p>Extra content line 1.</p>
+          <p>Extra content line 2.</p>
+          <p>Extra content line 3.</p>
+          <p>Extra content line 4.</p>
+          <p>Extra content line 5.</p>
+        </div>
+
+        <div class="scrollbar-column-demo__footer">
+          Sticky footer action row
+        </div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>With Padding</h4>
+      <p class="section-description">
+        <code>[ndwuScrollbarPadding]</code> adds extra space around scrollable content.
+        Uses CSS custom properties internally — can also be set via stylesheet.
+      </p>
+
+      <div
+        class="scrollbar-padding-demo"
+        ndwuScrollbar
+        [ndwuScrollbarPadding]="paddingExample"
+        tabindex="0"
+      >
+        <div class="scrollbar-padding-demo__item">Padded content item 1</div>
+        <div class="scrollbar-padding-demo__item">Padded content item 2</div>
+        <div class="scrollbar-padding-demo__item">Padded content item 3</div>
+        <div class="scrollbar-padding-demo__item">Padded content item 4</div>
+        <div class="scrollbar-padding-demo__item">Padded content item 5</div>
+        <div class="scrollbar-padding-demo__item">Padded content item 6</div>
+        <div class="scrollbar-padding-demo__item">Padded content item 7</div>
+        <div class="scrollbar-padding-demo__item">Padded content item 8</div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>With Content Padding</h4>
+      <p class="section-description">
+        <code>[ndwuScrollbarContentPadding]</code> adds inner breathing room to the scroll box
+        itself, distinct from the track gutter above. Top/left padding scrolls away with the
+        content; bottom/right padding adds trailing space. It composes with the reserved track
+        gutter, so content still never renders under the scrollbar.
+        <br/>
+        <br/>
+        Uses CSS custom properties internally — can also be set via stylesheet.
+      </p>
+
+      <div
+        class="scrollbar-content-padding-demo"
+        ndwuScrollbar
+        [ndwuScrollbarContentPadding]="contentPaddingExample"
+        tabindex="0"
+      >
+        <div class="scrollbar-content-padding-demo__item">Padded content item 1</div>
+        <div class="scrollbar-content-padding-demo__item">Padded content item 2</div>
+        <div class="scrollbar-content-padding-demo__item">Padded content item 3</div>
+        <div class="scrollbar-content-padding-demo__item">Padded content item 4</div>
+        <div class="scrollbar-content-padding-demo__item">Padded content item 5</div>
+        <div class="scrollbar-content-padding-demo__item">Padded content item 6</div>
+        <div class="scrollbar-content-padding-demo__item">Padded content item 7</div>
+        <div class="scrollbar-content-padding-demo__item">Padded content item 8</div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>Disabled scrollbar — container grows instead of scrolling</h4>
+      <p class="section-description">
+        <code>[ndwuScrollbarDisabled]</code> turns the custom scroll box into a pass-through
+        wrapper: both axes grow, both tracks disappear, and the reserved gutter is released.
+        Nothing inside is destroyed by the toggle, so component and DOM state survive — type
+        into the field below, then toggle.
+        <br/>
+        <br/>
+        The call site still owns its own height cap. Here
+        <code>scrollbar-grow-demo--grow</code> drops <code>height</code>; without that, the
+        container would stay capped even with the scrollbar disabled.
+      </p>
+
+      <button
+        type="button"
+        class="scrollbar-grow-demo__toggle"
+        (click)="toggleScrollbar()"
+      >
+        {{ isScrollbarDisabled() ? 'Enable scrollbar' : 'Disable scrollbar' }}
+      </button>
+
+      <div
+        class="scrollbar-grow-demo"
+        [class.scrollbar-grow-demo--grow]="isScrollbarDisabled()"
+        ndwuScrollbar
+        [ndwuScrollbarDisabled]="isScrollbarDisabled()"
+        tabindex="0"
+      >
+        <label class="scrollbar-grow-demo__state">
+          State probe (text must survive the toggle):
+          <input type="text"/>
+        </label>
+
+        <p>Row 1 — enough content to overflow the capped height.</p>
+        <p>Row 2 — with the scrollbar enabled this area scrolls.</p>
+        <p>Row 3 — with it disabled the container grows to fit.</p>
+        <p>Row 4 — no vertical track must remain in grow mode.</p>
+        <p>Row 5 — no dead gutter padding must remain either.</p>
+        <p>Row 6 — toggling back must restore scrolling exactly.</p>
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

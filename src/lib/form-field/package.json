@@ -1,0 +1,9 @@
+{
+  "name": "@ndw-ui-kit/core/form-field",
+  "ng-package": {
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  }
+}
+

@@ -1,0 +1,204 @@
+<ng-template #menuNavContent>
+    <ul>
+      @for (item of MENU_ITEMS; track item.type === 'item' ? item.name : item.label) {
+        @if (item.type === 'item') {
+          <li class="nav-item">
+            <button
+              class="nav-button"
+              [class.active]="selectedComponent() === item.name"
+              (click)="selectComponent(item.name)"
+              type="button"
+            >
+              <span class="nav-button__label">{{ SHOWCASE_NAMES[item.name] }}</span>
+              @if (isReadyForReview(item.name)) {
+                <sup class="nav-badge nav-badge--ready">ready for review</sup>
+              }
+            </button>
+          </li>
+        } @else {
+          <li class="nav-group-item">
+            <button
+              type="button"
+              class="nav-group-header"
+              (click)="toggleGroup(item.label)"
+              [attr.aria-expanded]="isGroupExpanded(item.label)"
+            >
+              <ndwu-icon
+                [name]="ICON_NAME.CHEVRON_RIGHT_S"
+                class="nav-group-header__chevron"
+                [class.nav-group-header__chevron--expanded]="isGroupExpanded(item.label)"
+              />
+              <span class="nav-button__label">{{ item.label }}</span>
+            </button>
+            @if (isGroupExpanded(item.label)) {
+              <ul class="nav-group-children">
+                @for (child of item.children; track child) {
+                  <li>
+                    <button
+                      class="nav-button"
+                      [class.active]="selectedComponent() === child"
+                      (click)="selectComponent(child)"
+                      type="button"
+                    >
+                      <span class="nav-button__label">{{ SHOWCASE_NAMES[child] }}</span>
+                      @if (isReadyForReview(child)) {
+                        <sup class="nav-badge nav-badge--ready">ready for review</sup>
+                      }
+                    </button>
+                  </li>
+                }
+              </ul>
+            }
+          </li>
+        }
+      }
+    </ul>
+
+    <h2>{{ 'app.examples' | localize }}</h2>
+    <ul>
+      @for (example of EXAMPLES_LIST; track example) {
+        <li class="nav-item">
+          <button
+            class="nav-button"
+            [class.active]="selectedExample() === example"
+            (click)="selectExample(example)"
+            type="button"
+          >
+            <span class="nav-button__label">{{ EXAMPLE_NAMES[example] }}</span>
+          </button>
+        </li>
+      }
+    </ul>
+
+
+  </ng-template>
+
+<div class="app-container playground-main">
+  <div class="header">
+    <div class="header__left">
+      <button
+        type="button"
+        class="burger-menu-button"
+        (click)="toggleMobileMenu()"
+        [attr.aria-label]="'app.menu' | localize"
+        [attr.aria-expanded]="isMobileMenuOpen()"
+      >
+        <ndwu-icon [name]="ICON_NAME.MENU_BURGER_S" />
+      </button>
+      <h1><a routerLink="/">{{ 'app.title' | localize }}</a></h1>
+    </div>
+    <div class="header__center">
+      <div
+        class="header__search-input-wrapper"
+        tabindex="0"
+        (click)="openSearch()"
+        (keydown.enter)="openSearch()"
+      >
+        <ndwu-icon [name]="ICON_NAME.SEARCH_S" />
+        <span class="header__search-placeholder">Search components...</span>
+        <kbd class="header__search-shortcut">/</kbd>
+      </div>
+    </div>
+    <div class="header__actions">
+      <button
+        type="button"
+        class="header__settings"
+        (click)="openDebugSettingsDialog()"
+        [attr.aria-label]="'app.settings' | localize"
+      >
+        <ndwu-icon [name]="ICON_NAME.SETTINGS_S" />
+      </button>
+      <div class="language-switcher">
+        <select
+          id="language-select"
+          [value]="currentLang()"
+          (change)="switchLanguage($any($event.target).value)"
+        >
+          <option value="en">EN</option>
+          <option value="de">DE</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="mobile-menu-overlay"
+    [class.mobile-menu-overlay--open]="isMobileMenuOpen()"
+    [attr.tabindex]="isMobileMenuOpen() ? 0 : -1"
+    [attr.aria-label]="'app.close-menu' | localize"
+    (click)="closeMobileMenu()"
+    (keydown.escape)="closeMobileMenu()"
+  ></div>
+  <aside
+    class="mobile-menu"
+    [class.mobile-menu--open]="isMobileMenuOpen()"
+  >
+    <div class="mobile-menu__header">
+      <h2 class="mobile-menu__title">{{ 'app.navigation' | localize }}</h2>
+      <button
+        type="button"
+        class="mobile-menu__close"
+        (click)="closeMobileMenu()"
+        [attr.aria-label]="'app.close-menu' | localize"
+      >
+        <ndwu-icon [name]="ICON_NAME.CLOSE_S" />
+      </button>
+    </div>
+    <nav class="component-nav">
+      <ng-container [ngTemplateOutlet]="menuNavContent" />
+    </nav>
+  </aside>
+
+  <div class="main-layout">
+    <aside
+      class="sidebar"
+      [class.sidebar--collapsed]="isSidebarCollapsed()"
+    >
+      <div class="sidebar__header">
+        @if (!isSidebarCollapsed()) {
+          <h2 class="sidebar__title">{{ 'app.navigation' | localize }}</h2>
+          <button
+            type="button"
+            class="sidebar__toggle"
+            (click)="toggleSidebarCollapse()"
+            [attr.aria-label]="'app.collapse-sidebar' | localize"
+          >
+            <ndwu-icon [name]="ICON_NAME.CHEVRON_LEFT_S" />
+          </button>
+        } @else {
+          <button
+            type="button"
+            class="sidebar__toggle"
+            (click)="toggleSidebarCollapse()"
+            [attr.aria-label]="'app.expand-sidebar' | localize"
+          >
+            <ndwu-icon [name]="ICON_NAME.CHEVRON_RIGHT_S" />
+          </button>
+        }
+      </div>
+      @if (!isSidebarCollapsed()) {
+        <nav
+          class="component-nav"
+          ndwuScrollbar
+          ndwuScrollbarAxis="y"
+        >
+          <ng-container [ngTemplateOutlet]="menuNavContent" />
+        </nav>
+      }
+    </aside>
+
+    <main class="main-content">
+      @if (selectedExample(); as example) {
+        <app-example-showcase [example]="example" />
+      } @else if (selectedComponent(); as component) {
+        <app-component-showcase [component]="component" />
+      } @else {
+        <app-index-page (componentSelected)="selectComponent($event)" />
+      }
+    </main>
+  </div>
+
+  @if (debugService.showInteractionPanel()) {
+    <app-interaction-debug-panel />
+  }
+</div>

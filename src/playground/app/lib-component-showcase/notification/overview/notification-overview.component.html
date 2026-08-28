@@ -1,0 +1,41 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="notification-section">
+      <h4>{{ 'notification-showcase.variants' | localize }}</h4>
+      <div class="notifications-list">
+        @for (item of VARIANTS; track item.id) {
+          <div class="notifications-list__row">
+            <span class="notifications-list__label">
+              {{ 'notification-showcase.' + item.id | localize }}
+            </span>
+            <ndwu-notification
+              [variant]="item.variant"
+              [message]="'notification-showcase.default-message' | localize"
+            />
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="notification-section">
+      <h4>{{ 'notification-showcase.long-text' | localize }}</h4>
+      <div class="notification-short-width">
+        <ndwu-notification
+          [variant]="NOTIFICATION_VARIANT.INFO"
+          [message]="'notification-showcase.long-text-message' | localize"
+        />
+      </div>
+    </div>
+
+    <div class="notification-section">
+      <h4>{{ 'notification-showcase.html-title' | localize }}</h4>
+      <ndwu-notification
+        [variant]="NOTIFICATION_VARIANT.INFO"
+        [message]="'notification-showcase.html-message' | localize"
+      />
+    </div>
+  </ng-template>
+</app-showcase-layout>

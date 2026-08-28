@@ -1,0 +1,15 @@
+export const TIMING_BUTTON_TOKEN_KEYS = [
+  'timing-button-primary-fill-bg',
+  'timing-button-primary-bg',
+  'timing-button-primary-border',
+  'timing-button-primary-text',
+  'timing-button-primary-hover-bg',
+  'timing-button-primary-hover-border',
+  'timing-button-primary-active-bg',
+  'timing-button-primary-active-border',
+  'timing-button-primary-focus-bg',
+  'timing-button-primary-focus-border',
+  'timing-button-primary-disabled-bg',
+  'timing-button-primary-disabled-border',
+  'timing-button-primary-disabled-text',
+] as const;

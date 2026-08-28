@@ -1,0 +1,39 @@
+.tabs-wrapper {
+  background: #fff;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+}
+
+.tab {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: #555;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #f0f0f0;
+    color: #111;
+  }
+
+  &:focus {
+    outline: 2px solid #0086cb;
+    outline-offset: 2px;
+  }
+}
+
+.tab--active {
+  border-color: #cfe8ff;
+  background: #e3f2fd;
+  color: #0086cb;
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@ndw-ui-kit/core/utils",
+  "ng-package": {
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  }
+}

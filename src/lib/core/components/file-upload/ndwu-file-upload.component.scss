@@ -1,0 +1,32 @@
+@use 'styles/radius';
+@use 'styles/spacing';
+
+:host {
+  display: block;
+}
+
+.ndwu-file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-12;
+  width: 100%;
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--ndwu-file-upload-border-color);
+    border-radius: radius.$radius-XL;
+    background-color: var(--ndwu-file-upload-surface-color);
+
+    ndwu-file-item + ndwu-file-item {
+      border-top: 1px solid var(--ndwu-file-upload-divider-color);
+    }
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--ndwu-file-upload-divider-color);
+  }
+}

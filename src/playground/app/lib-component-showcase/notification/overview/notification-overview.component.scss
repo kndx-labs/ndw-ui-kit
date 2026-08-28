@@ -1,0 +1,28 @@
+.notification-section {
+  margin-bottom: 24px;
+
+  h4 {
+    margin-bottom: 16px;
+  }
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &__row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__label {
+    color: var(--color-gray-60);
+    font-size: 12px;
+  }
+}
+
+.notification-short-width {
+  width: 200px;
+}

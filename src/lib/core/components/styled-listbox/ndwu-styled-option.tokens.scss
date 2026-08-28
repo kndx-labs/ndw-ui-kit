@@ -1,0 +1,14 @@
+@use 'styles/colors';
+@use 'styles/radius';
+
+$ndwu-styled-option-tokens: (
+  styled-option-text-color: colors.$gray-80,
+  styled-option-hover-bg: colors.$gray-10,
+  styled-option-active-bg: colors.$gray-0,
+  styled-option-active-border-radius: radius.$radius-S,
+  styled-option-active-outline-color: colors.$brand-50,
+  styled-option-selected-bg: colors.$brand-10,
+  styled-option-selected-hover-bg: colors.$brand-15,
+  styled-option-disabled-bg: colors.$gray-10,
+  styled-option-disabled-text-color: colors.$gray-30,
+);

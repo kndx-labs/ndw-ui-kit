@@ -1,0 +1,58 @@
+<section
+  *ndwuModalHeader
+  class="custom-slot-dialog__header"
+>
+  <div>
+    <h3
+      class="custom-slot-dialog__title"
+      tabindex="0"
+    >
+      Custom slot header
+    </h3>
+    <p class="custom-slot-dialog__subtitle">
+      This header is rendered in the modal container header area.
+    </p>
+  </div>
+
+  <button
+    ndwuButton
+    variant="secondary"
+    label="Close"
+    (click)="modalRef.close(false)"
+  >
+  </button>
+</section>
+
+<div class="custom-slot-dialog__content">
+  <p>
+    This component uses <code>*ndwuModalHeader</code> and <code>*ndwuModalFooter</code>
+    so the header and footer are rendered by the outer dialog/drawer container,
+    not inside the scrollable body content.
+  </p>
+
+  <p>
+    Use <code>ariaLabel</code> or <code>ariaLabelledby</code> in modal config when the
+    default title is replaced by a custom header.
+  </p>
+</div>
+
+<div
+  *ndwuModalFooter
+  ndwuModalActions
+>
+  <button
+    ndwuButton
+    variant="secondary"
+    label="Cancel"
+    (click)="modalRef.close(false)"
+  >
+  </button>
+
+  <button
+    ndwuButton
+    variant="primary"
+    label="Save"
+    (click)="confirm()"
+  >
+  </button>
+</div>

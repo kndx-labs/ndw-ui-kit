@@ -1,0 +1,14 @@
+@use 'styles/padding' as padding;
+@use 'styles/spacing' as spacing;
+
+.form {
+  display: block;
+  margin: spacing.$spacing-4 0 spacing.$spacing-16;
+  padding: padding.$padding-2;
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    gap: spacing.$spacing-16;
+  }
+}

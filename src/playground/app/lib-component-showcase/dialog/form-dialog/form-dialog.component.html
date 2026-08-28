@@ -1,0 +1,47 @@
+<ndwu-form-container
+  [formGroup]="form"
+  size="XL"
+  class="form"
+>
+  <div class="form__header">
+    <h4>Form header</h4>
+
+    <button
+      ndwuIconButton
+      [icon]="ICON_NAME.QUESTION_S"
+      variant="flat"
+      [ndwuPopover]="'Port forwarding enables remote access to devices on your local network from the internet.'"
+      popoverTitle="Port Forwarding"
+      [popoverShowHeader]="true"
+    >
+      {{ 'popover-showcase.overview.help-button' | localize }}
+    </button>
+  </div>
+
+  <ndwu-input-field
+    label="dialog-showcase.overview.form-dialog.fields.name.label"
+    required
+    formControlName="name"
+  >
+  </ndwu-input-field>
+
+  <ndwu-input-field
+    label="dialog-showcase.overview.form-dialog.fields.email.label"
+    required
+    formControlName="email"
+  >
+  </ndwu-input-field>
+</ndwu-form-container>
+
+<div
+  *ndwuModalFooter
+  ndwuModalActions
+>
+  <button
+    ndwuButton
+    [disabled]="form.invalid"
+    (click)="onOkClick()"
+    label="dialog-showcase.overview.common.button-ok"
+  >
+  </button>
+</div>

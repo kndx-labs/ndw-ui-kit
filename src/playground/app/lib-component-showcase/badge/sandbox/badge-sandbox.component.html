@@ -1,0 +1,100 @@
+<div class="sandbox">
+  <div class="sandbox__toolbar">
+    <app-theme-switcher
+      [theme]="sandboxTheme()"
+      (themeChange)="setSandboxTheme($any($event))"
+    />
+
+    <button
+      type="button"
+      class="sandbox__reset"
+      (click)="resetSandbox()"
+    >
+      {{ 'common.reset' | localize }}
+    </button>
+  </div>
+
+  <div class="sandbox__content">
+    <div class="sandbox__preview">
+      <h4 class="sandbox__section-title">{{ 'common.preview' | localize }}</h4>
+
+      <div
+        class="sandbox__preview-surface"
+        #previewSurface
+        [class.ndwu-theme-light]="sandboxTheme() === 'light'"
+        [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
+        [ngStyle]="sandboxTokenStyles()"
+      >
+        <ndwu-badge
+          [tone]="sandboxForm.controls.tone.value"
+          [size]="sandboxForm.controls.size.value"
+          [icon]="sandboxForm.controls.icon.value"
+          [ariaLabel]="sandboxForm.controls.ariaLabel.value || null"
+          [maxWidth]="sandboxForm.controls.maxWidth.value || null"
+        >
+          {{ sandboxForm.controls.label.value }}
+        </ndwu-badge>
+      </div>
+    </div>
+
+    <div class="sandbox__bottom">
+      <div class="sandbox__controls">
+        <h4 class="sandbox__section-title">{{ 'common.controls' | localize }}</h4>
+
+        <form [formGroup]="sandboxForm" class="sandbox__controls-form">
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-label">{{ 'common.label' | localize }}</label>
+            <input id="sandbox-label" class="sandbox__control-input" type="text" formControlName="label"/>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-tone">Tone</label>
+            <select id="sandbox-tone" class="sandbox__control-input" formControlName="tone">
+              @for (option of BADGE_TONE_OPTIONS; track option.id) {
+                <option [value]="option.id">{{ option.label }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-size">Size</label>
+            <select id="sandbox-size" class="sandbox__control-input" formControlName="size">
+              <option [value]="SIZE.S">S</option>
+              <option [value]="SIZE.L">L</option>
+              <option [value]="SIZE.XL">XL</option>
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-icon">Icon</label>
+            <select id="sandbox-icon" class="sandbox__control-input" formControlName="icon">
+              <option [ngValue]="null">None</option>
+              @for (iconName of BADGE_ICON_OPTIONS; track iconName) {
+                <option [ngValue]="iconName">{{ iconName }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-aria-label">Aria Label</label>
+            <input id="sandbox-aria-label" class="sandbox__control-input" type="text" formControlName="ariaLabel"/>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-max-width">Max Width (for truncation)</label>
+            <input id="sandbox-max-width" class="sandbox__control-input" type="text" formControlName="maxWidth" placeholder="e.g. 120px"/>
+          </div>
+        </form>
+      </div>
+
+      <div class="sandbox__variables">
+        <app-token-list
+          [tokens]="tokenListForCurrentType()"
+          [formGroup]="sandboxTokens"
+          [tokenPickerValues]="tokenPickerValues()"
+          [sectionTitle]="'badge-showcase.sandbox.colors' | localize"
+        />
+      </div>
+    </div>
+  </div>
+</div>

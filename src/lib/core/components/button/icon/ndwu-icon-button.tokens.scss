@@ -1,0 +1,21 @@
+@use 'styles/colors';
+
+$ndwu-icon-button-tokens: (
+  icon-button-icon: colors.$gray-80,
+  icon-button-bg: colors.$gray-0,
+  icon-button-border: colors.$gray-20,
+  icon-button-hover-bg: colors.$brand-5,
+  icon-button-focus-border: colors.$brand-30,
+  icon-button-focus-outline: colors.$brand-30,
+  icon-button-active-bg: colors.$brand-10,
+  icon-button-disabled-bg: colors.$gray-15,
+  icon-button-disabled-border: colors.$gray-20,
+  icon-button-disabled-icon: colors.$gray-40,
+
+  icon-button-flat-icon: colors.$gray-40,
+  icon-button-flat-hover-icon: colors.$gray-80,
+  icon-button-flat-focus-bg: colors.$gray-0,
+  icon-button-flat-focus-icon: colors.$gray-80,
+  icon-button-flat-active-icon: colors.$gray-80,
+  icon-button-flat-disabled-icon: colors.$gray-30,
+);

@@ -1,0 +1,101 @@
+<div class="sandbox">
+  <div class="sandbox__toolbar">
+    <app-theme-switcher
+      [theme]="sandboxTheme()"
+      (themeChange)="setSandboxTheme($any($event))"
+    />
+
+    <button
+      type="button"
+      class="sandbox__reset"
+      (click)="resetSandbox()"
+    >
+      {{ 'common.reset' | localize }}
+    </button>
+  </div>
+
+  <div
+    #previewSurface
+    class="sandbox__preview-surface"
+    [class]="'ndwu-theme-' + sandboxTheme()"
+    [style]="sandboxTokenStyles()"
+  >
+    <div class="tooltip-preview-trigger">
+      <button
+        ndwu-button
+        variant="primary"
+        [ndwuTooltip]="sandboxForm.controls.text.value"
+        [tooltipMaxWidth]="sandboxForm.controls.maxWidth.value || null"
+        [tooltipPosition]="sandboxForm.controls.position.value"
+        [tooltipAlign]="sandboxForm.controls.align.value"
+        [showDelay]="sandboxForm.controls.showDelay.value"
+        [hideDelay]="sandboxForm.controls.hideDelay.value"
+        [showOnTap]="sandboxForm.controls.showOnTap.value"
+      >
+        {{ 'tooltip-showcase.sandbox.preview-text' | localize }}
+      </button>
+    </div>
+  </div>
+
+  <div class="sandbox__bottom">
+    <div class="sandbox__controls">
+      <h4 class="sandbox__section-title">{{ 'common.controls' | localize }}</h4>
+      <form [formGroup]="sandboxForm" class="sandbox__controls-form">
+        <div class="sandbox__control-row">
+          <label class="sandbox__control-label" for="tooltip-sandbox-text">{{ 'tooltip-showcase.sandbox.text' | localize }}</label>
+          <textarea id="tooltip-sandbox-text" class="sandbox__control-input" rows="3" formControlName="text"></textarea>
+        </div>
+
+        <div class="sandbox__control-row">
+          <label class="sandbox__control-label" for="tooltip-sandbox-max-width">{{ 'tooltip-showcase.sandbox.max-width' | localize }}</label>
+          <input id="tooltip-sandbox-max-width" type="text" class="sandbox__control-input" formControlName="maxWidth" placeholder="300px" />
+        </div>
+
+        <div class="sandbox__control-row">
+          <label class="sandbox__control-label" for="tooltip-sandbox-position">{{ 'tooltip-showcase.sandbox.position' | localize }}</label>
+          <select id="tooltip-sandbox-position" class="sandbox__control-input" formControlName="position">
+            @for (position of tooltipPositionOptions; track position) {
+              <option [value]="position">{{ position }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="sandbox__control-row">
+          <label class="sandbox__control-label" for="tooltip-sandbox-align">{{ 'tooltip-showcase.sandbox.align' | localize }}</label>
+          <select id="tooltip-sandbox-align" class="sandbox__control-input" formControlName="align">
+            @for (align of tooltipAlignOptions; track align) {
+              <option [value]="align">{{ align }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="sandbox__control-row">
+          <label class="sandbox__control-label" for="tooltip-sandbox-show-delay">{{ 'tooltip-showcase.sandbox.show-delay' | localize }}</label>
+          <input id="tooltip-sandbox-show-delay" type="number" class="sandbox__control-input" formControlName="showDelay" />
+        </div>
+
+        <div class="sandbox__control-row">
+          <label class="sandbox__control-label" for="tooltip-sandbox-hide-delay">{{ 'tooltip-showcase.sandbox.hide-delay' | localize }}</label>
+          <input id="tooltip-sandbox-hide-delay" type="number" class="sandbox__control-input" formControlName="hideDelay" />
+        </div>
+
+        <div class="sandbox__control-row sandbox__control-row--checkboxes">
+          <label class="sandbox__checkbox">
+            <input type="checkbox" formControlName="showOnTap" />
+            <span>{{ 'tooltip-showcase.sandbox.show-on-tap' | localize }}</span>
+          </label>
+        </div>
+      </form>
+    </div>
+
+    <div class="sandbox__variables">
+      <app-token-list
+        [tokens]="tokenListForCurrentType()"
+        [formGroup]="sandboxTokens"
+        [tokenPickerValues]="tokenPickerValues()"
+        [sectionTitle]="'tooltip-showcase.sandbox.tokens' | localize"
+        [inheritLabel]="'tooltip-showcase.sandbox.inherit' | localize"
+      />
+    </div>
+  </div>
+</div>

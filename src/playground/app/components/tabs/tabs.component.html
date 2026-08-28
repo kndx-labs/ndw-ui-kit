@@ -1,0 +1,14 @@
+<div class="tabs-wrapper">
+  <div class="tabs">
+    @for (tab of tabs(); track tab.id) {
+      <button
+        type="button"
+        class="tab"
+        [class.tab--active]="activeTabId() === tab.id"
+        (click)="selectTab(tab.id)"
+      >
+        {{ tab.label | localize }}
+      </button>
+    }
+  </div>
+</div>

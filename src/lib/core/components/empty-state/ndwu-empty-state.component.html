@@ -1,0 +1,32 @@
+<div [class]="hostClasses()">
+  <div class="ndwu-empty-state__content">
+    <ndwu-adaptive-pictogram
+      [name]="pictogram()"
+      [adaptiveSize]="pictogramFlags"
+      [variant]="pictogramVariant()"
+    />
+
+    @if (header()) {
+      <span
+        class="ndwu-empty-state__title"
+        [innerHTML]="header() | localize"
+      >
+      </span>
+    }
+
+    @if (description()) {
+      <span
+        class="ndwu-empty-state__description"
+        [innerHTML]="description() | localize"
+      >
+      </span>
+    }
+  </div>
+
+  <div
+    #actionsContainer
+    class="ndwu-empty-state__actions"
+  >
+    <ng-content></ng-content>
+  </div>
+</div>

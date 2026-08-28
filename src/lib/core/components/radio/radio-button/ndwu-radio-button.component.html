@@ -1,0 +1,38 @@
+<div
+  class="ndwu-radio__wrapper"
+  [class.ndwu-radio__wrapper--disabled]="effectiveDisabled()"
+>
+  <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+  <div
+    class="ndwu-radio__input-wrapper"
+    (click)="selectThis()"
+    tabindex="-1"
+  >
+    <input
+      type="radio"
+      class="ndwu-radio__input"
+      [name]="groupName()"
+      [id]="inputId"
+      [value]="value()"
+      [checked]="isChecked()"
+      [disabled]="effectiveDisabled()"
+      (change)="selectThis()"
+    />
+  </div>
+  <!-- eslint-enable @angular-eslint/template/click-events-have-key-events -->
+
+  @if (label() || secondaryText()) {
+    <label
+      class="ndwu-radio__label"
+      [class.ndwu-radio__label--disabled]="effectiveDisabled()"
+      [for]="inputId"
+    >
+      <ndwu-label-group
+        [label]="label()"
+        [secondaryText]="secondaryText()"
+        [disabled]="effectiveDisabled()"
+        [size]="effectiveSize()"
+      />
+    </label>
+  }
+</div>

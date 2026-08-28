@@ -1,0 +1,114 @@
+<div
+  #modalElement
+  class="ndwu-dialog"
+  [style.--dialog-width]="config.width"
+  [style.--dialog-min-width]="config.minWidth"
+  [style.--dialog-max-width]="config.maxWidth"
+  [style.--dialog-height]="config.height"
+  [style.--dialog-min-height]="config.minHeight"
+  [style.--dialog-max-height]="config.maxHeight"
+  [cdkTrapFocus]="trapFocus()"
+  [cdkTrapFocusAutoCapture]="trapFocus() && !isLoading()"
+  [attr.aria-busy]="isLoading()"
+  role="dialog"
+  aria-modal="true"
+  tabindex="-1"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-labelledby]="ariaLabelledby()"
+  [attr.aria-describedby]="descriptionAriaId()"
+>
+  @if (customHeaderTemplate(); as customHeader) {
+    <header class="ndwu-dialog__header">
+      <ng-container [ngTemplateOutlet]="customHeader"></ng-container>
+    </header>
+  } @else if (hasDefaultHeader()) {
+    <header class="ndwu-dialog__header">
+      @if (config.autoFocus === 'first-heading') {
+        <h3
+          [id]="titleAriaId()"
+          class="ndwu-dialog__title"
+          tabindex="0"
+          cdkFocusInitial
+        >
+          {{ title() ?? '' | localize }}
+        </h3>
+      } @else {
+        <h3
+          [id]="titleAriaId()"
+          class="ndwu-dialog__title"
+        >
+          {{ title() ?? '' | localize }}
+        </h3>
+      }
+
+      <div class="ndwu-dialog__blank">
+      </div>
+    </header>
+    @if (hasDefaultHeaderDescription()) {
+      <p
+        [id]="descriptionAriaId()"
+        class="ndwu-dialog__description"
+      >
+        {{ description() ?? '' | localize }}
+      </p>
+    }
+  }
+
+  <div
+    #bodyElement
+    class="ndwu-dialog__body"
+    tabindex="-1"
+    ndwuScrollbar
+  >
+    <ng-template cdkPortalOutlet></ng-template>
+  </div>
+
+  @if (customFooterTemplate(); as customFooter) {
+    <footer
+      class="ndwu-dialog__footer"
+      ndwuModalActions
+    >
+      <ng-container [ngTemplateOutlet]="customFooter"></ng-container>
+    </footer>
+  } @else if (hasDefaultFooter()) {
+    <footer
+      class="ndwu-dialog__footer"
+      ndwuModalActions
+    >
+      @for (btn of config.buttons; track $index) {
+        <button
+          ndwuButton
+          [variant]="btn.variant ?? 'secondary'"
+          [label]="btn.label"
+          (click)="handleButtonClick(btn)"
+        >
+        </button>
+      }
+    </footer>
+  }
+
+  @if (isLoading()) {
+    <div
+      class="ndwu-dialog__loader"
+      aria-hidden="true"
+    >
+      <ndwu-spokes-loader
+        size="48"
+        spokeWidth="4"
+      />
+    </div>
+  }
+
+   @if (hasCloseButton() && (hasDefaultHeader() || hasCustomHeaderSlot())) {
+      <button
+        ndwuIconButton
+        class="ndwu-dialog__close-btn"
+        variant="flat"
+        [icon]="ICON_NAME.CLOSE_L"
+        [disabled]="isCloseButtonDisabled()"
+        [attr.aria-label]="closeButtonAriaLabel()"
+        (click)="handleClose()"
+      >
+      </button>
+  }
+</div>

@@ -1,0 +1,28 @@
+@use 'styles/animations' as animations;
+@use 'styles/colors' as colors;
+@use 'styles/padding' as padding;
+@use 'styles/radius' as radius;
+@use 'styles/spacing' as spacing;
+@use 'styles/typography' as typography;
+
+.delay-message {
+  margin: 0 0 spacing.$spacing-16;
+  font-size: typography.$fontSize-small;
+  line-height: 1.5;
+}
+
+.progressbar-track {
+  overflow: hidden;
+  height: padding.$padding-6;
+  margin-bottom: spacing.$spacing-16;
+  border-radius: radius.$radius-S;
+  background: colors.$gray-20;
+}
+
+.progressbar-fill {
+  height: 100%;
+  border-radius: radius.$radius-S;
+  background: colors.$brand-50;
+  transition: width 80ms linear;
+  transition-timing-function: animations.$easing-default;
+}

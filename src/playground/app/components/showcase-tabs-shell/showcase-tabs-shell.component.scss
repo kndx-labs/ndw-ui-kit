@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+
+  app-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+}

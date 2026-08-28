@@ -1,0 +1,46 @@
+@use 'styles/typography';
+@use 'styles/spacing';
+@use 'styles/padding';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: var(--ndwu-styled-listbox-max-height-override, var(--ndwu-styled-listbox-max-height, none));
+  padding: 0;
+
+  @supports (overscroll-behavior: contain) {
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    overscroll-behavior: contain;
+  }
+}
+
+:host([data-size='L']) {
+  --ndwu-styled-option-border-radius: 0;
+  --ndwu-styled-option-height: 32px;
+  --ndwu-styled-option-padding: #{padding.$padding-6} #{padding.$padding-8};
+  --ndwu-styled-option-gap: #{spacing.$spacing-8};
+  --ndwu-styled-option-font-size: #{typography.$fontSize-small};
+  --ndwu-styled-option-line-height: 20px;
+  --ndwu-styled-listbox-max-height: calc(9 * var(--ndwu-styled-option-height));
+}
+
+:host([data-size='XL']) {
+  --ndwu-styled-option-border-radius: 0;
+  --ndwu-styled-option-height: 44px;
+  --ndwu-styled-option-padding: #{padding.$padding-12};
+  --ndwu-styled-option-gap: #{spacing.$spacing-8};
+  --ndwu-styled-option-font-size: #{typography.$fontSize-medium};
+  --ndwu-styled-option-line-height: 24px;
+  --ndwu-styled-listbox-max-height: calc(8 * var(--ndwu-styled-option-height));
+}
+
+:host([data-size='XXL']) {
+  --ndwu-styled-option-border-radius: 0;
+  --ndwu-styled-option-height: 56px;
+  --ndwu-styled-option-padding: #{padding.$padding-16};
+  --ndwu-styled-option-gap: #{spacing.$spacing-12};
+  --ndwu-styled-option-font-size: #{typography.$fontSize-medium};
+  --ndwu-styled-option-line-height: 24px;
+  --ndwu-styled-listbox-max-height: calc(7 * var(--ndwu-styled-option-height));
+}

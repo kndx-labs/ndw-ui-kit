@@ -1,0 +1,73 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="popover-overview">
+      <div class="state-section">
+        <h4>{{ 'popover-showcase.overview.sections.simple-popover' | localize }}</h4>
+        <p>{{ 'popover-showcase.overview.simple-description' | localize }}</p>
+        <button
+          ndwu-button
+          variant="secondary"
+          [ndwuPopover]="'Port forwarding enables remote access to devices on your local network from the internet.'"
+          popoverTitle="Port Forwarding"
+          [popoverShowHeader]="true"
+        >
+          {{ 'popover-showcase.overview.help-button' | localize }}
+        </button>
+      </div>
+
+      <div class="state-section">
+        <h4>{{ 'popover-showcase.overview.sections.rich-popover' | localize }}</h4>
+        <p>{{ 'popover-showcase.overview.rich-description' | localize }}</p>
+        <button
+          ndwu-button
+          variant="primary"
+          [ndwuPopover]="richContent ?? ''"
+          popoverTitle="Important Notice"
+          [popoverShowHeader]="true"
+          [popoverButtons]="[
+            {label: 'Cancel'},
+            {label: 'Confirm', primary: true}
+          ]"
+        >
+          {{ 'popover-showcase.overview.open-popover' | localize }}
+        </button>
+
+        <ng-template #richPopoverTpl>
+          <div class="popover-rich-content">
+            <p>This popover contains <strong>formatted content</strong> with rich text support.</p>
+            <p>You can include:</p>
+            <ul>
+              <li>Text paragraphs with <strong>bold</strong> formatting</li>
+              <li>Bulleted lists for structured information</li>
+              <li>Links to external resources</li>
+            </ul>
+            <p>The <em>footer</em> provides action buttons for the user to interact with.</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="state-section">
+        <h4>Desktop positions</h4>
+        <p>popoverSide chooses touching side. popoverAlign chooses relative alignment. Mobile still opens in overlay.</p>
+        <div class="popover-position-examples">
+          @for (side of popoverSides; track side) {
+            @for (align of popoverAligns; track align) {
+              <button
+                ndwu-button
+                variant="secondary"
+                [ndwuPopover]="'Popover on ' + side + ' side, ' + align + ' aligned.'"
+                [popoverSide]="side"
+                [popoverAlign]="align"
+              >
+                {{ side }} / {{ align }}
+              </button>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

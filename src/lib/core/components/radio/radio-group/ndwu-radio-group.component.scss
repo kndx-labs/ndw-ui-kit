@@ -1,0 +1,29 @@
+@use 'sass:map';
+@use 'styles/spacing';
+
+/* stylelint-disable value-keyword-case */
+$sizes: (
+  L:   (size: 16px, area: 24px, wrapper-gap: spacing.$spacing-4, align: 17px, dot: 6px, options-gap: spacing.$spacing-12),
+  XL:  (size: 20px, area: 32px, wrapper-gap: spacing.$spacing-4, align: 24px, dot: 8px, options-gap: spacing.$spacing-12),
+  XXL: (size: 20px, area: 32px, wrapper-gap: spacing.$spacing-8, align: 27px, dot: 8px, options-gap: spacing.$spacing-24),
+);
+
+.ndwu-radio {
+  @each $mod, $cfg in $sizes {
+    &--#{$mod} {
+      --ndwu-radio-size: #{map.get($cfg, size)};
+      --ndwu-radio-clickable-area-size: #{map.get($cfg, area)};
+      --ndwu-radio-wrapper-gap: #{map.get($cfg, wrapper-gap)};
+      --ndwu-radio-input-align-line-height: #{map.get($cfg, align)};
+      --ndwu-radio-dot-size: #{map.get($cfg, dot)};
+
+      gap: #{map.get($cfg, options-gap)};
+    }
+  }
+
+  & {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+  }
+}

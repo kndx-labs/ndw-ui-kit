@@ -1,0 +1,26 @@
+@use 'styles/colors';
+
+$ndwu-checkbox-tokens: (
+  checkbox-border-color: colors.$gray-20,
+  checkbox-bg: colors.$gray-0,
+  checkbox-label-color: colors.$gray-80,
+  checkbox-secondary-text-color: colors.$gray-60,
+  checkbox-checkmark-color: colors.$gray-0,
+  checkbox-hover-border-color: colors.$brand-30,
+  checkbox-hover-bg: colors.$gray-0,
+  checkbox-active-border-color: colors.$brand-40,
+  checkbox-active-bg: colors.$brand-15,
+  checkbox-focus-border-color: colors.$gray-20,
+  checkbox-focus-bg: colors.$gray-5,
+  checkbox-focus-color: colors.$brand-50,
+  checkbox-checked-border-color: colors.$brand-50,
+  checkbox-checked-bg: colors.$brand-50,
+  checkbox-disabled-bg: colors.$gray-15,
+  checkbox-disabled-border-color: colors.$gray-20,
+  checkbox-disabled-checkmark-color: colors.$gray-20,
+  checkbox-label-disabled-color: colors.$gray-40,
+  checkbox-secondary-text-disabled-color: colors.$gray-30,
+  checkbox-invalid-border-color: colors.$red-40,
+  checkbox-invalid-hover-border-color: colors.$red-30,
+  checkbox-invalid-outline-color: colors.$brand-50, // TODO: remove legacy alias at next minor bump
+);

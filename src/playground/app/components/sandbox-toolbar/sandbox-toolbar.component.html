@@ -1,0 +1,59 @@
+<div class="sandbox-toolbar">
+  <app-theme-switcher
+    [theme]="theme()"
+    (themeChange)="themeChange.emit($event)"
+  />
+
+  @if (!isMobile()) {
+    <div class="sandbox-toolbar-group sandbox-toolbar-width-controls">
+      <span class="sandbox-toolbar-label">{{ 'input-showcase.common.width' | localize }}</span>
+      <div class="sandbox-toolbar-radios">
+        <label class="sandbox__radio">
+          <input
+            type="radio"
+            name="input-sandbox-width-mode"
+            value="stretch"
+            [checked]="widthMode() === 'stretch'"
+            (change)="onWidthModeChange('stretch')"
+          />
+          <span>{{ 'input-showcase.common.width-stretch' | localize }}</span>
+        </label>
+        <label class="sandbox__radio">
+          <input
+            type="radio"
+            name="input-sandbox-width-mode"
+            value="fixed"
+            [checked]="widthMode() === 'fixed'"
+            (change)="onWidthModeChange('fixed')"
+          />
+          <span>{{ 'input-showcase.common.width-fixed' | localize }}</span>
+        </label>
+      </div>
+
+      @if (widthMode() === 'fixed') {
+        <div class="sandbox-toolbar-range">
+          <input
+            id="input-sandbox-width-px"
+            class="sandbox__range sandbox__range--toolbar"
+            type="range"
+            [min]="widthPxMin()"
+            [max]="widthPxMax()"
+            [value]="clampedWidthPx()"
+            (input)="onWidthPxInput($event)"
+          />
+          <span class="sandbox__range-value">{{ clampedWidthPx() }} px</span>
+        </div>
+      }
+    </div>
+  }
+
+  @if (!isMobile()) {
+    <button
+      type="button"
+      class="sandbox__reset"
+      (click)="onReset()"
+    >
+      {{ 'common.reset' | localize }}
+    </button>
+  }
+</div>

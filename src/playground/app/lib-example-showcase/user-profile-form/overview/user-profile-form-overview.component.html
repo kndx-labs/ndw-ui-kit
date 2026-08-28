@@ -1,0 +1,188 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <ndwu-form-container [size]="SIZE.XL">
+      <form class="profile-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        @if (isSubmitted()) {
+          <div class="profile-form__success">
+            <p>{{ 'user-profile-form-example.success' | localize }}</p>
+          </div>
+        }
+
+        <!-- Personal Information -->
+        <section class="profile-form__section">
+          <h3 class="profile-form__section-title">{{ 'user-profile-form-example.sections.personal' | localize }}</h3>
+
+          <div class="profile-form__row">
+            <ndwu-input-field
+              formControlName="firstName"
+              [label]="'user-profile-form-example.fields.first-name' | localize"
+              [placeholder]="'user-profile-form-example.placeholders.first-name' | localize"
+              required
+            />
+            <ndwu-input-field
+              formControlName="lastName"
+              [label]="'user-profile-form-example.fields.last-name' | localize"
+              [placeholder]="'user-profile-form-example.placeholders.last-name' | localize"
+              required
+            />
+          </div>
+
+          <ndwu-input-field
+            formControlName="email"
+            [label]="'user-profile-form-example.fields.email' | localize"
+            [placeholder]="'user-profile-form-example.placeholders.email' | localize"
+            required
+          />
+
+          <div class="profile-form__row">
+            <ndwu-input-field
+              formControlName="phone"
+              [label]="'user-profile-form-example.fields.phone' | localize"
+              [placeholder]="'user-profile-form-example.placeholders.phone' | localize"
+            />
+            <ndwu-select-field
+              formControlName="city"
+              [label]="'user-profile-form-example.fields.city' | localize"
+              [placeholder]="'user-profile-form-example.placeholders.city' | localize"
+              [options]="cityOptions"
+            />
+          </div>
+        </section>
+
+        <!-- Account Settings -->
+        <section class="profile-form__section">
+          <h3 class="profile-form__section-title">{{ 'user-profile-form-example.sections.account' | localize }}</h3>
+
+          <ndwu-select-field
+            formControlName="country"
+            [label]="'user-profile-form-example.fields.country' | localize"
+            [placeholder]="'user-profile-form-example.placeholders.country' | localize"
+            [options]="countryOptions"
+            required
+          />
+
+          <ndwu-multi-select-field
+            formControlName="skills"
+            [label]="'user-profile-form-example.fields.skills' | localize"
+            [placeholder]="'user-profile-form-example.placeholders.skills' | localize"
+            [options]="skillOptions"
+            required
+          />
+        </section>
+
+        <!-- Role -->
+        <section class="profile-form__section">
+          <h3 class="profile-form__section-title">{{ 'user-profile-form-example.sections.role' | localize }}</h3>
+
+          <ndwu-radio-field
+            formControlName="role"
+            [options]="roleOptions"
+          />
+        </section>
+
+        <!-- Preferences -->
+        <section class="profile-form__section">
+          <h3 class="profile-form__section-title">{{ 'user-profile-form-example.sections.preferences' | localize }}</h3>
+
+          <div class="profile-form__row">
+            <ndwu-select-field
+              formControlName="language"
+              [label]="'user-profile-form-example.fields.language' | localize"
+              [options]="languageOptions"
+            />
+            <ndwu-select-field
+              formControlName="timezone"
+              [label]="'user-profile-form-example.fields.timezone' | localize"
+              [options]="timezoneOptions"
+            />
+          </div>
+
+          <br/>
+
+          <div class="profile-form__toggles">
+            <ndwu-toggle-field
+              formControlName="darkMode"
+              [label]="'user-profile-form-example.fields.dark-mode' | localize"
+              [secondaryText]="'user-profile-form-example.fields.dark-mode-hint' | localize"
+            />
+            <ndwu-toggle-field
+              formControlName="compactLayout"
+              [label]="'user-profile-form-example.fields.compact-layout' | localize"
+              [secondaryText]="'user-profile-form-example.fields.compact-layout-hint' | localize"
+            />
+          </div>
+        </section>
+
+        <!-- Notifications -->
+        <section class="profile-form__section">
+          <h3 class="profile-form__section-title">{{ 'user-profile-form-example.sections.notifications' | localize }}</h3>
+
+          <div class="profile-form__checkboxes">
+            <ndwu-checkbox-field
+              formControlName="emailNotifications"
+              [label]="'user-profile-form-example.fields.email-notifications' | localize"
+              [secondaryText]="'user-profile-form-example.fields.email-notifications-hint' | localize"
+            />
+            <ndwu-checkbox-field
+              formControlName="pushNotifications"
+              [label]="'user-profile-form-example.fields.push-notifications' | localize"
+              [secondaryText]="'user-profile-form-example.fields.push-notifications-hint' | localize"
+            />
+            <ndwu-checkbox-field
+              formControlName="weeklyDigest"
+              [label]="'user-profile-form-example.fields.weekly-digest' | localize"
+              [secondaryText]="'user-profile-form-example.fields.weekly-digest-hint' | localize"
+            />
+            <ndwu-checkbox-field
+              formControlName="marketingEmails"
+              [label]="'user-profile-form-example.fields.marketing-emails' | localize"
+              [secondaryText]="'user-profile-form-example.fields.marketing-emails-hint' | localize"
+            />
+          </div>
+        </section>
+
+        <!-- Schedule -->
+        <section class="profile-form__section">
+          <h3 class="profile-form__section-title">{{ 'user-profile-form-example.sections.schedule' | localize }}</h3>
+
+          <ndwu-schedule-editor-field
+            formControlName="schedule"
+            mode="full"
+            forceLayout="desktop"
+          />
+        </section>
+
+        <!-- Terms -->
+        <section class="profile-form__section profile-form__section--terms">
+          <ndwu-checkbox-field
+            formControlName="termsAccepted"
+            [label]="'user-profile-form-example.fields.terms' | localize"
+            [secondaryText]="'user-profile-form-example.fields.terms-hint' | localize"
+          />
+        </section>
+
+        <!-- Actions -->
+        <div class="profile-form__actions">
+          <button
+            ndwu-button
+            variant="secondary"
+            type="button"
+            [label]="'user-profile-form-example.actions.reset' | localize"
+            (click)="onReset()"
+          ></button>
+          <button
+            ndwu-button
+            type="submit"
+            [label]="'user-profile-form-example.actions.save' | localize"
+            [loading]="isLoading()"
+          ></button>
+        </div>
+
+      </form>
+    </ndwu-form-container>
+  </ng-template>
+</app-showcase-layout>

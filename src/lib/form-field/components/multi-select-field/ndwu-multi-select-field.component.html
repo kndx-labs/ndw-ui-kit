@@ -1,0 +1,141 @@
+<ndwu-form-field
+  [size]="sizeSvc.size()"
+  [ndwuResizeObserver]="true"
+>
+  @if (label()) {
+    <ndwu-floating-label
+      [label]="label()"
+      [required]="required()"
+    />
+  }
+
+  <div
+    ndwuCombobox
+    ndwuComboboxInput
+    ndwuComboboxPopoverBridge
+    [ndwuControlProvider]="this"
+    [readonly]="true"
+    [disabled]="disabled"
+    [ndwuPopoverTrigger]="panelTemplate"
+    [popoverControllerFactory]="dropdownControllerFactory"
+    [triggerOn]="'manual'"
+    [popoverClass]="panelClass()"
+    [popoverTrapFocus]="isMobileViewport()"
+    [attr.id]="id"
+    [attr.aria-labelledby]="label() ? formField()?.labelId() : null"
+    [attr.aria-required]="required() ? 'true' : null"
+    [attr.aria-invalid]="invalid() ? 'true' : null"
+    class="ndwu-multi-select-field__trigger ndwu-form-field__input"
+    (focus)="focused.set(true)"
+    (blur)="focused.set(false)"
+  >
+    <span
+      class="ndwu-multi-select-field__trigger-text"
+      [class.ndwu-multi-select-field__trigger-text--placeholder]="!this.inputValue"
+    >
+      @if (displayTemplate(); as displayDir) {
+        <ng-container
+          [ngTemplateOutlet]="displayDir.templateRef"
+          [ngTemplateOutletContext]="$any(displayContext)"
+        />
+      } @else {
+        {{ (empty ? placeholder() : displayText) | localize }}
+      }
+    </span>
+
+    <ndwu-icon
+      [name]="chevronIcon()"
+      aria-hidden="true"
+      class="ndwu-multi-select-field__trigger-icon"
+    />
+  </div>
+
+  <ng-template #panelTemplate>
+    <ndwu-dropdown-panel
+      [sheet]="isMobileViewport()"
+      [triggerWidth]="triggerWidth()"
+    >
+      @if (isMobileViewport()) {
+        <div ndwuPanelHeader class="ndwu-multi-select-field__panel-header">
+          <span class="ndwu-multi-select-field__panel-label">{{ label() | localize }}</span>
+          <button
+            type="button"
+            [attr.aria-label]="closeButtonAriaLabel() | localize"
+            class="ndwu-multi-select-field__panel-close"
+            (click)="closePanel()"
+          >
+            <ndwu-icon [name]="ICON_NAME.CLOSE_S" />
+          </button>
+        </div>
+      }
+      <ndwu-styled-listbox
+        [size]="dropdownSize()"
+        [comboboxRef]="combobox()"
+        [multi]="true"
+        selectionMode="explicit"
+        [values]="pendingSelection()"
+        (valuesChange)="onSelectionChange($event)"
+      >
+        @for (opt of normalizedOptions(); track opt.value) {
+          <ndwu-styled-option
+            [value]="opt.value"
+            [label]="opt.label"
+          >
+            <span
+              ndwuOptionPrefix
+              aria-hidden="true"
+              class="ndwu-multi-select-field__option-checkbox"
+            >
+              <ndwu-checkbox
+                [checked]="isOptionSelected(opt.value)"
+                [inputTabIndex]="-1"
+              />
+            </span>
+            <span class="ndwu-multi-select-field__option-label">
+              {{ opt.label | localize }}
+            </span>
+          </ndwu-styled-option>
+        }
+      </ndwu-styled-listbox>
+
+      @if (isMobileViewport()) {
+        <div
+          ndwuPanelFooter
+          class="ndwu-multi-select-field__footer"
+        >
+          @if (showSelectAll()) {
+            <div class="ndwu-multi-select-field__select-all-container">
+              <ndwu-checkbox
+                class="ndwu-multi-select-field__select-all"
+                [checked]="allSelected()"
+                [indeterminate]="indeterminate()"
+                [label]="selectAllLabel()"
+                [inputTabIndex]="-1"
+                (checkedChange)="onSelectAllChange($event)"
+              />
+            </div>
+          }
+
+          <button
+            type="button"
+            ndwuButtonBase
+            variant="primary"
+            size="XL"
+            (click)="onConfirm()"
+          >
+            {{ confirmBtnLabel() | localize }}
+          </button>
+        </div>
+      }
+    </ndwu-dropdown-panel>
+  </ng-template>
+
+  @if (hint()) {
+    <ndwu-helper-message
+      ndwuHint
+      [helperMessage]="hint()"
+    />
+  }
+
+  <ng-content/>
+</ndwu-form-field>

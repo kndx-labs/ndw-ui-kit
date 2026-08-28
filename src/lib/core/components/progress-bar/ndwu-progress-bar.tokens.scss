@@ -1,0 +1,11 @@
+@use 'styles/colors';
+
+$ndwu-progress-bar-tokens: (
+  progress-bar-track-bg: colors.$brand-10,
+  progress-bar-track-disabled-bg: colors.$gray-15,
+  progress-bar-fill-primary: colors.$brand-50,
+  progress-bar-fill-success: colors.$green-50,
+  progress-bar-fill-danger: colors.$red-50,
+  progress-bar-fill-warning: colors.$yellow-50,
+  progress-bar-fill-disabled: colors.$gray-15,
+);

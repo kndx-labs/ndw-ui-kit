@@ -1,0 +1,106 @@
+<app-showcase-layout
+  lightTitleKey="empty-state-showcase.light-theme"
+  darkTitleKey="empty-state-showcase.dark-theme"
+>
+  <ng-template let-theme="theme" let-idPrefix="idPrefix">
+    <div class="overview-grid">
+      <!-- XL size with title, description, and double actions -->
+      <div class="overview-item">
+        <h3>{{ 'empty-state-showcase.overview.xl-error-with-actions' | localize }}</h3>
+        <ndwu-empty-state
+          size="XL"
+          pictogram="pictogram_connection1"
+          [header]="'empty-state-showcase.overview.failed-to-upload-the-file' | localize"
+          [description]="'empty-state-showcase.overview.please-try-again-later' | localize"
+        >
+          <button ndwu-button variant="secondary">{{ 'empty-state-showcase.overview.cancel' | localize }}</button>
+          <button ndwu-button variant="primary">{{ 'empty-state-showcase.overview.retry' | localize }}</button>
+        </ndwu-empty-state>
+      </div>
+
+      <!-- XL size with title, description, and single action -->
+      <div class="overview-item">
+        <h3>{{ 'empty-state-showcase.overview.xl-success-with-single-action' | localize }}</h3>
+        <ndwu-empty-state
+          size="XL"
+          pictogram="pictogram_connection2"
+          [header]="'empty-state-showcase.overview.upload-complete' | localize"
+          [description]="'empty-state-showcase.overview.your-file-has-been-successfully-uploaded' | localize"
+        >
+          <button ndwu-button variant="primary">{{ 'empty-state-showcase.overview.accept' | localize }}</button>
+        </ndwu-empty-state>
+      </div>
+
+      <!-- XL size with title only -->
+      <div class="overview-item">
+        <h3>{{ 'empty-state-showcase.overview.xl-no-data-title-only' | localize }}</h3>
+        <ndwu-empty-state
+          size="XL"
+          pictogram="pictogram_connection3"
+          [header]="'empty-state-showcase.overview.the-list-is-empty' | localize"
+        />
+      </div>
+
+      <!-- L size with description only -->
+      <div class="overview-item">
+        <h3>{{ 'empty-state-showcase.overview.l-no-connection-description-only' | localize }}</h3>
+        <ndwu-empty-state
+          size="L"
+          pictogram="pictogram_connection4"
+          [description]="'empty-state-showcase.overview.no-internet-connection' | localize"
+        >
+          <button ndwu-button variant="primary">{{ 'empty-state-showcase.overview.retry' | localize }}</button>
+        </ndwu-empty-state>
+      </div>
+
+      <!-- L size with download pictogram -->
+      <div class="overview-item">
+        <h3>{{ 'empty-state-showcase.overview.l-uploading' | localize }}</h3>
+        <ndwu-empty-state
+          size="L"
+          pictogram="pictogram_connection1"
+          [header]="'empty-state-showcase.overview.uploading-your-file' | localize"
+          [description]="'empty-state-showcase.overview.this-may-take-a-few-seconds' | localize"
+        >
+          <button ndwu-button variant="secondary">{{ 'empty-state-showcase.overview.cancel' | localize }}</button>
+        </ndwu-empty-state>
+      </div>
+
+      <!-- L size with info pictogram and HTML description -->
+      <div class="overview-item">
+        <h3>{{ 'empty-state-showcase.overview.l-info-with-html' | localize }}</h3>
+        <ndwu-empty-state
+          size="L"
+          pictogram="pictogram_info3"
+          [description]="'empty-state-showcase.overview.this-may-take-a-few-seconds' | localize"
+        />
+      </div>
+
+      <div class="overview-item">
+        <h3>Adaptive size ({{ emptyStateIsDesktop() ? 'XL' : 'L' }})</h3>
+        <ndwu-empty-state
+          pictogram="pictogram_info3"
+          [adaptiveSize]="emptyStateSizeFlags"
+          header="Adaptive"
+          description="Pictogram and projected button both follow the adaptive size."
+        >
+          <button ndwu-button variant="primary">Action</button>
+        </ndwu-empty-state>
+        <button type="button" (click)="toggleEmptyStateFlags()">Toggle desktop/mobile</button>
+      </div>
+
+      <div class="overview-item">
+        <h3>Adaptive wins over size="L"</h3>
+        <ndwu-empty-state
+          size="L"
+          pictogram="pictogram_info3"
+          [adaptiveSize]="emptyStateSizeFlags"
+          header="Adaptive beats explicit"
+          description="Binding adaptiveSize is opt-in, so it takes precedence over size."
+        >
+          <button ndwu-button variant="primary">Action</button>
+        </ndwu-empty-state>
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

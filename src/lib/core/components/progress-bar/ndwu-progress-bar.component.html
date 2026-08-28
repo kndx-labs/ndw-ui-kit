@@ -1,0 +1,17 @@
+<div
+  [id]="progressBarId"
+  [class]="rootClass()"
+  role="progressbar"
+  [attr.aria-valuemin]="0"
+  [attr.aria-valuemax]="max()"
+  [attr.aria-valuenow]="isIndeterminate() ? null : value()"
+  [attr.aria-label]="label() || null"
+  [attr.aria-disabled]="disabled() || null"
+>
+  <div class="ndwu-progress-bar__track">
+    <div
+      class="ndwu-progress-bar__fill"
+      [style.width.%]="isIndeterminate() ? null : percentage()"
+    ></div>
+  </div>
+</div>

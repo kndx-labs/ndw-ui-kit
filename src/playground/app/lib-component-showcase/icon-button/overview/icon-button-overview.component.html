@@ -1,0 +1,35 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>Sizes</h4>
+      <div class="size-examples">
+        @for (size of SIZES; track size) {
+          <button
+            ndwuIconButton
+            icon="bell_off_S"
+            variant="square"
+            [size]="size"
+          >
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>Variants</h4>
+      <div class="size-examples">
+        @for (variant of VARIANTS; track variant) {
+          <button
+            ndwuIconButton
+            icon="bell_off_S"
+            [variant]="variant"
+          >
+          </button>
+        }
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

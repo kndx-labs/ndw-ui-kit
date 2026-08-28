@@ -1,0 +1,69 @@
+<div
+  class="ndwu-popover"
+  [attr.id]="popoverId"
+  role="dialog"
+  aria-modal="true"
+>
+  @let hasHeader = showHeader || title;
+  @let isCloseButtonFloating = showClose && !hasHeader;
+
+  @if (hasHeader) {
+    <div class="ndwu-popover__header">
+      @if (title) {
+        <h5 class="ndwu-popover__header-title">{{ title }}</h5>
+      }
+
+      @if (showClose) {
+        <button
+          ndwu-icon-button
+          variant="flat"
+          size="S"
+          class="ndwu-popover__close"
+          [icon]="ICON_NAME.CLOSE_S"
+          [attr.aria-label]="closeAriaLabel"
+          (click)="handleClose()"
+        >
+        </button>
+      }
+    </div>
+  }
+
+  <div
+    class="ndwu-popover__body"
+    [class.ndwu-popover__body--with-floating-close]="isCloseButtonFloating"
+  >
+    @if (isString) {
+      {{ bodyString }}
+    } @else if (bodyTemplate) {
+      <ng-container [ngTemplateOutlet]="bodyTemplate" />
+    }
+  </div>
+
+  @if (buttons.length > 0) {
+    <div class="ndwu-popover__footer">
+      @for (button of buttons; track button.label) {
+        <button
+          ndwu-button
+          size="XL"
+          [variant]="button.primary ? 'primary' : 'secondary'"
+          (click)="handleButtonClick(button)"
+        >
+          {{ button.label }}
+        </button>
+      }
+    </div>
+  }
+
+  @if (isCloseButtonFloating) {
+    <button
+      ndwu-icon-button
+      variant="flat"
+      size="S"
+      class="ndwu-popover__close ndwu-popover__close--floating"
+      [icon]="ICON_NAME.CLOSE_S"
+      [attr.aria-label]="closeAriaLabel"
+      (click)="handleClose()"
+    >
+    </button>
+  }
+</div>

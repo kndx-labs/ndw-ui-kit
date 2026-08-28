@@ -1,0 +1,24 @@
+<div class="index-page">
+  <div class="index-page__header">
+    <app-logo class="index-page__logo"></app-logo>
+    <p class="index-page__subtitle">{{ COMPONENTS.length }} components <span class="index-page__version">v{{ LIB_INFO.version }}</span></p>
+  </div>
+
+  <div class="index-page__grid">
+    @for (component of COMPONENTS; track component) {
+      <button
+        type="button"
+        class="component-card"
+        (click)="select(component)"
+      >
+        <div class="component-card__header">
+          <span class="component-card__name">{{ SHOWCASE_NAMES[component] }}</span>
+          @if (isReadyForReview(component)) {
+            <span class="component-card__badge">ready</span>
+          }
+        </div>
+        <p class="component-card__description">{{ DESCRIPTIONS[component] }}</p>
+      </button>
+    }
+  </div>
+</div>

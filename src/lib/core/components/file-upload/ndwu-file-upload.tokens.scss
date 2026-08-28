@@ -1,0 +1,28 @@
+@use 'styles/colors';
+
+$ndwu-file-upload-tokens: (
+  file-upload-border-color: colors.$brand-30,
+  file-upload-border-hover-color: colors.$brand-30,
+  file-upload-border-focus-color: colors.$brand-40,
+  file-upload-border-disabled-color: colors.$gray-20,
+  file-upload-divider-color: colors.$gray-15,
+  file-upload-surface-color: colors.$gray-0,
+  file-upload-surface-disabled-color: colors.$gray-5,
+  file-upload-surface-success-hover-color: colors.$green-5,
+  file-upload-surface-error-hover-color: colors.$red-5,
+  file-upload-surface-warning-hover-color: colors.$yellow-5,
+  file-upload-surface-brand-hover-color: colors.$brand-5,
+  file-upload-text-color: colors.$gray-80,
+  file-upload-text-muted-color: colors.$gray-50,
+  file-upload-text-canceled-color: colors.$gray-40,
+  file-upload-icon-color: colors.$brand-50,
+  file-upload-icon-disabled-color: colors.$gray-40,
+  file-upload-icon-canceled-color: colors.$gray-40,
+  file-upload-progress-success-color: colors.$green-50,
+  file-upload-progress-error-color: colors.$red-50,
+  file-upload-progress-warning-color: colors.$yellow-50,
+  file-upload-error-text-color: colors.$red-50,
+  file-upload-button-bg: colors.$brand-50,
+  file-upload-button-hover-bg: colors.$brand-60,
+  file-upload-button-text-color: colors.$gray-0,
+);

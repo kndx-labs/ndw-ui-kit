@@ -1,0 +1,142 @@
+<div class="sandbox">
+  <div class="sandbox__toolbar">
+    <app-theme-switcher
+      [theme]="sandboxTheme()"
+      (themeChange)="setSandboxTheme($any($event))"
+    />
+    <button type="button" class="sandbox__reset" (click)="resetSandbox()">
+      {{ 'common.reset' | localize }}
+    </button>
+  </div>
+
+  <div class="sandbox__content">
+    <div class="sandbox__preview">
+      <h4 class="sandbox__section-title">{{ 'common.preview' | localize }}</h4>
+      <div
+        class="sandbox__preview-surface"
+        [class.ndwu-theme-light]="sandboxTheme() === 'light'"
+        [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
+      >
+        <form [formGroup]="sandboxForm" class="sandbox__preview-form">
+          <ndwu-multi-select-field
+            [label]="sandboxForm.controls.label.value"
+            [placeholder]="sandboxForm.controls.placeholder.value"
+            [hint]="sandboxForm.controls.hint.value"
+            [options]="options()"
+            [size]="sandboxForm.controls.size.value"
+            [confirmBtnLabel]="sandboxForm.controls.confirmLabel.value"
+            [required]="sandboxForm.controls.required.value"
+            formControlName="selectValue"
+          >
+            <ng-template
+              ndwuMultiSelectDisplay
+              let-selectedOptions="selectedOptions"
+              let-empty="empty"
+            >
+              @if (empty) {
+                <span class="display-empty">
+                  {{ sandboxForm.controls.placeholder.value }}
+                </span>
+              } @else {
+                @switch (sandboxForm.controls.displayMode.value) {
+                  @case ('default') {
+                    @for (opt of selectedOptions; track opt.value) {
+                      <span>{{ opt.label }}{{ $last ? '' : ', ' }}</span>
+                    }
+                  }
+                  @case ('chips') {
+                    <div class="chips-container">
+                      @for (opt of selectedOptions; track opt.value) {
+                        <span class="chip">
+                          {{ opt.label }}
+                          <ndwu-icon
+                            [name]="ICON_NAME.CLOSE_XS"
+                            class="chip-remove"
+                            (click)="deselect(opt, $event)"
+                          />
+                        </span>
+                      }
+                    </div>
+                  }
+                  @case ('count') {
+                    <span class="default-display">
+                      {{ empty ? sandboxForm.controls.placeholder.value : ('Selected :' + selectedOptions.length) }}
+                    </span>
+                  }
+                }
+              }
+            </ng-template>
+          </ndwu-multi-select-field>
+        </form>
+      </div>
+    </div>
+
+    <div class="sandbox__bottom">
+      <div class="sandbox__controls">
+        <h4 class="sandbox__section-title">{{ 'common.controls' | localize }}</h4>
+        <form [formGroup]="sandboxForm" class="sandbox__controls-form">
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="msf-label">{{ 'common.label' | localize }}</label>
+            <input id="msf-label" class="sandbox__control-input" type="text" formControlName="label"/>
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="msf-placeholder">{{ 'common.placeholder' | localize }}</label>
+            <input id="msf-placeholder" class="sandbox__control-input" type="text" formControlName="placeholder"/>
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label"
+                   for="msf-hint">{{ 'multi-select-field-showcase.sandbox.hint' | localize }}</label>
+            <input id="msf-hint" class="sandbox__control-input" type="text" formControlName="hint"/>
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="msf-displayMode">Display mode</label>
+            <select id="msf-displayMode" class="sandbox__control-input" formControlName="displayMode">
+              <option value="default">Default (comma-separated)</option>
+              <option value="count">Selected options count</option>
+              <option value="chips">Chips with (x)</option>
+            </select>
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="msf-size">{{ 'common.size' | localize }}</label>
+            <select id="msf-size" class="sandbox__control-input" formControlName="size">
+              <option [value]="SIZE.S">{{ 'common.sizes.s' | localize }}</option>
+              <option [value]="SIZE.L">{{ 'common.sizes.l' | localize }}</option>
+              <option [value]="SIZE.XL">{{ 'common.sizes.xl' | localize }}</option>
+              <option [value]="SIZE.XXL">{{ 'common.sizes.xxl' | localize }}</option>
+            </select>
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label"
+                   for="msf-confirm">{{ 'multi-select-field-showcase.sandbox.confirm-label' | localize }}</label>
+            <input id="msf-confirm" class="sandbox__control-input" type="text" formControlName="confirmLabel"/>
+          </div>
+          <div class="sandbox__control-row sandbox__control-row--checkboxes">
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="disabled"/>
+              <span>{{ 'common.disabled' | localize }}</span>
+            </label>
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="required"/>
+              <span>{{ 'common.required' | localize }}</span>
+            </label>
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label"
+                   for="msf-options">{{ 'multi-select-field-showcase.sandbox.options-textarea' | localize }}</label>
+            <textarea
+              id="msf-options"
+              class="sandbox__control-input sandbox__control-textarea"
+              formControlName="optionsRaw"
+              rows="6"
+            ></textarea>
+          </div>
+        </form>
+
+        <div class="sandbox__state">
+          <h4 class="sandbox__section-title">{{ 'multi-select-field-showcase.sandbox.state-title' | localize }}</h4>
+          <code class="sandbox__state-scalar">{{ sandboxForm.controls.selectValue.value | json }}</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

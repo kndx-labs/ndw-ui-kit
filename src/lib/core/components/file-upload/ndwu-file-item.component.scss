@@ -1,0 +1,205 @@
+@use 'styles/padding';
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
+@use './ndwu-file-upload.mixins' as *;
+
+@keyframes ndwu-file-item-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+:host {
+  display: block;
+}
+
+.ndwu-file-item {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ndwu-file-upload-surface-color);
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover:not(.ndwu-file-item--disabled) {
+    background-color: var(--ndwu-file-upload-surface-brand-hover-color);
+  }
+
+  &--success:hover:not(.ndwu-file-item--disabled) {
+    background-color: var(--ndwu-file-upload-surface-success-hover-color);
+  }
+
+  &--error:hover:not(.ndwu-file-item--disabled) {
+    background-color: var(--ndwu-file-upload-surface-error-hover-color);
+  }
+
+  &--warning:hover:not(.ndwu-file-item--disabled) {
+    background-color: var(--ndwu-file-upload-surface-warning-hover-color);
+  }
+
+  &:focus-within {
+    background-color: var(--ndwu-file-upload-surface-color);
+  }
+
+  &--uploading.ndwu-file-item--disabled,
+  &--error.ndwu-file-item--disabled,
+  &--warning.ndwu-file-item--disabled {
+    background-color: var(--ndwu-file-upload-surface-disabled-color);
+  }
+
+  &--disabled:not(.ndwu-file-item--uploading, .ndwu-file-item--error, .ndwu-file-item--warning) {
+    background-color: transparent;
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--uploading {
+    .ndwu-file-item__icon {
+      color: var(--ndwu-file-upload-icon-color);
+    }
+  }
+
+  &--success {
+    .ndwu-file-item__icon {
+      color: var(--ndwu-file-upload-progress-success-color);
+    }
+  }
+
+  &--error {
+    .ndwu-file-item__icon {
+      color: var(--ndwu-file-upload-progress-error-color);
+    }
+
+    .ndwu-file-item__error-text {
+      color: var(--ndwu-file-upload-error-text-color);
+    }
+  }
+
+  &--warning {
+    .ndwu-file-item__icon {
+      color: var(--ndwu-file-upload-progress-warning-color);
+    }
+
+    .ndwu-file-item__error-text {
+      color: var(--ndwu-file-upload-progress-warning-color);
+    }
+
+    .ndwu-file-item__status {
+      color: var(--ndwu-file-upload-progress-warning-color);
+    }
+  }
+
+  &--canceled {
+    .ndwu-file-item__icon {
+      color: var(--ndwu-file-upload-icon-canceled-color);
+    }
+
+    .ndwu-file-item__name,
+    .ndwu-file-item__status {
+      color: var(--ndwu-file-upload-text-canceled-color);
+    }
+  }
+
+  &__body {
+    display: flex;
+    gap: spacing.$spacing-12;
+    align-items: center;
+    padding: spacing.$spacing-12 spacing.$spacing-16;
+  }
+
+  &--L {
+    @include file-item-size(
+      (
+        body-min-height: padding.$padding-56,
+        body-padding: padding.$padding-8 padding.$padding-16,
+        icon-wrapper-size: padding.$padding-32,
+        name-font-size: typography.$fontSize-small,
+        content-bar-gap: padding.$padding-6,
+      )
+    );
+  }
+
+  &--XL {
+    @include file-item-size(
+      (
+        body-min-height: spacing.$spacing-64,
+        body-padding: padding.$padding-12 padding.$padding-16,
+        icon-wrapper-size: 48px,
+        name-font-size: typography.$fontSize-medium,
+        content-bar-gap: spacing.$spacing-8,
+      )
+    );
+  }
+
+  &__icon-wrapper {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__icon {
+    width: 100%;
+    height: 100%;
+    color: var(--ndwu-file-upload-icon-color);
+
+    &--spinner {
+      animation: ndwu-file-item-spin 1s linear infinite;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: spacing.$spacing-2;
+    min-width: 0;
+  }
+
+  &__primary {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  &__name {
+    overflow: hidden;
+    color: var(--ndwu-file-upload-text-color);
+    font-weight: typography.$fontWeight-L;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__secondary {
+    display: flex;
+    gap: spacing.$spacing-4;
+    align-items: center;
+    color: var(--ndwu-file-upload-text-muted-color);
+  }
+
+  &__separator {
+    opacity: 0.5;
+  }
+
+  &__status {
+    color: var(--ndwu-file-upload-text-muted-color);
+  }
+
+  &__error-text {
+    display: block;
+  }
+
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: spacing.$spacing-4;
+    align-items: center;
+  }
+}

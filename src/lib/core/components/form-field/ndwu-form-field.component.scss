@@ -1,0 +1,522 @@
+@use 'sass:math';
+@use 'styles/animations';
+@use 'styles/fonts';
+@use 'styles/padding';
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/mixins';
+@use 'styles/typography';
+
+ndwu-form-field {
+  display: block;
+  min-width: 0;
+}
+
+.ndwu-form-field {
+  display: flex;
+  flex-direction: column;
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    &--readonly {
+      .ndwu-form-field__input {
+        border-color: var(--ndwu-form-field-readonly-border-color, var(--ndwu-form-field-border-color));
+        background-color: var(--ndwu-form-field-readonly-bg);
+        outline: none;
+        color: var(--ndwu-form-field-readonly-text);
+        cursor: default;
+      }
+
+      .ndwu-form-field__label--floating {
+        background-color: var(--ndwu-form-field-readonly-bg);
+      }
+    }
+
+    &--disabled {
+      pointer-events: none;
+
+      .ndwu-form-field__input {
+        border-color: var(--ndwu-form-field-disabled-border-color, var(--ndwu-form-field-border-color));
+        background-color: var(--ndwu-form-field-disabled-bg);
+        color: var(--ndwu-form-field-disabled-text);
+        cursor: not-allowed;
+        pointer-events: none;
+        user-select: none;
+      }
+    }
+
+    // apply input hover state when hovering anywhere in wrapper (including over the `right icon` button)
+    &:hover:not(.ndwu-form-field__wrapper--readonly) .ndwu-form-field__input:not(:disabled) {
+      border-color: var(--ndwu-form-field-hover-border-color);
+      background-color: var(--ndwu-form-field-hover-bg);
+    }
+
+    &:hover:not(.ndwu-form-field__wrapper--readonly) .ndwu-form-field__input--invalid:not(:disabled) {
+      border-color: var(--ndwu-form-field-invalid-hover-border-color);
+    }
+  }
+
+  &__label {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding-right: spacing.$spacing-8;
+    background-color: transparent;
+    color: var(--ndwu-form-field-label-color);
+    font-weight: typography.$fontWeight-L;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+    transition:
+      top animations.$duration-long animations.$easing-default,
+      left animations.$duration-long animations.$easing-default,
+      max-width animations.$duration-long animations.$easing-default,
+      padding animations.$duration-long animations.$easing-default,
+      border-radius animations.$duration-long animations.$easing-default,
+      font-size animations.$duration-long animations.$easing-default,
+      line-height animations.$duration-long animations.$easing-default,
+      color animations.$duration-long animations.$easing-default,
+      background-color animations.$duration-long animations.$easing-default;
+    transform: translateY(-50%);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    &--floating {
+      top: 0;
+      right: unset;
+      max-width: calc(100% - #{spacing.$spacing-16});
+      background-color: var(--ndwu-form-field-bg);
+      color: var(--ndwu-form-field-floating-label-color);
+      transform: translateY(-50%);
+    }
+
+    &--readonly {
+      background-color: var(--ndwu-form-field-readonly-bg);
+      color: var(--ndwu-form-field-floating-label-color);
+      transform: translateY(-50%);
+
+      &.ndwu-form-field__label--floating {
+        background-color: var(--ndwu-form-field-bg);
+      }
+    }
+
+    &--disabled {
+      background-color: var(--ndwu-form-field-disabled-bg);
+      color: var(--ndwu-form-field-disabled-text);
+
+      &.ndwu-form-field__label--floating {
+        background-color: var(--ndwu-form-field-disabled-bg);
+      }
+
+      .ndwu-label__required-asterisk {
+        color: var(--ndwu-form-field-disabled-text);
+      }
+    }
+  }
+
+  // when a floating label is present, keep placeholder hidden even on focus.
+  &__wrapper--has-label {
+    .ndwu-form-field__input:focus::placeholder {
+      opacity: 0;
+    }
+  }
+
+  .ndwu-label__required-asterisk {
+    color: var(--ndwu-form-field-required-asterisk-color);
+  }
+
+  // ensure long labels don't overlap right-side affordances (suffix/right-icon)
+  &__wrapper {
+    &--has-right-icon,
+    &--has-suffix {
+      // only the non-floating label needs extra right padding to avoid overlapping
+      // the suffix/right-icon. The floating label is shrink-to-fit; extra padding
+      // makes its background cover the input border.
+      .ndwu-form-field__label:not(.ndwu-form-field__label--floating) {
+        padding-right: 3rem;
+      }
+    }
+  }
+
+  // Right-side affordances (suffix + right icon) share the same base layout.
+  &__suffix,
+  &__right-icon {
+    position: absolute;
+    top: 50%;
+    right: spacing.$spacing-8;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: none;
+    border-radius: radius.$radius-S;
+    background: none;
+    color: var(--ndwu-form-field-icon-color);
+    transform: translateY(-50%);
+
+    .ndwu-icon {
+      display: block;
+    }
+  }
+
+  // suffix/right icon positioning selector with extra specificity
+  // to override positioning of elements with extra tap area (`touch-target.touchable()`)
+  &__wrapper &__suffix,
+  &__wrapper &__right-icon {
+    position: absolute;
+  }
+
+  // Hover/focus coloring for suffix (to match right-icon behavior)
+  &__wrapper:hover &__suffix {
+    color: var(--ndwu-form-field-icon-hover-color);
+  }
+
+  &__input:focus ~ &__suffix {
+    color: var(--ndwu-form-field-icon-focus-color);
+  }
+
+  &__input--invalid ~ &__suffix {
+    color: var(--ndwu-form-field-icon-invalid-color);
+  }
+
+  // Disabled input should also "disable" suffix visuals/interactions
+  &__wrapper--disabled &__suffix {
+    color: var(--ndwu-form-field-icon-disabled-color);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  // Readonly input should keep suffix visuals but suppress interactions
+  &__wrapper--readonly &__suffix {
+    color: var(--ndwu-form-field-icon-color);
+  }
+
+  &__required-asterisk {
+    color: var(--ndwu-form-field-required-asterisk-color);
+  }
+
+  &__input {
+    border: 1px solid var(--ndwu-form-field-border-color);
+    border-radius: radius.$radius-L;
+    background-color: var(--ndwu-form-field-bg);
+    color: var(--ndwu-form-field-text);
+    font-family: fonts.$font-family-default;
+    transition:
+      border-color animations.$duration-default animations.$easing-default,
+      background-color animations.$duration-default animations.$easing-default,
+      box-shadow animations.$duration-default animations.$easing-default;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+
+      &::placeholder {
+        transition: none;
+      }
+    }
+
+    &::placeholder {
+      color: var(--ndwu-form-field-placeholder-color);
+      opacity: 0;
+      transition: opacity animations.$duration-default animations.$easing-default;
+    }
+
+    &:hover:not(:disabled, [readonly]) {
+      border-color: var(--ndwu-form-field-hover-border-color, var(--ndwu-form-field-border-color));
+      background-color: var(--ndwu-form-field-hover-bg, var(--ndwu-form-field-bg));
+    }
+
+    &:focus:not([readonly]) {
+      @include mixins.focus-ring();
+
+      & {
+        border-color: transparent;
+        background-color: var(--ndwu-form-field-focus-bg, var(--ndwu-form-field-bg));
+      }
+
+      &::placeholder {
+        opacity: 1;
+      }
+    }
+
+    &--invalid {
+      border-color: var(--ndwu-form-field-invalid-border-color);
+
+      &:hover:not(:disabled, [readonly]) {
+        border-color: var(--ndwu-form-field-invalid-hover-border-color, var(--ndwu-form-field-invalid-border-color));
+      }
+
+      &:focus:not([readonly]) {
+        border-color: var(--ndwu-form-field-invalid-border-color);
+      }
+    }
+
+    &:disabled {
+      border-color: var(--ndwu-form-field-disabled-border-color, var(--ndwu-form-field-border-color));
+      background-color: var(--ndwu-form-field-disabled-bg);
+      color: var(--ndwu-form-field-disabled-text);
+      cursor: not-allowed;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    &--password {
+      padding-right: 2.5rem;
+    }
+
+    &--has-right-icon {
+      padding-right: 2.5rem;
+    }
+  }
+
+  // Select-specific: hide native dropdown, show chevron
+  select.ndwu-form-field__input {
+    appearance: none;
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236A6F7C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-position: right 0.75rem center;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  &__right-icon {
+    cursor: pointer;
+    transition: color animations.$duration-default animations.$easing-default;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible:not(:disabled) {
+      @include mixins.focus-ring();
+    }
+
+    &--invalid {
+      border-color: var(--ndwu-form-field-invalid-border-color);
+
+      &:hover:not(:disabled, [readonly]) {
+        border-color: var(--ndwu-form-field-invalid-hover-border-color, var(--ndwu-form-field-invalid-border-color));
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &:disabled {
+      color: var(--ndwu-form-field-icon-disabled-color, var(--ndwu-form-field-disabled-text));
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  &__wrapper:hover:not(&--readonly) &__right-icon:not(:disabled) {
+    color: var(--ndwu-form-field-icon-hover-color, var(--ndwu-form-field-hover-border-color));
+  }
+
+  &__input:focus ~ &__right-icon:not(:disabled) {
+    color: var(--ndwu-form-field-icon-focus-color, var(--ndwu-form-field-focus-border-color));
+  }
+
+  &__input--invalid ~ &__right-icon:not(:disabled) {
+    color: var(--ndwu-form-field-icon-invalid-color, var(--ndwu-form-field-invalid-border-color));
+  }
+
+  // Invalid state takes precedence over hover
+  &__wrapper:hover &__input--invalid ~ &__right-icon:not(:disabled) {
+    color: var(--ndwu-form-field-icon-invalid-color, var(--ndwu-form-field-invalid-border-color));
+  }
+
+  &__input--invalid:focus ~ &__right-icon:not(:disabled) {
+    color: var(--ndwu-form-field-icon-invalid-color, var(--ndwu-form-field-invalid-border-color));
+  }
+
+  &__input:disabled ~ &__right-icon {
+    color: var(--ndwu-form-field-icon-disabled-color, var(--ndwu-form-field-disabled-text));
+  }
+
+  // size-specific padding styles
+  &--L {
+    .ndwu-form-field__input {
+      box-sizing: border-box;
+      height: 32px;
+      padding: padding.$padding-6 spacing.$spacing-8;
+      border-radius: radius.$radius-M;
+      font-size: typography.$fontSize-xsmall;
+      line-height: 17px;
+
+      &--has-right-icon {
+        padding-right: 36px;
+      }
+    }
+
+    // If a suffix exists (e.g. `[ndwuSuffix]`) but the control doesn't explicitly
+    // set `--has-right-icon`, still reserve space so it doesn't overlap.
+    .ndwu-form-field__wrapper--has-suffix {
+      .ndwu-form-field__input:not(.ndwu-form-field__input--has-right-icon) {
+        padding-right: 36px;
+      }
+    }
+
+    .ndwu-form-field__label {
+      left: spacing.$spacing-8;
+      line-height: 17px;
+
+      &--floating {
+        left: padding.$padding-6;
+        padding: 0 padding.$padding-2;
+        border-radius: spacing.$spacing-2;
+        font-size: typography.$fontSize-xxsmall;
+      }
+    }
+
+    .ndwu-form-field__right-icon .ndwu-icon,
+    .ndwu-form-field__suffix .ndwu-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .ndwu-form-field__right-icon,
+    .ndwu-form-field__password-toggle {
+      right: spacing.$spacing-8;
+    }
+
+    .ndwu-form-field__hint {
+      margin-left: spacing.$spacing-8;
+
+      .ndwu-helper-message {
+        font-size: typography.$fontSize-xxsmall;
+      }
+    }
+  }
+
+  &--XL {
+    .ndwu-form-field__input {
+      box-sizing: border-box;
+      height: 44px;
+      padding: 0 spacing.$spacing-12;
+      font-size: typography.$fontSize-medium;
+      line-height: 20px;
+      letter-spacing: typography.$letterSpacing-L;
+
+      &--has-right-icon {
+        padding-right: 40px;
+      }
+    }
+
+    .ndwu-form-field__wrapper--has-suffix {
+      .ndwu-form-field__input:not(.ndwu-form-field__input--has-right-icon) {
+        padding-right: 44px;
+      }
+    }
+
+    .ndwu-form-field__label {
+      left: spacing.$spacing-12;
+      line-height: 20px;
+
+      &--floating {
+        left: spacing.$spacing-8;
+        padding: 0 spacing.$spacing-4;
+        border-radius: spacing.$spacing-2;
+        font-size: typography.$fontSize-xsmall;
+      }
+    }
+
+    .ndwu-form-field__right-icon .ndwu-icon,
+    .ndwu-form-field__suffix .ndwu-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .ndwu-form-field__right-icon,
+    .ndwu-form-field__password-toggle {
+      right: spacing.$spacing-12;
+    }
+
+    .ndwu-form-field__hint {
+      margin-left: spacing.$spacing-12;
+
+      .ndwu-helper-message {
+        font-size: typography.$fontSize-xsmall;
+      }
+    }
+  }
+
+  &--XXL {
+    .ndwu-form-field__input {
+      box-sizing: border-box;
+      height: 56px;
+      padding: 0 spacing.$spacing-16;
+      font-size: typography.$fontSize-medium;
+      line-height: 24px;
+      letter-spacing: typography.$letterSpacing-S;
+
+      &--has-right-icon {
+        padding-right: 52px;
+      }
+    }
+
+    .ndwu-form-field__wrapper--has-suffix {
+      .ndwu-form-field__input:not(.ndwu-form-field__input--has-right-icon) {
+        padding-right: 52px;
+      }
+    }
+
+    .ndwu-form-field__label {
+      left: spacing.$spacing-16;
+      line-height: 24px;
+
+      &--floating {
+        left: 10px;
+        padding: 0 padding.$padding-6;
+        border-radius: radius.$radius-S;
+        font-size: typography.$fontSize-small;
+      }
+    }
+
+    .ndwu-form-field__right-icon .ndwu-icon,
+    .ndwu-form-field__suffix .ndwu-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .ndwu-form-field__right-icon,
+    .ndwu-form-field__password-toggle {
+      right: spacing.$spacing-16;
+    }
+
+    .ndwu-form-field__hint {
+      margin-left: spacing.$spacing-16;
+
+      .ndwu-helper-message {
+        line-height: 20px;
+      }
+    }
+  }
+
+  &__hint {
+    margin-top: spacing.$spacing-4;
+    text-align: left;
+  }
+}

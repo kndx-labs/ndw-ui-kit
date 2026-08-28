@@ -1,0 +1,35 @@
+:host {
+  display: block;
+
+  &.ndwu-popover-host--mobile {
+    width: 100%;
+  }
+}
+
+/*
+ Sheet mode (mobile bottom sheet): relay the max-height constraint from the CDK pane
+ down through the host and focus-trap so the options container can scroll.
+*/
+:host-context(.ndwu-options-panel--sheet) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ndwu-popover-host__focus-trap {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+:host-context(.cdk-overlay-pane.ndwu-modal) .ndwu-popover-host__focus-trap {
+  height: auto;
+}
+
+:host-context(.ndwu-options-panel--sheet) .ndwu-popover-host__focus-trap {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}

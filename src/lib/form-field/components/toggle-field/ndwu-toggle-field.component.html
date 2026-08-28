@@ -1,0 +1,10 @@
+<ndwu-toggle
+  [checked]="inputValue"
+  [disabled]="isDisabled"
+  [label]="label()"
+  [secondaryText]="secondaryText()"
+  [color]="color()"
+  [size]="sizeSvc.size()"
+  (checkedChange)="onCheckedChange($event)"
+  (blurred)="onBlur()"
+/>

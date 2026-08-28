@@ -1,0 +1,9 @@
+<app-tabs
+  [tabs]="tabs()"
+  [activeTabId]="activeTab()"
+  (tabChange)="setTab($event)"
+/>
+
+@if (currentContentType(); as type) {
+  <ng-container [ngComponentOutlet]="type"/>
+}

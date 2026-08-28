@@ -1,0 +1,101 @@
+@use '../../../styles/mixins' as mixins;
+@use 'styles/colors' as colors;
+
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.showcase-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 100%;
+
+  @include mixins.mobile() {
+    grid-template-columns: 1fr;
+  }
+
+  &__column-light {
+    @include mixins.mobile() {
+      display: none;
+
+      &.showcase-layout__column-light--active {
+        display: block;
+      }
+    }
+  }
+
+  &__column-dark {
+    @include mixins.mobile() {
+      display: none;
+
+      &.showcase-layout__column-dark--active {
+        display: block;
+      }
+    }
+  }
+
+  &__mobile-toggle {
+    display: none;
+    padding: 16px 20px;
+    border-bottom: 1px solid colors.$gray-20;
+    background-color: colors.$gray-0;
+
+    @include mixins.mobile() {
+      display: block;
+      grid-column: 1 / -1;
+      padding: 0 0 16px;
+    }
+  }
+}
+
+.theme-column {
+  flex-grow: 1;
+  min-width: 0;
+  padding: 20px;
+
+  @include mixins.mobile() {
+    padding: 16px;
+  }
+
+  h2 {
+    margin: 0 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid color-mix(in srgb, #{colors.$gray-100} 10%, transparent);
+    font-weight: 600;
+    font-size: 1.3rem;
+
+    @include mixins.mobile() {
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      font-size: 1.1rem;
+    }
+  }
+
+  &.ndwu-theme-dark {
+    background-color: colors.$gray-0;
+    color: colors.$gray-100;
+
+    h2 {
+      border-bottom-color: color-mix(in srgb, #{colors.$gray-100} 10%, transparent);
+      color: colors.$gray-100;
+    }
+  }
+
+  &.ndwu-theme-light {
+    border-right: 1px solid colors.$gray-20;
+    background-color: colors.$gray-0;
+    color: colors.$gray-100;
+
+    @include mixins.mobile() {
+      border-right: none;
+    }
+
+    h2 {
+      color: colors.$gray-100;
+    }
+  }
+}
+

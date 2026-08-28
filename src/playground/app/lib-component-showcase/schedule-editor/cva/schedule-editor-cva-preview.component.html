@@ -1,0 +1,96 @@
+<div class="sandbox">
+  <div class="sandbox__toolbar">
+    <app-theme-switcher
+      [theme]="sandboxTheme()"
+      (themeChange)="setSandboxTheme($any($event))"
+    />
+
+    <button
+      type="button"
+      class="sandbox__reset"
+      (click)="resetSandbox()"
+    >
+      {{ 'common.reset' | localize }}
+    </button>
+  </div>
+
+  <div class="sandbox__content">
+    <div class="sandbox__preview">
+      <h4 class="sandbox__section-title">{{ 'common.preview' | localize }}</h4>
+
+      <div
+        class="sandbox__preview-surface"
+        #previewSurface
+        [class.ndwu-theme-light]="sandboxTheme() === 'light'"
+        [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
+      >
+        <form [formGroup]="sandboxForm">
+          <div
+            class="schedule-editor-fill-host"
+            [style.resize]="sandboxForm.controls.sizing.value === 'fill' ? 'both' : 'none'"
+          >
+            <ndwu-schedule-editor-field
+              formControlName="scheduleValue"
+              [weekDays]="weekDays"
+              [mode]="sandboxForm.controls.mode.value"
+              [forceLayout]="getForceLayoutValue()"
+              [sizing]="sandboxForm.controls.sizing.value"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="sandbox__bottom sandbox__bottom--three-col">
+      <div class="sandbox__controls">
+        <h4 class="sandbox__section-title">{{ 'common.controls' | localize }}</h4>
+
+        <form [formGroup]="sandboxForm" class="sandbox__controls-form">
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="cva-mode">{{ 'schedule-editor-showcase.cva.mode' | localize }}</label>
+            <select id="cva-mode" class="sandbox__control-input" formControlName="mode">
+              <option [value]="MODE.FULL">{{ 'schedule-editor-showcase.cva.mode-full' | localize }}</option>
+              <option [value]="MODE.THUMBNAIL">{{ 'schedule-editor-showcase.cva.mode-thumbnail' | localize }}</option>
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="cva-layout">{{ 'schedule-editor-showcase.cva.layout' | localize }}</label>
+            <select id="cva-layout" class="sandbox__control-input" formControlName="forceLayout">
+              <option value="auto">{{ 'schedule-editor-showcase.cva.layout-auto' | localize }}</option>
+              <option [value]="LAYOUT.DESKTOP">{{ 'schedule-editor-showcase.cva.layout-desktop' | localize }}</option>
+              <option [value]="LAYOUT.MOBILE">{{ 'schedule-editor-showcase.cva.layout-mobile' | localize }}</option>
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="cva-week-start">{{ 'schedule-editor-showcase.cva.week-start' | localize }}</label>
+            <select id="cva-week-start" class="sandbox__control-input" formControlName="weekStart">
+              <option value="monday">{{ 'schedule-editor-showcase.cva.week-start-monday' | localize }}</option>
+              <option value="sunday">{{ 'schedule-editor-showcase.cva.week-start-sunday' | localize }}</option>
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="cva-sizing">Sizing</label>
+            <select id="cva-sizing" class="sandbox__control-input" formControlName="sizing">
+              @for (option of sizingOptions; track option) {
+                <option [value]="option">{{ option }}</option>
+              }
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <div class="sandbox__state">
+        <h4 class="sandbox__section-title">{{ 'schedule-editor-showcase.cva.current-value' | localize }}</h4>
+
+        <div class="sandbox__state-content">
+          <pre class="sandbox__state-json">{{ sandboxForm.getRawValue().scheduleValue | json }}</pre>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

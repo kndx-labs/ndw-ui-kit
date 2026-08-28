@@ -1,0 +1,9 @@
+@use 'styles/colors';
+@use 'styles/radius';
+
+$ndwu-dropdown-panel-tokens: (
+  dropdown-panel-border-color: colors.$gray-20,
+  dropdown-panel-border-radius: radius.$radius-M,
+  dropdown-panel-bg: colors.$gray-0,
+  dropdown-panel-header-text-color: colors.$gray-80,
+);

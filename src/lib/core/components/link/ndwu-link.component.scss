@@ -1,0 +1,54 @@
+@use 'styles/typography';
+@use 'styles/radius';
+
+:host {
+  color: var(--ndwu-link-default-color);
+  font-weight: typography.$fontWeight-L;
+  font-size: typography.$fontSize-small;
+  cursor: pointer;
+  transition:
+    color 0.2s ease-in-out,
+    outline 0.2s ease-in-out;
+
+  .ndwu-link__container {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    text-decoration: underline;
+  }
+
+  .ndwu-link__icon {
+    flex-shrink: 0;
+  }
+
+  &:not(.ndwu-link--disabled) {
+    &:hover {
+      color: var(--ndwu-link-hover-color);
+    }
+
+    &:active {
+      color: var(--ndwu-link-active-color);
+    }
+
+    &:focus {
+      border-radius: radius.$radius-S;
+      outline: 2px solid var(--ndwu-link-focus-outline);
+      outline-offset: 2px;
+      color: var(--ndwu-link-focus-color);
+
+      .ndwu-link__container {
+        text-decoration: none;
+      }
+    }
+
+    &:visited:not(:hover, :focus) {
+      color: var(--ndwu-link-visited-color);
+    }
+  }
+
+  &.ndwu-link--disabled {
+    color: var(--ndwu-link-disabled-color);
+    cursor: default;
+    pointer-events: none;
+  }
+}

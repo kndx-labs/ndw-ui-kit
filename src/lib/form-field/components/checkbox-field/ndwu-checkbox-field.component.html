@@ -1,0 +1,11 @@
+<ndwu-checkbox
+  [id]="inputId()"
+  [checked]="inputValue"
+  [disabled]="isDisabled"
+  [invalid]="isInvalid()"
+  [label]="label()"
+  [secondaryText]="secondaryText()"
+  [size]="sizeSvc.size()"
+  (checkedChange)="onCheckedChange($event)"
+  (blurred)="onBlur()"
+/>

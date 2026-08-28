@@ -1,0 +1,30 @@
+@use 'styles/colors';
+
+$ndwu-form-field-tokens: (
+  form-field-border-color: colors.$gray-20,
+  form-field-bg: colors.$gray-0,
+  form-field-text: colors.$gray-80,
+  form-field-label-color: colors.$gray-40,
+  form-field-floating-label-color: colors.$gray-50,
+  form-field-placeholder-color: colors.$gray-40,
+  form-field-hover-border-color: colors.$brand-30,
+  form-field-hover-bg: colors.$gray-0,
+  form-field-outline-border-color: colors.$brand-50, // TODO: remove legacy alias at next minor bump
+  form-field-focus-border-color: colors.$brand-50,
+  form-field-focus-bg: colors.$gray-0,
+  form-field-disabled-bg: colors.$gray-10,
+  form-field-disabled-text: colors.$gray-30,
+  form-field-disabled-border-color: colors.$gray-20,
+  form-field-readonly-bg: colors.$gray-5,
+  form-field-readonly-text: colors.$gray-60,
+  form-field-readonly-border-color: colors.$gray-20,
+  form-field-invalid-border-color: colors.$red-40,
+  form-field-invalid-hover-border-color: colors.$red-30,
+  form-field-invalid-outline-color: colors.$brand-50, // TODO: remove legacy alias at next minor bump
+  form-field-required-asterisk-color: colors.$red-40,
+  form-field-icon-color: colors.$gray-100,
+  form-field-icon-hover-color: colors.$brand-30,
+  form-field-icon-focus-color: colors.$brand-50,
+  form-field-icon-invalid-color: colors.$red-40,
+  form-field-icon-disabled-color: colors.$gray-30
+);

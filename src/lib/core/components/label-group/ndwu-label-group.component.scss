@@ -1,0 +1,67 @@
+@use 'styles/typography';
+@use 'styles/spacing';
+
+.ndwu-label-group {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  cursor: pointer;
+
+  &--disabled {
+    cursor: default;
+  }
+
+  &__label-text {
+    color: var(--ndwu-label-group-label-color);
+    font-weight: typography.$fontWeight-L;
+    cursor: pointer;
+  }
+
+  &__secondary-text {
+    color: var(--ndwu-label-group-secondary-text-color);
+    font-weight: typography.$fontWeight-L;
+  }
+
+  // Size-specific styles
+  &--L {
+    .ndwu-label-group__label-text {
+      font-size: typography.$fontSize-small;
+      line-height: 20px;
+    }
+
+    .ndwu-label-group__secondary-text {
+      font-size: typography.$fontSize-xsmall;
+      line-height: 17px;
+    }
+  }
+
+  &--XL {
+    gap: spacing.$spacing-2;
+
+    .ndwu-label-group__label-text {
+      font-size: typography.$fontSize-medium;
+      line-height: 24px;
+    }
+
+    .ndwu-label-group__secondary-text {
+      font-size: typography.$fontSize-small;
+      line-height: 20px;
+    }
+  }
+
+  &--XXL {
+    gap: spacing.$spacing-4;
+
+    .ndwu-label-group__label-text {
+      font-weight: typography.$fontWeight-XL;
+      font-size: typography.$fontSize-H4;
+      line-height: 27px;
+      letter-spacing: typography.$letterSpacing-S;
+    }
+
+    .ndwu-label-group__secondary-text {
+      font-size: typography.$fontSize-medium;
+      line-height: 24px;
+    }
+  }
+}

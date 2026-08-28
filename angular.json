@@ -1,0 +1,186 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "yarn",
+    "analytics": false,
+    "schematicCollections": ["angular-eslint"]
+  },
+  "newProjectRoot": ".",
+  "projects": {
+    "ndw-ui-kit": {
+      "projectType": "library",
+      "root": "",
+      "sourceRoot": "src/lib",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "project": "./src/lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.component.html"
+            ]
+          }
+        }
+      }
+    },
+    "playground": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src/playground",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": "dist/playground",
+            "index": "src/playground/index.html",
+            "browser": "src/playground/main.ts",
+            "polyfills": [],
+            "tsConfig": "tsconfig.playground.json",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/lib"
+              ]
+            },
+            "assets": [
+              "src/playground/favicon.ico",
+              "src/playground/assets",
+              {
+                "glob": "ndw-ui-kit.sprite.svg",
+                "input": "src/lib/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/lib/assets",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              "src/playground/styles/ndw-ui-kit-theme.scss",
+              "src/playground/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1000kB",
+                  "maximumError": "2MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "12kB",
+                  "maximumError": "14kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "no-l10n": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/playground/app/app.config.ts",
+                  "with": "src/playground/app/app.config.no-l10n.ts"
+                }
+              ]
+            },
+            "ngx-translate": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/playground/app/app.config.ts",
+                  "with": "src/playground/app/app.config.ngx-translate.ts"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "playground:build:production"
+            },
+            "development": {
+              "buildTarget": "playground:build:development"
+            },
+            "no-l10n": {
+              "buildTarget": "playground:build:no-l10n"
+            },
+            "ngx-translate": {
+              "buildTarget": "playground:build:ngx-translate"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "playground:build:development",
+            "runner": "vitest",
+            "include": [
+              "../lib/**/*.spec.ts"
+            ],
+            "tsConfig": "tsconfig.spec.json"
+          }
+        }
+      }
+    }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    }
+  }
+}

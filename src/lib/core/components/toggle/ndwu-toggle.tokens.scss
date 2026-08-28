@@ -1,0 +1,25 @@
+@use 'styles/colors';
+
+$ndwu-toggle-tokens: (
+  toggle-track-disabled-bg: colors.$gray-15,
+  toggle-track-checked-disabled-bg: colors.$gray-15,
+  toggle-knob-bg: colors.$gray-0,
+  toggle-disabled-knob-bg: colors.$gray-5,
+  toggle-brand-track-unchecked-bg: colors.$gray-30,
+  toggle-brand-track-unchecked-hover-bg: colors.$brand-20,
+  toggle-brand-track-unchecked-active-bg: colors.$brand-30,
+  toggle-brand-track-checked-bg: colors.$brand-50,
+  toggle-brand-track-checked-hover-bg: colors.$brand-60,
+  toggle-brand-track-checked-active-bg: colors.$brand-70,
+  toggle-green-track-unchecked-bg: colors.$green-30,
+  toggle-green-track-unchecked-hover-bg: colors.$green-30,
+  toggle-green-track-unchecked-active-bg: colors.$green-40,
+  toggle-green-track-checked-bg: colors.$green-50,
+  toggle-green-track-checked-hover-bg: colors.$green-40,
+  toggle-green-track-checked-active-bg: colors.$green-60,
+  toggle-focus-color: colors.$brand-50,
+  toggle-label-color: colors.$gray-80,
+  toggle-secondary-text-color: colors.$gray-60,
+  toggle-label-disabled-color: colors.$gray-30,
+  toggle-secondary-text-disabled-color: colors.$gray-30,
+);

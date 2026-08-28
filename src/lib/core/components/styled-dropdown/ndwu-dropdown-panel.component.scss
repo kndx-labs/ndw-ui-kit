@@ -1,0 +1,78 @@
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/padding';
+@use 'styles/typography';
+@use 'styles/colors';
+
+.ndwu-dropdown-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: inherit;
+  border: 1px solid var(--ndwu-dropdown-panel-border-color);
+  border-radius: var(--ndwu-dropdown-panel-border-radius);
+  background: var(--ndwu-dropdown-panel-bg);
+
+  &__header:empty,
+  &__footer:empty {
+    display: none;
+  }
+
+  &__header {
+    color: var(--ndwu-dropdown-panel-header-text-color);
+  }
+
+  &__body {
+    flex: 1;
+    overflow: auto;
+    min-height: 0;
+  }
+}
+
+.ndwu-dropdown-panel.ndwu-dropdown-panel--sheet {
+  $header-height: 56px;
+
+  --ndwu-styled-listbox-max-height-override: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - #{$header-height});
+
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+  border: none;
+  border-radius: radius.$radius-XL radius.$radius-XL 0 0;
+  background: var(--ndwu-dropdown-panel-bg);
+
+  /* stylelint-disable plugin/no-unsupported-browser-features */
+  @supports (max-height: 100dvh) {
+    // allow the listbox to fill available height when displayed as a bottom sheet
+    --ndwu-styled-listbox-max-height-override: calc(100dvh - #{$header-height});
+  }
+
+  .ndwu-dropdown-panel__header {
+    display: flex;
+    flex-shrink: 0;
+    gap: spacing.$spacing-8;
+    justify-content: space-between;
+    align-items: center;
+    padding: padding.$padding-16;
+    border-bottom: 1px solid colors.$gray-15;
+    font-weight: 500;
+    font-style: normal;
+    font-size: typography.$fontSize-H4;
+    line-height: 25px;
+    letter-spacing: typography.$letterSpacing-S;
+  }
+
+  .ndwu-dropdown-panel__body {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .ndwu-dropdown-panel__footer {
+    display: flex;
+    flex-shrink: 0;
+    gap: spacing.$spacing-12;
+    padding: spacing.$spacing-12 spacing.$spacing-16;
+    border-top: 1px solid colors.$gray-15;
+    background: var(--ndwu-options-panel-bg);
+  }
+}

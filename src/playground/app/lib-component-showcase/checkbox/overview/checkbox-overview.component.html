@@ -1,0 +1,115 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>{{ 'checkbox-showcase.default' | localize }}</h4>
+      <form [formGroup]="checkboxDefault">
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="checkbox-showcase.accept-terms"
+          secondaryText="checkbox-showcase.terms-secondary"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.sizes.l' | localize }}</h4>
+      <form [formGroup]="checkboxSizeL">
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="checkbox-showcase.small-checkbox"
+          secondaryText="common.additional-text"
+          size="L"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.sizes.xl' | localize }}</h4>
+      <form [formGroup]="checkboxSizeXL">
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="checkbox-showcase.extra-large-checkbox"
+          secondaryText="common.additional-text"
+          size="XL"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.sizes.xxl' | localize }}</h4>
+      <form [formGroup]="checkboxSizeXXL">
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="checkbox-showcase.extra-large-checkbox"
+          secondaryText="common.additional-text"
+          size="XXL"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.checked' | localize }}</h4>
+      <form [formGroup]="checkboxChecked">
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="checkbox-showcase.newsletter-subscription"
+          secondaryText="checkbox-showcase.newsletter-secondary"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'checkbox-showcase.two-layer' | localize }}</h4>
+      <ndwu-checkbox
+        [checked]="twoLayerParentChecked()"
+        [indeterminate]="twoLayerParentIndeterminate()"
+        label="checkbox-showcase.parent-task"
+        (checkedChange)="onTwoLayerParentChange($event)"
+      />
+      <div class="child-checkboxes">
+        <ndwu-checkbox
+          [checked]="twoLayerChild1()"
+          label="checkbox-showcase.child-task-1"
+          (checkedChange)="twoLayerChild1.set($event)"
+        />
+        <ndwu-checkbox
+          [checked]="twoLayerChild2()"
+          label="checkbox-showcase.child-task-2"
+          (checkedChange)="twoLayerChild2.set($event)"
+        />
+        <ndwu-checkbox
+          [checked]="twoLayerChild3()"
+          label="checkbox-showcase.child-task-3"
+          (checkedChange)="twoLayerChild3.set($event)"
+        />
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.disabled' | localize }}</h4>
+      <form [formGroup]="checkboxDisabled">
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="checkbox-showcase.disabled-checkbox"
+          secondaryText="checkbox-showcase.disabled-secondary"
+        />
+      </form>
+      <form [formGroup]="checkboxDisabledChecked">
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          label="checkbox-showcase.disabled-checked-checkbox"
+          secondaryText="checkbox-showcase.disabled-checked-secondary"
+        />
+      </form>
+      <ndwu-checkbox
+        [checked]="false"
+        [disabled]="true"
+        label="checkbox-showcase.disabled-checkbox"
+        secondaryText="checkbox-showcase.disabled-secondary"
+      />
+    </div>
+  </ng-template>
+</app-showcase-layout>

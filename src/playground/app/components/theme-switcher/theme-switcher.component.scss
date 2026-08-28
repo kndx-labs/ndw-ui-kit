@@ -1,0 +1,54 @@
+@use 'styles/colors' as colors;
+@use 'styles/typography' as typography;
+@use '../../../styles/mixins' as mixins;
+
+.theme-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+
+  @include mixins.mobile() {
+    justify-content: space-between;
+  }
+
+  &__label {
+    margin-right: 12px;
+    color: colors.$gray-50;
+    font-weight: 600;
+    font-size: typography.$fontSize-H5;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+}
+
+.theme-switcher__theme-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.theme-switcher__btn {
+  padding: 8px 10px;
+  border: 1px solid colors.$gray-20;
+  border-radius: 6px;
+  background: colors.$gray-0;
+  color: colors.$gray-80;
+  font-weight: 600;
+  font-size: typography.$fontSize-small;
+  cursor: pointer;
+
+  &:hover {
+    border-color: colors.$brand-50;
+  }
+
+  &:focus {
+    outline: 2px solid colors.$brand-50;
+    outline-offset: 2px;
+  }
+}
+
+.theme-switcher__btn--active {
+  border-color: colors.$brand-50;
+  background: colors.$brand-10;
+  color: colors.$brand-50;
+}

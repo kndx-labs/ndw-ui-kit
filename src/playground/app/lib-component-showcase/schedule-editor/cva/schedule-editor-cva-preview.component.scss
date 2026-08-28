@@ -1,0 +1,26 @@
+@use 'styles/spacing';
+@use 'styles/mixins';
+
+// Sandbox layout and controls: shared in _sandbox.scss (loaded from app root).
+
+// Three-column layout for schedule-editor sandbox to position
+// timecoder format on the right side
+.sandbox__bottom--three-col {
+  grid-template-columns: 1fr 1fr 1fr;
+
+  @include mixins.mobile() {
+    grid-template-columns: 1fr;
+  }
+}
+
+.schedule-editor-fill-host {
+  overflow: auto;
+  width: 100%;
+  height: 320px;
+  border: 1px dashed #999;
+}
+
+.schedule-editor-fill-host > ndwu-schedule-editor-field {
+  display: block;
+  height: 100%;
+}

@@ -1,0 +1,41 @@
+@if (closeDelayEnabled()) {
+  <p class="delay-message">
+    {{ 'dialog-showcase.overview.custom-dialogs.delayed-close.message' | localize }}
+  </p>
+}
+
+@if (isClosing()) {
+  <div class="progressbar-track">
+    <div
+      class="progressbar-fill"
+      [style.width.%]="progress()"
+    >
+    </div>
+  </div>
+}
+
+<div
+  *ndwuModalFooter
+  ndwuModalActions
+>
+  @let delayToggleLabel = closeDelayEnabled()
+    ? 'dialog-showcase.overview.custom-dialogs.delayed-close.button-remove-delay'
+    : 'dialog-showcase.overview.custom-dialogs.delayed-close.button-add-delay';
+
+  <button
+    ndwuButton
+    [disabled]="isClosing()"
+    (click)="toggleDelay()"
+    [label]="delayToggleLabel"
+  >
+  </button>
+
+  <button
+    ndwuButton
+    variant="primary"
+    [disabled]="isClosing()"
+    (click)="handleClose()"
+    label="dialog-showcase.overview.common.button-close"
+  >
+  </button>
+</div>

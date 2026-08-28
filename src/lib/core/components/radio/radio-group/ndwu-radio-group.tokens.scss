@@ -1,0 +1,37 @@
+@use 'styles/colors';
+
+$ndwu-radio-group-tokens: (
+  radio-label-color: colors.$gray-80,
+  radio-secondary-text-color: colors.$gray-60,
+
+  radio-label-disabled-color: colors.$gray-40,
+  radio-secondary-text-disabled-color: colors.$gray-30,
+
+  // default state
+  radio-border-color: colors.$gray-20,
+  radio-bg: colors.$gray-0,
+  radio-checked-border-color: colors.$brand-50,
+  radio-checked-bg: colors.$brand-50,
+  radio-checked-dot-color: colors.$gray-0,
+
+  radio-hover-border-color: colors.$brand-30,
+  radio-hover-bg: colors.$gray-0,
+  radio-hover-dot-color: colors.$brand-15,
+  radio-checked-hover-border-color: colors.$brand-50,
+  radio-checked-hover-bg: colors.$brand-40,
+  radio-checked-hover-dot-color: colors.$gray-0,
+
+  radio-active-border-color: colors.$brand-40,
+  radio-active-bg: colors.$brand-15,
+  radio-checked-active-border-color: colors.$brand-40,
+  radio-checked-active-bg: colors.$brand-50,
+
+  radio-focus-border-color: colors.$gray-30,
+  radio-focus-bg: colors.$gray-10,
+  radio-focus-color: colors.$brand-50,
+
+  // disabled state
+  radio-disabled-bg: colors.$gray-15,
+  radio-disabled-border-color: colors.$gray-20,
+  radio-disabled-dot-color: colors.$gray-20,
+);

@@ -1,0 +1,23 @@
+@use 'styles/colors';
+
+$ndwu-tabs-tokens: (
+  // Light theme
+  tab-container-bg: colors.$gray-0,
+  tab-default-bg: transparent,
+  tab-hover-bg: colors.$brand-15,
+  tab-selected-bg: colors.$brand-10,
+  tab-pressed-bg: colors.$brand-15,
+  tab-default-text: colors.$gray-80,
+  tab-selected-text: colors.$gray-80,
+  tab-hover-text: colors.$gray-60,
+  tab-disabled-text: colors.$gray-30,
+  tab-disabled-selected-text: colors.$gray-15,
+  tab-disabled-selected-bg: colors.$gray-30,
+  tab-bordered-default-border: colors.$gray-20,
+  tab-bordered-selected-border: colors.$brand-50,
+  tab-bordered-disabled-border: colors.$gray-15,
+  tab-bordered-default-bg: colors.$gray-15,
+  tab-bordered-hover-bg: colors.$brand-10,
+  tab-focus-outline: colors.$brand-30,
+  tab-focus-bg: colors.$gray-15,
+);

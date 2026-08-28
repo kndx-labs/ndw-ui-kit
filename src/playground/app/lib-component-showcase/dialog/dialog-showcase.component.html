@@ -1,0 +1,355 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template let-theme="theme">
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.alert-confirm' | localize }}</h4>
+
+      <div class="button-row">
+
+      <button
+        ndwuButton
+        variant="primary"
+        [label]="'dialog-showcase.overview.alert.button-show'"
+        (click)="openServiceAlert(theme)"
+      >
+      </button>
+
+        <button
+          ndwuButton
+          variant="secondary"
+          [label]="'dialog-showcase.overview.confirm.button-open'"
+          (click)="openServiceConfirm(theme)"
+        >
+        </button>
+      </div>
+      @if (isAlertOpened) {
+        <p class="result-text">{{ 'dialog-showcase.overview.alert.status-open' | localize }}</p>
+      } @else {
+        <p class="result-text">{{ 'dialog-showcase.overview.alert.status-closed' | localize }}</p>
+      }
+
+      @if (confirmResult !== null) {
+        <p class="result-text">
+          {{ 'dialog-showcase.overview.confirm.result-prefix' | localize }}
+          {{ (confirmResult ? 'dialog-showcase.overview.confirm.result.confirmed' : 'dialog-showcase.overview.confirm.result.cancelled') | localize }}
+        </p>
+      }
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.custom-form' | localize }}</h4>
+      <button
+        ndwuButton
+        variant="primary"
+        [label]="'dialog-showcase.overview.form-dialog.button-open'"
+        (click)="openServiceFormDialog(theme)"
+      >
+      </button>
+      @if (formResult) {
+        <p class="result-text">{{ 'dialog-showcase.overview.form-dialog.submitted' | localize:{name: formResult.name, email: formResult.email} }}</p>
+      }
+    </div>
+
+    <div class="state-section">
+      <h4>Template dialog API</h4>
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="secondary"
+          label="Open template dialog"
+          (click)="openTemplateDialog(theme)"
+        >
+        </button>
+
+        <button
+          ndwuButton
+          variant="tertiary"
+          label="Open scrollable template dialog"
+          (click)="openTemplateDialogWithCustomFooter(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>Component slot API</h4>
+      <button
+        ndwuButton
+        variant="secondary"
+        label="Open component dialog with custom slots"
+        (click)="openComponentDialogWithCustomSlots(theme)"
+      >
+      </button>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.return-result' | localize }}</h4>
+      <button
+        ndwuButton
+        variant="secondary"
+        [label]="'dialog-showcase.overview.result-dialog.button-open'"
+        (click)="openResultDialog(theme)"
+      >
+      </button>
+      @if (selectedUser) {
+        <p class="result-text">{{ 'dialog-showcase.overview.result-dialog.selected' | localize:{name: selectedUser.name} }}</p>
+      }
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.scrollable' | localize }}</h4>
+      <button
+        ndwuButton
+        variant="tertiary"
+        [label]="'dialog-showcase.overview.scrollable-dialog.button-open'"
+        (click)="openScrollableDialog(theme)"
+      >
+      </button>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.size-control' | localize }}</h4>
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="primary"
+          [label]="'dialog-showcase.overview.size.button-small'"
+          (click)="openSmallDialog(theme)"
+        >
+        </button>
+        <button
+          ndwuButton
+          variant="secondary"
+          [label]="'dialog-showcase.overview.size.button-narrow'"
+          (click)="openNarrowDialog(theme)"
+        >
+        </button>
+        <button
+          ndwuButton
+          variant="tertiary"
+          [label]="'dialog-showcase.overview.size.button-wide'"
+          (click)="openWideDialog(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.focus-management' | localize }}</h4>
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="secondary"
+          [label]="'dialog-showcase.overview.focus.button-auto-focus-header'"
+          (click)="openAutoFocus(theme)"
+        >
+        </button>
+
+        <button
+          ndwuButton
+          variant="primary"
+          [label]="'dialog-showcase.overview.focus.button-no-focus-trap'"
+          (click)="openNoFocusTrap(theme)"
+        >
+        </button>
+
+        <button
+          ndwuButton
+          variant="tertiary"
+          [label]="'dialog-showcase.overview.focus.button-auto-focus-first-tabbable'"
+          (click)="openAutoFocusFirstTabbable(theme)"
+        >
+        </button>
+
+        <button
+          ndwuButton
+          variant="secondary"
+          [label]="'dialog-showcase.overview.focus.button-custom-focus'"
+          (click)="openCustomFocus(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.loading-state' | localize }}</h4>
+      <button
+        ndwuButton
+        variant="primary"
+        [label]="'dialog-showcase.overview.loading.button-open'"
+        (click)="openLoadingDialog(theme)"
+      >
+      </button>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.async-title-description' | localize }}</h4>
+      <button
+        ndwuButton
+        variant="secondary"
+        [label]="'dialog-showcase.overview.async-title-description.button-open'"
+        (click)="openAsyncTitleDescriptionDialog(theme)"
+      >
+      </button>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.custom-confirmation' | localize }}</h4>
+
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="primary"
+          [label]="'dialog-showcase.overview.on-close-handler.button-delayed-close'"
+          (click)="openDelayedCloseDialog(theme)"
+        >
+        </button>
+
+        <button
+          ndwuButton
+          variant="primary"
+          [label]="'dialog-showcase.overview.on-close-handler.button-confirm-to-close'"
+          (click)="openConfirmToCloseDialog(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.nested-modal' | localize }}</h4>
+      <p>{{ 'dialog-showcase.overview.nested-modal.description' | localize }}</p>
+
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="primary"
+          [label]="'dialog-showcase.overview.nested-modal.button-open'"
+          (click)="openNestedModalDialog(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.nested-modal-stack' | localize }}</h4>
+      <p>{{ 'dialog-showcase.overview.nested-modal-stack.description' | localize }}</p>
+
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="primary"
+          [label]="'dialog-showcase.overview.nested-modal-stack.button-open'"
+          (click)="openNestedModalDialogWithStacking(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.nested-modal-none' | localize }}</h4>
+      <p>{{ 'dialog-showcase.overview.nested-modal-none.description' | localize }}</p>
+
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="primary"
+          [label]="'dialog-showcase.overview.nested-modal-none.button-open'"
+          (click)="openNestedModalDialogWithoutStacking(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'dialog-showcase.overview.sections.drawer-dialog-stacking' | localize }}</h4>
+      <p>{{ 'dialog-showcase.overview.drawer-dialog-stacking.description' | localize }}</p>
+
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="primary"
+          [label]="'dialog-showcase.overview.drawer-dialog-stacking.button-open'"
+          (click)="openDrawerDialogBugDemo(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <ng-template #templateDialog let-modalRef="modalRef">
+      <section *ndwuModalHeader>
+        <h3>Template header</h3>
+
+        <button
+          ndwuButton
+          variant="secondary"
+          label="Dismiss"
+          (click)="modalRef.close()"
+        >
+        </button>
+      </section>
+
+      <div ndwuModalBody>
+        <p>
+          This dialog was opened with <code>openTemplate(...)</code> and uses
+          <code>*ndwuModalHeader</code>, <code>ndwuModalBody</code>, and
+          <code>*ndwuModalFooter</code> inside the template content.
+        </p>
+      </div>
+
+      <div
+        *ndwuModalFooter
+        ndwuModalActions
+      >
+        <button
+          ndwuButton
+          variant="primary"
+          label="Close template dialog"
+          (click)="modalRef.close()"
+        >
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template
+      #scrollableTemplateDialog
+      let-data="data"
+      let-modalRef="modalRef"
+    >
+      <div class="template-dialog-layout">
+        <div
+          ndwuModalBody
+          class="template-dialog-layout__body"
+        >
+          <div
+            class="template-dialog-layout__content"
+            [innerHTML]="(data ?? '') | parseMarkdownDocument"
+          >
+          </div>
+        </div>
+
+        <div
+          *ndwuModalFooter
+          ndwuModalActions
+        >
+          <button
+            ndwuButton
+            variant="secondary"
+            label="Close"
+            (click)="modalRef.close(false)"
+          >
+          </button>
+
+          <button
+            ndwuButton
+            variant="primary"
+            label="Confirm"
+            (click)="modalRef.close(true)"
+          >
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
+</app-showcase-layout>

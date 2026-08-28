@@ -1,0 +1,25 @@
+<div
+  class="ndwu-dropdown-panel"
+  [class.ndwu-dropdown-panel--sheet]="sheet()"
+  [style.min-width.px]="minWidth()"
+  [style.max-width.px]="maxWidth()"
+>
+  @if (hasHeader()) {
+    <div class="ndwu-dropdown-panel__header">
+      <ng-content select="[ndwuPanelHeader]"/>
+    </div>
+  }
+
+  <div
+    class="ndwu-dropdown-panel__body"
+    ndwuScrollbar
+  >
+    <ng-content/>
+  </div>
+
+  @if (hasFooter()) {
+    <div class="ndwu-dropdown-panel__footer">
+      <ng-content select="[ndwuPanelFooter]"/>
+    </div>
+  }
+</div>

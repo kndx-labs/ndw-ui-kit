@@ -1,0 +1,46 @@
+@use 'styles/colors';
+
+$ndwu-badge-tokens: (
+  // Foreground (text) — same high-contrast ink for all tones
+  badge-fg: colors.$gray-80,
+
+  // Gray
+  badge-gray-bg: colors.$gray-10,
+  badge-gray-border: colors.$gray-20,
+  badge-gray-accent: colors.$gray-70,
+
+  // Negative (red / error)
+  badge-negative-bg: colors.$red-10,
+  badge-negative-border: colors.$red-15,
+  badge-negative-accent: colors.$red-60,
+
+  // Positive (green / success)
+  badge-positive-bg: colors.$green-10,
+  badge-positive-border: colors.$green-15,
+  badge-positive-accent: colors.$green-60,
+
+  // Warning (yellow)
+  badge-warning-bg: colors.$yellow-10,
+  badge-warning-border: colors.$yellow-15,
+  badge-warning-accent: colors.$yellow-70,
+
+  // Blue (brand / info)
+  badge-blue-bg: colors.$brand-10,
+  badge-blue-border: colors.$brand-15,
+  badge-blue-accent: colors.$brand-60,
+
+  // Violet (purple)
+  badge-violet-bg: colors.$violet-10,
+  badge-violet-border: colors.$violet-15,
+  badge-violet-accent: colors.$violet-60,
+
+  // Cyan (teal)
+  badge-cyan-bg: colors.$cyan-10,
+  badge-cyan-border: colors.$cyan-15,
+  badge-cyan-accent: colors.$cyan-50,
+
+  // White
+  badge-white-bg: colors.$gray-0,
+  badge-white-border: colors.$gray-20,
+  badge-white-accent: colors.$gray-70,
+);

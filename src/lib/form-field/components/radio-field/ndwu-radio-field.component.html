@@ -1,0 +1,15 @@
+<ndwu-radio-group
+  [value]="inputValue"
+  [disabled]="isDisabled"
+  [size]="sizeSvc.size()"
+  (valueChange)="onValueChange($event)"
+  (blurred)="onBlur()"
+>
+  @for (option of normalizedOptions(); track option.value) {
+    <ndwu-radio-button
+      [value]="option.value"
+      [label]="option.label"
+      [secondaryText]="option.secondaryText ?? ''"
+    />
+  }
+</ndwu-radio-group>

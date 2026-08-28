@@ -1,0 +1,130 @@
+<div class="sandbox">
+  <app-sandbox-toolbar
+    [theme]="sandboxTheme()"
+    (themeChange)="setSandboxTheme($any($event))"
+    (widthChange)="onWidthChange($event)"
+    (resetClick)="resetSandbox()"
+  />
+
+  <div class="sandbox__content">
+    <div class="sandbox__preview">
+      <h4 class="sandbox__section-title">{{ 'common.preview' | localize }}</h4>
+
+      <div
+        class="sandbox__preview-surface"
+        #previewSurface
+        [class.ndwu-theme-light]="sandboxTheme() === 'light'"
+        [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
+        [ngStyle]="sandboxTokenStyles()"
+      >
+        <div class="sandbox__preview-input-wrap" [style.width]="previewWidth()">
+          <form [formGroup]="sandboxForm" class="sandbox__preview-form">
+            <ndwu-input-field
+              formControlName="value"
+              [label]="sandboxForm.controls.label.value"
+              [placeholder]="sandboxForm.controls.placeholder.value"
+              [hint]="sandboxForm.controls.hint.value"
+              [size]="sandboxForm.controls.size.value"
+              [required]="sandboxForm.controls.isRequired.value"
+              [type]="sandboxForm.controls.type.value"
+              [readonly]="sandboxForm.controls.isReadonly.value"
+              [rightIcon]="sandboxForm.controls.type.value === 'password' ? undefined : getRightIconName()"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="sandbox__bottom">
+      <div class="sandbox__controls">
+        <h4 class="sandbox__section-title">{{ 'common.controls' | localize }}</h4>
+
+        <form [formGroup]="sandboxForm" class="sandbox__controls-form">
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-size">{{ 'common.size' | localize }}</label>
+            <select id="sandbox-size" class="sandbox__control-input" formControlName="size">
+              @for (size of SIZE_OPTIONS; track size.value) {
+                <option [value]="size.value">{{ size.label | localize }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-type">{{ 'input-showcase.common.type' | localize }}</label>
+            <select id="sandbox-type" class="sandbox__control-input" formControlName="type">
+              <option value="text">{{ 'input-showcase.common.type-text' | localize }}</option>
+              <option value="password">{{ 'input-showcase.common.type-password' | localize }}</option>
+            </select>
+          </div>
+
+          @if (sandboxForm.controls.type.value !== 'password') {
+            <div class="sandbox__control-row">
+              <label class="sandbox__control-label" for="sandbox-right-icon">{{ 'input-showcase.common.right-icon' | localize }}</label>
+              <select id="sandbox-right-icon" class="sandbox__control-input" formControlName="rightIcon">
+                <option value="none">{{ 'input-showcase.common.right-icon-none' | localize }}</option>
+                <option value="search">{{ 'input-showcase.common.right-icon-search' | localize }}</option>
+                <option value="close">{{ 'input-showcase.common.right-icon-close' | localize }}</option>
+              </select>
+            </div>
+          }
+
+          <div class="sandbox__control-row sandbox__control-row--checkboxes">
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="isRequired" />
+              <span>{{ 'common.required' | localize }}</span>
+            </label>
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="isDisabled" />
+              <span>{{ 'common.disabled' | localize }}</span>
+            </label>
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="isReadonly" />
+              <span>{{ 'common.readonly' | localize }}</span>
+            </label>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-label">{{ 'common.label' | localize }}</label>
+            <input id="sandbox-label" class="sandbox__control-input" type="text" formControlName="label" />
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-placeholder">{{ 'common.placeholder' | localize }}</label>
+            <input id="sandbox-placeholder" class="sandbox__control-input" type="text" formControlName="placeholder" />
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-hint">{{ 'input-showcase.common.hint' | localize }}</label>
+            <input id="sandbox-hint" class="sandbox__control-input" type="text" formControlName="hint" />
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-value">{{ 'common.value' | localize }}</label>
+            <input
+              id="sandbox-value"
+              class="sandbox__control-input"
+              type="text"
+              formControlName="value"
+              [disabled]="sandboxForm.controls.isDisabled.value"
+            />
+          </div>
+        </form>
+
+        <div class="sandbox__state">
+          <h4 class="sandbox__section-title">{{ 'input-showcase.sandbox.state-title' | localize }}</h4>
+          <code class="sandbox__state-scalar">{{ sandboxForm.controls.value.value }}</code>
+        </div>
+      </div>
+
+      <div class="sandbox__variables">
+        <app-token-list
+          [tokens]="tokenList"
+          [formGroup]="sandboxTokens"
+          [tokenPickerValues]="tokenPickerValues()"
+          [sectionTitle]="'input-showcase.sandbox.tokens' | localize"
+          [inheritLabel]="'input-showcase.sandbox.inherit' | localize"
+        />
+      </div>
+    </div>
+  </div>
+</div>

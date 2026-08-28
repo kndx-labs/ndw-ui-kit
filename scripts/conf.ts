@@ -1,0 +1,48 @@
+import * as path from 'node:path';
+import {existsSync} from 'node:fs';
+import {PICTOGRAM_VARIANTS} from '../src/lib/pictogram-presets';
+
+// We assume that this file will always be in the './scripts' directory.
+export const SCRIPTS_DIR: string = path.resolve(__dirname);
+
+// Load scripts/.env for local dev (no-op in CI, where vars are injected).
+// Uses the Node 22 built-in loader — no dotenv dependency.
+const DOTENV_PATH = path.resolve(SCRIPTS_DIR, '.env');
+
+if (existsSync(DOTENV_PATH)) {
+  process.loadEnvFile(DOTENV_PATH);
+}
+
+export const requireEnv = (name: string): string => {
+  const value = process.env[name];
+
+  if (!value) {
+    throw new Error(
+      `Environment variable "${name}" is required but not set. `
+      + 'Set it in scripts/.env locally or as a GitHub Actions secret/variable.',
+    );
+  }
+
+  return value;
+};
+export const SCRIPTS_DATA_DIR: string = path.resolve(SCRIPTS_DIR, 'data');
+
+export const ROOT_DIR: string = path.resolve(SCRIPTS_DIR, '..');
+export const SRC_DIR: string = path.resolve(ROOT_DIR, 'src');
+
+export const SPRITE_FILENAME = 'ndw-ui-kit.sprite.svg';
+export const EXTRA_SPRITE_FILENAME = 'ndw-ui-kit.extra.sprite.svg';
+export const PICTOGRAM_SPRITE_FILENAME = 'ndw-ui-kit.pictogram.sprite.svg';
+
+export const PICTOGRAM_SUPPORTED_SUFFIXES = new Set(['L', 'XL']);
+export const PICTOGRAM_EXPECTED_DIMENSIONS: Record<string, number> = {L: 64, XL: 100};
+export const PICTOGRAM_COLOR_PRESETS = PICTOGRAM_VARIANTS;
+
+// Matches Breakpoints.Handset from @angular/cdk/layout
+// @see https://github.com/angular/components/blob/main/src/cdk/layout/breakpoints.ts
+// dprint-ignore
+export const HANDSET_BREAKPOINT = [
+  '(max-width: 599.99px) and (orientation: portrait)',
+  '(max-width: 959.99px) and (orientation: landscape)',
+]
+  .join(', ');

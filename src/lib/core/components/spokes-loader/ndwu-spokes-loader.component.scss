@@ -1,0 +1,46 @@
+:host {
+  display: contents;
+}
+
+.ndwu-spokes-loader {
+  position: relative;
+  display: inline-block;
+}
+
+.spoke-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  animation: fade-spoke var(--animation-duration, 900ms) linear infinite;
+}
+
+.spoke {
+  width: var(--spoke-width, 1.5px);
+  height: var(--spoke-height, 4.04px);
+  margin-top: var(--spoke-offset, 1.73px);
+  border-radius: var(--spoke-width, 1.5px);
+  background-color: var(--ndwu-spokes-loader-color);
+}
+
+@for $i from 1 through 12 {
+  .spoke-container:nth-child(#{$i}) {
+    animation-delay: calc(var(--animation-duration, 900ms) * (#{$i} - 1) / var(--spokes-count, 8));
+  }
+}
+
+@keyframes fade-spoke {
+  0% {
+    opacity: 1;
+  }
+
+  10% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

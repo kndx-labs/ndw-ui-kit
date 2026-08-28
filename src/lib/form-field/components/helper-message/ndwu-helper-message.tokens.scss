@@ -1,0 +1,8 @@
+@use 'styles/colors';
+
+$ndwu-helper-message-tokens: (
+  helper-message-text: colors.$gray-60,
+  helper-message-error: colors.$red-50,
+  helper-message-success: colors.$green-60,
+  helper-message-warning: colors.$yellow-50,
+);

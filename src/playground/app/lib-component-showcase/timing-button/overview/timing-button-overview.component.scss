@@ -1,0 +1,58 @@
+@use 'styles/spacing';
+
+/* stylelint-disable selector-pseudo-element-no-unknown */
+.state-section {
+  margin-bottom: spacing.$spacing-32;
+
+  h3 {
+    margin: 0 0 spacing.$spacing-12;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing.$spacing-12;
+  align-items: center;
+}
+
+.state-demo {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-8;
+  align-items: center;
+}
+
+.demo-preloading {
+  background-color: var(--ndwu-timing-button-primary-preloading-bg) !important;
+  color: var(--ndwu-timing-button-primary-preloading-text, var(--ndwu-timing-button-primary-text)) !important;
+  pointer-events: none;
+}
+
+.demo-hover {
+  border-color: var(--ndwu-timing-button-primary-hover-border) !important;
+  background-color: var(--ndwu-timing-button-primary-hover-bg) !important;
+
+  --ndwu-timing-button-fill: 50%;
+
+  &::before {
+    background-color: var(--ndwu-timing-button-primary-hover-fill-bg) !important;
+  }
+}
+
+.demo-focus {
+  border-color: var(--ndwu-timing-button-primary-focus-border) !important;
+  background-color: var(--ndwu-timing-button-primary-focus-bg) !important;
+  outline: 1px solid var(--ndwu-timing-button-primary-focus-outline) !important;
+}
+
+.demo-pressed {
+  border-color: var(--ndwu-timing-button-primary-active-border) !important;
+  background-color: var(--ndwu-timing-button-primary-active-bg) !important;
+
+  --ndwu-timing-button-fill: 100%;
+}

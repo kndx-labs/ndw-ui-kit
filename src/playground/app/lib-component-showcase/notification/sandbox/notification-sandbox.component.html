@@ -1,0 +1,83 @@
+<div class="sandbox">
+  <div class="sandbox__toolbar">
+    <app-theme-switcher
+      [theme]="sandboxTheme()"
+      (themeChange)="setSandboxTheme($any($event))"
+    />
+
+    <button
+      type="button"
+      class="sandbox__reset"
+      (click)="resetSandbox()"
+    >
+      {{ 'common.reset' | localize }}
+    </button>
+  </div>
+
+  <div class="sandbox__content">
+    <div class="sandbox__preview">
+      <h4 class="sandbox__section-title">{{ 'common.preview' | localize }}</h4>
+
+      <div
+        class="sandbox__preview-surface"
+        #previewSurface
+        [class.ndwu-theme-light]="sandboxTheme() === 'light'"
+        [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
+        [ngStyle]="sandboxTokenStyles()"
+      >
+        <ndwu-notification
+          [variant]="previewVariant"
+          [message]="previewMessage"
+        />
+      </div>
+    </div>
+
+    <div class="sandbox__bottom">
+      <div class="sandbox__controls">
+        <h4 class="sandbox__section-title">{{ 'common.controls' | localize }}</h4>
+
+        <form [formGroup]="sandboxForm" class="sandbox__controls-form">
+          <div class="sandbox__control-row">
+            <label
+              class="sandbox__control-label"
+              for="sandbox-variant"
+            >
+              {{ 'notification-showcase.sandbox.variant' | localize }}
+            </label>
+            <select id="sandbox-variant" class="sandbox__control-input" formControlName="variant">
+              <option [ngValue]="NOTIFICATION_VARIANT.INFO">{{ 'notification-showcase.info' | localize }}</option>
+              <option [ngValue]="NOTIFICATION_VARIANT.SUCCESS">{{ 'notification-showcase.success' | localize }}</option>
+              <option [ngValue]="NOTIFICATION_VARIANT.WARNING">{{ 'notification-showcase.warning' | localize }}</option>
+              <option [ngValue]="NOTIFICATION_VARIANT.ERROR">{{ 'notification-showcase.error' | localize }}</option>
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label
+              class="sandbox__control-label"
+              for="sandbox-message"
+            >
+              {{ 'notification-showcase.sandbox.message' | localize }}
+            </label>
+            <input
+              id="sandbox-message"
+              class="sandbox__control-input"
+              type="text"
+              formControlName="message"
+            />
+          </div>
+        </form>
+      </div>
+
+      <div class="sandbox__variables">
+        <app-token-list
+          [tokens]="tokenListForCurrentType()"
+          [formGroup]="sandboxTokens"
+          [tokenPickerValues]="tokenPickerValues()"
+          [sectionTitle]="'notification-showcase.sandbox.tokens' | localize"
+          [inheritLabel]="'notification-showcase.sandbox.inherit' | localize"
+        />
+      </div>
+    </div>
+  </div>
+</div>

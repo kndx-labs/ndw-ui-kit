@@ -1,0 +1,8 @@
+@if (effectiveIcon()) {
+  <ndwu-icon
+    class="ndwu-badge__icon"
+    [name]="effectiveIcon()!"
+    aria-hidden="true"
+  />
+}
+<span class="ndwu-badge__label"><ng-content /></span>

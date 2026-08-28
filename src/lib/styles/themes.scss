@@ -1,0 +1,113 @@
+@use 'styles/themes/theme-utils' as theme-utils;
+@use 'styles/themes/light-theme' as light-theme;
+@use 'styles/themes/dark-theme' as dark-theme;
+@use 'styles/fonts' as fonts;
+@use 'styles/_components-global' as components-global;
+@use 'core/components/button/button/ndwu-button.tokens' as ndwu-button-tokens;
+@use 'core/components/button/icon/ndwu-icon-button.tokens' as ndwu-icon-button-tokens;
+@use 'core/components/button/timing-button/ndwu-timing-button.tokens' as ndwu-timing-button-tokens;
+@use 'core/components/link/ndwu-link.tokens' as ndwu-link-tokens;
+@use 'core/components/checkbox/ndwu-checkbox.tokens' as ndwu-checkbox-tokens;
+@use 'core/components/form-field/ndwu-form-field.tokens' as ndwu-form-field-tokens;
+@use 'core/components/label-group/ndwu-label-group.tokens' as ndwu-label-group-tokens;
+@use 'core/components/radio/radio-group/ndwu-radio-group.tokens' as ndwu-radio-group-tokens;
+@use 'core/components/styled-dropdown/ndwu-dropdown-panel.tokens' as ndwu-dropdown-panel-tokens;
+@use 'core/components/styled-listbox/ndwu-styled-listbox.tokens' as ndwu-styled-listbox-tokens;
+@use 'core/components/styled-listbox/ndwu-styled-option.tokens' as ndwu-styled-option-tokens;
+@use 'core/components/spokes-loader/ndwu-spokes-loader.tokens' as ndwu-spokes-loader-tokens;
+@use 'core/components/toggle/ndwu-toggle.tokens' as ndwu-toggle-tokens;
+@use 'core/components/tooltip/ndwu-tooltip.tokens' as ndwu-tooltip-tokens;
+@use 'core/components/popover/ndwu-popover.tokens' as ndwu-popover-tokens;
+@use 'core/components/badge/ndwu-badge.tokens' as ndwu-badge-tokens;
+@use 'core/components/modal/ndwu-modal.tokens' as ndwu-modal-tokens;
+@use 'core/components/modal/dialog/ndwu-dialog-container.tokens' as ndwu-dialog-container-tokens;
+@use 'core/components/modal/drawer/ndwu-drawer-container.tokens' as ndwu-drawer-container-tokens;
+@use 'core/components/notification/ndwu-notification.tokens' as ndwu-notification-tokens;
+@use 'core/components/progress-bar/ndwu-progress-bar.tokens' as ndwu-progress-bar-tokens;
+@use 'core/components/file-upload/ndwu-file-upload.tokens' as ndwu-file-upload-tokens;
+@use 'core/components/card/ndwu-card.tokens' as ndwu-card-tokens;
+@use 'core/components/tabs/ndwu-tabs.tokens' as ndwu-tabs-tokens;
+@use 'core/components/empty-state/ndwu-empty-state.tokens' as ndwu-empty-state-tokens;
+@use 'core/components/password-strength-indicator/ndwu-password-strength-indicator.tokens' as ndwu-password-strength-indicator-tokens;
+@use 'core/components/scrollbar/ndwu-scrollbar.tokens' as ndwu-scrollbar-tokens;
+@use 'form-field/components/helper-message/ndwu-helper-message.tokens' as ndwu-helper-message-tokens;
+@use 'styles/focus-tokens' as focus-tokens;
+
+$ndwu-emit-font-faces: false !default;
+$ndwu-roboto-font-base-path: "../assets/fonts/roboto" !default;
+
+@if $ndwu-emit-font-faces {
+  @include fonts.emit-font-faces($ndwu-roboto-font-base-path);
+}
+
+// List of component token modules.
+// Each component should export a flat map of tokens that reference theme-aware color variables
+$component-tokens: (
+  'ndwu-badge': ndwu-badge-tokens.$ndwu-badge-tokens,
+  'ndwu-form-field': ndwu-form-field-tokens.$ndwu-form-field-tokens,
+  'ndwu-checkbox': ndwu-checkbox-tokens.$ndwu-checkbox-tokens,
+  'ndwu-button': ndwu-button-tokens.$ndwu-button-tokens,
+  'ndwu-icon-button': ndwu-icon-button-tokens.$ndwu-icon-button-tokens,
+  'ndwu-timing-button': ndwu-timing-button-tokens.$ndwu-timing-button-tokens,
+  'ndwu-link': ndwu-link-tokens.$ndwu-link-tokens,
+  'ndwu-helper-message': ndwu-helper-message-tokens.$ndwu-helper-message-tokens,
+  'ndwu-toggle': ndwu-toggle-tokens.$ndwu-toggle-tokens,
+  'ndwu-radio-group': ndwu-radio-group-tokens.$ndwu-radio-group-tokens,
+  'ndwu-label-group': ndwu-label-group-tokens.$ndwu-label-group-tokens,
+  'ndwu-scrollbar': ndwu-scrollbar-tokens.$ndwu-scrollbar-tokens,
+  'ndwu-dropdown-panel': ndwu-dropdown-panel-tokens.$ndwu-dropdown-panel-tokens,
+  'ndwu-styled-listbox': ndwu-styled-listbox-tokens.$ndwu-styled-listbox-tokens,
+  'ndwu-styled-option': ndwu-styled-option-tokens.$ndwu-styled-option-tokens,
+  'ndwu-spokes-loader': ndwu-spokes-loader-tokens.$ndwu-spokes-loader-tokens,
+  'ndwu-tooltip': ndwu-tooltip-tokens.$ndwu-tooltip-tokens,
+  'ndwu-popover': ndwu-popover-tokens.$ndwu-popover-tokens,
+  'ndwu-modal': ndwu-modal-tokens.$ndwu-modal-tokens,
+  'ndwu-dialog': ndwu-dialog-container-tokens.$ndwu-dialog-tokens,
+  'ndwu-drawer': ndwu-drawer-container-tokens.$ndwu-drawer-tokens,
+  'ndwu-progress-bar': ndwu-progress-bar-tokens.$ndwu-progress-bar-tokens,
+  'ndwu-file-upload': ndwu-file-upload-tokens.$ndwu-file-upload-tokens,
+  'ndwu-notification': ndwu-notification-tokens.$ndwu-notification-tokens,
+  'ndwu-card': ndwu-card-tokens.$ndwu-card-tokens,
+  'ndwu-tabs': ndwu-tabs-tokens.$ndwu-tabs-tokens,
+  'ndwu-empty-state': ndwu-empty-state-tokens.$ndwu-empty-state-tokens,
+  'ndwu-password-strength-indicator': ndwu-password-strength-indicator-tokens.$ndwu-password-strength-indicator-tokens,
+);
+
+// List of utility token modules.
+// Each group should export a flat map of tokens that reference theme-aware color variables
+$utility-tokens: (
+  'ndwu-focus-tokens': focus-tokens.$ndwu-focus-tokens,
+);
+
+// Default theme: light theme
+:root {
+  @include theme-utils.emit-color-vars(light-theme.$light-theme-colors);
+  @include theme-utils.emit-token-groups($component-tokens);
+  @include theme-utils.emit-token-groups($utility-tokens);
+}
+
+// Set Roboto as default font-family for all UI components
+:root,
+:root.dark,
+.ndwu-theme-light,
+.ndwu-theme-dark {
+  font-family: fonts.$font-family-default;
+}
+
+:root.dark {
+  @include theme-utils.emit-color-vars(dark-theme.$dark-theme-colors);
+  @include theme-utils.emit-token-groups($component-tokens);
+  @include theme-utils.emit-token-groups($utility-tokens);
+}
+
+.ndwu-theme-light {
+  @include theme-utils.emit-color-vars(light-theme.$light-theme-colors);
+  @include theme-utils.emit-token-groups($component-tokens);
+  @include theme-utils.emit-token-groups($utility-tokens);
+}
+
+.ndwu-theme-dark {
+  @include theme-utils.emit-color-vars(dark-theme.$dark-theme-colors);
+  @include theme-utils.emit-token-groups($component-tokens);
+  @include theme-utils.emit-token-groups($utility-tokens);
+}

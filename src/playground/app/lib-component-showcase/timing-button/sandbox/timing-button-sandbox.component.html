@@ -1,0 +1,115 @@
+<div class="sandbox">
+  <div class="sandbox__toolbar">
+    <app-theme-switcher
+      [theme]="sandboxTheme()"
+      (themeChange)="setSandboxTheme($any($event))"
+    />
+
+    <button
+      type="button"
+      class="sandbox__reset"
+      (click)="resetSandbox()"
+    >
+      {{ 'common.reset' | localize }}
+    </button>
+  </div>
+
+  <div class="sandbox__content">
+    <div class="sandbox__preview">
+      <h4 class="sandbox__section-title">{{ 'common.preview' | localize }}</h4>
+
+      <div
+        class="sandbox__preview-surface"
+        #previewSurface
+        [class.ndwu-theme-light]="sandboxTheme() === 'light'"
+        [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
+        [ngStyle]="sandboxTokenStyles()"
+      >
+        @for (key of [sandboxButtonKey()]; track key) {
+          @if (sandboxButtonVisible()) {
+            <button
+              ndwu-timing-button
+              [ngClass]="{
+                'sandbox-state-preloading': sandboxForm.controls.state.value === 'preloading',
+                'sandbox-state-hover': sandboxForm.controls.state.value === 'hover',
+                'sandbox-state-focus': sandboxForm.controls.state.value === 'focus',
+                'sandbox-state-pressed': sandboxForm.controls.state.value === 'pressed'
+              }"
+              [style.pointer-events]="sandboxForm.controls.state.value === 'preloading' ? 'none' : null"
+              [size]="sandboxForm.controls.size.value"
+              [leftText]="sandboxForm.controls.leftText.value"
+              [rightText]="sandboxForm.controls.rightText.value"
+              [disabled]="sandboxForm.controls.state.value === 'disabled'"
+              [loading]="sandboxForm.controls.state.value === 'loading'"
+              [duration]="sandboxForm.controls.duration.value"
+              (timerEnd)="onTimerEnd()"
+            >
+            </button>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="sandbox__bottom">
+      <div class="sandbox__controls">
+        <h4 class="sandbox__section-title">{{ 'common.controls' | localize }}</h4>
+
+        <form [formGroup]="sandboxForm" class="sandbox__controls-form">
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-left-text">{{ 'timing-button-showcase.sandbox.left-text' | localize }}</label>
+            <input id="sandbox-left-text" class="sandbox__control-input" type="text" formControlName="leftText" />
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-right-text">{{ 'timing-button-showcase.sandbox.right-text' | localize }}</label>
+            <input id="sandbox-right-text" class="sandbox__control-input" type="text" formControlName="rightText" />
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-size">{{ 'common.size' | localize }}</label>
+            <select id="sandbox-size" class="sandbox__control-input" formControlName="size">
+              <option [value]="SIZE.L">{{ 'common.sizes.l' | localize }}</option>
+              <option [value]="SIZE.XL">{{ 'common.sizes.xl' | localize }}</option>
+              <option [value]="SIZE.XXL">{{ 'common.sizes.xxl' | localize }}</option>
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-duration">{{ 'timing-button-showcase.sandbox.duration' | localize }}</label>
+            <input id="sandbox-duration" class="sandbox__control-input" type="number" min="1" max="999" formControlName="duration" />
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-state">{{ 'timing-button-showcase.sandbox.state' | localize }}</label>
+            <select id="sandbox-state" class="sandbox__control-input" formControlName="state">
+              <option value="preloading">{{ 'timing-button-showcase.state-preloading' | localize }}</option>
+              <option value="default">{{ 'timing-button-showcase.state-enabled' | localize }}</option>
+              <option value="hover">{{ 'timing-button-showcase.state-hover' | localize }}</option>
+              <option value="focus">{{ 'timing-button-showcase.state-focus' | localize }}</option>
+              <option value="pressed">{{ 'timing-button-showcase.state-pressed' | localize }}</option>
+              <option value="disabled">{{ 'timing-button-showcase.state-disabled' | localize }}</option>
+              <option value="loading">{{ 'timing-button-showcase.state-loading' | localize }}</option>
+            </select>
+          </div>
+
+          @if (timerEndCount() > 0) {
+            <div class="sandbox__control-row">
+              <span class="sandbox__control-label">{{ 'timing-button-showcase.sandbox.timer-end-count' | localize }}</span>
+              <span class="sandbox__state-scalar">{{ timerEndCount() }}</span>
+            </div>
+          }
+        </form>
+      </div>
+
+      <div class="sandbox__variables">
+        <app-token-list
+          [tokens]="tokenListForCurrentType()"
+          [formGroup]="sandboxTokens"
+          [tokenPickerValues]="tokenPickerValues()"
+          [sectionTitle]="'timing-button-showcase.sandbox.tokens-for-type' | localize"
+          [inheritLabel]="'timing-button-showcase.sandbox.inherit' | localize"
+        />
+      </div>
+    </div>
+  </div>
+</div>

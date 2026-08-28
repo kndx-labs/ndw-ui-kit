@@ -1,0 +1,23 @@
+// Font asset path is resolved relative to the stylesheet that includes this mixin.
+// Component styles should only consume `$font-family-default`; emit font faces from
+// a top-level stylesheet such as `styles/themes.scss`.
+$roboto-font-base-path: "../assets/fonts/roboto" !default;
+
+@mixin emit-font-faces($font-base-path: $roboto-font-base-path) {
+  @font-face {
+    font-weight: 400;
+    font-style: normal;
+    font-family: Roboto;
+    src: local("Roboto"), local("Roboto-Regular"), url("#{$font-base-path}/Roboto-Regular.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-weight: 500;
+    font-style: normal;
+    font-family: Roboto;
+    src: local("Roboto Medium"), local("Roboto-Medium"), url("#{$font-base-path}/Roboto-Medium.woff2") format("woff2");
+  }
+}
+
+// Default font family for all UI components
+$font-family-default: roboto, "Helvetica Neue", sans-serif;

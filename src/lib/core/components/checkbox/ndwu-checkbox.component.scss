@@ -1,0 +1,229 @@
+@use 'sass:math';
+@use 'sass:map';
+@use 'styles/spacing';
+@use 'styles/radius';
+@use 'styles/typography';
+@use 'styles/mixins';
+@use 'styles/touch-target' as touch-target;
+
+$checkbox-checkmark-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%229%22%20height%3D%227%22%20viewBox%3D%220%200%209%207%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M8.09606%200.419011C8.04294%200.365457%207.97975%200.32295%207.91012%200.293942C7.84049%200.264935%207.76581%200.25%207.69038%200.25C7.61495%200.25%207.54027%200.264935%207.47064%200.293942C7.40102%200.32295%207.33782%200.365457%207.28471%200.419011L3.02797%204.68146L1.23957%202.88734C1.18442%202.83407%201.11932%202.79218%201.04798%202.76407C0.976644%202.73595%200.900466%202.72217%200.823799%202.72349C0.747132%202.72482%200.671476%202.74123%200.601153%202.7718C0.530829%202.80236%200.467214%202.84648%200.41394%202.90163C0.360666%202.95678%200.318776%203.02188%200.290662%203.09322C0.262548%203.16456%200.248761%203.24074%200.250087%203.3174C0.251414%203.39407%200.267828%203.46973%200.298393%203.54005C0.328958%203.61037%200.373074%203.67399%200.428224%203.72726L2.6223%205.92134C2.67542%205.97489%202.73861%206.0174%202.80824%206.04641C2.87786%206.07541%202.95255%206.09035%203.02797%206.09035C3.1034%206.09035%203.17808%206.07541%203.24771%206.04641C3.31734%206.0174%203.38053%205.97489%203.43365%205.92134L8.09606%201.25893C8.15405%201.20543%208.20034%201.14049%208.232%201.06821C8.26366%200.995931%208.28%200.917879%208.28%200.838971C8.28%200.760063%208.26366%200.682011%208.232%200.609732C8.20034%200.537454%208.15405%200.472516%208.09606%200.419011Z%22%20fill%3D%22currentColor%22%20stroke%3D%22white%22%20stroke-width%3D%220.5%22%2F%3E%3C%2Fsvg%3E");
+$checkbox-indeterminate-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%3E%0A%3Cpath%20d%3D%22M9.7%205.40002H2.3C2.14087%205.40002%201.98826%205.46324%201.87574%205.57576C1.76321%205.68828%201.7%205.84089%201.7%206.00002C1.7%206.15915%201.76321%206.31177%201.87574%206.42429C1.98826%206.53681%202.14087%206.60002%202.3%206.60002H9.7C9.85913%206.60002%2010.0117%206.53681%2010.1243%206.42429C10.2368%206.31177%2010.3%206.15915%2010.3%206.00002C10.3%205.84089%2010.2368%205.68828%2010.1243%205.57576C10.0117%205.46324%209.85913%205.40002%209.7%205.40002Z%22%20fill%3D%22currentColor%22%20stroke%3D%22white%22%20stroke-width%3D%220.5%22%2F%3E%0A%3C%2Fsvg%3E");
+
+@mixin checkbox($config) {
+  $checkbox-size: map.get($config, checkbox-size);
+  $checkbox-align-top: map.get($config, checkbox-align-top);
+  $gap: map.get($config, gap);
+  $label-inner-gap: map.get($config, label-inner-gap);
+
+  $checkmark-width: math.div(9, 16) * $checkbox-size;
+  $checkmark-height: math.div(7, 16) * $checkbox-size;
+  $indeterminate-mark-width: math.div(12, 16) * $checkbox-size;
+  $indeterminate-mark-height: math.div(12, 16) * $checkbox-size;
+
+  --ndwu-checkbox-checkmark-width: #{$checkmark-width};
+  --ndwu-checkbox-checkmark-height: #{$checkmark-height};
+  --ndwu-checkbox-indeterminate-mark-width: #{$indeterminate-mark-width};
+  --ndwu-checkbox-indeterminate-mark-height: #{$indeterminate-mark-height};
+
+  gap: $gap;
+
+  ndwu-label-group {
+    gap: $label-inner-gap;
+  }
+
+  .ndwu-checkbox__input {
+    width: $checkbox-size;
+    height: $checkbox-size;
+
+    &:not(.ndwu-checkbox__input--no-label) {
+      margin-top: $checkbox-align-top; // align center with label's first line
+    }
+  }
+}
+
+.ndwu-checkbox {
+  display: flex;
+  gap: spacing.$spacing-4;
+  align-items: flex-start;
+  width: fit-content;
+
+  &.ndwu-checkbox--disabled {
+    pointer-events: none;
+
+    ndwu-label-group {
+      --ndwu-label-group-label-color: var(--ndwu-checkbox-label-disabled-color);
+      --ndwu-label-group-secondary-text-color: var(--ndwu-checkbox-secondary-text-disabled-color);
+    }
+  }
+
+  &__hint {
+    margin-left: spacing.$spacing-32;
+  }
+
+  &__input {
+    appearance: none;
+    position: relative;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin: 0;
+    border: 1px solid var(--ndwu-checkbox-border-color);
+    border-radius: radius.$radius-S;
+    background-color: var(--ndwu-checkbox-bg);
+    cursor: pointer;
+    transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+    // ::after is reserved for the checkmark, so expand the tap area via ::before
+    /* stylelint-disable-next-line order/order */
+    @include touch-target.touch-target-expand($pseudo: before);
+
+    &:hover:not(:disabled, :checked, :indeterminate) {
+      @include mixins.colorbox(var(--ndwu-checkbox-hover-border-color), var(--ndwu-checkbox-hover-bg));
+    }
+
+    &:hover:not(:disabled):checked {
+      @include mixins.colorbox(var(--ndwu-checkbox-checked-border-color), var(--ndwu-checkbox-checked-bg));
+    }
+
+    &:active {
+      @include mixins.colorbox(var(--ndwu-checkbox-active-border-color), var(--ndwu-checkbox-active-bg));
+    }
+
+    &:focus {
+      @include mixins.colorbox(var(--ndwu-checkbox-focus-border-color), var(--ndwu-checkbox-focus-bg));
+
+      outline: none;
+    }
+
+    &:focus-visible {
+      @include mixins.focus-ring();
+    }
+
+    &:focus-visible:checked,
+    &:focus-visible:indeterminate {
+      @include mixins.focus-ring(var(--ndwu-fx-focused-primary));
+    }
+
+    &:checked {
+      @include mixins.colorbox(var(--ndwu-checkbox-checked-border-color), var(--ndwu-checkbox-checked-bg));
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        mask-image: $checkbox-checkmark-image;
+        mask-position: center;
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        width: var(--ndwu-checkbox-checkmark-width);
+        height: var(--ndwu-checkbox-checkmark-height);
+        background-color: var(--ndwu-checkbox-checkmark-color);
+        transform: translate(-50%, -50%);
+      }
+
+      &:disabled {
+        &::after {
+          background-color: var(--ndwu-checkbox-disabled-checkmark-color);
+        }
+      }
+    }
+
+    &:indeterminate {
+      @include mixins.colorbox(var(--ndwu-checkbox-checked-border-color), var(--ndwu-checkbox-checked-bg));
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        mask-image: $checkbox-indeterminate-image;
+        mask-position: center;
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        width: var(--ndwu-checkbox-indeterminate-mark-width);
+        height: var(--ndwu-checkbox-indeterminate-mark-height);
+        background-color: var(--ndwu-checkbox-checkmark-color);
+        transform: translate(-50%, -50%);
+      }
+
+      &:hover:not(:disabled) {
+        @include mixins.colorbox(var(--ndwu-checkbox-checked-border-color), var(--ndwu-checkbox-checked-bg));
+      }
+
+      &:disabled {
+        &::after {
+          background-color: var(--ndwu-checkbox-disabled-checkmark-color);
+        }
+      }
+    }
+
+    &--invalid {
+      border-color: var(--ndwu-checkbox-invalid-border-color);
+
+      &:hover:not(:disabled) {
+        border-color: var(--ndwu-checkbox-invalid-hover-border-color, var(--ndwu-checkbox-invalid-border-color));
+      }
+
+      &:focus {
+        border-color: var(--ndwu-checkbox-invalid-border-color);
+        outline: none;
+      }
+
+      &:focus-visible {
+        @include mixins.focus-ring();
+      }
+    }
+
+    &:disabled {
+      @include mixins.colorbox(var(--ndwu-checkbox-disabled-border-color), var(--ndwu-checkbox-disabled-bg));
+
+      cursor: not-allowed;
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+
+  // Set CSS variables for label-group component
+  ndwu-label-group {
+    --ndwu-label-group-label-color: var(--ndwu-checkbox-label-color);
+    --ndwu-label-group-secondary-text-color: var(--ndwu-checkbox-secondary-text-color);
+  }
+
+  // size-specific styles
+  &--L {
+    @include checkbox(
+      (
+        checkbox-size: 16px,
+        checkbox-align-top: 2px,
+        gap: spacing.$spacing-8,
+        label-inner-gap: 0,
+      )
+    );
+  }
+
+  &--XL {
+    @include checkbox(
+      (
+        checkbox-size: 20px,
+        checkbox-align-top: 2px,
+        gap: spacing.$spacing-12,
+        label-inner-gap: spacing.$spacing-2,
+      )
+    );
+  }
+
+  &--XXL {
+    @include checkbox(
+      (
+        checkbox-size: 20px,
+        checkbox-align-top: 3px,
+        gap: spacing.$spacing-12,
+        label-inner-gap: spacing.$spacing-4,
+      )
+    );
+
+    .ndwu-checkbox__input {
+      border-radius: radius.$radius-M;
+    }
+  }
+}

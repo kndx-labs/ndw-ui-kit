@@ -1,0 +1,35 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>{{ 'card-showcase.overview.default' | localize }}</h4>
+      <ndwu-card>
+        <p>{{ 'card-showcase.overview.content' | localize }}</p>
+      </ndwu-card>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'card-showcase.overview.with-title' | localize }}</h4>
+      <ndwu-card>
+        <h3 class="ndwu-card__title">{{ 'card-showcase.overview.card-title' | localize }}</h3>
+        <p>{{ 'card-showcase.overview.card-description' | localize }}</p>
+      </ndwu-card>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'common.size' | localize }}</h4>
+      <div class="size-examples">
+        @for (size of sizes; track size) {
+          <div class="size-example">
+            <h5>{{ ('common.sizes.' + size.toLowerCase()) | localize }}</h5>
+            <ndwu-card [size]="size">
+              <p>{{ 'card-showcase.overview.content' | localize }}</p>
+            </ndwu-card>
+          </div>
+        }
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

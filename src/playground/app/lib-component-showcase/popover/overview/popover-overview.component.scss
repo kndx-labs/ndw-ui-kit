@@ -1,0 +1,42 @@
+.popover-overview {
+  .state-section {
+    margin-bottom: 32px;
+  }
+
+  h4 {
+    margin: 0 0 8px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  p {
+    margin: 0 0 12px;
+    color: var(--ndwu-color-text-secondary, #666);
+  }
+
+  .popover-rich-content {
+    p {
+      margin: 0 0 8px;
+      color: inherit;
+    }
+
+    ul {
+      margin: 0 0 8px;
+      padding-left: 20px;
+    }
+  }
+
+  .popover-position-examples {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, max-content));
+    gap: 12px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, minmax(0, max-content));
+    }
+
+    @media (max-width: 560px) {
+      grid-template-columns: minmax(0, max-content);
+    }
+  }
+}

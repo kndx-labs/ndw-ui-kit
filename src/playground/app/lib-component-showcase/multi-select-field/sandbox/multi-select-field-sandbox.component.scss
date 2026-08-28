@@ -1,0 +1,37 @@
+@use 'styles/animations' as animations;
+@use 'styles/colors' as colors;
+@use 'styles/padding' as padding;
+@use 'styles/radius' as radius;
+@use 'styles/spacing' as spacing;
+@use 'styles/typography' as typography;
+
+.sandbox__control-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.display-empty {
+  color: var(--ndwu-color-text-placeholder);
+}
+
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.chip {
+  display: inline-flex;
+  gap: spacing.$spacing-4;
+  align-items: center;
+  padding: padding.$padding-2 padding.$padding-8;
+  border: 1px solid colors.$gray-20;
+  border-radius: radius.$radius-L;
+  background: colors.$gray-10;
+  font-size: typography.$fontSize-small;
+
+  .chip-remove {
+    opacity: 0.6;
+    cursor: pointer;
+  }
+}

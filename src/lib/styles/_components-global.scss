@@ -1,0 +1,118 @@
+@use 'core/components/button/ndwu-button-style.global' as ndwu-button-style-global;
+@use 'core/components/modal/ndwu-modal' as ndwu-modal-container-global;
+@use 'styles/mixins';
+
+/// This file should import (via @use) any styles
+/// that should be available "globally".
+
+/**
+ * Desktop dropdown overlay pane: when maxHeight is set by the overlay controller,
+ * the pane must use flex so the floating content shrinks and the options list scrolls.
+ * Applied to panes with ndwu-options-panel but not ndwu-options-panel--sheet (mobile).
+ */
+.cdk-overlay-pane.ndwu-options-panel:not(.ndwu-options-panel--sheet) {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.cdk-overlay-pane.ndwu-options-panel--sheet {
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+
+  /* stylelint-disable plugin/no-unsupported-browser-features */
+  @supports (max-height: 100dvh) {
+    max-height: 100dvh;
+  }
+  /* stylelint-enable plugin/no-unsupported-browser-features */
+}
+
+.cdk-overlay-backdrop--sheet {
+  background: rgb(0 0 0 / 32%);
+}
+
+.cdk-overlay-backdrop-noop-animation {
+  transition: none;
+}
+
+.cdk-overlay-backdrop.ndwu-dropdown-backdrop--sheet {
+  background: rgb(152 154 161 / 45%);
+
+  /* stylelint-disable plugin/no-unsupported-browser-features */
+  @supports (backdrop-filter: none) {
+    backdrop-filter: blur(4px);
+  }
+  /* stylelint-enable plugin/no-unsupported-browser-features */
+}
+
+.cdk-overlay-backdrop.ndwu-popover-backdrop--sheet {
+  background: rgb(152 154 161 / 45%);
+
+  /* stylelint-disable plugin/no-unsupported-browser-features */
+  @supports (backdrop-filter: none) {
+    backdrop-filter: blur(4px);
+  }
+  /* stylelint-enable plugin/no-unsupported-browser-features */
+}
+
+.cdk-overlay-backdrop.ndwu-modal-backdrop {
+  background: rgb(0 0 0 / 40%);
+}
+
+.cdk-overlay-pane.ndwu-modal-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cdk-overlay-backdrop.ndwu-drawer-backdrop {
+  background: rgb(0 0 0 / 40%);
+}
+
+.cdk-overlay-pane.ndwu-drawer-panel {
+  position: absolute;
+  right: 0;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+.cdk-overlay-pane.ndwu-drawer-panel > .ndwu-drawer {
+  height: 100%;
+}
+
+.cdk-overlay-backdrop.ndwu-dialog-backdrop {
+  background: rgb(0 0 0 / 40%);
+}
+
+.cdk-overlay-pane.ndwu-dialog-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@include mixins.mobile() {
+  .cdk-overlay-pane.ndwu-dialog-panel {
+    align-items: flex-end;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    pointer-events: none;
+
+    /* stylelint-disable plugin/no-unsupported-browser-features */
+    @supports (height: 100dvh) {
+      height: 100dvh;
+      max-height: 100dvh;
+    }
+    /* stylelint-enable plugin/no-unsupported-browser-features */
+  }
+
+  .cdk-overlay-pane.ndwu-dialog-panel > * {
+    pointer-events: auto;
+  }
+}

@@ -1,0 +1,7 @@
+@use 'styles/colors' as colors;
+
+.scrollable-text {
+  margin: 0;
+  color: colors.$gray-80;
+  line-height: 1.6;
+}

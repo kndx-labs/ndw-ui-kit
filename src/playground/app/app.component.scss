@@ -1,0 +1,511 @@
+@use 'styles/fonts';
+@use 'styles/mixins';
+@use 'styles/typography';
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: calc(100vh - 16px);
+}
+
+.header {
+  display: grid;
+  flex-shrink: 0;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+
+  @include mixins.mobile() {
+    grid-template-columns: auto auto;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  &__left {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  &__center {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 560px;
+
+    @include mixins.mobile() {
+      display: none;
+    }
+  }
+
+  &__search-input-wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    min-width: 560px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    color: #666;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+
+    &:hover {
+      border-color: #0086CB;
+    }
+
+    @include mixins.mobile() {
+      display: none;
+    }
+  }
+
+  &__search-placeholder {
+    flex: 1;
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  &__search-shortcut {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f5f5f5;
+    color: #999;
+    font-size: 0.75rem;
+    font-family: monospace;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  &__settings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #666;
+    cursor: pointer;
+    touch-action: manipulation;
+
+    &:hover {
+      color: #0086CB;
+    }
+
+    &:focus {
+      border-radius: 4px;
+      outline: 2px solid #0086CB;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.burger-menu-button {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px;
+  border: none;
+  background: none;
+  color: #333;
+  cursor: pointer;
+  touch-action: manipulation;
+
+  @include mixins.mobile() {
+    display: flex;
+  }
+
+  &:focus {
+    border-radius: 4px;
+    outline: 2px solid #0086CB;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    background-color: rgb(0 0 0 / 5%);
+  }
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  display: none;
+  background-color: rgb(0 0 0 / 50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  @include mixins.mobile() {
+    display: block;
+  }
+
+  &--open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  display: none;
+  overflow-y: auto;
+  width: 280px;
+  height: 100vh;
+  border-right: 1px solid #e0e0e0;
+  background-color: #fafafa;
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+
+  @include mixins.mobile() {
+    display: block;
+  }
+
+  &--open {
+    transform: translateX(0);
+  }
+
+  &__header {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  &__title {
+    margin: 0;
+    color: #333;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  &__close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #666;
+    cursor: pointer;
+    touch-action: manipulation;
+
+    &:hover {
+      color: #0086CB;
+    }
+
+    &:focus {
+      border-radius: 4px;
+      outline: 2px solid #0086CB;
+      outline-offset: 2px;
+    }
+  }
+
+  .component-nav {
+    padding: 16px;
+  }
+}
+
+.language-switcher {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+
+  select {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    color: #333;
+    font-size: 0.9rem;
+    cursor: pointer;
+
+    @include mixins.mobile() {
+      padding: 6px 10px;
+      font-size: 16px; // Prevent iOS Safari zoom on focus (must be >= 16px)
+    }
+
+    &:hover {
+      border-color: #0086CB;
+    }
+
+    &:focus {
+      outline: 2px solid #0086CB;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.main-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  overflow: hidden;
+  width: 250px;
+  border-right: 1px solid #e0e0e0;
+  background-color: #fafafa;
+
+  @include mixins.mobile() {
+    display: none;
+  }
+
+  &--collapsed {
+    width: 56px;
+  }
+
+  &__header {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  &--collapsed &__header {
+    justify-content: center;
+    padding: 8px 0;
+  }
+
+  &__title {
+    margin: 0;
+    color: #333;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  &__toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #666;
+    cursor: pointer;
+    touch-action: manipulation;
+
+    &:hover {
+      color: #0086CB;
+    }
+
+    &:focus {
+      border-radius: 4px;
+      outline: 2px solid #0086CB;
+      outline-offset: 2px;
+    }
+  }
+
+  .component-nav {
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+  }
+}
+
+.component-nav {
+  padding: 16px 12px;
+
+  h2 {
+    margin: 0 0 16px;
+    color: #333;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    margin-bottom: 8px;
+
+    button:focus {
+      outline-offset: -2px;
+    }
+  }
+
+  .nav-group-children {
+    margin: 4px 0 0;
+    padding-left: 12px;
+
+    li {
+      margin-bottom: 4px;
+    }
+  }
+}
+
+.nav-button {
+  position: relative;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  background: none;
+  color: #666;
+  font-size: 0.86rem;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.1s ease;
+
+  @include mixins.mobile() {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+
+  &:hover {
+    background-color: #f0f0f0;
+    color: #111;
+  }
+
+  &.active {
+    background-color: #e3f2fd;
+    color: #0086CB;
+    font-weight: 500;
+  }
+
+  &:focus {
+    outline: 2px solid #0086CB;
+    outline-offset: 2px;
+  }
+}
+
+.nav-button__label {
+  display: block;
+  white-space: nowrap;
+}
+
+.nav-group-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  background: none;
+  color: #333;
+  font-weight: typography.$fontWeight-XL;
+  font-size: 0.86rem;
+  font-family: fonts.$font-family-default;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.1s ease;
+
+  @include mixins.mobile() {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+
+  &:hover {
+    background-color: #f0f0f0;
+    color: #111;
+  }
+
+  &:focus {
+    outline: 2px solid #0086CB;
+    outline-offset: 2px;
+  }
+}
+
+.nav-group-header__chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+
+  &--expanded {
+    transform: rotate(90deg);
+  }
+}
+
+.nav-badge {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background-color: #dcfce7;
+  color: #166534;
+  font-weight: 600;
+  font-size: 0.7em;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  min-width: 0;
+
+  @include mixins.mobile() {
+    width: 100%;
+  }
+}
+
+
+h1 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+
+  @include mixins.mobile() {
+    font-size: 1.25rem;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:focus {
+      border-radius: 4px;
+      outline: 2px solid #0086CB;
+      outline-offset: 2px;
+    }
+  }
+}

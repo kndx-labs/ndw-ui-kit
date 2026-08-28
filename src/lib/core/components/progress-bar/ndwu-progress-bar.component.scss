@@ -1,0 +1,93 @@
+@use 'styles/colors';
+@use 'styles/padding';
+@use 'styles/radius';
+@use 'styles/spacing';
+
+.ndwu-progress-bar {
+  display: block;
+  width: 100%;
+
+  &__track {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    border-radius: radius.$radius-L;
+    background-color: var(--ndwu-progress-bar-track-bg);
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: radius.$radius-L;
+    transition: width 0.3s ease-in-out;
+  }
+
+  // Size variants
+  &--L {
+    .ndwu-progress-bar__track {
+      height: spacing.$spacing-4;
+    }
+  }
+
+  &--XL {
+    .ndwu-progress-bar__track {
+      height: spacing.$spacing-8;
+    }
+  }
+
+  // Color variants
+  &--primary {
+    .ndwu-progress-bar__fill {
+      background-color: var(--ndwu-progress-bar-fill-primary);
+    }
+  }
+
+  &--success {
+    .ndwu-progress-bar__fill {
+      background-color: var(--ndwu-progress-bar-fill-success);
+    }
+  }
+
+  &--danger {
+    .ndwu-progress-bar__fill {
+      background-color: var(--ndwu-progress-bar-fill-danger);
+    }
+  }
+
+  &--warning {
+    .ndwu-progress-bar__fill {
+      background-color: var(--ndwu-progress-bar-fill-warning);
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    .ndwu-progress-bar__track {
+      background-color: var(--ndwu-progress-bar-track-disabled-bg);
+    }
+
+    .ndwu-progress-bar__fill {
+      background-color: var(--ndwu-progress-bar-fill-disabled);
+    }
+  }
+
+  // Indeterminate mode
+  &--indeterminate {
+    .ndwu-progress-bar__fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40%;
+      animation: ndwu-progress-bar-indeterminate 1.5s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes ndwu-progress-bar-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(250%);
+  }
+}

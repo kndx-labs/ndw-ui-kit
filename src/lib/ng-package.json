@@ -1,0 +1,17 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ndw-ui-kit",
+  "allowedNonPeerDependencies": ["svg-sprite"],
+  "assets": [
+    "styles/**/*.scss",
+    "core/**/*.scss",
+    "form-field/**/*.scss",
+    "assets/**/*",
+    "LICENSE.txt",
+    "README.md"
+  ],
+  "lib": {
+    "entryFile": "public-api.ts",
+    "styleIncludePaths": ["."]
+  }
+}

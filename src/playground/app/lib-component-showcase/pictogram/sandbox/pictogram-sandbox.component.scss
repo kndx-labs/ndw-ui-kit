@@ -1,0 +1,72 @@
+@use 'styles/colors' as colors;
+@use 'styles/spacing' as spacing;
+@use 'styles/radius' as radius;
+
+.sandbox-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+
+  select,
+  input[type="color"] {
+    min-width: 200px;
+    padding: 0.5rem;
+    border: 1px solid colors.$gray-30;
+    border-radius: radius.$radius-S;
+  }
+
+  input[type="color"] {
+    min-width: 60px;
+    height: 36px;
+    cursor: pointer;
+  }
+}
+
+.preview-container {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.preview-surface {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  min-height: 120px;
+  border: 1px dashed colors.$gray-30;
+  border-radius: radius.$radius-L;
+  background: colors.$gray-5;
+}
+
+.reset-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: radius.$radius-S;
+  background: colors.$brand-50;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background: colors.$brand-70;
+  }
+}

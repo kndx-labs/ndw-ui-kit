@@ -1,0 +1,74 @@
+@use 'styles/radius';
+
+.state-section {
+  margin-bottom: 32px;
+
+  h3 {
+    margin: 0 0 12px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+}
+
+.states-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  &__label {
+    flex-shrink: 0;
+    width: 80px;
+    color: var(--color-gray-60);
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+
+  &__class {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--color-gray-10);
+    color: var(--color-gray-60);
+    font-size: 0.75rem;
+    font-family: monospace;
+  }
+
+}
+
+a[ndwu-link] {
+  color: var(--ndwu-link-default-color);
+
+  .ndwu-link__container {
+    text-decoration: underline;
+  }
+
+  &.ndwu-link--state-hover {
+    color: var(--ndwu-link-hover-color) !important;
+  }
+
+  &.ndwu-link--state-pressed {
+    color: var(--ndwu-link-active-color) !important;;
+  }
+
+  &.ndwu-link--state-focused {
+    border-radius: radius.$radius-S;
+    outline: 2px solid var(--ndwu-link-focus-outline);
+    outline-offset: 2px;
+    color: var(--ndwu-link-focus-color) !important;;
+
+    .ndwu-link__container {
+      text-decoration: none;
+    }
+  }
+
+  &.ndwu-link--state-visited {
+    color: var(--ndwu-link-visited-color) !important;;
+  }
+}

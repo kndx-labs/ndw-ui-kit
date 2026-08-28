@@ -1,0 +1,42 @@
+@use 'styles/colors';
+@use 'styles/typography';
+
+.state-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  ndwu-card {
+    max-width: 320px;
+  }
+
+  .size-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .size-example {
+    display: flex;
+    flex: 1 1 240px;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 320px;
+
+    h5 {
+      margin: 0;
+    }
+  }
+
+  & + .state-section {
+    margin-top: 16px;
+  }
+
+  h3.ndwu-card__title {
+    color: colors.$gray-80;
+    font-weight: typography.$fontWeight-XL;
+    font-style: normal;
+    line-height: 22px;
+    letter-spacing: typography.$letterSpacing-L;
+  }
+}

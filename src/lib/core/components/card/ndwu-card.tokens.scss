@@ -1,0 +1,7 @@
+@use 'styles/colors';
+
+$ndwu-card-tokens: (
+  card-bg: colors.$gray-0,
+  card-border-color: colors.$gray-20,
+  card-color: colors.$gray-80,
+);

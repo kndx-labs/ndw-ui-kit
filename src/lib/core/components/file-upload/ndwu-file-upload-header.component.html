@@ -1,0 +1,57 @@
+<div [class]="rootClass()">
+  <div class="ndwu-file-upload-header__body">
+    <div class="ndwu-file-upload-header__info">
+      <span class="ndwu-file-upload-header__title">
+        {{ headerTitle() | localize }}
+      </span>
+      <span class="ndwu-file-upload-header__subtitle">
+        {{ headerSubtitle().key | localize: headerSubtitle().params }}
+      </span>
+    </div>
+
+    <div class="ndwu-file-upload-header__actions">
+      @if (hasUploading()) {
+        <button
+          ndwu-button
+          variant="ghost"
+          size="L"
+          [label]="effectiveHeaderActionTexts().cancelAll | localize"
+          [disabled]="disabled()"
+          (click)="onCancelAll()"
+        ></button>
+      }
+
+      @if (hasErrors()) {
+        <button
+          ndwu-button
+          variant="ghost"
+          size="L"
+          [label]="effectiveHeaderActionTexts().retry | localize"
+          [disabled]="disabled()"
+          (click)="onRetryAll()"
+        ></button>
+      }
+
+      <button
+        ndwu-button
+        variant="ghost"
+        size="L"
+        [icon]="ICON_NAME.CHEVRON_DOWN_L"
+        [disabled]="disabled()"
+        [attr.aria-expanded]="!isCollapsed()"
+        [attr.aria-label]="toggleAriaLabel() | localize"
+        class="ndwu-file-upload-header__toggle"
+        [class.ndwu-file-upload-header__toggle--collapsed]="isCollapsed()"
+        (click)="onToggleCollapse()"
+      ></button>
+    </div>
+  </div>
+
+  <div class="ndwu-file-upload-header__progress">
+    <ndwu-progress-bar
+      [value]="overallProgress()"
+      [max]="100"
+      [color]="progressColor()"
+    />
+  </div>
+</div>

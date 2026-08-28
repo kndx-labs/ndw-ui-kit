@@ -1,0 +1,199 @@
+/*
+ * Neutralizes the custom scroll box: content grows on both axes, tracks disappear, and the
+ * gutter padding is released. This is always both axes at once:
+ * CSS computes `overflow-y: visible` next to `overflow-x: auto` back to `auto` on both,
+ * so a single-axis grow mode is not expressible on one element.
+ *
+ * The triple class names raise specificity to match the axis selectors; the blocks that
+ * include this mixin must also come last in source order to win the resulting tie.
+ */
+@mixin passthrough-overflow {
+  overflow: visible;
+
+  .ndwu-scrollbar__content.ndwu-scrollbar__content.ndwu-scrollbar__content {
+    overflow: visible;
+    width: auto;
+    max-width: none;
+    height: auto;
+    max-height: none;
+    padding-inline-end: 0;
+    padding-block-end: 0;
+  }
+
+  .ndwu-scrollbar__track.ndwu-scrollbar__track.ndwu-scrollbar__track {
+    display: none;
+  }
+}
+
+:host {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+}
+
+:host(.ndwu-scrollbar--size-l) {
+  --ndwu-scrollbar-size-local: var(--ndwu-scrollbar-size-l);
+}
+
+:host(.ndwu-scrollbar--size-xl) {
+  --ndwu-scrollbar-size-local: var(--ndwu-scrollbar-size-xl);
+}
+
+// We keep this node as actual scroll box for TS metrics/focus/listeners, but inherit host layout
+// props so projected children preserve flex-based patterns like wrapping cards, column layouts,
+// and sticky footer/margin-top:auto alignment when `ndwuScrollbar` sits on flex containers.
+// Reserve space for visible custom tracks via padding so content does not render underneath them.
+.ndwu-scrollbar__content {
+  /* stylelint-disable order/properties-order */
+  display: inherit;
+  flex: 1 1 auto;
+  flex-direction: inherit;
+  flex-wrap: inherit;
+  gap: inherit;
+  row-gap: inherit;
+  column-gap: inherit;
+  align-content: inherit;
+  justify-content: inherit;
+  align-items: inherit;
+  overflow: auto;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  padding-inline: var(--ndwu-scrollbar-content-padding-left, 0) var(--ndwu-scrollbar-content-padding-right, 0);
+  padding-block: var(--ndwu-scrollbar-content-padding-top, 0) var(--ndwu-scrollbar-content-padding-bottom, 0);
+  /* stylelint-disable plugin/no-unsupported-browser-features */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* stylelint-enable plugin/no-unsupported-browser-features */
+  /* stylelint-enable order/properties-order */
+}
+
+// Axis-based overflow on host. CSS cannot combine visible with non-visible per axis
+// (e.g. overflow-y: hidden + overflow-x: visible computes to auto on both),
+// so we keep overflow: hidden for all axes.
+:host(.ndwu-scrollbar--axis-y) {
+  overflow-y: hidden;
+}
+
+:host(.ndwu-scrollbar--axis-y) .ndwu-scrollbar__content {
+  overflow-y: auto;
+}
+
+:host(.ndwu-scrollbar--axis-x) {
+  overflow-x: hidden;
+}
+
+:host(.ndwu-scrollbar--axis-x) .ndwu-scrollbar__content {
+  overflow-x: auto;
+}
+
+// Scrollbar track positioned with per-side padding inset.
+// Custom properties control gap between track and container edges.
+.ndwu-scrollbar__track {
+  position: absolute;
+  z-index: 1;
+  display: none;
+  border-radius: calc(var(--ndwu-scrollbar-size-local) / 2);
+  background: var(--ndwu-scrollbar-track-color);
+
+  &--vertical {
+    top: var(--ndwu-scrollbar-padding-top, 0);
+    right: var(--ndwu-scrollbar-padding-right, 4px);
+    bottom: var(--ndwu-scrollbar-padding-bottom, 0);
+    width: var(--ndwu-scrollbar-size-local);
+  }
+
+  &--horizontal {
+    right: var(--ndwu-scrollbar-padding-right, 4px);
+    bottom: var(--ndwu-scrollbar-padding-bottom, 0);
+    left: var(--ndwu-scrollbar-padding-left, 4px);
+    height: var(--ndwu-scrollbar-size-local);
+  }
+}
+
+.ndwu-scrollbar__thumb {
+  position: absolute;
+  border-radius: calc(var(--ndwu-scrollbar-size-local) / 2);
+  background: var(--ndwu-scrollbar-thumb-color);
+  cursor: pointer;
+  will-change: transform;
+
+  .ndwu-scrollbar__track--vertical & {
+    width: 100%;
+    min-height: var(--ndwu-scrollbar-min-thumb-size, 24px); // should match MIN_THUMB_SIZE
+  }
+
+  .ndwu-scrollbar__track--horizontal & {
+    min-width: var(--ndwu-scrollbar-min-thumb-size, 24px); // should match MIN_THUMB_SIZE
+    height: 100%;
+  }
+}
+
+:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--vertical,
+:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-y .ndwu-scrollbar__track--vertical {
+  display: block;
+}
+
+:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-both .ndwu-scrollbar__content,
+:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-y .ndwu-scrollbar__content {
+  padding-inline-end: calc(
+    var(--ndwu-scrollbar-padding-left, 4px) + var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-right, 4px) + var(--ndwu-scrollbar-content-padding-right, 0)
+  );
+}
+
+:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--horizontal,
+:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-x .ndwu-scrollbar__track--horizontal {
+  display: block;
+}
+
+:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-both .ndwu-scrollbar__content,
+:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-x .ndwu-scrollbar__content {
+  padding-block-end: calc(
+    var(--ndwu-scrollbar-padding-top, 0) + var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-bottom, 0) + var(--ndwu-scrollbar-content-padding-bottom, 0)
+  );
+}
+
+// When both scrollbars are visible, offset each track to avoid the other.
+// Include padding so tracks stay inset from the intersection corner.
+:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--vertical,
+:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-y .ndwu-scrollbar__track--vertical {
+  bottom: calc(var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-bottom, 0));
+}
+
+:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--horizontal,
+:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-x .ndwu-scrollbar__track--horizontal {
+  right: calc(var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-right, 4px));
+}
+
+:host(.ndwu-scrollbar--dragging) .ndwu-scrollbar__thumb {
+  /* stylelint-disable plugin/no-unsupported-browser-features */
+  @supports (cursor: grabbing) {
+    cursor: grabbing;
+  }
+  /* stylelint-enable plugin/no-unsupported-browser-features */
+}
+
+
+:host(.ndwu-scrollbar--disabled) {
+  @include passthrough-overflow();
+}
+
+:host(.ndwu-scrollbar--unprintable) {
+  @media print {
+    @include passthrough-overflow();
+
+    // The ResizeObserver pins width/height inline on the content box, and only `!important`
+    // outranks an inline style -> the mixin's plain `width: auto` never applies here. Print
+    // has no equivalent of the effect that clears those styles in the disabled state.
+    .ndwu-scrollbar__content.ndwu-scrollbar__content.ndwu-scrollbar__content {
+      width: auto !important;
+      height: auto !important;
+    }
+  }
+}

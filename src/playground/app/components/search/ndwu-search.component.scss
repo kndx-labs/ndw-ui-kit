@@ -1,0 +1,176 @@
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
+@use 'styles/colors';
+
+.ndwu-search {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+  height: 480px;
+  max-height: 80vh;
+  background: colors.$gray-0;
+
+  &__header {
+    display: flex;
+    gap: spacing.$spacing-8;
+    align-items: center;
+    padding: spacing.$spacing-12 spacing.$spacing-16;
+    border-bottom: 1px solid colors.$gray-20;
+  }
+
+  &__input-wrapper {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__results {
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  &__listbox {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__category {
+    padding: spacing.$spacing-8 spacing.$spacing-16;
+    color: colors.$gray-50;
+    font-weight: typography.$fontWeight-XL;
+    font-size: typography.$fontSize-H6;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  &__result {
+    display: flex;
+    gap: spacing.$spacing-12;
+    align-items: flex-start;
+    width: 100%;
+    padding: spacing.$spacing-12 spacing.$spacing-16;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.12s ease;
+
+    &:hover,
+    &--active {
+      background: colors.$gray-10;
+    }
+
+    &--best-match {
+      background: colors.$brand-10;
+      color: colors.$brand-70;
+
+      &:hover,
+      &[data-active='true'] {
+        background: colors.$brand-10;
+        opacity: 0.9;
+      }
+    }
+  }
+
+  &__result-icon {
+    flex-shrink: 0;
+    color: colors.$gray-50;
+  }
+
+  &__result-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: spacing.$spacing-4;
+    min-width: 0;
+  }
+
+  &__result-label,
+  &__result-snippet {
+    mark {
+      background: transparent;
+      color: colors.$brand-60;
+      font-weight: typography.$fontWeight-XL;
+    }
+  }
+
+  &__result-label {
+    color: colors.$gray-80;
+    font-weight: typography.$fontWeight-XL;
+    font-size: typography.$fontSize-small;
+    line-height: 20px;
+    overflow-wrap: break-word;
+  }
+
+  &__result-snippet {
+    color: colors.$gray-50;
+    font-size: typography.$fontSize-xsmall;
+    line-height: 18px;
+    overflow-wrap: break-word;
+  }
+
+  &__result-meta {
+    display: flex;
+    flex-shrink: 0;
+    gap: spacing.$spacing-8;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: spacing.$spacing-8 spacing.$spacing-16;
+    border-top: 1px solid colors.$gray-20;
+    background: colors.$gray-5;
+  }
+
+  &__hints {
+    display: flex;
+    gap: spacing.$spacing-12;
+    align-items: center;
+  }
+
+  &__hint {
+    display: flex;
+    gap: spacing.$spacing-4;
+    align-items: center;
+    color: colors.$gray-50;
+    font-size: typography.$fontSize-xxsmall;
+    line-height: 16px;
+  }
+
+  &__hint-key {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 4px;
+    border: 1px solid colors.$gray-20;
+    border-radius: radius.$radius-S;
+    background: colors.$gray-5;
+    font-size: typography.$fontSize-xxsmall;
+    font-family: monospace;
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-12;
+    justify-content: center;
+    align-items: center;
+    padding: spacing.$spacing-32 spacing.$spacing-16;
+    color: colors.$gray-50;
+    font-size: typography.$fontSize-small;
+    text-align: center;
+
+    ndwu-icon {
+      color: colors.$gray-30;
+    }
+  }
+}

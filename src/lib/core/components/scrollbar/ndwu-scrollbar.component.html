@@ -1,0 +1,27 @@
+<div class="ndwu-scrollbar__content" #contentEl>
+  <ng-content></ng-content>
+</div>
+<div
+  class="ndwu-scrollbar__track ndwu-scrollbar__track--vertical"
+  #trackY
+  (pointerdown)="onTrackPointerDown('y', $event)"
+>
+  <div
+    class="ndwu-scrollbar__thumb"
+    #thumbY
+    (pointerdown)="onThumbPointerDown('y', $event)"
+  >
+  </div>
+</div>
+<div
+  class="ndwu-scrollbar__track ndwu-scrollbar__track--horizontal"
+  #trackX
+  (pointerdown)="onTrackPointerDown('x', $event)"
+>
+  <div
+    class="ndwu-scrollbar__thumb"
+    #thumbX
+    (pointerdown)="onThumbPointerDown('x', $event)"
+  >
+  </div>
+</div>

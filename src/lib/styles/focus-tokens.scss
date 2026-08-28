@@ -1,0 +1,9 @@
+@use 'styles/colors';
+
+$ndwu-focus-tokens: (
+  fx-focused-default: 0 0 0 2px #{colors.$brand-50},
+  fx-focused-primary: (inset 0 0 0 1px #{colors.$gray-0}, 0 0 0 2px #{colors.$brand-50}),
+  fx-focused-negative: 0 0 0 3px #{colors.$red-20},
+  fx-focused-positive: 0 0 0 3px #{colors.$green-30},
+  fx-focused-warning: 0 0 0 3px #{colors.$yellow-20},
+);

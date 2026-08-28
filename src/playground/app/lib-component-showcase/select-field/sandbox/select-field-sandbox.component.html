@@ -1,0 +1,85 @@
+<div class="sandbox">
+  <app-sandbox-toolbar
+    [theme]="sandboxTheme()"
+    (themeChange)="setSandboxTheme($any($event))"
+    (widthChange)="onWidthChange($event)"
+    (resetClick)="resetSandbox()"
+  />
+
+  <div class="sandbox__content">
+    <div class="sandbox__preview">
+      <h4 class="sandbox__section-title">{{ 'common.preview' | localize }}</h4>
+      <div
+        class="sandbox__preview-surface"
+        [class.ndwu-theme-light]="sandboxTheme() === 'light'"
+        [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
+      >
+        <div class="sandbox__preview-input-wrap" [style.width]="previewWidth()">
+          <form [formGroup]="sandboxForm" class="sandbox__preview-form">
+            <ndwu-select-field
+              [label]="sandboxForm.controls.label.value"
+              [placeholder]="sandboxForm.controls.placeholder.value"
+              [hint]="sandboxForm.controls.hint.value"
+              [options]="options()"
+              [size]="sandboxForm.controls.size.value"
+              [required]="sandboxForm.controls.required.value"
+              formControlName="selectValue"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="sandbox__bottom">
+      <div class="sandbox__controls">
+        <h4 class="sandbox__section-title">{{ 'common.controls' | localize }}</h4>
+        <form [formGroup]="sandboxForm" class="sandbox__controls-form">
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sf-label">{{ 'common.label' | localize }}</label>
+            <input id="sf-label" class="sandbox__control-input" type="text" formControlName="label" />
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sf-placeholder">{{ 'common.placeholder' | localize }}</label>
+            <input id="sf-placeholder" class="sandbox__control-input" type="text" formControlName="placeholder" />
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sf-hint">{{ 'select-field-showcase.sandbox.hint' | localize }}</label>
+            <input id="sf-hint" class="sandbox__control-input" type="text" formControlName="hint" />
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sf-size">{{ 'common.size' | localize }}</label>
+            <select id="sf-size" class="sandbox__control-input" formControlName="size">
+              <option [value]="SIZE.L">{{ 'common.sizes.l' | localize }}</option>
+              <option [value]="SIZE.XL">{{ 'common.sizes.xl' | localize }}</option>
+              <option [value]="SIZE.XXL">{{ 'common.sizes.xxl' | localize }}</option>
+            </select>
+          </div>
+          <div class="sandbox__control-row sandbox__control-row--checkboxes">
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="disabled" />
+              <span>{{ 'common.disabled' | localize }}</span>
+            </label>
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="required" />
+              <span>{{ 'common.required' | localize }}</span>
+            </label>
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sf-options">{{ 'select-field-showcase.sandbox.options-textarea' | localize }}</label>
+            <textarea
+              id="sf-options"
+              class="sandbox__control-input sandbox__control-textarea"
+              formControlName="optionsRaw"
+              rows="6"
+            ></textarea>
+          </div>
+        </form>
+
+        <div class="sandbox__state">
+          <h4 class="sandbox__section-title">{{ 'select-field-showcase.sandbox.state-title' | localize }}</h4>
+          <code class="sandbox__state-scalar">{{ sandboxForm.controls.selectValue.value }}</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+{
+  "name": "@ndw-ui-kit/core/popover",
+  "ng-package": {
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  }
+}
+

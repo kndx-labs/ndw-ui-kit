@@ -1,0 +1,16 @@
+ndwu-card {
+  &.ndwu-card--state-hover {
+    border-color: var(--ndwu-card-border-color);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  }
+
+  &.ndwu-card--state-focused {
+    outline: 2px solid var(--ndwu-card-border-color);
+    outline-offset: 2px;
+  }
+
+  &.ndwu-card--state-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,6 @@
+@use 'styles/colors';
+
+$ndwu-label-group-tokens: (
+  label-group-label-color: colors.$gray-80,
+  label-group-secondary-text-color: colors.$gray-60,
+);

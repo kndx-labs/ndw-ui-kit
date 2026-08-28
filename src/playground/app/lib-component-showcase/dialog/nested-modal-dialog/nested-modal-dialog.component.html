@@ -1,0 +1,19 @@
+<div ndwuModalBody>
+  @if (isParent) {
+    <p>{{ 'dialog-showcase.overview.nested-modal.parent-dialog.description' | localize }}</p>
+    <p>{{ 'dialog-showcase.overview.nested-modal.parent-dialog.extra-1' | localize }}</p>
+    <p>{{ 'dialog-showcase.overview.nested-modal.parent-dialog.extra-2' | localize }}</p>
+    <p>{{ 'dialog-showcase.overview.nested-modal.parent-dialog.extra-3' | localize }}</p>
+    <p>{{ 'dialog-showcase.overview.nested-modal.parent-dialog.extra-4' | localize }}</p>
+  } @else {
+    <p>{{ 'dialog-showcase.overview.nested-modal.nested-dialog.description' | localize }}</p>
+  }
+</div>
+<div ndwuModalFooter>
+  <button ndwuButton variant="secondary" (click)="openNestedDialog()">
+    {{ 'dialog-showcase.overview.nested-modal.parent-dialog.button-open-nested' | localize }}
+  </button>
+  <button ndwuButton variant="primary" (click)="closeDialog()">
+    {{ 'dialog-showcase.overview.common.button-close' | localize }}
+  </button>
+</div>

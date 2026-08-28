@@ -1,0 +1,12 @@
+@use 'styles/colors';
+
+$ndwu-link-tokens: (
+  link-default-color: colors.$brand-50,
+  link-hover-color: colors.$brand-50,
+  link-active-color: colors.$brand-70,
+  link-focus-color: colors.$brand-50,
+  link-focus-outline: colors.$brand-20,
+  link-visited-color: colors.$violet-50,
+  link-disabled-color: colors.$gray-30,
+);
+

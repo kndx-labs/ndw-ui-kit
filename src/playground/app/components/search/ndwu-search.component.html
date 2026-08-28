@@ -1,0 +1,91 @@
+<div class="ndwu-search">
+  <div class="ndwu-search__header">
+    <ndwu-input-field
+      #searchInput
+      class="ndwu-search__input-wrapper"
+      [placeholder]="placeholder()"
+      [ngModel]="query()"
+      (ngModelChange)="onQueryChange($event)"
+      [rightIcon]="query() ? ICON_NAME.CLOSE_S : undefined"
+      (rightIconClicked)="clearQuery()"
+    />
+  </div>
+
+  <div class="ndwu-search__results" ndwuScrollbar ndwuScrollbarAxis="y">
+    @if (resultGroups().length === 0) {
+      <div class="ndwu-search__empty">
+        <ndwu-icon [name]="ICON_NAME.SEARCH_L" />
+        <span>
+          @if (!query()) {
+            Type to search components and examples
+          } @else {
+            No results found for "{{ query() }}"
+          }
+        </span>
+      </div>
+    }
+
+    @if (resultGroups().length > 0) {
+      <div class="ndwu-search__listbox" #resultContainer>
+        @for (group of resultGroups(); track group.category.type) {
+          <div class="ndwu-search__category">
+            {{ group.category.label }}
+          </div>
+
+          @for (result of group.results; track result.id) {
+            <div
+              class="ndwu-search__result"
+              tabindex="0"
+              [class.ndwu-search__result--best-match]="bestMatch()?.id === result.id"
+              [class.ndwu-search__result--active]="isActive(result)"
+              [attr.data-active]="isActive(result)"
+              (click)="selectResult(result)"
+              (keydown.enter)="selectResult(result)"
+            >
+              <ndwu-icon
+                class="ndwu-search__result-icon"
+                [name]="result.icon ?? ICON_NAME.FILE_L"
+              />
+
+              <div class="ndwu-search__result-content">
+                <div
+                  class="ndwu-search__result-label"
+                  [innerHTML]="result.highlightedLabel"
+                ></div>
+
+                <div
+                  class="ndwu-search__result-snippet"
+                  [innerHTML]="result.highlightedDescription"
+                ></div>
+              </div>
+
+              @if (bestMatch()?.id === result.id) {
+                <div class="ndwu-search__result-meta">
+                  <ndwu-icon [name]="ICON_NAME.CHEVRON_RIGHT_S" />
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+
+  <div class="ndwu-search__footer">
+    <div class="ndwu-search__hints">
+      <span class="ndwu-search__hint">
+        <kbd class="ndwu-search__hint-key">↵</kbd>
+        select
+      </span>
+      <span class="ndwu-search__hint">
+        <kbd class="ndwu-search__hint-key">↑</kbd>
+        <kbd class="ndwu-search__hint-key">↓</kbd>
+        navigate
+      </span>
+      <span class="ndwu-search__hint">
+        <kbd class="ndwu-search__hint-key">esc</kbd>
+        close
+      </span>
+    </div>
+  </div>
+</div>

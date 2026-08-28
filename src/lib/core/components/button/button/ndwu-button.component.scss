@@ -1,0 +1,60 @@
+@use 'styles/spacing';
+@use 'styles/touch-target' as touch-target;
+@use '../ndwu-button.mixins' as button-mixins;
+
+:host {
+  /* stylelint-disable order/order */
+  @include button-mixins.base();
+
+  @each $variant in (primary, secondary, tertiary, ghost, secondary-negative) {
+    &.ndwu-button--#{$variant} {
+      @include button-mixins.variant($variant);
+    }
+  }
+
+  .ndwu-button__label {
+    display: inline-flex;
+    gap: spacing.$spacing-8;
+    align-items: center;
+  }
+
+  &.ndwu-button--S {
+    @include button-mixins.size(S);
+  }
+
+  &.ndwu-button--L {
+    @include button-mixins.size(L);
+  }
+
+  &.ndwu-button--XL {
+    @include button-mixins.size(XL);
+  }
+
+  &.ndwu-button--XXL {
+    @include button-mixins.size(XXL);
+  }
+
+  &.ndwu-button--with-icon {
+    &.ndwu-button--L {
+      padding-right: 12px;
+      padding-left: 10px;
+    }
+
+    &.ndwu-button--XL {
+      padding-right: 16px;
+      padding-left: 14px;
+    }
+
+    &.ndwu-button--XXL {
+      padding-right: 20px;
+      padding-left: 18px;
+    }
+  }
+
+  &.ndwu-button--loading {
+    pointer-events: none;
+  }
+
+  @include touch-target.touchable();
+  /* stylelint-enable order/order */
+}

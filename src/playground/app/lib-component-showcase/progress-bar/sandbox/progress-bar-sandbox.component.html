@@ -1,0 +1,244 @@
+<div class="sandbox">
+  <div class="sandbox__toolbar">
+    <app-theme-switcher
+      [theme]="sandboxTheme()"
+      (themeChange)="setSandboxTheme($any($event))"
+    />
+
+    <button
+      type="button"
+      class="sandbox__reset"
+      (click)="resetSandbox()"
+    >
+      {{ 'common.reset' | localize }}
+    </button>
+  </div>
+
+  <div class="sandbox__content">
+    <div class="sandbox__preview">
+      <h4 class="sandbox__section-title">{{ 'common.preview' | localize }}</h4>
+
+      <div
+        class="sandbox__preview-surface"
+        #previewSurface
+        [class.ndwu-theme-light]="sandboxTheme() === 'light'"
+        [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
+        [ngStyle]="sandboxTokenStyles()"
+      >
+        <div style="width: 100%; min-height: 80px; background: #fff; padding: 20px; box-sizing: border-box;">
+          <span class="size-label">{{ sandboxForm.controls.value.value }}%</span>
+          <ndwu-progress-bar
+            [value]="sandboxForm.controls.value.value"
+            [max]="sandboxForm.controls.max.value"
+            [color]="getColor()"
+            [size]="getSize()"
+            [disabled]="isDisabled()"
+            [mode]="getMode()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="sandbox__bottom">
+      <div class="sandbox__controls">
+        <h4 class="sandbox__section-title">{{ 'common.controls' | localize }}</h4>
+
+        <form [formGroup]="sandboxForm" class="sandbox__controls-form">
+          <div class="sandbox__control-row">
+            <label
+              class="sandbox__control-label"
+              for="sandbox-value"
+            >
+              {{ 'progress-bar-showcase.sandbox.value' | localize }}
+            </label>
+            <div style="display: flex; align-items: center; gap: 10px; flex: 1;">
+              <input
+                id="sandbox-value"
+                class="sandbox__control-input"
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                formControlName="value"
+                style="flex: 1;"
+              />
+              <span style="min-width: 50px; text-align: right; font-weight: 600; font-size: 0.9rem; color: #333;">
+                {{ sandboxForm.controls.value.value }}%
+              </span>
+            </div>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label
+              class="sandbox__control-label"
+              for="sandbox-max"
+            >
+              {{ 'progress-bar-showcase.sandbox.max' | localize }}
+            </label>
+            <input
+              id="sandbox-max"
+              class="sandbox__control-input"
+              type="number"
+              min="1"
+              max="1000"
+              formControlName="max"
+            />
+          </div>
+
+          <div class="sandbox__control-row">
+            <label
+              class="sandbox__control-label"
+              for="sandbox-size"
+            >
+              {{ 'common.size' | localize }}
+            </label>
+            <select
+              id="sandbox-size"
+              class="sandbox__control-select"
+              formControlName="size"
+            >
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label
+              class="sandbox__control-label"
+              for="sandbox-color"
+            >
+              {{ 'progress-bar-showcase.sandbox.color' | localize }}
+            </label>
+            <select
+              id="sandbox-color"
+              class="sandbox__control-select"
+              formControlName="color"
+            >
+              <option value="primary">Primary</option>
+              <option value="success">Success</option>
+              <option value="danger">Danger</option>
+              <option value="warning">Warning</option>
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label
+              class="sandbox__control-label"
+              for="sandbox-mode"
+            >
+              {{ 'progress-bar-showcase.sandbox.mode' | localize }}
+            </label>
+            <select
+              id="sandbox-mode"
+              class="sandbox__control-select"
+              formControlName="mode"
+            >
+              <option value="determinate">Determinate</option>
+              <option value="indeterminate">Indeterminate</option>
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label
+              class="sandbox__control-label"
+              for="sandbox-disabled"
+            >
+              {{ 'progress-bar-showcase.sandbox.disabled' | localize }}
+            </label>
+            <input
+              id="sandbox-disabled"
+              type="checkbox"
+              formControlName="disabled"
+            />
+          </div>
+        </form>
+      </div>
+
+      <div class="sandbox__tokens">
+        <h4 class="sandbox__section-title">{{ 'common.tokens' | localize }}</h4>
+
+        <form [formGroup]="sandboxTokens" class="sandbox__tokens-form">
+          <div class="sandbox__token-row">
+            <label
+              class="sandbox__token-label"
+              for="token-track-bg"
+            >
+              Track BG
+            </label>
+            <input
+              id="token-track-bg"
+              class="sandbox__token-input"
+              type="text"
+              formControlName="trackBg"
+              placeholder="#e6edf7"
+            />
+          </div>
+
+          <div class="sandbox__token-row">
+            <label
+              class="sandbox__token-label"
+              for="token-fill-primary"
+            >
+              Fill Primary
+            </label>
+            <input
+              id="token-fill-primary"
+              class="sandbox__token-input"
+              type="text"
+              formControlName="fillPrimary"
+              placeholder="#1b84e7"
+            />
+          </div>
+
+          <div class="sandbox__token-row">
+            <label
+              class="sandbox__token-label"
+              for="token-fill-success"
+            >
+              Fill Success
+            </label>
+            <input
+              id="token-fill-success"
+              class="sandbox__token-input"
+              type="text"
+              formControlName="fillSuccess"
+              placeholder="#22c55e"
+            />
+          </div>
+
+          <div class="sandbox__token-row">
+            <label
+              class="sandbox__token-label"
+              for="token-fill-danger"
+            >
+              Fill Danger
+            </label>
+            <input
+              id="token-fill-danger"
+              class="sandbox__token-input"
+              type="text"
+              formControlName="fillDanger"
+              placeholder="#ef4444"
+            />
+          </div>
+
+          <div class="sandbox__token-row">
+            <label
+              class="sandbox__token-label"
+              for="token-fill-warning"
+            >
+              Fill Warning
+            </label>
+            <input
+              id="token-fill-warning"
+              class="sandbox__token-input"
+              type="text"
+              formControlName="fillWarning"
+              placeholder="#f59e0b"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

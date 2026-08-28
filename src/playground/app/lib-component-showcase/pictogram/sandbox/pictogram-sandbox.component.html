@@ -1,0 +1,61 @@
+<div class="sandbox-container">
+  <div class="controls">
+    <div class="control-group">
+      <label for="pictogram-select">Pictogram:</label>
+      <select id="pictogram-select" [formControl]="sandboxForm.controls.name">
+        @for (pictogram of allPictograms; track pictogram) {
+          <option [value]="pictogram">{{ pictogram }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label>
+        <input type="checkbox" [formControl]="sandboxForm.controls.stretched"/>
+        Stretched
+      </label>
+    </div>
+
+    <div class="control-group">
+      <label for="variant-select">Variant:</label>
+      <select id="variant-select" [formControl]="sandboxForm.controls.variant" (change)="onVariantChange()">
+        @for (variant of allVariants; track variant) {
+          <option [value]="variant">{{ variant }}</option>
+        }
+      </select>
+    </div>
+    
+    <div class="control-group">
+      <label for="first-color">First color:</label>
+      <input id="first-color" type="color" [formControl]="sandboxForm.controls.firstColor"/>
+    </div>
+
+    <div class="control-group">
+      <label for="second-color">Second color:</label>
+      <input id="second-color" type="color" [formControl]="sandboxForm.controls.secondColor"/>
+    </div>
+
+    <button class="reset-button" (click)="resetSandbox()">Reset</button>
+  </div>
+
+  <div class="preview-container">
+    <div class="preview-surface ndwu-theme-light">
+      <ndwu-pictogram
+        [name]="sandboxForm.controls.name.value"
+        [variant]="sandboxForm.controls.variant.value"
+        [stretched]="sandboxForm.controls.stretched.value"
+        [firstColor]="sandboxForm.controls.firstColor.value"
+        [secondColor]="sandboxForm.controls.secondColor.value"
+      />
+    </div>
+    <div class="preview-surface ndwu-theme-dark">
+      <ndwu-pictogram
+        [name]="sandboxForm.controls.name.value"
+        [variant]="sandboxForm.controls.variant.value"
+        [stretched]="sandboxForm.controls.stretched.value"
+        [firstColor]="sandboxForm.controls.firstColor.value"
+        [secondColor]="sandboxForm.controls.secondColor.value"
+      />
+    </div>
+  </div>
+</div>

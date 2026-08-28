@@ -1,0 +1,28 @@
+<div class="token-list">
+  @if (sectionTitle()) {
+    <h4 class="token-list__section-title">{{ sectionTitle() }}</h4>
+  }
+  <div class="token-list__grid" [formGroup]="formGroup()">
+    @for (token of tokens(); track token.key) {
+      <div class="token-list__row">
+        <label class="token-list__label" [for]="'token-list-' + token.key">{{ token.cssVar }}</label>
+        <div class="token-list__controls">
+          <input
+            [id]="'token-list-' + token.key"
+            class="token-list__color"
+            type="color"
+            [value]="tokenPickerValues()[token.key] ?? formGroup().get(token.key)?.value ?? '#000000'"
+            (input)="formGroup().get(token.key)?.setValue($any($event.target).value)"
+          />
+          <button
+            type="button"
+            class="token-list__clear"
+            (click)="formGroup().get(token.key)?.setValue('')"
+          >
+            {{ inheritLabel() || 'Inherit' }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

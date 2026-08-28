@@ -1,0 +1,59 @@
+@use 'sass:map';
+@use 'styles/spacing';
+@use 'styles/typography';
+
+%icon-16 {
+  width: spacing.$spacing-16;
+  height: spacing.$spacing-16;
+}
+
+@mixin dropzone-size($config) {
+  min-height: map.get($config, min-height);
+  padding: map.get($config, padding);
+  border-radius: map.get($config, radius);
+
+  .ndwu-file-dropzone__content {
+    gap: map.get($config, content-gap);
+  }
+}
+
+@mixin file-item-size($config) {
+  .ndwu-file-item__body {
+    min-height: map.get($config, body-min-height);
+    padding: map.get($config, body-padding);
+  }
+
+  .ndwu-file-item__icon-wrapper {
+    width: map.get($config, icon-wrapper-size);
+    height: map.get($config, icon-wrapper-size);
+  }
+
+  .ndwu-file-item__name {
+    font-size: map.get($config, name-font-size);
+  }
+
+  .ndwu-file-item__content--with-bar {
+    gap: map.get($config, content-bar-gap);
+  }
+
+  .ndwu-file-item__secondary {
+    font-size: typography.$fontSize-xsmall;
+    line-height: 17px;
+  }
+}
+
+@mixin header-size($config) {
+  .ndwu-file-upload-header__body {
+    min-height: map.get($config, body-min-height);
+    padding: map.get($config, body-padding);
+  }
+
+  .ndwu-file-upload-header__title {
+    font-size: map.get($config, title-font-size);
+  }
+
+  .ndwu-file-upload-header__subtitle {
+    font-size: typography.$fontSize-xsmall;
+    line-height: 17px;
+  }
+}

@@ -1,0 +1,14 @@
+@use 'styles/colors';
+@use 'styles/spacing';
+@use 'styles/padding';
+@use 'styles/radius';
+
+$ndwu-dialog-tokens: (
+  dialog-bg: colors.$gray-0,
+  dialog-title-color: colors.$gray-100,
+  dialog-description-color: colors.$gray-60,
+  dialog-border-radius: radius.$radius-L,
+  dialog-padding-desktop: padding.$padding-32 padding.$padding-24,
+  dialog-padding-mobile: padding.$padding-24,
+  dialog-backdrop-bg: rgb(0 0 0 / 40%),
+);

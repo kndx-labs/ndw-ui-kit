@@ -1,0 +1,80 @@
+.state-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+
+  h3 {
+    margin: 0;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+}
+
+.size-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.size-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.size-label {
+  color: #64748b;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.color-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.color-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.color-label {
+  color: #64748b;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.progress-states {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.progress-label {
+  color: #94a3b8;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.animated-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.animated-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

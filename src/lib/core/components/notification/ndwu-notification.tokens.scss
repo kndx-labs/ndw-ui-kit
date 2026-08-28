@@ -1,0 +1,13 @@
+@use 'styles/colors';
+
+$ndwu-notification-tokens: (
+  notification-text: colors.$gray-80,
+  notification-info-bg: colors.$brand-5,
+  notification-info-icon: colors.$brand-50,
+  notification-success-bg: colors.$green-10,
+  notification-success-icon: colors.$green-60,
+  notification-warning-bg: colors.$yellow-10,
+  notification-warning-icon: colors.$yellow-50,
+  notification-error-bg: colors.$red-10,
+  notification-error-icon: colors.$red-50,
+);

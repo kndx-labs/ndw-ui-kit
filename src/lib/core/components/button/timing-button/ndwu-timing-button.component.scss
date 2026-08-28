@@ -1,0 +1,63 @@
+@use 'styles/spacing';
+@use '../ndwu-button.mixins' as button-mixins;
+@use 'ndwu-timing-button.mixins' as timing-button-mixins;
+
+:host {
+  @include button-mixins.base();
+  @include timing-button-mixins.timing-button-variant();
+
+  position: relative;
+  overflow: hidden;
+  width: var(--ndwu-timing-button-width, auto);
+
+  &.ndwu-timing-button--preloading {
+    background-color: var(--ndwu-timing-button-primary-preloading-bg);
+    color: var(--ndwu-timing-button-primary-preloading-text, var(--ndwu-timing-button-primary-text));
+
+    &::before {
+      width: 0%;
+    }
+  }
+
+  &.ndwu-timing-button--loading {
+    background-color: var(--ndwu-timing-button-primary-loading-bg);
+  }
+
+  .ndwu-timing-button__label {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    gap: spacing.$spacing-8;
+    align-items: center;
+
+    &--hidden {
+      display: none;
+    }
+  }
+
+  .ndwu-timing-button__timer {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+
+  &.ndwu-timing-button--S {
+    @include button-mixins.size(S);
+  }
+
+  &.ndwu-timing-button--L {
+    @include button-mixins.size(L);
+  }
+
+  &.ndwu-timing-button--XL {
+    @include button-mixins.size(XL);
+  }
+
+  &.ndwu-timing-button--XXL {
+    @include button-mixins.size(XXL);
+  }
+
+  &.ndwu-timing-button--loading {
+    pointer-events: none;
+  }
+}

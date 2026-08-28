@@ -1,0 +1,18 @@
+@use 'styles/spacing';
+@use 'styles/typography';
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: spacing.$spacing-24;
+  padding: 20px;
+}
+
+.overview-item {
+  h3 {
+    margin-bottom: spacing.$spacing-16;
+    color: var(--ndwu-text-secondary, #6A6F7C);
+    font-weight: typography.$fontWeight-XL;
+    font-size: typography.$fontSize-H6;
+  }
+}

@@ -1,0 +1,135 @@
+<div [class]="rootClass()">
+  <div class="ndwu-file-item__body">
+    <div class="ndwu-file-item__icon-wrapper">
+      <ndwu-icon
+        [name]="statusIcon()"
+        class="ndwu-file-item__icon"
+        [class.ndwu-file-item__icon--spinner]="file().status === 'uploading'"
+      />
+    </div>
+
+    <div
+      class="ndwu-file-item__content"
+      [class.ndwu-file-item__content--with-bar]="hasProgressBar()"
+    >
+      <div class="ndwu-file-item__primary">
+        <span
+          class="ndwu-file-item__name"
+          [title]="file().name"
+        >
+          {{ displayFileName() }}
+        </span>
+      </div>
+
+      @if (hasProgressBar()) {
+        <div class="ndwu-file-item__progress">
+          <ndwu-progress-bar
+            [value]="file().progress"
+            [max]="100"
+            [color]="progressColor()"
+          />
+        </div>
+      }
+
+      <div class="ndwu-file-item__secondary">
+        @if ((file().status === 'error' || file().status === 'warning') && file().error) {
+          <span class="ndwu-file-item__error-text">{{ file().error | localize }}</span>
+        } @else {
+          <span class="ndwu-file-item__size">{{ formattedSize() }}</span>
+          <span class="ndwu-file-item__separator">·</span>
+          <span class="ndwu-file-item__status">
+            {{ statusText() | localize }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="ndwu-file-item__actions">
+      @switch (file().status) {
+        @case ('queued') {
+          <button
+            ndwu-button
+            variant="ghost"
+            size="L"
+            [icon]="ICON_NAME.CLOSE_S"
+            [label]="''"
+            [disabled]="disabled()"
+            [attr.aria-label]="effectiveActionTexts().remove | localize"
+            (click)="onRemove($event)"
+          ></button>
+        }
+        @case ('uploading') {
+          <button
+            ndwu-button
+            variant="ghost"
+            size="L"
+            [icon]="ICON_NAME.CLOSE_S"
+            [disabled]="disabled()"
+            [attr.aria-label]="effectiveActionTexts().cancel | localize"
+            (click)="onCancel($event)"
+          ></button>
+        }
+        @case ('success') {
+          <button
+            ndwu-button
+            variant="ghost"
+            size="L"
+            [icon]="ICON_NAME.TRASH_S"
+            [label]="''"
+            [disabled]="disabled()"
+            [attr.aria-label]="effectiveActionTexts().remove | localize"
+            (click)="onRemove($event)"
+          ></button>
+        }
+        @case ('warning') {
+          <button
+            ndwu-button
+            variant="ghost"
+            size="L"
+            [icon]="ICON_NAME.TRASH_S"
+            [label]="''"
+            [disabled]="disabled()"
+            [attr.aria-label]="effectiveActionTexts().remove | localize"
+            (click)="onRemove($event)"
+          ></button>
+        }
+        @case ('error') {
+          @if (file().isRetryable) {
+            <button
+              ndwu-button
+              variant="ghost"
+              size="L"
+              [icon]="ICON_NAME.RELOAD_S"
+              [label]="''"
+              [disabled]="disabled()"
+              [attr.aria-label]="effectiveActionTexts().retry | localize"
+              (click)="onRetry($event)"
+            ></button>
+          }
+          <button
+            ndwu-button
+            variant="ghost"
+            size="L"
+            [icon]="ICON_NAME.CLOSE_S"
+            [label]="''"
+            [disabled]="disabled()"
+            [attr.aria-label]="effectiveActionTexts().remove | localize"
+            (click)="onRemove($event)"
+          ></button>
+        }
+        @case ('canceled') {
+          <button
+            ndwu-button
+            variant="ghost"
+            size="L"
+            [icon]="ICON_NAME.CLOSE_S"
+            [label]="''"
+            [disabled]="disabled()"
+            [attr.aria-label]="effectiveActionTexts().remove | localize"
+            (click)="onRemove($event)"
+          ></button>
+        }
+      }
+    </div>
+  </div>
+</div>

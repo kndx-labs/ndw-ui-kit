@@ -1,0 +1,216 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template let-theme="theme" let-idPrefix="idPrefix">
+    <div class="state-section">
+      <h4>{{ 'progress-bar-showcase.sizes' | localize }}</h4>
+      <div class="size-row">
+        <div class="size-item">
+          <span class="size-label">{{ 'common.sizes.l' | localize }}</span>
+          <ndwu-progress-bar
+            [value]="primaryValue()"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.PRIMARY"
+            [size]="SIZE.L"
+          />
+        </div>
+        <div class="size-item">
+          <span class="size-label">{{ 'common.sizes.xl' | localize }}</span>
+          <ndwu-progress-bar
+            [value]="primaryValue()"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.PRIMARY"
+            [size]="SIZE.XL"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'progress-bar-showcase.colors' | localize }}</h4>
+      <div class="color-row">
+        <div class="color-item">
+          <span class="color-label">Primary</span>
+          <ndwu-progress-bar
+            [value]="primaryValue()"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.PRIMARY"
+          />
+        </div>
+        <div class="color-item">
+          <span class="color-label">Success</span>
+          <ndwu-progress-bar
+            [value]="successValue()"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.SUCCESS"
+          />
+        </div>
+        <div class="color-item">
+          <span class="color-label">Danger</span>
+          <ndwu-progress-bar
+            [value]="dangerValue()"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.DANGER"
+          />
+        </div>
+        <div class="color-item">
+          <span class="color-label">Warning</span>
+          <ndwu-progress-bar
+            [value]="warningValue()"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.WARNING"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'progress-bar-showcase.progress-states' | localize }}</h4>
+      <div class="progress-states">
+        <div class="progress-item">
+          <span class="progress-label">0%</span>
+          <ndwu-progress-bar
+            [value]="0"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.PRIMARY"
+          />
+        </div>
+        <div class="progress-item">
+          <span class="progress-label">25%</span>
+          <ndwu-progress-bar
+            [value]="25"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.PRIMARY"
+          />
+        </div>
+        <div class="progress-item">
+          <span class="progress-label">50%</span>
+          <ndwu-progress-bar
+            [value]="50"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.PRIMARY"
+          />
+        </div>
+        <div class="progress-item">
+          <span class="progress-label">75%</span>
+          <ndwu-progress-bar
+            [value]="75"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.PRIMARY"
+          />
+        </div>
+        <div class="progress-item">
+          <span class="progress-label">100%</span>
+          <ndwu-progress-bar
+            [value]="100"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.SUCCESS"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'progress-bar-showcase.disabled-state' | localize }}</h4>
+      <div class="color-row">
+        <div class="color-item">
+          <span class="color-label">Disabled Primary 50%</span>
+          <ndwu-progress-bar
+            [value]="50"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.PRIMARY"
+            [disabled]="true"
+          />
+        </div>
+        <div class="color-item">
+          <span class="color-label">Disabled Success 100%</span>
+          <ndwu-progress-bar
+            [value]="100"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.SUCCESS"
+            [disabled]="true"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'progress-bar-showcase.indeterminate' | localize }}</h4>
+      <div class="size-row">
+        <div class="size-item">
+          <span class="size-label">{{ 'common.sizes.l' | localize }}</span>
+          <ndwu-progress-bar
+            [mode]="'indeterminate'"
+            [size]="SIZE.L"
+          />
+        </div>
+        <div class="size-item">
+          <span class="size-label">{{ 'common.sizes.xl' | localize }}</span>
+          <ndwu-progress-bar
+            [mode]="'indeterminate'"
+            [size]="SIZE.XL"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'progress-bar-showcase.disabled-state' | localize }}</h4>
+      <div class="color-row">
+        <div class="color-item">
+          <span class="color-label">Disabled Primary 50%</span>
+          <ndwu-progress-bar
+            [value]="50"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.PRIMARY"
+            [disabled]="true"
+          />
+        </div>
+        <div class="color-item">
+          <span class="color-label">Disabled Success 100%</span>
+          <ndwu-progress-bar
+            [value]="100"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.SUCCESS"
+            [disabled]="true"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'progress-bar-showcase.indeterminate' | localize }}</h4>
+      <div class="size-row">
+        <div class="size-item">
+          <span class="size-label">{{ 'common.sizes.l' | localize }}</span>
+          <ndwu-progress-bar
+            [mode]="'indeterminate'"
+            [size]="SIZE.L"
+          />
+        </div>
+        <div class="size-item">
+          <span class="size-label">{{ 'common.sizes.xl' | localize }}</span>
+          <ndwu-progress-bar
+            [mode]="'indeterminate'"
+            [size]="SIZE.XL"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'progress-bar-showcase.animated' | localize }}</h4>
+      <div class="animated-row">
+        <div class="animated-item">
+          <span class="progress-label">Animated Example ({{ animatedValue() }}%)</span>
+          <ndwu-progress-bar
+            [value]="animatedValue()"
+            [max]="100"
+            [color]="PROGRESS_BAR_COLOR.PRIMARY"
+          />
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

@@ -1,0 +1,208 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template let-theme="theme">
+    <div class="state-section">
+      <h4>{{ 'drawer-showcase.overview.sections.basic' | localize }}</h4>
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="primary"
+          [label]="'drawer-showcase.overview.button-default'"
+          (click)="openDefault(theme)"
+        >
+        </button>
+        <button
+          ndwuButton
+          variant="secondary"
+          [label]="'drawer-showcase.overview.button-xl'"
+          (click)="openXL(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'drawer-showcase.overview.sections.content' | localize }}</h4>
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="primary"
+          [label]="'drawer-showcase.overview.button-form'"
+          (click)="openWithForm(theme)"
+        >
+        </button>
+        <button
+          ndwuButton
+          variant="secondary"
+          [label]="'drawer-showcase.overview.button-scrollable'"
+          (click)="openScrollable(theme)"
+        >
+        </button>
+
+        <button
+          ndwuButton
+          variant="tertiary"
+          label="Open custom slot component"
+          (click)="openWithCustomSlots(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
+      <h4>Template drawer API</h4>
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="tertiary"
+          label="Open template drawer"
+          (click)="openTemplateDrawer(theme)"
+        >
+        </button>
+
+        <button
+          ndwuButton
+          variant="secondary"
+          label="Open template drawer with custom slots"
+          (click)="openTemplateDrawerWithCustomSlots(theme)"
+        >
+        </button>
+
+        <button
+          ndwuButton
+          variant="secondary"
+          label="Open scrollable template drawer"
+          (click)="openTemplateDrawerWithCustomFooter(theme)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <ng-template #templateDrawer let-modalRef="modalRef">
+      <div ndwuModalBody>
+        <p>
+          This drawer was opened with <code>openTemplate(...)</code> using
+          <code>type: 'drawer'</code>.
+        </p>
+      </div>
+
+      <div
+        *ndwuModalFooter
+        ndwuModalActions
+      >
+        <button
+          ndwuButton
+          variant="primary"
+          label="Close template drawer"
+          (click)="modalRef.close()"
+        >
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template #templateDrawerWithCustomSlots let-modalRef="modalRef">
+      <section
+        *ndwuModalHeader
+        class="template-drawer-layout__header"
+      >
+        <div>
+          <h3
+            class="template-drawer-layout__title"
+            tabindex="0"
+          >
+            Template drawer header
+          </h3>
+
+          <p class="template-drawer-layout__subtitle">
+            This header is rendered in the outer drawer container.
+          </p>
+        </div>
+
+        <button
+          ndwuButton
+          variant="secondary"
+          label="Dismiss"
+          (click)="modalRef.close(false)"
+        >
+        </button>
+      </section>
+
+      <div ndwuModalBody>
+        <p>
+          This drawer was opened with <code>openTemplate(...)</code> using
+          <code>type: 'drawer'</code> and defines
+          <code>*ndwuModalHeader</code> and <code>*ndwuModalFooter</code>
+          inside the same <code>&lt;ng-template&gt;</code>.
+        </p>
+
+        <p>
+          Use <code>ariaLabel</code> or <code>ariaLabelledby</code> when a
+          custom header replaces the default title.
+        </p>
+      </div>
+
+      <div
+        *ndwuModalFooter
+        ndwuModalActions
+      >
+        <button
+          ndwuButton
+          variant="secondary"
+          label="Cancel"
+          (click)="modalRef.close(false)"
+        >
+        </button>
+
+        <button
+          ndwuButton
+          variant="primary"
+          label="Save"
+          (click)="modalRef.close(true)"
+        >
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template
+      #scrollableTemplateDrawer
+      let-data="data"
+      let-modalRef="modalRef"
+    >
+      <div class="template-drawer-layout">
+        <div
+          ndwuModalBody
+          class="template-drawer-layout__body"
+        >
+          <div
+            class="template-drawer-layout__content"
+            [innerHTML]="(data ?? '') | parseMarkdownDocument"
+          >
+          </div>
+        </div>
+
+        <div
+          *ndwuModalFooter
+          ndwuModalActions
+        >
+          <button
+            ndwuButton
+            variant="secondary"
+            label="Close"
+            (click)="modalRef.close(false)"
+          >
+          </button>
+
+          <button
+            ndwuButton
+            variant="primary"
+            label="Save"
+            (click)="modalRef.close(true)"
+          >
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
+</app-showcase-layout>

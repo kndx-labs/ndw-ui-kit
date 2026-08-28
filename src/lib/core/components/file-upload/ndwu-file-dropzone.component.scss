@@ -1,0 +1,105 @@
+@use 'styles/padding';
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
+@use './ndwu-file-upload.mixins' as *;
+
+.ndwu-file-dropzone {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 510px;
+  border: 1px dashed var(--ndwu-file-upload-border-color);
+  background-color: transparent;
+  outline: none;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+
+  &:hover:not(.ndwu-file-dropzone--disabled) {
+    border-color: var(--ndwu-file-upload-border-hover-color);
+    background-color: var(--ndwu-file-upload-surface-brand-hover-color);
+  }
+
+  &:focus-visible:not(.ndwu-file-dropzone--disabled) {
+    border-color: var(--ndwu-file-upload-border-focus-color);
+    background-color: var(--ndwu-file-upload-surface-brand-hover-color);
+    outline: 3px solid var(--ndwu-file-upload-border-focus-color);
+    outline-offset: 2px;
+  }
+
+  &--drag-over:not(.ndwu-file-dropzone--disabled) {
+    border-color: var(--ndwu-file-upload-border-hover-color);
+    background-color: var(--ndwu-file-upload-surface-brand-hover-color);
+  }
+
+  &--disabled {
+    border-color: var(--ndwu-file-upload-border-disabled-color);
+    background-color: var(--ndwu-file-upload-surface-disabled-color);
+    cursor: not-allowed;
+
+    .ndwu-file-dropzone__title,
+    .ndwu-file-dropzone__hint {
+      color: var(--ndwu-file-upload-icon-disabled-color);
+    }
+  }
+
+  &--L {
+    @include dropzone-size((padding: padding.$padding-24,
+        min-height: 120px,
+        radius: radius.$radius-L,
+        content-gap: spacing.$spacing-12,
+      ));
+  }
+
+  &--XL {
+    @include dropzone-size((padding: padding.$padding-32,
+        min-height: 160px,
+        radius: radius.$radius-XL,
+        content-gap: spacing.$spacing-16,
+      ));
+  }
+
+  &__input {
+    position: absolute;
+    display:none;
+    overflow: hidden;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  &__pictogram {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+  }
+
+  &__instructions {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-4;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__title,
+  &__hint {
+    font-size: typography.$fontSize-small;
+    line-height: 20px;
+  }
+
+  &__title {
+    color: var(--ndwu-file-upload-text-color);
+    font-weight: typography.$fontWeight-XL;
+  }
+
+  &__hint {
+    color: var(--ndwu-file-upload-text-muted-color);
+  }
+}

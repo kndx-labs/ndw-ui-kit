@@ -1,0 +1,87 @@
+@use 'sass:map';
+@use 'styles/spacing' as spacing;
+@use 'styles/radius' as radius;
+
+$container-padding: (
+  'L':  spacing.$spacing-4,
+  'XL': spacing.$spacing-4,
+  'XXL': 6px,
+);
+
+$container-gap: (
+  'L':  spacing.$spacing-4,
+  'XL': spacing.$spacing-4,
+  'XXL': 6px,
+);
+
+$container-radius: (
+  'L':  radius.$radius-M,
+  'XL': radius.$radius-L,
+  'XXL': radius.$radius-XL,
+);
+
+$tab-radius: (
+  'L':  radius.$radius-S,
+  'XL': radius.$radius-M,
+  'XXL': radius.$radius-L,
+);
+
+:host {
+  @each $size in ('L', 'XL', 'XXL') {
+    &.ndwu-tabs--size-#{$size} {
+      gap: map.get($container-gap, $size);
+      padding: map.get($container-padding, $size);
+      border-radius: map.get($container-radius, $size);
+
+      &.ndwu-tabs--variant-bordered {
+        button:first-child {
+          border-radius: map.get($tab-radius, $size) 0 0 map.get($tab-radius, $size);
+        }
+
+        button:not(:first-child, :last-child) {
+          border-radius: 0;
+        }
+
+        button:last-child {
+          border-radius: 0 map.get($tab-radius, $size) map.get($tab-radius, $size) 0;
+        }
+      }
+    }
+  }
+
+  align-items: center;
+  box-sizing: border-box;
+
+  &.ndwu-tabs--variant-default {
+    border: 1px solid var(--ndwu-tab-bordered-default-border);
+    background: var(--ndwu-tab-container-bg);
+  }
+
+  &.ndwu-tabs--variant-bordered {
+    gap: spacing.$spacing-2;
+    border: none;
+    background: transparent;
+  }
+
+  &.ndwu-tabs--scroll-auto {
+    display: inline-flex;
+    overflow-x: visible;
+    width: auto;
+  }
+
+  &.ndwu-tabs--scroll-scrollable {
+    display: flex;
+    overflow-x: auto;
+    width: var(--ndwu-tabs-scroll-width, auto);
+
+    /* stylelint-disable plugin/no-unsupported-browser-features */
+    @supports (scrollbar-width: none) {
+      scrollbar-width: none;
+    }
+    /* stylelint-enable plugin/no-unsupported-browser-features */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+.state-section {
+  margin-bottom: 24px;
+}
+
+.state-section__field {
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.component-sizes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

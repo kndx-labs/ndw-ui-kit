@@ -1,0 +1,15 @@
+<div
+  class="ndwu-spokes-loader"
+  [style.width.px]="size()"
+  [style.height.px]="size()"
+  [ngStyle]="getAnimationStyle()"
+>
+  @for (i of spokenArray(); track i) {
+    <div
+      class="spoke-container"
+      [ngStyle]="getSpokeStyle(i)"
+    >
+      <div class="spoke"></div>
+    </div>
+  }
+</div>

@@ -1,0 +1,127 @@
+@use 'styles/padding';
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/touch-target' as touch-target;
+
+@mixin icon-button($size) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: $size;
+  height: $size;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease-in-out,
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    outline 0.2s ease-in-out,
+    filter 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    filter: drop-shadow(1px 1px 2px -1px #00000024);
+  }
+}
+
+:host {
+  /* stylelint-disable order/order */
+  box-sizing: border-box;
+  outline-color: transparent;
+
+  &.ndwu-icon-button--round {
+    border-radius: 128px;
+  }
+
+  &.ndwu-icon-button--square {
+    border-radius: radius.$radius-M;
+  }
+
+  // Shared between all variants
+  &:focus {
+    border: 1px solid var(--ndwu-icon-button-focus-border);
+    outline: 2px solid var(--ndwu-icon-button-focus-outline);
+    outline-offset: 0;
+  }
+
+  &.ndwu-icon-button--round,
+  &.ndwu-icon-button--square {
+    border: 1px solid var(--ndwu-icon-button-border);
+    background-color: var(--ndwu-icon-button-bg);
+    color: var(--ndwu-icon-button-icon);
+
+    &.ndwu-icon-button--L {
+      @include icon-button(32px);
+
+      border-radius: radius.$radius-M;
+    }
+
+    &.ndwu-icon-button--XL {
+      @include icon-button(44px);
+
+      ndwu-icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    &.ndwu-icon-button--XXL {
+      @include icon-button(56px);
+
+      ndwu-icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    &:hover {
+      background-color: var(--ndwu-icon-button-hover-bg);
+    }
+
+    &:active {
+      background-color: var(--ndwu-icon-button-active-bg);
+    }
+
+    &:disabled {
+      border-color: var(--ndwu-icon-button-disabled-border);
+      background-color: var(--ndwu-icon-button-disabled-bg);
+      color: var(--ndwu-icon-button-disabled-icon);
+      cursor: not-allowed;
+    }
+  }
+
+  &.ndwu-icon-button--flat {
+    padding: 0;
+    border: none;
+    border-radius: radius.$radius-S;
+    background: transparent;
+    color: var(--ndwu-icon-button-flat-icon);
+
+    // Flat icon button size is determined
+    // by the size of the icon (+ padding to increase touch target size @ mobile)
+    &.ndwu-icon-button--S {
+      @include icon-button(24px);
+    }
+
+    &.ndwu-icon-button--L {
+      @include icon-button(32px);
+
+      border-radius: radius.$radius-M;
+    }
+
+    &:hover {
+      color: var(--ndwu-icon-button-flat-hover-icon);
+    }
+
+    &:focus {
+      background-color: var(--ndwu-icon-button-flat-focus-bg);
+      color: var(--ndwu-icon-button-flat-focus-icon);
+    }
+
+    &:disabled {
+      color: var(--ndwu-icon-button-flat-disabled-icon);
+      cursor: not-allowed;
+    }
+  }
+
+  @include touch-target.touchable();
+  /* stylelint-enable order/order */
+}

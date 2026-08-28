@@ -1,0 +1,36 @@
+<div [class]="rootClass()">
+  <div
+    class="ndwu-toggle__wrapper"
+    [class.ndwu-toggle__wrapper--disabled]="disabled()"
+  >
+    <div class="ndwu-toggle__input-wrapper">
+      <input
+        type="checkbox"
+        class="ndwu-toggle__input"
+        [id]="toggleId"
+        [checked]="checked()"
+        [disabled]="disabled()"
+        (change)="onToggleChange($event)"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+      />
+      <label
+        class="ndwu-toggle__track"
+        [for]="toggleId"
+      >
+        <span class="ndwu-toggle__knob"></span>
+      </label>
+    </div>
+
+    @if (label() || secondaryText()) {
+      <label [for]="toggleId">
+        <ndwu-label-group
+          [label]="label()"
+          [secondaryText]="secondaryText()"
+          [disabled]="disabled()"
+          [size]="sizeSvc.effectiveSize()"
+        />
+      </label>
+    }
+  </div>
+</div>

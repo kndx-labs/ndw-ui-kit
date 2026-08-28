@@ -1,0 +1,34 @@
+<div [class]="rootClass">
+  <div
+    class="ndwu-form-field__wrapper"
+    [class.ndwu-form-field__wrapper--disabled]="isFieldDisabled"
+    [class.ndwu-form-field__wrapper--readonly]="readonly()"
+    [class.ndwu-form-field__wrapper--has-label]="hasLabel()"
+    [class.ndwu-form-field__wrapper--has-suffix]="hasSuffix()"
+    [class.ndwu-form-field__wrapper--has-right-icon]="hasRightIcon()"
+  >
+    @if (hasLabel()) {
+      <label
+        [class]="labelClass"
+        [id]="labelId()"
+        [attr.for]="inputId"
+      >
+        <ng-content select="ndwu-floating-label" />
+      </label>
+    }
+
+    <ng-content />
+
+    @if (hasSuffix()) {
+      <span class="ndwu-form-field__suffix">
+        <ng-content select="[ndwuSuffix]" />
+      </span>
+    }
+  </div>
+
+  @if (hasHint()) {
+    <div class="ndwu-form-field__hint">
+      <ng-content select="[ndwuHint]" />
+    </div>
+  }
+</div>

@@ -1,0 +1,74 @@
+<form [formGroup]="sandboxForm" class="sandbox-container">
+  <div class="sandbox-toolbar">
+    <app-theme-switcher
+      [theme]="sandboxTheme()"
+      (themeChange)="setSandboxTheme($any($event))"
+    />
+
+    <button type="button" class="sandbox-reset" (click)="resetSandbox()">Reset</button>
+  </div>
+
+  <div class="sandbox-controls">
+    <div class="control-group">
+      <label for="pictogram-select">Pictogram:</label>
+      <select id="pictogram-select" formControlName="pictogram">
+        @for (pictogram of pictogramOptions; track pictogram) {
+          <option [value]="pictogram">{{ pictogram }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="variant-select">Variant:</label>
+      <select id="variant-select" formControlName="pictogramVariant">
+        @for (variant of variantOptions; track variant) {
+          <option [value]="variant">{{ variant }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="title-input">Title:</label>
+      <input id="title-input" type="text" formControlName="title" placeholder="Enter title (optional)" />
+    </div>
+
+    <div class="control-group">
+      <label for="description-input">Description:</label>
+      <input id="description-input" type="text" formControlName="description" placeholder="Enter description (optional)" />
+    </div>
+
+    <div class="control-group">
+      <label>
+        <input type="checkbox" formControlName="showCancel" />
+        Show Cancel button
+      </label>
+    </div>
+
+    <div class="control-group">
+      <label>
+        <input type="checkbox" formControlName="showRetry" />
+        Show Retry button
+      </label>
+    </div>
+  </div>
+
+  <div
+    class="sandbox-preview"
+    [class.ndwu-theme-light]="sandboxTheme() === 'light'"
+    [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
+  >
+    <ndwu-empty-state
+      [pictogram]="sandboxForm.value.pictogram!"
+      [pictogramVariant]="sandboxForm.value.pictogramVariant!"
+      [header]="sandboxForm.value.title || undefined"
+      [description]="sandboxForm.value.description || undefined"
+    >
+      @if (sandboxForm.value.showCancel) {
+        <button ndwu-button variant="secondary">Cancel</button>
+      }
+      @if (sandboxForm.value.showRetry) {
+        <button ndwu-button variant="primary">Retry</button>
+      }
+    </ndwu-empty-state>
+  </div>
+</form>

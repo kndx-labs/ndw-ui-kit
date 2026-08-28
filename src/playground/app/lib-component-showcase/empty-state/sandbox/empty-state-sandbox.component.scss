@@ -1,0 +1,72 @@
+@use 'styles/spacing';
+@use 'styles/typography';
+@use 'styles/radius';
+
+.sandbox-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing.$spacing-24;
+  padding: 20px;
+}
+
+.sandbox-toolbar {
+  display: flex;
+  gap: spacing.$spacing-16;
+  align-items: center;
+  width: 100%;
+}
+
+.sandbox-reset {
+  padding: spacing.$spacing-8 spacing.$spacing-16;
+  border: 1px solid var(--ndwu-border-default, #E0E0E0);
+  border-radius: radius.$radius-M;
+  background: var(--ndwu-color-white, #FFFFFF);
+  font-size: typography.$fontSize-H6;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ndwu-color-light-grey, #F0F2F4);
+  }
+}
+
+.sandbox-controls {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: spacing.$spacing-16;
+  min-width: 300px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-4;
+
+  label {
+    color: var(--ndwu-text-secondary, #6A6F7C);
+    font-size: typography.$fontSize-H6;
+  }
+
+  input[type="text"], select {
+    padding: spacing.$spacing-8 spacing.$spacing-12;
+    border: 1px solid var(--ndwu-border-default, #E0E0E0);
+    border-radius: radius.$radius-M;
+    background: var(--ndwu-color-white, #FFFFFF);
+    font-size: typography.$fontSize-H6;
+  }
+
+  input[type="checkbox"] {
+    margin-right: spacing.$spacing-8;
+  }
+}
+
+.sandbox-preview {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  min-width: 300px;
+  padding: 20px;
+  border: 1px dashed var(--ndwu-border-default, #E0E0E0);
+  border-radius: radius.$radius-XL;
+}

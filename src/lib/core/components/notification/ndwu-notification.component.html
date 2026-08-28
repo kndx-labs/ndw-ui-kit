@@ -1,0 +1,11 @@
+<div [class]="hostClasses()">
+  <ndwu-icon
+    [name]="variantIcon()"
+    class="ndwu-notification__icon"
+  />
+  <span
+    class="ndwu-notification__message"
+    [innerHTML]="message() | localize"
+  >
+  </span>
+</div>

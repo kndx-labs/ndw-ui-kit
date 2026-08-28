@@ -1,0 +1,63 @@
+<app-showcase-layout
+  lightTitleKey="pictogram-showcase.light-theme"
+  darkTitleKey="pictogram-showcase.dark-theme"
+>
+  <ng-template let-theme="theme" let-idPrefix="idPrefix">
+    <div class="pictogram-section">
+      <h3>{{ 'pictogram-showcase.sample-pictograms' | localize }}</h3>
+      <div class="pictogram-grid">
+        @for (pictogram of samplePictograms; track pictogram) {
+          <div class="pictogram-item">
+            <ndwu-pictogram [name]="pictogram"/>
+            <span class="pictogram-name">{{ pictogram }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="pictogram-section">
+      <h3>{{ 'pictogram-showcase.custom-colors' | localize }}</h3>
+      <div class="pictogram-grid">
+        @for (pictogram of samplePictograms; track pictogram) {
+          <div class="pictogram-item">
+            <ndwu-pictogram [name]="pictogram" firstColor="#FF6B6B" secondColor="#4ECDC4"/>
+          </div>
+        }
+      </div>
+      <div class="pictogram-grid">
+        @for (pictogram of samplePictograms; track pictogram) {
+          <div class="pictogram-item">
+            <ndwu-pictogram [name]="pictogram" firstColor="var(--color-red-30)" secondColor="var(--color-red-30)"/>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="pictogram-section">
+      <h3>Adaptive pictogram</h3>
+      <div class="pictogram-grid">
+        <div class="pictogram-item">
+          <ndwu-adaptive-pictogram name="pictogram_empty" [adaptiveSize]="pictogramSizeFlags"/>
+          <span class="pictogram-name">pictogram_empty_{{ pictogramIsDesktop() ? 'XL' : 'L' }}</span>
+        </div>
+        <div class="pictogram-item">
+          <ndwu-adaptive-pictogram name="pictogram_empty"/>
+          <span class="pictogram-name">unbound: always XL</span>
+        </div>
+      </div>
+      <button type="button" (click)="togglePictogramFlags()">Toggle desktop/mobile</button>
+    </div>
+
+    <div class="pictogram-section">
+      <h3>{{ 'pictogram-showcase.variants' | localize }}</h3>
+      <div class="pictogram-grid">
+        @for (variant of allVariants; track variant) {
+          <div class="pictogram-item">
+            <ndwu-pictogram [name]="variantShowcasePictogram" [variant]="variant"/>
+            <span class="pictogram-name">{{ variant }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

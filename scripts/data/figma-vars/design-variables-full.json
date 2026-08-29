@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastModified": "2026-08-21T15:00:43.235Z",
+  "lastModified": "2026-08-28T15:00:45.856Z",
   "collections": [
     {
       "id": "VariableCollectionId:2385:3263",
@@ -16,15 +16,20 @@
       ],
       "remote": false,
       "variableIds": [
-        "VariableID:14888:14755",
+        "VariableID:17522:2589",
+        "VariableID:17522:2590",
         "VariableID:14888:14763",
+        "VariableID:17522:2591",
+        "VariableID:17522:2592",
+        "VariableID:17573:1504",
+        "VariableID:14888:14755",
         "VariableID:4078:3571",
         "VariableID:14888:14764",
         "VariableID:4078:3814",
-        "VariableID:14888:14765",
         "VariableID:4078:3815",
-        "VariableID:16855:2714",
+        "VariableID:14888:14765",
         "VariableID:4078:3816",
+        "VariableID:16855:2714",
         "VariableID:16855:2715",
         "VariableID:6423:6569",
         "VariableID:4789:19993",
@@ -50,14 +55,74 @@
         "VariableID:4755:19618",
         "VariableID:4756:20266",
         "VariableID:2436:3368",
-        "VariableID:2436:3369"
+        "VariableID:2436:3369",
+        "VariableID:17573:1503",
+        "VariableID:17522:2587",
+        "VariableID:17522:2588",
+        "VariableID:17522:2593",
+        "VariableID:17522:2594",
+        "VariableID:17573:1501"
       ],
       "variables": [
         {
-          "id": "VariableID:14888:14755",
-          "name": "alias/form/form-control-radius-xl",
+          "id": "VariableID:17522:2589",
+          "name": "component/button-XXL/button-padding-v-xxl",
           "description": "",
-          "key": "2b5d5a71f89ac876a93cc99cc82d17aefc9423e0",
+          "key": "1f9e11dbeec2424ea41f93a962460d5bb93b99dc",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:4830:15846"
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:17522:2590",
+          "name": "component/button-XXL/button-padding-h-xxl",
+          "description": "",
+          "key": "ab183e9f47137377e99636dcbcb4baa51196f64a",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": 20
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:14888:14763",
+          "name": "component/button-XL/button-padding-v-xl",
+          "description": "",
+          "key": "0fa73ca6b1e33da1efe09858e6bcb086ad1afff4",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:4789:19996"
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:17522:2591",
+          "name": "alias/form-XXL/form-control-radius-xxl",
+          "description": "",
+          "key": "237c17921a469a75ddfe7ebfc403b08630f19a5c",
           "resolvedType": "FLOAT",
           "valuesByMode": {
             "2385:0": {
@@ -73,15 +138,50 @@
           "variableCollectionId": "VariableCollectionId:2385:3263"
         },
         {
-          "id": "VariableID:14888:14763",
-          "name": "alias/form/form-button-padding-v-xl",
+          "id": "VariableID:17522:2592",
+          "name": "alias/form-XXL/form-control-gap-h-xxl",
           "description": "",
-          "key": "0fa73ca6b1e33da1efe09858e6bcb086ad1afff4",
+          "key": "2988f11b1e71abaf7367d7a8c948e87309588a1e",
           "resolvedType": "FLOAT",
           "valuesByMode": {
             "2385:0": {
               "type": "VARIABLE_ALIAS",
               "id": "VariableID:4789:19996"
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:17573:1504",
+          "name": "alias/form-XXL/form-min-width-xxl",
+          "description": "",
+          "key": "25e36bdf4bf086fdc00ff709aa4d73b798be41a5",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": 0
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:14888:14755",
+          "name": "alias/form-XL/form-control-radius-xl",
+          "description": "",
+          "key": "2b5d5a71f89ac876a93cc99cc82d17aefc9423e0",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:4078:3815"
             }
           },
           "scopes": [
@@ -109,7 +209,7 @@
         },
         {
           "id": "VariableID:14888:14764",
-          "name": "alias/form/form-button-padding-h-xl",
+          "name": "component/button-XL/button-padding-h-xl",
           "description": "",
           "key": "046d6864888064db3c23f426541a67d3a2130886",
           "resolvedType": "FLOAT",
@@ -143,8 +243,24 @@
           "variableCollectionId": "VariableCollectionId:2385:3263"
         },
         {
+          "id": "VariableID:4078:3815",
+          "name": "global/radius/global-radius-L",
+          "description": "",
+          "key": "7ad0150d59fa2d2471bd2f983f9d07e13c3aad12",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": 8
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
           "id": "VariableID:14888:14765",
-          "name": "alias/form/form-control-gap-h-xl",
+          "name": "alias/form-XL/form-control-gap-h-xl",
           "description": "",
           "key": "3ca2695d08f9b373ff891456052995692bd911cd",
           "resolvedType": "FLOAT",
@@ -162,13 +278,13 @@
           "variableCollectionId": "VariableCollectionId:2385:3263"
         },
         {
-          "id": "VariableID:4078:3815",
-          "name": "global/radius/global-radius-L",
+          "id": "VariableID:4078:3816",
+          "name": "global/radius/global-radius-XL",
           "description": "",
-          "key": "7ad0150d59fa2d2471bd2f983f9d07e13c3aad12",
+          "key": "313ebe8b4026d4f0f02131b1ada87a62403de60a",
           "resolvedType": "FLOAT",
           "valuesByMode": {
-            "2385:0": 8
+            "2385:0": 12
           },
           "scopes": [
             "ALL_SCOPES"
@@ -185,22 +301,6 @@
           "resolvedType": "FLOAT",
           "valuesByMode": {
             "2385:0": 0
-          },
-          "scopes": [
-            "ALL_SCOPES"
-          ],
-          "hiddenFromPublishing": false,
-          "codeSyntax": {},
-          "variableCollectionId": "VariableCollectionId:2385:3263"
-        },
-        {
-          "id": "VariableID:4078:3816",
-          "name": "global/radius/global-radius-XL",
-          "description": "",
-          "key": "313ebe8b4026d4f0f02131b1ada87a62403de60a",
-          "resolvedType": "FLOAT",
-          "valuesByMode": {
-            "2385:0": 12
           },
           "scopes": [
             "ALL_SCOPES"
@@ -624,6 +724,114 @@
           "hiddenFromPublishing": false,
           "codeSyntax": {},
           "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:17573:1503",
+          "name": "alias/form-XL/form-min-width-xl",
+          "description": "",
+          "key": "81a0b2e06800a9893f6b334deeca8c037d556bcb",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": 0
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:17522:2587",
+          "name": "component/button-L/button-padding-v-l",
+          "description": "",
+          "key": "fa3896226bdb35d0f39cec590dd5b2078f45d068",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:4789:19995"
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:17522:2588",
+          "name": "component/button-L/button-padding-h-l",
+          "description": "",
+          "key": "8668ae5e666fc3b778a4fd29bce60674d9c8834d",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:4790:19997"
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:17522:2593",
+          "name": "alias/form-L/form-control-radius-l",
+          "description": "",
+          "key": "08c0940e231b1d2b292ac1c274b83c569c838716",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:4078:3814"
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:17522:2594",
+          "name": "alias/form-L/form-control-gap-h-l",
+          "description": "",
+          "key": "915b39e86c7ef7ad57c8ee43c15868b20b7b73b4",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:4789:19995"
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:17573:1501",
+          "name": "alias/form-L/form-min-width-l",
+          "description": "",
+          "key": "33cd756f52ab5e9ac8983cf3cd213bbd98a2781a",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": 0
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
         }
       ]
     },
@@ -658,6 +866,8 @@
         "VariableID:14888:14760",
         "VariableID:14888:14761",
         "VariableID:14888:14762",
+        "VariableID:17517:1108",
+        "VariableID:17522:2586",
         "VariableID:14906:3668",
         "VariableID:14974:1201",
         "VariableID:14974:1202",
@@ -747,7 +957,13 @@
         "VariableID:2921:10640",
         "VariableID:2921:10641",
         "VariableID:3043:17445",
-        "VariableID:2921:10642"
+        "VariableID:2921:10642",
+        "VariableID:17526:2598",
+        "VariableID:17526:2596",
+        "VariableID:17526:2599",
+        "VariableID:17526:2600",
+        "VariableID:17526:2603",
+        "VariableID:17529:2604"
       ],
       "variables": [
         {
@@ -990,6 +1206,64 @@
             "2919:1": {
               "type": "VARIABLE_ALIAS",
               "id": "VariableID:2921:10643"
+            },
+            "7737:1": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2919:22758"
+        },
+        {
+          "id": "VariableID:17517:1108",
+          "name": "component/button-primary/primary-color-bg-negative-default",
+          "description": "",
+          "key": "5d855b7d96dbd1f17e901987451416efc5a457f9",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "2919:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:3043:17450"
+            },
+            "2919:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:3043:17450"
+            },
+            "7737:1": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2919:22758"
+        },
+        {
+          "id": "VariableID:17522:2586",
+          "name": "component/button-primary/primary-color-bg-negative-loading",
+          "description": "",
+          "key": "4a060abc32704db94e5dea13cf4ce02f18252536",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "2919:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:3043:17450"
+            },
+            "2919:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:3043:17450"
             },
             "7737:1": {
               "r": 1,
@@ -3908,6 +4182,180 @@
           "hiddenFromPublishing": false,
           "codeSyntax": {},
           "variableCollectionId": "VariableCollectionId:2919:22758"
+        },
+        {
+          "id": "VariableID:17526:2598",
+          "name": "component/button-ghost/ghost-color-content-default",
+          "description": "",
+          "key": "6af6f1e9ea2bb1a76435ac3357c7dde70daeed13",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "2919:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2919:22759"
+            },
+            "2919:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2919:22759"
+            },
+            "7737:1": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2919:22758"
+        },
+        {
+          "id": "VariableID:17526:2596",
+          "name": "component/button-ghost/ghost-color-bg-disabled",
+          "description": "",
+          "key": "629c5ec08f80d564d39cf0cefb1fba29672dfc6d",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "2919:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2921:10635"
+            },
+            "2919:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2921:10635"
+            },
+            "7737:1": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2919:22758"
+        },
+        {
+          "id": "VariableID:17526:2599",
+          "name": "component/button-ghost/ghost-color-content-disabled",
+          "description": "",
+          "key": "589cac7c0143ef912411b71d170b75ace89b481b",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "2919:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2919:22759"
+            },
+            "2919:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2919:22759"
+            },
+            "7737:1": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2919:22758"
+        },
+        {
+          "id": "VariableID:17526:2600",
+          "name": "component/button-ghost/ghost-color-content-loading",
+          "description": "",
+          "key": "a70a7213e7dd2964f8b2e372ba38b3af9e8fb05f",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "2919:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2919:22759"
+            },
+            "2919:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2919:22759"
+            },
+            "7737:1": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2919:22758"
+        },
+        {
+          "id": "VariableID:17526:2603",
+          "name": "component/button-ghost/ghost-color-content-negative-default",
+          "description": "",
+          "key": "8e26108d2907ae1d85dbff04094d1977409aafc8",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "2919:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:3043:17450"
+            },
+            "2919:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:3043:17450"
+            },
+            "7737:1": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2919:22758"
+        },
+        {
+          "id": "VariableID:17529:2604",
+          "name": "component/button-ghost/ghost-color-content-negative-disabled",
+          "description": "",
+          "key": "19dec0ccf56d4bbf25215eac4983a16df1e742ae",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "2919:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2921:10638"
+            },
+            "2919:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2921:10638"
+            },
+            "7737:1": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2919:22758"
         }
       ]
     },
@@ -4404,6 +4852,2098 @@
           "hiddenFromPublishing": false,
           "codeSyntax": {},
           "variableCollectionId": "VariableCollectionId:9412:5199"
+        }
+      ]
+    },
+    {
+      "id": "VariableCollectionId:17614:49133",
+      "name": "v2 · Palette",
+      "key": "aa4ff824652ed4f9f8c611bfa993cd1a7c3e0085",
+      "hiddenFromPublishing": false,
+      "defaultModeId": "17614:0",
+      "modes": [
+        {
+          "name": "Value",
+          "modeId": "17614:0"
+        }
+      ],
+      "remote": false,
+      "variableIds": [
+        "VariableID:17614:49134",
+        "VariableID:17614:49135",
+        "VariableID:17614:49136",
+        "VariableID:17614:49137",
+        "VariableID:17614:49138",
+        "VariableID:17614:49139",
+        "VariableID:17614:49140",
+        "VariableID:17614:49141",
+        "VariableID:17614:49142",
+        "VariableID:17614:49143",
+        "VariableID:17614:49144",
+        "VariableID:17614:49145",
+        "VariableID:17614:49146",
+        "VariableID:17614:49147",
+        "VariableID:17614:49148",
+        "VariableID:17614:49149",
+        "VariableID:17614:49150",
+        "VariableID:17614:49151",
+        "VariableID:17614:49152",
+        "VariableID:17614:49153",
+        "VariableID:17614:49154",
+        "VariableID:17614:49155",
+        "VariableID:17614:49156",
+        "VariableID:17614:49157",
+        "VariableID:17614:49158",
+        "VariableID:17614:49159",
+        "VariableID:17614:49160",
+        "VariableID:17614:49161",
+        "VariableID:17614:49162",
+        "VariableID:17614:49163",
+        "VariableID:17614:49164",
+        "VariableID:17614:49165",
+        "VariableID:17614:49166",
+        "VariableID:17614:49167",
+        "VariableID:17615:49211",
+        "VariableID:17615:49212",
+        "VariableID:17615:49213"
+      ],
+      "variables": [
+        {
+          "id": "VariableID:17614:49134",
+          "name": "color/blue/20",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "13266b8ff24aa5c3569694e66f43b20d722418e3",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.6667,
+              "g": 0.8157,
+              "b": 0.9725,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-blue-20",
+            "ANDROID": "colorBlue20",
+            "iOS": "colorBlue20"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49135",
+          "name": "color/blue/22",
+          "description": "Добавленная ступень. Значение brand-60 из текущей Dark-темы — перенесено в палитру, чтобы тёмная тема не переопределяла примитивы.",
+          "key": "6d85dec77c27f8bc657b59938650d76c0514b1b3",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.4549,
+              "g": 0.7725,
+              "b": 0.9882,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-blue-22",
+            "ANDROID": "colorBlue22",
+            "iOS": "colorBlue22"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49136",
+          "name": "color/blue/25",
+          "description": "Добавленная ступень. Значение brand-50 из текущей Dark-темы.",
+          "key": "7ac60c8bf0a3f8380fddd2848a8f079f967d19e3",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.1137,
+              "g": 0.7255,
+              "b": 1,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-blue-25",
+            "ANDROID": "colorBlue25",
+            "iOS": "colorBlue25"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49137",
+          "name": "color/blue/30",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "3afd8a3494ea605b8e156201d80aea6fa7cc1ded",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.3451,
+              "g": 0.6745,
+              "b": 0.9098,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-blue-30",
+            "ANDROID": "colorBlue30",
+            "iOS": "colorBlue30"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49138",
+          "name": "color/blue/40",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "8c763e2897732983cd481c8873631836cfbdb26d",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.1294,
+              "g": 0.6118,
+              "b": 0.8706,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-blue-40",
+            "ANDROID": "colorBlue40",
+            "iOS": "colorBlue40"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49139",
+          "name": "color/blue/50",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "8feebd800d7fa319c09ab5e4ef9cde6cedcab72a",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0,
+              "g": 0.4824,
+              "b": 0.7451,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-blue-50",
+            "ANDROID": "colorBlue50",
+            "iOS": "colorBlue50"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49140",
+          "name": "color/blue/60",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "d65bd1614cd6f50ec0bd28bd0b1d6f2eb03372c1",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.0235,
+              "g": 0.3922,
+              "b": 0.6275,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-blue-60",
+            "ANDROID": "colorBlue60",
+            "iOS": "colorBlue60"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49141",
+          "name": "color/blue/70",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "e11cdddaaa39ffc54443d6a64ff213bfb4539e11",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0,
+              "g": 0.2588,
+              "b": 0.4235,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-blue-70",
+            "ANDROID": "colorBlue70",
+            "iOS": "colorBlue70"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49142",
+          "name": "color/red/25",
+          "description": "Добавленная ступень. Значение red-60 из текущей Dark-темы.",
+          "key": "f4b76bc24c0ae216f07abef6cb7e842cf3641e91",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 1,
+              "g": 0.5373,
+              "b": 0.5961,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-red-25",
+            "ANDROID": "colorRed25",
+            "iOS": "colorRed25"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49143",
+          "name": "color/red/30",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "dff5c116f434f83d29df1e976add332e235ab4d2",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.9647,
+              "g": 0.3725,
+              "b": 0.451,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-red-30",
+            "ANDROID": "colorRed30",
+            "iOS": "colorRed30"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49144",
+          "name": "color/red/40",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "ecec6dbdb81ab7c8bd466f9160041725022a17cb",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.9176,
+              "g": 0.2078,
+              "b": 0.298,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-red-40",
+            "ANDROID": "colorRed40",
+            "iOS": "colorRed40"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49145",
+          "name": "color/red/50",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "68ec182b8e06e69dbefc5413ab4559f499a56bef",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.8784,
+              "g": 0.0118,
+              "b": 0.1216,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-red-50",
+            "ANDROID": "colorRed50",
+            "iOS": "colorRed50"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49146",
+          "name": "color/red/60",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "5fc974592102e0dc649a45becc8da43f794f044d",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.6667,
+              "g": 0,
+              "b": 0.0824,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-red-60",
+            "ANDROID": "colorRed60",
+            "iOS": "colorRed60"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49147",
+          "name": "color/gray/0",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "95de3999b386619fb962db013a72a50df5059d42",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-gray-0",
+            "ANDROID": "colorGray0",
+            "iOS": "colorGray0"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49148",
+          "name": "color/gray/10",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "39b2fba4ba9b7f06eda67b9dd80ac273bbeec8d4",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.9412,
+              "g": 0.949,
+              "b": 0.9569,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-gray-10",
+            "ANDROID": "colorGray10",
+            "iOS": "colorGray10"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49149",
+          "name": "color/gray/30",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "9f8ba3577d7aea4e968efc749fcaa7cb0dbbad31",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.5961,
+              "g": 0.6039,
+              "b": 0.6314,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-gray-30",
+            "ANDROID": "colorGray30",
+            "iOS": "colorGray30"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49150",
+          "name": "color/gray/40",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "0813ae7c05cb8c66eedbac0bf7fda679b7cbab1d",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.4745,
+              "g": 0.4902,
+              "b": 0.5373,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-gray-40",
+            "ANDROID": "colorGray40",
+            "iOS": "colorGray40"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49151",
+          "name": "color/gray/70",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "8c56a7cdb7fa4b7ebcb9742f5a4e1337ccb0a946",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.2471,
+              "g": 0.2588,
+              "b": 0.302,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-gray-70",
+            "ANDROID": "colorGray70",
+            "iOS": "colorGray70"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49152",
+          "name": "color/gray/80",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "c879217967eae21e74b27a4156de6a39cbfbc484",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.1882,
+              "g": 0.1961,
+              "b": 0.2157,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-gray-80",
+            "ANDROID": "colorGray80",
+            "iOS": "colorGray80"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49153",
+          "name": "color/gray/90",
+          "description": "Добавленная ступень. Значение gray-0 из текущей Dark-темы.",
+          "key": "3d9c0332ec30d17afdff735a6ac48e544084cce4",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.1176,
+              "g": 0.1451,
+              "b": 0.2,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-gray-90",
+            "ANDROID": "colorGray90",
+            "iOS": "colorGray90"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49154",
+          "name": "dimension/4",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "c5b7dad7d68a2f198a52aa44922f6bc8d4426ae1",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 4
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--dimension-4",
+            "ANDROID": "dimension4",
+            "iOS": "dimension4"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49155",
+          "name": "dimension/6",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "85ceb2715011971280972638b30d77d1c7714891",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 6
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--dimension-6",
+            "ANDROID": "dimension6",
+            "iOS": "dimension6"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49156",
+          "name": "dimension/8",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "b0fe79d3f38a4e36cd95e087d1981a90894e64cd",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 8
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--dimension-8",
+            "ANDROID": "dimension8",
+            "iOS": "dimension8"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49157",
+          "name": "dimension/12",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "c7b830515b891cb3ac256016bb19fabd1df5f52c",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 12
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--dimension-12",
+            "ANDROID": "dimension12",
+            "iOS": "dimension12"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49158",
+          "name": "dimension/16",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "7cb1435d61276cb98a591543ac8f8dbaff177b11",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 16
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--dimension-16",
+            "ANDROID": "dimension16",
+            "iOS": "dimension16"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49159",
+          "name": "dimension/20",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "b76052fa4ea1ec71c2c1501b2d77072c1a243fcd",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 20
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--dimension-20",
+            "ANDROID": "dimension20",
+            "iOS": "dimension20"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49160",
+          "name": "dimension/24",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "714122f82c50a62accb49e1e180c0c9310259d91",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 24
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--dimension-24",
+            "ANDROID": "dimension24",
+            "iOS": "dimension24"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49161",
+          "name": "dimension/32",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "956dcf42d435f34ca597ed6ed06d9361d7304e81",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 32
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--dimension-32",
+            "ANDROID": "dimension32",
+            "iOS": "dimension32"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49162",
+          "name": "dimension/44",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "81628919117931f3f68eefb6de3bdb60423ee758",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 44
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--dimension-44",
+            "ANDROID": "dimension44",
+            "iOS": "dimension44"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49163",
+          "name": "dimension/56",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "519876f0043fef3935d3f1e917f8e9e08ed16393",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 56
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--dimension-56",
+            "ANDROID": "dimension56",
+            "iOS": "dimension56"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49164",
+          "name": "font-size/12",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "9a6230afb45767524480218dfb0bf02180aade69",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 12
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--font-size-12",
+            "ANDROID": "fontSize12",
+            "iOS": "fontSize12"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49165",
+          "name": "font-size/16",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "289be8d6a3b2f765a8c4e08dfd32749cccbc3f50",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 16
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--font-size-16",
+            "ANDROID": "fontSize16",
+            "iOS": "fontSize16"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49166",
+          "name": "line-height/17",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "b434c5cbd4409e95f73eea8193d47fce359f7687",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 17
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--line-height-17",
+            "ANDROID": "lineHeight17",
+            "iOS": "lineHeight17"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17614:49167",
+          "name": "line-height/24",
+          "description": "Примитив шкалы. Напрямую не используется — только через слой Alias.",
+          "key": "5cfbdbf82f8e6da261f1f7a776a6784d4aa8a843",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:0": 24
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--line-height-24",
+            "ANDROID": "lineHeight24",
+            "iOS": "lineHeight24"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17615:49211",
+          "name": "color/blue/80",
+          "description": "Тёмная ступень для нажатия в Classic.",
+          "key": "a3176a7985b569c22240e3e848143a2cacf321ab",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.0588,
+              "g": 0.1765,
+              "b": 0.3216,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-blue-80",
+            "ANDROID": "colorBlue80",
+            "iOS": "colorBlue80"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17615:49212",
+          "name": "color/red/70",
+          "description": "Тёмная ступень для нажатия деструктивного действия.",
+          "key": "8b4a79f95740471ad36ef2da8609457c2db499c9",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0.4745,
+              "g": 0.0039,
+              "b": 0.0667,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-red-70",
+            "ANDROID": "colorRed70",
+            "iOS": "colorRed70"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        },
+        {
+          "id": "VariableID:17615:49213",
+          "name": "color/gray/100",
+          "description": "Примитив палитры. Напрямую в макетах не используется — только через слой Alias.",
+          "key": "1b34cc8251f27e7254e6b98d2f875eddd4ce12b1",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:0": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            }
+          },
+          "scopes": [],
+          "hiddenFromPublishing": true,
+          "codeSyntax": {
+            "WEB": "--color-gray-100",
+            "ANDROID": "colorGray100",
+            "iOS": "colorGray100"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49133"
+        }
+      ]
+    },
+    {
+      "id": "VariableCollectionId:17614:49168",
+      "name": "v2 · Alias / Color",
+      "key": "c811ef51495c248d43613d1e1f29f8e708569616",
+      "hiddenFromPublishing": false,
+      "defaultModeId": "17614:1",
+      "modes": [
+        {
+          "name": "Light",
+          "modeId": "17614:1"
+        },
+        {
+          "name": "Dark",
+          "modeId": "17614:2"
+        },
+        {
+          "name": "Classic",
+          "modeId": "17614:3"
+        }
+      ],
+      "remote": false,
+      "variableIds": [
+        "VariableID:17614:49169",
+        "VariableID:17614:49170",
+        "VariableID:17614:49171",
+        "VariableID:17614:49172",
+        "VariableID:17614:49173",
+        "VariableID:17614:49174",
+        "VariableID:17614:49175",
+        "VariableID:17614:49176",
+        "VariableID:17614:49177",
+        "VariableID:17614:49178",
+        "VariableID:17614:49179",
+        "VariableID:17614:49180"
+      ],
+      "variables": [
+        {
+          "id": "VariableID:17614:49169",
+          "name": "color/action-primary/bg",
+          "description": "Фон акцентного действия в покое.",
+          "key": "b94b1b46b49219692b3ad43ade465eeb98b2b627",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49139"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49136"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49140"
+            }
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-action-primary-bg",
+            "ANDROID": "colorActionPrimaryBg",
+            "iOS": "colorActionPrimaryBg"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49170",
+          "name": "color/action-primary/bg-hover",
+          "description": "Наведение. В Light и Classic — темнее bg (осветление ломает контраст подписи), в Dark — светлее.",
+          "key": "bf145b13e604cace662fb18d8d237fcb243441e7",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49140"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49135"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49141"
+            }
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-action-primary-bg-hover",
+            "ANDROID": "colorActionPrimaryBgHover",
+            "iOS": "colorActionPrimaryBgHover"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49171",
+          "name": "color/action-primary/bg-active",
+          "description": "Нажатие. Во всех темах темнее, чем bg.",
+          "key": "3e99f69aa25fba33cfc45cf3ef72b25bf3e4497f",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49141"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49138"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17615:49211"
+            }
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-action-primary-bg-active",
+            "ANDROID": "colorActionPrimaryBgActive",
+            "iOS": "colorActionPrimaryBgActive"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49172",
+          "name": "color/action-primary/fg",
+          "description": "Текст и иконка на акцентном фоне. В Dark акцентные фоны высокой светлоты, поэтому подпись почти чёрная.",
+          "key": "0bd33e4115c0fb10fb329d4a2027be32e8955120",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49147"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17615:49213"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49147"
+            }
+          },
+          "scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-action-primary-fg",
+            "ANDROID": "colorActionPrimaryFg",
+            "iOS": "colorActionPrimaryFg"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49173",
+          "name": "color/action-primary/ring",
+          "description": "Кольцо фокуса для акцентного действия.",
+          "key": "76598b0147a4471a9cf5c64589f5ebf17efd7073",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49139"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49136"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49140"
+            }
+          },
+          "scopes": [
+            "STROKE_COLOR",
+            "EFFECT_COLOR"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-action-primary-ring",
+            "ANDROID": "colorActionPrimaryRing",
+            "iOS": "colorActionPrimaryRing"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49174",
+          "name": "color/danger/bg",
+          "description": "Фон деструктивного действия в покое.",
+          "key": "4ad2fb7ceb3bd85ab9cf35b562db657ed7167b70",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49145"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49143"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49145"
+            }
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-danger-bg",
+            "ANDROID": "colorDangerBg",
+            "iOS": "colorDangerBg"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49175",
+          "name": "color/danger/bg-hover",
+          "description": "Наведение.",
+          "key": "27efe469bbd2625936f2c4ac8651a31ca592bbc2",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49146"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49142"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49146"
+            }
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-danger-bg-hover",
+            "ANDROID": "colorDangerBgHover",
+            "iOS": "colorDangerBgHover"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49176",
+          "name": "color/danger/bg-active",
+          "description": "Нажатие.",
+          "key": "e3361f47427e2efe57844b57a789c5c6387d9552",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17615:49212"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49144"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17615:49212"
+            }
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-danger-bg-active",
+            "ANDROID": "colorDangerBgActive",
+            "iOS": "colorDangerBgActive"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49177",
+          "name": "color/danger/fg",
+          "description": "Текст и иконка на деструктивном фоне. В Dark — почти чёрная, см. action-primary/fg.",
+          "key": "6e93676bf1e59b2d3438b5aa09465a22c8babe97",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49147"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17615:49213"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49147"
+            }
+          },
+          "scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-danger-fg",
+            "ANDROID": "colorDangerFg",
+            "iOS": "colorDangerFg"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49178",
+          "name": "color/danger/ring",
+          "description": "Кольцо фокуса для деструктивного действия.",
+          "key": "8c6569e15d18e24baeb2da19ca9e545e03913832",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49145"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49143"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49145"
+            }
+          },
+          "scopes": [
+            "STROKE_COLOR",
+            "EFFECT_COLOR"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-danger-ring",
+            "ANDROID": "colorDangerRing",
+            "iOS": "colorDangerRing"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49179",
+          "name": "color/disabled/bg",
+          "description": "Фон недоступного контрола. Общий для всех типов кнопки.",
+          "key": "f04dc1d077ff143037c7e15aba244793f7b06d6d",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49150"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49151"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49150"
+            }
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-disabled-bg",
+            "ANDROID": "colorDisabledBg",
+            "iOS": "colorDisabledBg"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        },
+        {
+          "id": "VariableID:17614:49180",
+          "name": "color/disabled/fg",
+          "description": "Текст недоступного контрола.",
+          "key": "c4f299383198a59b63569f4add4972582c902dc7",
+          "resolvedType": "COLOR",
+          "valuesByMode": {
+            "17614:1": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49148"
+            },
+            "17614:2": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49149"
+            },
+            "17614:3": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49148"
+            }
+          },
+          "scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--color-disabled-fg",
+            "ANDROID": "colorDisabledFg",
+            "iOS": "colorDisabledFg"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49168"
+        }
+      ]
+    },
+    {
+      "id": "VariableCollectionId:17614:49181",
+      "name": "v2 · Alias / Size",
+      "key": "893b1230d775851c855ad68df4c01ce6e212b9f2",
+      "hiddenFromPublishing": false,
+      "defaultModeId": "17614:4",
+      "modes": [
+        {
+          "name": "Desktop",
+          "modeId": "17614:4"
+        },
+        {
+          "name": "Mobile",
+          "modeId": "17614:5"
+        }
+      ],
+      "remote": false,
+      "variableIds": [
+        "VariableID:17614:49182",
+        "VariableID:17614:49183",
+        "VariableID:17614:49184",
+        "VariableID:17614:49185",
+        "VariableID:17614:49186",
+        "VariableID:17614:49187",
+        "VariableID:17614:49188",
+        "VariableID:17614:49189",
+        "VariableID:17614:49190",
+        "VariableID:17614:49191",
+        "VariableID:17614:49192",
+        "VariableID:17614:49193",
+        "VariableID:17614:49194",
+        "VariableID:17614:49195",
+        "VariableID:17614:49196",
+        "VariableID:17614:49197",
+        "VariableID:17614:49198",
+        "VariableID:17614:49199",
+        "VariableID:17614:49200",
+        "VariableID:17614:49201",
+        "VariableID:17614:49202",
+        "VariableID:17614:49203",
+        "VariableID:17614:49204",
+        "VariableID:17614:49205",
+        "VariableID:17614:49206",
+        "VariableID:17614:49207",
+        "VariableID:17614:49208",
+        "VariableID:17614:49209",
+        "VariableID:17614:49210"
+      ],
+      "variables": [
+        {
+          "id": "VariableID:17614:49182",
+          "name": "size/control-h/s",
+          "description": "Минимальная высота контрола.",
+          "key": "64b2bf76d07865c544aca8bcec71ba2d2ba568dc",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49160"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49160"
+            }
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--size-control-h-s",
+            "ANDROID": "sizeControlHS",
+            "iOS": "sizeControlHS"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49183",
+          "name": "size/control-h/l",
+          "description": "Минимальная высота контрола.",
+          "key": "da2cee93dd357ac6f7404f8293033c6c8e678fed",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49161"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49161"
+            }
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--size-control-h-l",
+            "ANDROID": "sizeControlHL",
+            "iOS": "sizeControlHL"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49184",
+          "name": "size/control-h/xl",
+          "description": "Минимальная высота контрола.",
+          "key": "6c49a2f7648e72bd1e16c8c4074b4926b1905712",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49162"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49162"
+            }
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--size-control-h-xl",
+            "ANDROID": "sizeControlHXl",
+            "iOS": "sizeControlHXl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49185",
+          "name": "size/control-h/xxl",
+          "description": "Минимальная высота контрола.",
+          "key": "66aca20ca2fdbabe2d000f4e124cc03b011d39c6",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49163"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49163"
+            }
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--size-control-h-xxl",
+            "ANDROID": "sizeControlHXxl",
+            "iOS": "sizeControlHXxl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49186",
+          "name": "space/inset-x/s",
+          "description": "Горизонтальный внутренний отступ контрола.",
+          "key": "e0d647cf40a622189d3f65987cce699780febe6c",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-inset-x-s",
+            "ANDROID": "spaceInsetXS",
+            "iOS": "spaceInsetXS"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49187",
+          "name": "space/inset-x/l",
+          "description": "Горизонтальный внутренний отступ контрола.",
+          "key": "e0e55ca57d11114bfeaf97c845895b2dc8f819e4",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49157"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49157"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-inset-x-l",
+            "ANDROID": "spaceInsetXL",
+            "iOS": "spaceInsetXL"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49188",
+          "name": "space/inset-x/xl",
+          "description": "Горизонтальный внутренний отступ контрола.",
+          "key": "7c9d6e6456bdfb8b5d889784f4ab2362940614e9",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49158"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49158"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-inset-x-xl",
+            "ANDROID": "spaceInsetXXl",
+            "iOS": "spaceInsetXXl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49189",
+          "name": "space/inset-x/xxl",
+          "description": "Горизонтальный внутренний отступ контрола.",
+          "key": "c9ecc9c30557d373c742642f3fdea7784003a243",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49159"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49159"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-inset-x-xxl",
+            "ANDROID": "spaceInsetXXxl",
+            "iOS": "spaceInsetXXxl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49190",
+          "name": "space/inset-y/s",
+          "description": "Вертикальный внутренний отступ контрола.",
+          "key": "f3f4cea9bacb05ddfd8c7e3a9a90b142d400bd2d",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49155"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49155"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-inset-y-s",
+            "ANDROID": "spaceInsetYS",
+            "iOS": "spaceInsetYS"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49191",
+          "name": "space/inset-y/l",
+          "description": "Вертикальный внутренний отступ контрола.",
+          "key": "7fa4fad61a48bb2b629b5f0d8bb8876a0e21e009",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49155"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49155"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-inset-y-l",
+            "ANDROID": "spaceInsetYL",
+            "iOS": "spaceInsetYL"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49192",
+          "name": "space/inset-y/xl",
+          "description": "Вертикальный внутренний отступ контрола.",
+          "key": "a8e4323e99f00a27ff829699f21dd9f64e8efe00",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-inset-y-xl",
+            "ANDROID": "spaceInsetYXl",
+            "iOS": "spaceInsetYXl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49193",
+          "name": "space/inset-y/xxl",
+          "description": "Вертикальный внутренний отступ контрола.",
+          "key": "46782416b8fdf605cc098657128a0d3a1435c819",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49158"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49158"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-inset-y-xxl",
+            "ANDROID": "spaceInsetYXxl",
+            "iOS": "spaceInsetYXxl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49194",
+          "name": "space/gap/s",
+          "description": "Зазор между иконкой и подписью.",
+          "key": "c1ee703aa24ac26245fe97c65920bd839174e995",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49154"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49154"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-gap-s",
+            "ANDROID": "spaceGapS",
+            "iOS": "spaceGapS"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49195",
+          "name": "space/gap/l",
+          "description": "Зазор между иконкой и подписью.",
+          "key": "cad1125ca6ffb59a9ddbf32eaa7542fa8a558dde",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49155"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49155"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-gap-l",
+            "ANDROID": "spaceGapL",
+            "iOS": "spaceGapL"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49196",
+          "name": "space/gap/xl",
+          "description": "Зазор между иконкой и подписью.",
+          "key": "567fcb9663f1db5868b5c175724b82df054d43b5",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-gap-xl",
+            "ANDROID": "spaceGapXl",
+            "iOS": "spaceGapXl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49197",
+          "name": "space/gap/xxl",
+          "description": "Зазор между иконкой и подписью.",
+          "key": "729e591d0921cf3597439220b6987312b9097a92",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            }
+          },
+          "scopes": [
+            "GAP"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--space-gap-xxl",
+            "ANDROID": "spaceGapXxl",
+            "iOS": "spaceGapXxl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49198",
+          "name": "radius/control/s",
+          "description": "Радиус скругления контрола.",
+          "key": "28f0045c3eda9a947499f3f280e20a564ca3a372",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49154"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49154"
+            }
+          },
+          "scopes": [
+            "CORNER_RADIUS"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--radius-control-s",
+            "ANDROID": "radiusControlS",
+            "iOS": "radiusControlS"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49199",
+          "name": "radius/control/l",
+          "description": "Радиус скругления контрола.",
+          "key": "8134daf021227787561d5c5ca4b6edf8350a303f",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49155"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49155"
+            }
+          },
+          "scopes": [
+            "CORNER_RADIUS"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--radius-control-l",
+            "ANDROID": "radiusControlL",
+            "iOS": "radiusControlL"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49200",
+          "name": "radius/control/xl",
+          "description": "Радиус скругления контрола.",
+          "key": "896c376c2348b3489b0c55f4a938f10b16e9c39e",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            }
+          },
+          "scopes": [
+            "CORNER_RADIUS"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--radius-control-xl",
+            "ANDROID": "radiusControlXl",
+            "iOS": "radiusControlXl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49201",
+          "name": "radius/control/xxl",
+          "description": "Радиус скругления контрола.",
+          "key": "1aef7f1e1ea97b73bfa3d3e40fa0680f6270aecd",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49156"
+            }
+          },
+          "scopes": [
+            "CORNER_RADIUS"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--radius-control-xxl",
+            "ANDROID": "radiusControlXxl",
+            "iOS": "radiusControlXxl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49202",
+          "name": "font/size/control-s",
+          "description": "Кегль подписи контрола.",
+          "key": "a4fdc935b111ac9d73ec0893a5abc3c3013e8bfd",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49164"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49164"
+            }
+          },
+          "scopes": [
+            "FONT_SIZE"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--font-size-control-s",
+            "ANDROID": "fontSizeControlS",
+            "iOS": "fontSizeControlS"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49203",
+          "name": "font/size/control-l",
+          "description": "Кегль подписи контрола.",
+          "key": "3cdc678c46c1dbc2b1ae69ead2652704ec1a750d",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49164"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49164"
+            }
+          },
+          "scopes": [
+            "FONT_SIZE"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--font-size-control-l",
+            "ANDROID": "fontSizeControlL",
+            "iOS": "fontSizeControlL"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49204",
+          "name": "font/size/control-xl",
+          "description": "Кегль подписи контрола.",
+          "key": "1b69fac24a826132a7f09d87a377773fbe40cb6f",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49165"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49165"
+            }
+          },
+          "scopes": [
+            "FONT_SIZE"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--font-size-control-xl",
+            "ANDROID": "fontSizeControlXl",
+            "iOS": "fontSizeControlXl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49205",
+          "name": "font/size/control-xxl",
+          "description": "Кегль подписи контрола.",
+          "key": "7999ef73c45fb199ecc322ffbc2f50130b0ce86f",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49165"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49165"
+            }
+          },
+          "scopes": [
+            "FONT_SIZE"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--font-size-control-xxl",
+            "ANDROID": "fontSizeControlXxl",
+            "iOS": "fontSizeControlXxl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49206",
+          "name": "font/line-height/control-s",
+          "description": "Интерлиньяж подписи контрола.",
+          "key": "d7f0c9703ac60e70e8e468136219421ef58df39a",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49166"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49166"
+            }
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--font-line-height-control-s",
+            "ANDROID": "fontLineHeightControlS",
+            "iOS": "fontLineHeightControlS"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49207",
+          "name": "font/line-height/control-l",
+          "description": "Интерлиньяж подписи контрола.",
+          "key": "4c15e033272d20a147d59bcd8059c10540193b79",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49166"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49166"
+            }
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--font-line-height-control-l",
+            "ANDROID": "fontLineHeightControlL",
+            "iOS": "fontLineHeightControlL"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49208",
+          "name": "font/line-height/control-xl",
+          "description": "Интерлиньяж подписи контрола.",
+          "key": "2dc718e208d972aa76105d6c14c644c0010fba1d",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49167"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49167"
+            }
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--font-line-height-control-xl",
+            "ANDROID": "fontLineHeightControlXl",
+            "iOS": "fontLineHeightControlXl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49209",
+          "name": "font/line-height/control-xxl",
+          "description": "Интерлиньяж подписи контрола.",
+          "key": "0646514a42d1fd04a7b1d3b1366d471532c772bd",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49167"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49167"
+            }
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--font-line-height-control-xxl",
+            "ANDROID": "fontLineHeightControlXxl",
+            "iOS": "fontLineHeightControlXxl"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
+        },
+        {
+          "id": "VariableID:17614:49210",
+          "name": "size/touch-min",
+          "description": "Минимальная зона нажатия. Может быть больше видимой высоты контрола.",
+          "key": "8bfdcdef07376854310704a38e635f1c0a82d9e5",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "17614:4": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49162"
+            },
+            "17614:5": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17614:49162"
+            }
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {
+            "WEB": "--size-touch-min",
+            "ANDROID": "sizeTouchMin",
+            "iOS": "sizeTouchMin"
+          },
+          "variableCollectionId": "VariableCollectionId:17614:49181"
         }
       ]
     }

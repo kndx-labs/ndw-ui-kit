@@ -78,15 +78,9 @@
       >
         @for (row of renderRows(); track renderRowKey(row)) {
           @if (row.kind === 'subheader') {
-            <div
-              class="ndwu-multi-select-field__group-subheader"
-              role="presentation"
-              [id]="groupHeaderId(row.id)"
-            >
-              <span class="ndwu-multi-select-field__group-subheader-text">
-                {{ row.label | localizeIf: localizeLabels() }}
-              </span>
-            </div>
+            <ndwu-styled-group-header [id]="groupHeaderId(row.id)">
+              {{ row.label | localizeIf: localizeLabels() }}
+            </ndwu-styled-group-header>
           } @else {
             <ndwu-styled-option
               [value]="row.option.value"

@@ -1,7 +1,4 @@
 @use 'styles/mixins';
-@use 'styles/colors';
-@use 'styles/padding';
-@use 'styles/spacing';
 
 .ndwu-select-field__trigger {
   display: flex;
@@ -63,26 +60,4 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-}
-
-.ndwu-select-field__group-subheader {
-  display: flex;
-  gap: spacing.$spacing-8;
-  align-items: center;
-  padding: padding.$padding-8 padding.$padding-12;
-
-  &::before,
-  &::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background-color: colors.$gray-20;
-  }
-}
-
-.ndwu-select-field__group-subheader-text {
-  flex-shrink: 0;
-  color: colors.$gray-60;
-  font-size: 12px;
-  white-space: nowrap;
 }

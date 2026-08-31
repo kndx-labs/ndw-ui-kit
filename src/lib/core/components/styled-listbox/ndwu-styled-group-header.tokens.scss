@@ -1,0 +1,6 @@
+@use 'styles/colors';
+
+$ndwu-styled-group-header-tokens: (
+  styled-group-header-text-color: colors.$gray-50,
+  styled-group-header-divider-color: colors.$gray-15,
+);

@@ -25,6 +25,7 @@
   --ndwu-styled-listbox-max-height: calc(9 * var(--ndwu-styled-option-height));
   --ndwu-styled-group-header-gap: #{spacing.$spacing-8};
   --ndwu-styled-group-header-letter-spacing: #{typography.$letterSpacing-L};
+  --ndwu-styled-group-header-min-divider-width: #{spacing.$spacing-24};
 }
 
 :host([data-size='XL']) {
@@ -37,6 +38,7 @@
   --ndwu-styled-listbox-max-height: calc(8 * var(--ndwu-styled-option-height));
   --ndwu-styled-group-header-gap: #{spacing.$spacing-12};
   --ndwu-styled-group-header-letter-spacing: #{typography.$letterSpacing-S};
+  --ndwu-styled-group-header-min-divider-width: #{spacing.$spacing-32};
 }
 
 :host([data-size='XXL']) {
@@ -49,4 +51,5 @@
   --ndwu-styled-listbox-max-height: calc(7 * var(--ndwu-styled-option-height));
   --ndwu-styled-group-header-gap: #{spacing.$spacing-16};
   --ndwu-styled-group-header-letter-spacing: #{typography.$letterSpacing-S};
+  --ndwu-styled-group-header-min-divider-width: 48px;
 }

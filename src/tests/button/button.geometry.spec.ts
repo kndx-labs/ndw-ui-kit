@@ -1,6 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {BUTTON_VARIANT, SIZE} from '@ndw-ui-kit/core';
-import type {ButtonVariant, Size} from '@ndw-ui-kit/core';
+import {BUTTON_VARIANT, SIZE, type ButtonVariant, type Size} from '@ndw-ui-kit/core';
 import {mountButton} from '../helpers/mount';
 import {isZeroLetterSpacing} from '../helpers/styles';
 

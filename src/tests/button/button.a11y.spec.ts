@@ -55,6 +55,7 @@ describe('button accessibility', () => {
   ])('BTN-ACC-04 — %s activates the button (%s)', async (key) => {
     const {host} = mountButton();
     let clicks = 0;
+
     host.addEventListener('click', () => {
       clicks += 1;
     });
@@ -68,6 +69,7 @@ describe('button accessibility', () => {
   it('BTN-ACC-05 — loading sets no aria-busy and does not block keyboard activation', async () => {
     const {host} = mountButton({loading: true});
     let clicks = 0;
+
     host.addEventListener('click', () => {
       clicks += 1;
     });

@@ -77,6 +77,7 @@ describe('button behaviour', () => {
   it('BTN-STA-02 — a disabled button cannot be activated', () => {
     const {host} = mountButton({disabled: true});
     let clicks = 0;
+
     host.addEventListener('click', () => {
       clicks += 1;
     });

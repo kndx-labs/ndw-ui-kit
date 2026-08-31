@@ -121,6 +121,16 @@
                   "with": "src/playground/app/app.config.ngx-translate.ts"
                 }
               ]
+            },
+            "test": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "polyfills": ["zone.js"],
+              "styles": [
+                {"input": "src/playground/styles/ndw-ui-kit-theme.scss", "bundleName": "styles"},
+                {"input": "src/playground/styles.scss", "bundleName": "styles"}
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -152,6 +162,20 @@
               "../lib/**/*.spec.ts"
             ],
             "tsConfig": "tsconfig.spec.json"
+          }
+        },
+        "test-conformance": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "playground:build:test",
+            "runner": "vitest",
+            "browsers": ["ChromiumHeadless"],
+            "include": [
+              "../tests/**/*.spec.ts"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "providersFile": "src/tests/test-providers.ts",
+            "setupFiles": ["src/tests/setup.ts"]
           }
         }
       }

@@ -21,3 +21,8 @@ beforeAll(async () => {
   disableMotion();
   await waitForTheme();
 });
+
+// Fixture teardown lives in helpers/mount.ts, not here: setupFiles are loaded
+// by Vite's dev pipeline directly and can't resolve the "@ndw-ui-kit/core"
+// tsconfig alias that the mount helper needs, so mount.ts registers its own
+// afterEach at import time instead.

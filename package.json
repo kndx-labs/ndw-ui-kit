@@ -14,6 +14,7 @@
     "test": "ng test playground",
     "test:conformance": "ng run playground:test-conformance",
     "check:spec-coverage": "tsx src/tests/tools/check-spec-coverage.ts",
+    "generate:button-rules": "tsx src/tests/tools/generate-rule-spec.ts",
     "fmt": "dprint fmt \"src/**/*.ts\" \"scripts/**/*.ts\"",
     "lint:ts-src": "eslint --cache --cache-location .eslintcache-src \"src/**/*.ts\" \"src/**/*.component.html\"",
     "lint:ts-scripts": "eslint --cache --cache-location .eslintcache-scripts \"scripts/**/*.ts\"",

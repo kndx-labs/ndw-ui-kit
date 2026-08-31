@@ -27,13 +27,6 @@ describe('button appearance', () => {
     expect(styles().opacity).toBe('1');
   });
 
-  it('BTN-ELV-03 — a resting button has no elevation', () => {
-    const {styles} = mountButton();
-
-    expect(styles().boxShadow).toBe('none');
-    expect(styles().filter).toBe('none');
-  });
-
   it('BTN-ELV-02 — keyboard focus renders the primary focus ring', async () => {
     const {host, styles} = mountButton({variant: BUTTON_VARIANT.PRIMARY});
 

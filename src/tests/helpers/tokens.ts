@@ -1,7 +1,8 @@
 const THEME_SENTINEL = '--ndwu-color-brand-50';
 
 export const cssVar = (name: string, el: Element = document.documentElement): string => {
-  return getComputedStyle(el).getPropertyValue(name).trim();
+  return getComputedStyle(el).getPropertyValue(name)
+.trim();
 };
 
 export const waitForTheme = async (timeoutMs = 2000): Promise<void> => {

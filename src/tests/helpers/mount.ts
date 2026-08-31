@@ -1,8 +1,7 @@
 import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {afterEach} from 'vitest';
-import {BUTTON_VARIANT, NdwuButtonComponent} from '@ndw-ui-kit/core';
-import type {ButtonVariant, IconName, Size} from '@ndw-ui-kit/core';
+import {BUTTON_VARIANT, NdwuButtonComponent, type ButtonVariant, type IconName, type Size} from '@ndw-ui-kit/core';
 
 export interface ButtonState {
   variant: ButtonVariant;
@@ -63,19 +62,30 @@ const mounted: ComponentFixture<ButtonHostComponent>[] = [];
 afterEach(() => {
   while (mounted.length > 0) {
     const fixture = mounted.pop();
-    fixture?.nativeElement.remove();
-    fixture?.destroy();
+
+    if (!fixture) {
+      continue;
+    }
+
+    (fixture.nativeElement as HTMLElement).remove();
+    fixture.destroy();
   }
 });
 
 export const mountButton = (patch: Partial<ButtonState> = {}): MountedButton => {
   const fixture = TestBed.createComponent(ButtonHostComponent);
+  const rootElement = fixture.nativeElement as HTMLElement;
+
   fixture.componentInstance.state.set({...DEFAULT_STATE, ...patch});
-  document.body.appendChild(fixture.nativeElement);
+  document.body.appendChild(rootElement);
   fixture.detectChanges();
   mounted.push(fixture);
 
-  const host = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
+  const host = rootElement.querySelector<HTMLButtonElement>('button');
+
+  if (!host) {
+    throw new Error('mountButton: no <button> was rendered in the host template');
+  }
 
   return {
     fixture,

@@ -310,6 +310,7 @@ module.exports = tseslint.config(
     files: ['**/*.ts'],
     ignores: [
       'scripts/**/*.ts', // build scripts
+      'src/tests/tools/**/*.ts', // node CLI tools for the conformance test suite
     ],
     extends: [
       eslint.configs.recommended,
@@ -388,7 +389,7 @@ module.exports = tseslint.config(
     },
   },
   {
-    files: ['scripts/**/*.ts'],
+    files: ['scripts/**/*.ts', 'src/tests/tools/**/*.ts'],
 
     languageOptions: {
       globals: {

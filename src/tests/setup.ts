@@ -9,6 +9,7 @@ const disableMotion = (): void => {
   }
 
   const style = document.createElement('style');
+
   style.id = NO_MOTION_STYLE_ID;
   style.textContent = '*, *::before, *::after {'
     + 'transition: none !important;'

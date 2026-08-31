@@ -39,7 +39,7 @@
           [ngTemplateOutletContext]="$any(displayContext)"
         />
       } @else {
-        {{ (empty ? placeholder() : displayText) | localize }}
+        {{ (empty ? placeholder() : displayText) | localizeIf: localizeLabels() }}
       }
     </span>
 
@@ -64,7 +64,7 @@
             class="ndwu-multi-select-field__panel-close"
             (click)="closePanel()"
           >
-            <ndwu-icon [name]="ICON_NAME.CLOSE_S" />
+            <ndwu-icon [name]="ICON_NAME.CLOSE_S"/>
           </button>
         </div>
       }
@@ -76,25 +76,42 @@
         [values]="pendingSelection()"
         (valuesChange)="onSelectionChange($event)"
       >
-        @for (opt of normalizedOptions(); track opt.value) {
-          <ndwu-styled-option
-            [value]="opt.value"
-            [label]="opt.label"
-          >
-            <span
-              ndwuOptionPrefix
-              aria-hidden="true"
-              class="ndwu-multi-select-field__option-checkbox"
+        @for (row of renderRows(); track renderRowKey(row)) {
+          @if (row.kind === 'subheader') {
+            <div
+              class="ndwu-multi-select-field__group-subheader"
+              role="presentation"
+              [id]="groupHeaderId(row.id)"
             >
-              <ndwu-checkbox
-                [checked]="isOptionSelected(opt.value)"
-                [inputTabIndex]="-1"
-              />
-            </span>
-            <span class="ndwu-multi-select-field__option-label">
-              {{ opt.label | localize }}
-            </span>
-          </ndwu-styled-option>
+              <span class="ndwu-multi-select-field__group-subheader-text">
+                {{ row.label | localizeIf: localizeLabels() }}
+              </span>
+            </div>
+          } @else {
+            <ndwu-styled-option
+              [value]="row.option.value"
+              [label]="row.option.label"
+              [attr.aria-describedby]="
+                row.option.groupId
+                  ? groupHeaderId(row.option.groupId)
+                  : null
+              "
+            >
+              <span
+                ndwuOptionPrefix
+                aria-hidden="true"
+                class="ndwu-multi-select-field__option-checkbox"
+              >
+                <ndwu-checkbox
+                  [checked]="isOptionSelected(row.option.value)"
+                  [inputTabIndex]="-1"
+                />
+              </span>
+              <span class="ndwu-multi-select-field__option-label">
+                {{ row.option.label | localizeIf: localizeLabels() }}
+              </span>
+            </ndwu-styled-option>
+          }
         }
       </ndwu-styled-listbox>
 

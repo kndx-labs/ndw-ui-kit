@@ -13,6 +13,13 @@ export interface NdwuOption {
   label: string;
   secondaryText?: string;
   disabled?: boolean;
+  hidden?: boolean;
+  groupId?: string;
+}
+
+export interface NdwuOptionGroup {
+  id: string;
+  label: string;
 }
 
 // For some item type T, a selector can be either:
@@ -27,6 +34,8 @@ export interface NdwuOptionAdapter<T> {
   label: NdwuOptionFieldSelector<T, string>;
   secondaryText?: NdwuOptionFieldSelector<T, string | undefined>;
   disabled?: NdwuOptionFieldSelector<T, boolean | undefined>;
+  hidden?: NdwuOptionFieldSelector<T, boolean | undefined>;
+  groupId?: NdwuOptionFieldSelector<T, string | undefined>;
 }
 
 export interface NdwuOptionConfig<T = unknown> {

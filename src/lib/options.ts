@@ -11,6 +11,8 @@ export const NDWU_DEFAULT_OPTION_ADAPTER: NdwuOptionAdapter<NdwuOption> = {
   label: 'label',
   secondaryText: 'secondaryText',
   disabled: 'disabled',
+  hidden: 'hidden',
+  groupId: 'groupId',
 };
 
 /**
@@ -70,6 +72,9 @@ export function normalizeOptions<T>(
     const secondaryText = adapter.secondaryText
       ? resolve(item, adapter.secondaryText)
       : undefined;
+    const groupId = adapter.groupId
+      ? resolve(item, adapter.groupId)
+      : undefined;
 
     const normalized: NdwuOption = {
       value,
@@ -77,10 +82,17 @@ export function normalizeOptions<T>(
       disabled: adapter.disabled
         ? !!resolve(item, adapter.disabled)
         : false,
+      hidden: adapter.hidden
+        ? !!resolve(item, adapter.hidden)
+        : false,
     };
 
     if (secondaryText !== undefined) {
       normalized.secondaryText = secondaryText;
+    }
+
+    if (groupId !== undefined) {
+      normalized.groupId = groupId;
     }
 
     return normalized;

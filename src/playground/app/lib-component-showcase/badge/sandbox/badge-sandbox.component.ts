@@ -1,14 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {
-  ICON_NAME,
-  type IconName,
-  NdwuBadgeComponent,
-  type NdwuBadgeTone,
-  SIZE,
-  type Size,
-} from '@ndw-ui-kit/core';
+import {ICON_NAME, type IconName, NdwuBadgeComponent, type NdwuBadgeTone, SIZE, type Size} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';

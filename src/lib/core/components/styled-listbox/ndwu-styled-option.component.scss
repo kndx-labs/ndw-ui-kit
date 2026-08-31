@@ -23,7 +23,11 @@
 
   &.ndwu-styled-option--active:not(.ndwu-styled-option--disabled, .ndwu-styled-option--selected) {
     background-color: var(--ndwu-styled-option-active-bg);
-    box-shadow: 0 0 0 2px var(--ndwu-styled-option-active-outline-color);
+
+    // inset: the option spans the listbox's full width with no horizontal
+    // padding, so an outward ring gets clipped by the scroll container's
+    // inside the dropdown panel
+    box-shadow: inset 0 0 0 2px var(--ndwu-styled-option-active-outline-color);
 
     &:first-child {
       border-top-left-radius: var(--ndwu-styled-option-active-border-radius);
@@ -37,7 +41,7 @@
   }
 
   &.ndwu-styled-option--active.ndwu-styled-option--selected:not(.ndwu-styled-option--disabled) {
-    box-shadow: 0 0 0 2px var(--ndwu-styled-option-active-outline-color);
+    box-shadow: inset 0 0 0 2px var(--ndwu-styled-option-active-outline-color);
 
     &:first-child {
       border-top-left-radius: var(--ndwu-styled-option-active-border-radius);

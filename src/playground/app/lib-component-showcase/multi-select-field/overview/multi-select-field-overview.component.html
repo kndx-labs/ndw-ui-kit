@@ -85,5 +85,31 @@
         </ndwu-multi-select-field>
       </form>
     </div>
+
+    <div class="state-section">
+      <h4>Non-localized labels</h4>
+      <form [formGroup]="formNoLocalize">
+        <ndwu-multi-select-field
+          label="Tags"
+          placeholder="Pick tags"
+          [options]="userProvidedLabelOptions"
+          [localizeLabels]="false"
+          formControlName="tags"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>Grouped options</h4>
+      <form [formGroup]="formGrouped">
+        <ndwu-multi-select-field
+          label="Countries"
+          placeholder="Pick countries"
+          [options]="countryOptionsGrouped"
+          [groups]="continentGroups"
+          formControlName="countries"
+        />
+      </form>
+    </div>
   </ng-template>
 </app-showcase-layout>

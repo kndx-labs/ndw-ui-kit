@@ -1,9 +1,16 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NdwuOption, SIZE} from '@ndw-ui-kit/core';
+import {NdwuOption, NdwuOptionGroup, SIZE} from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
-import {COUNTRY_OPTIONS, COUNTRY_OPTIONS_LONG_LIST} from '../../shared/select-showcase.data';
+import {
+  CONTINENT_GROUPS,
+  COUNTRY_OPTIONS,
+  COUNTRY_OPTIONS_GROUPED,
+  COUNTRY_OPTIONS_LONG_LIST,
+  COUNTRY_OPTIONS_WITH_HIDDEN,
+  USER_PROVIDED_LABEL_OPTIONS,
+} from '../../shared/select-showcase.data';
 
 const createLongString = (len: number, char: string = 'W') => {
   return (new Array(len))
@@ -27,6 +34,10 @@ export class SelectFieldOverviewComponent {
 
   protected readonly countryOptions = COUNTRY_OPTIONS;
   protected readonly countryOptionsLongList = COUNTRY_OPTIONS_LONG_LIST;
+  protected readonly countryOptionsWithHidden = COUNTRY_OPTIONS_WITH_HIDDEN;
+  protected readonly countryOptionsGrouped = COUNTRY_OPTIONS_GROUPED;
+  protected readonly continentGroups: NdwuOptionGroup[] = CONTINENT_GROUPS;
+  protected readonly userProvidedLabelOptions = USER_PROVIDED_LABEL_OPTIONS;
 
   protected readonly longLabelsOptionsList: NdwuOption[] = [
     {
@@ -46,6 +57,18 @@ export class SelectFieldOverviewComponent {
 
   protected readonly formBasic = new FormGroup({
     country: new FormControl(''),
+  });
+
+  protected readonly formHiddenOption = new FormGroup({
+    country: new FormControl('legacy-region'),
+  });
+
+  protected readonly formGrouped = new FormGroup({
+    country: new FormControl(''),
+  });
+
+  protected readonly formNoLocalize = new FormGroup({
+    tag: new FormControl(''),
   });
 
   protected readonly formDisabled = new FormGroup({

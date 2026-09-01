@@ -61,7 +61,10 @@ afterEach(async () => {
 });
 
 const readPanel = (): HTMLElement => {
-  const panel = document.querySelector<HTMLElement>('.ndwu-dialog, .ndwu-drawer');
+  // The most recently attached overlay panel — so opening a second modal in a
+  // test returns the new one, not the first still-open panel.
+  const panels = document.querySelectorAll<HTMLElement>('.ndwu-dialog, .ndwu-drawer');
+  const panel = panels[panels.length - 1];
 
   if (!panel) {
     throw new Error('open: no .ndwu-dialog / .ndwu-drawer rendered in the overlay');

@@ -66,7 +66,15 @@ const readTests = (): TestRef[] => {
 };
 
 const committedRulesText = readFileSync(rulesPath, 'utf8');
-const freshRulesText = generateRuleSpec(readFileSync(sourcePath, 'utf8'));
+
+let freshRulesText: string;
+
+try {
+  freshRulesText = generateRuleSpec(readFileSync(sourcePath, 'utf8'));
+} catch (error) {
+  console.error(`ERROR ${error instanceof Error ? error.message : String(error)}`);
+  process.exit(1);
+}
 
 if (committedRulesText !== freshRulesText) {
   console.error(

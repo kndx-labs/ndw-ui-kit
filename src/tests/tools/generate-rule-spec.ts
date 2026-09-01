@@ -1,5 +1,17 @@
+import {createHash} from 'node:crypto';
 import {readFileSync, writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
+
+// sha256 of `md_design/button.md` as of the last time SPLITS/REDIRECTS/
+// HEADING_SECTION below (all keyed to specific line numbers and headings)
+// were reviewed against the spec. This generator has no way to notice on its
+// own that a spec edit shifted a line number out from under one of those
+// tables and started silently misclassifying a bullet — a hash mismatch is
+// the only signal. If this check fires: diff button.md against the version
+// this hash was taken from, re-review every SPLITS/REDIRECTS/HEADING_SECTION
+// entry against the new text, update them as needed, then replace this
+// constant with the new file's hash.
+const EXPECTED_SOURCE_HASH = 'aedc095f5c866e06bad5f0ed0df758e50bd40b18a0be2643434b8fad5ae46d2f';
 
 interface Block {
   line: number;        // 1-indexed source line where this block starts
@@ -233,6 +245,15 @@ const parseBlocks = (lines: string[]): Block[] => {
   return blocks;
 };
 
+// Reads `version:` from the spec's leading YAML frontmatter, so the generated
+// header reflects the spec's real version instead of a hardcoded string that
+// silently drifts when the spec is revised. Falls back to 'unknown' if absent.
+const sourceVersion = (sourceText: string): string => {
+  const frontmatter = /^---\n([\s\S]*?)\n---/.exec(sourceText)?.[1] ?? '';
+
+  return /^version:\s*(.+)$/m.exec(frontmatter)?.[1]?.trim() ?? 'unknown';
+};
+
 const summarize = (text: string): string => {
   const cleaned = text
     .replace(/^#{2,3}\s+/, '')
@@ -247,6 +268,20 @@ const summarize = (text: string): string => {
 };
 
 export const generateRuleSpec = (sourceText: string): string => {
+  const actualHash = createHash('sha256')
+    .update(sourceText)
+    .digest('hex');
+
+  if (actualHash !== EXPECTED_SOURCE_HASH) {
+    throw new Error(
+      'md_design/button.md has changed since this generator\'s SPLITS/REDIRECTS/'
+      + 'HEADING_SECTION tables were last reviewed against it '
+      + `(expected sha256 ${EXPECTED_SOURCE_HASH}, got ${actualHash}). `
+      + 'Review every hardcoded line-number entry in generate-rule-spec.ts against '
+      + 'the new spec text, update them as needed, then update EXPECTED_SOURCE_HASH.',
+    );
+  }
+
   const lines = sourceText.split('\n');
   const blocks = parseBlocks(lines);
 
@@ -323,10 +358,11 @@ export const generateRuleSpec = (sourceText: string): string => {
 
   lines_out.push('# Button — Test Rule Extraction');
   lines_out.push('');
-  lines_out.push('Generated from `md_design/button.md` (version: alpha) by');
+  lines_out.push(`Generated from \`md_design/button.md\` (version: ${sourceVersion(sourceText)}) by`);
   lines_out.push('`src/tests/tools/generate-rule-spec.ts`. Do not hand-edit — rerun the');
-  lines_out.push('generator instead. If a fresh run produces a diff, `button.md` changed');
-  lines_out.push('and this file is stale.');
+  lines_out.push('generator instead. The generator refuses to run if `button.md` no longer');
+  lines_out.push('matches the hash its extraction tables were reviewed against; `yarn');
+  lines_out.push('check:spec-coverage` also fails if this file drifts from a fresh run.');
   lines_out.push('');
   lines_out.push('## Legend');
   lines_out.push('');
@@ -406,8 +442,14 @@ if (isMain) {
   const sourcePath = resolve(process.cwd(), '../md_design/button.md');
   const outputPath = resolve(process.cwd(), 'src/tests/button/button.rules.md');
   const source = readFileSync(sourcePath, 'utf8');
-  const generated = generateRuleSpec(source);
 
-  writeFileSync(outputPath, generated, 'utf8');
-  console.log(`wrote ${outputPath}`);
+  try {
+    const generated = generateRuleSpec(source);
+
+    writeFileSync(outputPath, generated, 'utf8');
+    console.log(`wrote ${outputPath}`);
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : String(error));
+    process.exit(1);
+  }
 }

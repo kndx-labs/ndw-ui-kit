@@ -2,8 +2,9 @@
 
 Generated from `md_design/button.md` (version: alpha) by
 `src/tests/tools/generate-rule-spec.ts`. Do not hand-edit — rerun the
-generator instead. If a fresh run produces a diff, `button.md` changed
-and this file is stale.
+generator instead. The generator refuses to run if `button.md` no longer
+matches the hash its extraction tables were reviewed against; `yarn
+check:spec-coverage` also fails if this file drifts from a fresh run.
 
 ## Legend
 

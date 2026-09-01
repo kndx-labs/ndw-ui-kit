@@ -41,3 +41,6 @@ opencode.json
 .opencode
 
 .eslintcache*
+
+# local superpowers specs/plans (not tracked)
+docs/superpowers/

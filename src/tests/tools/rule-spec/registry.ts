@@ -1,8 +1,9 @@
 import {ComponentSpecConfig} from './types';
 import {buttonConfig} from './button.config';
 import {dialogConfig} from './dialog.config';
+import {drawerConfig} from './drawer.config';
 
-export const COMPONENTS: ComponentSpecConfig[] = [buttonConfig, dialogConfig];
+export const COMPONENTS: ComponentSpecConfig[] = [buttonConfig, dialogConfig, drawerConfig];
 
 // Cross-component separation rests entirely on the 3-letter prefix, and the
 // coverage checker's ID regex requires prefix + section codes to be exactly 3

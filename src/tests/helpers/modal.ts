@@ -1,6 +1,7 @@
 import {ApplicationRef, type Type} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {page} from '@vitest/browser/context';
+import {firstValueFrom} from 'rxjs';
 import {afterEach, beforeAll} from 'vitest';
 import {
   NdwuModalService,
@@ -36,11 +37,22 @@ const settle = async (): Promise<void> => {
   await new Promise((resolve) => setTimeout(resolve));  // flush afterNextRender autofocus
 };
 
+// Await each ref's afterClosed$ (not just a macrotask): a dialog closes
+// synchronously, but a drawer animates out and disposes the overlay only when
+// the close animation (or its ~350ms fallback) finishes. Refs already closed by
+// the test (ESC/backdrop) are skipped — their subject has completed.
 afterEach(async () => {
-  while (opened.length > 0) {
-    opened.pop()?.close();
-  }
+  const closing = opened.splice(0)
+    .filter((ref) => ref.isVisible())
+    .map((ref) => {
+      const done = firstValueFrom(ref.afterClosed$);
 
+      ref.close();
+
+      return done;
+    });
+
+  await Promise.all(closing);
   await settle();
 
   if (getComputedStyle(document.body).overflow === 'hidden') {
@@ -49,10 +61,10 @@ afterEach(async () => {
 });
 
 const readPanel = (): HTMLElement => {
-  const panel = document.querySelector<HTMLElement>('.ndwu-dialog');
+  const panel = document.querySelector<HTMLElement>('.ndwu-dialog, .ndwu-drawer');
 
   if (!panel) {
-    throw new Error('openDialog: no .ndwu-dialog was rendered in the overlay');
+    throw new Error('open: no .ndwu-dialog / .ndwu-drawer rendered in the overlay');
   }
 
   return panel;
@@ -73,4 +85,8 @@ export const openAlert = (config: NdwuAlertModalConfig): Promise<OpenedDialog> =
 
 export const openDialog = (content: Type<unknown>, config?: NdwuModalConfig): Promise<OpenedDialog> => {
   return track(TestBed.inject(NdwuModalService).openDialog(content, config));
+};
+
+export const openDrawer = (content: Type<unknown>, config?: NdwuModalConfig): Promise<OpenedDialog> => {
+  return track(TestBed.inject(NdwuModalService).openDrawer(content, config));
 };

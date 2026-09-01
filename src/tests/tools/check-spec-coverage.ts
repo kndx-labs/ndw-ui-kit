@@ -1,7 +1,8 @@
 import {readFileSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import fg from 'fast-glob';
-import {generateRuleSpec} from './generate-rule-spec';
+import {buildRuleSpec} from './rule-spec/core';
+import {COMPONENTS} from './rule-spec/registry';
 
 interface Rule {
   id: string;
@@ -19,13 +20,10 @@ const TEST_RE = /\b(it\.todo|it\.each(?:<[^>]*>)?\([\s\S]*?\)|it|describe)\s*\(\
 const ID_IN_TITLE_RE = /[A-Z]{3}-[A-Z]{3}-\d{2}/g;
 
 const testsRoot = resolve(process.cwd(), 'src/tests');
-const sourcePath = resolve(process.cwd(), '../md_design/button.md');
-const rulesPath = resolve(process.cwd(), 'src/tests/button/button.rules.md');
 
-// Pure [DS] rules must have NO test or todo — that's the whole point of the
-// redesign's governance list. Everything else must have at least one. Which
-// list an ID came from in button.rules.md is tracked here so the two rules
-// can be enforced separately instead of one blanket "must have a test".
+// Pure [DS] rules must have NO test/todo; everything else must have at least
+// one. readRules tracks which list each ID came from (governance vs not) by
+// watching for the '## Design-system governance' heading buildRuleSpec emits.
 const readRules = (text: string): Rule[] => {
   const rules: Rule[] = [];
   let inGovernance = false;
@@ -46,6 +44,8 @@ const readRules = (text: string): Rule[] => {
   return rules;
 };
 
+// Scanned ONCE across all spec files; refs are bucketed by their 3-letter
+// prefix so each component is checked only against its own tests.
 const readTests = (): TestRef[] => {
   const files = fg.sync('**/*.spec.ts', {cwd: testsRoot});
   const refs: TestRef[] = [];
@@ -65,62 +65,75 @@ const readTests = (): TestRef[] => {
   return refs;
 };
 
-const committedRulesText = readFileSync(rulesPath, 'utf8');
-
-let freshRulesText: string;
-
-try {
-  freshRulesText = generateRuleSpec(readFileSync(sourcePath, 'utf8'));
-} catch (error) {
-  console.error(`ERROR ${error instanceof Error ? error.message : String(error)}`);
-  process.exit(1);
-}
-
-if (committedRulesText !== freshRulesText) {
-  console.error(
-    'ERROR button.rules.md is stale — it does not match a fresh run of the '
-    + 'generator. Run `yarn generate:button-rules` and commit the result.',
-  );
-  process.exit(1);
-}
-
-const rules = readRules(committedRulesText);
 const refs = readTests();
-const refIds = new Set(refs.map((r) => r.id));
-const ruleIdSet = new Set(rules.map((r) => r.id));
+const byPrefix = new Map<string, TestRef[]>();
 
-const uncovered = rules.filter((r) => !r.governance && !refIds.has(r.id));
-const wronglyTested = rules.filter((r) => r.governance && refIds.has(r.id));
-const stale = refs.filter((r) => !ruleIdSet.has(r.id));
-const governanceCount = rules.filter((r) => r.governance).length;
+for (const ref of refs) {
+  const prefix = ref.id.slice(0, 3);
 
-console.log(`spec rules: ${rules.length} (${governanceCount} governance)   test references: ${refs.length}`);
-
-for (const rule of rules) {
-  const kinds = [...new Set(refs.filter((r) => r.id === rule.id).map((r) => r.kind))];
-  const where = rule.governance
-    ? (kinds.length > 0 ? `UNEXPECTED:${kinds.sort().join('+')}` : 'governance')
-    : (kinds.length > 0 ? kinds.sort().join('+') : 'MISSING');
-
-  console.log(`  ${rule.id}  ${where}`);
+  byPrefix.set(prefix, [...(byPrefix.get(prefix) ?? []), ref]);
 }
 
-for (const rule of uncovered) {
-  console.error(`ERROR ${rule.id} has no test or todo`);
+const registeredPrefixes = new Set(COMPONENTS.map((c) => c.prefix));
+const errors: string[] = [];
+
+// Orphan guard: any ref whose prefix maps to no registered component would
+// otherwise fall into no per-component bucket and silently pass.
+for (const [prefix, list] of byPrefix) {
+  if (!registeredPrefixes.has(prefix)) {
+    for (const ref of list) {
+      errors.push(`ERROR ${ref.id} in ${ref.file} has unregistered component prefix "${prefix}"`);
+    }
+  }
 }
 
-for (const rule of wronglyTested) {
-  console.error(`ERROR ${rule.id} is pure [DS] governance but has a test/todo reference — governance rules should have none`);
+for (const config of COMPONENTS) {
+  const committed = readFileSync(resolve(process.cwd(), config.rulesFile), 'utf8');
+  let fresh: string;
+
+  try {
+    fresh = buildRuleSpec(config, readFileSync(resolve(process.cwd(), '..', config.sourceFile), 'utf8'));
+  } catch (error) {
+    errors.push(`ERROR [${config.displayName}] ${error instanceof Error ? error.message : String(error)}`);
+    continue;
+  }
+
+  if (committed !== fresh) {
+    errors.push(
+      `ERROR [${config.displayName}] ${config.rulesFile} is stale — run `
+      + `\`yarn generate:rules --component ${config.displayName.toLowerCase()}\` and commit the result.`,
+    );
+    continue;
+  }
+
+  const rules = readRules(committed);
+  const compRefs = byPrefix.get(config.prefix) ?? [];
+  const refIds = new Set(compRefs.map((r) => r.id));
+  const ruleIds = new Set(rules.map((r) => r.id));
+
+  for (const rule of rules.filter((r) => !r.governance && !refIds.has(r.id))) {
+    errors.push(`ERROR [${config.displayName}] ${rule.id} has no test or todo`);
+  }
+
+  for (const rule of rules.filter((r) => r.governance && refIds.has(r.id))) {
+    errors.push(`ERROR [${config.displayName}] ${rule.id} is pure [DS] governance but has a test/todo reference — governance rules should have none`);
+  }
+
+  for (const ref of compRefs.filter((r) => !ruleIds.has(r.id))) {
+    errors.push(`ERROR [${config.displayName}] ${ref.id} referenced in ${ref.file} but absent from ${config.rulesFile}`);
+  }
+
+  const governanceCount = rules.filter((r) => r.governance).length;
+
+  console.log(`[${config.displayName}] ${rules.length} rules (${governanceCount} governance), ${compRefs.length} test references`);
 }
 
-for (const ref of stale) {
-  console.error(`ERROR ${ref.id} referenced in ${ref.file} but absent from button.rules.md`);
-}
+if (errors.length > 0) {
+  for (const error of errors) {
+    console.error(error);
+  }
 
-const failures = uncovered.length + wronglyTested.length + stale.length;
-
-if (failures > 0) {
-  console.error(`\n${failures} coverage problem(s)`);
+  console.error(`\n${errors.length} coverage problem(s)`);
   process.exit(1);
 }
 

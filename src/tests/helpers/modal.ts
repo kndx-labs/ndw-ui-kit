@@ -1,6 +1,7 @@
 import {ApplicationRef, type Type} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
-import {afterEach} from 'vitest';
+import {page} from '@vitest/browser/context';
+import {afterEach, beforeAll} from 'vitest';
 import {
   NdwuModalService,
   type NdwuAlertModalConfig,
@@ -21,6 +22,14 @@ export interface OpenedDialog {
 // reachable via a spec file) rather than in setup.ts, for the same
 // tsconfig-path-resolution reason as helpers/mount.ts.
 const opened: NdwuModalRef<unknown>[] = [];
+
+// Dialog rules are specified for the desktop breakpoint; the default test
+// iframe is mobile-width (~414px), which flips the mobile media query (title
+// steps to 20px, dialog goes full-screen). Pin a desktop viewport so specs
+// assert the desktop dialog. Mobile-specific rules are it.todo.
+beforeAll(async () => {
+  await page.viewport(1280, 800);
+});
 
 const settle = async (): Promise<void> => {
   await TestBed.inject(ApplicationRef).whenStable();

@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {userEvent} from '@vitest/browser/context';
-import {afterEach} from 'vitest';
+import {page, userEvent} from '@vitest/browser/context';
+import {afterEach, beforeAll} from 'vitest';
 import {type NdwuOption} from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
 
@@ -56,6 +56,14 @@ export interface MountedSelect {
   panel: () => HTMLElement | null;
   options: () => HTMLElement[];
 }
+
+// Select rules are specified for desktop; the default test iframe is
+// mobile-width (~414px), which makes the dropdown render as the mobile bottom
+// sheet instead of the desktop anchored panel. Pin a desktop viewport so specs
+// assert the desktop select. Mobile-specific rules are it.todo.
+beforeAll(async () => {
+  await page.viewport(1280, 800);
+});
 
 const mounted: ComponentFixture<SelectHostComponent>[] = [];
 

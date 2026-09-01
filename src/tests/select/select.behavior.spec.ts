@@ -11,7 +11,14 @@ describe('select behavior', () => {
 
     const panel = sel.panel();
 
-    expect(panel).not.toBeNull();
+    if (!panel) {
+      throw new Error('SEL-ELV-01: no dropdown panel rendered');
+    }
+
+    // Desktop: an anchored panel that is bordered and rounded (not the mobile sheet).
+    expect(panel.classList.contains('ndwu-dropdown-panel--sheet')).toBe(false);
+    expect(getComputedStyle(panel).borderTopWidth).not.toBe('0px');
+    expect(getComputedStyle(panel).borderTopLeftRadius).not.toBe('0px');
     expect(sel.options().length).toBe(2);
   });
 });

@@ -1,10 +1,12 @@
 import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture} from '@angular/core/testing';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {page, userEvent} from '@vitest/browser/context';
-import {afterEach, beforeAll} from 'vitest';
+import {beforeAll} from 'vitest';
 import {type NdwuOption} from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {must} from './dom';
+import {createTrackedHost} from './fixture';
 
 export interface SelectState {
   size: 'XXL' | 'XL' | 'L' | undefined;
@@ -65,37 +67,14 @@ beforeAll(async () => {
   await page.viewport(1280, 800);
 });
 
-const mounted: ComponentFixture<SelectHostComponent>[] = [];
-
-afterEach(() => {
-  while (mounted.length > 0) {
-    const fixture = mounted.pop();
-
-    fixture?.destroy();
-    (fixture?.nativeElement as HTMLElement | undefined)?.remove();
-  }
-});
-
-const readTrigger = (root: HTMLElement): HTMLElement => {
-  const trigger = root.querySelector<HTMLElement>('.ndwu-select-field__trigger');
-
-  if (!trigger) {
-    throw new Error('mountSelect: no .ndwu-select-field__trigger rendered');
-  }
-
-  return trigger;
-};
-
 export const mountSelect = (patch: Partial<SelectState> = {}): MountedSelect => {
-  const fixture = TestBed.createComponent(SelectHostComponent);
+  const fixture = createTrackedHost(SelectHostComponent);
   const root = fixture.nativeElement as HTMLElement;
 
   fixture.componentInstance.state.set({...DEFAULT_STATE, ...patch});
-  document.body.appendChild(root);
   fixture.detectChanges();
-  mounted.push(fixture);
 
-  const trigger = readTrigger(root);
+  const trigger = must<HTMLElement>(root, '.ndwu-select-field__trigger', 'mountSelect');
 
   return {
     fixture,

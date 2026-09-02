@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {userEvent} from '@vitest/browser/context';
 import {describe, expect, it} from 'vitest';
+import {must} from '../helpers/dom';
 import {openDrawer} from '../helpers/modal';
 
 @Component({selector: 'drw-a11y-content', template: '<p>body</p>'})
@@ -28,11 +29,7 @@ describe('drawer accessibility', () => {
 
   it('DRW-ACC-03 — focus is captured on the heading and ESC closes the drawer', async () => {
     const {panel} = await openDrawer(DrawerContentComponent, {title: 'Title'});
-    const title = panel.querySelector<HTMLElement>('.ndwu-drawer__title');
-
-    if (!title) {
-      throw new Error('DRW-ACC-03: no title rendered');
-    }
+    const title = must<HTMLElement>(panel, '.ndwu-drawer__title', 'DRW-ACC-03');
 
     expect(document.activeElement).toBe(title);
 

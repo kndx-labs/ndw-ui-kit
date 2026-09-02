@@ -1,5 +1,6 @@
 import {userEvent} from '@vitest/browser/context';
 import {describe, expect, it} from 'vitest';
+import {must} from '../helpers/dom';
 import {openAlert} from '../helpers/modal';
 
 describe('dialog accessibility', () => {
@@ -24,11 +25,7 @@ describe('dialog accessibility', () => {
 
   it('DLG-ACC-03 — focus is captured on the heading and ESC closes the dialog', async () => {
     const {panel} = await openAlert({header: 'Title'});
-    const title = panel.querySelector<HTMLElement>('.ndwu-dialog__title');
-
-    if (!title) {
-      throw new Error('DLG-ACC-03: no title rendered');
-    }
+    const title = must<HTMLElement>(panel, '.ndwu-dialog__title', 'DLG-ACC-03');
 
     expect(document.activeElement).toBe(title);
 

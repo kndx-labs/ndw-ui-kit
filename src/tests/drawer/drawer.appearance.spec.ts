@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {describe, expect, it} from 'vitest';
+import {must} from '../helpers/dom';
 import {openDrawer} from '../helpers/modal';
 import {hexToRgb} from '../helpers/styles';
 
@@ -18,23 +19,14 @@ describe('drawer appearance', () => {
       title: 'Title',
       buttons: [{label: 'OK', variant: 'primary'}],
     });
-    const primary = panel.querySelector<HTMLButtonElement>('.ndwu-drawer__footer button');
-
-    if (!primary) {
-      throw new Error('DRW-CLR-02: no footer button rendered');
-    }
+    const primary = must<HTMLButtonElement>(panel, '.ndwu-drawer__footer button', 'DRW-CLR-02');
 
     expect(getComputedStyle(primary).backgroundColor).toBe(hexToRgb('#007bbe'));
   });
 
   it('DRW-TYP-01 — default title is Roboto Medium 25 / line height 34', async () => {
     const {panel} = await openDrawer(DrawerContentComponent, {title: 'Title'});
-    const title = panel.querySelector<HTMLElement>('.ndwu-drawer__title');
-
-    if (!title) {
-      throw new Error('DRW-TYP-01: no title rendered');
-    }
-
+    const title = must<HTMLElement>(panel, '.ndwu-drawer__title', 'DRW-TYP-01');
     const style = getComputedStyle(title);
 
     expect(style.fontWeight).toBe('500');
@@ -58,12 +50,8 @@ describe('drawer appearance', () => {
       title: 'Title',
       buttons: [{label: 'OK', variant: 'primary'}],
     });
-    const header = panel.querySelector<HTMLElement>('.ndwu-drawer__header');
-    const footer = panel.querySelector<HTMLElement>('.ndwu-drawer__footer');
-
-    if (!header || !footer) {
-      throw new Error('DRW-SHP-01: header/footer not rendered');
-    }
+    const header = must<HTMLElement>(panel, '.ndwu-drawer__header', 'DRW-SHP-01');
+    const footer = must<HTMLElement>(panel, '.ndwu-drawer__footer', 'DRW-SHP-01');
 
     expect(getComputedStyle(header).borderBottomWidth).not.toBe('0px');
     expect(getComputedStyle(footer).borderTopWidth).not.toBe('0px');
@@ -72,11 +60,7 @@ describe('drawer appearance', () => {
   it('DRW-ELV-01 — overlay shows a dimming backdrop and locks page scroll', async () => {
     await openDrawer(DrawerContentComponent, {title: 'Title'});
 
-    const backdrop = document.querySelector<HTMLElement>('.ndwu-drawer-backdrop');
-
-    if (!backdrop) {
-      throw new Error('DRW-ELV-01: no backdrop rendered');
-    }
+    const backdrop = must<HTMLElement>(document, '.ndwu-drawer-backdrop', 'DRW-ELV-01');
 
     expect(getComputedStyle(backdrop).backgroundColor).toBe('rgba(0, 0, 0, 0.4)');
     expect(getComputedStyle(document.body).overflow).toBe('hidden');

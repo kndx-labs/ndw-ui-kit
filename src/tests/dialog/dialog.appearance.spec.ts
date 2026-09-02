@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {describe, expect, it} from 'vitest';
+import {must} from '../helpers/dom';
 import {openAlert, openDialog} from '../helpers/modal';
 import {hexToRgb} from '../helpers/styles';
 
@@ -18,23 +19,14 @@ describe('dialog appearance', () => {
       title: 'Title',
       buttons: [{label: 'OK', variant: 'primary'}],
     });
-    const primary = panel.querySelector<HTMLButtonElement>('.ndwu-dialog__footer button');
-
-    if (!primary) {
-      throw new Error('DLG-CLR-02: no footer button rendered');
-    }
+    const primary = must<HTMLButtonElement>(panel, '.ndwu-dialog__footer button', 'DLG-CLR-02');
 
     expect(getComputedStyle(primary).backgroundColor).toBe(hexToRgb('#007bbe'));
   });
 
   it('DLG-TYP-01 — default title is Roboto Medium 25 / line height 34', async () => {
     const {panel} = await openAlert({header: 'Title'});
-    const title = panel.querySelector<HTMLElement>('.ndwu-dialog__title');
-
-    if (!title) {
-      throw new Error('DLG-TYP-01: no title rendered');
-    }
-
+    const title = must<HTMLElement>(panel, '.ndwu-dialog__title', 'DLG-TYP-01');
     const style = getComputedStyle(title);
 
     expect(style.fontWeight).toBe('500');
@@ -52,11 +44,7 @@ describe('dialog appearance', () => {
   it('DLG-ELV-01 — overlay shows a dimming backdrop and locks page scroll', async () => {
     await openAlert({header: 'Title'});
 
-    const backdrop = document.querySelector<HTMLElement>('.ndwu-modal-backdrop');
-
-    if (!backdrop) {
-      throw new Error('DLG-ELV-01: no backdrop rendered');
-    }
+    const backdrop = must<HTMLElement>(document, '.ndwu-modal-backdrop', 'DLG-ELV-01');
 
     expect(getComputedStyle(backdrop).backgroundColor).toBe('rgba(0, 0, 0, 0.4)');
     expect(getComputedStyle(document.body).overflow).toBe('hidden');

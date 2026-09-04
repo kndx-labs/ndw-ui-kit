@@ -65,16 +65,16 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   public readonly focused = signal<boolean>(false);
   public readonly invalid = signal<boolean>(false);
 
-  // Subclasses provide their own "is field empty" logic (it will be different for, e.g., select vs. multiselect).
+  // Subclasses provide their own "is field empty" logic
+  // (it will be different for, e.g., select vs. multiselect).
   public abstract get empty(): boolean;
 
   // Subclasses expose placeholder input; base derives hasPlaceholder.
   public abstract readonly placeholder: Signal<string>;
 
-  // Should option labels be processed by the `localize` pipe (defaults to `true`).
+  // Should option labels be localized.
   public readonly localizeLabels = input(true, {transform: booleanAttribute});
 
-  // List of options groups to render in the dropdown panel.
   public readonly groups = input<readonly NdwuOptionGroup[]>([]);
 
   public get id(): string {
@@ -164,9 +164,9 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
     // produce an invalid id and split the aria-describedby IDREF into
     // broken tokens. The same sanitized value is used on both the
     // subheader id and the option's aria-describedby, so they still match.
-    const safe = groupId.replace(/[^A-Za-z0-9_-]/g, '-');
+    const sanitizedId = groupId.replace(/[^A-Za-z0-9_-]/g, '-');
 
-    return `${this.id}-grp-${safe}`;
+    return `${this.id}-grp-${sanitizedId}`;
   }
 
   protected initFocusTracking(): void {

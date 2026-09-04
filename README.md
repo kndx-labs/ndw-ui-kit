@@ -31,6 +31,8 @@ docs/
 
 - Package-facing documentation: `src/lib/README.md`
 - Architecture decisions: `docs/architecture/ADR/*.md`
+- Codestyle: `docs/codestyle/` ([CODESTYLE.md](docs/codestyle/CODESTYLE.md),
+  [NAMING.md](docs/codestyle/NAMING.md), [CSS.md](docs/codestyle/CSS.md))
 - Repository workflow (this file): `README.md`
 
 ## Local development

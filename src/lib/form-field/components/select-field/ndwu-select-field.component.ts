@@ -16,13 +16,14 @@ import {
   NdwuPanelHeaderDirective,
   NdwuResizeObserverDirective,
   NdwuSizeDirective,
+  NdwuStyledGroupHeaderComponent,
   NdwuStyledListboxComponent,
   NdwuStyledOptionComponent,
   SIZE,
   normalizeOptions,
   resolveOptionsAdapter,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {LocalizeIfPipe, LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   NdwuComboboxDirective,
   NdwuComboboxInputDirective,
@@ -31,12 +32,14 @@ import {
 import {NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 import {SelectFieldBase} from '../../classes/select-field-base.directive';
+import {type NdwuSelectRenderRow, buildSelectRenderRows} from '../../classes/select-render';
 
 @Component({
   selector: 'ndwu-select-field',
   templateUrl: './ndwu-select-field.component.html',
   styleUrl: './ndwu-select-field.component.scss',
   imports: [
+    LocalizeIfPipe,
     LocalizePipe,
     NdwuComboboxDirective,
     NdwuComboboxInputDirective,
@@ -52,6 +55,7 @@ import {SelectFieldBase} from '../../classes/select-field-base.directive';
     NdwuPanelHeaderDirective,
     NdwuPopoverTriggerDirective,
     NdwuResizeObserverDirective,
+    NdwuStyledGroupHeaderComponent,
     NdwuStyledListboxComponent,
     NdwuStyledOptionComponent,
   ],
@@ -90,6 +94,10 @@ export class NdwuSelectFieldComponent<T = NdwuOption> extends SelectFieldBase<st
       this.options(),
       resolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
     );
+  });
+
+  protected readonly renderRows = computed<NdwuSelectRenderRow[]>(() => {
+    return buildSelectRenderRows(this.normalizedOptions(), this.groups());
   });
 
   protected get displayText(): string {

@@ -1,0 +1,27 @@
+:host {
+  display: flex;
+  gap: var(--ndwu-styled-group-header-gap);
+  align-items: center;
+  height: var(--ndwu-styled-option-height);
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    min-width: var(--ndwu-styled-group-header-min-divider-width);
+    height: 1px;
+    background-color: var(--ndwu-styled-group-header-divider-color);
+  }
+}
+
+.ndwu-styled-group-header__text {
+  flex: 0 1 auto;
+  overflow: hidden;
+  min-width: 0;
+  color: var(--ndwu-styled-group-header-text-color);
+  font-size: var(--ndwu-styled-option-font-size);
+  line-height: var(--ndwu-styled-option-line-height);
+  letter-spacing: var(--ndwu-styled-group-header-letter-spacing);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

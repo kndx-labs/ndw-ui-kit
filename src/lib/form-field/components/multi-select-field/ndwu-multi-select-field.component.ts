@@ -19,6 +19,7 @@ import {
   NdwuPanelHeaderDirective,
   NdwuResizeObserverDirective,
   NdwuSizeDirective,
+  NdwuStyledGroupHeaderComponent,
   NdwuStyledListboxComponent,
   NdwuStyledOptionComponent,
   SIZE,
@@ -30,7 +31,7 @@ import {
   NdwuComboboxInputDirective,
   NdwuComboboxPopoverBridgeDirective,
 } from '@ndw-ui-kit/core/aria';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {LocalizeIfPipe, LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 import {
@@ -38,12 +39,14 @@ import {
   NdwuMultiSelectDisplayDirective,
 } from './ndwu-multi-select-display.directive';
 import {SelectFieldBase} from '../../classes/select-field-base.directive';
+import {type NdwuSelectRenderRow, buildSelectRenderRows} from '../../classes/select-render';
 
 @Component({
   selector: 'ndwu-multi-select-field',
   templateUrl: './ndwu-multi-select-field.component.html',
   styleUrl: './ndwu-multi-select-field.component.scss',
   imports: [
+    LocalizeIfPipe,
     LocalizePipe,
     NdwuButtonBaseDirective,
     NdwuCheckboxComponent,
@@ -61,6 +64,7 @@ import {SelectFieldBase} from '../../classes/select-field-base.directive';
     NdwuPanelHeaderDirective,
     NdwuPopoverTriggerDirective,
     NdwuResizeObserverDirective,
+    NdwuStyledGroupHeaderComponent,
     NdwuStyledListboxComponent,
     NdwuStyledOptionComponent,
     NgTemplateOutlet,
@@ -107,6 +111,10 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends SelectFieldBa
       this.options(),
       resolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
     );
+  });
+
+  protected readonly renderRows = computed<NdwuSelectRenderRow[]>(() => {
+    return buildSelectRenderRows(this.normalizedOptions(), this.groups());
   });
 
   protected readonly allSelected = computed(() => {

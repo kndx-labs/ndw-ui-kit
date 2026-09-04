@@ -14,6 +14,7 @@
 @use 'core/components/styled-dropdown/ndwu-dropdown-panel.tokens' as ndwu-dropdown-panel-tokens;
 @use 'core/components/styled-listbox/ndwu-styled-listbox.tokens' as ndwu-styled-listbox-tokens;
 @use 'core/components/styled-listbox/ndwu-styled-option.tokens' as ndwu-styled-option-tokens;
+@use 'core/components/styled-listbox/ndwu-styled-group-header.tokens' as ndwu-styled-group-header-tokens;
 @use 'core/components/spokes-loader/ndwu-spokes-loader.tokens' as ndwu-spokes-loader-tokens;
 @use 'core/components/toggle/ndwu-toggle.tokens' as ndwu-toggle-tokens;
 @use 'core/components/tooltip/ndwu-tooltip.tokens' as ndwu-tooltip-tokens;
@@ -58,6 +59,7 @@ $component-tokens: (
   'ndwu-dropdown-panel': ndwu-dropdown-panel-tokens.$ndwu-dropdown-panel-tokens,
   'ndwu-styled-listbox': ndwu-styled-listbox-tokens.$ndwu-styled-listbox-tokens,
   'ndwu-styled-option': ndwu-styled-option-tokens.$ndwu-styled-option-tokens,
+  'ndwu-styled-group-header': ndwu-styled-group-header-tokens.$ndwu-styled-group-header-tokens,
   'ndwu-spokes-loader': ndwu-spokes-loader-tokens.$ndwu-spokes-loader-tokens,
   'ndwu-tooltip': ndwu-tooltip-tokens.$ndwu-tooltip-tokens,
   'ndwu-popover': ndwu-popover-tokens.$ndwu-popover-tokens,

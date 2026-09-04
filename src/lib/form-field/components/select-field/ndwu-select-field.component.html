@@ -33,7 +33,7 @@
       class="ndwu-select-field__trigger-text"
       [class.ndwu-select-field__trigger-text--placeholder]="empty"
     >
-      {{ displayText | localize }}
+      {{ displayText | localizeIf: localizeLabels() }}
     </span>
 
     <ndwu-icon
@@ -69,10 +69,24 @@
         selectionMode="explicit"
         (valuesChange)="onSelectionChange($event)"
       >
-        @for (opt of normalizedOptions(); track opt.value) {
-          <ndwu-styled-option [value]="opt.value" [label]="opt.label">
-            {{ opt.label | localize }}
-          </ndwu-styled-option>
+        @for (row of renderRows(); track renderRowKey(row)) {
+          @if (row.kind === 'subheader') {
+            <ndwu-styled-group-header [id]="groupHeaderId(row.id)">
+              {{ row.label | localizeIf: localizeLabels() }}
+            </ndwu-styled-group-header>
+          } @else if (row.kind === 'option') {
+            <ndwu-styled-option
+              [value]="row.option.value"
+              [label]="row.option.label"
+              [attr.aria-describedby]="
+                row.option.groupId
+                  ? groupHeaderId(row.option.groupId)
+                  : null
+              "
+            >
+              {{ row.option.label | localizeIf: localizeLabels() }}
+            </ndwu-styled-option>
+          }
         }
       </ndwu-styled-listbox>
     </ndwu-dropdown-panel>

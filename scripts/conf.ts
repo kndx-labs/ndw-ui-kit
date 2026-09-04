@@ -17,10 +17,7 @@ export const requireEnv = (name: string): string => {
   const value = process.env[name];
 
   if (!value) {
-    throw new Error(
-      `Environment variable "${name}" is required but not set. `
-      + 'Set it in scripts/.env locally or as a GitHub Actions secret/variable.',
-    );
+    throw new Error(`Environment variable "${name}" is required but not set.`);
   }
 
   return value;

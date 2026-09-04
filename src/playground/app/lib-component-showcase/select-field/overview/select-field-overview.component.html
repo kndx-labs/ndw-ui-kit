@@ -70,5 +70,43 @@
         />
       </form>
     </div>
+
+    <div class="state-section">
+      <h4>Hidden option</h4>
+      <form [formGroup]="formHiddenOption">
+        <ndwu-select-field
+          label="Region"
+          placeholder="Choose region"
+          [options]="countryOptionsWithHidden"
+          formControlName="country"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>Grouped options</h4>
+      <form [formGroup]="formGrouped">
+        <ndwu-select-field
+          label="Country"
+          placeholder="Choose country"
+          [options]="countryOptionsGrouped"
+          [groups]="continentGroups"
+          formControlName="country"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>Non-localized labels</h4>
+      <form [formGroup]="formNoLocalize">
+        <ndwu-select-field
+          label="Client"
+          placeholder="Choose client"
+          [options]="userProvidedLabelOptions"
+          [localizeLabels]="false"
+          formControlName="tag"
+        />
+      </form>
+    </div>
   </ng-template>
 </app-showcase-layout>

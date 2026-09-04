@@ -4,9 +4,11 @@ import {
   Injector,
   OnInit,
   type Signal,
+  booleanAttribute,
   computed,
   effect,
   inject,
+  input,
   signal,
   viewChild,
 } from '@angular/core';
@@ -18,6 +20,7 @@ import {
   NdwuFormFieldComponent,
   type NdwuInteractionFocusType,
   NdwuInteractionRegistry,
+  type NdwuOptionGroup,
   NdwuSizeDirective,
 } from '@ndw-ui-kit/core';
 import {NdwuComboboxDirective} from '@ndw-ui-kit/core/aria';
@@ -25,6 +28,7 @@ import {createDropdownController} from '@ndw-ui-kit/core/popover';
 import {HANDSET_BREAKPOINT, uniqueId} from '@ndw-ui-kit/core/utils';
 import {setValueAccessor, syncIsInvalid} from '../form-field.utils';
 import {FormFieldBase} from './form-field-base';
+import type {NdwuSelectRenderRow} from './select-render';
 
 const SELECT_FOCUS_TYPE: NdwuInteractionFocusType = 'select';
 
@@ -61,11 +65,17 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   public readonly focused = signal<boolean>(false);
   public readonly invalid = signal<boolean>(false);
 
-  // Subclasses provide their own "is field empty" logic (it will be different for, e.g., select vs. multiselect).
+  // Subclasses provide their own "is field empty" logic
+  // (it will be different for, e.g., select vs. multiselect).
   public abstract get empty(): boolean;
 
   // Subclasses expose placeholder input; base derives hasPlaceholder.
   public abstract readonly placeholder: Signal<string>;
+
+  // Should option labels be localized.
+  public readonly localizeLabels = input(true, {transform: booleanAttribute});
+
+  public readonly groups = input<readonly NdwuOptionGroup[]>([]);
 
   public get id(): string {
     return this.idValue;
@@ -143,6 +153,20 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
 
   protected isMobileViewport(): boolean {
     return this.breakpoint.isMatched(HANDSET_BREAKPOINT);
+  }
+
+  protected renderRowKey(row: NdwuSelectRenderRow): string {
+    return row.kind === 'option' ? `opt:${row.option.value}` : `grp:${row.id}`;
+  }
+
+  protected groupHeaderId(groupId: string): string {
+    // Sanitize: a raw groupId may contain spaces/punctuation, which would
+    // produce an invalid id and split the aria-describedby IDREF into
+    // broken tokens. The same sanitized value is used on both the
+    // subheader id and the option's aria-describedby, so they still match.
+    const sanitizedId = groupId.replace(/[^A-Za-z0-9_-]/g, '-');
+
+    return `${this.id}-grp-${sanitizedId}`;
   }
 
   protected initFocusTracking(): void {

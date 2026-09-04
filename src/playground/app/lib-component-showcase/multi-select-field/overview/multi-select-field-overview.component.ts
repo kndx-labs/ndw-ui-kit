@@ -1,9 +1,15 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {SIZE} from '@ndw-ui-kit/core';
+import {NdwuOptionGroup, SIZE} from '@ndw-ui-kit/core';
 import {NdwuMultiSelectDisplayDirective, NdwuMultiSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
-import {COUNTRY_OPTIONS, COUNTRY_OPTIONS_LONG_LIST} from '../../shared/select-showcase.data';
+import {
+  CONTINENT_GROUPS,
+  COUNTRY_OPTIONS,
+  COUNTRY_OPTIONS_GROUPED,
+  COUNTRY_OPTIONS_LONG_LIST,
+  USER_PROVIDED_LABEL_OPTIONS,
+} from '../../shared/select-showcase.data';
 
 @Component({
   selector: 'app-multi-select-field-overview',
@@ -22,6 +28,9 @@ export class MultiSelectFieldOverviewComponent {
 
   protected readonly countryOptions = COUNTRY_OPTIONS;
   protected readonly countryOptionsLongList = COUNTRY_OPTIONS_LONG_LIST;
+  protected readonly userProvidedLabelOptions = USER_PROVIDED_LABEL_OPTIONS;
+  protected readonly countryOptionsGrouped = COUNTRY_OPTIONS_GROUPED;
+  protected readonly continentGroups: NdwuOptionGroup[] = CONTINENT_GROUPS;
 
   protected readonly formBasic = new FormGroup({
     countries: new FormControl<string[]>([]),
@@ -36,6 +45,14 @@ export class MultiSelectFieldOverviewComponent {
   });
 
   protected readonly formCustomDisplay = new FormGroup({
+    countries: new FormControl<string[]>([]),
+  });
+
+  protected readonly formNoLocalize = new FormGroup({
+    tags: new FormControl<string[]>([]),
+  });
+
+  protected readonly formGrouped = new FormGroup({
     countries: new FormControl<string[]>([]),
   });
 

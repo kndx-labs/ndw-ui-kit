@@ -23,6 +23,10 @@
   }
 
   &__body {
+    // non-transparent scrollbar track visually overlaps with the option
+    // when it is in focus, hovered over or selected
+    --ndwu-scrollbar-track-color: transparent;
+
     flex: 1;
     overflow: auto;
     min-height: 0;

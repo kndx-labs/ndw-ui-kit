@@ -79,7 +79,6 @@ export class NdwuSelectFieldComponent<T = NdwuOption> extends SelectFieldBase<st
   public readonly optionAdapter = input<NdwuOptionAdapter<T> | undefined>(undefined);
   public readonly closeButtonAriaLabel = input<string>('Close');
 
-  // == NdwuControl ===========================================================
   public get empty(): boolean {
     return !this.inputValue;
   }

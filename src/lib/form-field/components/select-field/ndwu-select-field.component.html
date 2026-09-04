@@ -74,7 +74,7 @@
             <ndwu-styled-group-header [id]="groupHeaderId(row.id)">
               {{ row.label | localizeIf: localizeLabels() }}
             </ndwu-styled-group-header>
-          } @else {
+          } @else if (row.kind === 'option') {
             <ndwu-styled-option
               [value]="row.option.value"
               [label]="row.option.label"

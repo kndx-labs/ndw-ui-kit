@@ -1,5 +1,10 @@
 # SCSS / CSS Conventions
 
+Stylesheets are written in SCSS.
+The project uses [Stylelint](https://stylelint.io/) to enforce rules.
+The Stylelint configuration extends `stylelint-config-standard-scss`
+and uses `stylelint-config-hudochenkov/order` for property ordering.
+
 ## BEM Naming
 
 CSS classes follow BEM methodology:
@@ -10,12 +15,11 @@ CSS classes follow BEM methodology:
 
 Rules:
 
-- Elements belong inside a block — never declare an
-  element outside its block.
+- Elements belong inside a block — never declare an element outside its block.
 - Modifiers require the base element/block class alongside.
 - Class names must **not** reflect DOM nesting (no `.block__el1__el2`).
 - When encapsulation is off, avoid generic names
-  (`header`, `title`, `footer`) — they leak.
+  (`header`, `title`, `footer`) &mdash; they leak.
 
 ### Nested Blocks
 
@@ -26,7 +30,7 @@ live in the same SCSS file:
 <table class="ndwu-table">
   <thead class="ndwu-table__header table-header">
     <tr class="table-header__row">
-      <th class="table-header__cell">...</th>
+      <th class="table-header__cell"><!-- ... --></th>
     </tr>
   </thead>
 </table>

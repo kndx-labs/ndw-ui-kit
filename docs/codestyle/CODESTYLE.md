@@ -22,15 +22,18 @@ rules automatically.
 - **Arrow functions:** use explicit curly braces and `return`
   for multi-line bodies, even if the return value is implicit.
 
+The project uses [dprint](https://dprint.dev/) as its code formatter. It also
+uses ESLint for additional linting rules. All rules above the
+`Max function length` rule can be applied automatically by `dprint`.
+Others are fixed or reported by ESLint.
+
 ### `@dprint-ignore`
 
-The project uses [dprint](https://dprint.dev/) as its code
-formatter. When dprint's automatic formatting would break
-readability — e.g. collapsing a deliberately split chain
-into one line, or wrapping a long generic signature in an
-unhelpful way — place a `// @dprint-ignore` comment on the
-line immediately before the statement to preserve its
-manual formatting:
+When dprint's automatic formatting would break readability &mdash; e.g.
+collapsing a deliberately split chain into one line, or wrapping
+a long generic signature in an unhelpful way &mdash; place a
+`// @dprint-ignore` comment on the line immediately before the statement
+to preserve its manual formatting:
 
 ```typescript
 // @dprint-ignore
@@ -42,8 +45,8 @@ protected readonly dialog = viewChild
   .required<TemplateRef<Context>>('dialog');
 ```
 
-Use sparingly — only when the formatter's output is
-genuinely less readable than the hand-formatted version.
+Use sparingly — only when the formatter's output is genuinely less readable
+than the hand-formatted version.
 
 ## TypeScript
 
@@ -77,8 +80,7 @@ export class MyComponent {
 
 ### Non-null Assertions
 
-The `!` (non-null assertion) operator is **banned**. Use
-proper null checks or `assertIsDefined()` instead.
+The `!` (non-null assertion) operator is **banned**. Use proper null checks.
 
 ### `console` Usage
 
@@ -87,21 +89,18 @@ proper null checks or `assertIsDefined()` instead.
 
 ### Banned Identifiers
 
-Short names `e`, `cb`, `x` are banned as variable names
-(relaxed in coordinate-related files where `x`/`y` are
-natural).
+Short names `e`, `cb`, `x` are banned as variable names (relaxed
+in coordinate-related files where `x`/`y` are natural).
 
 ### `prefer-const` and `no-var`
 
-Always use `const` when the binding is never reassigned.
-`var` is not allowed.
+Always use `const` when the binding is never reassigned. `var` is not allowed.
 
 ### Class Property Initialization
 
-Because `useDefineForClassFields` is enabled, class
-properties **cannot** reference constructor parameters or
-other instance properties at declaration time. Initialize
-them in the constructor body instead:
+Because `useDefineForClassFields` is enabled, class properties **cannot**
+reference constructor parameters or other instance properties
+at declaration time. Initialize them in the constructor body instead:
 
 ```typescript
 // WRONG — this.myService is undefined at field init time
@@ -135,28 +134,10 @@ export class MyComponent {
 }
 ```
 
-### Dependency Injection
-
-Prefer `inject()` over constructor DI in new code. This
-avoids `useDefineForClassFields` conflicts and simplifies
-inheritance.
-
-```typescript
-// Preferred
-@Component({...})
-export class MyComponent {
-  private readonly myService = inject(MyService);
-  private readonly route = inject(ActivatedRoute);
-  public readonly data: { name: string } =
-    inject(SOME_TOKEN, {optional: true});
-}
-```
-
 ### Generics over Type Casting
 
-When TypeScript cannot infer the correct type (e.g. with
-Lodash or RxJS methods returning `any`), prefer explicit
-generics over `as` casts:
+When TypeScript cannot infer the correct type (e.g. with Lodash
+or RxJS methods returning `any`), prefer explicit generics over `as` casts:
 
 ```typescript
 // Preferred
@@ -169,9 +150,9 @@ const items = _.get(obj, 'key', []) as Item[];
 
 ### `satisfies` Operator
 
-Use `satisfies` instead of type annotations (`: Type`) when
-you need both type validation **and** preserved literal
-types:
+Use [`satisfies`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator)
+instead of type annotations (`: Type`) when you need both type validation
+**and** preserved literal types:
 
 ```typescript
 // Preserves literal types + validates structure
@@ -183,31 +164,6 @@ export const STATUS_L10N = {
 
 Use `: Type` when the value will be mutated or when literal
 types are not needed.
-
-### Lodash vs Native JavaScript
-
-Prefer native JS methods over Lodash when a direct
-equivalent exists:
-
-- `_.map` → `array.map(fn)`
-- `_.filter` → `array.filter(fn)`
-- `_.groupBy` → `Object.groupBy(array, fn)`
-- `_.uniq` → `[...new Set(array)]`
-- `_.get(obj, 'a.b.c')` → `obj?.a?.b?.c`
-
-Use Lodash only when no native equivalent exists
-(e.g. `_.debounce`, `_.throttle`, deep merge).
-
-When using `_.chain`, put `_` and `.chain(...)` on
-separate lines:
-
-```typescript
-const result = _
-  .chain(items)
-  .flatMap(fn)
-  .sortBy('key')
-  .value();
-```
 
 ### String Literal Types in Templates
 
@@ -234,10 +190,26 @@ type checking:
 
 ## Angular
 
+### Dependency Injection
+
+Prefer `inject()` over constructor DI in new code. This
+avoids `useDefineForClassFields` conflicts and simplifies
+inheritance.
+
+```typescript
+// Preferred
+@Component({...})
+export class MyComponent {
+  private readonly myService = inject(MyService);
+  private readonly route = inject(ActivatedRoute);
+  public readonly data: { name: string } =
+    inject(SOME_TOKEN, {optional: true});
+}
+```
+
 ### Component Configuration
 
-- **Change detection:** always use
-  `ChangeDetectionStrategy.OnPush`.
+- **Change detection:** always use `ChangeDetectionStrategy.OnPush`.
 - **Standalone:** components are standalone (no NgModules);
   dependencies go in the `imports` array.
 - **Selector prefix:** `ndwu` for library components,
@@ -249,22 +221,6 @@ type checking:
 
 Use `takeUntilDestroyed()` for subscription cleanup in
 components and directives.
-
-### Observable Subscriptions inside `effect()`
-
-**Do not** subscribe to Observables inside `effect()` —
-each re-run creates a new subscription, leaking the
-previous one. If unavoidable, clean up manually:
-
-```typescript
-effect((onCleanup) => {
-  const id = this.activeId();
-  const sub = this.valueChanges$
-    .subscribe(v => this.handle(id, v));
-
-  onCleanup(() => sub.unsubscribe());
-});
-```
 
 ### Template Interpolation
 
@@ -285,15 +241,16 @@ effect((onCleanup) => {
 
 ### Dynamic Styles
 
-Avoid `NgStyle` and `[ngClass]`. For 1–2 dynamic style
-properties, use `[style.property]` binding:
+Avoid `NgStyle` and `NgClass`. Use `[style.property]`
+and/or `[class]` binding(s) instead:
 
 ```html
 [style.color]="config.lineColor"
 [style.left]="`${item.leftShift}%`"
+[class]="someComputedClass()"
 ```
 
-For conditional classes, use `[class.name]` binding:
+For conditional classes, prefer `[class.name]` binding:
 
 ```html
 [class.is-active]="isActive"

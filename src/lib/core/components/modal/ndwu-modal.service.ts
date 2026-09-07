@@ -1,10 +1,10 @@
 import {DOCUMENT, Injectable, Injector, TemplateRef, computed, inject, signal} from '@angular/core';
-import {GlobalPositionStrategy, Overlay, OverlayConfig, OverlayRef} from '@angular/cdk/overlay';
+import {GlobalPositionStrategy, Overlay, OverlayConfig, OverlayRef, OverlaySizeConfig} from '@angular/cdk/overlay';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {ComponentPortal, TemplatePortal} from '@angular/cdk/portal';
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
-import {HANDSET_BREAKPOINT, applyThemeClass, detectThemeClass, normalizeClass} from '@ndw-ui-kit/core/utils';
+import {HANDSET_BREAKPOINT, applyThemeClass, normalizeClass} from '@ndw-ui-kit/core/utils';
 import {MobileScrollLockStrategy} from '@ndw-ui-kit/core/popover';
 import {
   DrawerCloseStrategy,
@@ -13,8 +13,7 @@ import {
   NDWU_DRAWER_PANEL_CLASS,
   NdwuDrawerContainerComponent,
 } from './drawer';
-import {ImmediateCloseStrategy, SwitchModalCloseStrategy} from './close-strategy';
-import {SwitchModalOpenStrategy} from './open-strategy';
+import {ImmediateCloseStrategy} from './close-strategy';
 import {NDWU_DIALOG_PANEL_CLASS, NdwuDialogContainerComponent} from './dialog';
 import {
   NdwuAlertModalConfig,
@@ -35,6 +34,17 @@ import {
   NDWU_MODAL_HANDSET_OVERLAY_SIZE,
 } from './ndwu-modal.constants';
 import {NDWU_MODAL_SLOT_REGISTRY, NdwuModalSlotRegistry} from './ndwu-modal-slot-registry';
+import {SwitchAnimationManager} from './switch-animation-manager';
+import {resolveOverlayThemeClass} from './overlay-theme';
+
+interface OverlayCreationParams {
+  positionStrategy: GlobalPositionStrategy;
+  backdropClass: string | string[];
+  panelClass: string;
+  desktopSize: OverlaySizeConfig;
+  config: NdwuResolvedModalConfig;
+  isHandset: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +60,8 @@ export class NdwuModalService {
 
   private readonly openModals = signal<NdwuModalRef[]>([]);
   public readonly openModalCount = computed(() => this.openModals().length);
+
+  private readonly switchAnimationOrchestrator = new SwitchAnimationManager(this.openModals);
 
   public open<D = unknown, R = unknown>(
     type: NdwuModalType,
@@ -203,8 +215,8 @@ export class NdwuModalService {
     const isHandset = this.breakpointObserver.isMatched(HANDSET_BREAKPOINT);
 
     const overlayRef = config.type === 'drawer'
-      ? this.createDrawerOverlay(config, isHandset).overlayRef
-      : this.createDialogOverlay(config, isHandset).overlayRef;
+      ? this.createDrawerOverlay(config, isHandset)
+      : this.createDialogOverlay(config, isHandset);
 
     const modalRef = this.createModalRef<R>(overlayRef, config);
 
@@ -212,79 +224,9 @@ export class NdwuModalService {
     this.registerModalEvents(overlayRef, modalRef, config);
     this.trackOpenModal(modalRef);
 
-    this.applySwitchAnimationOnOpen(modalRef, overlayRef, isHandset);
+    this.switchAnimationOrchestrator.onOpen(modalRef, overlayRef, isHandset);
 
     return modalRef;
-  }
-
-  private applySwitchAnimationOnOpen<R>(
-    modalRef: NdwuModalRef<R>,
-    overlayRef: OverlayRef,
-    isHandset: boolean,
-  ): void {
-    if (modalRef.type !== 'dialog') {
-      return;
-    }
-
-    if (!isHandset) {
-      return;
-    }
-
-    if (modalRef.config.stackingOnMobile === 'none') {
-      return;
-    }
-
-    if (!modalRef.isVisible()) {
-      return;
-    }
-
-    const openModals = this.openModals();
-    const isNested = openModals.length > 1;
-    const shouldStack = modalRef.config.stackingOnMobile === 'stack';
-
-    const openStrategy = new SwitchModalOpenStrategy();
-
-    modalRef.setOpenStrategy(openStrategy);
-    openStrategy.onOpen(overlayRef.overlayElement);
-
-    let collapsedParent = false;
-
-    if (isNested && !shouldStack) {
-      const parentModal = openModals.at(-2);
-
-      if (parentModal && parentModal?.type === 'dialog') {
-        let parentOpenStrategy = parentModal.getOpenStrategy();
-
-        if (!parentOpenStrategy) {
-          parentOpenStrategy = new SwitchModalOpenStrategy();
-          parentModal.setOpenStrategy(parentOpenStrategy);
-        }
-
-        parentOpenStrategy.onBeforeChildOpen(parentModal.getOverlayRef().overlayElement);
-        collapsedParent = true;
-      }
-    }
-
-    modalRef.setCloseStrategy(
-      new SwitchModalCloseStrategy(
-        collapsedParent
-          ? () => this.restoreParentAfterClose(modalRef)
-          : undefined,
-      ),
-    );
-  }
-
-  private restoreParentAfterClose<R>(closingModal: NdwuModalRef<R>): void {
-    const parentModal = this.openModals()
-      .filter((ref) => ref.id !== closingModal.id)
-      .at(-1);
-
-    if (!parentModal || parentModal?.type !== 'dialog') {
-      return;
-    }
-
-    parentModal.getOpenStrategy()
-      ?.onAfterChildClose(parentModal.getOverlayRef().overlayElement);
   }
 
   private createDesktopPositionStrategy(): GlobalPositionStrategy {
@@ -317,17 +259,36 @@ export class NdwuModalService {
       });
   }
 
-  private createDialogOverlay(config: NdwuModalConfig, isHandset: boolean): {overlayRef: OverlayRef} {
-    const positionStrategy = this.createDesktopPositionStrategy();
+  private createOverlay(overlayCreationParams: OverlayCreationParams,): OverlayRef {
+    const {positionStrategy, backdropClass, panelClass, desktopSize, config, isHandset} = overlayCreationParams;
 
     const overlayConfig: OverlayConfig = {
-      positionStrategy: positionStrategy,
+      positionStrategy,
       scrollStrategy: new MobileScrollLockStrategy(),
       hasBackdrop: true,
-      backdropClass: config.backdropClass ?? NDWU_MODAL_BACKDROP_CLASS,
-      panelClass: normalizeClass(config.panelClass, NDWU_DIALOG_PANEL_CLASS),
+      backdropClass: config.backdropClass ?? backdropClass,
+      panelClass: normalizeClass(config.panelClass, panelClass),
     };
 
+    const overlayRef = this.overlay.create(overlayConfig);
+
+    overlayRef.updateSize(isHandset ? NDWU_MODAL_HANDSET_OVERLAY_SIZE : desktopSize);
+
+    return overlayRef;
+  }
+
+  private createDialogOverlay(config: NdwuResolvedModalConfig, isHandset: boolean): OverlayRef {
+    return this.createOverlay({
+      positionStrategy: this.createDesktopPositionStrategy(),
+      backdropClass: NDWU_MODAL_BACKDROP_CLASS,
+      panelClass: NDWU_DIALOG_PANEL_CLASS,
+      desktopSize: this.getDialogDesktopSize(config),
+      config,
+      isHandset,
+    });
+  }
+
+  private getDialogDesktopSize(config: NdwuResolvedModalConfig): OverlaySizeConfig {
     const sizeProps: Array<NdwuModalSizeProp> = [
       'width',
       'minWidth',
@@ -337,64 +298,30 @@ export class NdwuModalService {
       'maxHeight',
     ];
 
-    const overlayRef = this.overlay.create(overlayConfig);
+    const desktopSize: Partial<Record<NdwuModalSizeProp, string>> = {};
 
-    const applyDesktopSizing = (): void => {
-      const size: Partial<{
-        width: string;
-        minWidth: string;
-        maxWidth: string;
-        height: string;
-        minHeight: string;
-        maxHeight: string;
-      }> = {};
+    sizeProps.forEach((prop) => {
+      if (config[prop] !== undefined) {
+        desktopSize[prop] = config[prop];
+      }
+    });
 
-      sizeProps.forEach((prop) => {
-        if (config[prop] !== undefined) {
-          size[prop] = config[prop];
-        }
-      });
-
-      overlayRef.updateSize(size);
-    };
-
-    const applyHandsetSizing = (): void => {
-      overlayRef.updateSize(NDWU_MODAL_HANDSET_OVERLAY_SIZE);
-    };
-
-    if (isHandset) {
-      applyHandsetSizing();
-    } else {
-      applyDesktopSizing();
-    }
-
-    return {overlayRef};
+    return desktopSize;
   }
 
-  private createDrawerOverlay(config: NdwuModalConfig, isHandset: boolean): {overlayRef: OverlayRef} {
-    const positionStrategy = this.createDrawerPositionStrategy();
-
-    const overlayConfig: OverlayConfig = {
-      positionStrategy: positionStrategy,
-      scrollStrategy: new MobileScrollLockStrategy(),
-      hasBackdrop: true,
-      backdropClass: config.backdropClass ?? NDWU_DRAWER_BACKDROP_CLASS,
-      panelClass: normalizeClass(config.panelClass, NDWU_DRAWER_PANEL_CLASS),
-    };
-
-    const overlayRef = this.overlay.create(overlayConfig);
-
-    if (isHandset) {
-      overlayRef.updateSize(NDWU_MODAL_HANDSET_OVERLAY_SIZE);
-    } else {
-      overlayRef.updateSize({
+  private createDrawerOverlay(config: NdwuResolvedModalConfig, isHandset: boolean): OverlayRef {
+    return this.createOverlay({
+      positionStrategy: this.createDrawerPositionStrategy(),
+      backdropClass: NDWU_DRAWER_BACKDROP_CLASS,
+      panelClass: NDWU_DRAWER_PANEL_CLASS,
+      desktopSize: {
         width: config.width ?? NDWU_DRAWER_OVERLAY_DEFAULTS.width ?? '',
         height: config.height ?? NDWU_DRAWER_OVERLAY_DEFAULTS.height ?? '',
         maxHeight: NDWU_DRAWER_OVERLAY_DEFAULTS.maxHeight ?? '',
-      });
-    }
-
-    return {overlayRef};
+      },
+      config,
+      isHandset,
+    });
   }
 
   private createModalRef<R>(
@@ -430,13 +357,7 @@ export class NdwuModalService {
     overlayRef: OverlayRef,
     config: NdwuResolvedModalConfig<D>,
   ): void {
-    let themeClass: string | null = null;
-
-    if (config.theme) {
-      themeClass = `ndwu-theme-${config.theme}`;
-    } else if (this.document.body instanceof HTMLElement) {
-      themeClass = detectThemeClass(this.document.body);
-    }
+    const themeClass = resolveOverlayThemeClass(config, this.document);
 
     applyThemeClass(overlayRef.overlayElement, themeClass);
   }

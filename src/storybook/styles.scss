@@ -1,0 +1,25 @@
+@use '../lib/styles/colors';
+@use '../lib/styles/themes' with (
+  $ndwu-emit-font-faces: true,
+  $ndwu-roboto-font-base-path: '../assets/fonts/roboto'
+);
+
+.storybook-surface {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 24px;
+  background: colors.$gray-0;
+  color: colors.$gray-100;
+}
+
+.storybook-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.storybook-field {
+  width: 320px;
+  max-width: 100%;
+}

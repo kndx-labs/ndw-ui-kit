@@ -69,6 +69,47 @@ yarn run playground:ngx-translate
 yarn run playground:no-l10n
 ```
 
+### Run Storybook
+
+```shell
+yarn storybook
+```
+
+Serves Storybook at `http://localhost:6006`, independently of the playground
+app. To produce a static build:
+
+```shell
+yarn build-storybook
+```
+
+This outputs to `dist/storybook`. Both commands run icon preparation
+(`prepare-icons`) automatically before starting/building.
+
+Notes:
+
+- Storybook lives under `src/storybook/` as its own Angular application
+  project (`storybook` in `angular.json`), excluded from the library build
+  and kept independent of the playground.
+- Storybook uses Webpack (`@storybook/angular` + `@storybook/builder-webpack5`),
+  while the playground uses esbuild/Vite via `@angular/build`.
+- The preview registers all icons and a no-op English translation provider
+  (`provideNdwUiKitNoopTranslation`), and renders zoneless, matching the
+  playground's application providers.
+- A toolbar control switches between the `light` and `dark` themes for every
+  story and Docs page.
+- Stories are named by component group, e.g. `Core/Button` and
+  `Form Field/Input Field`. Controls/Actions are provided by Storybook 10's
+  core (no `@storybook/addon-essentials` dependency is needed); Docs pages
+  are registered via `@storybook/addon-docs`.
+- Interaction checks run as story `play` functions (via `storybook/test`),
+  exercised automatically in the Storybook UI and CI-style smoke runs.
+- The button story's `icon` control is a curated subset of `IconName`
+  values, not a full icon catalog, to keep the Controls panel usable.
+- The input-field story uses an instance-local reactive-forms host
+  (`InputFieldStoryComponent`) so each story/Docs instance owns its own
+  `FormControl`; `initialValue`, `disabled`, and `showValidation` are
+  story-host-only controls, not `NdwuInputFieldComponent` inputs.
+
 ### Linting and formatting
 
 This repository uses three separate code-quality tools:

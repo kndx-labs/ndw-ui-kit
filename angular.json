@@ -155,6 +155,50 @@
           }
         }
       }
+    },
+    "storybook": {
+      "projectType": "application",
+      "root": "src/storybook",
+      "sourceRoot": "src/storybook",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "tsConfig": "tsconfig.storybook.json"
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": "src/storybook/.storybook",
+            "tsConfig": "tsconfig.storybook.json",
+            "compodoc": false,
+            "styles": ["src/storybook/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/lib"]
+            },
+            "port": 6006,
+            "host": "localhost",
+            "open": false,
+            "browserTarget": "storybook:build"
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": "src/storybook/.storybook",
+            "tsConfig": "tsconfig.storybook.json",
+            "compodoc": false,
+            "styles": ["src/storybook/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/lib"]
+            },
+            "outputDir": "dist/storybook",
+            "browserTarget": "storybook:build"
+          }
+        }
+      }
     }
   },
   "schematics": {

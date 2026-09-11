@@ -56,8 +56,12 @@ const preview: Preview = {
       const lang = resolveLang(context.globals['locale']);
 
       return componentWrapperDecorator(
-        (story) => `<storybook-locale-setter [lang]="'${lang}'"></storybook-locale-setter>` +
-          `<div class="ndwu-theme-${theme} storybook-surface">${story}</div>`,
+        (story) => {
+          return `
+            <storybook-locale-setter [lang]="'${lang}'"></storybook-locale-setter>
+            <div class="ndwu-theme-${theme} storybook-surface">${story}</div>
+          `;
+        },
       )(storyFn, context);
     },
   ],

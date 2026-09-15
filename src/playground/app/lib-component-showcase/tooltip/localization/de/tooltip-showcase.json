@@ -1,0 +1,20 @@
+{
+  "tooltip-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "text": "Text",
+      "max-width": "Max. Breite",
+      "position": "Position",
+      "align": "Ausrichtung",
+      "show-delay": "Anzeige (ms)",
+      "hide-delay": "Ausblenden (ms)",
+      "show-on-tap": "Bei Tippen anzeigen",
+      "tokens": "Tokens",
+      "inherit": "Vererben",
+      "preview-text": "Zeigen Sie mit der Maus"
+    }
+  }
+}

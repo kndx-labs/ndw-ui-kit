@@ -1,0 +1,21 @@
+{
+  "file-upload-showcase": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "multiple": "Multiple Files",
+    "multiple-description": "Standard multiple file upload with a persistent dropzone. No [size] is set, so it follows its own width: L below 510px, XL above.",
+    "single-xl": "Single File",
+    "single-xl-description": "Dropzone is hidden when a file is selected.",
+    "mixed-states": "Mixed File States",
+    "mixed-states-description": "One upload queue holding every state at once: uploading, uploaded, validation error, server error with retry, warning, canceled and queued.",
+    "file-item-reference": "FileItem Reference (1:1)",
+    "file-item-reference-description": "Standalone FileItem states as separate 400px cards, matching the Figma reference.",
+    "file-item-bar-reference": "FileItemBar Reference (1:1)",
+    "file-item-bar-reference-description": "Standalone FileItem states with a progress bar as separate 400px cards, matching the Figma reference.",
+    "disabled": "Disabled State",
+    "cva-field": "Form Field (CVA)",
+    "cva-field-description": "Drop-in replacement for a file input bound to a reactive form control.",
+    "current-size": "Current size"
+  }
+}

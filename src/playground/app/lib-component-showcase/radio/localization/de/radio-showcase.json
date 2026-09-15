@@ -1,0 +1,25 @@
+{
+  "radio-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "state-title": "Zustand",
+      "tokens": "Tokens",
+      "inherit": "Übernehmen"
+    },
+    "default": "Standard (Größe XL)",
+    "option-1": "Option 1",
+    "option-2": "Option 2",
+    "option-3": "Option 3",
+    "small-option-1": "Kleine Option 1",
+    "small-option-2": "Kleine Option 2",
+    "extra-large-option-1": "Extra große Option 1",
+    "extra-large-option-2": "Extra große Option 2",
+    "option-2-selected": "Option 2 (Ausgewählt)",
+    "disabled-option-1": "Deaktivierte Option 1",
+    "disabled-option-2": "Deaktivierte Option 2",
+    "disabled-checked-option-2": "Deaktivierte ausgewählte Option 2"
+  }
+}

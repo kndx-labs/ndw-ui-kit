@@ -1,0 +1,26 @@
+{
+  "empty-state-showcase": {
+    "light-theme": "Empty State Showcase - Light Theme",
+    "dark-theme": "Empty State Showcase - Dark Theme",
+    "overview": {
+      "xl-error-with-actions": "XL - Error with actions",
+      "xl-success-with-single-action": "XL - Success with single action",
+      "xl-no-data-title-only": "XL - No data (title only)",
+      "l-no-connection-description-only": "L - No connection (description only)",
+      "l-uploading": "L - Uploading",
+      "l-info-with-html": "L - Info with HTML",
+      "failed-to-upload-the-file": "Failed to upload the file",
+      "please-try-again-later": "Please try again later",
+      "upload-complete": "Upload complete",
+      "your-file-has-been-successfully-uploaded": "Your file has been successfully uploaded",
+      "the-list-is-empty": "The list is empty",
+      "no-internet-connection": "No internet connection",
+      "uploading-your-file": "Uploading your file",
+      "this-may-take-a-few-seconds": "This may take a few seconds",
+      "system-automatically-updates": "The system automatically updates on a rolling basis",
+      "cancel": "Cancel",
+      "retry": "Retry",
+      "accept": "Accept"
+    }
+  }
+}

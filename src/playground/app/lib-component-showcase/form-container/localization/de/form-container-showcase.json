@@ -1,0 +1,33 @@
+{
+  "form-container-showcase": {
+    "size-token-inheritance": "Größen-Token-Vererbung",
+    "inheritance-description-prefix": "Diese Showcase-Komponente stellt",
+    "inheritance-description-value": "mit",
+    "inheritance-description-suffix": "bereit. Der erste Formular-Container setzt kein [size] und erbt deshalb diese Eltern-Größe. Der zweite Container überschreibt den geerbten Kontext lokal.",
+    "inherited-from-parent-token": "Vom Eltern-Token geerbt",
+    "container-inherits-from-showcase": "Der Container erbt SIZE.XXL aus dem Showcase",
+    "also-inherited-from-parent-token": "Ebenfalls vom Eltern-Token geerbt",
+    "still-resolves-to-parent-size": "Wird weiterhin zu SIZE.XXL aufgelöst",
+    "container-overrides-parent-to-l": "Container überschreibt Elternwert auf L",
+    "uses-local-form-container-size": "Verwendet die lokale Größe des Formular-Containers",
+    "field-overrides-container-to-xl": "Feld überschreibt Container auf XL",
+    "uses-nearest-field-level-size": "Verwendet die nächstgelegene Feld-Größe",
+    "order-of-precedence-prefix": "Reihenfolge der Priorität: Feld",
+    "order-of-precedence-middle": "nächster",
+    "order-of-precedence-suffix": "Eltern-",
+    "order-of-precedence-provider": "Provider",
+    "with-disabled-children": "Mit deaktivierten Kindern",
+    "with-invalid-children": "Mit ungültigen Kindern",
+    "remember-me": "Angemeldet bleiben",
+    "password-disabled": "Passwort (Deaktiviert)",
+    "disabled-checkbox": "Deaktivierte Checkbox",
+    "email-invalid": "E-Mail (Ungültig)",
+    "required-checkbox": "Pflicht-Checkbox",
+    "enter-email": "E-Mail eingeben",
+    "enter-password": "Passwort eingeben",
+    "disabled-placeholder": "Dies ist deaktiviert",
+    "valid-email-placeholder": "Geben Sie eine gültige E-Mail ein",
+    "invalid-email-format": "Ungültiges E-Mail-Format",
+    "field-required": "Dieses Feld ist erforderlich"
+  }
+}

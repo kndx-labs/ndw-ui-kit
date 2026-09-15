@@ -1,0 +1,182 @@
+{
+  "dialog-showcase": {
+    "tabs": {
+      "overview": "Übersicht"
+    },
+    "overview": {
+      "sections": {
+        "async-title-description": "Asynchroner Titel und Beschreibung",
+        "nested-modal": "Verschachtelte Modal-Dialoge",
+        "nested-modal-stack": "Verschachtelte Dialoge gestapelt ('stack')",
+        "nested-modal-none": "Verschachtelte Dialoge ohne Stacking ('none')",
+        "drawer-dialog-stacking": "Drawer + verschachtelter Dialog"
+      },
+      "async-title-description": {
+        "button-open": "Dialog mit asynchronem Titel/Beschreibung öffnen",
+        "dialog": {
+          "initial-title": "Dialoginhalt wird geladen",
+          "initial-description": "Titel und Beschreibung werden in 2 Sekunden aktualisiert.",
+          "loaded-title": "Inhalt geladen",
+          "loaded-description": "Titel und Beschreibung wurden nach dem Öffnen asynchron gesetzt."
+        }
+      },
+      "nested-modal": {
+        "description": "Zeigt das Öffnen eines Dialogs von einem anderen Dialog aus. Auf dem Handy blendet sich der erste Dialog aus, während der zweite einblendet.",
+        "button-open": "Verschachteltes Modal öffnen",
+        "parent-dialog": {
+          "title": "Übergeordneter Dialog",
+          "description": "Dies ist der übergeordnete Dialog. Öffnen Sie hier einen verschachtelten Dialog.",
+          "extra-1": "Zusätzlicher Inhalt Absatz eins. Dieser übergeordnete Dialog ist größer.",
+          "extra-2": "Zusätzlicher Inhalt Absatz zwei. Sie sollten diesen Text beim Öffnen sehen.",
+          "extra-3": "Zusätzlicher Inhalt Absatz drei. Mehr Text bedeutet mehr Höhenunterschied.",
+          "extra-4": "Zusätzlicher Inhalt Absatz vier. Der verschachtelte Dialog hat nur eine Zeile.",
+          "button-open-nested": "Verschachtelten Dialog öffnen"
+        },
+        "nested-dialog": {
+          "title": "Verschachtelter Dialog",
+          "description": "Dies ist ein verschachtelter Dialog, der vom übergeordneten Dialog geöffnet wurde."
+        }
+      },
+      "nested-modal-stack": {
+        "description": "Dieselbe Demo für verschachtelte Dialoge, aber mit stackingOnMobile: 'stack' geöffnet. Der verschachtelte Dialog blendet weiterhin ein, der erste bleibt jedoch darunter ausgeklappt, statt eingeklappt zu werden — es blendet also nichts aus, während Sie tiefer gehen.",
+        "button-open": "Verschachteltes Modal mit Stacking öffnen"
+      },
+      "nested-modal-none": {
+        "description": "Dieselbe Demo für verschachtelte Dialoge, aber mit stackingOnMobile: 'none' geöffnet. Auf dem Handy öffnen und schließen beide Dialoge sofort, und der erste bleibt an Ort und Stelle, statt sich auszublenden — zum Vergleich mit dem Abschnitt oben.",
+        "button-open": "Verschachteltes Modal ohne Stacking öffnen"
+      },
+      "drawer-dialog-stacking": {
+        "description": "Öffnen eines Dialogs über einem bereits geöffneten Drawer auf dem Handy. Nur Dialoge nehmen an der Switch-Animation teil, daher bleibt der Drawer an Ort und Stelle, statt ausgeblendet zu werden.",
+        "button-open": "Drawer öffnen",
+        "drawer": {
+          "title": "Drawer",
+          "description": "Tippen Sie auf die Schaltfläche unten, um einen Dialog über diesem Drawer zu öffnen. Auf dem Handy sollte der Drawer dahinter an Ort und Stelle bleiben.",
+          "button-open-dialog": "Dialog darüber öffnen"
+        },
+        "dialog": {
+          "title": "Dialog über einem Drawer geöffnet",
+          "description": "Der darunterliegende Drawer bleibt unberührt — er wird nicht als Crossfade-Elternteil behandelt."
+        }
+      }
+    },
+    "simple-dialog": {
+      "button-open": "Einfaches Dialog öffnen",
+      "dialog": {
+        "title": "Einfaches Dialog",
+        "description": "Dies ist ein einfaches Dialog mit einer Beschreibung.",
+        "button-close": "Schließen"
+      }
+    },
+    "confirm-dialog": {
+      "button-open": "Bestätigungsdialog öffnen",
+      "dialog": {
+        "title": "Element löschen",
+        "description": "Sind Sie sicher, dass Sie dieses Element löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "button-confirm": "Löschen",
+        "button-cancel": "Abbrechen"
+      }
+    },
+    "form-dialog": {
+      "button-open": "Formulardialog öffnen",
+      "submitted": "Übermittelt: {{name}} - {{email}}",
+      "dialog": {
+        "title": "Kontaktformular",
+        "description": "Geben Sie unten Ihre Kontaktinformationen ein."
+      },
+      "fields": {
+        "name": {
+          "label": "Name"
+        },
+        "email": {
+          "label": "E-Mail"
+        }
+      }
+    },
+    "result-dialog": {
+      "button-open": "Benutzer auswählen",
+      "selected": "Ausgewählt: {{name}}",
+      "dialog": {
+        "title": "Benutzer auswählen",
+        "description": "Klicken Sie auf einen Benutzer, um ihn auszuwählen."
+      }
+    },
+    "scrollable-dialog": {
+      "button-open": "Bedingungen anzeigen",
+      "dialog": {
+        "title": "Ein langer Text"
+      }
+    },
+    "size": {
+      "button-small": "Klein",
+      "button-narrow": "Schmal",
+      "button-wide": "Breit",
+      "small-dialog": {
+        "title": "Kleiner Dialog",
+        "description": "Dies ist ein kompakter Dialog: {{width}}×{{height}}"
+      },
+      "narrow-dialog": {
+        "title": "Schmaler Dialog",
+        "description": "Breite begrenzt zwischen 300px und 400px."
+      },
+      "wide-dialog": {
+        "title": "Breiter Dialog",
+        "html-heading": "Dieser Dialog nimmt {{width}} der Viewport-Breite ein, begrenzt auf {{maxWidth}} maximal."
+      }
+    },
+    "focus": {
+      "button-auto-focus-header": "Auto-Fokus auf Header (Standard)",
+      "button-no-focus-trap": "Keine Fokusfalle",
+      "button-auto-focus-first-tabbable": "Auto-Fokus auf das erste tabulatorfähige Element",
+      "button-custom-focus": "Benutzerdefinierter Fokus",
+      "auto-focus-dialog": {
+        "title": "Auto-Fokus",
+        "description": "Der Dialog-Header erhielt automatisch den Fokus, als dieser Dialog geöffnet wurde."
+      },
+      "no-focus-trap-dialog": {
+        "title": "Keine Fokusfalle",
+        "description": "Der Fokus ist nicht gefangen. Sie können mit Tab aus diesem Dialog heraus navigieren."
+      },
+      "auto-focus-first-tabbable-dialog": {
+        "title": "Auto-Fokus erstes Element",
+        "description": "Fokusfalle ist aktiv. Das erste tabulatorfähige Element erhält den Fokus."
+      },
+      "custom-focus-dialog": {
+        "title": "Benutzerdefinierter Fokus",
+        "description": "Fokusfalle ist aktiv. Der \"Schließen\"-Button erhält den Fokus."
+      }
+    },
+    "loading": {
+      "button-open": "Async simulieren",
+      "dialog": {
+        "title": "Ladezustand",
+        "description": "Klicken Sie auf \"Neu laden\", um eine asynchrone Operation mit Ladezustand zu simulieren.",
+        "button-reload": "Neu laden"
+      }
+    },
+    "on-close-handler": {
+      "button-delayed-close": "Verzögertes Schließen",
+      "button-confirm-to-close": "Bestätigen zum Schließen",
+      "delayed-close-dialog": {
+        "title": "onCloseHandler$ Demo",
+        "description": "Schalten Sie die Schließverzögerung ein, um zu sehen, wie setCloseHandler() Schließereignisse abfängt."
+      },
+      "confirm-to-close-dialog": {
+        "title": "Benutzerdefinierte Bestätigungsdemo #2"
+      }
+    },
+    "custom-dialogs": {
+      "confirm-close": {
+        "message": "Das Schließen dieses Dialogs erfordert eine Bestätigung",
+        "confirm-dialog": {
+          "title": "Sind Sie sicher?"
+        }
+      },
+      "custom-focus": {},
+      "delayed-close": {
+        "message": "Schließverzögerung ist aktiv. Das Klicken auf \"Schließen\" startet einen 2-Sekunden-Countdown, bevor sich der Dialog schließt.",
+        "button-remove-delay": "Schließverzögerung entfernen",
+        "button-add-delay": "Schließen um 2 Sek. verzögern"
+      }
+    }
+  }
+}

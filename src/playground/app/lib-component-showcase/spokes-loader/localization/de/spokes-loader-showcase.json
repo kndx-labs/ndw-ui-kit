@@ -1,0 +1,20 @@
+{
+  "spokes-loader-showcase": {
+    "tabs": {
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "size": "Größe (px)",
+      "spokes": "Speichen",
+      "duration": "Dauer (ms)",
+      "spoke-width": "Speichenbreite",
+      "spoke-height": "Speichenhöhe",
+      "spoke-height-placeholder": "Auto",
+      "spoke-offset": "Speichenversatz",
+      "spoke-offset-placeholder": "Auto",
+      "autostart": "Autostart",
+      "tokens": "Tokens",
+      "inherit": "Vererben"
+    }
+  }
+}

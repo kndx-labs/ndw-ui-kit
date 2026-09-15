@@ -1,0 +1,87 @@
+{
+  "app": {
+    "title": "NDW UI Kit Demo",
+    "components": "Komponenten",
+    "navigation": "Navigation",
+    "examples": "Beispiele",
+    "menu": "Menü",
+    "close-menu": "Menü schließen",
+    "collapse-sidebar": "Seitenleiste einklappen",
+    "expand-sidebar": "Seitenleiste ausklappen",
+    "settings": "Einstellungen"
+  },
+  "common": {
+    "label": "Bezeichnung",
+    "additional-text": "Zusätzlicher Text",
+    "additional-information": "Zusätzliche Informationen",
+    "enter-text": "Text eingeben",
+    "enter-email": "E-Mail eingeben",
+    "enter-password": "Passwort eingeben",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "disabled": "Deaktiviert",
+    "checked": "Ausgewählt",
+    "invalid": "Ungültig",
+    "required": "Erforderlich",
+    "loading": "Lädt",
+    "size": "Größe",
+    "theme": "Theme",
+    "placeholder": "Platzhalter",
+    "value": "Wert",
+    "reset": "Zurücksetzen",
+    "preview": "Vorschau",
+    "controls": "Steuerung",
+    "themes": {
+      "light": "Hell Theme",
+      "dark": "Dunkel Theme"
+    },
+    "sizes": {
+      "s": "Größe S",
+      "l": "Größe L",
+      "xl": "Größe XL",
+      "xxl": "Größe XXL"
+    }
+  },
+  "file-upload": {
+    "dropzone": {
+      "title": "Datei hochladen",
+      "hint": "Datei hierher ziehen oder",
+      "browse": "Datei auswählen"
+    },
+    "status": {
+      "uploading": "Wird hochgeladen...",
+      "success": "Hochgeladen",
+      "error": "Upload fehlgeschlagen. Verbindung prüfen und erneut versuchen.",
+      "warning": "Warnung",
+      "canceled": "Abgebrochen",
+      "queued": "Warteschlange"
+    },
+    "validation": {
+      "tooLarge": "Datei überschreitet Größenlimit"
+    },
+    "header": {
+      "inProgress": "In Bearbeitung",
+      "completed": "Fertig",
+      "failed": "Einige Elemente fehlgeschlagen",
+      "subtitle": {
+        "completed": "{{completed}} von {{total}} Dateien abgeschlossen",
+        "canceled": "{{total}} Dateien abgebrochen",
+        "inProgress": "{{progress}} % hochgeladen"
+      },
+      "expand": "Upload-Liste erweitern",
+      "collapse": "Upload-Liste reduzieren",
+      "cancelAll": "Alle abbrechen",
+      "retry": "Wiederholen"
+    },
+    "actions": {
+      "remove": "Entfernen",
+      "cancel": "Abbrechen",
+      "retry": "Wiederholen"
+    }
+  },
+  "error": {
+    "ascii-only": "Nur ASCII-Zeichen sind erlaubt",
+    "required": "Dieses Feld ist erforderlich",
+    "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+  }
+}

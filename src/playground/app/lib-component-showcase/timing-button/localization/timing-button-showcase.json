@@ -1,0 +1,29 @@
+{
+  "timing-button-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "left-text": "Left text",
+      "right-text": "Right text",
+      "tokens-for-type": "Tokens for type={{type}}",
+      "inherit": "Inherit",
+      "duration": "Duration (s)",
+      "state": "State",
+      "timer-end-count": "timerEnd fired:"
+    },
+    "sizes": "Sizes",
+    "default": "Default",
+    "primary": "Primary",
+    "visual-states": "Visual States",
+    "state-preloading": "Preloading",
+    "state-enabled": "Enabled",
+    "state-hover": "Hover",
+    "state-focus": "Focus",
+    "state-pressed": "Pressed",
+    "state-disabled": "Disabled",
+    "state-loading": "Loading",
+    "seconds": "s"
+  }
+}

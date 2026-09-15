@@ -1,0 +1,30 @@
+{
+  "popover-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "overview": {
+      "sections": {
+        "simple-popover": "Einfaches Popover",
+        "rich-popover": "Erweitertes Popover"
+      },
+      "simple-description": "Popover mit reinem Textinhalt",
+      "rich-description": "Popover mit Header-Titel, formatiertem Inhalt und Footer-Schaltflächen",
+      "help-button": "Hilfe",
+      "open-popover": "Popover öffnen"
+    },
+    "sandbox": {
+      "content": "Inhalt",
+      "title": "Titel",
+      "show-header": "Header anzeigen",
+      "show-close": "Schließen-Button anzeigen",
+      "add-button": "+ Button hinzufügen",
+      "button-primary": "Primär",
+      "buttons": "Schaltflächen",
+      "tokens": "Tokens",
+      "inherit": "Vererben",
+      "preview-trigger": "Klick mich"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schedule-editor-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "cva": "Sandbox"
+    },
+    "full-mode-desktop-sunday-first": "Full mode (desktop, week starts on Sunday)",
+    "full-mode-desktop": "Full mode (desktop)",
+    "thumbnail-mode-desktop": "Thumbnail mode (desktop)",
+    "full-mode-mobile": "Full mode (mobile)",
+    "weekdays": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "cva": {
+      "mode": "Mode",
+      "mode-full": "Full",
+      "mode-thumbnail": "Thumbnail",
+      "layout": "Layout",
+      "layout-auto": "Auto",
+      "layout-desktop": "Desktop",
+      "layout-mobile": "Mobile",
+      "week-start": "Week starts on",
+      "week-start-monday": "Monday",
+      "week-start-sunday": "Sunday",
+      "scale-to-container": "Scale to container",
+      "current-value": "Current value"
+    }
+  }
+}

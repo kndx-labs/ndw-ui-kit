@@ -17,3 +17,7 @@ export {
   NdwuRow,
   NdwuNoDataRow,
 } from './ndwu-row';
+export {NdwuSort, NdwuSortHeader} from './ndwu-sort';
+export type {NdwuSortDirection, NdwuSortState} from './ndwu-sort';
+export {NdwuPaginator} from './ndwu-paginator';
+export type {NdwuPageEvent} from './ndwu-paginator';

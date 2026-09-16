@@ -1,11 +1,18 @@
 <section class="table-overview">
-  <h3>Basic table with selection and actions</h3>
+  <h3>Table with sorting and pagination</h3>
 
-  <ndwu-table [dataSource]="dataSource()" [trackBy]="trackById">
+  <ndwu-table
+    [dataSource]="dataSource()"
+    [trackBy]="trackById"
+    ndwuSort
+    [ndwuSortActive]="sortState().active"
+    [ndwuSortDirection]="sortState().direction"
+    (ndwuSortChange)="onSortChange($event)"
+  >
 
     <!-- Select column -->
     <ng-container ndwuColumnDef="select">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="select-cell">
+      <th ndwu-header-cell *ndwuHeaderCellDef class="select-cell col-select">
         <input
           type="checkbox"
           [checked]="isAllSelected()"
@@ -22,15 +29,15 @@
       </td>
     </ng-container>
 
-    <!-- Name column -->
+    <!-- Name column (sortable) -->
     <ng-container ndwuColumnDef="name">
-      <th ndwu-header-cell *ndwuHeaderCellDef>Network SSID</th>
+      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="name" class="col-name">Network SSID</th>
       <td ndwu-cell *ndwuCellDef="let row">{{ row.name }}</td>
     </ng-container>
 
-    <!-- Band column -->
+    <!-- Band column (sortable) -->
     <ng-container ndwuColumnDef="band">
-      <th ndwu-header-cell *ndwuHeaderCellDef>Band</th>
+      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="band" class="col-band">Band</th>
       <td ndwu-cell *ndwuCellDef="let row">
         <span class="badge">{{ row.band }}</span>
       </td>
@@ -38,13 +45,13 @@
 
     <!-- IP column -->
     <ng-container ndwuColumnDef="ip">
-      <th ndwu-header-cell *ndwuHeaderCellDef>IP Address</th>
+      <th ndwu-header-cell *ndwuHeaderCellDef class="col-ip">IP Address</th>
       <td ndwu-cell *ndwuCellDef="let row">{{ row.ip }}</td>
     </ng-container>
 
-    <!-- Status column -->
+    <!-- Status column (sortable) -->
     <ng-container ndwuColumnDef="status">
-      <th ndwu-header-cell *ndwuHeaderCellDef>Status</th>
+      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="status" class="col-status">Status</th>
       <td ndwu-cell *ndwuCellDef="let row">
         <span class="status-dot" [class.online]="row.status === 'online'" [class.offline]="row.status === 'offline'"></span>
         {{ row.status }}
@@ -53,7 +60,7 @@
 
     <!-- Actions column -->
     <ng-container ndwuColumnDef="actions">
-      <th ndwu-header-cell *ndwuHeaderCellDef></th>
+      <th ndwu-header-cell *ndwuHeaderCellDef class="col-actions"></th>
       <td ndwu-cell *ndwuCellDef="let row" class="actions-cell">
         <button class="action-btn" (click)="onEdit(row)" title="Edit">&#x270E;</button>
         <button class="action-btn action-btn--danger" (click)="onDelete(row)" title="Delete">&#x2715;</button>
@@ -72,4 +79,12 @@
       </td>
     </ng-template>
   </ndwu-table>
+
+  <ndwu-paginator
+    [length]="allData().length"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageIndex()"
+    [pageSizeOptions]="[5, 10]"
+    (page)="onPageChange($event)"
+  />
 </section>

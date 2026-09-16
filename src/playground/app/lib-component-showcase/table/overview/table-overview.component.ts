@@ -12,6 +12,11 @@ import {
   NdwuHeaderRow,
   NdwuRow,
   NdwuNoDataRow,
+  NdwuSort,
+  NdwuSortHeader,
+  NdwuSortState,
+  NdwuPaginator,
+  NdwuPageEvent,
 } from '@ndw-ui-kit/core/table';
 
 interface Device {
@@ -29,6 +34,12 @@ const DEVICES: Device[] = [
   {id: 4, name: 'dev', band: '5 GHz', ip: '192.168.1.20', status: 'online'},
   {id: 5, name: 'Keenetic-9067-Teens', band: '5 GHz', ip: '192.168.1.33', status: 'online'},
   {id: 6, name: 'Guest-Network', band: '2.4 GHz', ip: '192.168.1.50', status: 'offline'},
+  {id: 7, name: 'Lab-5G', band: '5 GHz', ip: '192.168.1.60', status: 'online'},
+  {id: 8, name: 'Office-Main', band: '2.4 GHz', ip: '192.168.1.70', status: 'online'},
+  {id: 9, name: 'Garage-AP', band: '2.4 GHz', ip: '192.168.1.80', status: 'offline'},
+  {id: 10, name: 'Backyard-Mesh', band: '5 GHz', ip: '192.168.1.90', status: 'online'},
+  {id: 11, name: 'Basement-Node', band: '2.4 GHz', ip: '192.168.1.100', status: 'offline'},
+  {id: 12, name: 'Attic-Repeater', band: '5 GHz', ip: '192.168.1.110', status: 'online'},
 ];
 
 @Component({
@@ -48,28 +59,66 @@ const DEVICES: Device[] = [
     NdwuHeaderRow,
     NdwuRow,
     NdwuNoDataRow,
+    NdwuSort,
+    NdwuSortHeader,
+    NdwuPaginator,
   ],
 })
 export class TableOverviewComponent {
   protected readonly displayedColumns = ['select', 'name', 'band', 'ip', 'status', 'actions'];
-  protected readonly dataSource = signal(DEVICES);
+  protected readonly allData = signal(DEVICES);
   protected readonly selection = new SelectionModel<Device>(true, []);
+
+  protected readonly sortState = signal<NdwuSortState>({active: '', direction: ''});
+  protected readonly pageIndex = signal(0);
+  protected readonly pageSize = signal(5);
+
+  protected readonly sortedData = computed(() => {
+    const data = [...this.allData()];
+    const {active, direction} = this.sortState();
+    if (!active || !direction) return data;
+
+    return data.sort((a, b) => {
+      const aVal = a[active as keyof Device];
+      const bVal = b[active as keyof Device];
+      const cmp = String(aVal).localeCompare(String(bVal));
+      return direction === 'asc' ? cmp : -cmp;
+    });
+  });
+
+  protected readonly dataSource = computed(() => {
+    const sorted = this.sortedData();
+    const start = this.pageIndex() * this.pageSize();
+    return sorted.slice(start, start + this.pageSize());
+  });
 
   protected readonly isAllSelected = computed(() => {
     const data = this.dataSource();
-    return data.length > 0 && this.selection.selected.length === data.length;
+    return data.length > 0 && data.every(d => this.selection.isSelected(d));
   });
 
   protected readonly isIndeterminate = computed(() => {
-    return this.selection.hasValue() && !this.isAllSelected();
+    const data = this.dataSource();
+    const selectedCount = data.filter(d => this.selection.isSelected(d)).length;
+    return selectedCount > 0 && selectedCount < data.length;
   });
 
   protected toggleAll(): void {
     if (this.isAllSelected()) {
-      this.selection.clear();
+      this.selection.deselect(...this.dataSource());
     } else {
       this.selection.select(...this.dataSource());
     }
+  }
+
+  protected onSortChange(state: NdwuSortState): void {
+    this.sortState.set(state);
+    this.pageIndex.set(0);
+  }
+
+  protected onPageChange(event: NdwuPageEvent): void {
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
   }
 
   protected onEdit(device: Device): void {

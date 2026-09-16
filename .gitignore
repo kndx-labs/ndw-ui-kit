@@ -39,5 +39,6 @@ CLAUDE.MD
 AGENTS.MD
 opencode.json
 .opencode
+docs/superpowers
 
 .eslintcache*

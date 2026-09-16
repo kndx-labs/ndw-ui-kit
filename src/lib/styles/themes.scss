@@ -31,6 +31,7 @@
 @use 'core/components/empty-state/ndwu-empty-state.tokens' as ndwu-empty-state-tokens;
 @use 'core/components/password-strength-indicator/ndwu-password-strength-indicator.tokens' as ndwu-password-strength-indicator-tokens;
 @use 'core/components/scrollbar/ndwu-scrollbar.tokens' as ndwu-scrollbar-tokens;
+@use 'table/ndwu-table.tokens' as ndwu-table-tokens;
 @use 'form-field/components/helper-message/ndwu-helper-message.tokens' as ndwu-helper-message-tokens;
 @use 'styles/focus-tokens' as focus-tokens;
 
@@ -73,6 +74,7 @@ $component-tokens: (
   'ndwu-tabs': ndwu-tabs-tokens.$ndwu-tabs-tokens,
   'ndwu-empty-state': ndwu-empty-state-tokens.$ndwu-empty-state-tokens,
   'ndwu-password-strength-indicator': ndwu-password-strength-indicator-tokens.$ndwu-password-strength-indicator-tokens,
+  'ndwu-table': ndwu-table-tokens.$ndwu-table-tokens,
 );
 
 // List of utility token modules.

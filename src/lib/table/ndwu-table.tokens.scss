@@ -1,0 +1,12 @@
+@use 'styles/colors' as colors;
+
+$ndwu-table-tokens: (
+  table-border-color: colors.$gray-20,
+  table-header-bg: colors.$gray-5,
+  table-header-color: colors.$gray-60,
+  table-cell-bg: colors.$gray-0,
+  table-cell-color: colors.$gray-80,
+  table-row-hover-bg: colors.$gray-10,
+  table-row-selected-bg: colors.$brand-10,
+  table-row-selected-hover-bg: colors.$brand-15,
+);

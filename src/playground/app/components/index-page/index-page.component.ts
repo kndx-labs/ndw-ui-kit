@@ -43,6 +43,7 @@ const COMPONENT_DESCRIPTIONS: Record<ComponentName, string> = {
   'ndwu-timing-button': 'Button with a delayed or timed action.',
   'ndwu-toggle': 'On/off switch control.',
   'ndwu-tooltip': 'Small hint shown on hover or focus.',
+  'ndwu-table': 'Data table with selection, sorting, and pagination.',
 };
 
 const INDEX_COMPONENTS: ComponentName[] = COMPONENTS_LIST

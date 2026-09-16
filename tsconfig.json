@@ -25,6 +25,9 @@
       ],
       "@ndw-ui-kit/core/form-field": [
         "src/lib/form-field/index.ts"
+      ],
+      "@ndw-ui-kit/core/table": [
+        "src/lib/table/index.ts"
       ]
     },
     "skipLibCheck": true,

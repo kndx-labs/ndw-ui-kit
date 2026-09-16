@@ -30,6 +30,7 @@ export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-pictogram',
   'ndwu-empty-state',
   'ndwu-scrollbar',
+  'ndwu-table',
 ];
 
 /** Tab ids per component; used to build routes and tab config. */
@@ -63,6 +64,7 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-pictogram': ['overview', 'sandbox'],
   'ndwu-empty-state': ['overview', 'sandbox'],
   'ndwu-scrollbar': ['overview'],
+  'ndwu-table': ['overview'],
 };
 
 export const READY_FOR_REVIEW_COMPONENTS: ComponentName[] = [
@@ -116,6 +118,7 @@ export const SHOWCASE_NAMES: Record<string, string> = {
   'ndwu-pictogram': 'Pictogram',
   'ndwu-empty-state': 'Empty State',
   'ndwu-scrollbar': 'Scrollbar',
+  'ndwu-table': 'Table',
 };
 
 export const EXAMPLES_LIST: ExampleName[] = ['user-profile-form'];
@@ -172,4 +175,5 @@ export const MENU_ITEMS: MenuItem[] = [
   {type: 'item', name: 'ndwu-pictogram'},
   {type: 'item', name: 'ndwu-empty-state'},
   {type: 'item', name: 'ndwu-scrollbar'},
+  {type: 'item', name: 'ndwu-table'},
 ];

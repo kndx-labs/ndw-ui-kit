@@ -1,0 +1,75 @@
+<section class="table-overview">
+  <h3>Basic table with selection and actions</h3>
+
+  <ndwu-table [dataSource]="dataSource()" [trackBy]="trackById">
+
+    <!-- Select column -->
+    <ng-container ndwuColumnDef="select">
+      <th ndwu-header-cell *ndwuHeaderCellDef class="select-cell">
+        <input
+          type="checkbox"
+          [checked]="isAllSelected()"
+          [indeterminate]="isIndeterminate()"
+          (change)="toggleAll()"
+        />
+      </th>
+      <td ndwu-cell *ndwuCellDef="let row" class="select-cell">
+        <input
+          type="checkbox"
+          [checked]="selection.isSelected(row)"
+          (change)="selection.toggle(row)"
+        />
+      </td>
+    </ng-container>
+
+    <!-- Name column -->
+    <ng-container ndwuColumnDef="name">
+      <th ndwu-header-cell *ndwuHeaderCellDef>Network SSID</th>
+      <td ndwu-cell *ndwuCellDef="let row">{{ row.name }}</td>
+    </ng-container>
+
+    <!-- Band column -->
+    <ng-container ndwuColumnDef="band">
+      <th ndwu-header-cell *ndwuHeaderCellDef>Band</th>
+      <td ndwu-cell *ndwuCellDef="let row">
+        <span class="badge">{{ row.band }}</span>
+      </td>
+    </ng-container>
+
+    <!-- IP column -->
+    <ng-container ndwuColumnDef="ip">
+      <th ndwu-header-cell *ndwuHeaderCellDef>IP Address</th>
+      <td ndwu-cell *ndwuCellDef="let row">{{ row.ip }}</td>
+    </ng-container>
+
+    <!-- Status column -->
+    <ng-container ndwuColumnDef="status">
+      <th ndwu-header-cell *ndwuHeaderCellDef>Status</th>
+      <td ndwu-cell *ndwuCellDef="let row">
+        <span class="status-dot" [class.online]="row.status === 'online'" [class.offline]="row.status === 'offline'"></span>
+        {{ row.status }}
+      </td>
+    </ng-container>
+
+    <!-- Actions column -->
+    <ng-container ndwuColumnDef="actions">
+      <th ndwu-header-cell *ndwuHeaderCellDef></th>
+      <td ndwu-cell *ndwuCellDef="let row" class="actions-cell">
+        <button class="action-btn" (click)="onEdit(row)" title="Edit">&#x270E;</button>
+        <button class="action-btn action-btn--danger" (click)="onDelete(row)" title="Delete">&#x2715;</button>
+      </td>
+    </ng-container>
+
+    <ndwu-header-row *ndwuHeaderRowDef="displayedColumns" />
+    <ndwu-row
+      *ndwuRowDef="let row; columns: displayedColumns"
+      [class.ndwu-row-selected]="selection.isSelected(row)"
+    />
+
+    <ng-template ndwuNoDataRow>
+      <td class="no-data-cell" [attr.colspan]="displayedColumns.length">
+        No networks found.
+      </td>
+    </ng-template>
+  </ndwu-table>
+</section>

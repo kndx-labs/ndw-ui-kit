@@ -1,0 +1,91 @@
+.table-overview {
+  padding: 24px;
+
+  h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ndwu-color-gray-80);
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  padding: 2px 8px;
+  border: 1px solid var(--ndwu-color-gray-20);
+  border-radius: 16px;
+  font-size: 11px;
+  line-height: 17px;
+  background-color: var(--ndwu-color-gray-0);
+  color: var(--ndwu-color-gray-80);
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+
+  &.online {
+    background-color: var(--ndwu-color-green-50);
+  }
+
+  &.offline {
+    background-color: var(--ndwu-color-gray-30);
+  }
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--ndwu-color-gray-50);
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--ndwu-color-gray-80);
+  }
+
+  &--danger:hover {
+    color: var(--ndwu-color-red-50);
+  }
+}
+
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+
+  .action-btn + .action-btn {
+    margin-left: 8px;
+  }
+}
+
+.select-cell {
+  width: 48px;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--ndwu-color-brand-50);
+  }
+}
+
+.no-data-cell {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--ndwu-color-gray-40);
+}

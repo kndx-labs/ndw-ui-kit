@@ -8,7 +8,14 @@
     "close-menu": "Menü schließen",
     "collapse-sidebar": "Seitenleiste einklappen",
     "expand-sidebar": "Seitenleiste ausklappen",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "groups": {
+      "Button": "Schaltfläche",
+      "Modal": "Modal",
+      "Dropdown": "Dropdown"
+    },
+    "ready": "Bereit",
+    "ready-for-review": "Bereit zur Überprüfung"
   },
   "common": {
     "label": "Bezeichnung",

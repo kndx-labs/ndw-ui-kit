@@ -8,7 +8,14 @@
     "close-menu": "Close menu",
     "collapse-sidebar": "Collapse sidebar",
     "expand-sidebar": "Expand sidebar",
-    "settings": "Settings"
+    "settings": "Settings",
+    "groups": {
+      "Button": "Button",
+      "Modal": "Modal",
+      "Dropdown": "Dropdown"
+    },
+    "ready": "ready",
+    "ready-for-review": "ready for review"
   },
   "common": {
     "label": "Label",

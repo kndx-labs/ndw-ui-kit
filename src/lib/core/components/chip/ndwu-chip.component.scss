@@ -1,0 +1,146 @@
+@use 'styles/mixins';
+@use 'styles/padding';
+@use 'styles/radius';
+@use 'styles/typography';
+@use 'styles/touch-target' as touch-target;
+
+$statuses: 'default', 'positive', 'negative';
+$icon-size: 20px;
+
+:host {
+  /* stylelint-disable order/order */
+  appearance: none;
+  display: inline-flex;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  border: 1px solid var(--ndwu-chip-border);
+  border-radius: radius.$radius-XXL;
+  background-color: var(--ndwu-chip-bg);
+  color: var(--ndwu-chip-fg);
+  font-weight: typography.$fontWeight-L;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color 0.2s ease-in-out,
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+
+  @include touch-target.touchable();
+
+  // ── Status modifiers — token names follow --ndwu-chip-{status}-{state}-{prop} ──
+  @each $status in $statuses {
+    &.ndwu-chip--status-#{$status} {
+      --ndwu-chip-bg: var(--ndwu-chip-#{$status}-bg);
+      --ndwu-chip-border: var(--ndwu-chip-#{$status}-border);
+      --ndwu-chip-accent: var(--ndwu-chip-#{$status}-accent);
+      --ndwu-chip-hover-bg: var(--ndwu-chip-#{$status}-hover-bg);
+      --ndwu-chip-hover-border: var(--ndwu-chip-#{$status}-hover-border);
+      --ndwu-chip-active-bg: var(--ndwu-chip-#{$status}-active-bg);
+      --ndwu-chip-active-border: var(--ndwu-chip-#{$status}-active-border);
+      --ndwu-chip-focus-bg: var(--ndwu-chip-#{$status}-focus-bg);
+      --ndwu-chip-focus-border: var(--ndwu-chip-#{$status}-focus-border);
+      --ndwu-chip-focus-ring: var(--ndwu-chip-#{$status}-focus-ring);
+    }
+  }
+
+  // ── Size modifiers ───────────────────────────────────────────────────────────
+  // Label-only paddings are symmetric; a leading icon pulls the start padding in.
+  &.ndwu-chip--size-L {
+    gap: padding.$padding-6;
+    height: 28px;
+    padding-inline: padding.$padding-12;
+    font-size: typography.$fontSize-xsmall;
+    line-height: 17px;
+
+    &.ndwu-chip--with-icon {
+      padding-left: 10px;
+    }
+
+    &.ndwu-chip--icon-only {
+      width: 28px;
+      padding-inline: 0;
+    }
+  }
+
+  &.ndwu-chip--size-XL {
+    gap: padding.$padding-8;
+    height: 32px;
+    padding-inline: padding.$padding-16;
+    font-size: typography.$fontSize-small;
+    line-height: 20px;
+
+    &.ndwu-chip--with-icon {
+      padding-left: padding.$padding-12;
+    }
+
+    &.ndwu-chip--icon-only {
+      width: 32px;
+      padding-inline: 0;
+    }
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--ndwu-chip-hover-border);
+    background-color: var(--ndwu-chip-hover-bg);
+  }
+
+  &:focus:not(:disabled) {
+    border-color: var(--ndwu-chip-focus-border);
+    background-color: var(--ndwu-chip-focus-bg);
+    outline: none;
+  }
+
+  &:focus-visible:not(:disabled) {
+    @include mixins.focus-ring(var(--ndwu-chip-focus-ring));
+  }
+
+  &:active:not(:disabled) {
+    border-color: var(--ndwu-chip-active-border);
+    background-color: var(--ndwu-chip-active-bg);
+  }
+
+  &:disabled {
+    border-color: var(--ndwu-chip-disabled-border);
+    background-color: var(--ndwu-chip-disabled-bg);
+    color: var(--ndwu-chip-disabled-fg);
+    cursor: not-allowed;
+
+    .ndwu-chip__icon {
+      color: var(--ndwu-chip-disabled-accent);
+    }
+
+    .ndwu-chip__loader {
+      --ndwu-spokes-loader-color: var(--ndwu-chip-disabled-accent);
+    }
+  }
+
+  &.ndwu-chip--loading {
+    pointer-events: none;
+  }
+  /* stylelint-enable order/order */
+}
+
+.ndwu-chip__icon,
+.ndwu-chip__loader {
+  flex-shrink: 0;
+  width: $icon-size;
+  height: $icon-size;
+  color: var(--ndwu-chip-accent);
+}
+
+.ndwu-chip__loader {
+  --ndwu-spokes-loader-color: var(--ndwu-chip-accent);
+}
+
+.ndwu-chip__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

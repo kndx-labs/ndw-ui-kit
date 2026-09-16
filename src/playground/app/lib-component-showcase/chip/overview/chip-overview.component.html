@@ -1,0 +1,141 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="section">
+      <h4>Statuses — icon + label</h4>
+      <div class="chip-row">
+        @for (status of statuses; track status) {
+          <button
+            ndwu-chip
+            [status]="status"
+            [icon]="statusIcon[status]"
+            [label]="status + ' chip'"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Statuses — label only</h4>
+      <div class="chip-row">
+        @for (status of statuses; track status) {
+          <button
+            ndwu-chip
+            [status]="status"
+            [label]="status + ' chip'"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Statuses — icon only</h4>
+      <div class="chip-row">
+        @for (status of statuses; track status) {
+          <button
+            ndwu-chip
+            [status]="status"
+            [icon]="statusIcon[status]"
+            [ariaLabel]="status + ' chip'"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Sizes</h4>
+      <div class="chip-row">
+        @for (size of sizes; track size) {
+          <button
+            ndwu-chip
+            [size]="size"
+            [icon]="ICON_NAME.DOWNLOAD_S"
+            [label]="'Size ' + size"
+          ></button>
+        }
+        @for (size of sizes; track size) {
+          <button
+            ndwu-chip
+            [size]="size"
+            [label]="'Size ' + size"
+          ></button>
+        }
+        @for (size of sizes; track size) {
+          <button
+            ndwu-chip
+            [size]="size"
+            [icon]="ICON_NAME.DOWNLOAD_S"
+            [ariaLabel]="'Size ' + size"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Loading</h4>
+      <div class="chip-row">
+        @for (size of sizes; track size) {
+          <button
+            ndwu-chip
+            loading
+            [size]="size"
+            label="Updating"
+          ></button>
+        }
+        @for (size of sizes; track size) {
+          <button
+            ndwu-chip
+            loading
+            [size]="size"
+            ariaLabel="Updating"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Disabled</h4>
+      <div class="chip-row">
+        @for (size of sizes; track size) {
+          <button
+            ndwu-chip
+            disabled
+            [size]="size"
+            [icon]="ICON_NAME.DOWNLOAD_S"
+            label="Unavailable"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Truncation — over 18 characters</h4>
+      <div class="chip-row">
+        <button
+          ndwu-chip
+          [icon]="ICON_NAME.DOWNLOAD_S"
+          label="Exactly 18 chars!!"
+        ></button>
+        <button
+          ndwu-chip
+          [icon]="ICON_NAME.DOWNLOAD_S"
+          label="Very long chip label that gets cut"
+        ></button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Extra clipping via maxWidth</h4>
+      <div class="chip-row">
+        <button
+          ndwu-chip
+          maxWidth="120px"
+          [icon]="ICON_NAME.DOWNLOAD_S"
+          label="Narrow container"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

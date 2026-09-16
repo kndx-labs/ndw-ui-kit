@@ -1,0 +1,11 @@
+{
+  "chip-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "colors": "Farben"
+    }
+  }
+}

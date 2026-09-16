@@ -27,6 +27,7 @@
 @use 'core/components/progress-bar/ndwu-progress-bar.tokens' as ndwu-progress-bar-tokens;
 @use 'core/components/file-upload/ndwu-file-upload.tokens' as ndwu-file-upload-tokens;
 @use 'core/components/card/ndwu-card.tokens' as ndwu-card-tokens;
+@use 'core/components/chip/ndwu-chip.tokens' as ndwu-chip-tokens;
 @use 'core/components/tabs/ndwu-tabs.tokens' as ndwu-tabs-tokens;
 @use 'core/components/empty-state/ndwu-empty-state.tokens' as ndwu-empty-state-tokens;
 @use 'core/components/password-strength-indicator/ndwu-password-strength-indicator.tokens' as ndwu-password-strength-indicator-tokens;
@@ -70,6 +71,7 @@ $component-tokens: (
   'ndwu-file-upload': ndwu-file-upload-tokens.$ndwu-file-upload-tokens,
   'ndwu-notification': ndwu-notification-tokens.$ndwu-notification-tokens,
   'ndwu-card': ndwu-card-tokens.$ndwu-card-tokens,
+  'ndwu-chip': ndwu-chip-tokens.$ndwu-chip-tokens,
   'ndwu-tabs': ndwu-tabs-tokens.$ndwu-tabs-tokens,
   'ndwu-empty-state': ndwu-empty-state-tokens.$ndwu-empty-state-tokens,
   'ndwu-password-strength-indicator': ndwu-password-strength-indicator-tokens.$ndwu-password-strength-indicator-tokens,

@@ -1,0 +1,19 @@
+@if (loading()) {
+  <ndwu-spokes-loader
+    class="ndwu-chip__loader"
+    [size]="loaderSize"
+  />
+} @else if (icon()) {
+  <ndwu-icon
+    class="ndwu-chip__icon"
+    name="{{ icon() }}"
+    aria-hidden="true"
+  />
+}
+
+@if (label()) {
+  <span
+    class="ndwu-chip__label"
+    [attr.title]="isLabelTruncated() ? localizedLabel() : null"
+  >{{ displayLabel() }}</span>
+}

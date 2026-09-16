@@ -1,0 +1,24 @@
+{
+  "notification-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "variant": "Variant",
+      "message": "Message",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "variants": "Variants",
+    "info": "Info notification",
+    "success": "Success notification",
+    "warning": "Warning notification",
+    "error": "Error notification",
+    "default-message": "This is a notification message",
+    "long-text": "Long text, short width",
+    "long-text-message": "This is a very long notification message that contains important information and should wrap to multiple lines when placed in a narrow container with a fixed width of 200 pixels. It demonstrates how the text wraps correctly within the component boundaries.",
+    "html-title": "HTML message",
+    "html-message": "This notification contains <b>bold text</b> and <em>inline HTML</em>."
+  }
+}

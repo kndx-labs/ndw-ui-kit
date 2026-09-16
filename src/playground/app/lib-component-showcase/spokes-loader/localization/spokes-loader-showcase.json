@@ -1,0 +1,20 @@
+{
+  "spokes-loader-showcase": {
+    "tabs": {
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "size": "Size (px)",
+      "spokes": "Spokes",
+      "duration": "Duration (ms)",
+      "spoke-width": "Spoke width",
+      "spoke-height": "Spoke height",
+      "spoke-height-placeholder": "Auto",
+      "spoke-offset": "Spoke offset",
+      "spoke-offset-placeholder": "Auto",
+      "autostart": "Autostart",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    }
+  }
+}

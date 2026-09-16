@@ -1,0 +1,32 @@
+{
+  "checkbox-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "common": {
+      "secondary-text": "Zusatztext"
+    },
+    "sandbox": {
+      "state-title": "Zustand",
+      "tokens": "Tokens",
+      "inherit": "Vererben"
+    },
+    "default": "Standard (Größe XL)",
+    "two-layer": "Zwei-Ebenen-Checkboxen",
+    "parent-task": "Übergeordnete Aufgabe",
+    "child-task-1": "Unteraufgabe 1",
+    "child-task-2": "Unteraufgabe 2",
+    "child-task-3": "Unteraufgabe 3",
+    "accept-terms": "Allgemeine Geschäftsbedingungen akzeptieren",
+    "small-checkbox": "Kleine Checkbox",
+    "extra-large-checkbox": "Extra große Checkbox",
+    "newsletter-subscription": "Newsletter-Abonnement",
+    "disabled-checkbox": "Deaktivierte Checkbox",
+    "disabled-checked-checkbox": "Deaktivierte ausgewählte Checkbox",
+    "terms-secondary": "Durch Ankreuzen dieses Feldes stimmen Sie unseren Nutzungsbedingungen zu",
+    "newsletter-secondary": "Erhalten Sie Updates und Sonderangebote",
+    "disabled-secondary": "Diese Checkbox ist deaktiviert",
+    "disabled-checked-secondary": "Diese Checkbox ist ausgewählt und deaktiviert"
+  }
+}

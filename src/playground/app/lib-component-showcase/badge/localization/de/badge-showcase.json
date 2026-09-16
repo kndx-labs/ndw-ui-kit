@@ -1,0 +1,11 @@
+{
+  "badge-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "colors": "Colors"
+    }
+  }
+}

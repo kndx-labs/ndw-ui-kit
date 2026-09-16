@@ -1,0 +1,95 @@
+{
+  "app": {
+    "title": "NDW UI Kit Demo",
+    "components": "Components",
+    "navigation": "Navigation",
+    "examples": "Examples",
+    "menu": "Menu",
+    "close-menu": "Close menu",
+    "collapse-sidebar": "Collapse sidebar",
+    "expand-sidebar": "Expand sidebar",
+    "settings": "Settings",
+    "groups": {
+      "Button": "Button",
+      "Modal": "Modal",
+      "Dropdown": "Dropdown"
+    },
+    "ready": "ready",
+    "ready-for-review": "ready for review"
+  },
+  "common": {
+    "label": "Label",
+    "additional-text": "Additional text",
+    "additional-information": "Additional information",
+    "enter-text": "Enter text",
+    "enter-email": "Enter email",
+    "enter-password": "Enter password",
+    "email": "Email",
+    "password": "Password",
+    "disabled": "Disabled",
+    "readonly": "Readonly",
+    "checked": "Checked",
+    "invalid": "Invalid",
+    "required": "Required",
+    "loading": "Loading",
+    "size": "Size",
+    "theme": "Theme",
+    "placeholder": "Placeholder",
+    "value": "Value",
+    "reset": "Reset",
+    "preview": "Preview",
+    "controls": "Controls",
+    "themes": {
+      "light": "Light Theme",
+      "dark": "Dark Theme"
+    },
+    "sizes": {
+      "s": "Size S",
+      "l": "Size L",
+      "xl": "Size XL",
+      "xxl": "Size XXL"
+    }
+  },
+  "file-upload": {
+    "dropzone": {
+      "title": "Upload file",
+      "hint": "Drag and drop a file here or",
+      "browse": "Browse file"
+    },
+    "status": {
+      "uploading": "Uploading...",
+      "success": "Uploaded",
+      "error": "Upload failed. Check your connection and try again.",
+      "warning": "Warning",
+      "canceled": "Canceled",
+      "queued": "Queued"
+    },
+    "validation": {
+      "tooLarge": "File exceeds size limit"
+    },
+    "header": {
+      "inProgress": "In progress",
+      "completed": "Done",
+      "failed": "Some items failed",
+      "subtitle": {
+        "completed": "{{completed}} of {{total}} files completed",
+        "canceled": "{{total}} files canceled",
+        "inProgress": "{{progress}}% uploaded"
+      },
+      "expand": "Expand upload list",
+      "collapse": "Collapse upload list",
+      "cancelAll": "Cancel all",
+      "retry": "Retry"
+    },
+    "actions": {
+      "remove": "Remove",
+      "cancel": "Cancel",
+      "retry": "Retry"
+    }
+  },
+  "error": {
+    "ascii-only": "Only numbers and characters from Latin alphabet are allowed",
+    "required": "This field is required",
+    "email": "Please enter a valid email address"
+  }
+}

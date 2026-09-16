@@ -1,0 +1,13 @@
+{
+  "tabs-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "overview": {
+      "variant-default": "Standard-Variante",
+      "variant-bordered": "Umrandete Variante",
+      "tabs-with-icons": "Tabs mit Symbolen"
+    }
+  }
+}

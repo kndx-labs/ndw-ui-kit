@@ -1,0 +1,41 @@
+{
+  "toggle-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "common": {
+      "color": "Farbe",
+      "color-brand": "Marke",
+      "color-green": "Grün",
+      "secondary-text": "Zusätzlicher Text"
+    },
+    "sandbox": {
+      "state-title": "Zustand",
+      "tokens": "Tokens",
+      "inherit": "Vererben"
+    },
+    "default": "Standard (Größe XL)",
+    "color-themes": "Farbthemen",
+    "without-label": "Ohne Bezeichnung",
+    "with-label-only": "Nur mit Bezeichnung",
+    "with-secondary-text": "Mit zusätzlichem Text",
+    "enable-notifications": "Benachrichtigungen aktivieren",
+    "small-toggle": "Kleiner Toggle",
+    "extra-large-toggle": "Extra großer Toggle",
+    "dark-mode-enabled": "Dunkelmodus aktiviert",
+    "brand-color-blue": "Markenfarbe (blau)",
+    "green-color": "Grüne Farbe",
+    "brand-color-checked": "Markenfarbe ausgewählt",
+    "green-color-checked": "Grüne Farbe ausgewählt",
+    "enable-feature": "Funktion aktivieren",
+    "auto-save": "Automatisches Speichern",
+    "disabled-toggle": "Deaktivierter Toggle",
+    "disabled-checked-toggle": "Deaktivierter ausgewählter Toggle",
+    "notifications-secondary": "Erhalten Sie Updates über Ihre Kontenaktivität",
+    "dark-mode-secondary": "Wechseln Sie zwischen hellen und dunklen Themes",
+    "auto-save-secondary": "Speichern Sie Ihre Arbeit automatisch alle 5 Minuten",
+    "disabled-secondary": "Dieser Toggle ist deaktiviert",
+    "disabled-checked-secondary": "Dieser Toggle ist ausgewählt und deaktiviert"
+  }
+}

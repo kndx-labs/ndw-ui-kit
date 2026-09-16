@@ -1,0 +1,32 @@
+{
+  "button-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "btn-type": "Button-Typ",
+      "icon": "Icon",
+      "icon-none": "Keins",
+      "tokens": "Tokens",
+      "tokens-for-type": "Tokens für Typ={{type}}",
+      "inherit": "Vererben"
+    },
+    "button-types": "Button-Typen",
+    "with-icon": "Mit Icon",
+    "sizes": "Größen",
+    "loading-state": "Ladezustand",
+    "disabled-state": "Deaktivierter Zustand",
+    "primary": "Primär",
+    "secondary": "Sekundär",
+    "tertiary": "Tertiär",
+    "ghost": "Geister",
+    "secondary-negative": "Sekundär Negativ",
+    "primary-loading": "Primär lädt",
+    "secondary-loading": "Sekundär lädt",
+    "tertiary-loading": "Tertiär lädt",
+    "primary-disabled": "Primär deaktiviert",
+    "secondary-disabled": "Sekundär deaktiviert",
+    "tertiary-disabled": "Tertiär deaktiviert"
+  }
+}

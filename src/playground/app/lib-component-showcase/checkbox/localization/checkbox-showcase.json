@@ -1,0 +1,32 @@
+{
+  "checkbox-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "common": {
+      "secondary-text": "Secondary text"
+    },
+    "sandbox": {
+      "state-title": "State",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "default": "Default (Size XL)",
+    "two-layer": "Two-layer checkboxes",
+    "parent-task": "Parent task",
+    "child-task-1": "Child task 1",
+    "child-task-2": "Child task 2",
+    "child-task-3": "Child task 3",
+    "accept-terms": "Accept terms and conditions",
+    "small-checkbox": "Small checkbox",
+    "extra-large-checkbox": "Extra large checkbox",
+    "newsletter-subscription": "Newsletter subscription",
+    "disabled-checkbox": "Disabled checkbox",
+    "disabled-checked-checkbox": "Disabled checked checkbox",
+    "terms-secondary": "By checking this box, you agree to our terms of service",
+    "newsletter-secondary": "Receive updates and special offers",
+    "disabled-secondary": "This checkbox is disabled",
+    "disabled-checked-secondary": "This checkbox is checked and disabled"
+  }
+}

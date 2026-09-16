@@ -9,9 +9,9 @@
               (click)="selectComponent(item.name)"
               type="button"
             >
-              <span class="nav-button__label">{{ SHOWCASE_NAMES[item.name] }}</span>
+              <span class="nav-button__label">{{ 'components.' + item.name + '.name' | localize }}</span>
               @if (isReadyForReview(item.name)) {
-                <sup class="nav-badge nav-badge--ready">ready for review</sup>
+                <sup class="nav-badge nav-badge--ready">{{ 'app.ready-for-review' | localize }}</sup>
               }
             </button>
           </li>
@@ -28,7 +28,7 @@
                 class="nav-group-header__chevron"
                 [class.nav-group-header__chevron--expanded]="isGroupExpanded(item.label)"
               />
-              <span class="nav-button__label">{{ item.label }}</span>
+              <span class="nav-button__label">{{ 'app.groups.' + item.label | localize }}</span>
             </button>
             @if (isGroupExpanded(item.label)) {
               <ul class="nav-group-children">
@@ -40,9 +40,9 @@
                       (click)="selectComponent(child)"
                       type="button"
                     >
-                      <span class="nav-button__label">{{ SHOWCASE_NAMES[child] }}</span>
+                      <span class="nav-button__label">{{ 'components.' + child + '.name' | localize }}</span>
                       @if (isReadyForReview(child)) {
-                        <sup class="nav-badge nav-badge--ready">ready for review</sup>
+                        <sup class="nav-badge nav-badge--ready">{{ 'app.ready-for-review' | localize }}</sup>
                       }
                     </button>
                   </li>

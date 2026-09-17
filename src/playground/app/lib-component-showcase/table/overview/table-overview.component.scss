@@ -151,3 +151,23 @@
 .detail-hidden {
   display: none;
 }
+
+.dark-example {
+  background-color: var(--ndwu-color-gray-100);
+  border-radius: 8px;
+  margin-top: 32px;
+
+  h3 {
+    color: var(--ndwu-color-gray-0);
+  }
+
+  .table-scroll-container {
+    border-color: var(--ndwu-color-gray-80);
+  }
+
+  .badge {
+    border-color: var(--ndwu-color-gray-70);
+    background-color: var(--ndwu-color-gray-90);
+    color: var(--ndwu-color-gray-20);
+  }
+}

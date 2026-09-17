@@ -137,3 +137,39 @@
     (page)="onPageChange($event)"
   />
 </section>
+
+<section class="table-overview dark-example ndwu-theme-dark">
+  <h3>Dark theme</h3>
+
+  <div class="table-scroll-container">
+    <ndwu-table [dataSource]="darkData" [trackBy]="trackById">
+      <ng-container ndwuColumnDef="name">
+        <th ndwu-header-cell *ndwuHeaderCellDef class="col-name">Network SSID</th>
+        <td ndwu-cell *ndwuCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+
+      <ng-container ndwuColumnDef="band">
+        <th ndwu-header-cell *ndwuHeaderCellDef class="col-band">Band</th>
+        <td ndwu-cell *ndwuCellDef="let row">
+          <span class="badge">{{ row.band }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container ndwuColumnDef="ip">
+        <th ndwu-header-cell *ndwuHeaderCellDef class="col-ip">IP Address</th>
+        <td ndwu-cell *ndwuCellDef="let row">{{ row.ip }}</td>
+      </ng-container>
+
+      <ng-container ndwuColumnDef="status">
+        <th ndwu-header-cell *ndwuHeaderCellDef class="col-status">Status</th>
+        <td ndwu-cell *ndwuCellDef="let row">
+          <span class="status-dot" [class.online]="row.status === 'online'" [class.offline]="row.status === 'offline'"></span>
+          {{ row.status }}
+        </td>
+      </ng-container>
+
+      <ndwu-header-row *ndwuHeaderRowDef="darkColumns" />
+      <ndwu-row *ndwuRowDef="let row; columns: darkColumns" />
+    </ndwu-table>
+  </div>
+</section>

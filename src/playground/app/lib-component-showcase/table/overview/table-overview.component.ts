@@ -72,6 +72,8 @@ const DEVICES: Device[] = [
 })
 export class TableOverviewComponent {
   protected readonly displayedColumns = ['select', 'name', 'band', 'ip', 'status', 'actions'];
+  protected readonly darkColumns = ['name', 'band', 'ip', 'status'];
+  protected readonly darkData = DEVICES.slice(0, 5);
   protected readonly allData = signal(DEVICES);
   protected readonly selection = new SelectionModel<Device>(true, []);
   protected readonly filterText = signal('');

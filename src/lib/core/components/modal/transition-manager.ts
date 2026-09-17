@@ -3,7 +3,12 @@ import {SwitchModalOpenStrategy} from './open-strategy';
 import {SwitchModalCloseStrategy} from './close-strategy';
 import type {NdwuModalRef} from './ndwu-modal-ref';
 
-export class SwitchAnimationManager {
+// On mobile screens we avoid stacking modals on top of each other.
+// Instead, we collapse the parent modal when a child modal is opened,
+// and restore it when the child modal is closed.
+//
+// This class manages that transition.
+export class TransitionManager {
   constructor(
     private readonly openModals: () => readonly NdwuModalRef[],
   ) {}

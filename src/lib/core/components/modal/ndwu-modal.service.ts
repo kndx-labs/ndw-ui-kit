@@ -34,7 +34,7 @@ import {
   NDWU_MODAL_HANDSET_OVERLAY_SIZE,
 } from './ndwu-modal.constants';
 import {NDWU_MODAL_SLOT_REGISTRY, NdwuModalSlotRegistry} from './ndwu-modal-slot-registry';
-import {SwitchAnimationManager} from './switch-animation-manager';
+import {TransitionManager} from './transition-manager';
 import {resolveOverlayThemeClass} from './overlay-theme';
 
 interface OverlayCreationParams {
@@ -61,7 +61,7 @@ export class NdwuModalService {
   private readonly openModals = signal<NdwuModalRef[]>([]);
   public readonly openModalCount = computed(() => this.openModals().length);
 
-  private readonly switchAnimationOrchestrator = new SwitchAnimationManager(this.openModals);
+  private readonly transitionManager = new TransitionManager(this.openModals);
 
   public open<D = unknown, R = unknown>(
     type: NdwuModalType,
@@ -224,7 +224,7 @@ export class NdwuModalService {
     this.registerModalEvents(overlayRef, modalRef, config);
     this.trackOpenModal(modalRef);
 
-    this.switchAnimationOrchestrator.onOpen(modalRef, overlayRef, isHandset);
+    this.transitionManager.onOpen(modalRef, overlayRef, isHandset);
 
     return modalRef;
   }

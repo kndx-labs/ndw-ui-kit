@@ -1,0 +1,34 @@
+@use 'styles/spacing' as spacing;
+
+[ndwu-sort-header] {
+  cursor: pointer;
+  user-select: none;
+}
+
+.ndwu-sort-header-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-4;
+}
+
+.ndwu-sort-header-indicator {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--ndwu-table-header-color);
+  opacity: 0.4;
+}
+
+.ndwu-sort-header-indicator.ndwu-sort-active {
+  opacity: 1;
+  color: var(--ndwu-table-cell-color);
+}
+
+.ndwu-sort-arrow {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 0.8;
+  letter-spacing: -2px;
+}

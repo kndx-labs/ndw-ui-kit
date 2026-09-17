@@ -17,6 +17,9 @@ import {
   NdwuSortState,
   NdwuPaginator,
   NdwuPageEvent,
+  NdwuTableToolbar,
+  NdwuColumnResize,
+  NdwuTableSkeleton,
 } from '@ndw-ui-kit/core/table';
 
 interface Device {
@@ -62,19 +65,36 @@ const DEVICES: Device[] = [
     NdwuSort,
     NdwuSortHeader,
     NdwuPaginator,
+    NdwuTableToolbar,
+    NdwuColumnResize,
+    NdwuTableSkeleton,
   ],
 })
 export class TableOverviewComponent {
   protected readonly displayedColumns = ['select', 'name', 'band', 'ip', 'status', 'actions'];
   protected readonly allData = signal(DEVICES);
   protected readonly selection = new SelectionModel<Device>(true, []);
+  protected readonly filterText = signal('');
+  protected readonly loading = signal(false);
+  protected readonly expandedRows = signal<Set<number>>(new Set());
 
   protected readonly sortState = signal<NdwuSortState>({active: '', direction: ''});
   protected readonly pageIndex = signal(0);
   protected readonly pageSize = signal(5);
 
+  protected readonly filteredData = computed(() => {
+    const text = this.filterText().toLowerCase();
+    const data = this.allData();
+    if (!text) return data;
+    return data.filter(d =>
+      d.name.toLowerCase().includes(text) ||
+      d.ip.includes(text) ||
+      d.band.toLowerCase().includes(text)
+    );
+  });
+
   protected readonly sortedData = computed(() => {
-    const data = [...this.allData()];
+    const data = [...this.filteredData()];
     const {active, direction} = this.sortState();
     if (!active || !direction) return data;
 
@@ -111,6 +131,11 @@ export class TableOverviewComponent {
     }
   }
 
+  protected onFilterChange(event: Event): void {
+    this.filterText.set((event.target as HTMLInputElement).value);
+    this.pageIndex.set(0);
+  }
+
   protected onSortChange(state: NdwuSortState): void {
     this.sortState.set(state);
     this.pageIndex.set(0);
@@ -119,6 +144,26 @@ export class TableOverviewComponent {
   protected onPageChange(event: NdwuPageEvent): void {
     this.pageIndex.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
+  }
+
+  protected toggleExpand(id: number): void {
+    const current = new Set(this.expandedRows());
+    if (current.has(id)) {
+      current.delete(id);
+    } else {
+      current.add(id);
+    }
+    this.expandedRows.set(current);
+  }
+
+  protected isExpanded(id: number): boolean {
+    return this.expandedRows().has(id);
+  }
+
+  protected isDetailRow = (_index: number, _row: Device): boolean => true;
+
+  protected toggleLoading(): void {
+    this.loading.update(v => !v);
   }
 
   protected onEdit(device: Device): void {

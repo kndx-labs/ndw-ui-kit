@@ -11,7 +11,6 @@ import {
   ViewEncapsulation,
   inject,
   OnInit,
-  OnDestroy,
 } from '@angular/core';
 
 export type NdwuSortDirection = 'asc' | 'desc' | '';
@@ -81,40 +80,7 @@ export class NdwuSort {
       </span>
     </div>
   `,
-  styles: `
-    [ndwu-sort-header] {
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .ndwu-sort-header-inner {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .ndwu-sort-header-indicator {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 10px;
-      line-height: 1;
-      color: var(--ndwu-table-header-color);
-      opacity: 0.4;
-    }
-
-    .ndwu-sort-header-indicator.ndwu-sort-active {
-      opacity: 1;
-      color: var(--ndwu-table-cell-color);
-    }
-
-    .ndwu-sort-arrow {
-      display: inline-flex;
-      flex-direction: column;
-      line-height: 0.8;
-      letter-spacing: -2px;
-    }
-  `,
+  styleUrl: './ndwu-sort.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -122,7 +88,7 @@ export class NdwuSort {
     '[attr.aria-sort]': 'ariaSort()',
   },
 })
-export class NdwuSortHeader implements OnInit, OnDestroy {
+export class NdwuSortHeader implements OnInit {
   private readonly _sort = inject(NdwuSort);
 
   @Input('ndwu-sort-header') id = '';
@@ -141,8 +107,6 @@ export class NdwuSortHeader implements OnInit, OnDestroy {
       throw new Error('ndwu-sort-header must have an id');
     }
   }
-
-  ngOnDestroy(): void {}
 
   _handleClick(): void {
     this._sort.sort(this.id);

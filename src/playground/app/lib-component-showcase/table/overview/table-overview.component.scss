@@ -96,3 +96,58 @@
   padding: 40px 16px;
   color: var(--ndwu-color-gray-40);
 }
+
+.toolbar-search {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--ndwu-color-gray-20);
+  border-radius: 4px;
+  background: var(--ndwu-color-gray-0);
+  color: var(--ndwu-color-gray-80);
+  font-size: 13px;
+  width: 220px;
+  box-sizing: border-box;
+  outline: none;
+
+  &:focus {
+    border-color: var(--ndwu-color-brand-50);
+  }
+}
+
+.toolbar-btn {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--ndwu-color-gray-20);
+  border-radius: 4px;
+  background: var(--ndwu-color-gray-0);
+  color: var(--ndwu-color-gray-60);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--ndwu-color-gray-5);
+  }
+}
+
+.table-scroll-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--ndwu-color-gray-20);
+  border-top: none;
+}
+
+.detail-cell {
+  padding: 12px 16px !important;
+  background-color: var(--ndwu-color-gray-5);
+}
+
+.detail-content {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--ndwu-color-gray-60);
+}
+
+.detail-hidden {
+  display: none;
+}

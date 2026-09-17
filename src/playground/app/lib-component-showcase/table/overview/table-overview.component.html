@@ -1,87 +1,136 @@
 <section class="table-overview">
-  <h3>Table with sorting and pagination</h3>
+  <h3>Table with all features</h3>
 
-  <ndwu-table
-    [dataSource]="dataSource()"
-    [trackBy]="trackById"
-    ndwuSort
-    [ndwuSortActive]="sortState().active"
-    [ndwuSortDirection]="sortState().direction"
-    (ndwuSortChange)="onSortChange($event)"
-  >
-
-    <!-- Select column -->
-    <ng-container ndwuColumnDef="select">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="select-cell col-select">
-        <input
-          type="checkbox"
-          [checked]="isAllSelected()"
-          [indeterminate]="isIndeterminate()"
-          (change)="toggleAll()"
-        />
-      </th>
-      <td ndwu-cell *ndwuCellDef="let row" class="select-cell">
-        <input
-          type="checkbox"
-          [checked]="selection.isSelected(row)"
-          (change)="selection.toggle(row)"
-        />
-      </td>
-    </ng-container>
-
-    <!-- Name column (sortable) -->
-    <ng-container ndwuColumnDef="name">
-      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="name" class="col-name">Network SSID</th>
-      <td ndwu-cell *ndwuCellDef="let row">{{ row.name }}</td>
-    </ng-container>
-
-    <!-- Band column (sortable) -->
-    <ng-container ndwuColumnDef="band">
-      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="band" class="col-band">Band</th>
-      <td ndwu-cell *ndwuCellDef="let row">
-        <span class="badge">{{ row.band }}</span>
-      </td>
-    </ng-container>
-
-    <!-- IP column -->
-    <ng-container ndwuColumnDef="ip">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="col-ip">IP Address</th>
-      <td ndwu-cell *ndwuCellDef="let row">{{ row.ip }}</td>
-    </ng-container>
-
-    <!-- Status column (sortable) -->
-    <ng-container ndwuColumnDef="status">
-      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="status" class="col-status">Status</th>
-      <td ndwu-cell *ndwuCellDef="let row">
-        <span class="status-dot" [class.online]="row.status === 'online'" [class.offline]="row.status === 'offline'"></span>
-        {{ row.status }}
-      </td>
-    </ng-container>
-
-    <!-- Actions column -->
-    <ng-container ndwuColumnDef="actions">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="col-actions"></th>
-      <td ndwu-cell *ndwuCellDef="let row" class="actions-cell">
-        <button class="action-btn" (click)="onEdit(row)" title="Edit">&#x270E;</button>
-        <button class="action-btn action-btn--danger" (click)="onDelete(row)" title="Delete">&#x2715;</button>
-      </td>
-    </ng-container>
-
-    <ndwu-header-row *ndwuHeaderRowDef="displayedColumns" />
-    <ndwu-row
-      *ndwuRowDef="let row; columns: displayedColumns"
-      [class.ndwu-row-selected]="selection.isSelected(row)"
+  <!-- 1. Toolbar -->
+  <ndwu-table-toolbar>
+    <input
+      ndwuTableToolbarStart
+      class="toolbar-search"
+      type="text"
+      placeholder="Filter networks..."
+      (input)="onFilterChange($event)"
     />
+    <button ndwuTableToolbarEnd class="toolbar-btn" (click)="toggleLoading()">
+      {{ loading() ? 'Stop loading' : 'Simulate loading' }}
+    </button>
+  </ndwu-table-toolbar>
 
-    <ng-template ndwuNoDataRow>
-      <td class="no-data-cell" [attr.colspan]="displayedColumns.length">
-        No networks found.
-      </td>
-    </ng-template>
-  </ndwu-table>
+  <!-- 5. Loading skeleton -->
+  @if (loading()) {
+    <ndwu-table-skeleton [rows]="pageSize()" [columns]="6" />
+  } @else {
+    <!-- Main table with 2. sticky header, 3. column resize, 4. row expansion -->
+    <div class="table-scroll-container">
+      <ndwu-table
+        [dataSource]="dataSource()"
+        [trackBy]="trackById"
+        [multiTemplateDataRows]="true"
+        ndwuSort
+        [ndwuSortActive]="sortState().active"
+        [ndwuSortDirection]="sortState().direction"
+        (ndwuSortChange)="onSortChange($event)"
+      >
+
+        <!-- Select column -->
+        <ng-container ndwuColumnDef="select">
+          <th ndwu-header-cell *ndwuHeaderCellDef class="select-cell col-select">
+            <input
+              type="checkbox"
+              [checked]="isAllSelected()"
+              [indeterminate]="isIndeterminate()"
+              (change)="toggleAll()"
+            />
+          </th>
+          <td ndwu-cell *ndwuCellDef="let row" class="select-cell">
+            <input
+              type="checkbox"
+              [checked]="selection.isSelected(row)"
+              (change)="selection.toggle(row)"
+            />
+          </td>
+        </ng-container>
+
+        <!-- Name column (sortable, resizable) -->
+        <ng-container ndwuColumnDef="name">
+          <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="name" ndwuColumnResize class="col-name">Network SSID</th>
+          <td ndwu-cell *ndwuCellDef="let row">
+            <span
+              class="ndwu-expand-icon"
+              [class.ndwu-expand-icon--expanded]="isExpanded(row.id)"
+              (click)="toggleExpand(row.id); $event.stopPropagation()"
+            >&#x25B6;</span>
+            {{ row.name }}
+          </td>
+        </ng-container>
+
+        <!-- Band column (sortable) -->
+        <ng-container ndwuColumnDef="band">
+          <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="band" class="col-band">Band</th>
+          <td ndwu-cell *ndwuCellDef="let row">
+            <span class="badge">{{ row.band }}</span>
+          </td>
+        </ng-container>
+
+        <!-- IP column -->
+        <ng-container ndwuColumnDef="ip">
+          <th ndwu-header-cell *ndwuHeaderCellDef class="col-ip">IP Address</th>
+          <td ndwu-cell *ndwuCellDef="let row">{{ row.ip }}</td>
+        </ng-container>
+
+        <!-- Status column (sortable) -->
+        <ng-container ndwuColumnDef="status">
+          <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="status" class="col-status">Status</th>
+          <td ndwu-cell *ndwuCellDef="let row">
+            <span class="status-dot" [class.online]="row.status === 'online'" [class.offline]="row.status === 'offline'"></span>
+            {{ row.status }}
+          </td>
+        </ng-container>
+
+        <!-- Actions column -->
+        <ng-container ndwuColumnDef="actions">
+          <th ndwu-header-cell *ndwuHeaderCellDef class="col-actions"></th>
+          <td ndwu-cell *ndwuCellDef="let row" class="actions-cell">
+            <button class="action-btn" (click)="onEdit(row)" title="Edit">&#x270E;</button>
+            <button class="action-btn action-btn--danger" (click)="onDelete(row)" title="Delete">&#x2715;</button>
+          </td>
+        </ng-container>
+
+        <!-- 4. Expandable detail column -->
+        <ng-container ndwuColumnDef="expandedDetail">
+          <td ndwu-cell *ndwuCellDef="let row" [attr.colspan]="displayedColumns.length" class="detail-cell">
+            <div class="detail-content">
+              <strong>{{ row.name }}</strong> — MAC: AA:BB:CC:{{ row.id.toString().padStart(2, '0') }}:DD:EE
+              · Signal: {{ row.status === 'online' ? '-' + (30 + row.id * 3) + ' dBm' : 'N/A' }}
+              · Last seen: {{ row.status === 'online' ? 'now' : '2h ago' }}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- 2. Sticky header -->
+        <ndwu-header-row *ndwuHeaderRowDef="displayedColumns; sticky: true" class="ndwu-header-row-sticky" />
+        <ndwu-row
+          *ndwuRowDef="let row; columns: displayedColumns"
+          [class.ndwu-row-selected]="selection.isSelected(row)"
+          class="ndwu-row-expandable"
+        />
+        <!-- Detail row (only for expanded items) -->
+        <ndwu-row
+          *ndwuRowDef="let row; columns: ['expandedDetail']; when: isDetailRow"
+          class="ndwu-detail-row"
+          [class.detail-hidden]="!isExpanded(row.id)"
+        />
+
+        <ng-template ndwuNoDataRow>
+          <td class="no-data-cell" [attr.colspan]="displayedColumns.length">
+            No networks found.
+          </td>
+        </ng-template>
+      </ndwu-table>
+    </div>
+  }
 
   <ndwu-paginator
-    [length]="allData().length"
+    [length]="filteredData().length"
     [pageSize]="pageSize()"
     [pageIndex]="pageIndex()"
     [pageSizeOptions]="[5, 10]"

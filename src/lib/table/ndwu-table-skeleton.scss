@@ -1,0 +1,69 @@
+@use 'styles/spacing' as spacing;
+
+.ndwu-table-skeleton {
+  display: block;
+}
+
+.ndwu-skeleton-table {
+  border: 1px solid var(--ndwu-table-border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ndwu-skeleton-header {
+  display: flex;
+  background-color: var(--ndwu-table-header-bg);
+  border-bottom: 1px solid var(--ndwu-table-border-color);
+}
+
+.ndwu-skeleton-header-cell {
+  flex: 1;
+  padding: spacing.$spacing-12;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.ndwu-skeleton-row {
+  display: flex;
+  border-bottom: 1px solid var(--ndwu-table-border-color);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.ndwu-skeleton-cell {
+  flex: 1;
+  padding: spacing.$spacing-12;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.ndwu-skeleton-bar {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--ndwu-table-border-color) 25%,
+    var(--ndwu-table-header-bg) 50%,
+    var(--ndwu-table-border-color) 75%
+  );
+  background-size: 200% 100%;
+  animation: ndwu-skeleton-shimmer 1.5s ease-in-out infinite;
+  width: 60%;
+
+  &--header {
+    height: 14px;
+    width: 50%;
+    opacity: 0.8;
+  }
+}
+
+@keyframes ndwu-skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

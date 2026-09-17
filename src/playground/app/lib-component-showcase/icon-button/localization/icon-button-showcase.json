@@ -1,0 +1,22 @@
+{
+  "icon-button-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "button-variant": {
+        "label": "Button type",
+        "option": {
+          "square": "Square",
+          "round": "Round",
+          "flat": "Flat"
+        }
+      },
+      "icon": "Icon",
+      "tokens": "Tokens",
+      "tokens-for-type": "Tokens for type={{type}}",
+      "inherit": "Inherit"
+    }
+  }
+}

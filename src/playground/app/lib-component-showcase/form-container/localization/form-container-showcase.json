@@ -1,0 +1,33 @@
+{
+  "form-container-showcase": {
+    "size-token-inheritance": "Size token inheritance",
+    "inheritance-description-prefix": "This showcase component provides",
+    "inheritance-description-value": "with",
+    "inheritance-description-suffix": ". The first form container does not set [size], so it inherits that parent size. The second container overrides the inherited context locally.",
+    "inherited-from-parent-token": "Inherited from parent token",
+    "container-inherits-from-showcase": "Container inherits SIZE.XXL from the showcase",
+    "also-inherited-from-parent-token": "Also inherited from parent token",
+    "still-resolves-to-parent-size": "Still resolves to SIZE.XXL",
+    "container-overrides-parent-to-l": "Container overrides parent to L",
+    "uses-local-form-container-size": "Uses the local form-container size",
+    "field-overrides-container-to-xl": "Field overrides container to XL",
+    "uses-nearest-field-level-size": "Uses the nearest field-level size",
+    "order-of-precedence-prefix": "Order of precedence: field",
+    "order-of-precedence-middle": "nearest",
+    "order-of-precedence-suffix": "parent",
+    "order-of-precedence-provider": "provider",
+    "with-disabled-children": "With Disabled Children",
+    "with-invalid-children": "With Invalid Children",
+    "remember-me": "Remember me",
+    "password-disabled": "Password (Disabled)",
+    "disabled-checkbox": "Disabled Checkbox",
+    "email-invalid": "Email (Invalid)",
+    "required-checkbox": "Required Checkbox",
+    "enter-email": "Enter email",
+    "enter-password": "Enter password",
+    "disabled-placeholder": "This is disabled",
+    "valid-email-placeholder": "Enter a valid email",
+    "invalid-email-format": "Invalid email format",
+    "field-required": "This field is required"
+  }
+}

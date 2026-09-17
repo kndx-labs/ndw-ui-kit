@@ -1,0 +1,120 @@
+{
+  "components": {
+    "ndwu-badge": {
+      "name": "Badge",
+      "description": "Small status indicator for labels, counts, or states."
+    },
+    "ndwu-button": {
+      "name": "Button",
+      "description": "Primary action control with variants and sizes."
+    },
+    "ndwu-card": {
+      "name": "Card",
+      "description": "Container for grouped content with a subtle border."
+    },
+    "ndwu-checkbox": {
+      "name": "Checkbox",
+      "description": "Binary choice input for forms and lists."
+    },
+    "ndwu-context-menu": {
+      "name": "Context Menu",
+      "description": "Menu opened by right-click or trigger button."
+    },
+    "ndwu-dialog": {
+      "name": "Dialog",
+      "description": "Modal window for alerts, confirmations, or tasks."
+    },
+    "ndwu-drawer": {
+      "name": "Drawer",
+      "description": "Side panel that slides in from the edge."
+    },
+    "ndwu-empty-state": {
+      "name": "Empty State",
+      "description": "Placeholder illustration for empty content areas."
+    },
+    "ndwu-file-upload": {
+      "name": "File Upload",
+      "description": "Control for selecting and uploading files."
+    },
+    "ndwu-form-container": {
+      "name": "Form Container",
+      "description": "Layout wrapper for form fields and validation."
+    },
+    "ndwu-icon": {
+      "name": "Icon",
+      "description": "Scalable SVG icon from the sprite set."
+    },
+    "ndwu-icon-button": {
+      "name": "Icon Button",
+      "description": "Button that displays an icon instead of text."
+    },
+    "ndwu-input": {
+      "name": "Input",
+      "description": "Single-line text input with validation support."
+    },
+    "ndwu-link": {
+      "name": "Link",
+      "description": "Text hyperlink with navigation styles."
+    },
+    "ndwu-multi-select-field": {
+      "name": "Multi Select Field",
+      "description": "Dropdown that allows multiple selections."
+    },
+    "ndwu-notification": {
+      "name": "Notification",
+      "description": "Toast or inline message for user feedback."
+    },
+    "ndwu-password-input-field": {
+      "name": "Password Input Field",
+      "description": "Masked input for secure password entry."
+    },
+    "ndwu-pictogram": {
+      "name": "Pictogram",
+      "description": "Large illustrative SVG graphic."
+    },
+    "ndwu-popover": {
+      "name": "Popover",
+      "description": "Floating content panel anchored to an element."
+    },
+    "ndwu-progress-bar": {
+      "name": "Progress Bar",
+      "description": "Visual indicator of completion percentage."
+    },
+    "ndwu-radio": {
+      "name": "Radio",
+      "description": "Single-choice selection from a group of options."
+    },
+    "ndwu-schedule-editor": {
+      "name": "Schedule Editor",
+      "description": "Control for defining recurring schedules."
+    },
+    "ndwu-scrollbar": {
+      "name": "Scrollbar",
+      "description": "Custom-styled scrollable container."
+    },
+    "ndwu-select-field": {
+      "name": "Select Field",
+      "description": "Dropdown for single-option selection."
+    },
+    "ndwu-spokes-loader": {
+      "name": "Spokes Loader",
+      "description": "Animated loading spinner."
+    },
+    "ndwu-tabs": {
+      "name": "Tabs",
+      "description": "Switchable content sections within a single panel."
+    },
+    "ndwu-timing-button": {
+      "name": "Timing Button",
+      "description": "Button with a delayed or timed action."
+    },
+    "ndwu-toggle": {
+      "name": "Toggle",
+      "description": "On/off switch control."
+    },
+    "ndwu-tooltip": {
+      "name": "Tooltip",
+      "description": "Small hint shown on hover or focus."
+    }
+  }
+}

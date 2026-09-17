@@ -1,0 +1,24 @@
+{
+  "notification-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "variant": "Variante",
+      "message": "Nachricht",
+      "tokens": "Tokens",
+      "inherit": "Vererben"
+    },
+    "variants": "Varianten",
+    "info": "Info-Benachrichtigung",
+    "success": "Erfolgsbenachrichtigung",
+    "warning": "Warnungsbenachrichtigung",
+    "error": "Fehlerbenachrichtigung",
+    "default-message": "Dies ist eine Benachrichtigungsnachricht",
+    "long-text": "Langer Text, kurze Breite",
+    "long-text-message": "Dies ist eine sehr lange Benachrichtigungsnachricht mit wichtigen Informationen, die in einem schmalen Container mit einer festen Breite von 200 Pixeln auf mehrere Zeilen umgebrochen werden sollte.",
+    "html-title": "HTML-Nachricht",
+    "html-message": "Diese Benachrichtigung enthält <strong>fetten Text</strong> und <em>Inline-HTML</em>."
+  }
+}

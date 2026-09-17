@@ -1,0 +1,23 @@
+{
+  "link-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "href": "Href",
+      "state": "State",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "states": "States",
+    "link-label": "https://example.com",
+    "text": "Text",
+    "state-default": "Default",
+    "state-hover": "Hover",
+    "state-pressed": "Pressed",
+    "state-focused": "Focused",
+    "state-visited": "Visited",
+    "state-disabled": "Disabled"
+  }
+}

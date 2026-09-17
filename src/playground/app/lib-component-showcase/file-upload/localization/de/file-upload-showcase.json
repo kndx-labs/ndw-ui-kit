@@ -1,0 +1,21 @@
+{
+  "file-upload-showcase": {
+    "tabs": {
+      "overview": "Übersicht"
+    },
+    "multiple": "Mehrere Dateien",
+    "multiple-description": "Standard-Mehrfach-Upload mit permanenter Dropzone. Kein [size] gesetzt: Die Komponente folgt ihrer eigenen Breite — unter 510px L, darüber XL.",
+    "single-xl": "Einzelne Datei",
+    "single-xl-description": "Die Dropzone wird ausgeblendet, wenn eine Datei ausgewählt ist.",
+    "mixed-states": "Gemischte Dateizustände",
+    "mixed-states-description": "Eine Upload-Liste mit allen Zuständen gleichzeitig: wird geladen, hochgeladen, Validierungsfehler, Serverfehler mit Wiederholung, Warnung, abgebrochen und in Warteschlange.",
+    "file-item-reference": "FileItem-Referenz (1:1)",
+    "file-item-reference-description": "Einzelne FileItem-Zustände als separate 400px-Karten gemäß Figma-Referenz.",
+    "file-item-bar-reference": "FileItemBar-Referenz (1:1)",
+    "file-item-bar-reference-description": "Einzelne FileItem-Zustände mit Fortschrittsbalken als separate 400px-Karten gemäß Figma-Referenz.",
+    "disabled": "Deaktivierter Zustand",
+    "cva-field": "Formularfeld (CVA)",
+    "cva-field-description": "Ersatz für eine Dateieingabe, die an ein reaktives Formularsteuerelement gebunden ist.",
+    "current-size": "Aktuelle Größe"
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "components": {
+    "ndwu-badge": {
+      "name": "Abzeichen",
+      "description": "Kleiner Statusindikator für Beschriftungen, Zähler oder Zustände."
+    },
+    "ndwu-button": {
+      "name": "Schaltfläche",
+      "description": "Primäres Steuerelement mit Varianten und Größen."
+    },
+    "ndwu-card": {
+      "name": "Karte",
+      "description": "Container für gruppierten Inhalt mit dezenter Umrandung."
+    },
+    "ndwu-checkbox": {
+      "name": "Kontrollkästchen",
+      "description": "Binäre Auswahl für Formulare und Listen."
+    },
+    "ndwu-context-menu": {
+      "name": "Kontextmenü",
+      "description": "Menü per Rechtsklick oder Auslöser-Schaltfläche."
+    },
+    "ndwu-dialog": {
+      "name": "Dialog",
+      "description": "Modales Fenster für Hinweise, Bestätigungen oder Aufgaben."
+    },
+    "ndwu-drawer": {
+      "name": "Seitenbereich",
+      "description": "Seitenpanel, das vom Rand hereingeschoben wird."
+    },
+    "ndwu-empty-state": {
+      "name": "Leerer Zustand",
+      "description": "Platzhalter-Illustration für leere Inhaltsbereiche."
+    },
+    "ndwu-file-upload": {
+      "name": "Datei-Upload",
+      "description": "Steuerelement zum Auswählen und Hochladen von Dateien."
+    },
+    "ndwu-form-container": {
+      "name": "Formular-Container",
+      "description": "Layout-Wrapper für Formularfelder und Validierung."
+    },
+    "ndwu-icon": {
+      "name": "Symbol",
+      "description": "Skalierbares SVG-Symbol aus dem Sprite-Set."
+    },
+    "ndwu-icon-button": {
+      "name": "Symbol-Schaltfläche",
+      "description": "Schaltfläche mit Symbol statt Text."
+    },
+    "ndwu-input": {
+      "name": "Eingabefeld",
+      "description": "Einzeiliges Texteingabefeld mit Validierung."
+    },
+    "ndwu-link": {
+      "name": "Link",
+      "description": "Text-Hyperlink mit Navigations-Stilen."
+    },
+    "ndwu-multi-select-field": {
+      "name": "Mehrfachauswahl",
+      "description": "Dropdown mit Mehrfachauswahl."
+    },
+    "ndwu-notification": {
+      "name": "Benachrichtigung",
+      "description": "Toast- oder Inline-Nachricht für Benutzer-Feedback."
+    },
+    "ndwu-password-input-field": {
+      "name": "Passwort-Eingabefeld",
+      "description": "Maskiertes Eingabefeld für sichere Passworteingabe."
+    },
+    "ndwu-pictogram": {
+      "name": "Piktogramm",
+      "description": "Große illustrative SVG-Grafik."
+    },
+    "ndwu-popover": {
+      "name": "Popover",
+      "description": "Schwebendes Inhaltspanel, verankert an einem Element."
+    },
+    "ndwu-progress-bar": {
+      "name": "Fortschrittsbalken",
+      "description": "Visuelle Anzeige des Fertigstellungsgrades."
+    },
+    "ndwu-radio": {
+      "name": "Optionsfeld",
+      "description": "Einzelauswahl aus einer Gruppe von Optionen."
+    },
+    "ndwu-schedule-editor": {
+      "name": "Zeitplan-Editor",
+      "description": "Steuerelement zum Definieren wiederkehrender Zeitpläne."
+    },
+    "ndwu-scrollbar": {
+      "name": "Scrollleiste",
+      "description": "Benutzerdefiniert gestalteter scrollbarer Container."
+    },
+    "ndwu-select-field": {
+      "name": "Auswahlfeld",
+      "description": "Dropdown für Einzelauswahl."
+    },
+    "ndwu-spokes-loader": {
+      "name": "Ladeanimation",
+      "description": "Animierter Lade-Spinner."
+    },
+    "ndwu-tabs": {
+      "name": "Tabs",
+      "description": "Umschaltbare Inhaltsbereiche innerhalb eines Panels."
+    },
+    "ndwu-timing-button": {
+      "name": "Zeitgesteuerte Schaltfläche",
+      "description": "Schaltfläche mit verzögerter oder zeitgesteuerter Aktion."
+    },
+    "ndwu-toggle": {
+      "name": "Umschalter",
+      "description": "Ein/Aus-Schalter."
+    },
+    "ndwu-tooltip": {
+      "name": "Tooltip",
+      "description": "Kleiner Hinweis bei Hover oder Fokus."
+    }
+  }
+}

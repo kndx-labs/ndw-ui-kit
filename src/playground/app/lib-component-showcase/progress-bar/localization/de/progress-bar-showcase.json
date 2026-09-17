@@ -1,0 +1,21 @@
+{
+  "progress-bar-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "value": "Wert",
+      "max": "Max",
+      "color": "Farbe",
+      "mode": "Modus",
+      "disabled": "Deaktiviert"
+    },
+    "sizes": "Größen",
+    "colors": "Farben",
+    "progress-states": "Fortschrittszustände",
+    "disabled-state": "Deaktivierter Zustand",
+    "indeterminate": "Unbestimmt",
+    "animated": "Animiert"
+  }
+}

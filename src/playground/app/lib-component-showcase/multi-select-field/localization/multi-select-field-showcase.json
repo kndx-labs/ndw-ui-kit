@@ -1,0 +1,15 @@
+{
+  "multi-select-field-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "options-textarea": "Options (one per line)",
+      "hint": "Hint",
+      "cancel-label": "Cancel label",
+      "confirm-label": "Confirm label",
+      "state-title": "State"
+    }
+  }
+}

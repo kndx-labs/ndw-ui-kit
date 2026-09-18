@@ -1,5 +1,4 @@
 @use 'styles/spacing' as spacing;
-@use 'styles/radius' as radius;
 @use './ndwu-table-vars' as vars;
 
 .ndwu-table-toolbar {
@@ -7,11 +6,9 @@
   align-items: center;
   justify-content: space-between;
   gap: spacing.$spacing-12;
-  padding: spacing.$spacing-12 spacing.$spacing-16;
-  background-color: var(--ndwu-table-cell-bg);
-  border: 1px solid var(--ndwu-table-border-color);
-  border-bottom: none;
-  border-radius: radius.$radius-S radius.$radius-S 0 0;
+  // Figma floats the toolbar controls above the table with no container chrome,
+  // so the table stays a single rounded surface.
+  padding: spacing.$spacing-12 0;
   min-height: vars.$row-height;
   box-sizing: border-box;
 }

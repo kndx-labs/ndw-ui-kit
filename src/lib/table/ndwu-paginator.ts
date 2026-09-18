@@ -19,6 +19,20 @@ export interface NdwuPageEvent {
   selector: 'ndwu-paginator',
   exportAs: 'ndwuPaginator',
   template: `
+    @if (pageSizeOptions.length > 1) {
+      <label class="ndwu-paginator-size">
+        <span class="ndwu-paginator-size-label">Items per page</span>
+        <select
+          class="ndwu-paginator-select"
+          [value]="_pageSize()"
+          (change)="onPageSizeChange($event)"
+        >
+          @for (size of pageSizeOptions; track size) {
+            <option [value]="size">{{ size }}</option>
+          }
+        </select>
+      </label>
+    }
     <div class="ndwu-paginator-range">
       {{ rangeLabel() }}
     </div>
@@ -26,37 +40,28 @@ export interface NdwuPageEvent {
       <button
         class="ndwu-paginator-btn"
         [disabled]="!hasPrevious()"
+        (click)="firstPage()"
+        aria-label="First page"
+      >&#x21E4;</button>
+      <button
+        class="ndwu-paginator-btn"
+        [disabled]="!hasPrevious()"
         (click)="previousPage()"
         aria-label="Previous page"
       >&#x2039;</button>
-      @for (page of visiblePages(); track page) {
-        <button
-          class="ndwu-paginator-btn ndwu-paginator-page"
-          [class.ndwu-paginator-active]="page === currentPage()"
-          [attr.aria-current]="page === currentPage() ? 'page' : null"
-          (click)="goToPage(page)"
-        >{{ page + 1 }}</button>
-      }
       <button
         class="ndwu-paginator-btn"
         [disabled]="!hasNext()"
         (click)="nextPage()"
         aria-label="Next page"
       >&#x203A;</button>
+      <button
+        class="ndwu-paginator-btn"
+        [disabled]="!hasNext()"
+        (click)="lastPage()"
+        aria-label="Last page"
+      >&#x21E5;</button>
     </div>
-    @if (pageSizeOptions.length > 1) {
-      <div class="ndwu-paginator-size">
-        <select
-          class="ndwu-paginator-select"
-          [value]="_pageSize()"
-          (change)="onPageSizeChange($event)"
-        >
-          @for (size of pageSizeOptions; track size) {
-            <option [value]="size">{{ size }} / page</option>
-          }
-        </select>
-      </div>
-    }
   `,
   styleUrl: './ndwu-paginator.scss',
   encapsulation: ViewEncapsulation.None,
@@ -101,18 +106,22 @@ export class NdwuPaginator {
     if (len === 0) return '0 of 0';
     const start = this.currentPage() * this._pageSize() + 1;
     const end = Math.min((this.currentPage() + 1) * this._pageSize(), len);
-    return `${start}–${end} of ${len}`;
+    return `${start}-${end} of ${len}`;
   });
 
-  readonly visiblePages = computed(() => {
-    const total = this.totalPages();
-    const current = this.currentPage();
-    if (total <= 5) {
-      return Array.from({length: total}, (_, i) => i);
+  firstPage(): void {
+    if (this.hasPrevious()) {
+      this._pageIndex.set(0);
+      this._emitPageEvent();
     }
-    const start = Math.max(0, Math.min(current - 2, total - 5));
-    return Array.from({length: 5}, (_, i) => start + i);
-  });
+  }
+
+  lastPage(): void {
+    if (this.hasNext()) {
+      this._pageIndex.set(this.totalPages() - 1);
+      this._emitPageEvent();
+    }
+  }
 
   previousPage(): void {
     if (this.hasPrevious()) {

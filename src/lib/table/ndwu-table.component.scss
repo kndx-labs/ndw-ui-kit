@@ -1,10 +1,14 @@
 @use 'styles/spacing' as spacing;
 @use 'styles/typography' as typography;
+@use 'styles/radius' as radius;
 @use './ndwu-table-vars' as vars;
 
 .ndwu-table {
   display: block;
   overflow-x: auto;
+  // Figma draws the table as a rounded surface with no outer stroke; the
+  // `overflow` above is what clips the header and last row to the corners.
+  border-radius: radius.$radius-L;
 
   table {
     width: 100%;
@@ -43,7 +47,10 @@
 .ndwu-header-cell {
   display: table-cell;
   height: vars.$row-height;
-  padding: spacing.$spacing-12;
+  // Vertical space comes from `height` + `vertical-align`, not padding: on a
+  // table cell `height` is only a minimum, so padding on top of a tall inline
+  // child (badge, icon button) would push the row past the 48px design grid.
+  padding: 0 spacing.$spacing-12;
   font-weight: 500;
   font-size: typography.$fontSize-small;
   line-height: 20px;
@@ -90,7 +97,8 @@
 .ndwu-cell {
   display: table-cell;
   height: vars.$row-height;
-  padding: spacing.$spacing-12;
+  // See `.ndwu-header-cell` — vertical padding would break the 48px row grid.
+  padding: 0 spacing.$spacing-12;
   font-size: typography.$fontSize-small;
   line-height: 20px;
   color: var(--ndwu-table-cell-color);

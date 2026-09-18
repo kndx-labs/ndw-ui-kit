@@ -47,10 +47,15 @@
   }
 }
 
-.ndwu-paginator-btn.ndwu-paginator-active {
-  background: var(--ndwu-table-row-selected-bg);
-  border-color: var(--ndwu-table-row-selected-bg);
-  font-weight: 500;
+.ndwu-paginator-size {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-8;
+}
+
+.ndwu-paginator-size-label {
+  color: var(--ndwu-table-header-color);
+  font-size: var(--ndwu-fontSize-xsmall);
 }
 
 .ndwu-paginator-select {

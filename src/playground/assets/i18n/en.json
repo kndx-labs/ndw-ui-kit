@@ -988,6 +988,47 @@
     }
   },
   "table-showcase": {
+    "overview": {
+      "title": "Table with all features",
+      "dark-title": "Dark theme",
+      "add": "Add network",
+      "loading-start": "Simulate loading",
+      "loading-stop": "Stop loading",
+      "delete-selected": "Delete selected",
+      "filter": "Filter networks",
+      "settings": "Column settings",
+      "selected-count": "Selected: {{selected}}/{{total}}",
+      "select-all": "Select all rows on this page",
+      "select-row": "Select {{name}}",
+      "expand": "Expand details for {{name}}",
+      "collapse": "Collapse details for {{name}}",
+      "row-menu": "More actions for {{name}}",
+      "delete-row": "Delete {{name}}",
+      "no-data": "No networks found.",
+      "columns": {
+        "enabled": "Enabled",
+        "name": "Network SSID",
+        "band": "Band",
+        "ip": "IP Address",
+        "status": "Status"
+      },
+      "status": {
+        "online": "online",
+        "offline": "offline"
+      },
+      "detail": "MAC: {{mac}} · Signal: {{signal}} · Last seen: {{seen}}",
+      "detail-signal": "-{{dbm}} dBm",
+      "detail-signal-na": "N/A",
+      "seen-now": "now",
+      "seen-ago": "2h ago",
+      "action": {
+        "added": "Added {{name}}",
+        "deleted": "Deleted {{name}}",
+        "deleted-many": "Deleted {{count}} network(s)",
+        "row-menu": "Row menu: {{name}}",
+        "settings": "Column settings"
+      }
+    },
     "tabs": {
       "overview": "Overview"
     }

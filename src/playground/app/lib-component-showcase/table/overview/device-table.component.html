@@ -6,7 +6,7 @@
     variant="primary"
     size="L"
     icon="add_S"
-    label="Add network"
+    [label]="'table-showcase.overview.add' | localize"
     (click)="onAdd()"
   ></button>
   <button
@@ -14,7 +14,7 @@
     ndwu-button
     variant="secondary"
     size="L"
-    [label]="loading() ? 'Stop loading' : 'Simulate loading'"
+    [label]="(loading() ? 'table-showcase.overview.loading-stop' : 'table-showcase.overview.loading-start') | localize"
     (click)="toggleLoading()"
   ></button>
   <!-- Spec: the text action only applies to the current selection. -->
@@ -23,7 +23,7 @@
     ndwu-button
     variant="ghost"
     size="L"
-    label="Delete selected"
+    [label]="'table-showcase.overview.delete-selected' | localize"
     [disabled]="selectedCount() === 0"
     (click)="onDeleteSelected()"
   ></button>
@@ -31,23 +31,25 @@
     ndwuTableToolbarStart
     class="toolbar-search"
     type="text"
-    aria-label="Filter networks"
-    placeholder="Filter networks..."
+    [attr.aria-label]="'table-showcase.overview.filter' | localize"
+    [attr.placeholder]="'table-showcase.overview.filter' | localize"
     (input)="onFilterChange($event)"
   />
 
-  @if (lastAction()) {
-    <span ndwuTableToolbarEnd class="toolbar-action" role="status">{{ lastAction() }}</span>
+  @if (lastAction(); as action) {
+    <span ndwuTableToolbarEnd class="toolbar-action" role="status">
+      {{ action.key | localize: action.params }}
+    </span>
   }
   <span ndwuTableToolbarEnd class="toolbar-count">
-    Selected: {{ selectedCount() }}/{{ rows().length }}
+    {{ 'table-showcase.overview.selected-count' | localize: {selected: selectedCount(), total: rows().length} }}
   </span>
   <button
     ndwuTableToolbarEnd
     ndwu-icon-button
     icon="settings_S"
     variant="flat"
-    aria-label="Column settings"
+    [attr.aria-label]="'table-showcase.overview.settings' | localize"
     (click)="onSettings()"
   ></button>
 </ndwu-table-toolbar>
@@ -78,7 +80,7 @@
       <th ndwu-header-cell *ndwuHeaderCellDef class="select-cell col-select">
         <input
           type="checkbox"
-          aria-label="Select all rows on this page"
+          [attr.aria-label]="'table-showcase.overview.select-all' | localize"
           [checked]="isAllSelected()"
           [indeterminate]="isIndeterminate()"
           (change)="toggleAll()"
@@ -87,7 +89,7 @@
       <td ndwu-cell *ndwuCellDef="let row" class="select-cell">
         <input
           type="checkbox"
-          [attr.aria-label]="'Select ' + row.name"
+          [attr.aria-label]="'table-showcase.overview.select-row' | localize: {name: row.name}"
           [checked]="isSelected(row)"
           (change)="toggleRow(row)"
         />
@@ -96,7 +98,9 @@
 
     <!-- Toggle column -->
     <ng-container ndwuColumnDef="enabled">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="col-enabled">Enabled</th>
+      <th ndwu-header-cell *ndwuHeaderCellDef class="col-enabled">
+        {{ 'table-showcase.overview.columns.enabled' | localize }}
+      </th>
       <td ndwu-cell *ndwuCellDef="let row">
         <!-- Name comes from the `scope="col"` header; the kit toggle has no
              hidden-label input. -->
@@ -109,13 +113,15 @@
 
     <!-- Name column (sortable, resizable) -->
     <ng-container ndwuColumnDef="name">
-      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="name" ndwuColumnResize class="col-name">Network SSID</th>
+      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="name" ndwuColumnResize class="col-name">
+        {{ 'table-showcase.overview.columns.name' | localize }}
+      </th>
       <td ndwu-cell *ndwuCellDef="let row">
         <button
           type="button"
           class="ndwu-expand-icon"
           [attr.aria-expanded]="isExpanded(row.id)"
-          [attr.aria-label]="(isExpanded(row.id) ? 'Collapse details for ' : 'Expand details for ') + row.name"
+          [attr.aria-label]="(isExpanded(row.id) ? 'table-showcase.overview.collapse' : 'table-showcase.overview.expand') | localize: {name: row.name}"
           (click)="toggleExpand(row.id)"
         >
           <ndwu-icon [name]="isExpanded(row.id) ? 'chevron_down_S' : 'chevron_right_S'" />
@@ -126,7 +132,9 @@
 
     <!-- Band column (sortable) -->
     <ng-container ndwuColumnDef="band">
-      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="band" class="col-band">Band</th>
+      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="band" class="col-band">
+        {{ 'table-showcase.overview.columns.band' | localize }}
+      </th>
       <td ndwu-cell *ndwuCellDef="let row">
         <ndwu-badge size="S" tone="gray">{{ row.band }}</ndwu-badge>
       </td>
@@ -134,16 +142,20 @@
 
     <!-- IP column -->
     <ng-container ndwuColumnDef="ip">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="col-ip">IP Address</th>
+      <th ndwu-header-cell *ndwuHeaderCellDef class="col-ip">
+        {{ 'table-showcase.overview.columns.ip' | localize }}
+      </th>
       <td ndwu-cell *ndwuCellDef="let row">{{ row.ip }}</td>
     </ng-container>
 
     <!-- Status column (sortable) -->
     <ng-container ndwuColumnDef="status">
-      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="status" class="col-status">Status</th>
+      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="status" class="col-status">
+        {{ 'table-showcase.overview.columns.status' | localize }}
+      </th>
       <td ndwu-cell *ndwuCellDef="let row">
         <span class="status-dot" [class.online]="row.status === 'online'" [class.offline]="row.status === 'offline'"></span>
-        {{ row.status }}
+        {{ 'table-showcase.overview.status.' + row.status | localize }}
       </td>
     </ng-container>
 
@@ -155,14 +167,14 @@
           ndwu-icon-button
           icon="menu_kebab_S"
           variant="flat"
-          [attr.aria-label]="'More actions for ' + row.name"
+          [attr.aria-label]="'table-showcase.overview.row-menu' | localize: {name: row.name}"
           (click)="onRowMenu(row)"
         ></button>
         <button
           ndwu-icon-button
           icon="trash_S"
           variant="flat"
-          [attr.aria-label]="'Delete ' + row.name"
+          [attr.aria-label]="'table-showcase.overview.delete-row' | localize: {name: row.name}"
           (click)="onDelete(row)"
         ></button>
       </td>
@@ -172,9 +184,16 @@
     <ng-container ndwuColumnDef="expandedDetail">
       <td ndwu-cell *ndwuCellDef="let row" [attr.colspan]="displayedColumns.length" class="detail-cell">
         <div class="detail-content">
-          <strong>{{ row.name }}</strong> — MAC: AA:BB:CC:{{ row.id.toString().padStart(2, '0') }}:DD:EE
-          · Signal: {{ row.status === 'online' ? '-' + (30 + row.id * 3) + ' dBm' : 'N/A' }}
-          · Last seen: {{ row.status === 'online' ? 'now' : '2h ago' }}
+          <strong>{{ row.name }}</strong> —
+          {{
+            'table-showcase.overview.detail' | localize: {
+              mac: macFor(row),
+              signal: row.status === 'online'
+                ? ('table-showcase.overview.detail-signal' | localize: {dbm: dbmFor(row)})
+                : ('table-showcase.overview.detail-signal-na' | localize),
+              seen: (row.status === 'online' ? 'table-showcase.overview.seen-now' : 'table-showcase.overview.seen-ago') | localize
+            }
+          }}
         </div>
       </td>
     </ng-container>
@@ -194,7 +213,7 @@
 
     <ng-template ndwuNoDataRow>
       <td class="no-data-cell" [attr.colspan]="displayedColumns.length">
-        No networks found.
+        {{ 'table-showcase.overview.no-data' | localize }}
       </td>
     </ng-template>
   </ndwu-table>

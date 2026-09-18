@@ -21,6 +21,7 @@ import {
   NdwuTableSkeleton,
   TranslationTexts,
 } from '@ndw-ui-kit/core/table';
+import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   NdwuBadgeComponent,
   NdwuButtonComponent,
@@ -35,6 +36,11 @@ export interface Device {
   band: string;
   ip: string;
   status: 'online' | 'offline';
+}
+
+interface ActionMessage {
+  key: string;
+  params?: Record<string, string | number>;
 }
 
 const NAME_PREFIXES = ['Keenetic', 'Guest', 'Lab', 'Office', 'Mesh', 'Repeater'] as const;
@@ -69,6 +75,7 @@ const STATUSES = ['online', 'offline'] as const satisfies readonly Device['statu
     NdwuIconButtonComponent,
     NdwuIconComponent,
     NdwuToggleComponent,
+    LocalizePipe,
   ],
 })
 export class DeviceTableComponent {
@@ -114,8 +121,11 @@ export class DeviceTableComponent {
   protected readonly expandedRows = signal<Set<number>>(new Set());
   /** Only rows the user flipped; every other row follows the device's own status. */
   private readonly toggledRows = signal<ReadonlySet<number>>(new Set());
-  /** Echoes the last toolbar/row action, so the stubs are visible in the demo. */
-  protected readonly lastAction = signal('');
+  /**
+   * Echoes the last toolbar/row action, so the stubs are visible in the demo.
+   * Stored as key plus params, so it re-renders in the new language on switch.
+   */
+  protected readonly lastAction = signal<ActionMessage | null>(null);
 
   protected readonly sortState = signal<NdwuSortState>({active: '', direction: ''});
   protected readonly pageIndex = signal(0);
@@ -238,18 +248,18 @@ export class DeviceTableComponent {
   }
 
   protected onRowMenu(device: Device): void {
-    this.lastAction.set(`Row menu: ${device.name}`);
+    this.lastAction.set({key: 'table-showcase.overview.action.row-menu', params: {name: device.name}});
   }
 
   protected onDelete(device: Device): void {
     this.removeRows([device]);
-    this.lastAction.set(`Deleted ${device.name}`);
+    this.lastAction.set({key: 'table-showcase.overview.action.deleted', params: {name: device.name}});
   }
 
   protected onAdd(): void {
     const device = this.randomDevice();
     this.rows.update(rows => [...rows, device]);
-    this.lastAction.set(`Added ${device.name}`);
+    this.lastAction.set({key: 'table-showcase.overview.action.added', params: {name: device.name}});
   }
 
   protected onDeleteSelected(): void {
@@ -258,7 +268,10 @@ export class DeviceTableComponent {
     if (doomed.length === 0) return;
 
     this.removeRows(doomed);
-    this.lastAction.set(`Deleted ${doomed.length} network(s)`);
+    this.lastAction.set({
+      key: 'table-showcase.overview.action.deleted-many',
+      params: {count: doomed.length},
+    });
   }
 
   private randomDevice(): Device {
@@ -296,7 +309,16 @@ export class DeviceTableComponent {
   }
 
   protected onSettings(): void {
-    this.lastAction.set('Column settings');
+    this.lastAction.set({key: 'table-showcase.overview.action.settings'});
+  }
+
+  /** Demo-only derived detail values; the dictionary supplies the wording around them. */
+  protected macFor(device: Device): string {
+    return `AA:BB:CC:${device.id.toString().padStart(2, '0')}:DD:EE`;
+  }
+
+  protected dbmFor(device: Device): number {
+    return 30 + device.id * 3;
   }
 
   protected trackById(_index: number, device: Device): number {

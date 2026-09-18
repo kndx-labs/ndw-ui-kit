@@ -1,0 +1,19 @@
+{
+  "icon-showcase": {
+    "light-theme": "Icon Showcase - Hell Theme",
+    "dark-theme": "Icon Showcase - Dunkel Theme",
+    "some-examples": "Einige Beispiele",
+    "icons-with-css-color": "Icons mit CSS-Farbe",
+    "configurable-example": "Konfigurierbares Beispiel",
+    "icon-name": "Icon Name:",
+    "color": "Farbe:",
+    "color-default": "Standard (Größe XL)",
+    "color-primary": "Primär",
+    "color-success": "Erfolg",
+    "color-error": "Fehler",
+    "adaptive-icon": "Adaptives Icon",
+    "adaptive-default": "Ohne Bindung (kein Bibliotheks-Breakpoint)",
+    "adaptive-size-flags": "adaptiveSize Zuordnung",
+    "adaptive-toggle": "Umschalten"
+  }
+}

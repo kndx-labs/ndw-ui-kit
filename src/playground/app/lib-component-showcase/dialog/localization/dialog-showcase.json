@@ -1,0 +1,203 @@
+{
+  "dialog-showcase": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "overview": {
+      "common": {
+        "button-close": "Close",
+        "button-ok": "Ok",
+        "button-cancel": "Cancel",
+        "button-save": "Save"
+      },
+      "sections": {
+        "alert-confirm": "Alert / Confirm dialog",
+        "custom-form": "Custom dialog with a form",
+        "return-result": "Returning result from a dialog",
+        "scrollable": "Scrollable content",
+        "size-control": "Size control",
+        "focus-management": "Focus management",
+        "loading-state": "Loading state",
+        "async-title-description": "Async title and description",
+        "custom-confirmation": "Custom confirmation examples (onCloseHandler$)",
+        "nested-modal": "Nested modal dialogs",
+        "nested-modal-stack": "Nested dialogs kept stacked ('stack')",
+        "nested-modal-none": "Nested dialogs without stacking ('none')",
+        "drawer-dialog-stacking": "Drawer + nested dialog"
+      },
+      "alert": {
+        "button-show": "Show Alert",
+        "status-open": "Alert is opened",
+        "status-closed": "Alert is closed",
+        "dialog": {
+          "title": "Operation Successful",
+          "description": "Your changes have been saved successfully.",
+          "button-got-it": "Got it"
+        }
+      },
+      "confirm": {
+        "button-open": "Delete Item (confirm)",
+        "result-prefix": "Result:",
+        "result": {
+          "confirmed": "Confirmed",
+          "cancelled": "Cancelled"
+        },
+        "dialog": {
+          "title": "Delete Item",
+          "description": "Are you sure you want to delete this item? This action cannot be undone.",
+          "button-confirm": "Delete",
+          "button-cancel": "Cancel"
+        }
+      },
+      "form-dialog": {
+        "button-open": "Open Form Dialog",
+        "submitted": "Submitted: {{name}} - {{email}}",
+        "dialog": {
+          "title": "Contact Form",
+          "description": "Enter your contact information below."
+        },
+        "fields": {
+          "name": {
+            "label": "Name"
+          },
+          "email": {
+            "label": "E-mail"
+          }
+        }
+      },
+      "result-dialog": {
+        "button-open": "Select a User",
+        "selected": "Selected: {{name}}",
+        "dialog": {
+          "title": "Select a User",
+          "description": "Click on a user to select them."
+        }
+      },
+      "scrollable-dialog": {
+        "button-open": "View Terms",
+        "dialog": {
+          "title": "Some long text"
+        }
+      },
+      "size": {
+        "button-small": "Small",
+        "button-narrow": "Narrow",
+        "button-wide": "Wide",
+        "small-dialog": {
+          "title": "Small Dialog",
+          "description": "This is a compact dialog: {{width}}×{{height}}"
+        },
+        "narrow-dialog": {
+          "title": "Narrow Dialog",
+          "description": "Width constrained between 300px and 400px."
+        },
+        "wide-dialog": {
+          "title": "Wide Dialog",
+          "html-heading": "This dialog takes up {{width}} of the viewport width, capped at {{maxWidth}} maximum."
+        }
+      },
+      "focus": {
+        "button-auto-focus-header": "Auto focus on header (default)",
+        "button-no-focus-trap": "No focus trap",
+        "button-auto-focus-first-tabbable": "Auto focus on first tabbable",
+        "button-custom-focus": "Custom focus",
+        "auto-focus-dialog": {
+          "title": "Auto Focus",
+          "description": "The dialog header received focus automatically when this dialog opened."
+        },
+        "no-focus-trap-dialog": {
+          "title": "No Focus Trap",
+          "description": "Focus is not trapped. You can Tab outside this dialog."
+        },
+        "auto-focus-first-tabbable-dialog": {
+          "title": "Auto Focus First Tabbable",
+          "description": "Focus trap is active. The first tabbable element gets focus."
+        },
+        "custom-focus-dialog": {
+          "title": "Custom Focus",
+          "description": "Focus trap is active. The \"Close\" button gets focus."
+        }
+      },
+      "loading": {
+        "button-open": "Simulate async",
+        "dialog": {
+          "title": "Loading State",
+          "description": "Click \"Reload\" to simulate an async operation with loading state.",
+          "button-reload": "Reload"
+        }
+      },
+      "async-title-description": {
+        "button-open": "Open async title/description dialog",
+        "dialog": {
+          "initial-title": "Loading dialog content",
+          "initial-description": "Title and description will update in 2 seconds.",
+          "loaded-title": "Content loaded",
+          "loaded-description": "This title and description were set asynchronously after opening."
+        }
+      },
+      "on-close-handler": {
+        "button-delayed-close": "Delayed close",
+        "button-confirm-to-close": "Confirm to close",
+        "delayed-close-dialog": {
+          "title": "onCloseHandler$ Demo",
+          "description": "Toggle the close delay to see how setCloseHandler() intercepts close events."
+        },
+        "confirm-to-close-dialog": {
+          "title": "Custom confirmation demo #2"
+        }
+      },
+      "custom-dialogs": {
+        "confirm-close": {
+          "message": "Closing this dialog will require confirmation",
+          "confirm-dialog": {
+            "title": "Are you sure?"
+          }
+        },
+        "custom-focus": {},
+        "delayed-close": {
+          "message": "Close delay is active. Clicking \"Close\" will start a 2-second countdown before the dialog closes.",
+          "button-remove-delay": "Remove close delay",
+          "button-add-delay": "Delay close by 2 s"
+        }
+      },
+      "nested-modal": {
+        "description": "Demonstrates opening a dialog from within another dialog. On mobile, the first dialog fades out while the second fades in.",
+        "button-open": "Open nested modal",
+        "parent-dialog": {
+          "title": "Parent Dialog",
+          "description": "This is the parent dialog. Open a nested dialog from here.",
+          "extra-1": "Extra content paragraph one. This makes parent dialog taller and visually distinct from nested dialog.",
+          "extra-2": "Extra content paragraph two. You should see this text slide up when the parent opens on mobile.",
+          "extra-3": "Extra content paragraph three. More text means more height difference between parent and nested dialog.",
+          "extra-4": "Extra content paragraph four. The nested dialog only has one line of description text.",
+          "button-open-nested": "Open Nested Dialog"
+        },
+        "nested-dialog": {
+          "title": "Nested Dialog",
+          "description": "This is a nested dialog opened from the parent."
+        }
+      },
+      "nested-modal-stack": {
+        "description": "The same nested dialog demo, but opened with stackingOnMobile: 'stack'. The nested dialog still fades in, but the first one is left expanded underneath instead of collapsing — so nothing animates out while you go deeper.",
+        "button-open": "Open nested modal with stacking"
+      },
+      "nested-modal-none": {
+        "description": "The same nested dialog demo, but opened with stackingOnMobile: 'none'. On mobile both dialogs open and close instantly, and the first one stays in place instead of fading out — compare it with the section above.",
+        "button-open": "Open nested modal without stacking"
+      },
+      "drawer-dialog-stacking": {
+        "description": "Opening a dialog on top of an already-open drawer on mobile. Only dialogs take part in the switch animation, so the drawer stays put instead of being faded out.",
+        "button-open": "Open Drawer",
+        "drawer": {
+          "title": "Drawer",
+          "description": "Tap the button below to open a dialog on top of this drawer. On mobile, the drawer should stay in place behind it.",
+          "button-open-dialog": "Open Dialog on Top"
+        },
+        "dialog": {
+          "title": "Dialog opened over a drawer",
+          "description": "The drawer beneath is left untouched — it is not treated as a crossfade parent."
+        }
+      }
+    }
+  }
+}

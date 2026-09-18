@@ -1,0 +1,25 @@
+{
+  "card-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "overview": {
+      "default": "Default",
+      "with-title": "With title",
+      "content": "Card content goes here.",
+      "card-title": "Card title",
+      "card-description": "Card description text goes here."
+    },
+    "sandbox": {
+      "content": "Card content goes here.",
+      "tokens": "Tokens",
+      "inherit": "Inherit",
+      "state": "State",
+      "state-default": "Default",
+      "state-hover": "Hover",
+      "state-focused": "Focused",
+      "state-disabled": "Disabled"
+    }
+  }
+}

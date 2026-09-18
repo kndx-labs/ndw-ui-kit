@@ -1,0 +1,20 @@
+{
+  "tooltip-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "text": "Text",
+      "max-width": "Max Width",
+      "position": "Position",
+      "align": "Align",
+      "show-delay": "Show Delay (ms)",
+      "hide-delay": "Hide Delay (ms)",
+      "show-on-tap": "Show on Tap",
+      "tokens": "Tokens",
+      "inherit": "Inherit",
+      "preview-text": "Hover over me"
+    }
+  }
+}

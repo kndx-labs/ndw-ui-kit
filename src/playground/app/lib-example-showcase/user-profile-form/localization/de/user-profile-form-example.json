@@ -1,0 +1,55 @@
+{
+  "user-profile-form-example": {
+    "tabs": {
+      "overview": "Übersicht"
+    },
+    "success": "Profil erfolgreich gespeichert!",
+    "sections": {
+      "personal": "Persönliche Informationen",
+      "account": "Kontoeinstellungen",
+      "role": "Rolle",
+      "preferences": "Einstellungen",
+      "notifications": "Benachrichtigungen",
+      "schedule": "Zeitplan"
+    },
+    "fields": {
+      "first-name": "Vorname",
+      "last-name": "Nachname",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefonnummer",
+      "city": "Stadt",
+      "country": "Land",
+      "role": "Rolle",
+      "skills": "Kenntnisse",
+      "language": "Sprache der Benutzeroberfläche",
+      "timezone": "Zeitzone",
+      "dark-mode": "Dark Mode",
+      "dark-mode-hint": "Zum dunklen Farbschema wechseln",
+      "compact-layout": "Kompaktes Layout",
+      "compact-layout-hint": "Weniger Abstände für dichtere Inhalte",
+      "email-notifications": "E-Mail-Benachrichtigungen",
+      "email-notifications-hint": "Updates und Hinweise per E-Mail erhalten",
+      "push-notifications": "Push-Benachrichtigungen",
+      "push-notifications-hint": "Browser-Push-Benachrichtigungen für Echtzeit-Benachrichtigungen",
+      "weekly-digest": "Wöchentliche Zusammenfassung",
+      "weekly-digest-hint": "Aktivitätszusammenfassung wird jeden Montag gesendet",
+      "marketing-emails": "Marketing-E-Mails",
+      "marketing-emails-hint": "Produktupdates, Tipps und Sonderangebote",
+      "terms": "Ich stimme den Nutzungsbedingungen zu",
+      "terms-hint": "Mit dem Absenden akzeptieren Sie unsere Datenschutzrichtlinie und Nutzungsbedingungen"
+    },
+    "placeholders": {
+      "first-name": "Vorname eingeben",
+      "last-name": "Nachname eingeben",
+      "email": "name@beispiel.com",
+      "phone": "+49 000 000 0000",
+      "city": "Stadt suchen",
+      "country": "Land auswählen",
+      "skills": "Kenntnisse auswählen"
+    },
+    "actions": {
+      "save": "Änderungen speichern",
+      "reset": "Zurücksetzen"
+    }
+  }
+}

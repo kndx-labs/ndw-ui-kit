@@ -1,0 +1,36 @@
+{
+  "drawer-showcase": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "overview": {
+      "common": {
+        "button-ok": "Ok",
+        "button-cancel": "Cancel",
+        "button-save": "Save"
+      },
+      "sections": {
+        "basic": "Size variants",
+        "content": "Content"
+      },
+      "button-default": "Open Drawer (L)",
+      "button-xl": "Open Drawer (XL)",
+      "button-form": "Open Drawer with Form",
+      "button-scrollable": "Open Drawer with Scrollable Content",
+      "default": {
+        "title": "Drawer (L - 700px)",
+        "description": "This is a standard L-size drawer. It slides in from the right."
+      },
+      "xl": {
+        "title": "Drawer (XL - 1200px)",
+        "description": "This is an XL-size drawer with extra width for complex content."
+      },
+      "form": {
+        "title": "Drawer with Form"
+      },
+      "scrollable": {
+        "title": "Scrollable Content"
+      }
+    }
+  }
+}

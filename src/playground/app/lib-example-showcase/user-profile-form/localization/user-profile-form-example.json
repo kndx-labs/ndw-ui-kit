@@ -1,0 +1,53 @@
+{
+  "user-profile-form-example": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "success": "Profile saved successfully!",
+    "sections": {
+      "personal": "Personal Information",
+      "account": "Account Settings",
+      "role": "Role",
+      "preferences": "Preferences",
+      "notifications": "Notifications",
+      "schedule": "Schedule"
+    },
+    "fields": {
+      "first-name": "First Name",
+      "last-name": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "city": "City",
+      "country": "Country",
+      "role": "Role",
+      "skills": "Skills",
+      "language": "Language",
+      "time-zone": "Time Zone",
+      "dark-mode": "Dark Mode",
+      "dark-mode-hint": "Enable dark theme",
+      "compact-layout": "Compact Layout",
+      "compact-layout-hint": "Use compact form layout",
+      "email-notifications": "Email Notifications",
+      "email-notifications-hint": "Receive notifications via email",
+      "push-notifications": "Push Notifications",
+      "push-notifications-hint": "Receive push notifications",
+      "weekly-digest": "Weekly Digest",
+      "weekly-digest-hint": "Receive weekly summary",
+      "marketing-emails": "Marketing Emails",
+      "marketing-emails-hint": "Receive marketing communications"
+    },
+    "placeholders": {
+      "first-name": "John",
+      "last-name": "Doe",
+      "email": "john.doe@example.com",
+      "phone": "+1 (555) 123-4567",
+      "city": "New York",
+      "country": "United States",
+      "skills": "JavaScript, Angular, TypeScript"
+    },
+    "actions": {
+      "save": "Save",
+      "reset": "Reset"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "card-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "overview": {
+      "default": "Standard",
+      "with-title": "Mit Titel",
+      "content": "Karteninhalt kommt hierhin.",
+      "card-title": "Kartentitel",
+      "card-description": "Kartenbeschreibungstext kommt hierhin."
+    },
+    "sandbox": {
+      "content": "Karteninhalt kommt hierhin.",
+      "tokens": "Tokens",
+      "inherit": "Vererben",
+      "state": "Zustand",
+      "state-default": "Standard",
+      "state-hover": "Hover",
+      "state-focused": "Fokus",
+      "state-disabled": "Deaktiviert"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "empty-state-showcase": {
+    "light-theme": "Empty State Showcase - Hell Theme",
+    "dark-theme": "Empty State Showcase - Dunkel Theme",
+    "overview": {
+      "xl-error-with-actions": "XL - Fehler mit Aktionen",
+      "xl-success-with-single-action": "XL - Erfolg mit einzelner Aktion",
+      "xl-no-data-title-only": "XL - Keine Daten (nur Titel)",
+      "l-no-connection-description-only": "L - Keine Verbindung (nur Beschreibung)",
+      "l-uploading": "L - Upload läuft",
+      "l-info-with-html": "L - Info mit HTML",
+      "failed-to-upload-the-file": "Datei-Upload fehlgeschlagen",
+      "please-try-again-later": "Bitte versuchen Sie es später erneut",
+      "upload-complete": "Upload abgeschlossen",
+      "your-file-has-been-successfully-uploaded": "Ihre Datei wurde erfolgreich hochgeladen",
+      "the-list-is-empty": "Die Liste ist leer",
+      "no-internet-connection": "Keine Internetverbindung",
+      "uploading-your-file": "Datei wird hochgeladen",
+      "this-may-take-a-few-seconds": "Dies kann einige Sekunden dauern",
+      "system-automatically-updates": "Das System aktualisiert sich automatisch im Rolling-Verfahren",
+      "cancel": "Abbruch",
+      "retry": "Wiederholen",
+      "accept": "Akzeptieren"
+    }
+  }
+}

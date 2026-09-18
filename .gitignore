@@ -6,6 +6,7 @@
 /src/lib/assets/ndw-ui-kit.sprite.svg
 /src/lib/assets/ndw-ui-kit.extra.sprite.svg
 /src/lib/assets/ndw-ui-kit.pictogram.sprite.svg
+/src/playground/assets/i18n/*.json
 
 /out-tsc
 /bazel-out
@@ -32,7 +33,6 @@ temp
 
 .cursorrules
 .cursor
-
 
 .claude
 CLAUDE.MD

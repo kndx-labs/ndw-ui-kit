@@ -1,0 +1,20 @@
+{
+  "schedule-editor-showcase": {
+    "tabs": {
+      "overview": "Übersicht"
+    },
+    "full-mode-desktop-sunday-first": "Vollmodus (Desktop, Woche beginnt am Sonntag)",
+    "full-mode-desktop": "Vollmodus (Desktop)",
+    "thumbnail-mode-desktop": "Miniaturmodus (Desktop)",
+    "full-mode-mobile": "Vollmodus (Mobil)",
+    "weekdays": {
+      "sun": "So",
+      "mon": "Mo",
+      "tue": "Di",
+      "wed": "Mi",
+      "thu": "Do",
+      "fri": "Fr",
+      "sat": "Sa"
+    }
+  }
+}

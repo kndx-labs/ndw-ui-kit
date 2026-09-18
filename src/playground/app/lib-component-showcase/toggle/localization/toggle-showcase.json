@@ -1,0 +1,41 @@
+{
+  "toggle-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "common": {
+      "color": "Color",
+      "color-brand": "Brand",
+      "color-green": "Green",
+      "secondary-text": "Secondary text"
+    },
+    "sandbox": {
+      "state-title": "State",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "default": "Default (Size XL)",
+    "color-themes": "Color Themes",
+    "without-label": "Without Label",
+    "with-label-only": "With Label Only",
+    "with-secondary-text": "With Secondary Text",
+    "enable-notifications": "Enable notifications",
+    "small-toggle": "Small toggle",
+    "extra-large-toggle": "Extra large toggle",
+    "dark-mode-enabled": "Dark mode enabled",
+    "brand-color-blue": "Brand color (blue)",
+    "green-color": "Green color",
+    "brand-color-checked": "Brand color checked",
+    "green-color-checked": "Green color checked",
+    "enable-feature": "Enable feature",
+    "auto-save": "Auto-save",
+    "disabled-toggle": "Disabled toggle",
+    "disabled-checked-toggle": "Disabled checked toggle",
+    "notifications-secondary": "Receive updates about your account activity",
+    "dark-mode-secondary": "Switch between light and dark themes",
+    "auto-save-secondary": "Automatically save your work every 5 minutes",
+    "disabled-secondary": "This toggle is disabled",
+    "disabled-checked-secondary": "This toggle is checked and disabled"
+  }
+}

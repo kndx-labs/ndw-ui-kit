@@ -1,0 +1,25 @@
+{
+  "radio-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "state-title": "State",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "default": "Default (Size XL)",
+    "option-1": "Option 1",
+    "option-2": "Option 2",
+    "option-3": "Option 3",
+    "small-option-1": "Small option 1",
+    "small-option-2": "Small option 2",
+    "extra-large-option-1": "Extra large option 1",
+    "extra-large-option-2": "Extra large option 2",
+    "option-2-selected": "Option 2 (Selected)",
+    "disabled-option-1": "Disabled option 1",
+    "disabled-option-2": "Disabled option 2",
+    "disabled-checked-option-2": "Disabled checked option 2"
+  }
+}

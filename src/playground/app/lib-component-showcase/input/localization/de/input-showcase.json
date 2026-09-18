@@ -1,0 +1,67 @@
+{
+  "input-showcase": {
+    "default": "Standard (Größe XL)",
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "common": {
+      "type": "Typ",
+      "type-text": "Text",
+      "type-password": "Passwort",
+      "right-icon": "Rechtes Icon",
+      "right-icon-none": "Keins",
+      "right-icon-search": "Suche",
+      "right-icon-close": "Löschen/Schließen",
+      "hint": "Hinweis",
+      "width": "Breite",
+      "width-stretch": "An Container anpassen",
+      "width-fixed": "Fest (px)",
+      "width-px": "Breite (px)",
+      "validator": "Validator",
+      "validator-none": "Keine",
+      "validator-required": "Erforderlich",
+      "validator-email": "E-Mail",
+      "validator-minlength": "Mindestlänge (3)",
+      "validator-pattern": "Muster (beginnt mit Großbuchstabe)"
+    },
+    "validation": {
+      "required": "Dieses Feld ist erforderlich",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "minlength": "Mindestlänge beträgt {{requiredLength}} Zeichen (aktuell: {{actualLength}})",
+      "pattern": "Wert muss mit einem Großbuchstaben beginnen"
+    },
+    "sandbox": {
+      "state-title": "Zustand",
+      "tokens": "Tokens",
+      "inherit": "Übernehmen"
+    },
+    "with-value": "Mit Wert",
+    "required-invalid": "Erforderlich ungültig",
+    "email-address": "E-Mail-Adresse",
+    "small-input": "Kleine Eingabe",
+    "extra-large-input": "Extra große Eingabe",
+    "disabled-input": "Deaktivierte Eingabe",
+    "invalid-input": "Ungültige Eingabe",
+    "required-field": "Pflichtfeld",
+    "enter-email-placeholder": "Geben Sie Ihre E-Mail ein",
+    "enter-text-placeholder": "Text eingeben",
+    "disabled-placeholder": "Dies ist deaktiviert",
+    "valid-email-placeholder": "Geben Sie eine gültige E-Mail ein",
+    "email-hint": "Wir werden Ihre E-Mail niemals mit anderen teilen",
+    "validation-error-hint": "Dieses Feld hat Validierungsfehler",
+    "password": "Passwort",
+    "password-label": "Passwort",
+    "password-required": "Passwort erforderlich",
+    "enter-password-placeholder": "Geben Sie Ihr Passwort ein",
+    "with-search-icon": "Mit Suchsymbol",
+    "with-clear-icon": "Mit Löschsymbol",
+    "search-label": "Suche",
+    "search-placeholder": "Suchen...",
+    "clear-label": "Löschbares Eingabefeld",
+    "readonly": "Schreibgeschützt",
+    "readonly-with-icon": "Schreibgeschützt mit Icon",
+    "readonly-label": "Schreibgeschütztes Feld",
+    "readonly-hint": "Dieses Feld ist schreibgeschützt"
+  }
+}

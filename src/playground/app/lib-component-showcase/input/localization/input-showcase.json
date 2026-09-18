@@ -1,0 +1,67 @@
+{
+  "input-showcase": {
+    "default": "Default (Size XL)",
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "common": {
+      "type": "Type",
+      "type-text": "Text",
+      "type-password": "Password",
+      "right-icon": "Right icon",
+      "right-icon-none": "None",
+      "right-icon-search": "Search",
+      "right-icon-close": "Clear/Close",
+      "hint": "Hint",
+      "width": "Width",
+      "width-stretch": "Stretch to container",
+      "width-fixed": "Fixed (px)",
+      "width-px": "Width (px)",
+      "validator": "Validator",
+      "validator-none": "None",
+      "validator-required": "Required",
+      "validator-email": "Email",
+      "validator-minlength": "Min Length (3)",
+      "validator-pattern": "Pattern (starts with uppercase)"
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address",
+      "minlength": "Minimum length is {{requiredLength}} characters (current: {{actualLength}})",
+      "pattern": "Value must start with an uppercase letter"
+    },
+    "sandbox": {
+      "state-title": "State",
+      "tokens": "Tokens",
+      "inherit": "Inherit"
+    },
+    "with-value": "With Value",
+    "required-invalid": "Required Invalid",
+    "email-address": "Email Address",
+    "small-input": "Small Input",
+    "extra-large-input": "Extra Large Input",
+    "disabled-input": "Disabled Input",
+    "invalid-input": "Invalid Input",
+    "required-field": "Required Field",
+    "enter-email-placeholder": "Enter your email",
+    "enter-text-placeholder": "Enter text",
+    "disabled-placeholder": "This is disabled",
+    "valid-email-placeholder": "Enter a valid email",
+    "email-hint": "We'll never share your email with anyone else",
+    "validation-error-hint": "This field has validation errors",
+    "password": "Password",
+    "password-label": "Password",
+    "password-required": "Password Required",
+    "enter-password-placeholder": "Enter your password",
+    "with-search-icon": "With Search Icon",
+    "with-clear-icon": "With Clear Icon",
+    "search-label": "Search",
+    "search-placeholder": "Search...",
+    "clear-label": "Clearable Input",
+    "readonly": "Readonly",
+    "readonly-with-icon": "Readonly with Icon",
+    "readonly-label": "Readonly Field",
+    "readonly-hint": "This field is read-only"
+  }
+}

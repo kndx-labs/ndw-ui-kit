@@ -1,0 +1,36 @@
+{
+  "drawer-showcase": {
+    "tabs": {
+      "overview": "Übersicht"
+    },
+    "overview": {
+      "common": {
+        "button-ok": "Ok",
+        "button-cancel": "Abbrechen",
+        "button-save": "Speichern"
+      },
+      "sections": {
+        "basic": "Größenvarianten",
+        "content": "Inhalt"
+      },
+      "button-default": "Drawer öffnen (L)",
+      "button-xl": "Drawer öffnen (XL)",
+      "button-form": "Drawer mit Formular",
+      "button-scrollable": "Drawer mit scrollbarem Inhalt",
+      "default": {
+        "title": "Drawer (L - 700px)",
+        "description": "Dies ist ein standard L-Drawer. Er gleitet von rechts herein."
+      },
+      "xl": {
+        "title": "Drawer (XL - 1200px)",
+        "description": "Dies ist ein XL-Drawer mit extra Breite für komplexe Inhalte."
+      },
+      "form": {
+        "title": "Drawer mit Formular"
+      },
+      "scrollable": {
+        "title": "Scrollbarer Inhalt"
+      }
+    }
+  }
+}

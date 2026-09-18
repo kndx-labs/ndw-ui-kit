@@ -1,0 +1,65 @@
+{
+  "table": {
+    "paginator": {
+      "itemsPerPage": "Einträge pro Seite",
+      "range": "{{start}}-{{end}} von {{length}}",
+      "rangeEmpty": "0 von 0",
+      "firstPage": "Erste Seite",
+      "previousPage": "Vorherige Seite",
+      "nextPage": "Nächste Seite",
+      "lastPage": "Letzte Seite"
+    },
+    "skeleton": {
+      "loading": "Tabellendaten werden geladen"
+    }
+  },
+  "table-showcase": {
+    "overview": {
+      "title": "Tabelle mit allen Funktionen",
+      "dark-title": "Dunkles Theme",
+      "add": "Netzwerk hinzufügen",
+      "loading-start": "Laden simulieren",
+      "loading-stop": "Laden stoppen",
+      "delete-selected": "Auswahl löschen",
+      "filter": "Netzwerke filtern",
+      "settings": "Spalteneinstellungen",
+      "selected-count": "Ausgewählt: {{selected}}/{{total}}",
+      "select-all": "Alle Zeilen dieser Seite auswählen",
+      "select-row": "{{name}} auswählen",
+      "expand": "Details für {{name}} einblenden",
+      "collapse": "Details für {{name}} ausblenden",
+      "row-menu": "Weitere Aktionen für {{name}}",
+      "delete-row": "{{name}} löschen",
+      "no-data": "Keine Netzwerke gefunden.",
+      "reorder-row": "{{name}} verschieben",
+      "pin-column": "Spalte anheften",
+      "columns": {
+        "enabled": "Aktiviert",
+        "name": "Netzwerk-SSID",
+        "band": "Band",
+        "ip": "IP-Adresse",
+        "status": "Status"
+      },
+      "status": {
+        "online": "online",
+        "offline": "offline"
+      },
+      "detail": "MAC: {{mac}} · Signal: {{signal}} · Zuletzt gesehen: {{seen}}",
+      "detail-signal": "-{{dbm}} dBm",
+      "detail-signal-na": "N/V",
+      "seen-now": "jetzt",
+      "seen-ago": "vor 2 Std.",
+      "action": {
+        "added": "{{name}} hinzugefügt",
+        "deleted": "{{name}} gelöscht",
+        "deleted-many": "{{count}} Netzwerk(e) gelöscht",
+        "row-menu": "Zeilenmenü: {{name}}",
+        "settings": "Spalteneinstellungen",
+        "moved": "{{name}} verschoben"
+      }
+    },
+    "tabs": {
+      "overview": "Übersicht"
+    }
+  }
+}

@@ -69,11 +69,26 @@
     [dataSource]="dataSource()"
     [trackBy]="trackById"
     [multiTemplateDataRows]="true"
+    ndwuRowDrag
+    [ndwuRowDragDisabled]="isSorted()"
+    (ndwuRowDrop)="onRowDrop($event)"
     ndwuSort
     [ndwuSortActive]="sortState().active"
     [ndwuSortDirection]="sortState().direction"
     (ndwuSortChange)="onSortChange($event)"
   >
+
+    <!-- Row drag handle column -->
+    <ng-container ndwuColumnDef="drag">
+      <th ndwu-header-cell *ndwuHeaderCellDef class="drag-cell col-drag"></th>
+      <td ndwu-cell *ndwuCellDef="let row" class="drag-cell">
+        <button
+          ndwu-row-drag-handle
+          [disabled]="isSorted()"
+          [attr.aria-label]="'table-showcase.overview.reorder-row' | localize: {name: row.name}"
+        ></button>
+      </td>
+    </ng-container>
 
     <!-- Select column -->
     <ng-container ndwuColumnDef="select">
@@ -111,10 +126,16 @@
       </td>
     </ng-container>
 
-    <!-- Name column (sortable, resizable) -->
-    <ng-container ndwuColumnDef="name">
+    <!-- Name column (sortable, resizable, pinnable) -->
+    <ng-container ndwuColumnDef="name" [sticky]="namePinned()">
       <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="name" ndwuColumnResize class="col-name">
         {{ 'table-showcase.overview.columns.name' | localize }}
+        <button
+          ndwu-column-pin
+          [pinned]="namePinned()"
+          (pinnedChange)="namePinned.set($event)"
+          [attr.aria-label]="'table-showcase.overview.pin-column' | localize"
+        ></button>
       </th>
       <td ndwu-cell *ndwuCellDef="let row">
         <button
@@ -202,6 +223,7 @@
     <ndwu-header-row *ndwuHeaderRowDef="displayedColumns" class="ndwu-header-row-sticky" />
     <ndwu-row
       *ndwuRowDef="let row; columns: displayedColumns"
+      [ndwuRowDraggable]="row"
       [class.ndwu-row-selected]="isSelected(row)"
     />
     <!-- Detail row, always rendered and revealed by class (the CDK pattern) -->

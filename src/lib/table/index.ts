@@ -24,4 +24,6 @@ export type {NdwuPageEvent} from './ndwu-paginator';
 export {NdwuTableToolbar} from './ndwu-table-toolbar';
 export {NdwuColumnResize} from './ndwu-column-resize';
 export {NdwuTableSkeleton} from './ndwu-table-skeleton';
+export {NdwuRowDrag, NdwuRowDraggable, NdwuRowDragHandle} from './ndwu-row-drag';
+export {NdwuColumnPin} from './ndwu-column-pin';
 export type {TranslationTexts} from './ndwu-table.types';

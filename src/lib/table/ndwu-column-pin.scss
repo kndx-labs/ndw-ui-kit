@@ -1,0 +1,39 @@
+@use 'styles/radius' as radius;
+
+.ndwu-column-pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--ndwu-table-header-color);
+  opacity: 0.4;
+  vertical-align: middle;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--ndwu-fx-focused-default);
+    border-radius: radius.$radius-S;
+  }
+}
+
+.ndwu-column-pin.ndwu-column-pin-active {
+  opacity: 1;
+  color: var(--ndwu-color-brand-50);
+}
+
+// A pinned column scrolls over its neighbours, so it needs its own opaque
+// ground and an edge to separate it from what passes underneath. The row owns
+// the colour — including hover and selected — hence `inherit` over a token.
+.ndwu-cell.ndwu-table-sticky,
+.ndwu-header-cell.ndwu-table-sticky {
+  z-index: 2;
+  background-color: inherit;
+  border-right: 1px solid var(--ndwu-table-border-color);
+}

@@ -958,6 +958,8 @@
       "row-menu": "Weitere Aktionen für {{name}}",
       "delete-row": "{{name}} löschen",
       "no-data": "Keine Netzwerke gefunden.",
+      "reorder-row": "{{name}} verschieben",
+      "pin-column": "Spalte anheften",
       "columns": {
         "enabled": "Aktiviert",
         "name": "Netzwerk-SSID",
@@ -979,7 +981,8 @@
         "deleted": "{{name}} gelöscht",
         "deleted-many": "{{count}} Netzwerk(e) gelöscht",
         "row-menu": "Zeilenmenü: {{name}}",
-        "settings": "Spalteneinstellungen"
+        "settings": "Spalteneinstellungen",
+        "moved": "{{name}} verschoben"
       }
     },
     "tabs": {

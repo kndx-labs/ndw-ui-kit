@@ -19,8 +19,13 @@ import {
   NdwuTableToolbar,
   NdwuColumnResize,
   NdwuTableSkeleton,
+  NdwuRowDrag,
+  NdwuRowDraggable,
+  NdwuRowDragHandle,
+  NdwuColumnPin,
   TranslationTexts,
 } from '@ndw-ui-kit/core/table';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   NdwuBadgeComponent,
@@ -70,6 +75,10 @@ const STATUSES = ['online', 'offline'] as const satisfies readonly Device['statu
     NdwuTableToolbar,
     NdwuColumnResize,
     NdwuTableSkeleton,
+    NdwuRowDrag,
+    NdwuRowDraggable,
+    NdwuRowDragHandle,
+    NdwuColumnPin,
     NdwuBadgeComponent,
     NdwuButtonComponent,
     NdwuIconButtonComponent,
@@ -104,10 +113,12 @@ export class DeviceTableComponent {
   protected readonly rows = linkedSignal(() => this.data());
 
   protected readonly displayedColumns =
-    ['select', 'enabled', 'name', 'band', 'ip', 'status', 'actions'];
+    ['drag', 'select', 'enabled', 'name', 'band', 'ip', 'status', 'actions'];
   /** Mirrors the .col-* widths so the skeleton and the loaded table line up. */
   protected readonly skeletonWidths =
-    ['48px', '72px', '170px', '88px', '130px', '96px', '88px'];
+    ['40px', '48px', '72px', '170px', '88px', '130px', '96px', '88px'];
+
+  protected readonly namePinned = signal(false);
 
   /**
    * Selection is signal state, not a `SelectionModel`: the header checkbox and
@@ -134,7 +145,9 @@ export class DeviceTableComponent {
   protected readonly filteredData = computed(() => {
     const text = this.filterText().toLowerCase();
     const data = this.rows();
-    if (!text) return data;
+    if (!text) {
+      return data;
+    }
     return data.filter(d =>
       d.name.toLowerCase().includes(text) ||
       d.ip.includes(text) ||
@@ -142,10 +155,18 @@ export class DeviceTableComponent {
     );
   });
 
+  /** A sorted table has no meaningful drop target, so reordering is off then. */
+  protected readonly isSorted = computed(() => {
+    const {active, direction} = this.sortState();
+    return active !== '' && direction !== '';
+  });
+
   protected readonly sortedData = computed(() => {
     const data = [...this.filteredData()];
     const {active, direction} = this.sortState();
-    if (!active || !direction) return data;
+    if (!active || !direction) {
+      return data;
+    }
 
     return data.sort((a, b) => {
       const cmp = String(a[active as keyof Device]).localeCompare(String(b[active as keyof Device]));
@@ -247,6 +268,33 @@ export class DeviceTableComponent {
     this.toggledRows.set(next);
   }
 
+  /**
+   * The drop indices are page-relative, so the move is replayed on the full
+   * array by id: that survives both paging and an active filter.
+   */
+  protected onRowDrop(event: CdkDragDrop<unknown>): void {
+    const page = this.dataSource();
+    const moved = page[event.previousIndex];
+    const target = page[event.currentIndex];
+    if (!moved || !target || moved === target) {
+      return;
+    }
+
+    this.rows.update(rows => {
+      const next = [...rows];
+      const from = next.findIndex(d => d.id === moved.id);
+      const to = next.findIndex(d => d.id === target.id);
+      if (from === -1 || to === -1) {
+        return rows;
+      }
+
+      next.splice(to, 0, ...next.splice(from, 1));
+
+      return next;
+    });
+    this.lastAction.set({key: 'table-showcase.overview.action.moved', params: {name: moved.name}});
+  }
+
   protected onRowMenu(device: Device): void {
     this.lastAction.set({key: 'table-showcase.overview.action.row-menu', params: {name: device.name}});
   }
@@ -265,7 +313,9 @@ export class DeviceTableComponent {
   protected onDeleteSelected(): void {
     const ids = this.selectedIds();
     const doomed = this.rows().filter(d => ids.has(d.id));
-    if (doomed.length === 0) return;
+    if (doomed.length === 0) {
+      return;
+    }
 
     this.removeRows(doomed);
     this.lastAction.set({

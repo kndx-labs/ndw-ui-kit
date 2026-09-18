@@ -1005,6 +1005,8 @@
       "row-menu": "More actions for {{name}}",
       "delete-row": "Delete {{name}}",
       "no-data": "No networks found.",
+      "reorder-row": "Reorder {{name}}",
+      "pin-column": "Pin column",
       "columns": {
         "enabled": "Enabled",
         "name": "Network SSID",
@@ -1026,7 +1028,8 @@
         "deleted": "Deleted {{name}}",
         "deleted-many": "Deleted {{count}} network(s)",
         "row-menu": "Row menu: {{name}}",
-        "settings": "Column settings"
+        "settings": "Column settings",
+        "moved": "Moved {{name}}"
       }
     },
     "tabs": {

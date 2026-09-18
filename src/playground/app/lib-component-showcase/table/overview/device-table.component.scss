@@ -49,6 +49,7 @@
   color: var(--ndwu-color-brand-50);
 }
 
+.col-drag { width: 40px; }
 .col-select { width: 48px; }
 .col-enabled { width: 72px; }
 .col-name { width: 170px; }
@@ -56,6 +57,11 @@
 .col-ip { width: 130px; }
 .col-status { width: 96px; }
 .col-actions { width: 88px; }
+
+.drag-cell {
+  padding-left: 12px;
+  padding-right: 0;
+}
 
 .select-cell {
   padding-left: 16px;

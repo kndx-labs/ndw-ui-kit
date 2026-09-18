@@ -5,13 +5,21 @@ import {
   Input,
   signal,
   computed,
+  input,
 } from '@angular/core';
+import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import type {TranslationTexts} from './ndwu-table.types';
 
 @Component({
   selector: 'ndwu-table-skeleton',
   exportAs: 'ndwuTableSkeleton',
   template: `
-    <div class="ndwu-skeleton-table" aria-busy="true" aria-live="polite" aria-label="Loading table data">
+    <div
+      class="ndwu-skeleton-table"
+      aria-busy="true"
+      aria-live="polite"
+      [attr.aria-label]="effectiveTexts().loading | localize"
+    >
       <div class="ndwu-skeleton-header">
         @for (col of _cols(); track col) {
           <div class="ndwu-skeleton-header-cell" [style.flex]="_flexFor(col)">
@@ -30,6 +38,7 @@ import {
       }
     </div>
   `,
+  imports: [LocalizePipe],
   styleUrl: './ndwu-table-skeleton.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,6 +47,17 @@ import {
   },
 })
 export class NdwuTableSkeleton {
+  private readonly DEFAULT_SKELETON_TEXTS = {
+    loading: 'Loading table data',
+  };
+
+  readonly skeletonTexts = input<TranslationTexts['skeleton']>();
+
+  protected readonly effectiveTexts = computed(() => ({
+    ...this.DEFAULT_SKELETON_TEXTS,
+    ...this.skeletonTexts(),
+  }));
+
   private readonly _rowCount = signal(5);
   private readonly _colCount = signal(4);
 

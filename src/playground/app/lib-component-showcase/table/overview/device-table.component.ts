@@ -19,6 +19,7 @@ import {
   NdwuTableToolbar,
   NdwuColumnResize,
   NdwuTableSkeleton,
+  TranslationTexts,
 } from '@ndw-ui-kit/core/table';
 import {
   NdwuBadgeComponent,
@@ -71,6 +72,22 @@ const STATUSES = ['online', 'offline'] as const satisfies readonly Device['statu
   ],
 })
 export class DeviceTableComponent {
+  /** Overrides the library's English defaults with keys from the app dictionary. */
+  protected readonly translationTexts: TranslationTexts = {
+    paginator: {
+      itemsPerPage: 'table.paginator.itemsPerPage',
+      range: 'table.paginator.range',
+      rangeEmpty: 'table.paginator.rangeEmpty',
+      firstPage: 'table.paginator.firstPage',
+      previousPage: 'table.paginator.previousPage',
+      nextPage: 'table.paginator.nextPage',
+      lastPage: 'table.paginator.lastPage',
+    },
+    skeleton: {
+      loading: 'table.skeleton.loading',
+    },
+  };
+
   readonly data = input.required<Device[]>();
 
   /**

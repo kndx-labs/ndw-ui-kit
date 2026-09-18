@@ -926,6 +926,20 @@
     "html-title": "HTML-Nachricht",
     "html-message": "Diese Benachrichtigung enthält <strong>fetten Text</strong> und <em>Inline-HTML</em>."
   },
+  "table": {
+    "paginator": {
+      "itemsPerPage": "Einträge pro Seite",
+      "range": "{{start}}-{{end}} von {{length}}",
+      "rangeEmpty": "0 von 0",
+      "firstPage": "Erste Seite",
+      "previousPage": "Vorherige Seite",
+      "nextPage": "Nächste Seite",
+      "lastPage": "Letzte Seite"
+    },
+    "skeleton": {
+      "loading": "Tabellendaten werden geladen"
+    }
+  },
   "table-showcase": {
     "tabs": {
       "overview": "Übersicht"

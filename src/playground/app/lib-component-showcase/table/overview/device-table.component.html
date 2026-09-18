@@ -54,7 +54,12 @@
 
 <!-- 5. Loading skeleton -->
 @if (loading()) {
-  <ndwu-table-skeleton [rows]="pageSize()" [columns]="7" [columnWidths]="skeletonWidths" />
+  <ndwu-table-skeleton
+    [rows]="pageSize()"
+    [columns]="7"
+    [columnWidths]="skeletonWidths"
+    [skeletonTexts]="translationTexts.skeleton"
+  />
 } @else {
   <!-- Main table with 2. sticky header, 3. column resize, 4. row expansion -->
   <ndwu-table
@@ -200,5 +205,6 @@
   [pageSize]="pageSize()"
   [pageIndex]="pageIndex()"
   [pageSizeOptions]="[5, 10]"
+  [paginatorTexts]="translationTexts.paginator"
   (page)="onPageChange($event)"
 />

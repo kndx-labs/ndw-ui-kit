@@ -7,7 +7,10 @@ import {
   EventEmitter,
   signal,
   computed,
+  input,
 } from '@angular/core';
+import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import type {TranslationTexts} from './ndwu-table.types';
 
 export interface NdwuPageEvent {
   pageIndex: number;
@@ -21,7 +24,7 @@ export interface NdwuPageEvent {
   template: `
     @if (pageSizeOptions.length > 1) {
       <label class="ndwu-paginator-size">
-        <span class="ndwu-paginator-size-label">Items per page</span>
+        <span class="ndwu-paginator-size-label">{{ effectiveTexts().itemsPerPage | localize }}</span>
         <select
           class="ndwu-paginator-select"
           [value]="_pageSize()"
@@ -34,35 +37,36 @@ export interface NdwuPageEvent {
       </label>
     }
     <div class="ndwu-paginator-range">
-      {{ rangeLabel() }}
+      {{ rangeLabel().key | localize: rangeLabel().params }}
     </div>
     <div class="ndwu-paginator-controls">
       <button
         class="ndwu-paginator-btn"
         [disabled]="!hasPrevious()"
         (click)="firstPage()"
-        aria-label="First page"
+        [attr.aria-label]="effectiveTexts().firstPage | localize"
       >&#x21E4;</button>
       <button
         class="ndwu-paginator-btn"
         [disabled]="!hasPrevious()"
         (click)="previousPage()"
-        aria-label="Previous page"
+        [attr.aria-label]="effectiveTexts().previousPage | localize"
       >&#x2039;</button>
       <button
         class="ndwu-paginator-btn"
         [disabled]="!hasNext()"
         (click)="nextPage()"
-        aria-label="Next page"
+        [attr.aria-label]="effectiveTexts().nextPage | localize"
       >&#x203A;</button>
       <button
         class="ndwu-paginator-btn"
         [disabled]="!hasNext()"
         (click)="lastPage()"
-        aria-label="Last page"
+        [attr.aria-label]="effectiveTexts().lastPage | localize"
       >&#x21E5;</button>
     </div>
   `,
+  imports: [LocalizePipe],
   styleUrl: './ndwu-paginator.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,6 +75,23 @@ export interface NdwuPageEvent {
   },
 })
 export class NdwuPaginator {
+  private readonly DEFAULT_PAGINATOR_TEXTS = {
+    itemsPerPage: 'Items per page',
+    range: '{{start}}-{{end}} of {{length}}',
+    rangeEmpty: '0 of 0',
+    firstPage: 'First page',
+    previousPage: 'Previous page',
+    nextPage: 'Next page',
+    lastPage: 'Last page',
+  };
+
+  readonly paginatorTexts = input<TranslationTexts['paginator']>();
+
+  protected readonly effectiveTexts = computed(() => ({
+    ...this.DEFAULT_PAGINATOR_TEXTS,
+    ...this.paginatorTexts(),
+  }));
+
   readonly _pageIndex = signal(0);
   readonly _pageSize = signal(10);
   readonly _length = signal(0);
@@ -101,12 +122,16 @@ export class NdwuPaginator {
   readonly hasPrevious = computed(() => this.currentPage() > 0);
   readonly hasNext = computed(() => this.currentPage() < this.totalPages() - 1);
 
-  readonly rangeLabel = computed(() => {
-    const len = this._length();
-    if (len === 0) return '0 of 0';
+  /** Key plus interpolation params, so the host can translate and reorder it. */
+  readonly rangeLabel = computed<{key: string; params?: Record<string, number>}>(() => {
+    const texts = this.effectiveTexts();
+    const length = this._length();
+    if (length === 0) return {key: texts.rangeEmpty};
+
     const start = this.currentPage() * this._pageSize() + 1;
-    const end = Math.min((this.currentPage() + 1) * this._pageSize(), len);
-    return `${start}-${end} of ${len}`;
+    const end = Math.min((this.currentPage() + 1) * this._pageSize(), length);
+
+    return {key: texts.range, params: {start, end, length}};
   });
 
   firstPage(): void {

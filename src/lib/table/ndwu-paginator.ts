@@ -32,7 +32,8 @@ export interface NdwuPageEvent {
       @for (page of visiblePages(); track page) {
         <button
           class="ndwu-paginator-btn ndwu-paginator-page"
-          [class.ndwu-paginator-active]="page === _pageIndex()"
+          [class.ndwu-paginator-active]="page === currentPage()"
+          [attr.aria-current]="page === currentPage() ? 'page' : null"
           (click)="goToPage(page)"
         >{{ page + 1 }}</button>
       }
@@ -87,20 +88,25 @@ export class NdwuPaginator {
 
   readonly totalPages = computed(() => Math.max(1, Math.ceil(this._length() / this._pageSize())));
 
-  readonly hasPrevious = computed(() => this._pageIndex() > 0);
-  readonly hasNext = computed(() => this._pageIndex() < this.totalPages() - 1);
+  /** `pageIndex` can outrun the data when the host shrinks `length` without resetting the page. */
+  readonly currentPage = computed(() =>
+    Math.max(0, Math.min(this._pageIndex(), this.totalPages() - 1)),
+  );
+
+  readonly hasPrevious = computed(() => this.currentPage() > 0);
+  readonly hasNext = computed(() => this.currentPage() < this.totalPages() - 1);
 
   readonly rangeLabel = computed(() => {
     const len = this._length();
     if (len === 0) return '0 of 0';
-    const start = this._pageIndex() * this._pageSize() + 1;
-    const end = Math.min((this._pageIndex() + 1) * this._pageSize(), len);
+    const start = this.currentPage() * this._pageSize() + 1;
+    const end = Math.min((this.currentPage() + 1) * this._pageSize(), len);
     return `${start}–${end} of ${len}`;
   });
 
   readonly visiblePages = computed(() => {
     const total = this.totalPages();
-    const current = this._pageIndex();
+    const current = this.currentPage();
     if (total <= 5) {
       return Array.from({length: total}, (_, i) => i);
     }
@@ -110,14 +116,14 @@ export class NdwuPaginator {
 
   previousPage(): void {
     if (this.hasPrevious()) {
-      this._pageIndex.set(this._pageIndex() - 1);
+      this._pageIndex.set(this.currentPage() - 1);
       this._emitPageEvent();
     }
   }
 
   nextPage(): void {
     if (this.hasNext()) {
-      this._pageIndex.set(this._pageIndex() + 1);
+      this._pageIndex.set(this.currentPage() + 1);
       this._emitPageEvent();
     }
   }
@@ -136,7 +142,7 @@ export class NdwuPaginator {
 
   private _emitPageEvent(): void {
     this.page.emit({
-      pageIndex: this._pageIndex(),
+      pageIndex: this.currentPage(),
       pageSize: this._pageSize(),
       length: this._length(),
     });

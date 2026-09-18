@@ -1,4 +1,6 @@
 @use 'styles/spacing' as spacing;
+@use 'styles/typography' as typography;
+@use './ndwu-table-vars' as vars;
 
 .ndwu-table {
   display: block;
@@ -40,12 +42,14 @@
 
 .ndwu-header-cell {
   display: table-cell;
-  height: 48px;
+  height: vars.$row-height;
   padding: spacing.$spacing-12;
   font-weight: 500;
-  font-size: var(--ndwu-fontSize-small);
+  font-size: typography.$fontSize-small;
   line-height: 20px;
   color: var(--ndwu-table-header-color);
+  // Opaque so rows scrolling under a sticky header stay hidden.
+  background-color: var(--ndwu-table-header-bg);
   border-bottom: 1px solid var(--ndwu-table-border-color);
   text-align: left;
   vertical-align: middle;
@@ -54,14 +58,12 @@
   position: relative;
 }
 
-// Sticky header
-.ndwu-header-row-sticky {
-  .ndwu-header-cell {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background-color: var(--ndwu-table-header-bg);
-  }
+// Sticky header. Opt in with `class="ndwu-header-row-sticky"` on the header row.
+// Beats the `position: relative` above on specificity, which the resize grip needs.
+.ndwu-header-row-sticky .ndwu-header-cell {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 // Column resize handle
@@ -87,9 +89,9 @@
 
 .ndwu-cell {
   display: table-cell;
-  height: 48px;
+  height: vars.$row-height;
   padding: spacing.$spacing-12;
-  font-size: var(--ndwu-fontSize-small);
+  font-size: typography.$fontSize-small;
   line-height: 20px;
   color: var(--ndwu-table-cell-color);
   border-bottom: 1px solid var(--ndwu-table-border-color);
@@ -103,6 +105,8 @@
   border-top: 1px solid var(--ndwu-table-border-color);
 }
 
+// Applied by the CDK's sticky styler, which also sets `top`/`z-index` inline.
+// Must win over a cell's own positioning, hence !important.
 .ndwu-table-sticky {
   position: sticky !important;
 }
@@ -129,11 +133,19 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  font-size: 12px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: typography.$fontSize-xsmall;
   transition: transform 150ms ease;
   color: var(--ndwu-table-header-color);
 
   &--expanded {
     transform: rotate(90deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }

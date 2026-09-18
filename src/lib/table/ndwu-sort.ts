@@ -84,7 +84,11 @@ export class NdwuSort {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    'tabindex': '0',
+    'role': 'columnheader',
     '(click)': '_handleClick()',
+    '(keydown.enter)': '_handleClick()',
+    '(keydown.space)': '_handleKeydownSpace($event)',
     '[attr.aria-sort]': 'ariaSort()',
   },
 })
@@ -109,6 +113,11 @@ export class NdwuSortHeader implements OnInit {
   }
 
   _handleClick(): void {
+    this._sort.sort(this.id);
+  }
+
+  _handleKeydownSpace(event: Event): void {
+    event.preventDefault();
     this._sort.sort(this.id);
   }
 }

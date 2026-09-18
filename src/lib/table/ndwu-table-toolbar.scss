@@ -1,4 +1,6 @@
 @use 'styles/spacing' as spacing;
+@use 'styles/radius' as radius;
+@use './ndwu-table-vars' as vars;
 
 .ndwu-table-toolbar {
   display: flex;
@@ -9,8 +11,8 @@
   background-color: var(--ndwu-table-cell-bg);
   border: 1px solid var(--ndwu-table-border-color);
   border-bottom: none;
-  border-radius: 4px 4px 0 0;
-  min-height: 48px;
+  border-radius: radius.$radius-S radius.$radius-S 0 0;
+  min-height: vars.$row-height;
   box-sizing: border-box;
 }
 

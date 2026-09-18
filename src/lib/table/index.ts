@@ -23,5 +23,4 @@ export {NdwuPaginator} from './ndwu-paginator';
 export type {NdwuPageEvent} from './ndwu-paginator';
 export {NdwuTableToolbar} from './ndwu-table-toolbar';
 export {NdwuColumnResize} from './ndwu-column-resize';
-export {NdwuDetailRowDef, NdwuDetailRow} from './ndwu-detail-row';
 export {NdwuTableSkeleton} from './ndwu-table-skeleton';

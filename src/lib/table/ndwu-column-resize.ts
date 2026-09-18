@@ -36,8 +36,16 @@ export class NdwuColumnResize implements AfterViewInit, OnDestroy {
     this._renderer.appendChild(this._el.nativeElement, this._handle);
 
     this._zone.runOutsideAngular(() => {
+      // Grip sits inside the header cell, which may also be a sort header.
+      // Without this the drag's trailing click would toggle sorting.
+      const click = this._renderer.listen(this._handle, 'click', (e: MouseEvent) => {
+        e.stopPropagation();
+      });
+      this._cleanup.push(click);
+
       const mousedown = this._renderer.listen(this._handle, 'mousedown', (e: MouseEvent) => {
         e.preventDefault();
+        e.stopPropagation();
         const startX = e.pageX;
         const startWidth = this._el.nativeElement.offsetWidth;
 

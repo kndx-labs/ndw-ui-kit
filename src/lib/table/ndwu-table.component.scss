@@ -145,15 +145,16 @@
   border: none;
   background: none;
   cursor: pointer;
-  font-size: typography.$fontSize-xsmall;
-  transition: transform 150ms ease;
   color: var(--ndwu-table-header-color);
+  vertical-align: middle;
 
-  &--expanded {
-    transform: rotate(90deg);
+  &:hover {
+    color: var(--ndwu-table-cell-color);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--ndwu-fx-focused-default);
+    border-radius: radius.$radius-S;
   }
 }

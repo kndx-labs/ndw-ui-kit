@@ -34,7 +34,9 @@ export class NdwuCell extends CdkCell {}
 
 @Directive({
   selector: 'ndwu-header-cell, th[ndwu-header-cell]',
-  host: {'class': 'ndwu-header-cell'},
+  // `scope` lets assistive tech announce the column name for each cell, which is
+  // what gives an unlabelled in-cell control (toggle, checkbox) its context.
+  host: {'class': 'ndwu-header-cell', 'scope': 'col'},
 })
 export class NdwuHeaderCell extends CdkHeaderCell {}
 

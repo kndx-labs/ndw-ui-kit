@@ -4,22 +4,6 @@
   display: block;
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 20px;
-  padding: 2px 8px;
-  border: 1px solid var(--ndwu-color-gray-20);
-  border-radius: 16px;
-  font-size: 11px;
-  line-height: 17px;
-  background-color: var(--ndwu-color-gray-0);
-  color: var(--ndwu-color-gray-80);
-  white-space: nowrap;
-  box-sizing: border-box;
-}
-
 .status-dot {
   display: inline-block;
   width: 8px;
@@ -37,40 +21,41 @@
   }
 }
 
-.action-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  font-size: 16px;
-  line-height: 1;
-  color: var(--ndwu-color-gray-50);
-  border-radius: 4px;
-
-  &:hover {
-    color: var(--ndwu-color-gray-80);
-  }
-
-  &--danger:hover {
-    color: var(--ndwu-color-red-50);
-  }
-}
-
 .actions-cell {
   text-align: right;
   white-space: nowrap;
 
-  .action-btn + .action-btn {
-    margin-left: 8px;
+  // The icon button is `display: flex`, so without this the two buttons stack
+  // as block boxes and push the row past the 48px grid.
+  button {
+    display: inline-flex;
+    vertical-align: middle;
+  }
+
+  button + button {
+    margin-left: 4px;
   }
 }
 
+.toolbar-count,
+.toolbar-action {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ndwu-color-gray-60);
+  white-space: nowrap;
+}
+
+.toolbar-action {
+  color: var(--ndwu-color-brand-50);
+}
+
 .col-select { width: 48px; }
+.col-enabled { width: 72px; }
 .col-name { width: 170px; }
 .col-band { width: 88px; }
 .col-ip { width: 130px; }
 .col-status { width: 96px; }
-.col-actions { width: 72px; }
+.col-actions { width: 88px; }
 
 .select-cell {
   padding-left: 16px;
@@ -91,36 +76,21 @@
   color: var(--ndwu-color-gray-40);
 }
 
+// Matches the box of the size="L" kit buttons it sits next to.
 .toolbar-search {
   height: 32px;
   padding: 0 12px;
   border: 1px solid var(--ndwu-color-gray-20);
-  border-radius: 4px;
+  border-radius: 6px;
   background: var(--ndwu-color-gray-0);
   color: var(--ndwu-color-gray-80);
-  font-size: 13px;
+  font-size: 14px;
   width: 220px;
   box-sizing: border-box;
   outline: none;
 
   &:focus {
     border-color: var(--ndwu-color-brand-50);
-  }
-}
-
-.toolbar-btn {
-  height: 32px;
-  padding: 0 12px;
-  border: 1px solid var(--ndwu-color-gray-20);
-  border-radius: 4px;
-  background: var(--ndwu-color-gray-0);
-  color: var(--ndwu-color-gray-60);
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-
-  &:hover {
-    background: var(--ndwu-color-gray-5);
   }
 }
 

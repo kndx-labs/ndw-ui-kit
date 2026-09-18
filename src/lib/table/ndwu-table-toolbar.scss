@@ -4,8 +4,10 @@
 .ndwu-table-toolbar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: spacing.$spacing-12;
+
   // Figma floats the toolbar controls above the table with no container chrome,
   // so the table stays a single rounded surface.
   padding: spacing.$spacing-12 0;
@@ -15,6 +17,7 @@
 
 .ndwu-table-toolbar-start {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: spacing.$spacing-8;
   flex: 1;

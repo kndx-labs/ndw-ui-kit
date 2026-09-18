@@ -26,6 +26,8 @@ export const BASE_ICON_NAME = [
   'info_S',
   'loading_L',
   'reload_S',
+  'sorting_default_S',
+  'sorting_reverse_S',
   'success_L',
   'success_S',
   'success_XS',

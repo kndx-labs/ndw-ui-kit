@@ -1,5 +1,4 @@
 @use 'styles/spacing' as spacing;
-@use 'styles/typography' as typography;
 
 [ndwu-sort-header] {
   cursor: pointer;
@@ -17,12 +16,8 @@
   gap: spacing.$spacing-4;
 }
 
+// The icon paints with `currentColor`, so colour and dimming are set here.
 .ndwu-sort-header-indicator {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: typography.$fontSize-xsmall;
-  line-height: 1;
   color: var(--ndwu-table-header-color);
   opacity: 0.4;
 }
@@ -30,11 +25,4 @@
 .ndwu-sort-header-indicator.ndwu-sort-active {
   opacity: 1;
   color: var(--ndwu-table-cell-color);
-}
-
-.ndwu-sort-arrow {
-  display: inline-flex;
-  flex-direction: column;
-  line-height: 0.8;
-  letter-spacing: -2px;
 }

@@ -1,5 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, input, signal} from '@angular/core';
-import {SelectionModel} from '@angular/cdk/collections';
+import {ChangeDetectionStrategy, Component, computed, input, linkedSignal, signal} from '@angular/core';
 import {
   NdwuTableComponent,
   NdwuColumnDef,
@@ -21,6 +20,13 @@ import {
   NdwuColumnResize,
   NdwuTableSkeleton,
 } from '@ndw-ui-kit/core/table';
+import {
+  NdwuBadgeComponent,
+  NdwuButtonComponent,
+  NdwuIconButtonComponent,
+  NdwuIconComponent,
+  NdwuToggleComponent,
+} from '@ndw-ui-kit/core';
 
 export interface Device {
   id: number;
@@ -29,6 +35,10 @@ export interface Device {
   ip: string;
   status: 'online' | 'offline';
 }
+
+const NAME_PREFIXES = ['Keenetic', 'Guest', 'Lab', 'Office', 'Mesh', 'Repeater'] as const;
+const BANDS = ['2.4 GHz', '5 GHz'] as const;
+const STATUSES = ['online', 'offline'] as const satisfies readonly Device['status'][];
 
 @Component({
   selector: 'app-device-table',
@@ -53,19 +63,42 @@ export interface Device {
     NdwuTableToolbar,
     NdwuColumnResize,
     NdwuTableSkeleton,
+    NdwuBadgeComponent,
+    NdwuButtonComponent,
+    NdwuIconButtonComponent,
+    NdwuIconComponent,
+    NdwuToggleComponent,
   ],
 })
 export class DeviceTableComponent {
   readonly data = input.required<Device[]>();
 
-  protected readonly displayedColumns = ['select', 'name', 'band', 'ip', 'status', 'actions'];
-  /** Mirrors the .col-* widths so the skeleton and the loaded table line up. */
-  protected readonly skeletonWidths = ['48px', '170px', '88px', '130px', '96px', '72px'];
+  /**
+   * Working copy: add and delete mutate this, and it re-seeds if the host swaps
+   * the input. The two demo tables therefore edit independently.
+   */
+  protected readonly rows = linkedSignal(() => this.data());
 
-  protected readonly selection = new SelectionModel<Device>(true, []);
+  protected readonly displayedColumns =
+    ['select', 'enabled', 'name', 'band', 'ip', 'status', 'actions'];
+  /** Mirrors the .col-* widths so the skeleton and the loaded table line up. */
+  protected readonly skeletonWidths =
+    ['48px', '72px', '170px', '88px', '130px', '96px', '88px'];
+
+  /**
+   * Selection is signal state, not a `SelectionModel`: the header checkbox and
+   * the toolbar counter read it from `computed`s, which only re-run when a
+   * signal they read changes.
+   */
+  private readonly selectedIds = signal<ReadonlySet<number>>(new Set());
+  protected readonly selectedCount = computed(() => this.selectedIds().size);
   protected readonly filterText = signal('');
   protected readonly loading = signal(false);
   protected readonly expandedRows = signal<Set<number>>(new Set());
+  /** Only rows the user flipped; every other row follows the device's own status. */
+  private readonly toggledRows = signal<ReadonlySet<number>>(new Set());
+  /** Echoes the last toolbar/row action, so the stubs are visible in the demo. */
+  protected readonly lastAction = signal('');
 
   protected readonly sortState = signal<NdwuSortState>({active: '', direction: ''});
   protected readonly pageIndex = signal(0);
@@ -73,7 +106,7 @@ export class DeviceTableComponent {
 
   protected readonly filteredData = computed(() => {
     const text = this.filterText().toLowerCase();
-    const data = this.data();
+    const data = this.rows();
     if (!text) return data;
     return data.filter(d =>
       d.name.toLowerCase().includes(text) ||
@@ -98,23 +131,44 @@ export class DeviceTableComponent {
     return this.sortedData().slice(start, start + this.pageSize());
   });
 
+  /** Header checkbox and its indeterminate state cover the current page only. */
+  private readonly pageSelectedCount = computed(() => {
+    const ids = this.selectedIds();
+    return this.dataSource().filter(d => ids.has(d.id)).length;
+  });
+
   protected readonly isAllSelected = computed(() => {
     const data = this.dataSource();
-    return data.length > 0 && data.every(d => this.selection.isSelected(d));
+    return data.length > 0 && this.pageSelectedCount() === data.length;
   });
 
   protected readonly isIndeterminate = computed(() => {
-    const data = this.dataSource();
-    const selectedCount = data.filter(d => this.selection.isSelected(d)).length;
-    return selectedCount > 0 && selectedCount < data.length;
+    const count = this.pageSelectedCount();
+    return count > 0 && count < this.dataSource().length;
   });
 
-  protected toggleAll(): void {
-    if (this.isAllSelected()) {
-      this.selection.deselect(...this.dataSource());
-    } else {
-      this.selection.select(...this.dataSource());
+  protected isSelected(device: Device): boolean {
+    return this.selectedIds().has(device.id);
+  }
+
+  protected toggleRow(device: Device): void {
+    const next = new Set(this.selectedIds());
+    if (!next.delete(device.id)) {
+      next.add(device.id);
     }
+    this.selectedIds.set(next);
+  }
+
+  protected toggleAll(): void {
+    const page = this.dataSource();
+    const next = new Set(this.selectedIds());
+
+    if (this.isAllSelected()) {
+      page.forEach(d => next.delete(d.id));
+    } else {
+      page.forEach(d => next.add(d.id));
+    }
+    this.selectedIds.set(next);
   }
 
   protected onFilterChange(event: Event): void {
@@ -152,12 +206,80 @@ export class DeviceTableComponent {
     this.loading.update(v => !v);
   }
 
-  protected onEdit(device: Device): void {
-    console.log('Edit:', device.name);
+  protected isEnabled(device: Device): boolean {
+    return this.toggledRows().has(device.id)
+      ? device.status !== 'online'
+      : device.status === 'online';
+  }
+
+  protected toggleEnabled(device: Device): void {
+    const next = new Set(this.toggledRows());
+    if (!next.delete(device.id)) {
+      next.add(device.id);
+    }
+    this.toggledRows.set(next);
+  }
+
+  protected onRowMenu(device: Device): void {
+    this.lastAction.set(`Row menu: ${device.name}`);
   }
 
   protected onDelete(device: Device): void {
-    console.log('Delete:', device.name);
+    this.removeRows([device]);
+    this.lastAction.set(`Deleted ${device.name}`);
+  }
+
+  protected onAdd(): void {
+    const device = this.randomDevice();
+    this.rows.update(rows => [...rows, device]);
+    this.lastAction.set(`Added ${device.name}`);
+  }
+
+  protected onDeleteSelected(): void {
+    const ids = this.selectedIds();
+    const doomed = this.rows().filter(d => ids.has(d.id));
+    if (doomed.length === 0) return;
+
+    this.removeRows(doomed);
+    this.lastAction.set(`Deleted ${doomed.length} network(s)`);
+  }
+
+  private randomDevice(): Device {
+    const rows = this.rows();
+    const id = rows.reduce((max, d) => Math.max(max, d.id), 0) + 1;
+    const pick = <T>(values: readonly [T, ...T[]]): T =>
+      values[Math.floor(Math.random() * values.length)] ?? values[0];
+
+    return {
+      id,
+      name: `${pick(NAME_PREFIXES)}-${1000 + Math.floor(Math.random() * 9000)}`,
+      band: pick(BANDS),
+      // Keep the host octet clear of the 1-120 range the seed data uses.
+      ip: `192.168.1.${121 + Math.floor(Math.random() * 130)}`,
+      status: pick(STATUSES),
+    };
+  }
+
+  private removeRows(doomed: readonly Device[]): void {
+    const ids = new Set(doomed.map(d => d.id));
+
+    this.rows.update(rows => rows.filter(d => !ids.has(d.id)));
+    this.selectedIds.update(set => new Set([...set].filter(id => !ids.has(id))));
+    this.expandedRows.update(set => new Set([...set].filter(id => !ids.has(id))));
+    this.clampPageIndex();
+  }
+
+  /** Deleting the tail of the list can leave `pageIndex` past the last page. */
+  private clampPageIndex(): void {
+    const lastPage = Math.max(0, Math.ceil(this.filteredData().length / this.pageSize()) - 1);
+
+    if (this.pageIndex() > lastPage) {
+      this.pageIndex.set(lastPage);
+    }
+  }
+
+  protected onSettings(): void {
+    this.lastAction.set('Column settings');
   }
 
   protected trackById(_index: number, device: Device): number {

@@ -12,6 +12,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
+import {ICON_NAME, IconName, NdwuIconComponent} from '@ndw-ui-kit/core';
 
 export type NdwuSortDirection = 'asc' | 'desc' | '';
 
@@ -68,21 +69,18 @@ export class NdwuSort {
   template: `
     <div class="ndwu-sort-header-inner">
       <span class="ndwu-sort-header-content"><ng-content /></span>
-      <span class="ndwu-sort-header-indicator" [class.ndwu-sort-active]="isActive()">
-        <span class="ndwu-sort-arrow" [class.ndwu-sort-asc]="isAsc()" [class.ndwu-sort-desc]="isDesc()">
-          @if (isActive()) {
-            @if (isAsc()) { &#x25B2; }
-            @if (isDesc()) { &#x25BC; }
-          } @else {
-            &#x25B4;&#x25BE;
-          }
-        </span>
-      </span>
+      <ndwu-icon
+        class="ndwu-sort-header-indicator"
+        [class.ndwu-sort-active]="isActive()"
+        [name]="indicatorIcon()"
+        aria-hidden="true"
+      />
     </div>
   `,
   styleUrl: './ndwu-sort.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NdwuIconComponent],
   host: {
     'tabindex': '0',
     'role': 'columnheader',
@@ -100,6 +98,11 @@ export class NdwuSortHeader implements OnInit {
   readonly isActive = computed(() => this._sort.activeSignal() === this.id && this._sort.directionSignal() !== '');
   readonly isAsc = computed(() => this.isActive() && this._sort.directionSignal() === 'asc');
   readonly isDesc = computed(() => this.isActive() && this._sort.directionSignal() === 'desc');
+
+  /** Dimmed to 0.4 while inactive, so the neutral state reuses the ascending icon. */
+  readonly indicatorIcon = computed<IconName>(() =>
+    this.isDesc() ? ICON_NAME.SORTING_REVERSE_S : ICON_NAME.SORTING_DEFAULT_S,
+  );
 
   readonly ariaSort = computed(() => {
     if (!this.isActive()) return null;

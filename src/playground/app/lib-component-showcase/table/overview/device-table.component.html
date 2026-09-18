@@ -1,20 +1,60 @@
 <!-- 1. Toolbar -->
 <ndwu-table-toolbar>
+  <button
+    ndwuTableToolbarStart
+    ndwu-button
+    variant="primary"
+    size="L"
+    icon="add_S"
+    label="Add network"
+    (click)="onAdd()"
+  ></button>
+  <button
+    ndwuTableToolbarStart
+    ndwu-button
+    variant="secondary"
+    size="L"
+    [label]="loading() ? 'Stop loading' : 'Simulate loading'"
+    (click)="toggleLoading()"
+  ></button>
+  <!-- Spec: the text action only applies to the current selection. -->
+  <button
+    ndwuTableToolbarStart
+    ndwu-button
+    variant="ghost"
+    size="L"
+    label="Delete selected"
+    [disabled]="selectedCount() === 0"
+    (click)="onDeleteSelected()"
+  ></button>
   <input
     ndwuTableToolbarStart
     class="toolbar-search"
     type="text"
+    aria-label="Filter networks"
     placeholder="Filter networks..."
     (input)="onFilterChange($event)"
   />
-  <button ndwuTableToolbarEnd class="toolbar-btn" (click)="toggleLoading()">
-    {{ loading() ? 'Stop loading' : 'Simulate loading' }}
-  </button>
+
+  @if (lastAction()) {
+    <span ndwuTableToolbarEnd class="toolbar-action" role="status">{{ lastAction() }}</span>
+  }
+  <span ndwuTableToolbarEnd class="toolbar-count">
+    Selected: {{ selectedCount() }}/{{ rows().length }}
+  </span>
+  <button
+    ndwuTableToolbarEnd
+    ndwu-icon-button
+    icon="settings_S"
+    variant="flat"
+    aria-label="Column settings"
+    (click)="onSettings()"
+  ></button>
 </ndwu-table-toolbar>
 
 <!-- 5. Loading skeleton -->
 @if (loading()) {
-  <ndwu-table-skeleton [rows]="pageSize()" [columns]="6" [columnWidths]="skeletonWidths" />
+  <ndwu-table-skeleton [rows]="pageSize()" [columns]="7" [columnWidths]="skeletonWidths" />
 } @else {
   <!-- Main table with 2. sticky header, 3. column resize, 4. row expansion -->
   <ndwu-table
@@ -43,8 +83,21 @@
         <input
           type="checkbox"
           [attr.aria-label]="'Select ' + row.name"
-          [checked]="selection.isSelected(row)"
-          (change)="selection.toggle(row)"
+          [checked]="isSelected(row)"
+          (change)="toggleRow(row)"
+        />
+      </td>
+    </ng-container>
+
+    <!-- Toggle column -->
+    <ng-container ndwuColumnDef="enabled">
+      <th ndwu-header-cell *ndwuHeaderCellDef class="col-enabled">Enabled</th>
+      <td ndwu-cell *ndwuCellDef="let row">
+        <!-- Name comes from the `scope="col"` header; the kit toggle has no
+             hidden-label input. -->
+        <ndwu-toggle
+          [checked]="isEnabled(row)"
+          (checkedChange)="toggleEnabled(row)"
         />
       </td>
     </ng-container>
@@ -56,11 +109,12 @@
         <button
           type="button"
           class="ndwu-expand-icon"
-          [class.ndwu-expand-icon--expanded]="isExpanded(row.id)"
           [attr.aria-expanded]="isExpanded(row.id)"
           [attr.aria-label]="(isExpanded(row.id) ? 'Collapse details for ' : 'Expand details for ') + row.name"
           (click)="toggleExpand(row.id)"
-        >&#x25B6;</button>
+        >
+          <ndwu-icon [name]="isExpanded(row.id) ? 'chevron_down_S' : 'chevron_right_S'" />
+        </button>
         {{ row.name }}
       </td>
     </ng-container>
@@ -69,7 +123,7 @@
     <ng-container ndwuColumnDef="band">
       <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="band" class="col-band">Band</th>
       <td ndwu-cell *ndwuCellDef="let row">
-        <span class="badge">{{ row.band }}</span>
+        <ndwu-badge size="S" tone="gray">{{ row.band }}</ndwu-badge>
       </td>
     </ng-container>
 
@@ -88,12 +142,24 @@
       </td>
     </ng-container>
 
-    <!-- Actions column -->
+    <!-- Actions column: spec pairs a context menu with a direct delete. -->
     <ng-container ndwuColumnDef="actions">
       <th ndwu-header-cell *ndwuHeaderCellDef class="col-actions"></th>
       <td ndwu-cell *ndwuCellDef="let row" class="actions-cell">
-        <button class="action-btn" (click)="onEdit(row)" [attr.aria-label]="'Edit ' + row.name">&#x270E;</button>
-        <button class="action-btn action-btn--danger" (click)="onDelete(row)" [attr.aria-label]="'Delete ' + row.name">&#x2715;</button>
+        <button
+          ndwu-icon-button
+          icon="menu_kebab_S"
+          variant="flat"
+          [attr.aria-label]="'More actions for ' + row.name"
+          (click)="onRowMenu(row)"
+        ></button>
+        <button
+          ndwu-icon-button
+          icon="trash_S"
+          variant="flat"
+          [attr.aria-label]="'Delete ' + row.name"
+          (click)="onDelete(row)"
+        ></button>
       </td>
     </ng-container>
 
@@ -112,7 +178,7 @@
     <ndwu-header-row *ndwuHeaderRowDef="displayedColumns" class="ndwu-header-row-sticky" />
     <ndwu-row
       *ndwuRowDef="let row; columns: displayedColumns"
-      [class.ndwu-row-selected]="selection.isSelected(row)"
+      [class.ndwu-row-selected]="isSelected(row)"
     />
     <!-- Detail row, always rendered and revealed by class (the CDK pattern) -->
     <ndwu-row

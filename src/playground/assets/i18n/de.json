@@ -925,5 +925,10 @@
     "long-text-message": "Dies ist eine sehr lange Benachrichtigungsnachricht mit wichtigen Informationen, die in einem schmalen Container mit einer festen Breite von 200 Pixeln auf mehrere Zeilen umgebrochen werden sollte.",
     "html-title": "HTML-Nachricht",
     "html-message": "Diese Benachrichtigung enthält <strong>fetten Text</strong> und <em>Inline-HTML</em>."
+  },
+  "table-showcase": {
+    "tabs": {
+      "overview": "Übersicht"
+    }
   }
 }

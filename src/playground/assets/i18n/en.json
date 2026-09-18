@@ -972,5 +972,10 @@
       "tokens": "Indicator Tokens",
       "inherit": "Inherit"
     }
+  },
+  "table-showcase": {
+    "tabs": {
+      "overview": "Overview"
+    }
   }
 }

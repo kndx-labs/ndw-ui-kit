@@ -27,7 +27,7 @@ import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
     '(click)': 'toggle($event)',
   },
 })
-export class NdwuColumnPin {
+export class NdwuColumnPinComponent {
   protected readonly ICON_NAME = ICON_NAME;
 
   readonly pinned = input(false, {transform: booleanAttribute});

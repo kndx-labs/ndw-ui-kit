@@ -1,29 +1,29 @@
 export {NdwuTableComponent} from './ndwu-table.component';
 export {
-  NdwuCellDef,
-  NdwuHeaderCellDef,
-  NdwuFooterCellDef,
-  NdwuCell,
-  NdwuHeaderCell,
-  NdwuFooterCell,
+  NdwuCellDefDirective,
+  NdwuHeaderCellDefDirective,
+  NdwuFooterCellDefDirective,
+  NdwuCellDirective,
+  NdwuHeaderCellDirective,
+  NdwuFooterCellDirective,
 } from './ndwu-cell';
-export {NdwuColumnDef} from './ndwu-column';
+export {NdwuColumnDefDirective} from './ndwu-column';
 export {
-  NdwuHeaderRowDef,
-  NdwuFooterRowDef,
-  NdwuRowDef,
-  NdwuHeaderRow,
-  NdwuFooterRow,
-  NdwuRow,
-  NdwuNoDataRow,
+  NdwuHeaderRowDefDirective,
+  NdwuFooterRowDefDirective,
+  NdwuRowDefDirective,
+  NdwuHeaderRowComponent,
+  NdwuFooterRowComponent,
+  NdwuRowComponent,
+  NdwuNoDataRowDirective,
 } from './ndwu-row';
-export {NdwuSort, NdwuSortHeader} from './ndwu-sort';
+export {NdwuSortDirective, NdwuSortHeaderComponent} from './ndwu-sort';
 export type {NdwuSortDirection, NdwuSortState} from './ndwu-sort';
-export {NdwuPaginator} from './ndwu-paginator';
+export {NdwuPaginatorComponent} from './ndwu-paginator';
 export type {NdwuPageEvent} from './ndwu-paginator';
-export {NdwuTableToolbar} from './ndwu-table-toolbar';
-export {NdwuColumnResize} from './ndwu-column-resize';
-export {NdwuTableSkeleton} from './ndwu-table-skeleton';
-export {NdwuRowDrag, NdwuRowDraggable, NdwuRowDragHandle} from './ndwu-row-drag';
-export {NdwuColumnPin} from './ndwu-column-pin';
+export {NdwuTableToolbarComponent} from './ndwu-table-toolbar';
+export {NdwuColumnResizeDirective} from './ndwu-column-resize';
+export {NdwuTableSkeletonComponent} from './ndwu-table-skeleton';
+export {NdwuRowDragDirective, NdwuRowDraggableDirective, NdwuRowDragHandleComponent} from './ndwu-row-drag';
+export {NdwuColumnPinComponent} from './ndwu-column-pin';
 export type {TranslationTexts} from './ndwu-table.types';

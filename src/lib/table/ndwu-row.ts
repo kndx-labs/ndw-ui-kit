@@ -1,4 +1,4 @@
-import {Component, Directive, ChangeDetectionStrategy} from '@angular/core';
+import {Component, Directive, Input, booleanAttribute, ChangeDetectionStrategy} from '@angular/core';
 import {
   CdkHeaderRowDef,
   CdkFooterRowDef,
@@ -13,75 +13,90 @@ import {
 
 @Directive({
   selector: '[ndwuHeaderRowDef]',
-  inputs: [
-    {name: 'columns', alias: 'ndwuHeaderRowDef'},
-    {name: 'sticky', alias: 'ndwuHeaderRowDefSticky'},
-  ],
-  providers: [{provide: CdkHeaderRowDef, useExisting: NdwuHeaderRowDef}],
+  providers: [{provide: CdkHeaderRowDef, useExisting: NdwuHeaderRowDefDirective}],
 })
-export class NdwuHeaderRowDef extends CdkHeaderRowDef {}
+export class NdwuHeaderRowDefDirective extends CdkHeaderRowDef {
+  @Input('ndwuHeaderRowDef') override columns: Iterable<string> = [];
+
+  @Input({alias: 'ndwuHeaderRowDefSticky', transform: booleanAttribute})
+  override get sticky(): boolean {
+    return super.sticky;
+  }
+
+  override set sticky(value: boolean) {
+    super.sticky = value;
+  }
+}
 
 @Directive({
   selector: '[ndwuFooterRowDef]',
-  inputs: [
-    {name: 'columns', alias: 'ndwuFooterRowDef'},
-    {name: 'sticky', alias: 'ndwuFooterRowDefSticky'},
-  ],
-  providers: [{provide: CdkFooterRowDef, useExisting: NdwuFooterRowDef}],
+  providers: [{provide: CdkFooterRowDef, useExisting: NdwuFooterRowDefDirective}],
 })
-export class NdwuFooterRowDef extends CdkFooterRowDef {}
+export class NdwuFooterRowDefDirective extends CdkFooterRowDef {
+  @Input('ndwuFooterRowDef') override columns: Iterable<string> = [];
+
+  @Input({alias: 'ndwuFooterRowDefSticky', transform: booleanAttribute})
+  override get sticky(): boolean {
+    return super.sticky;
+  }
+
+  override set sticky(value: boolean) {
+    super.sticky = value;
+  }
+}
 
 @Directive({
   selector: '[ndwuRowDef]',
-  inputs: [
-    {name: 'columns', alias: 'ndwuRowDefColumns'},
-    {name: 'when', alias: 'ndwuRowDefWhen'},
-  ],
-  providers: [{provide: CdkRowDef, useExisting: NdwuRowDef}],
+  providers: [{provide: CdkRowDef, useExisting: NdwuRowDefDirective}],
 })
-export class NdwuRowDef<T> extends CdkRowDef<T> {}
+export class NdwuRowDefDirective<T> extends CdkRowDef<T> {
+  @Input('ndwuRowDefColumns') override columns: Iterable<string> = [];
+  // Undefined means "always", which is what the CDK's own default is.
+  @Input('ndwuRowDefWhen') override when: (index: number, rowData: T) => boolean =
+    undefined as unknown as (index: number, rowData: T) => boolean;
+}
 
 @Component({
   selector: 'ndwu-header-row, tr[ndwu-header-row]',
   template: CDK_ROW_TEMPLATE,
   changeDetection: ChangeDetectionStrategy.Default,
-  providers: [{provide: CdkHeaderRow, useExisting: NdwuHeaderRow}],
+  providers: [{provide: CdkHeaderRow, useExisting: NdwuHeaderRowComponent}],
   imports: [CdkCellOutlet],
   host: {
     'class': 'ndwu-header-row',
     'role': 'row',
   },
 })
-export class NdwuHeaderRow extends CdkHeaderRow {}
+export class NdwuHeaderRowComponent extends CdkHeaderRow {}
 
 @Component({
   selector: 'ndwu-footer-row, tr[ndwu-footer-row]',
   template: CDK_ROW_TEMPLATE,
   changeDetection: ChangeDetectionStrategy.Default,
-  providers: [{provide: CdkFooterRow, useExisting: NdwuFooterRow}],
+  providers: [{provide: CdkFooterRow, useExisting: NdwuFooterRowComponent}],
   imports: [CdkCellOutlet],
   host: {
     'class': 'ndwu-footer-row',
     'role': 'row',
   },
 })
-export class NdwuFooterRow extends CdkFooterRow {}
+export class NdwuFooterRowComponent extends CdkFooterRow {}
 
 @Component({
   selector: 'ndwu-row, tr[ndwu-row]',
   template: CDK_ROW_TEMPLATE,
   changeDetection: ChangeDetectionStrategy.Default,
-  providers: [{provide: CdkRow, useExisting: NdwuRow}],
+  providers: [{provide: CdkRow, useExisting: NdwuRowComponent}],
   imports: [CdkCellOutlet],
   host: {
     'class': 'ndwu-row',
     'role': 'row',
   },
 })
-export class NdwuRow extends CdkRow {}
+export class NdwuRowComponent extends CdkRow {}
 
 @Directive({
   selector: 'ng-template[ndwuNoDataRow]',
-  providers: [{provide: CdkNoDataRow, useExisting: NdwuNoDataRow}],
+  providers: [{provide: CdkNoDataRow, useExisting: NdwuNoDataRowDirective}],
 })
-export class NdwuNoDataRow extends CdkNoDataRow {}
+export class NdwuNoDataRowDirective extends CdkNoDataRow {}

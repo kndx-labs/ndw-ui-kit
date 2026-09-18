@@ -18,12 +18,12 @@ const MIN_COLUMN_WIDTH = 40;
     'class': 'ndwu-column-resizable',
   },
 })
-export class NdwuColumnResize implements AfterViewInit, OnDestroy {
-  private readonly _el = inject(ElementRef<HTMLElement>);
+export class NdwuColumnResizeDirective implements AfterViewInit, OnDestroy {
+  private readonly _el = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly _zone = inject(NgZone);
   private readonly _renderer = inject(Renderer2);
 
-  @Output('ndwuColumnResized') readonly resized = new EventEmitter<number>();
+  @Output() readonly ndwuColumnResized = new EventEmitter<number>();
 
   private _handle: HTMLElement | null = null;
   private _cleanup: (() => void)[] = [];
@@ -57,7 +57,7 @@ export class NdwuColumnResize implements AfterViewInit, OnDestroy {
         const onUp = (me: MouseEvent) => {
           this._teardownDrag();
           const finalWidth = Math.max(MIN_COLUMN_WIDTH, startWidth + (me.pageX - startX));
-          this._zone.run(() => this.resized.emit(finalWidth));
+          this._zone.run(() => this.ndwuColumnResized.emit(finalWidth));
         };
 
         document.body.style.cursor = 'col-resize';

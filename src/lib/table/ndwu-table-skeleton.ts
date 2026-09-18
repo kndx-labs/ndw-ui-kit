@@ -46,7 +46,7 @@ import type {TranslationTexts} from './ndwu-table.types';
     'class': 'ndwu-table-skeleton',
   },
 })
-export class NdwuTableSkeleton {
+export class NdwuTableSkeletonComponent {
   private readonly DEFAULT_SKELETON_TEXTS = {
     loading: 'Loading table data',
   };
@@ -81,7 +81,10 @@ export class NdwuTableSkeleton {
   // proportion to their declared width — so grow must be proportional too.
   _flexFor(col: number): string {
     const width = this.columnWidths[col];
-    if (!width) return '1 1 0';
+    if (!width) {
+      return '1 1 0';
+    }
+
     return `${parseFloat(width) || 1} 0 ${width}`;
   }
 }

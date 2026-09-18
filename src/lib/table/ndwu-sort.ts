@@ -25,7 +25,7 @@ export interface NdwuSortState {
   selector: '[ndwuSort]',
   exportAs: 'ndwuSort',
 })
-export class NdwuSort {
+export class NdwuSortDirective {
   private readonly _active = signal('');
   private readonly _direction = signal<NdwuSortDirection>('');
 
@@ -37,7 +37,7 @@ export class NdwuSort {
   set direction(value: NdwuSortDirection) { this._direction.set(value); }
   get direction(): NdwuSortDirection { return this._direction(); }
 
-  @Output('ndwuSortChange') readonly sortChange = new EventEmitter<NdwuSortState>();
+  @Output() readonly ndwuSortChange = new EventEmitter<NdwuSortState>();
 
   readonly activeSignal: Signal<string> = this._active.asReadonly();
   readonly directionSignal: Signal<NdwuSortDirection> = this._direction.asReadonly();
@@ -53,12 +53,17 @@ export class NdwuSort {
       this._active.set(id);
       this._direction.set('asc');
     }
-    this.sortChange.emit({active: this._active(), direction: this._direction()});
+    this.ndwuSortChange.emit({active: this._active(), direction: this._direction()});
   }
 
   private _nextDirection(current: NdwuSortDirection): NdwuSortDirection {
-    if (current === 'asc') return 'desc';
-    if (current === 'desc') return '';
+    if (current === 'asc') {
+      return 'desc';
+    }
+    if (current === 'desc') {
+      return '';
+    }
+
     return 'asc';
   }
 }
@@ -90,8 +95,8 @@ export class NdwuSort {
     '[attr.aria-sort]': 'ariaSort()',
   },
 })
-export class NdwuSortHeader implements OnInit {
-  private readonly _sort = inject(NdwuSort);
+export class NdwuSortHeaderComponent implements OnInit {
+  private readonly _sort = inject(NdwuSortDirective);
 
   @Input('ndwu-sort-header') id = '';
 
@@ -105,7 +110,10 @@ export class NdwuSortHeader implements OnInit {
   );
 
   readonly ariaSort = computed(() => {
-    if (!this.isActive()) return null;
+    if (!this.isActive()) {
+      return null;
+    }
+
     return this._sort.directionSignal() === 'asc' ? 'ascending' : 'descending';
   });
 

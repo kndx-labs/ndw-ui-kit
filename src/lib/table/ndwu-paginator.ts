@@ -74,7 +74,7 @@ export interface NdwuPageEvent {
     'class': 'ndwu-paginator',
   },
 })
-export class NdwuPaginator {
+export class NdwuPaginatorComponent {
   private readonly DEFAULT_PAGINATOR_TEXTS = {
     itemsPerPage: 'Items per page',
     range: '{{start}}-{{end}} of {{length}}',
@@ -126,7 +126,9 @@ export class NdwuPaginator {
   readonly rangeLabel = computed<{key: string; params?: Record<string, number>}>(() => {
     const texts = this.effectiveTexts();
     const length = this._length();
-    if (length === 0) return {key: texts.rangeEmpty};
+    if (length === 0) {
+      return {key: texts.rangeEmpty};
+    }
 
     const start = this.currentPage() * this._pageSize() + 1;
     const end = Math.min((this.currentPage() + 1) * this._pageSize(), length);

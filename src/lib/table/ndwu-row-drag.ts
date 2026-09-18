@@ -20,7 +20,7 @@ import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
     'class': 'ndwu-row-drag-list',
   },
 })
-export class NdwuRowDrag {}
+export class NdwuRowDragDirective {}
 
 /** Makes one row draggable. The bound value is passed back on drop. */
 @Directive({
@@ -33,7 +33,7 @@ export class NdwuRowDrag {}
     'class': 'ndwu-row-draggable',
   },
 })
-export class NdwuRowDraggable {}
+export class NdwuRowDraggableDirective {}
 
 /** The grip in the leading cell; dragging starts here, not anywhere on the row. */
 @Component({
@@ -49,6 +49,6 @@ export class NdwuRowDraggable {}
     'type': 'button',
   },
 })
-export class NdwuRowDragHandle {
+export class NdwuRowDragHandleComponent {
   protected readonly ICON_NAME = ICON_NAME;
 }

@@ -10,27 +10,27 @@ import {
 
 @Directive({
   selector: '[ndwuCellDef]',
-  providers: [{provide: CdkCellDef, useExisting: NdwuCellDef}],
+  providers: [{provide: CdkCellDef, useExisting: NdwuCellDefDirective}],
 })
-export class NdwuCellDef extends CdkCellDef {}
+export class NdwuCellDefDirective extends CdkCellDef {}
 
 @Directive({
   selector: '[ndwuHeaderCellDef]',
-  providers: [{provide: CdkHeaderCellDef, useExisting: NdwuHeaderCellDef}],
+  providers: [{provide: CdkHeaderCellDef, useExisting: NdwuHeaderCellDefDirective}],
 })
-export class NdwuHeaderCellDef extends CdkHeaderCellDef {}
+export class NdwuHeaderCellDefDirective extends CdkHeaderCellDef {}
 
 @Directive({
   selector: '[ndwuFooterCellDef]',
-  providers: [{provide: CdkFooterCellDef, useExisting: NdwuFooterCellDef}],
+  providers: [{provide: CdkFooterCellDef, useExisting: NdwuFooterCellDefDirective}],
 })
-export class NdwuFooterCellDef extends CdkFooterCellDef {}
+export class NdwuFooterCellDefDirective extends CdkFooterCellDef {}
 
 @Directive({
   selector: 'ndwu-cell, td[ndwu-cell]',
   host: {'class': 'ndwu-cell'},
 })
-export class NdwuCell extends CdkCell {}
+export class NdwuCellDirective extends CdkCell {}
 
 @Directive({
   selector: 'ndwu-header-cell, th[ndwu-header-cell]',
@@ -38,10 +38,10 @@ export class NdwuCell extends CdkCell {}
   // what gives an unlabelled in-cell control (toggle, checkbox) its context.
   host: {'class': 'ndwu-header-cell', 'scope': 'col'},
 })
-export class NdwuHeaderCell extends CdkHeaderCell {}
+export class NdwuHeaderCellDirective extends CdkHeaderCell {}
 
 @Directive({
   selector: 'ndwu-footer-cell, td[ndwu-footer-cell]',
   host: {'class': 'ndwu-footer-cell'},
 })
-export class NdwuFooterCell extends CdkFooterCell {}
+export class NdwuFooterCellDirective extends CdkFooterCell {}

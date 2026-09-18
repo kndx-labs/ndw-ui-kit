@@ -1,9 +1,19 @@
-import {Directive} from '@angular/core';
+import {Directive, Input} from '@angular/core';
 import {CdkColumnDef} from '@angular/cdk/table';
 
 @Directive({
   selector: '[ndwuColumnDef]',
-  inputs: [{name: 'name', alias: 'ndwuColumnDef'}],
-  providers: [{provide: CdkColumnDef, useExisting: NdwuColumnDef}],
+  providers: [{provide: CdkColumnDef, useExisting: NdwuColumnDefDirective}],
 })
-export class NdwuColumnDef extends CdkColumnDef {}
+export class NdwuColumnDefDirective extends CdkColumnDef {
+  // `name` is an accessor on the CDK class (setting it also derives the cell
+  // css classes), so the alias has to go on an override of that accessor.
+  @Input('ndwuColumnDef')
+  override get name(): string {
+    return super.name;
+  }
+
+  override set name(value: string) {
+    super.name = value;
+  }
+}

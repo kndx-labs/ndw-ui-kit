@@ -18,4 +18,4 @@ import {Component, ChangeDetectionStrategy, ViewEncapsulation} from '@angular/co
     'class': 'ndwu-table-toolbar',
   },
 })
-export class NdwuTableToolbar {}
+export class NdwuTableToolbarComponent {}

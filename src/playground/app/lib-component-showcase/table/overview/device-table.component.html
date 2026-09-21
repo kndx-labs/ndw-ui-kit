@@ -55,7 +55,7 @@
 @if (loading()) {
   <ndwu-table-skeleton
     [rows]="pageSize()"
-    [columns]="7"
+    [columns]="displayedColumns.length"
     [columnWidths]="skeletonWidths"
     [skeletonTexts]="translationTexts.skeleton"
   />
@@ -147,7 +147,7 @@
           [attr.aria-label]="(isExpanded(row.id) ? 'table-showcase.overview.collapse' : 'table-showcase.overview.expand') | localize: {name: row.name}"
           (click)="toggleExpand(row.id)"
         >
-          <ndwu-icon [name]="isExpanded(row.id) ? 'chevron_down_S' : 'chevron_right_S'" />
+          <ndwu-icon [name]="isExpanded(row.id) ? ICON_NAME.CHEVRON_DOWN_S : ICON_NAME.CHEVRON_RIGHT_S" />
         </button>
         {{ row.name }}
       </td>

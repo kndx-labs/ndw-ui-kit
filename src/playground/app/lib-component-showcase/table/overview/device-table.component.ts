@@ -29,6 +29,7 @@ import {
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
+  ICON_NAME,
   NdwuBadgeComponent,
   NdwuButtonComponent,
   NdwuCheckboxComponent,
@@ -91,6 +92,8 @@ const STATUSES = ['online', 'offline'] as const satisfies readonly Device['statu
   ],
 })
 export class DeviceTableComponent {
+  protected readonly ICON_NAME = ICON_NAME;
+
   /** Overrides the library's English defaults with keys from the app dictionary. */
   protected readonly translationTexts: NdwuTableTranslationTexts = {
     paginator: {

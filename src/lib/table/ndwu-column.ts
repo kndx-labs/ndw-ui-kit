@@ -9,11 +9,11 @@ export class NdwuColumnDefDirective extends CdkColumnDef {
   // `name` is an accessor on the CDK class (setting it also derives the cell
   // css classes), so the alias has to go on an override of that accessor.
   @Input('ndwuColumnDef')
-  override get name(): string {
+  public override get name(): string {
     return super.name;
   }
 
-  override set name(value: string) {
+  public override set name(value: string) {
     super.name = value;
   }
 }

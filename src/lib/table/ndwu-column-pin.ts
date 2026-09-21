@@ -13,7 +13,8 @@ import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
  * column def's `sticky`, which is what actually freezes the column.
  */
 @Component({
-  selector: 'button[ndwu-column-pin]',
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'button[ndwuColumnPin]',
   template: '<ndwu-icon [name]="pinned() ? ICON_NAME.UNPIN_S : ICON_NAME.PIN_S" />',
   styleUrl: './ndwu-column-pin.scss',
   encapsulation: ViewEncapsulation.None,
@@ -30,8 +31,8 @@ import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
 export class NdwuColumnPinComponent {
   protected readonly ICON_NAME = ICON_NAME;
 
-  readonly pinned = input(false, {transform: booleanAttribute});
-  readonly pinnedChange = output<boolean>();
+  public readonly pinned = input(false, {transform: booleanAttribute});
+  public readonly pinnedChange = output<boolean>();
 
   protected toggle(event: Event): void {
     // The pin usually sits inside a sort header, which would otherwise sort.

@@ -2,8 +2,7 @@ import {
   Directive,
   ElementRef,
   inject,
-  Output,
-  EventEmitter,
+  output,
   NgZone,
   OnDestroy,
   Renderer2,
@@ -19,71 +18,75 @@ const MIN_COLUMN_WIDTH = 40;
   },
 })
 export class NdwuColumnResizeDirective implements AfterViewInit, OnDestroy {
-  private readonly _el = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly _zone = inject(NgZone);
-  private readonly _renderer = inject(Renderer2);
+  public readonly ndwuColumnResized = output<number>();
 
-  @Output() readonly ndwuColumnResized = new EventEmitter<number>();
+  private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly zone = inject(NgZone);
+  private readonly renderer = inject(Renderer2);
 
-  private _handle: HTMLElement | null = null;
-  private _cleanup: (() => void)[] = [];
-  private _activeMoveListener: (() => void) | null = null;
-  private _activeUpListener: (() => void) | null = null;
+  private handle: HTMLElement | null = null;
+  private cleanup: (() => void)[] = [];
+  private activeMoveListener: (() => void) | null = null;
+  private activeUpListener: (() => void) | null = null;
 
-  ngAfterViewInit(): void {
-    this._handle = this._renderer.createElement('div');
-    this._renderer.addClass(this._handle, 'ndwu-column-resize-handle');
-    this._renderer.appendChild(this._el.nativeElement, this._handle);
+  public ngAfterViewInit(): void {
+    this.handle = this.renderer.createElement('div');
+    this.renderer.addClass(this.handle, 'ndwu-column-resize-handle');
+    this.renderer.appendChild(this.el.nativeElement, this.handle);
 
-    this._zone.runOutsideAngular(() => {
+    this.zone.runOutsideAngular(() => {
       // Grip sits inside the header cell, which may also be a sort header.
       // Without this the drag's trailing click would toggle sorting.
-      const click = this._renderer.listen(this._handle, 'click', (e: MouseEvent) => {
-        e.stopPropagation();
+      const click = this.renderer.listen(this.handle, 'click', (event: MouseEvent) => {
+        event.stopPropagation();
       });
-      this._cleanup.push(click);
 
-      const mousedown = this._renderer.listen(this._handle, 'mousedown', (e: MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const startX = e.pageX;
-        const startWidth = this._el.nativeElement.offsetWidth;
+      this.cleanup.push(click);
 
-        const onMove = (me: MouseEvent) => {
-          const newWidth = Math.max(MIN_COLUMN_WIDTH, startWidth + (me.pageX - startX));
-          this._renderer.setStyle(this._el.nativeElement, 'width', `${newWidth}px`);
+      const mousedown = this.renderer.listen(this.handle, 'mousedown', (event: MouseEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const startX = event.pageX;
+        const startWidth = this.el.nativeElement.offsetWidth;
+
+        const widthAt = (pageX: number): number => Math.max(MIN_COLUMN_WIDTH, startWidth + (pageX - startX));
+
+        const onMove = (moveEvent: MouseEvent) => {
+          this.renderer.setStyle(this.el.nativeElement, 'width', `${widthAt(moveEvent.pageX)}px`);
         };
 
-        const onUp = (me: MouseEvent) => {
-          this._teardownDrag();
-          const finalWidth = Math.max(MIN_COLUMN_WIDTH, startWidth + (me.pageX - startX));
-          this._zone.run(() => this.ndwuColumnResized.emit(finalWidth));
+        const onUp = (upEvent: MouseEvent) => {
+          this.teardownDrag();
+          this.zone.run(() => this.ndwuColumnResized.emit(widthAt(upEvent.pageX)));
         };
 
         document.body.style.cursor = 'col-resize';
         document.body.style.userSelect = 'none';
         document.addEventListener('mousemove', onMove);
         document.addEventListener('mouseup', onUp);
-        this._activeMoveListener = () => document.removeEventListener('mousemove', onMove);
-        this._activeUpListener = () => document.removeEventListener('mouseup', onUp);
+        this.activeMoveListener = () => document.removeEventListener('mousemove', onMove);
+        this.activeUpListener = () => document.removeEventListener('mouseup', onUp);
       });
-      this._cleanup.push(mousedown);
+
+      this.cleanup.push(mousedown);
     });
   }
 
-  ngOnDestroy(): void {
-    this._teardownDrag();
-    this._cleanup.forEach(fn => fn());
-    if (this._handle) {
-      this._renderer.removeChild(this._el.nativeElement, this._handle);
+  public ngOnDestroy(): void {
+    this.teardownDrag();
+    this.cleanup.forEach(fn => fn());
+
+    if (this.handle) {
+      this.renderer.removeChild(this.el.nativeElement, this.handle);
     }
   }
 
-  private _teardownDrag(): void {
-    this._activeMoveListener?.();
-    this._activeUpListener?.();
-    this._activeMoveListener = null;
-    this._activeUpListener = null;
+  private teardownDrag(): void {
+    this.activeMoveListener?.();
+    this.activeUpListener?.();
+    this.activeMoveListener = null;
+    this.activeUpListener = null;
     document.body.style.cursor = '';
     document.body.style.userSelect = '';
   }

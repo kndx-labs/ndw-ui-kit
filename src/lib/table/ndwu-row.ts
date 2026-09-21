@@ -16,14 +16,14 @@ import {
   providers: [{provide: CdkHeaderRowDef, useExisting: NdwuHeaderRowDefDirective}],
 })
 export class NdwuHeaderRowDefDirective extends CdkHeaderRowDef {
-  @Input('ndwuHeaderRowDef') override columns: Iterable<string> = [];
+  @Input('ndwuHeaderRowDef') public override columns: Iterable<string> = [];
 
   @Input({alias: 'ndwuHeaderRowDefSticky', transform: booleanAttribute})
-  override get sticky(): boolean {
+  public override get sticky(): boolean {
     return super.sticky;
   }
 
-  override set sticky(value: boolean) {
+  public override set sticky(value: boolean) {
     super.sticky = value;
   }
 }
@@ -33,14 +33,14 @@ export class NdwuHeaderRowDefDirective extends CdkHeaderRowDef {
   providers: [{provide: CdkFooterRowDef, useExisting: NdwuFooterRowDefDirective}],
 })
 export class NdwuFooterRowDefDirective extends CdkFooterRowDef {
-  @Input('ndwuFooterRowDef') override columns: Iterable<string> = [];
+  @Input('ndwuFooterRowDef') public override columns: Iterable<string> = [];
 
   @Input({alias: 'ndwuFooterRowDefSticky', transform: booleanAttribute})
-  override get sticky(): boolean {
+  public override get sticky(): boolean {
     return super.sticky;
   }
 
-  override set sticky(value: boolean) {
+  public override set sticky(value: boolean) {
     super.sticky = value;
   }
 }
@@ -50,9 +50,9 @@ export class NdwuFooterRowDefDirective extends CdkFooterRowDef {
   providers: [{provide: CdkRowDef, useExisting: NdwuRowDefDirective}],
 })
 export class NdwuRowDefDirective<T> extends CdkRowDef<T> {
-  @Input('ndwuRowDefColumns') override columns: Iterable<string> = [];
+  @Input('ndwuRowDefColumns') public override columns: Iterable<string> = [];
   // Undefined means "always", which is what the CDK's own default is.
-  @Input('ndwuRowDefWhen') override when: (index: number, rowData: T) => boolean =
+  @Input('ndwuRowDefWhen') public override when: (index: number, rowData: T) => boolean =
     undefined as unknown as (index: number, rowData: T) => boolean;
 }
 

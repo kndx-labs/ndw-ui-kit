@@ -23,7 +23,7 @@ import {
   NdwuRowDraggableDirective,
   NdwuRowDragHandleComponent,
   NdwuColumnPinComponent,
-  TranslationTexts,
+  NdwuTableTranslationTexts,
 } from '@ndw-ui-kit/core/table';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
@@ -89,7 +89,7 @@ const STATUSES = ['online', 'offline'] as const satisfies readonly Device['statu
 })
 export class DeviceTableComponent {
   /** Overrides the library's English defaults with keys from the app dictionary. */
-  protected readonly translationTexts: TranslationTexts = {
+  protected readonly translationTexts: NdwuTableTranslationTexts = {
     paginator: {
       itemsPerPage: 'table.paginator.itemsPerPage',
       range: 'table.paginator.range',
@@ -104,7 +104,7 @@ export class DeviceTableComponent {
     },
   };
 
-  readonly data = input.required<Device[]>();
+  public readonly data = input.required<Device[]>();
 
   /**
    * Working copy: add and delete mutate this, and it re-seeds if the host swaps

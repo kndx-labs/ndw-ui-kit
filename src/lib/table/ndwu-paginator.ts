@@ -2,15 +2,13 @@ import {
   Component,
   ChangeDetectionStrategy,
   ViewEncapsulation,
-  Input,
-  Output,
-  EventEmitter,
-  signal,
   computed,
   input,
+  model,
+  output,
 } from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import type {TranslationTexts} from './ndwu-table.types';
+import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
 export interface NdwuPageEvent {
   pageIndex: number;
@@ -18,19 +16,29 @@ export interface NdwuPageEvent {
   length: number;
 }
 
+const DEFAULT_PAGINATOR_TEXTS = {
+  itemsPerPage: 'Items per page',
+  range: '{{start}}-{{end}} of {{length}}',
+  rangeEmpty: '0 of 0',
+  firstPage: 'First page',
+  previousPage: 'Previous page',
+  nextPage: 'Next page',
+  lastPage: 'Last page',
+};
+
 @Component({
   selector: 'ndwu-paginator',
   exportAs: 'ndwuPaginator',
   template: `
-    @if (pageSizeOptions.length > 1) {
+    @if (pageSizeOptions().length > 1) {
       <label class="ndwu-paginator-size">
         <span class="ndwu-paginator-size-label">{{ effectiveTexts().itemsPerPage | localize }}</span>
         <select
           class="ndwu-paginator-select"
-          [value]="_pageSize()"
+          [value]="pageSize()"
           (change)="onPageSizeChange($event)"
         >
-          @for (size of pageSizeOptions; track size) {
+          @for (size of pageSizeOptions(); track size) {
             <option [value]="size">{{ size }}</option>
           }
         </select>
@@ -75,112 +83,93 @@ export interface NdwuPageEvent {
   },
 })
 export class NdwuPaginatorComponent {
-  private readonly DEFAULT_PAGINATOR_TEXTS = {
-    itemsPerPage: 'Items per page',
-    range: '{{start}}-{{end}} of {{length}}',
-    rangeEmpty: '0 of 0',
-    firstPage: 'First page',
-    previousPage: 'Previous page',
-    nextPage: 'Next page',
-    lastPage: 'Last page',
-  };
+  public readonly pageSizeOptions = input<number[]>([10, 25, 50]);
+  public readonly length = input(0);
+  public readonly paginatorTexts = input<NdwuTableTranslationTexts['paginator']>();
 
-  readonly paginatorTexts = input<TranslationTexts['paginator']>();
+  // Paging is driven from inside the component as well as from the host, so
+  // these are models rather than plain inputs.
+  public readonly pageIndex = model(0);
+  public readonly pageSize = model(10);
+
+  public readonly page = output<NdwuPageEvent>();
+
+  public readonly totalPages = computed(() => Math.max(1, Math.ceil(this.length() / this.pageSize())));
+
+  /** `pageIndex` can outrun the data when the host shrinks `length` without resetting the page. */
+  public readonly currentPage = computed(() =>
+    Math.max(0, Math.min(this.pageIndex(), this.totalPages() - 1)),
+  );
+
+  public readonly hasPrevious = computed(() => this.currentPage() > 0);
+  public readonly hasNext = computed(() => this.currentPage() < this.totalPages() - 1);
 
   protected readonly effectiveTexts = computed(() => ({
-    ...this.DEFAULT_PAGINATOR_TEXTS,
+    ...DEFAULT_PAGINATOR_TEXTS,
     ...this.paginatorTexts(),
   }));
 
-  readonly _pageIndex = signal(0);
-  readonly _pageSize = signal(10);
-  readonly _length = signal(0);
-
-  @Input() pageSizeOptions: number[] = [10, 25, 50];
-
-  @Input()
-  set pageIndex(value: number) { this._pageIndex.set(value); }
-  get pageIndex(): number { return this._pageIndex(); }
-
-  @Input()
-  set pageSize(value: number) { this._pageSize.set(value); }
-  get pageSize(): number { return this._pageSize(); }
-
-  @Input()
-  set length(value: number) { this._length.set(value); }
-  get length(): number { return this._length(); }
-
-  @Output() readonly page = new EventEmitter<NdwuPageEvent>();
-
-  readonly totalPages = computed(() => Math.max(1, Math.ceil(this._length() / this._pageSize())));
-
-  /** `pageIndex` can outrun the data when the host shrinks `length` without resetting the page. */
-  readonly currentPage = computed(() =>
-    Math.max(0, Math.min(this._pageIndex(), this.totalPages() - 1)),
-  );
-
-  readonly hasPrevious = computed(() => this.currentPage() > 0);
-  readonly hasNext = computed(() => this.currentPage() < this.totalPages() - 1);
-
   /** Key plus interpolation params, so the host can translate and reorder it. */
-  readonly rangeLabel = computed<{key: string; params?: Record<string, number>}>(() => {
+  protected readonly rangeLabel = computed<{key: string; params?: Record<string, number>}>(() => {
     const texts = this.effectiveTexts();
-    const length = this._length();
+    const length = this.length();
+
     if (length === 0) {
       return {key: texts.rangeEmpty};
     }
 
-    const start = this.currentPage() * this._pageSize() + 1;
-    const end = Math.min((this.currentPage() + 1) * this._pageSize(), length);
+    const start = this.currentPage() * this.pageSize() + 1;
+    const end = Math.min((this.currentPage() + 1) * this.pageSize(), length);
 
     return {key: texts.range, params: {start, end, length}};
   });
 
-  firstPage(): void {
+  public firstPage(): void {
     if (this.hasPrevious()) {
-      this._pageIndex.set(0);
-      this._emitPageEvent();
+      this.pageIndex.set(0);
+      this.emitPageEvent();
     }
   }
 
-  lastPage(): void {
+  public lastPage(): void {
     if (this.hasNext()) {
-      this._pageIndex.set(this.totalPages() - 1);
-      this._emitPageEvent();
+      this.pageIndex.set(this.totalPages() - 1);
+      this.emitPageEvent();
     }
   }
 
-  previousPage(): void {
+  public previousPage(): void {
     if (this.hasPrevious()) {
-      this._pageIndex.set(this.currentPage() - 1);
-      this._emitPageEvent();
+      this.pageIndex.set(this.currentPage() - 1);
+      this.emitPageEvent();
     }
   }
 
-  nextPage(): void {
+  public nextPage(): void {
     if (this.hasNext()) {
-      this._pageIndex.set(this.currentPage() + 1);
-      this._emitPageEvent();
+      this.pageIndex.set(this.currentPage() + 1);
+      this.emitPageEvent();
     }
   }
 
-  goToPage(index: number): void {
-    this._pageIndex.set(index);
-    this._emitPageEvent();
+  public goToPage(index: number): void {
+    this.pageIndex.set(index);
+    this.emitPageEvent();
   }
 
-  onPageSizeChange(event: Event): void {
+  protected onPageSizeChange(event: Event): void {
     const newSize = Number((event.target as HTMLSelectElement).value);
-    this._pageSize.set(newSize);
-    this._pageIndex.set(0);
-    this._emitPageEvent();
+
+    this.pageSize.set(newSize);
+    this.pageIndex.set(0);
+    this.emitPageEvent();
   }
 
-  private _emitPageEvent(): void {
+  private emitPageEvent(): void {
     this.page.emit({
       pageIndex: this.currentPage(),
-      pageSize: this._pageSize(),
-      length: this._length(),
+      pageSize: this.pageSize(),
+      length: this.length(),
     });
   }
 }

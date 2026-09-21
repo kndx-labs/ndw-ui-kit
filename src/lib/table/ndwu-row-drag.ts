@@ -37,7 +37,8 @@ export class NdwuRowDraggableDirective {}
 
 /** The grip in the leading cell; dragging starts here, not anywhere on the row. */
 @Component({
-  selector: 'button[ndwu-row-drag-handle]',
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'button[ndwuRowDragHandle]',
   template: '<ndwu-icon [name]="ICON_NAME.MENU_DRAG_S" />',
   styleUrl: './ndwu-row-drag.scss',
   encapsulation: ViewEncapsulation.None,

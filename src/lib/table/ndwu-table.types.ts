@@ -3,7 +3,7 @@
  * text or a translation key, and whatever it leaves out falls back to the
  * component's English default.
  */
-export interface TranslationTexts {
+export interface NdwuTableTranslationTexts {
   paginator?: {
     itemsPerPage?: string;
     /** Interpolates `start`, `end` and `length`. */

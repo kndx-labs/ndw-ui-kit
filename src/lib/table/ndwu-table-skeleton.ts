@@ -2,13 +2,19 @@ import {
   Component,
   ChangeDetectionStrategy,
   ViewEncapsulation,
-  Input,
-  signal,
   computed,
   input,
+  numberAttribute,
 } from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import type {TranslationTexts} from './ndwu-table.types';
+import type {NdwuTableTranslationTexts} from './ndwu-table.types';
+
+const DEFAULT_SKELETON_TEXTS = {
+  loading: 'Loading table data',
+};
+
+/** Relative bar widths, cycled across the columns so rows do not look printed. */
+const BAR_WIDTHS = [60, 80, 45, 70, 55];
 
 @Component({
   selector: 'ndwu-table-skeleton',
@@ -21,17 +27,17 @@ import type {TranslationTexts} from './ndwu-table.types';
       [attr.aria-label]="effectiveTexts().loading | localize"
     >
       <div class="ndwu-skeleton-header">
-        @for (col of _cols(); track col) {
-          <div class="ndwu-skeleton-header-cell" [style.flex]="_flexFor(col)">
+        @for (col of cols(); track col) {
+          <div class="ndwu-skeleton-header-cell" [style.flex]="flexFor(col)">
             <div class="ndwu-skeleton-bar ndwu-skeleton-bar--header"></div>
           </div>
         }
       </div>
-      @for (row of _rows(); track row) {
+      @for (row of rowList(); track row) {
         <div class="ndwu-skeleton-row">
-          @for (col of _cols(); track col) {
-            <div class="ndwu-skeleton-cell" [style.flex]="_flexFor(col)">
-              <div class="ndwu-skeleton-bar" [style.width.%]="_widths[col % _widths.length]"></div>
+          @for (col of cols(); track col) {
+            <div class="ndwu-skeleton-cell" [style.flex]="flexFor(col)">
+              <div class="ndwu-skeleton-bar" [style.width.%]="barWidth(col)"></div>
             </div>
           }
         </div>
@@ -47,44 +53,35 @@ import type {TranslationTexts} from './ndwu-table.types';
   },
 })
 export class NdwuTableSkeletonComponent {
-  private readonly DEFAULT_SKELETON_TEXTS = {
-    loading: 'Loading table data',
-  };
+  public readonly rows = input(5, {transform: numberAttribute});
+  public readonly columns = input(4, {transform: numberAttribute});
 
-  readonly skeletonTexts = input<TranslationTexts['skeleton']>();
+  /** CSS widths matching the real table's columns, so swapping in the data causes no layout jump. */
+  public readonly columnWidths = input<string[]>([]);
+
+  public readonly skeletonTexts = input<NdwuTableTranslationTexts['skeleton']>();
 
   protected readonly effectiveTexts = computed(() => ({
-    ...this.DEFAULT_SKELETON_TEXTS,
+    ...DEFAULT_SKELETON_TEXTS,
     ...this.skeletonTexts(),
   }));
 
-  private readonly _rowCount = signal(5);
-  private readonly _colCount = signal(4);
-
-  @Input()
-  set rows(value: number) { this._rowCount.set(value); }
-  get rows(): number { return this._rowCount(); }
-
-  @Input()
-  set columns(value: number) { this._colCount.set(value); }
-  get columns(): number { return this._colCount(); }
-
-  /** CSS widths matching the real table's columns, so swapping in the data causes no layout jump. */
-  @Input() columnWidths: string[] = [];
-
-  readonly _widths = [60, 80, 45, 70, 55];
-
-  readonly _rows = computed(() => Array.from({length: this._rowCount()}, (_, i) => i));
-  readonly _cols = computed(() => Array.from({length: this._colCount()}, (_, i) => i));
+  protected readonly rowList = computed(() => Array.from({length: this.rows()}, (_, index) => index));
+  protected readonly cols = computed(() => Array.from({length: this.columns()}, (_, index) => index));
 
   // Mirrors `table-layout: fixed`, which hands leftover width to columns in
   // proportion to their declared width — so grow must be proportional too.
-  _flexFor(col: number): string {
-    const width = this.columnWidths[col];
+  protected flexFor(col: number): string {
+    const width = this.columnWidths()[col];
+
     if (!width) {
       return '1 1 0';
     }
 
     return `${parseFloat(width) || 1} 0 ${width}`;
+  }
+
+  protected barWidth(col: number): number {
+    return BAR_WIDTHS[col % BAR_WIDTHS.length] ?? 60;
   }
 }

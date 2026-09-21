@@ -26,4 +26,4 @@ export {NdwuColumnResizeDirective} from './ndwu-column-resize';
 export {NdwuTableSkeletonComponent} from './ndwu-table-skeleton';
 export {NdwuRowDragDirective, NdwuRowDraggableDirective, NdwuRowDragHandleComponent} from './ndwu-row-drag';
 export {NdwuColumnPinComponent} from './ndwu-column-pin';
-export type {TranslationTexts} from './ndwu-table.types';
+export type {NdwuTableTranslationTexts} from './ndwu-table.types';

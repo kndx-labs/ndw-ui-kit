@@ -1,16 +1,13 @@
 import {
   Directive,
-  EventEmitter,
-  Input,
-  Output,
-  Signal,
-  signal,
   computed,
+  model,
+  output,
+  input,
   Component,
   ChangeDetectionStrategy,
   ViewEncapsulation,
   inject,
-  OnInit,
 } from '@angular/core';
 import {ICON_NAME, IconName, NdwuIconComponent} from '@ndw-ui-kit/core';
 
@@ -26,40 +23,35 @@ export interface NdwuSortState {
   exportAs: 'ndwuSort',
 })
 export class NdwuSortDirective {
-  private readonly _active = signal('');
-  private readonly _direction = signal<NdwuSortDirection>('');
+  // Sorting is toggled from the headers, so the state is a model: the host may
+  // seed it and is notified through `ndwuSortChange`.
+  public readonly active = model('', {alias: 'ndwuSortActive'});
+  public readonly direction = model<NdwuSortDirection>('', {alias: 'ndwuSortDirection'});
 
-  @Input('ndwuSortActive')
-  set active(value: string) { this._active.set(value); }
-  get active(): string { return this._active(); }
+  public readonly ndwuSortChange = output<NdwuSortState>();
 
-  @Input('ndwuSortDirection')
-  set direction(value: NdwuSortDirection) { this._direction.set(value); }
-  get direction(): NdwuSortDirection { return this._direction(); }
+  public sort(id: string): void {
+    if (this.active() === id) {
+      const next = this.nextDirection(this.direction());
 
-  @Output() readonly ndwuSortChange = new EventEmitter<NdwuSortState>();
+      this.direction.set(next);
 
-  readonly activeSignal: Signal<string> = this._active.asReadonly();
-  readonly directionSignal: Signal<NdwuSortDirection> = this._direction.asReadonly();
-
-  sort(id: string): void {
-    if (this._active() === id) {
-      const next = this._nextDirection(this._direction());
-      this._direction.set(next);
       if (next === '') {
-        this._active.set('');
+        this.active.set('');
       }
     } else {
-      this._active.set(id);
-      this._direction.set('asc');
+      this.active.set(id);
+      this.direction.set('asc');
     }
-    this.ndwuSortChange.emit({active: this._active(), direction: this._direction()});
+
+    this.ndwuSortChange.emit({active: this.active(), direction: this.direction()});
   }
 
-  private _nextDirection(current: NdwuSortDirection): NdwuSortDirection {
+  private nextDirection(current: NdwuSortDirection): NdwuSortDirection {
     if (current === 'asc') {
       return 'desc';
     }
+
     if (current === 'desc') {
       return '';
     }
@@ -69,7 +61,8 @@ export class NdwuSortDirective {
 }
 
 @Component({
-  selector: '[ndwu-sort-header]',
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: '[ndwuSortHeader]',
   exportAs: 'ndwuSortHeader',
   template: `
     <div class="ndwu-sort-header-inner">
@@ -89,46 +82,43 @@ export class NdwuSortDirective {
   host: {
     'tabindex': '0',
     'role': 'columnheader',
-    '(click)': '_handleClick()',
-    '(keydown.enter)': '_handleClick()',
-    '(keydown.space)': '_handleKeydownSpace($event)',
+    '(click)': 'onSort()',
+    '(keydown.enter)': 'onSort()',
+    '(keydown.space)': 'onSortKeydown($event)',
     '[attr.aria-sort]': 'ariaSort()',
   },
 })
-export class NdwuSortHeaderComponent implements OnInit {
-  private readonly _sort = inject(NdwuSortDirective);
+export class NdwuSortHeaderComponent {
+  private readonly sortState = inject(NdwuSortDirective);
 
-  @Input('ndwu-sort-header') id = '';
+  public readonly id = input.required<string>({alias: 'ndwuSortHeader'});
 
-  readonly isActive = computed(() => this._sort.activeSignal() === this.id && this._sort.directionSignal() !== '');
-  readonly isAsc = computed(() => this.isActive() && this._sort.directionSignal() === 'asc');
-  readonly isDesc = computed(() => this.isActive() && this._sort.directionSignal() === 'desc');
+  public readonly isActive = computed(() =>
+    this.sortState.active() === this.id() && this.sortState.direction() !== '',
+  );
+
+  public readonly isAsc = computed(() => this.isActive() && this.sortState.direction() === 'asc');
+  public readonly isDesc = computed(() => this.isActive() && this.sortState.direction() === 'desc');
 
   /** Dimmed to 0.4 while inactive, so the neutral state reuses the ascending icon. */
-  readonly indicatorIcon = computed<IconName>(() =>
+  protected readonly indicatorIcon = computed<IconName>(() =>
     this.isDesc() ? ICON_NAME.SORTING_REVERSE_S : ICON_NAME.SORTING_DEFAULT_S,
   );
 
-  readonly ariaSort = computed(() => {
+  protected readonly ariaSort = computed(() => {
     if (!this.isActive()) {
       return null;
     }
 
-    return this._sort.directionSignal() === 'asc' ? 'ascending' : 'descending';
+    return this.sortState.direction() === 'asc' ? 'ascending' : 'descending';
   });
 
-  ngOnInit(): void {
-    if (!this.id) {
-      throw new Error('ndwu-sort-header must have an id');
-    }
+  protected onSort(): void {
+    this.sortState.sort(this.id());
   }
 
-  _handleClick(): void {
-    this._sort.sort(this.id);
-  }
-
-  _handleKeydownSpace(event: Event): void {
+  protected onSortKeydown(event: Event): void {
     event.preventDefault();
-    this._sort.sort(this.id);
+    this.sortState.sort(this.id());
   }
 }

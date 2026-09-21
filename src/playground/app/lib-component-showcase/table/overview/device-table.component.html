@@ -80,10 +80,10 @@
 
     <!-- Row drag handle column -->
     <ng-container ndwuColumnDef="drag">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="drag-cell col-drag"></th>
-      <td ndwu-cell *ndwuCellDef="let row" class="drag-cell">
+      <th ndwuHeaderCell *ndwuHeaderCellDef class="drag-cell col-drag"></th>
+      <td ndwuCell *ndwuCellDef="let row" class="drag-cell">
         <button
-          ndwu-row-drag-handle
+          ndwuRowDragHandle
           [disabled]="isSorted()"
           [attr.aria-label]="'table-showcase.overview.reorder-row' | localize: {name: row.name}"
         ></button>
@@ -92,7 +92,7 @@
 
     <!-- Select column -->
     <ng-container ndwuColumnDef="select">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="select-cell col-select">
+      <th ndwuHeaderCell *ndwuHeaderCellDef class="select-cell col-select">
         <input
           type="checkbox"
           [attr.aria-label]="'table-showcase.overview.select-all' | localize"
@@ -101,7 +101,7 @@
           (change)="toggleAll()"
         />
       </th>
-      <td ndwu-cell *ndwuCellDef="let row" class="select-cell">
+      <td ndwuCell *ndwuCellDef="let row" class="select-cell">
         <input
           type="checkbox"
           [attr.aria-label]="'table-showcase.overview.select-row' | localize: {name: row.name}"
@@ -113,10 +113,10 @@
 
     <!-- Toggle column -->
     <ng-container ndwuColumnDef="enabled">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="col-enabled">
+      <th ndwuHeaderCell *ndwuHeaderCellDef class="col-enabled">
         {{ 'table-showcase.overview.columns.enabled' | localize }}
       </th>
-      <td ndwu-cell *ndwuCellDef="let row">
+      <td ndwuCell *ndwuCellDef="let row">
         <!-- Name comes from the `scope="col"` header; the kit toggle has no
              hidden-label input. -->
         <ndwu-toggle
@@ -128,16 +128,16 @@
 
     <!-- Name column (sortable, resizable, pinnable) -->
     <ng-container ndwuColumnDef="name" [sticky]="namePinned()">
-      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="name" ndwuColumnResize class="col-name">
+      <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="name" ndwuColumnResize class="col-name">
         {{ 'table-showcase.overview.columns.name' | localize }}
         <button
-          ndwu-column-pin
+          ndwuColumnPin
           [pinned]="namePinned()"
           (pinnedChange)="namePinned.set($event)"
           [attr.aria-label]="'table-showcase.overview.pin-column' | localize"
         ></button>
       </th>
-      <td ndwu-cell *ndwuCellDef="let row">
+      <td ndwuCell *ndwuCellDef="let row">
         <button
           type="button"
           class="ndwu-expand-icon"
@@ -153,28 +153,28 @@
 
     <!-- Band column (sortable) -->
     <ng-container ndwuColumnDef="band">
-      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="band" class="col-band">
+      <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="band" class="col-band">
         {{ 'table-showcase.overview.columns.band' | localize }}
       </th>
-      <td ndwu-cell *ndwuCellDef="let row">
+      <td ndwuCell *ndwuCellDef="let row">
         <ndwu-badge size="S" tone="gray">{{ row.band }}</ndwu-badge>
       </td>
     </ng-container>
 
     <!-- IP column -->
     <ng-container ndwuColumnDef="ip">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="col-ip">
+      <th ndwuHeaderCell *ndwuHeaderCellDef class="col-ip">
         {{ 'table-showcase.overview.columns.ip' | localize }}
       </th>
-      <td ndwu-cell *ndwuCellDef="let row">{{ row.ip }}</td>
+      <td ndwuCell *ndwuCellDef="let row">{{ row.ip }}</td>
     </ng-container>
 
     <!-- Status column (sortable) -->
     <ng-container ndwuColumnDef="status">
-      <th ndwu-header-cell *ndwuHeaderCellDef ndwu-sort-header="status" class="col-status">
+      <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="status" class="col-status">
         {{ 'table-showcase.overview.columns.status' | localize }}
       </th>
-      <td ndwu-cell *ndwuCellDef="let row">
+      <td ndwuCell *ndwuCellDef="let row">
         <span class="status-dot" [class.online]="row.status === 'online'" [class.offline]="row.status === 'offline'"></span>
         {{ 'table-showcase.overview.status.' + row.status | localize }}
       </td>
@@ -182,8 +182,8 @@
 
     <!-- Actions column: spec pairs a context menu with a direct delete. -->
     <ng-container ndwuColumnDef="actions">
-      <th ndwu-header-cell *ndwuHeaderCellDef class="col-actions"></th>
-      <td ndwu-cell *ndwuCellDef="let row" class="actions-cell">
+      <th ndwuHeaderCell *ndwuHeaderCellDef class="col-actions"></th>
+      <td ndwuCell *ndwuCellDef="let row" class="actions-cell">
         <button
           ndwu-icon-button
           icon="menu_kebab_S"
@@ -203,7 +203,7 @@
 
     <!-- 4. Expandable detail column -->
     <ng-container ndwuColumnDef="expandedDetail">
-      <td ndwu-cell *ndwuCellDef="let row" [attr.colspan]="displayedColumns.length" class="detail-cell">
+      <td ndwuCell *ndwuCellDef="let row" [attr.colspan]="displayedColumns.length" class="detail-cell">
         <div class="detail-content">
           <strong>{{ row.name }}</strong> —
           {{

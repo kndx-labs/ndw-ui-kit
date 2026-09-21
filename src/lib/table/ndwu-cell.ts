@@ -27,13 +27,13 @@ export class NdwuHeaderCellDefDirective extends CdkHeaderCellDef {}
 export class NdwuFooterCellDefDirective extends CdkFooterCellDef {}
 
 @Directive({
-  selector: 'ndwu-cell, td[ndwu-cell]',
+  selector: 'td[ndwuCell], ndwu-cell',
   host: {'class': 'ndwu-cell'},
 })
 export class NdwuCellDirective extends CdkCell {}
 
 @Directive({
-  selector: 'ndwu-header-cell, th[ndwu-header-cell]',
+  selector: 'th[ndwuHeaderCell], ndwu-header-cell',
   // `scope` lets assistive tech announce the column name for each cell, which is
   // what gives an unlabelled in-cell control (toggle, checkbox) its context.
   host: {'class': 'ndwu-header-cell', 'scope': 'col'},
@@ -41,7 +41,7 @@ export class NdwuCellDirective extends CdkCell {}
 export class NdwuHeaderCellDirective extends CdkHeaderCell {}
 
 @Directive({
-  selector: 'ndwu-footer-cell, td[ndwu-footer-cell]',
+  selector: 'td[ndwuFooterCell], ndwu-footer-cell',
   host: {'class': 'ndwu-footer-cell'},
 })
 export class NdwuFooterCellDirective extends CdkFooterCell {}

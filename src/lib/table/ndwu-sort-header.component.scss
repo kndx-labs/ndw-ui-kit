@@ -1,19 +1,37 @@
 @use 'styles/spacing' as spacing;
+@use 'styles/radius' as radius;
 @use 'styles/mixins' as mixins;
 
 :host {
-  cursor: pointer;
   user-select: none;
-
-  &:focus-visible {
-    @include mixins.focus-ring();
-  }
 }
 
 .ndwu-sort-header__inner {
   display: inline-flex;
   gap: spacing.$spacing-4;
   align-items: center;
+}
+
+// The cell is not the sort target, the button is, so it carries the reset,
+// the pointer affordance and the focus ring.
+.ndwu-sort-header__button {
+  display: inline-flex;
+  gap: spacing.$spacing-4;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:focus-visible {
+    @include mixins.focus-ring();
+
+    border-radius: radius.$radius-S;
+  }
 }
 
 // The icon paints with `currentColor`, so colour and dimming are set here.

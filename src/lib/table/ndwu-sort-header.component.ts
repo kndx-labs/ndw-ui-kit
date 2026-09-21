@@ -17,12 +17,10 @@ import {NdwuSortDirective} from './ndwu-sort.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NdwuIconComponent],
   host: {
+    // The sort target is the inner button, so the cell keeps its native
+    // `columnheader` role and stays out of the tab order; `aria-sort`
+    // belongs on the header cell itself.
     'class': 'ndwu-sort-header',
-    'tabindex': '0',
-    'role': 'columnheader',
-    '(click)': 'onSort()',
-    '(keydown.enter)': 'onSort()',
-    '(keydown.space)': 'onSortKeydown($event)',
     '[attr.aria-sort]': 'ariaSort()',
   },
 })
@@ -53,11 +51,6 @@ export class NdwuSortHeaderComponent {
   });
 
   protected onSort(): void {
-    this.sortState.sort(this.id());
-  }
-
-  protected onSortKeydown(event: Event): void {
-    event.preventDefault();
     this.sortState.sort(this.id());
   }
 }

@@ -15,6 +15,22 @@
   padding: spacing.$spacing-12 0;
 }
 
+// The toolbar holds host controls, so size only scales the space around them.
+:host(.ndwu-table-toolbar--S) {
+  gap: spacing.$spacing-8;
+  padding: spacing.$spacing-4 0;
+}
+
+:host(.ndwu-table-toolbar--L) {
+  gap: spacing.$spacing-8;
+  padding: spacing.$spacing-8 0;
+}
+
+:host(.ndwu-table-toolbar--XXL) {
+  gap: spacing.$spacing-16;
+  padding: spacing.$spacing-16 0;
+}
+
 .ndwu-table-toolbar__start {
   display: flex;
   flex: 1;

@@ -1,10 +1,9 @@
 <!-- 1. Toolbar -->
-<ndwu-table-toolbar>
+<ndwu-table-toolbar size="L">
   <button
     ndwuTableToolbarStart
     ndwu-button
     variant="primary"
-    size="L"
     icon="add_S"
     [label]="'table-showcase.overview.add' | localize"
     (click)="onAdd()"
@@ -13,7 +12,6 @@
     ndwuTableToolbarStart
     ndwu-button
     variant="secondary"
-    size="L"
     [label]="(loading() ? 'table-showcase.overview.loading-stop' : 'table-showcase.overview.loading-start') | localize"
     (click)="toggleLoading()"
   ></button>
@@ -22,7 +20,6 @@
     ndwuTableToolbarStart
     ndwu-button
     variant="ghost"
-    size="L"
     [label]="'table-showcase.overview.delete-selected' | localize"
     [disabled]="selectedCount() === 0"
     (click)="onDeleteSelected()"
@@ -84,6 +81,7 @@
       <td ndwuCell *ndwuCellDef="let row" class="drag-cell">
         <button
           ndwuRowDragHandle
+          size="L"
           [disabled]="isSorted()"
           [dragTexts]="translationTexts.rowDragHandle"
           [attr.aria-label]="'table-showcase.overview.reorder-row' | localize: {name: row.name}"
@@ -135,6 +133,7 @@
         {{ 'table-showcase.overview.columns.name' | localize }}
         <button
           ndwuColumnPin
+          size="L"
           [pinned]="namePinned()"
           (pinnedChange)="namePinned.set($event)"
           [pinTexts]="translationTexts.columnPin"
@@ -245,6 +244,7 @@
 }
 
 <ndwu-paginator
+  size="L"
   [length]="filteredData().length"
   [pageSize]="pageSize()"
   [pageIndex]="pageIndex()"

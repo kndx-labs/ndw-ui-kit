@@ -26,6 +26,27 @@
   }
 }
 
+// Hit area per kit size, matching `ndwu-icon-button`.
+:host(.ndwu-column-pin--S) {
+  width: 24px;
+  height: 24px;
+}
+
+:host(.ndwu-column-pin--L) {
+  width: 32px;
+  height: 32px;
+}
+
+:host(.ndwu-column-pin--XL) {
+  width: 44px;
+  height: 44px;
+}
+
+:host(.ndwu-column-pin--XXL) {
+  width: 56px;
+  height: 56px;
+}
+
 :host(.ndwu-column-pin--active) {
   color: var(--ndwu-color-brand-50);
   opacity: 1;

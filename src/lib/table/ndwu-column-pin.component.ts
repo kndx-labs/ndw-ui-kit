@@ -3,10 +3,11 @@ import {
   ChangeDetectionStrategy,
   booleanAttribute,
   computed,
+  inject,
   input,
   output,
 } from '@angular/core';
-import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
+import {ICON_NAME, NdwuIconComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
@@ -26,21 +27,35 @@ const DEFAULT_COLUMN_PIN_TEXTS = {
   styleUrl: './ndwu-column-pin.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NdwuIconComponent, LocalizePipe],
+  hostDirectives: [{
+    directive: NdwuSizeDirective,
+    inputs: ['ndwuSize: size'],
+  }],
   host: {
-    'class': 'ndwu-column-pin',
+    '[class]': 'rootClass()',
     'type': 'button',
-    '[class.ndwu-column-pin--active]': 'pinned()',
     '[attr.aria-pressed]': 'pinned()',
     '(click)': 'toggle($event)',
   },
 })
 export class NdwuColumnPinComponent {
   protected readonly ICON_NAME = ICON_NAME;
+  protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   public readonly pinned = input(false, {transform: booleanAttribute});
   public readonly pinTexts = input<NdwuTableTranslationTexts['columnPin']>();
 
   public readonly pinnedChange = output<boolean>();
+
+  protected readonly rootClass = computed(() => {
+    const classes = ['ndwu-column-pin', `ndwu-column-pin--${this.sizeSvc.effectiveSize()}`];
+
+    if (this.pinned()) {
+      classes.push('ndwu-column-pin--active');
+    }
+
+    return classes.join(' ');
+  });
 
   protected readonly effectiveTexts = computed(() => ({
     ...DEFAULT_COLUMN_PIN_TEXTS,

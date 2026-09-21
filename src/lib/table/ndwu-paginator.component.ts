@@ -2,12 +2,19 @@ import {
   Component,
   ChangeDetectionStrategy,
   computed,
+  inject,
   input,
   model,
   output,
 } from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {ICON_NAME, type NdwuOption, NdwuIconButtonComponent} from '@ndw-ui-kit/core';
+import {
+  ICON_NAME,
+  NDWU_SIZE_TOKEN,
+  type NdwuOption,
+  NdwuIconButtonComponent,
+  NdwuSizeDirective,
+} from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
@@ -35,12 +42,28 @@ const DEFAULT_PAGINATOR_TEXTS = {
   imports: [FormsModule, LocalizePipe, NdwuIconButtonComponent, NdwuSelectFieldComponent],
   styleUrl: './ndwu-paginator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [{
+    directive: NdwuSizeDirective,
+    inputs: ['ndwuSize: size'],
+  }],
+  providers: [
+    {
+      provide: NDWU_SIZE_TOKEN,
+      useFactory: (sizeDirective: NdwuSizeDirective) => {
+        return () => sizeDirective.effectiveSize();
+      },
+      deps: [NdwuSizeDirective],
+    },
+  ],
   host: {
-    class: 'ndwu-paginator',
+    '[class]': 'rootClass()',
   },
 })
 export class NdwuPaginatorComponent {
   protected readonly ICON_NAME = ICON_NAME;
+  protected readonly sizeSvc = inject(NdwuSizeDirective);
+
+  protected readonly rootClass = computed(() => `ndwu-paginator ndwu-paginator--${this.sizeSvc.effectiveSize()}`);
 
   public readonly pageSizeOptions = input<number[]>([10, 25, 50]);
   public readonly length = input(0);

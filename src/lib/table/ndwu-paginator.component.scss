@@ -1,32 +1,33 @@
 @use 'styles/spacing' as spacing;
+@use 'styles/typography' as typography;
 @use 'styles/radius' as radius;
 
 :host {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
   gap: spacing.$spacing-16;
+  justify-content: flex-end;
+  align-items: center;
   padding: spacing.$spacing-12 0;
-  font-size: var(--ndwu-fontSize-small);
-  line-height: 20px;
   color: var(--ndwu-table-cell-color);
+  font-size: typography.$fontSize-small;
+  line-height: 20px;
 }
 
 .ndwu-paginator__range {
   color: var(--ndwu-table-header-color);
-  font-size: var(--ndwu-fontSize-xsmall);
+  font-size: typography.$fontSize-xsmall;
 }
 
 .ndwu-paginator__controls {
   display: flex;
-  align-items: center;
   gap: spacing.$spacing-2;
+  align-items: center;
 }
 
 .ndwu-paginator__button {
   display: inline-flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-width: 32px;
   height: 32px;
   padding: 0 spacing.$spacing-8;
@@ -34,7 +35,7 @@
   border-radius: radius.$radius-S;
   background: var(--ndwu-table-cell-bg);
   color: var(--ndwu-table-cell-color);
-  font-size: var(--ndwu-fontSize-small);
+  font-size: typography.$fontSize-small;
   cursor: pointer;
 
   &:hover:not(:disabled) {
@@ -49,13 +50,13 @@
 
 .ndwu-paginator__size {
   display: inline-flex;
-  align-items: center;
   gap: spacing.$spacing-8;
+  align-items: center;
 }
 
 .ndwu-paginator__size-label {
   color: var(--ndwu-table-header-color);
-  font-size: var(--ndwu-fontSize-xsmall);
+  font-size: typography.$fontSize-xsmall;
 }
 
 .ndwu-paginator__select {
@@ -65,6 +66,6 @@
   border-radius: radius.$radius-S;
   background: var(--ndwu-table-cell-bg);
   color: var(--ndwu-table-cell-color);
-  font-size: var(--ndwu-fontSize-xsmall);
+  font-size: typography.$fontSize-xsmall;
   cursor: pointer;
 }

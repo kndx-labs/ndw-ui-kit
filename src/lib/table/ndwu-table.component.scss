@@ -2,6 +2,7 @@
 @use 'styles/typography' as typography;
 @use 'styles/radius' as radius;
 @use './ndwu-table.tokens' as tokens;
+@use 'styles/mixins' as mixins;
 
 // Encapsulation is off here because the rows and cells below are declared in
 // the consumer's template and instantiated by the CDK, so they never carry
@@ -11,38 +12,39 @@
 .ndwu-table {
   display: block;
   overflow-x: auto;
+
   // Figma draws the table as a rounded surface with no outer stroke; the
   // `overflow` above is what clips the header and last row to the corners.
   border-radius: radius.$radius-L;
 
   table {
     width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
     border-spacing: 0;
+    border-collapse: collapse;
+    table-layout: fixed;
   }
 }
 
 .ndwu-table__expand-icon {
   display: inline-flex;
-  align-items: center;
+  vertical-align: middle;
   justify-content: center;
+  align-items: center;
   width: 20px;
   height: 20px;
   padding: 0;
   border: none;
   background: none;
-  cursor: pointer;
   color: var(--ndwu-table-header-color);
-  vertical-align: middle;
+  cursor: pointer;
 
   &:hover {
     color: var(--ndwu-table-cell-color);
   }
 
   &:focus-visible {
-    outline: none;
-    box-shadow: var(--ndwu-fx-focused-default);
+    @include mixins.focus-ring();
+
     border-radius: radius.$radius-S;
   }
 }
@@ -85,24 +87,26 @@
 }
 
 .ndwu-header-cell {
+  position: relative;
   display: table-cell;
+  vertical-align: middle;
+  box-sizing: border-box;
   height: tokens.$row-height;
+
   // Vertical space comes from `height` + `vertical-align`, not padding: on a
   // table cell `height` is only a minimum, so padding on top of a tall inline
   // child (badge, icon button) would push the row past the 48px design grid.
   padding: 0 spacing.$spacing-12;
+  border-bottom: 1px solid var(--ndwu-table-border-color);
+
+  // Opaque so rows scrolling under a sticky header stay hidden.
+  background-color: var(--ndwu-table-header-bg);
+  color: var(--ndwu-table-header-color);
   font-weight: 500;
   font-size: typography.$fontSize-small;
   line-height: 20px;
-  color: var(--ndwu-table-header-color);
-  // Opaque so rows scrolling under a sticky header stay hidden.
-  background-color: var(--ndwu-table-header-bg);
-  border-bottom: 1px solid var(--ndwu-table-border-color);
   text-align: left;
-  vertical-align: middle;
   white-space: nowrap;
-  box-sizing: border-box;
-  position: relative;
 }
 
 // Sticky header. Opt in with `class="ndwu-header-row--sticky"` on the header row.
@@ -115,15 +119,16 @@
 
 .ndwu-cell {
   display: table-cell;
-  height: tokens.$row-height;
-  // See `.ndwu-header-cell` — vertical padding would break the 48px row grid.
-  padding: 0 spacing.$spacing-12;
-  font-size: typography.$fontSize-small;
-  line-height: 20px;
-  color: var(--ndwu-table-cell-color);
-  border-bottom: 1px solid var(--ndwu-table-border-color);
   vertical-align: middle;
   box-sizing: border-box;
+  height: tokens.$row-height;
+
+  // See `.ndwu-header-cell` — vertical padding would break the 48px row grid.
+  padding: 0 spacing.$spacing-12;
+  border-bottom: 1px solid var(--ndwu-table-border-color);
+  color: var(--ndwu-table-cell-color);
+  font-size: typography.$fontSize-small;
+  line-height: 20px;
 }
 
 .ndwu-footer-cell {
@@ -144,8 +149,8 @@
 .ndwu-cell.ndwu-table-sticky,
 .ndwu-header-cell.ndwu-table-sticky {
   z-index: 2;
-  background-color: inherit;
   border-right: 1px solid var(--ndwu-table-border-color);
+  background-color: inherit;
 }
 
 // Column resize grip, appended to the header cell by NdwuColumnResizeDirective.
@@ -159,8 +164,8 @@
   right: 0;
   width: 4px;
   height: 100%;
-  cursor: col-resize;
   background: transparent;
+  cursor: col-resize;
 
   &:hover,
   &:active {
@@ -182,9 +187,11 @@
 .ndwu-row.cdk-drag-preview {
   display: table;
   box-sizing: border-box;
-  background-color: var(--ndwu-table-cell-bg);
-  box-shadow: var(--ndwu-fx-shadow-M, 0 4px 12px rgb(0 0 0 / 15%));
   border-radius: radius.$radius-S;
+  background-color: var(--ndwu-table-cell-bg);
+
+  // The kit has no elevation token yet, so the lift is spelled out here.
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
 }
 
 .ndwu-row.cdk-drag-animating,

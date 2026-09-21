@@ -1,19 +1,19 @@
 @use 'styles/spacing' as spacing;
+@use 'styles/mixins' as mixins;
 
 :host {
   cursor: pointer;
   user-select: none;
 
   &:focus-visible {
-    outline: none;
-    box-shadow: var(--ndwu-fx-focused-default);
+    @include mixins.focus-ring();
   }
 }
 
 .ndwu-sort-header__inner {
   display: inline-flex;
-  align-items: center;
   gap: spacing.$spacing-4;
+  align-items: center;
 }
 
 // The icon paints with `currentColor`, so colour and dimming are set here.
@@ -22,7 +22,7 @@
   opacity: 0.4;
 
   &--active {
-    opacity: 1;
     color: var(--ndwu-table-cell-color);
+    opacity: 1;
   }
 }

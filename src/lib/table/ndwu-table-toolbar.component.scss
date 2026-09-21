@@ -3,30 +3,30 @@
 
 :host {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
-  justify-content: space-between;
   gap: spacing.$spacing-12;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: tokens.$row-height;
 
   // Figma floats the toolbar controls above the table with no container chrome,
   // so the table stays a single rounded surface.
   padding: spacing.$spacing-12 0;
-  min-height: tokens.$row-height;
-  box-sizing: border-box;
 }
 
 .ndwu-table-toolbar__start {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: spacing.$spacing-8;
   flex: 1;
+  flex-wrap: wrap;
+  gap: spacing.$spacing-8;
+  align-items: center;
   min-width: 0;
 }
 
 .ndwu-table-toolbar__end {
   display: flex;
-  align-items: center;
-  gap: spacing.$spacing-8;
   flex-shrink: 0;
+  gap: spacing.$spacing-8;
+  align-items: center;
 }

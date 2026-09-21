@@ -7,24 +7,24 @@
 }
 
 .ndwu-table-skeleton__table {
+  overflow: hidden;
   border: 1px solid var(--ndwu-table-border-color);
   border-radius: radius.$radius-S;
-  overflow: hidden;
 }
 
 .ndwu-table-skeleton__header {
   display: flex;
-  background-color: var(--ndwu-table-header-bg);
   border-bottom: 1px solid var(--ndwu-table-border-color);
+  background-color: var(--ndwu-table-header-bg);
 }
 
 .ndwu-table-skeleton__header-cell {
-  flex: 1;
-  padding: spacing.$spacing-12;
-  height: tokens.$row-height;
   display: flex;
+  flex: 1;
   align-items: center;
   box-sizing: border-box;
+  height: tokens.$row-height;
+  padding: spacing.$spacing-12;
 }
 
 .ndwu-table-skeleton__row {
@@ -37,15 +37,16 @@
 }
 
 .ndwu-table-skeleton__cell {
-  flex: 1;
-  padding: spacing.$spacing-12;
-  height: tokens.$row-height;
   display: flex;
+  flex: 1;
   align-items: center;
   box-sizing: border-box;
+  height: tokens.$row-height;
+  padding: spacing.$spacing-12;
 }
 
 .ndwu-table-skeleton__bar {
+  width: 60%;
   height: 12px;
   border-radius: 6px;
   background: linear-gradient(
@@ -56,11 +57,10 @@
   );
   background-size: 200% 100%;
   animation: ndwu-skeleton-shimmer 1.5s ease-in-out infinite;
-  width: 60%;
 
   &--header {
-    height: 14px;
     width: 50%;
+    height: 14px;
     opacity: 0.8;
   }
 }

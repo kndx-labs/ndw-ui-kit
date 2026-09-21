@@ -38,7 +38,7 @@ import {_DisposeViewRepeaterStrategy, _VIEW_REPEATER_STRATEGY} from '@angular/cd
   ],
   imports: [HeaderRowOutlet, DataRowOutlet, FooterRowOutlet, NoDataRowOutlet],
   host: {
-    'class': 'ndwu-table',
+    class: 'ndwu-table',
   },
 })
 export class NdwuTableComponent<T> extends CdkTable<T> {

@@ -79,7 +79,7 @@ const DEFAULT_PAGINATOR_TEXTS = {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'class': 'ndwu-paginator',
+    class: 'ndwu-paginator',
   },
 })
 export class NdwuPaginatorComponent {

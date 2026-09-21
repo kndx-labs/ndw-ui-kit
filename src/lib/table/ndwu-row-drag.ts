@@ -17,7 +17,7 @@ import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
     outputs: ['cdkDropListDropped: ndwuRowDrop'],
   }],
   host: {
-    'class': 'ndwu-row-drag-list',
+    class: 'ndwu-row-drag-list',
   },
 })
 export class NdwuRowDragDirective {}
@@ -30,7 +30,7 @@ export class NdwuRowDragDirective {}
     inputs: ['cdkDragData: ndwuRowDraggable', 'cdkDragDisabled: ndwuRowDraggableDisabled'],
   }],
   host: {
-    'class': 'ndwu-row-draggable',
+    class: 'ndwu-row-draggable',
   },
 })
 export class NdwuRowDraggableDirective {}
@@ -46,8 +46,8 @@ export class NdwuRowDraggableDirective {}
   hostDirectives: [CdkDragHandle],
   imports: [NdwuIconComponent],
   host: {
-    'class': 'ndwu-row-drag-handle',
-    'type': 'button',
+    class: 'ndwu-row-drag-handle',
+    type: 'button',
   },
 })
 export class NdwuRowDragHandleComponent {

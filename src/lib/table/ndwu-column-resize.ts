@@ -14,7 +14,7 @@ const MIN_COLUMN_WIDTH = 40;
 @Directive({
   selector: '[ndwuColumnResize]',
   host: {
-    'class': 'ndwu-column-resizable',
+    class: 'ndwu-column-resizable',
   },
 })
 export class NdwuColumnResizeDirective implements AfterViewInit, OnDestroy {

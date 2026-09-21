@@ -145,9 +145,11 @@ export class DeviceTableComponent {
   protected readonly filteredData = computed(() => {
     const text = this.filterText().toLowerCase();
     const data = this.rows();
+
     if (!text) {
       return data;
     }
+
     return data.filter(d =>
       d.name.toLowerCase().includes(text) ||
       d.ip.includes(text) ||
@@ -158,40 +160,47 @@ export class DeviceTableComponent {
   /** A sorted table has no meaningful drop target, so reordering is off then. */
   protected readonly isSorted = computed(() => {
     const {active, direction} = this.sortState();
+
     return active !== '' && direction !== '';
   });
 
   protected readonly sortedData = computed(() => {
     const data = [...this.filteredData()];
     const {active, direction} = this.sortState();
+
     if (!active || !direction) {
       return data;
     }
 
     return data.sort((a, b) => {
       const cmp = String(a[active as keyof Device]).localeCompare(String(b[active as keyof Device]));
+
       return direction === 'asc' ? cmp : -cmp;
     });
   });
 
   protected readonly dataSource = computed(() => {
     const start = this.pageIndex() * this.pageSize();
+
     return this.sortedData().slice(start, start + this.pageSize());
   });
 
   /** Header checkbox and its indeterminate state cover the current page only. */
   private readonly pageSelectedCount = computed(() => {
     const ids = this.selectedIds();
+
     return this.dataSource().filter(d => ids.has(d.id)).length;
   });
 
   protected readonly isAllSelected = computed(() => {
     const data = this.dataSource();
+
     return data.length > 0 && this.pageSelectedCount() === data.length;
   });
 
   protected readonly isIndeterminate = computed(() => {
     const count = this.pageSelectedCount();
+
     return count > 0 && count < this.dataSource().length;
   });
 
@@ -201,9 +210,11 @@ export class DeviceTableComponent {
 
   protected toggleRow(device: Device): void {
     const next = new Set(this.selectedIds());
+
     if (!next.delete(device.id)) {
       next.add(device.id);
     }
+
     this.selectedIds.set(next);
   }
 
@@ -216,6 +227,7 @@ export class DeviceTableComponent {
     } else {
       page.forEach(d => next.add(d.id));
     }
+
     this.selectedIds.set(next);
   }
 
@@ -236,11 +248,13 @@ export class DeviceTableComponent {
 
   protected toggleExpand(id: number): void {
     const current = new Set(this.expandedRows());
+
     if (current.has(id)) {
       current.delete(id);
     } else {
       current.add(id);
     }
+
     this.expandedRows.set(current);
   }
 
@@ -262,9 +276,11 @@ export class DeviceTableComponent {
 
   protected toggleEnabled(device: Device): void {
     const next = new Set(this.toggledRows());
+
     if (!next.delete(device.id)) {
       next.add(device.id);
     }
+
     this.toggledRows.set(next);
   }
 
@@ -276,6 +292,7 @@ export class DeviceTableComponent {
     const page = this.dataSource();
     const moved = page[event.previousIndex];
     const target = page[event.currentIndex];
+
     if (!moved || !target || moved === target) {
       return;
     }
@@ -284,6 +301,7 @@ export class DeviceTableComponent {
       const next = [...rows];
       const from = next.findIndex(d => d.id === moved.id);
       const to = next.findIndex(d => d.id === target.id);
+
       if (from === -1 || to === -1) {
         return rows;
       }
@@ -306,6 +324,7 @@ export class DeviceTableComponent {
 
   protected onAdd(): void {
     const device = this.randomDevice();
+
     this.rows.update(rows => [...rows, device]);
     this.lastAction.set({key: 'table-showcase.overview.action.added', params: {name: device.name}});
   }
@@ -313,6 +332,7 @@ export class DeviceTableComponent {
   protected onDeleteSelected(): void {
     const ids = this.selectedIds();
     const doomed = this.rows().filter(d => ids.has(d.id));
+
     if (doomed.length === 0) {
       return;
     }

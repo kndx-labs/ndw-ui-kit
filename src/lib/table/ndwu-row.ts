@@ -63,8 +63,8 @@ export class NdwuRowDefDirective<T> extends CdkRowDef<T> {
   providers: [{provide: CdkHeaderRow, useExisting: NdwuHeaderRowComponent}],
   imports: [CdkCellOutlet],
   host: {
-    'class': 'ndwu-header-row',
-    'role': 'row',
+    class: 'ndwu-header-row',
+    role: 'row',
   },
 })
 export class NdwuHeaderRowComponent extends CdkHeaderRow {}
@@ -76,8 +76,8 @@ export class NdwuHeaderRowComponent extends CdkHeaderRow {}
   providers: [{provide: CdkFooterRow, useExisting: NdwuFooterRowComponent}],
   imports: [CdkCellOutlet],
   host: {
-    'class': 'ndwu-footer-row',
-    'role': 'row',
+    class: 'ndwu-footer-row',
+    role: 'row',
   },
 })
 export class NdwuFooterRowComponent extends CdkFooterRow {}
@@ -89,8 +89,8 @@ export class NdwuFooterRowComponent extends CdkFooterRow {}
   providers: [{provide: CdkRow, useExisting: NdwuRowComponent}],
   imports: [CdkCellOutlet],
   host: {
-    'class': 'ndwu-row',
-    'role': 'row',
+    class: 'ndwu-row',
+    role: 'row',
   },
 })
 export class NdwuRowComponent extends CdkRow {}

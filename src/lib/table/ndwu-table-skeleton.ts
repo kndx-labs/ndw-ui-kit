@@ -49,7 +49,7 @@ const BAR_WIDTHS = [60, 80, 45, 70, 55];
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'class': 'ndwu-table-skeleton',
+    class: 'ndwu-table-skeleton',
   },
 })
 export class NdwuTableSkeletonComponent {

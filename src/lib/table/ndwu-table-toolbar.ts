@@ -15,7 +15,7 @@ import {Component, ChangeDetectionStrategy, ViewEncapsulation} from '@angular/co
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'class': 'ndwu-table-toolbar',
+    class: 'ndwu-table-toolbar',
   },
 })
 export class NdwuTableToolbarComponent {}

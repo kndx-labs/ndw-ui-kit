@@ -1,6 +1,6 @@
 @use 'styles/spacing' as spacing;
 @use 'styles/radius' as radius;
-@use './ndwu-table-vars' as vars;
+@use './ndwu-table.tokens' as tokens;
 
 :host {
   display: block;
@@ -21,7 +21,7 @@
 .ndwu-table-skeleton__header-cell {
   flex: 1;
   padding: spacing.$spacing-12;
-  height: vars.$row-height;
+  height: tokens.$row-height;
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -39,7 +39,7 @@
 .ndwu-table-skeleton__cell {
   flex: 1;
   padding: spacing.$spacing-12;
-  height: vars.$row-height;
+  height: tokens.$row-height;
   display: flex;
   align-items: center;
   box-sizing: border-box;

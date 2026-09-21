@@ -1,5 +1,9 @@
 @use 'styles/colors' as colors;
 
+// Shared table metric. Not theme-dependent, so it stays an SCSS variable
+// instead of joining the token map, which carries theme-aware colours only.
+$row-height: 48px;
+
 $ndwu-table-tokens: (
   table-border-color: colors.$gray-20,
   table-header-bg: colors.$gray-5,

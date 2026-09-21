@@ -1,5 +1,5 @@
 @use 'styles/spacing' as spacing;
-@use './ndwu-table-vars' as vars;
+@use './ndwu-table.tokens' as tokens;
 
 :host {
   display: flex;
@@ -11,7 +11,7 @@
   // Figma floats the toolbar controls above the table with no container chrome,
   // so the table stays a single rounded surface.
   padding: spacing.$spacing-12 0;
-  min-height: vars.$row-height;
+  min-height: tokens.$row-height;
   box-sizing: border-box;
 }
 

@@ -1,5 +1,5 @@
 import {Directive} from '@angular/core';
-import {CdkDrag, CdkDropList} from '@angular/cdk/drag-drop';
+import {CdkDropList} from '@angular/cdk/drag-drop';
 
 /**
  * Marks the table as a row drop list. The library only reports the move — the
@@ -20,16 +20,3 @@ import {CdkDrag, CdkDropList} from '@angular/cdk/drag-drop';
   },
 })
 export class NdwuRowDragDirective {}
-
-/** Makes one row draggable. The bound value is passed back on drop. */
-@Directive({
-  selector: '[ndwuRowDraggable]',
-  hostDirectives: [{
-    directive: CdkDrag,
-    inputs: ['cdkDragData: ndwuRowDraggable', 'cdkDragDisabled: ndwuRowDraggableDisabled'],
-  }],
-  host: {
-    class: 'ndwu-row-draggable',
-  },
-})
-export class NdwuRowDraggableDirective {}

@@ -94,20 +94,22 @@
     <!-- Select column -->
     <ng-container ndwuColumnDef="select">
       <th ndwuHeaderCell *ndwuHeaderCellDef class="select-cell col-select">
-        <input
-          type="checkbox"
-          [attr.aria-label]="'table-showcase.overview.select-all' | localize"
+        <ndwu-checkbox
+          size="L"
+          labelHidden
+          [label]="'table-showcase.overview.select-all' | localize"
           [checked]="isAllSelected()"
           [indeterminate]="isIndeterminate()"
-          (change)="toggleAll()"
+          (checkedChange)="toggleAll()"
         />
       </th>
       <td ndwuCell *ndwuCellDef="let row" class="select-cell">
-        <input
-          type="checkbox"
-          [attr.aria-label]="'table-showcase.overview.select-row' | localize: {name: row.name}"
+        <ndwu-checkbox
+          size="L"
+          labelHidden
+          [label]="'table-showcase.overview.select-row' | localize: {name: row.name}"
           [checked]="isSelected(row)"
-          (change)="toggleRow(row)"
+          (checkedChange)="toggleRow(row)"
         />
       </td>
     </ng-container>
@@ -118,9 +120,9 @@
         {{ 'table-showcase.overview.columns.enabled' | localize }}
       </th>
       <td ndwuCell *ndwuCellDef="let row">
-        <!-- Name comes from the `scope="col"` header; the kit toggle has no
-             hidden-label input. -->
         <ndwu-toggle
+          labelHidden
+          [label]="'table-showcase.overview.toggle-row' | localize: {name: row.name}"
           [checked]="isEnabled(row)"
           (checkedChange)="toggleEnabled(row)"
         />

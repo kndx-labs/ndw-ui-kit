@@ -30,6 +30,7 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   NdwuBadgeComponent,
   NdwuButtonComponent,
+  NdwuCheckboxComponent,
   NdwuIconButtonComponent,
   NdwuIconComponent,
   NdwuToggleComponent,
@@ -81,6 +82,7 @@ const STATUSES = ['online', 'offline'] as const satisfies readonly Device['statu
     NdwuColumnPinComponent,
     NdwuBadgeComponent,
     NdwuButtonComponent,
+    NdwuCheckboxComponent,
     NdwuIconButtonComponent,
     NdwuIconComponent,
     NdwuToggleComponent,

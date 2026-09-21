@@ -33,6 +33,7 @@
       "selected-count": "Ausgewählt: {{selected}}/{{total}}",
       "select-all": "Alle Zeilen dieser Seite auswählen",
       "select-row": "{{name}} auswählen",
+      "toggle-row": "{{name}} aktivieren",
       "expand": "Details für {{name}} einblenden",
       "collapse": "Details für {{name}} ausblenden",
       "row-menu": "Weitere Aktionen für {{name}}",

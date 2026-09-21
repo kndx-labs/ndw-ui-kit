@@ -67,12 +67,9 @@
   padding-left: 16px;
   padding-right: 16px;
 
-  input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    cursor: pointer;
-    accent-color: var(--ndwu-color-brand-50);
+  ndwu-checkbox {
+    display: inline-flex;
+    vertical-align: middle;
   }
 }
 

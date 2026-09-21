@@ -63,7 +63,7 @@
   <!-- Main table with 2. sticky header, 3. column resize, 4. row expansion -->
   <ndwu-table
     class="table-scroll"
-    [dataSource]="dataSource()"
+    [dataSource]="dataSource"
     [trackBy]="trackById"
     [multiTemplateDataRows]="true"
     ndwuRowDrag
@@ -245,7 +245,7 @@
 
 <ndwu-paginator
   size="L"
-  [length]="filteredData().length"
+  [length]="dataSource.length()"
   [pageSize]="pageSize()"
   [pageIndex]="pageIndex()"
   [pageSizeOptions]="[5, 10]"

@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, Component, computed, input, linkedSignal, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, effect, input, signal} from '@angular/core';
 import {
   NdwuTableComponent,
+  NdwuTableDataSource,
   NdwuColumnDefDirective,
   NdwuHeaderCellDefDirective,
   NdwuCellDefDirective,
@@ -119,10 +120,18 @@ export class DeviceTableComponent {
   public readonly data = input.required<Device[]>();
 
   /**
-   * Working copy: add and delete mutate this, and it re-seeds if the host swaps
-   * the input. The two demo tables therefore edit independently.
+   * The kit data source owns filtering, sorting and paging; the component only
+   * feeds it rows and binds its state to the sort directive and the paginator.
    */
-  protected readonly rows = linkedSignal(() => this.data());
+  protected readonly dataSource = new NdwuTableDataSource<Device>({
+    filterPredicate: (device, filter) =>
+      device.name.toLowerCase().includes(filter)
+      || device.ip.includes(filter)
+      || device.band.toLowerCase().includes(filter),
+  });
+
+  /** Working copy: add and delete mutate it, and it re-seeds if the host swaps the input. */
+  protected readonly rows = this.dataSource.data;
 
   protected readonly displayedColumns =
     ['drag', 'select', 'enabled', 'name', 'band', 'ip', 'status', 'actions'];
@@ -139,7 +148,6 @@ export class DeviceTableComponent {
    */
   private readonly selectedIds = signal<ReadonlySet<number>>(new Set());
   protected readonly selectedCount = computed(() => this.selectedIds().size);
-  protected readonly filterText = signal('');
   protected readonly loading = signal(false);
   protected readonly expandedRows = signal<Set<number>>(new Set());
   /** Only rows the user flipped; every other row follows the device's own status. */
@@ -150,62 +158,30 @@ export class DeviceTableComponent {
    */
   protected readonly lastAction = signal<ActionMessage | null>(null);
 
-  protected readonly sortState = signal<NdwuSortState>({active: '', direction: ''});
-  protected readonly pageIndex = signal(0);
-  protected readonly pageSize = signal(5);
-
-  protected readonly filteredData = computed(() => {
-    const text = this.filterText().toLowerCase();
-    const data = this.rows();
-
-    if (!text) {
-      return data;
-    }
-
-    return data.filter(d =>
-      d.name.toLowerCase().includes(text) ||
-      d.ip.includes(text) ||
-      d.band.toLowerCase().includes(text)
-    );
-  });
+  protected readonly sortState = this.dataSource.sort;
+  protected readonly pageIndex = this.dataSource.pageIndex;
+  protected readonly pageSize = this.dataSource.pageSize;
 
   /** A sorted table has no meaningful drop target, so reordering is off then. */
-  protected readonly isSorted = computed(() => {
-    const {active, direction} = this.sortState();
+  protected readonly isSorted = this.dataSource.isSorted;
 
-    return active !== '' && direction !== '';
-  });
+  protected readonly visibleRows = this.dataSource.page;
 
-  protected readonly sortedData = computed(() => {
-    const data = [...this.filteredData()];
-    const {active, direction} = this.sortState();
+  constructor() {
+    this.pageSize.set(5);
 
-    if (!active || !direction) {
-      return data;
-    }
-
-    return data.sort((a, b) => {
-      const cmp = String(a[active as keyof Device]).localeCompare(String(b[active as keyof Device]));
-
-      return direction === 'asc' ? cmp : -cmp;
-    });
-  });
-
-  protected readonly dataSource = computed(() => {
-    const start = this.pageIndex() * this.pageSize();
-
-    return this.sortedData().slice(start, start + this.pageSize());
-  });
+    effect(() => this.rows.set(this.data()));
+  }
 
   /** Header checkbox and its indeterminate state cover the current page only. */
   private readonly pageSelectedCount = computed(() => {
     const ids = this.selectedIds();
 
-    return this.dataSource().filter(d => ids.has(d.id)).length;
+    return this.visibleRows().filter(d => ids.has(d.id)).length;
   });
 
   protected readonly isAllSelected = computed(() => {
-    const data = this.dataSource();
+    const data = this.visibleRows();
 
     return data.length > 0 && this.pageSelectedCount() === data.length;
   });
@@ -213,7 +189,7 @@ export class DeviceTableComponent {
   protected readonly isIndeterminate = computed(() => {
     const count = this.pageSelectedCount();
 
-    return count > 0 && count < this.dataSource().length;
+    return count > 0 && count < this.visibleRows().length;
   });
 
   protected isSelected(device: Device): boolean {
@@ -231,7 +207,7 @@ export class DeviceTableComponent {
   }
 
   protected toggleAll(): void {
-    const page = this.dataSource();
+    const page = this.visibleRows();
     const next = new Set(this.selectedIds());
 
     if (this.isAllSelected()) {
@@ -244,7 +220,7 @@ export class DeviceTableComponent {
   }
 
   protected onFilterChange(event: Event): void {
-    this.filterText.set((event.target as HTMLInputElement).value);
+    this.dataSource.filter.set((event.target as HTMLInputElement).value);
     this.pageIndex.set(0);
   }
 
@@ -296,33 +272,14 @@ export class DeviceTableComponent {
     this.toggledRows.set(next);
   }
 
-  /**
-   * The drop indices are page-relative, so the move is replayed on the full
-   * array by id: that survives both paging and an active filter.
-   */
   protected onRowDrop(event: CdkDragDrop<unknown>): void {
-    const page = this.dataSource();
-    const moved = page[event.previousIndex];
-    const target = page[event.currentIndex];
+    const moved = this.visibleRows()[event.previousIndex];
 
-    if (!moved || !target || moved === target) {
-      return;
+    this.dataSource.moveRow(event.previousIndex, event.currentIndex);
+
+    if (moved) {
+      this.lastAction.set({key: 'table-showcase.overview.action.moved', params: {name: moved.name}});
     }
-
-    this.rows.update(rows => {
-      const next = [...rows];
-      const from = next.findIndex(d => d.id === moved.id);
-      const to = next.findIndex(d => d.id === target.id);
-
-      if (from === -1 || to === -1) {
-        return rows;
-      }
-
-      next.splice(to, 0, ...next.splice(from, 1));
-
-      return next;
-    });
-    this.lastAction.set({key: 'table-showcase.overview.action.moved', params: {name: moved.name}});
   }
 
   protected onRowMenu(device: Device): void {
@@ -375,19 +332,10 @@ export class DeviceTableComponent {
   private removeRows(doomed: readonly Device[]): void {
     const ids = new Set(doomed.map(d => d.id));
 
+    // The data source clamps the page index itself when the data shrinks.
     this.rows.update(rows => rows.filter(d => !ids.has(d.id)));
     this.selectedIds.update(set => new Set([...set].filter(id => !ids.has(id))));
     this.expandedRows.update(set => new Set([...set].filter(id => !ids.has(id))));
-    this.clampPageIndex();
-  }
-
-  /** Deleting the tail of the list can leave `pageIndex` past the last page. */
-  private clampPageIndex(): void {
-    const lastPage = Math.max(0, Math.ceil(this.filteredData().length / this.pageSize()) - 1);
-
-    if (this.pageIndex() > lastPage) {
-      this.pageIndex.set(lastPage);
-    }
   }
 
   protected onSettings(): void {

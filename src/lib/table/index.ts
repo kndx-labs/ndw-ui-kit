@@ -1,4 +1,6 @@
 export {NdwuTableComponent} from './ndwu-table.component';
+export {NdwuTableDataSource} from './ndwu-table-data-source';
+export type {NdwuTableDataSourceOptions} from './ndwu-table-data-source';
 
 export {NdwuCellDefDirective} from './ndwu-cell-def.directive';
 export {NdwuHeaderCellDefDirective} from './ndwu-header-cell-def.directive';

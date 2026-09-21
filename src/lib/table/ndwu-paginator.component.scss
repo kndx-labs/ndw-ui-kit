@@ -24,30 +24,6 @@
   align-items: center;
 }
 
-.ndwu-paginator__button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 32px;
-  height: 32px;
-  padding: 0 spacing.$spacing-8;
-  border: 1px solid var(--ndwu-table-border-color);
-  border-radius: radius.$radius-S;
-  background: var(--ndwu-table-cell-bg);
-  color: var(--ndwu-table-cell-color);
-  font-size: typography.$fontSize-small;
-  cursor: pointer;
-
-  &:hover:not(:disabled) {
-    background: var(--ndwu-table-row-hover-bg);
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: default;
-  }
-}
-
 .ndwu-paginator__size {
   display: inline-flex;
   gap: spacing.$spacing-8;
@@ -60,12 +36,7 @@
 }
 
 .ndwu-paginator__select {
-  height: 32px;
-  padding: 0 spacing.$spacing-8;
-  border: 1px solid var(--ndwu-table-border-color);
-  border-radius: radius.$radius-S;
-  background: var(--ndwu-table-cell-bg);
-  color: var(--ndwu-table-cell-color);
-  font-size: typography.$fontSize-xsmall;
-  cursor: pointer;
+  // The picker only ever holds a page size, so it is kept to that width
+  // instead of stretching like a form field.
+  width: 88px;
 }

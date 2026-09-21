@@ -1,43 +1,50 @@
 @if (pageSizeOptions().length > 1) {
-  <label class="ndwu-paginator__size">
+  <div class="ndwu-paginator__size">
     <span class="ndwu-paginator__size-label">{{ effectiveTexts().itemsPerPage | localize }}</span>
-    <select
+    <ndwu-select-field
       class="ndwu-paginator__select"
-      [value]="pageSize()"
-      (change)="onPageSizeChange($event)"
-    >
-      @for (size of pageSizeOptions(); track size) {
-        <option [value]="size">{{ size }}</option>
-      }
-    </select>
-  </label>
+      size="L"
+      [options]="pageSizeOptionList()"
+      [ngModel]="pageSize()"
+      [ngModelOptions]="{standalone: true}"
+      (ngModelChange)="onPageSizeChange($event)"
+    />
+  </div>
 }
 <div class="ndwu-paginator__range">
   {{ rangeLabel().key | localize: rangeLabel().params }}
 </div>
 <div class="ndwu-paginator__controls">
   <button
-    class="ndwu-paginator__button"
+    ndwu-icon-button
+    variant="flat"
+    [icon]="ICON_NAME.FIRST_S"
     [disabled]="!hasPrevious()"
-    (click)="firstPage()"
     [attr.aria-label]="effectiveTexts().firstPage | localize"
-  >&#x21E4;</button>
+    (click)="firstPage()"
+  ></button>
   <button
-    class="ndwu-paginator__button"
+    ndwu-icon-button
+    variant="flat"
+    [icon]="ICON_NAME.CHEVRON_LEFT_S"
     [disabled]="!hasPrevious()"
-    (click)="previousPage()"
     [attr.aria-label]="effectiveTexts().previousPage | localize"
-  >&#x2039;</button>
+    (click)="previousPage()"
+  ></button>
   <button
-    class="ndwu-paginator__button"
+    ndwu-icon-button
+    variant="flat"
+    [icon]="ICON_NAME.CHEVRON_RIGHT_S"
     [disabled]="!hasNext()"
-    (click)="nextPage()"
     [attr.aria-label]="effectiveTexts().nextPage | localize"
-  >&#x203A;</button>
+    (click)="nextPage()"
+  ></button>
   <button
-    class="ndwu-paginator__button"
+    ndwu-icon-button
+    variant="flat"
+    [icon]="ICON_NAME.LAST_S"
     [disabled]="!hasNext()"
-    (click)="lastPage()"
     [attr.aria-label]="effectiveTexts().lastPage | localize"
-  >&#x21E5;</button>
+    (click)="lastPage()"
+  ></button>
 </div>

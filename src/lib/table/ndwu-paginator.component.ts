@@ -6,6 +6,9 @@ import {
   model,
   output,
 } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {ICON_NAME, type NdwuOption, NdwuIconButtonComponent} from '@ndw-ui-kit/core';
+import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
@@ -29,7 +32,7 @@ const DEFAULT_PAGINATOR_TEXTS = {
   selector: 'ndwu-paginator',
   exportAs: 'ndwuPaginator',
   templateUrl: './ndwu-paginator.component.html',
-  imports: [LocalizePipe],
+  imports: [FormsModule, LocalizePipe, NdwuIconButtonComponent, NdwuSelectFieldComponent],
   styleUrl: './ndwu-paginator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -37,6 +40,8 @@ const DEFAULT_PAGINATOR_TEXTS = {
   },
 })
 export class NdwuPaginatorComponent {
+  protected readonly ICON_NAME = ICON_NAME;
+
   public readonly pageSizeOptions = input<number[]>([10, 25, 50]);
   public readonly length = input(0);
   public readonly paginatorTexts = input<NdwuTableTranslationTexts['paginator']>();
@@ -57,6 +62,11 @@ export class NdwuPaginatorComponent {
 
   public readonly hasPrevious = computed(() => this.currentPage() > 0);
   public readonly hasNext = computed(() => this.currentPage() < this.totalPages() - 1);
+
+  /** The page sizes as kit options, so the picker is the same dropdown used everywhere else. */
+  protected readonly pageSizeOptionList = computed<NdwuOption[]>(() =>
+    this.pageSizeOptions().map(size => ({value: size, label: `${size}`})),
+  );
 
   protected readonly effectiveTexts = computed(() => ({
     ...DEFAULT_PAGINATOR_TEXTS,
@@ -111,10 +121,8 @@ export class NdwuPaginatorComponent {
     this.emitPageEvent();
   }
 
-  protected onPageSizeChange(event: Event): void {
-    const newSize = Number((event.target as HTMLSelectElement).value);
-
-    this.pageSize.set(newSize);
+  protected onPageSizeChange(value: string | number): void {
+    this.pageSize.set(Number(value));
     this.pageIndex.set(0);
     this.emitPageEvent();
   }

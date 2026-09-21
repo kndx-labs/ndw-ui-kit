@@ -237,7 +237,12 @@
 
     <ng-template ndwuNoDataRow>
       <td class="no-data-cell" [attr.colspan]="displayedColumns.length">
-        {{ 'table-showcase.overview.no-data' | localize }}
+        <ndwu-empty-state
+          size="L"
+          pictogram="pictogram_empty"
+          [header]="'table-showcase.overview.no-data' | localize"
+          [description]="'table-showcase.overview.no-data-hint' | localize"
+        />
       </td>
     </ng-template>
   </ndwu-table>

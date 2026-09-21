@@ -74,9 +74,8 @@
 }
 
 .no-data-cell {
-  text-align: center;
-  padding: 40px 16px;
-  color: var(--ndwu-color-gray-40);
+  // The empty state brings its own spacing and typography.
+  padding: 0;
 }
 
 // Matches the box of the size="L" kit buttons it sits next to.

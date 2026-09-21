@@ -42,6 +42,7 @@
       "row-menu": "More actions for {{name}}",
       "delete-row": "Delete {{name}}",
       "no-data": "No networks found.",
+      "no-data-hint": "Try a different filter.",
       "reorder-row": "Reorder {{name}}",
       "columns": {
         "enabled": "Enabled",

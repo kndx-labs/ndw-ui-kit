@@ -42,6 +42,7 @@
       "row-menu": "Weitere Aktionen für {{name}}",
       "delete-row": "{{name}} löschen",
       "no-data": "Keine Netzwerke gefunden.",
+      "no-data-hint": "Versuchen Sie einen anderen Filter.",
       "reorder-row": "{{name}} verschieben",
       "columns": {
         "enabled": "Aktiviert",

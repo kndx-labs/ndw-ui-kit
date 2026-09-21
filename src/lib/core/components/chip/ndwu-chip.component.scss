@@ -7,8 +7,9 @@
 $statuses: 'default', 'positive', 'negative';
 $icon-size: 20px;
 
+$icon-inset-L: 10px;
+
 :host {
-  /* stylelint-disable order/order */
   appearance: none;
   display: inline-flex;
   vertical-align: middle;
@@ -32,6 +33,7 @@ $icon-size: 20px;
     color 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out;
 
+  // stylelint-disable-next-line order/order
   @include touch-target.touchable();
 
   // ── Status modifiers — token names follow --ndwu-chip-{status}-{state}-{prop} ──
@@ -60,7 +62,7 @@ $icon-size: 20px;
     line-height: 17px;
 
     &.ndwu-chip--with-icon {
-      padding-left: 10px;
+      padding-left: $icon-inset-L;
     }
 
     &.ndwu-chip--icon-only {
@@ -86,27 +88,27 @@ $icon-size: 20px;
     }
   }
 
-  &:hover:not(:disabled) {
+  &:hover:not(.ndwu-chip--disabled) {
     border-color: var(--ndwu-chip-hover-border);
     background-color: var(--ndwu-chip-hover-bg);
   }
 
-  &:focus:not(:disabled) {
+  &:focus:not(.ndwu-chip--disabled) {
     border-color: var(--ndwu-chip-focus-border);
     background-color: var(--ndwu-chip-focus-bg);
     outline: none;
   }
 
-  &:focus-visible:not(:disabled) {
+  &:focus-visible:not(.ndwu-chip--disabled) {
     @include mixins.focus-ring(var(--ndwu-chip-focus-ring));
   }
 
-  &:active:not(:disabled) {
+  &:active:not(.ndwu-chip--disabled) {
     border-color: var(--ndwu-chip-active-border);
     background-color: var(--ndwu-chip-active-bg);
   }
 
-  &:disabled {
+  &.ndwu-chip--disabled {
     border-color: var(--ndwu-chip-disabled-border);
     background-color: var(--ndwu-chip-disabled-bg);
     color: var(--ndwu-chip-disabled-fg);
@@ -124,7 +126,10 @@ $icon-size: 20px;
   &.ndwu-chip--loading {
     pointer-events: none;
   }
-  /* stylelint-enable order/order */
+
+  &.ndwu-chip--icon-only .ndwu-chip__label {
+    display: none;
+  }
 }
 
 .ndwu-chip__icon,

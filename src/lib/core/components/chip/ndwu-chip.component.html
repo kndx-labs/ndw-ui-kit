@@ -11,9 +11,10 @@
   />
 }
 
-@if (label()) {
-  <span
-    class="ndwu-chip__label"
-    [attr.title]="isLabelTruncated() ? localizedLabel() : null"
-  >{{ displayLabel() }}</span>
-}
+<span class="ndwu-chip__label" #labelSlot>
+  @if (label()) {
+    {{ label() | localize }}
+  } @else {
+    <ng-content></ng-content>
+  }
+</span>

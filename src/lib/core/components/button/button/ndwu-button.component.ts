@@ -28,7 +28,7 @@ export type ButtonVariant = Values<typeof BUTTON_VARIANT>;
     NdwuSpokesLoaderComponent,
   ],
   host: {
-    'attr.type': 'button',
+    'type': 'button',
     '[class]': 'hostClasses()',
     '[disabled]': 'disabled()',
   },

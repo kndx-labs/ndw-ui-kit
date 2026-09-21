@@ -11,7 +11,7 @@
             ndwu-chip
             [status]="status"
             [icon]="statusIcon[status]"
-            [label]="status + ' chip'"
+            [label]="`${status} chip`"
           ></button>
         }
       </div>
@@ -24,7 +24,7 @@
           <button
             ndwu-chip
             [status]="status"
-            [label]="status + ' chip'"
+            [label]="`${status} chip`"
           ></button>
         }
       </div>
@@ -38,7 +38,7 @@
             ndwu-chip
             [status]="status"
             [icon]="statusIcon[status]"
-            [ariaLabel]="status + ' chip'"
+            [ariaLabel]="`${status} chip`"
           ></button>
         }
       </div>
@@ -52,14 +52,14 @@
             ndwu-chip
             [size]="size"
             [icon]="ICON_NAME.DOWNLOAD_S"
-            [label]="'Size ' + size"
+            [label]="`Size ${size}`"
           ></button>
         }
         @for (size of sizes; track size) {
           <button
             ndwu-chip
             [size]="size"
-            [label]="'Size ' + size"
+            [label]="`Size ${size}`"
           ></button>
         }
         @for (size of sizes; track size) {
@@ -67,7 +67,7 @@
             ndwu-chip
             [size]="size"
             [icon]="ICON_NAME.DOWNLOAD_S"
-            [ariaLabel]="'Size ' + size"
+            [ariaLabel]="`Size ${size}`"
           ></button>
         }
       </div>
@@ -111,29 +111,27 @@
     </div>
 
     <div class="section">
-      <h4>Truncation — over 18 characters</h4>
+      <h4>Projected content</h4>
       <div class="chip-row">
-        <button
-          ndwu-chip
-          [icon]="ICON_NAME.DOWNLOAD_S"
-          label="Exactly 18 chars!!"
-        ></button>
-        <button
-          ndwu-chip
-          [icon]="ICON_NAME.DOWNLOAD_S"
-          label="Very long chip label that gets cut"
-        ></button>
+        <button ndwu-chip [icon]="ICON_NAME.DOWNLOAD_S">Projected label</button>
+        <button ndwu-chip>Projected, no icon</button>
       </div>
     </div>
 
     <div class="section">
-      <h4>Extra clipping via maxWidth</h4>
+      <h4>Truncation via maxWidth</h4>
       <div class="chip-row">
         <button
           ndwu-chip
           maxWidth="120px"
           [icon]="ICON_NAME.DOWNLOAD_S"
           label="Narrow container"
+        ></button>
+        <button
+          ndwu-chip
+          maxWidth="160px"
+          [icon]="ICON_NAME.DOWNLOAD_S"
+          label="Very long chip label that gets cut"
         ></button>
       </div>
     </div>

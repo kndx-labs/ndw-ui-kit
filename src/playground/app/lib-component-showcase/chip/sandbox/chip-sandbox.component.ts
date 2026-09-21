@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   CHIP_STATUS,
@@ -22,7 +21,7 @@ const CHIP_COLOR_TOKENS = [
   'chip-override-accent',
 ] as const;
 
-const CHIP_STATUS_OPTIONS: { id: NdwuChipStatus; label: string }[] = [
+const CHIP_STATUS_OPTIONS: {id: NdwuChipStatus; label: string}[] = [
   {id: CHIP_STATUS.DEFAULT, label: 'default'},
   {id: CHIP_STATUS.POSITIVE, label: 'positive'},
   {id: CHIP_STATUS.NEGATIVE, label: 'negative'},
@@ -62,7 +61,6 @@ function tokenKeyToCssVar(key: string): string {
   styleUrl: './chip-sandbox.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     NdwuChipComponent,
     LocalizePipe,

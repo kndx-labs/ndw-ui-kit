@@ -1,6 +1,6 @@
 @use 'styles/spacing' as spacing;
 @use 'styles/typography' as typography;
-@use 'styles/radius' as radius;
+@use './ndwu-table.tokens' as tokens;
 
 :host {
   display: flex;
@@ -10,7 +10,7 @@
   padding: spacing.$spacing-12 0;
   color: var(--ndwu-table-cell-color);
   font-size: typography.$fontSize-small;
-  line-height: 20px;
+  line-height: tokens.$text-line-height;
 }
 
 :host(.ndwu-paginator--S) {
@@ -51,7 +51,5 @@
 }
 
 .ndwu-paginator__select {
-  // The picker only ever holds a page size, so it is kept to that width
-  // instead of stretching like a form field.
-  width: 88px;
+  width: tokens.$page-size-width;
 }

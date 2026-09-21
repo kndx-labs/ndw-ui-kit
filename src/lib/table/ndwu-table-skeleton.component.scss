@@ -47,8 +47,8 @@
 
 .ndwu-table-skeleton__bar {
   width: 60%;
-  height: 12px;
-  border-radius: 6px;
+  height: tokens.$skeleton-bar-height;
+  border-radius: radius.$radius-M;
   background: linear-gradient(
     90deg,
     var(--ndwu-table-border-color) 25%,
@@ -60,7 +60,7 @@
 
   &--header {
     width: 50%;
-    height: 14px;
+    height: tokens.$skeleton-header-bar-height;
     opacity: 0.8;
   }
 }

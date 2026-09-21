@@ -1,10 +1,11 @@
 @use 'styles/mixins' as mixins;
+@use './ndwu-table.tokens' as tokens;
 
 :host {
   position: absolute;
   top: 0;
   right: 0;
-  width: 4px;
+  width: tokens.$resize-handle-width;
   height: 100%;
   background: transparent;
   cursor: col-resize;

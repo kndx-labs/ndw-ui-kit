@@ -1,5 +1,6 @@
 @use 'styles/radius' as radius;
 @use 'styles/mixins' as mixins;
+@use './ndwu-table.tokens' as tokens;
 
 // The pinned column's own cell styling lives in `ndwu-table.component.scss`:
 // the CDK applies it to consumer cells, out of this component's reach.
@@ -26,25 +27,20 @@
   }
 }
 
-// Hit area per kit size, matching `ndwu-icon-button`.
 :host(.ndwu-column-pin--S) {
-  width: 24px;
-  height: 24px;
+  @include tokens.control-size('S');
 }
 
 :host(.ndwu-column-pin--L) {
-  width: 32px;
-  height: 32px;
+  @include tokens.control-size('L');
 }
 
 :host(.ndwu-column-pin--XL) {
-  width: 44px;
-  height: 44px;
+  @include tokens.control-size('XL');
 }
 
 :host(.ndwu-column-pin--XXL) {
-  width: 56px;
-  height: 56px;
+  @include tokens.control-size('XXL');
 }
 
 :host(.ndwu-column-pin--active) {

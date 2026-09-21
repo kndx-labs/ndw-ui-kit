@@ -1,8 +1,39 @@
+@use 'sass:map';
 @use 'styles/colors' as colors;
 
-// Shared table metric. Not theme-dependent, so it stays an SCSS variable
+// Shared table metrics. Not theme-dependent, so they stay SCSS variables
 // instead of joining the token map, which carries theme-aware colours only.
 $row-height: 48px;
+
+// Text in a 48px row: the line box the header and cell text sit on.
+$text-line-height: 20px;
+
+// The 20x20 box a `_S` kit icon draws in.
+$icon-size-S: 20px;
+
+// Grip width of the column resize handle.
+$resize-handle-width: 4px;
+
+// Page-size picker: it only ever holds a page size, so it does not stretch.
+$page-size-width: 88px;
+
+// Skeleton bars, sized to look like one line of text.
+$skeleton-bar-height: 12px;
+$skeleton-header-bar-height: 14px;
+
+// Hit area per kit size, matching `ndwu-icon-button`.
+$control-sizes: (
+  'S': 24px,
+  'L': 32px,
+  'XL': 44px,
+  'XXL': 56px,
+);
+
+/// Square hit area for an in-table control of the given kit size.
+@mixin control-size($size) {
+  width: map.get($control-sizes, $size);
+  height: map.get($control-sizes, $size);
+}
 
 $ndwu-table-tokens: (
   table-border-color: colors.$gray-20,

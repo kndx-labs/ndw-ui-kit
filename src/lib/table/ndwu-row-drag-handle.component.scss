@@ -1,5 +1,6 @@
 @use 'styles/radius' as radius;
 @use 'styles/mixins' as mixins;
+@use './ndwu-table.tokens' as tokens;
 
 // The drag list and the dragged row are consumer elements, so their drag
 // states live in `ndwu-table.component.scss`; this sheet owns only the grip.
@@ -31,25 +32,20 @@
   }
 }
 
-// Hit area per kit size, matching `ndwu-icon-button`.
 :host(.ndwu-row-drag-handle--S) {
-  width: 24px;
-  height: 24px;
+  @include tokens.control-size('S');
 }
 
 :host(.ndwu-row-drag-handle--L) {
-  width: 32px;
-  height: 32px;
+  @include tokens.control-size('L');
 }
 
 :host(.ndwu-row-drag-handle--XL) {
-  width: 44px;
-  height: 44px;
+  @include tokens.control-size('XL');
 }
 
 :host(.ndwu-row-drag-handle--XXL) {
-  width: 56px;
-  height: 56px;
+  @include tokens.control-size('XXL');
 }
 
 :host-context(.cdk-drag-disabled),

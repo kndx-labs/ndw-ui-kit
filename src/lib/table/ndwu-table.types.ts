@@ -25,4 +25,7 @@ export interface NdwuTableTranslationTexts {
   rowDragHandle?: {
     reorder?: string;
   };
+  columnResize?: {
+    resize?: string;
+  };
 }

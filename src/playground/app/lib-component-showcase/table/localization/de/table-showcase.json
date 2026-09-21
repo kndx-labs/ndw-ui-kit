@@ -12,6 +12,9 @@
     "skeleton": {
       "loading": "Tabellendaten werden geladen"
     },
+    "columnResize": {
+      "resize": "Spaltenbreite ändern"
+    },
     "columnPin": {
       "pin": "Spalte anheften",
       "unpin": "Spalte lösen"

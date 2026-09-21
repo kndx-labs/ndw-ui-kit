@@ -108,6 +108,9 @@ export class DeviceTableComponent {
       pin: 'table.columnPin.pin',
       unpin: 'table.columnPin.unpin',
     },
+    columnResize: {
+      resize: 'table.columnResize.resize',
+    },
     rowDragHandle: {
       reorder: 'table.rowDragHandle.reorder',
     },

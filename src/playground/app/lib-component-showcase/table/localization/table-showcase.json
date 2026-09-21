@@ -12,6 +12,9 @@
     "skeleton": {
       "loading": "Loading table data"
     },
+    "columnResize": {
+      "resize": "Resize column"
+    },
     "columnPin": {
       "pin": "Pin column",
       "unpin": "Unpin column"

@@ -131,7 +131,7 @@
 
     <!-- Name column (sortable, resizable, pinnable) -->
     <ng-container ndwuColumnDef="name" [sticky]="namePinned()">
-      <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="name" ndwuColumnResize class="col-name">
+      <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="name" ndwuColumnResize class="col-name" [resizeTexts]="translationTexts.columnResize">
         {{ 'table-showcase.overview.columns.name' | localize }}
         <button
           ndwuColumnPin

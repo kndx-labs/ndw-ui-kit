@@ -172,6 +172,14 @@
     background-color: var(--ndwu-table-header-color);
     opacity: 0.3;
   }
+
+  // The grip is a keyboard-operable separator, so it needs a visible focus.
+  &:focus-visible {
+    @include mixins.focus-ring();
+
+    background-color: var(--ndwu-table-header-color);
+    opacity: 0.3;
+  }
 }
 
 // Row drag states. The drop list and the dragged row are consumer elements, so

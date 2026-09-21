@@ -15,7 +15,7 @@ import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'button[ndwuColumnPin]',
-  template: '<ndwu-icon [name]="pinned() ? ICON_NAME.UNPIN_S : ICON_NAME.PIN_S" />',
+  templateUrl: './ndwu-column-pin.component.html',
   styleUrl: './ndwu-column-pin.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

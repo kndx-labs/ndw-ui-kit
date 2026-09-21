@@ -1,0 +1,43 @@
+@if (pageSizeOptions().length > 1) {
+  <label class="ndwu-paginator-size">
+    <span class="ndwu-paginator-size-label">{{ effectiveTexts().itemsPerPage | localize }}</span>
+    <select
+      class="ndwu-paginator-select"
+      [value]="pageSize()"
+      (change)="onPageSizeChange($event)"
+    >
+      @for (size of pageSizeOptions(); track size) {
+        <option [value]="size">{{ size }}</option>
+      }
+    </select>
+  </label>
+}
+<div class="ndwu-paginator-range">
+  {{ rangeLabel().key | localize: rangeLabel().params }}
+</div>
+<div class="ndwu-paginator-controls">
+  <button
+    class="ndwu-paginator-btn"
+    [disabled]="!hasPrevious()"
+    (click)="firstPage()"
+    [attr.aria-label]="effectiveTexts().firstPage | localize"
+  >&#x21E4;</button>
+  <button
+    class="ndwu-paginator-btn"
+    [disabled]="!hasPrevious()"
+    (click)="previousPage()"
+    [attr.aria-label]="effectiveTexts().previousPage | localize"
+  >&#x2039;</button>
+  <button
+    class="ndwu-paginator-btn"
+    [disabled]="!hasNext()"
+    (click)="nextPage()"
+    [attr.aria-label]="effectiveTexts().nextPage | localize"
+  >&#x203A;</button>
+  <button
+    class="ndwu-paginator-btn"
+    [disabled]="!hasNext()"
+    (click)="lastPage()"
+    [attr.aria-label]="effectiveTexts().lastPage | localize"
+  >&#x21E5;</button>
+</div>

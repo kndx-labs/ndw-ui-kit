@@ -12,22 +12,7 @@ import {_DisposeViewRepeaterStrategy, _VIEW_REPEATER_STRATEGY} from '@angular/cd
 @Component({
   selector: 'ndwu-table',
   exportAs: 'ndwuTable',
-  template: `
-    <ng-content select="caption" />
-    <ng-content select="colgroup, col" />
-    <table>
-      <thead role="rowgroup">
-        <ng-container headerRowOutlet />
-      </thead>
-      <tbody role="rowgroup">
-        <ng-container rowOutlet />
-        <ng-container noDataRowOutlet />
-      </tbody>
-      <tfoot role="rowgroup">
-        <ng-container footerRowOutlet />
-      </tfoot>
-    </table>
-  `,
+  templateUrl: './ndwu-table.component.html',
   styleUrl: './ndwu-table.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.Default,

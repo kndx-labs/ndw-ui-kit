@@ -3,14 +3,7 @@ import {Component, ChangeDetectionStrategy, ViewEncapsulation} from '@angular/co
 @Component({
   selector: 'ndwu-table-toolbar',
   exportAs: 'ndwuTableToolbar',
-  template: `
-    <div class="ndwu-table-toolbar-start">
-      <ng-content select="[ndwuTableToolbarStart]" />
-    </div>
-    <div class="ndwu-table-toolbar-end">
-      <ng-content select="[ndwuTableToolbarEnd]" />
-    </div>
-  `,
+  templateUrl: './ndwu-table-toolbar.component.html',
   styleUrl: './ndwu-table-toolbar.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

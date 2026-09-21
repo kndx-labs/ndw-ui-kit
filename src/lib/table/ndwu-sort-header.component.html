@@ -1,0 +1,9 @@
+<div class="ndwu-sort-header-inner">
+  <span class="ndwu-sort-header-content"><ng-content /></span>
+  <ndwu-icon
+    class="ndwu-sort-header-indicator"
+    [class.ndwu-sort-active]="isActive()"
+    [name]="indicatorIcon()"
+    aria-hidden="true"
+  />
+</div>

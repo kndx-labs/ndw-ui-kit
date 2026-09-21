@@ -6,7 +6,7 @@ import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'button[ndwuRowDragHandle]',
-  template: '<ndwu-icon [name]="ICON_NAME.MENU_DRAG_S" />',
+  templateUrl: './ndwu-row-drag-handle.component.html',
   styleUrl: './ndwu-row-drag-handle.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

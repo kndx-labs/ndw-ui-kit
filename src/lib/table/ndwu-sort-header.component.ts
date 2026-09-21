@@ -13,17 +13,7 @@ import {NdwuSortDirective} from './ndwu-sort.directive';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: '[ndwuSortHeader]',
   exportAs: 'ndwuSortHeader',
-  template: `
-    <div class="ndwu-sort-header-inner">
-      <span class="ndwu-sort-header-content"><ng-content /></span>
-      <ndwu-icon
-        class="ndwu-sort-header-indicator"
-        [class.ndwu-sort-active]="isActive()"
-        [name]="indicatorIcon()"
-        aria-hidden="true"
-      />
-    </div>
-  `,
+  templateUrl: './ndwu-sort-header.component.html',
   styleUrl: './ndwu-sort-header.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

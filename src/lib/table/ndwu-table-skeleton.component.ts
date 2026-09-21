@@ -19,31 +19,7 @@ const BAR_WIDTHS = [60, 80, 45, 70, 55];
 @Component({
   selector: 'ndwu-table-skeleton',
   exportAs: 'ndwuTableSkeleton',
-  template: `
-    <div
-      class="ndwu-skeleton-table"
-      aria-busy="true"
-      aria-live="polite"
-      [attr.aria-label]="effectiveTexts().loading | localize"
-    >
-      <div class="ndwu-skeleton-header">
-        @for (col of cols(); track col) {
-          <div class="ndwu-skeleton-header-cell" [style.flex]="flexFor(col)">
-            <div class="ndwu-skeleton-bar ndwu-skeleton-bar--header"></div>
-          </div>
-        }
-      </div>
-      @for (row of rowList(); track row) {
-        <div class="ndwu-skeleton-row">
-          @for (col of cols(); track col) {
-            <div class="ndwu-skeleton-cell" [style.flex]="flexFor(col)">
-              <div class="ndwu-skeleton-bar" [style.width.%]="barWidth(col)"></div>
-            </div>
-          }
-        </div>
-      }
-    </div>
-  `,
+  templateUrl: './ndwu-table-skeleton.component.html',
   imports: [LocalizePipe],
   styleUrl: './ndwu-table-skeleton.component.scss',
   encapsulation: ViewEncapsulation.None,

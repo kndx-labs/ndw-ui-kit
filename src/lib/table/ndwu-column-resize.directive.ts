@@ -1,18 +1,17 @@
 import {
   AfterViewInit,
+  ComponentRef,
   Directive,
   ElementRef,
   NgZone,
   Renderer2,
-  computed,
-  effect,
+  ViewContainerRef,
   inject,
   input,
+  inputBinding,
   output,
-  signal,
 } from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {UiKitTranslationService} from '@ndw-ui-kit/core/l10n';
+import {NdwuColumnResizeHandleComponent} from './ndwu-column-resize-handle.component';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
 const MIN_COLUMN_WIDTH = 40;
@@ -21,17 +20,14 @@ const MIN_COLUMN_WIDTH = 40;
 const KEYBOARD_STEP = 8;
 const KEYBOARD_LARGE_STEP = 40;
 
-const DEFAULT_COLUMN_RESIZE_TEXTS = {
-  resize: 'Resize column',
-};
-
 /**
- * Adds a resize grip to a header cell. The grip is created here rather than in
- * a template because the cell it attaches to belongs to the host, and a sort
- * header may already be the component on that element.
+ * Adds a resize grip to a header cell. The grip is a component created here
+ * rather than declared in a template, because the cell belongs to the host and
+ * a sort header may already be the component on that element.
  */
 @Directive({
   selector: '[ndwuColumnResize]',
+  exportAs: 'ndwuColumnResize',
   host: {
     class: 'ndwu-column-resizable',
   },
@@ -44,43 +40,23 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
   private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly zone = inject(NgZone);
   private readonly renderer = inject(Renderer2);
-  private readonly translation = inject(UiKitTranslationService);
+  private readonly viewContainer = inject(ViewContainerRef);
 
-  private readonly handle = signal<HTMLElement | null>(null);
-  private readonly language = toSignal(this.translation.onLangChange$, {initialValue: null});
-
-  private readonly effectiveTexts = computed(() => ({
-    ...DEFAULT_COLUMN_RESIZE_TEXTS,
-    ...this.resizeTexts(),
-  }));
-
-  constructor() {
-    effect(() => {
-      const handle = this.handle();
-
-      if (!handle) {
-        return;
-      }
-
-      // Re-read the label whenever the dictionary or the texts input changes.
-      this.language();
-
-      this.renderer.setAttribute(handle, 'aria-label', this.translation.instant(this.effectiveTexts().resize));
-    });
-  }
+  private handleRef: ComponentRef<NdwuColumnResizeHandleComponent> | null = null;
 
   public ngAfterViewInit(): void {
-    const handle = this.renderer.createElement('div') as HTMLElement;
+    this.handleRef = this.viewContainer.createComponent(NdwuColumnResizeHandleComponent, {
+      bindings: [
+        inputBinding('minWidth', () => MIN_COLUMN_WIDTH),
+        inputBinding('resizeTexts', this.resizeTexts),
+      ],
+    });
 
-    this.renderer.addClass(handle, 'ndwu-column-resizable__handle');
-    this.renderer.setAttribute(handle, 'role', 'separator');
-    this.renderer.setAttribute(handle, 'aria-orientation', 'vertical');
-    this.renderer.setAttribute(handle, 'tabindex', '0');
-    this.renderer.setAttribute(handle, 'aria-valuemin', `${MIN_COLUMN_WIDTH}`);
+    const handle = this.handleRef.location.nativeElement as HTMLElement;
+
+    // The grip is positioned against the header cell, so it is moved inside it.
     this.renderer.appendChild(this.el.nativeElement, handle);
-
     this.reportWidth(handle, this.el.nativeElement.offsetWidth);
-    this.handle.set(handle);
 
     // Pointer moves are frequent and change nothing Angular tracks, so they run
     // outside the zone; only the final width re-enters it.
@@ -159,6 +135,8 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
     this.reportWidth(handle, width);
   }
 
+  // Written straight to the element: a drag updates it outside the zone, where
+  // an input binding would not be picked up until the next change detection.
   private reportWidth(handle: HTMLElement, width: number): void {
     this.renderer.setAttribute(handle, 'aria-valuenow', `${Math.round(width)}`);
   }

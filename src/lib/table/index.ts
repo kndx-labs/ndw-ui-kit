@@ -9,6 +9,7 @@ export {NdwuFooterCellDirective} from './ndwu-footer-cell.directive';
 
 export {NdwuColumnDefDirective} from './ndwu-column-def.directive';
 export {NdwuColumnResizeDirective} from './ndwu-column-resize.directive';
+export {NdwuColumnResizeHandleComponent} from './ndwu-column-resize-handle.component';
 export {NdwuColumnPinComponent} from './ndwu-column-pin.component';
 
 export {NdwuHeaderRowDefDirective} from './ndwu-header-row-def.directive';

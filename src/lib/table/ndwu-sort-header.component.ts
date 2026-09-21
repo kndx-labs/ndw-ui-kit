@@ -1,64 +1,13 @@
 import {
-  Directive,
-  computed,
-  model,
-  output,
-  input,
   Component,
   ChangeDetectionStrategy,
   ViewEncapsulation,
+  computed,
   inject,
+  input,
 } from '@angular/core';
 import {ICON_NAME, IconName, NdwuIconComponent} from '@ndw-ui-kit/core';
-
-export type NdwuSortDirection = 'asc' | 'desc' | '';
-
-export interface NdwuSortState {
-  active: string;
-  direction: NdwuSortDirection;
-}
-
-@Directive({
-  selector: '[ndwuSort]',
-  exportAs: 'ndwuSort',
-})
-export class NdwuSortDirective {
-  // Sorting is toggled from the headers, so the state is a model: the host may
-  // seed it and is notified through `ndwuSortChange`.
-  public readonly active = model('', {alias: 'ndwuSortActive'});
-  public readonly direction = model<NdwuSortDirection>('', {alias: 'ndwuSortDirection'});
-
-  public readonly ndwuSortChange = output<NdwuSortState>();
-
-  public sort(id: string): void {
-    if (this.active() === id) {
-      const next = this.nextDirection(this.direction());
-
-      this.direction.set(next);
-
-      if (next === '') {
-        this.active.set('');
-      }
-    } else {
-      this.active.set(id);
-      this.direction.set('asc');
-    }
-
-    this.ndwuSortChange.emit({active: this.active(), direction: this.direction()});
-  }
-
-  private nextDirection(current: NdwuSortDirection): NdwuSortDirection {
-    if (current === 'asc') {
-      return 'desc';
-    }
-
-    if (current === 'desc') {
-      return '';
-    }
-
-    return 'asc';
-  }
-}
+import {NdwuSortDirective} from './ndwu-sort.directive';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -75,7 +24,7 @@ export class NdwuSortDirective {
       />
     </div>
   `,
-  styleUrl: './ndwu-sort.scss',
+  styleUrl: './ndwu-sort-header.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NdwuIconComponent],

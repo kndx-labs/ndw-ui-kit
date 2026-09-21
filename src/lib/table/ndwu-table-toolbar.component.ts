@@ -11,7 +11,7 @@ import {Component, ChangeDetectionStrategy, ViewEncapsulation} from '@angular/co
       <ng-content select="[ndwuTableToolbarEnd]" />
     </div>
   `,
-  styleUrl: './ndwu-table-toolbar.scss',
+  styleUrl: './ndwu-table-toolbar.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

@@ -30,6 +30,8 @@
 
 // The row being dragged keeps its place in the table, dimmed, while the
 // preview follows the pointer.
+// The drag list and its rows carry no stylesheet of their own — the handle
+// component is the only styled entry point, so their drag states live here.
 .ndwu-row.cdk-drag-placeholder {
   opacity: 0.3;
 }

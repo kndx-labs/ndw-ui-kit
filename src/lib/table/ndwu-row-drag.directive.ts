@@ -1,6 +1,5 @@
-import {Component, ChangeDetectionStrategy, Directive, ViewEncapsulation} from '@angular/core';
-import {CdkDrag, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
-import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
+import {Directive} from '@angular/core';
+import {CdkDrag, CdkDropList} from '@angular/cdk/drag-drop';
 
 /**
  * Marks the table as a row drop list. The library only reports the move — the
@@ -34,22 +33,3 @@ export class NdwuRowDragDirective {}
   },
 })
 export class NdwuRowDraggableDirective {}
-
-/** The grip in the leading cell; dragging starts here, not anywhere on the row. */
-@Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'button[ndwuRowDragHandle]',
-  template: '<ndwu-icon [name]="ICON_NAME.MENU_DRAG_S" />',
-  styleUrl: './ndwu-row-drag.scss',
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [CdkDragHandle],
-  imports: [NdwuIconComponent],
-  host: {
-    class: 'ndwu-row-drag-handle',
-    type: 'button',
-  },
-})
-export class NdwuRowDragHandleComponent {
-  protected readonly ICON_NAME = ICON_NAME;
-}

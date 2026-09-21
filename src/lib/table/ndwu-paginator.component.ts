@@ -75,7 +75,7 @@ const DEFAULT_PAGINATOR_TEXTS = {
     </div>
   `,
   imports: [LocalizePipe],
-  styleUrl: './ndwu-paginator.scss',
+  styleUrl: './ndwu-paginator.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

@@ -45,7 +45,7 @@ const BAR_WIDTHS = [60, 80, 45, 70, 55];
     </div>
   `,
   imports: [LocalizePipe],
-  styleUrl: './ndwu-table-skeleton.scss',
+  styleUrl: './ndwu-table-skeleton.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

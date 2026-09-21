@@ -31,12 +31,13 @@ export class NdwuSortHeaderComponent {
 
   public readonly id = input.required<string>({alias: 'ndwuSortHeader'});
 
-  public readonly isActive = computed(() =>
+  // Only the id is public: the sort state itself is read from `NdwuSortDirective`,
+  // which is what a host binds and listens to.
+  protected readonly isActive = computed(() =>
     this.sortState.active() === this.id() && this.sortState.direction() !== '',
   );
 
-  public readonly isAsc = computed(() => this.isActive() && this.sortState.direction() === 'asc');
-  public readonly isDesc = computed(() => this.isActive() && this.sortState.direction() === 'desc');
+  protected readonly isDesc = computed(() => this.isActive() && this.sortState.direction() === 'desc');
 
   /** Dimmed to 0.4 while inactive, so the neutral state reuses the ascending icon. */
   protected readonly indicatorIcon = computed<IconName>(() =>

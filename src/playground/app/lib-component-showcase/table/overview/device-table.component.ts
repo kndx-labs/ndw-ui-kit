@@ -102,6 +102,13 @@ export class DeviceTableComponent {
     skeleton: {
       loading: 'table.skeleton.loading',
     },
+    columnPin: {
+      pin: 'table.columnPin.pin',
+      unpin: 'table.columnPin.unpin',
+    },
+    rowDragHandle: {
+      reorder: 'table.rowDragHandle.reorder',
+    },
   };
 
   public readonly data = input.required<Device[]>();

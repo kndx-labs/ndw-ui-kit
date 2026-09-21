@@ -11,6 +11,13 @@
     },
     "skeleton": {
       "loading": "Loading table data"
+    },
+    "columnPin": {
+      "pin": "Pin column",
+      "unpin": "Unpin column"
+    },
+    "rowDragHandle": {
+      "reorder": "Reorder row"
     }
   },
   "table-showcase": {
@@ -32,7 +39,6 @@
       "delete-row": "Delete {{name}}",
       "no-data": "No networks found.",
       "reorder-row": "Reorder {{name}}",
-      "pin-column": "Pin column",
       "columns": {
         "enabled": "Enabled",
         "name": "Network SSID",

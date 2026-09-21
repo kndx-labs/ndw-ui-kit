@@ -18,4 +18,11 @@ export interface NdwuTableTranslationTexts {
   skeleton?: {
     loading?: string;
   };
+  columnPin?: {
+    pin?: string;
+    unpin?: string;
+  };
+  rowDragHandle?: {
+    reorder?: string;
+  };
 }

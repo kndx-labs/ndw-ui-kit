@@ -1,1 +1,2 @@
-<ndwu-icon [name]="pinned() ? ICON_NAME.UNPIN_S : ICON_NAME.PIN_S" />
+<ndwu-icon [name]="pinned() ? ICON_NAME.UNPIN_S : ICON_NAME.PIN_S" aria-hidden="true" />
+<span class="ndwu-column-pin__label">{{ label() | localize }}</span>

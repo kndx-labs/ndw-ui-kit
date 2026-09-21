@@ -85,6 +85,7 @@
         <button
           ndwuRowDragHandle
           [disabled]="isSorted()"
+          [dragTexts]="translationTexts.rowDragHandle"
           [attr.aria-label]="'table-showcase.overview.reorder-row' | localize: {name: row.name}"
         ></button>
       </td>
@@ -134,7 +135,7 @@
           ndwuColumnPin
           [pinned]="namePinned()"
           (pinnedChange)="namePinned.set($event)"
-          [attr.aria-label]="'table-showcase.overview.pin-column' | localize"
+          [pinTexts]="translationTexts.columnPin"
         ></button>
       </th>
       <td ndwuCell *ndwuCellDef="let row">

@@ -11,6 +11,13 @@
     },
     "skeleton": {
       "loading": "Tabellendaten werden geladen"
+    },
+    "columnPin": {
+      "pin": "Spalte anheften",
+      "unpin": "Spalte lösen"
+    },
+    "rowDragHandle": {
+      "reorder": "Zeile verschieben"
     }
   },
   "table-showcase": {
@@ -32,7 +39,6 @@
       "delete-row": "{{name}} löschen",
       "no-data": "Keine Netzwerke gefunden.",
       "reorder-row": "{{name}} verschieben",
-      "pin-column": "Spalte anheften",
       "columns": {
         "enabled": "Aktiviert",
         "name": "Netzwerk-SSID",

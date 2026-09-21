@@ -30,3 +30,7 @@
   color: var(--ndwu-color-brand-50);
   opacity: 1;
 }
+
+.ndwu-column-pin__label {
+  @include mixins.visually-hidden();
+}

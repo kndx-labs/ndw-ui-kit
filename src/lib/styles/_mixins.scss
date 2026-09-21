@@ -19,3 +19,17 @@
     outline: 2px solid Highlight;
   }
 }
+
+// Keeps text in the accessibility tree while removing it from the layout.
+// Used for icon-only controls that ship a default accessible name.
+@mixin visually-hidden() {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

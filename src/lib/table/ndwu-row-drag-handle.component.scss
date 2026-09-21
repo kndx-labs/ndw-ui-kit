@@ -36,3 +36,7 @@
   opacity: 0.4;
   cursor: default;
 }
+
+.ndwu-row-drag-handle__label {
+  @include mixins.visually-hidden();
+}

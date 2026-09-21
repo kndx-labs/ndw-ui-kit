@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, ViewEncapsulation} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {CdkDragHandle} from '@angular/cdk/drag-drop';
 import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
 
@@ -8,7 +8,6 @@ import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
   selector: 'button[ndwuRowDragHandle]',
   templateUrl: './ndwu-row-drag-handle.component.html',
   styleUrl: './ndwu-row-drag-handle.component.scss',
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [CdkDragHandle],
   imports: [NdwuIconComponent],

@@ -1,7 +1,7 @@
 @use 'styles/spacing' as spacing;
 @use './ndwu-table-vars' as vars;
 
-.ndwu-table-toolbar {
+:host {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -15,7 +15,7 @@
   box-sizing: border-box;
 }
 
-.ndwu-table-toolbar-start {
+.ndwu-table-toolbar__start {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -24,7 +24,7 @@
   min-width: 0;
 }
 
-.ndwu-table-toolbar-end {
+.ndwu-table-toolbar__end {
   display: flex;
   align-items: center;
   gap: spacing.$spacing-8;

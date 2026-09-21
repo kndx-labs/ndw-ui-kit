@@ -140,7 +140,7 @@
       <td ndwuCell *ndwuCellDef="let row">
         <button
           type="button"
-          class="ndwu-expand-icon"
+          class="ndwu-table__expand-icon"
           [attr.aria-expanded]="isExpanded(row.id)"
           [attr.aria-label]="(isExpanded(row.id) ? 'table-showcase.overview.collapse' : 'table-showcase.overview.expand') | localize: {name: row.name}"
           (click)="toggleExpand(row.id)"
@@ -220,16 +220,16 @@
     </ng-container>
 
     <!-- 2. Sticky header -->
-    <ndwu-header-row *ndwuHeaderRowDef="displayedColumns" class="ndwu-header-row-sticky" />
+    <ndwu-header-row *ndwuHeaderRowDef="displayedColumns" class="ndwu-header-row--sticky" />
     <ndwu-row
       *ndwuRowDef="let row; columns: displayedColumns"
       [ndwuRowDraggable]="row"
-      [class.ndwu-row-selected]="isSelected(row)"
+      [class.ndwu-row--selected]="isSelected(row)"
     />
     <!-- Detail row, always rendered and revealed by class (the CDK pattern) -->
     <ndwu-row
       *ndwuRowDef="let row; columns: ['expandedDetail']; when: isDetailRow"
-      class="ndwu-detail-row"
+      class="ndwu-row--detail"
       [class.detail-hidden]="!isExpanded(row.id)"
     />
 

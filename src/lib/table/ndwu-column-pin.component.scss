@@ -1,6 +1,8 @@
 @use 'styles/radius' as radius;
 
-.ndwu-column-pin {
+// The pinned column's own cell styling lives in `ndwu-table.component.scss`:
+// the CDK applies it to consumer cells, out of this component's reach.
+:host {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -23,17 +25,7 @@
   }
 }
 
-.ndwu-column-pin.ndwu-column-pin-active {
+:host(.ndwu-column-pin--active) {
   opacity: 1;
   color: var(--ndwu-color-brand-50);
-}
-
-// A pinned column scrolls over its neighbours, so it needs its own opaque
-// ground and an edge to separate it from what passes underneath. The row owns
-// the colour — including hover and selected — hence `inherit` over a token.
-.ndwu-cell.ndwu-table-sticky,
-.ndwu-header-cell.ndwu-table-sticky {
-  z-index: 2;
-  background-color: inherit;
-  border-right: 1px solid var(--ndwu-table-border-color);
 }

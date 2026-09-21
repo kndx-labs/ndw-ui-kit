@@ -1,7 +1,6 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ViewEncapsulation,
   computed,
   input,
   numberAttribute,
@@ -22,7 +21,6 @@ const BAR_WIDTHS = [60, 80, 45, 70, 55];
   templateUrl: './ndwu-table-skeleton.component.html',
   imports: [LocalizePipe],
   styleUrl: './ndwu-table-skeleton.component.scss',
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ndwu-table-skeleton',

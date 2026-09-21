@@ -1,7 +1,6 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ViewEncapsulation,
   booleanAttribute,
   input,
   output,
@@ -17,13 +16,12 @@ import {ICON_NAME, NdwuIconComponent} from '@ndw-ui-kit/core';
   selector: 'button[ndwuColumnPin]',
   templateUrl: './ndwu-column-pin.component.html',
   styleUrl: './ndwu-column-pin.component.scss',
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NdwuIconComponent],
   host: {
     'class': 'ndwu-column-pin',
     'type': 'button',
-    '[class.ndwu-column-pin-active]': 'pinned()',
+    '[class.ndwu-column-pin--active]': 'pinned()',
     '[attr.aria-pressed]': 'pinned()',
     '(click)': 'toggle($event)',
   },

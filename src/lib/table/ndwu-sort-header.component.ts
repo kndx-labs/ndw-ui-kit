@@ -1,7 +1,6 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ViewEncapsulation,
   computed,
   inject,
   input,
@@ -15,10 +14,10 @@ import {NdwuSortDirective} from './ndwu-sort.directive';
   exportAs: 'ndwuSortHeader',
   templateUrl: './ndwu-sort-header.component.html',
   styleUrl: './ndwu-sort-header.component.scss',
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NdwuIconComponent],
   host: {
+    'class': 'ndwu-sort-header',
     'tabindex': '0',
     'role': 'columnheader',
     '(click)': 'onSort()',

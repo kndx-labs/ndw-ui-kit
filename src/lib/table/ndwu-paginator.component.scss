@@ -1,7 +1,7 @@
 @use 'styles/spacing' as spacing;
 @use 'styles/radius' as radius;
 
-.ndwu-paginator {
+:host {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -12,18 +12,18 @@
   color: var(--ndwu-table-cell-color);
 }
 
-.ndwu-paginator-range {
+.ndwu-paginator__range {
   color: var(--ndwu-table-header-color);
   font-size: var(--ndwu-fontSize-xsmall);
 }
 
-.ndwu-paginator-controls {
+.ndwu-paginator__controls {
   display: flex;
   align-items: center;
   gap: spacing.$spacing-2;
 }
 
-.ndwu-paginator-btn {
+.ndwu-paginator__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -47,18 +47,18 @@
   }
 }
 
-.ndwu-paginator-size {
+.ndwu-paginator__size {
   display: inline-flex;
   align-items: center;
   gap: spacing.$spacing-8;
 }
 
-.ndwu-paginator-size-label {
+.ndwu-paginator__size-label {
   color: var(--ndwu-table-header-color);
   font-size: var(--ndwu-fontSize-xsmall);
 }
 
-.ndwu-paginator-select {
+.ndwu-paginator__select {
   height: 32px;
   padding: 0 spacing.$spacing-8;
   border: 1px solid var(--ndwu-table-border-color);

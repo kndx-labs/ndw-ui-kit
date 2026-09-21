@@ -31,7 +31,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit, OnDestroy {
 
   public ngAfterViewInit(): void {
     this.handle = this.renderer.createElement('div');
-    this.renderer.addClass(this.handle, 'ndwu-column-resize-handle');
+    this.renderer.addClass(this.handle, 'ndwu-column-resizable__handle');
     this.renderer.appendChild(this.el.nativeElement, this.handle);
 
     this.zone.runOutsideAngular(() => {

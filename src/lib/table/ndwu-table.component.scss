@@ -3,6 +3,11 @@
 @use 'styles/radius' as radius;
 @use './ndwu-table-vars' as vars;
 
+// Encapsulation is off here because the rows and cells below are declared in
+// the consumer's template and instantiated by the CDK, so they never carry
+// this component's scoping attribute. Every other table part keeps emulated
+// encapsulation — only the styles that must reach those rows live in this file.
+
 .ndwu-table {
   display: block;
   overflow-x: auto;
@@ -15,6 +20,30 @@
     table-layout: fixed;
     border-collapse: collapse;
     border-spacing: 0;
+  }
+}
+
+.ndwu-table__expand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--ndwu-table-header-color);
+  vertical-align: middle;
+
+  &:hover {
+    color: var(--ndwu-table-cell-color);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--ndwu-fx-focused-default);
+    border-radius: radius.$radius-S;
   }
 }
 
@@ -31,12 +60,23 @@
     background-color: var(--ndwu-table-row-hover-bg);
   }
 
-  &.ndwu-row-selected {
+  &--selected {
     background-color: var(--ndwu-table-row-selected-bg);
 
     &:hover {
       background-color: var(--ndwu-table-row-selected-hover-bg);
     }
+  }
+
+  &--expandable {
+    cursor: pointer;
+  }
+
+  // Detail/expansion row
+  &--detail > td {
+    padding: spacing.$spacing-16;
+    border-bottom: 1px solid var(--ndwu-table-border-color);
+    color: var(--ndwu-table-cell-color);
   }
 }
 
@@ -65,33 +105,12 @@
   position: relative;
 }
 
-// Sticky header. Opt in with `class="ndwu-header-row-sticky"` on the header row.
+// Sticky header. Opt in with `class="ndwu-header-row--sticky"` on the header row.
 // Beats the `position: relative` above on specificity, which the resize grip needs.
-.ndwu-header-row-sticky .ndwu-header-cell {
+.ndwu-header-row--sticky .ndwu-header-cell {
   position: sticky;
   top: 0;
   z-index: 1;
-}
-
-// Column resize handle
-.ndwu-column-resizable {
-  position: relative;
-}
-
-.ndwu-column-resize-handle {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 4px;
-  height: 100%;
-  cursor: col-resize;
-  background: transparent;
-
-  &:hover,
-  &:active {
-    background-color: var(--ndwu-table-header-color);
-    opacity: 0.3;
-  }
 }
 
 .ndwu-cell {
@@ -119,42 +138,56 @@
   position: sticky !important;
 }
 
-// Detail/expansion row
-.ndwu-detail-row {
-  display: table-row;
+// A pinned column scrolls over its neighbours, so it needs its own opaque
+// ground and an edge to separate it from what passes underneath. The row owns
+// the colour — including hover and selected — hence `inherit` over a token.
+.ndwu-cell.ndwu-table-sticky,
+.ndwu-header-cell.ndwu-table-sticky {
+  z-index: 2;
+  background-color: inherit;
+  border-right: 1px solid var(--ndwu-table-border-color);
+}
+
+// Column resize grip, appended to the header cell by NdwuColumnResizeDirective.
+.ndwu-column-resizable {
+  position: relative;
+}
+
+.ndwu-column-resizable__handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+
+  &:hover,
+  &:active {
+    background-color: var(--ndwu-table-header-color);
+    opacity: 0.3;
+  }
+}
+
+// Row drag states. The drop list and the dragged row are consumer elements, so
+// like the rows above they can only be reached from this unencapsulated sheet.
+// The row being dragged keeps its place in the table, dimmed, while the
+// preview follows the pointer.
+.ndwu-row.cdk-drag-placeholder {
+  opacity: 0.3;
+}
+
+// The preview is a clone lifted out of the table, so it has to lay itself out
+// as a table again or the cells collapse onto one line.
+.ndwu-row.cdk-drag-preview {
+  display: table;
+  box-sizing: border-box;
   background-color: var(--ndwu-table-cell-bg);
-
-  > td {
-    padding: spacing.$spacing-16;
-    border-bottom: 1px solid var(--ndwu-table-border-color);
-    color: var(--ndwu-table-cell-color);
-  }
+  box-shadow: var(--ndwu-fx-shadow-M, 0 4px 12px rgb(0 0 0 / 15%));
+  border-radius: radius.$radius-S;
 }
 
-.ndwu-row-expandable {
-  cursor: pointer;
-}
-
-.ndwu-expand-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: var(--ndwu-table-header-color);
-  vertical-align: middle;
-
-  &:hover {
-    color: var(--ndwu-table-cell-color);
-  }
-
-  &:focus-visible {
-    outline: none;
-    box-shadow: var(--ndwu-fx-focused-default);
-    border-radius: radius.$radius-S;
-  }
+.ndwu-row.cdk-drag-animating,
+.ndwu-row-drag-list.cdk-drop-list-dragging .ndwu-row:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }

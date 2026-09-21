@@ -1,6 +1,8 @@
 @use 'styles/radius' as radius;
 
-.ndwu-row-drag-handle {
+// The drag list and the dragged row are consumer elements, so their drag
+// states live in `ndwu-table.component.scss`; this sheet owns only the grip.
+:host {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -22,31 +24,8 @@
   }
 }
 
-.cdk-drag-disabled .ndwu-row-drag-handle,
-.ndwu-row-drag-list.cdk-drop-list-disabled .ndwu-row-drag-handle {
+:host-context(.cdk-drag-disabled),
+:host-context(.ndwu-row-drag-list.cdk-drop-list-disabled) {
   cursor: default;
   opacity: 0.4;
-}
-
-// The row being dragged keeps its place in the table, dimmed, while the
-// preview follows the pointer.
-// The drag list and its rows carry no stylesheet of their own — the handle
-// component is the only styled entry point, so their drag states live here.
-.ndwu-row.cdk-drag-placeholder {
-  opacity: 0.3;
-}
-
-// The preview is a clone lifted out of the table, so it has to lay itself out
-// as a table again or the cells collapse onto one line.
-.ndwu-row.cdk-drag-preview {
-  display: table;
-  box-sizing: border-box;
-  background-color: var(--ndwu-table-cell-bg);
-  box-shadow: var(--ndwu-fx-shadow-M, 0 4px 12px rgb(0 0 0 / 15%));
-  border-radius: radius.$radius-S;
-}
-
-.ndwu-row.cdk-drag-animating,
-.ndwu-row-drag-list.cdk-drop-list-dragging .ndwu-row:not(.cdk-drag-placeholder) {
-  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }

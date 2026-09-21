@@ -2,23 +2,23 @@
 @use 'styles/radius' as radius;
 @use './ndwu-table-vars' as vars;
 
-.ndwu-table-skeleton {
+:host {
   display: block;
 }
 
-.ndwu-skeleton-table {
+.ndwu-table-skeleton__table {
   border: 1px solid var(--ndwu-table-border-color);
   border-radius: radius.$radius-S;
   overflow: hidden;
 }
 
-.ndwu-skeleton-header {
+.ndwu-table-skeleton__header {
   display: flex;
   background-color: var(--ndwu-table-header-bg);
   border-bottom: 1px solid var(--ndwu-table-border-color);
 }
 
-.ndwu-skeleton-header-cell {
+.ndwu-table-skeleton__header-cell {
   flex: 1;
   padding: spacing.$spacing-12;
   height: vars.$row-height;
@@ -27,7 +27,7 @@
   box-sizing: border-box;
 }
 
-.ndwu-skeleton-row {
+.ndwu-table-skeleton__row {
   display: flex;
   border-bottom: 1px solid var(--ndwu-table-border-color);
 
@@ -36,7 +36,7 @@
   }
 }
 
-.ndwu-skeleton-cell {
+.ndwu-table-skeleton__cell {
   flex: 1;
   padding: spacing.$spacing-12;
   height: vars.$row-height;
@@ -45,7 +45,7 @@
   box-sizing: border-box;
 }
 
-.ndwu-skeleton-bar {
+.ndwu-table-skeleton__bar {
   height: 12px;
   border-radius: 6px;
   background: linear-gradient(
@@ -71,7 +71,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ndwu-skeleton-bar {
+  .ndwu-table-skeleton__bar {
     animation: none;
   }
 }

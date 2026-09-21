@@ -1,6 +1,6 @@
 @use 'styles/spacing' as spacing;
 
-[ndwu-sort-header] {
+:host {
   cursor: pointer;
   user-select: none;
 
@@ -10,19 +10,19 @@
   }
 }
 
-.ndwu-sort-header-inner {
+.ndwu-sort-header__inner {
   display: inline-flex;
   align-items: center;
   gap: spacing.$spacing-4;
 }
 
 // The icon paints with `currentColor`, so colour and dimming are set here.
-.ndwu-sort-header-indicator {
+.ndwu-sort-header__indicator {
   color: var(--ndwu-table-header-color);
   opacity: 0.4;
-}
 
-.ndwu-sort-header-indicator.ndwu-sort-active {
-  opacity: 1;
-  color: var(--ndwu-table-cell-color);
+  &--active {
+    opacity: 1;
+    color: var(--ndwu-table-cell-color);
+  }
 }

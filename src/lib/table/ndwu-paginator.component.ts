@@ -1,7 +1,6 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ViewEncapsulation,
   computed,
   input,
   model,
@@ -32,7 +31,6 @@ const DEFAULT_PAGINATOR_TEXTS = {
   templateUrl: './ndwu-paginator.component.html',
   imports: [LocalizePipe],
   styleUrl: './ndwu-paginator.component.scss',
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ndwu-paginator',

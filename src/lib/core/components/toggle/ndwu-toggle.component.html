@@ -22,7 +22,7 @@
       </label>
     </div>
 
-    @if (labelHidden()) {
+    @if (labelHidden() && label()) {
       <label
         class="ndwu-toggle__hidden-label"
         [for]="toggleId"

@@ -14,7 +14,7 @@
     (blur)="onBlur()"
   />
 
-  @if (labelHidden()) {
+  @if (labelHidden() && label()) {
     <label class="ndwu-checkbox__hidden-label" [for]="id()">{{ label() }}</label>
   } @else if (label() || secondaryText()) {
     <label [for]="id()">

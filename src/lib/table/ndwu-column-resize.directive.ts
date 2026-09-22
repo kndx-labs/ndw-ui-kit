@@ -3,7 +3,6 @@ import {
   ComponentRef,
   Directive,
   ElementRef,
-  NgZone,
   Renderer2,
   ViewContainerRef,
   inject,
@@ -39,7 +38,6 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
   public readonly ndwuColumnResized = output<number>();
 
   private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly zone = inject(NgZone);
   private readonly renderer = inject(Renderer2);
   private readonly viewContainer = inject(ViewContainerRef);
 
@@ -62,12 +60,8 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
     this.renderer.appendChild(this.el.nativeElement, handle);
     this.reportWidth(handle, this.el.nativeElement.offsetWidth);
 
-    // Pointer moves are frequent and change nothing Angular tracks, so they run
-    // outside the zone; only the final width re-enters it.
-    this.zone.runOutsideAngular(() => {
-      this.renderer.listen(handle, 'pointerdown', (event: PointerEvent) => this.onPointerDown(handle, event));
-      this.renderer.listen(handle, 'keydown', (event: KeyboardEvent) => this.onKeydown(handle, event));
-    });
+    this.renderer.listen(handle, 'pointerdown', (event: PointerEvent) => this.onPointerDown(handle, event));
+    this.renderer.listen(handle, 'keydown', (event: KeyboardEvent) => this.onKeydown(handle, event));
   }
 
   private onPointerDown(handle: HTMLElement, event: PointerEvent): void {
@@ -91,16 +85,17 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
       handle.releasePointerCapture(endEvent.pointerId);
     };
 
-    stops.push(
-      this.renderer.listen(
-        handle,
-        'pointermove',
-        (moveEvent: PointerEvent) => {
-          currentWidth = widthAt(moveEvent.clientX);
-          this.applyWidth(handle, currentWidth);
-        },
-      ),
-    );
+    // Moves are frequent and change nothing Angular tracks, so this one listener
+    // is native: a `Renderer2` listener would schedule change detection per move.
+    const onMove = (moveEvent: PointerEvent): void => {
+      currentWidth = widthAt(moveEvent.clientX);
+      this.applyWidth(handle, currentWidth);
+    };
+
+    handle.addEventListener('pointermove', onMove);
+    stops.push(() => {
+      return handle.removeEventListener('pointermove', onMove);
+    });
 
     stops.push(
       this.renderer.listen(
@@ -111,7 +106,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
           finish(upEvent);
           this.applyWidth(handle, currentWidth);
-          this.zone.run(() => this.ndwuColumnResized.emit(currentWidth));
+          this.ndwuColumnResized.emit(currentWidth);
         },
       ),
     );
@@ -123,7 +118,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
         'pointercancel',
         (cancelEvent: PointerEvent) => {
           finish(cancelEvent);
-          this.zone.run(() => this.ndwuColumnResized.emit(currentWidth));
+          this.ndwuColumnResized.emit(currentWidth);
         },
       ),
     );
@@ -151,7 +146,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
     const width = Math.max(MIN_COLUMN_WIDTH, this.el.nativeElement.offsetWidth + delta);
 
     this.applyWidth(handle, width);
-    this.zone.run(() => this.ndwuColumnResized.emit(width));
+    this.ndwuColumnResized.emit(width);
   }
 
   private applyWidth(handle: HTMLElement, width: number): void {
@@ -159,8 +154,8 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
     this.reportWidth(handle, width);
   }
 
-  // Written straight to the element: a drag updates it outside the zone, where
-  // an input binding would not be picked up until the next change detection.
+  // Written straight to the element: a drag updates it from a native listener,
+  // where an input binding would not be picked up until the next render.
   private reportWidth(handle: HTMLElement, width: number): void {
     this.renderer.setAttribute(handle, 'aria-valuenow', `${Math.round(width)}`);
   }

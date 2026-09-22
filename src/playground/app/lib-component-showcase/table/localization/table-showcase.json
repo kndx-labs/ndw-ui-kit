@@ -67,7 +67,9 @@
         "row-menu": "Row menu: {{name}}",
         "settings": "Column settings",
         "moved": "Moved {{name}}"
-      }
+      },
+      "basic-title": "Table without pagination",
+      "basic-hint": "Every row stays on screen, so a row added at the end is visible straight away."
     },
     "tabs": {
       "overview": "Overview"

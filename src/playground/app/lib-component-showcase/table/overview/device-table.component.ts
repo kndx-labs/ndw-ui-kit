@@ -301,6 +301,8 @@ export class DeviceTableComponent {
     const device = this.randomDevice();
 
     this.rows.update(rows => [...rows, device]);
+    // The row is appended, so the paginated demo jumps to the page holding it.
+    this.pageIndex.set(Math.max(0, Math.ceil(this.rows().length / this.pageSize()) - 1));
     this.lastAction.set({key: 'table-showcase.overview.action.added', params: {name: device.name}});
   }
 

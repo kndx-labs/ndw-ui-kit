@@ -67,7 +67,9 @@
         "row-menu": "Zeilenmenü: {{name}}",
         "settings": "Spalteneinstellungen",
         "moved": "{{name}} verschoben"
-      }
+      },
+      "basic-title": "Tabelle ohne Paginierung",
+      "basic-hint": "Alle Zeilen bleiben sichtbar, eine am Ende hinzugefügte Zeile ist also sofort zu sehen."
     },
     "tabs": {
       "overview": "Übersicht"

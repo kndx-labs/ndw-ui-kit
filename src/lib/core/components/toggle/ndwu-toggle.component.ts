@@ -34,7 +34,10 @@ export class NdwuToggleComponent {
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly label = input<string>('');
 
-  /** Keeps `label` as the accessible name while removing it from the layout. */
+  /**
+   * Keeps `label` as the accessible name while removing it from the layout.
+   * `secondaryText` is not affected and stays visible.
+   */
   public readonly labelHidden = input(false, {transform: booleanAttribute});
   public readonly secondaryText = input<string>('');
   public readonly color = input(TOGGLE_COLOR.BRAND, {transform: coerceToggleColor});

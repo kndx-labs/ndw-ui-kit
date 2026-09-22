@@ -3,7 +3,7 @@
     #checkboxInput
     type="checkbox"
     class="ndwu-checkbox__input"
-    [class.ndwu-checkbox__input--no-label]="labelHidden() || (!label() && !secondaryText())"
+    [class.ndwu-checkbox__input--no-label]="!secondaryText() && (labelHidden() || !label())"
     [class.ndwu-checkbox__input--invalid]="invalid()"
     [id]="id()"
     [checked]="checked()"
@@ -14,8 +14,26 @@
     (blur)="onBlur()"
   />
 
-  @if (labelHidden() && label()) {
-    <label class="ndwu-checkbox__hidden-label" [for]="id()">{{ label() }}</label>
+  @if (labelHidden()) {
+    @if (label()) {
+      <label
+        class="ndwu-checkbox__hidden-label"
+        [for]="id()"
+      >
+        {{ label() }}
+      </label>
+    }
+
+    <!-- `labelHidden` hides the label text only, so secondary text stays visible. -->
+    @if (secondaryText()) {
+      <label [for]="id()">
+        <ndwu-label-group
+          [secondaryText]="secondaryText()"
+          [disabled]="disabled()"
+          [size]="sizeSvc.effectiveSize()"
+        />
+      </label>
+    }
   } @else if (label() || secondaryText()) {
     <label [for]="id()">
       <ndwu-label-group

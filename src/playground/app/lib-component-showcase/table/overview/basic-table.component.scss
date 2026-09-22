@@ -1,0 +1,9 @@
+// Six rows plus the header, so the table scrolls once it holds more.
+$visible-rows: 6;
+$row-height: 48px;
+
+ndwu-table {
+  display: block;
+  overflow-y: auto;
+  max-height: $row-height * ($visible-rows + 1);
+}

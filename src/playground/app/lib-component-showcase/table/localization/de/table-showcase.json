@@ -26,7 +26,7 @@
   "table-showcase": {
     "overview": {
       "title": "Tabelle mit allen Funktionen",
-      "dark-title": "Dunkles Theme",
+      "dark-title": "Tabelle mit allen Funktionen (dunkles Theme)",
       "add": "Netzwerk hinzufügen",
       "loading-start": "Laden simulieren",
       "loading-stop": "Laden stoppen",
@@ -69,7 +69,8 @@
         "moved": "{{name}} verschoben"
       },
       "basic-title": "Tabelle ohne Paginierung",
-      "basic-hint": "Alle Zeilen bleiben sichtbar, eine am Ende hinzugefügte Zeile ist also sofort zu sehen."
+      "basic-hint": "Alle Zeilen bleiben sichtbar, eine am Ende hinzugefügte Zeile ist also sofort zu sehen.",
+      "remove": "Netzwerk entfernen"
     },
     "tabs": {
       "overview": "Übersicht"

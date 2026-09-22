@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, input, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, effect, input, signal} from '@angular/core';
 import {
   NdwuTableComponent,
   NdwuColumnDefDirective,
@@ -10,6 +10,7 @@ import {
   NdwuRowDefDirective,
   NdwuHeaderRowComponent,
   NdwuRowComponent,
+  NdwuTableToolbarComponent,
 } from '@ndw-ui-kit/core/table';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuBadgeComponent, NdwuButtonComponent} from '@ndw-ui-kit/core';
@@ -18,12 +19,14 @@ import type {Device} from './device-table.component';
 const BANDS = ['2.4 GHz', '5 GHz'] as const;
 
 /**
- * The plain table: no toolbar and no paginator, so every row stays on screen
- * and a row added at the end is visible straight away.
+ * The plain table: no paginator, so every row stays on screen and a row added
+ * at the end is visible straight away. The table scrolls once it outgrows its
+ * height limit.
  */
 @Component({
   selector: 'app-basic-table',
   templateUrl: './basic-table.component.html',
+  styleUrl: './basic-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LocalizePipe,
@@ -39,6 +42,7 @@ const BANDS = ['2.4 GHz', '5 GHz'] as const;
     NdwuRowDefDirective,
     NdwuHeaderRowComponent,
     NdwuRowComponent,
+    NdwuTableToolbarComponent,
   ],
 })
 export class BasicTableComponent {
@@ -46,10 +50,17 @@ export class BasicTableComponent {
 
   protected readonly displayedColumns = ['name', 'band', 'ip'];
 
-  protected readonly added = signal<readonly Device[]>([]);
+  /** Working copy: add and remove mutate it, and it re-seeds if the host swaps the input. */
+  protected readonly rows = signal<readonly Device[]>([]);
 
-  protected rows(): readonly Device[] {
-    return [...this.data(), ...this.added()];
+  protected readonly isEmpty = computed(() => {
+    return this.rows().length === 0;
+  });
+
+  constructor() {
+    effect(() => {
+      return this.rows.set(this.data());
+    });
   }
 
   protected trackById(_index: number, row: Device): number {
@@ -62,14 +73,20 @@ export class BasicTableComponent {
       return Math.max(max, row.id);
     }, 0) + 1;
 
-    this.added.update(current => {
+    this.rows.update(current => {
       return [...current, {
         id,
         name: `Keenetic-${1000 + Math.floor(Math.random() * 9000)}`,
         band: BANDS[Math.floor(Math.random() * BANDS.length)] ?? BANDS[0],
-        ip: `192.168.1.${100 + rows.length}`,
+        ip: `192.168.1.${100 + current.length}`,
         status: 'online',
       }];
+    });
+  }
+
+  protected onRemove(): void {
+    this.rows.update(current => {
+      return current.slice(0, -1);
     });
   }
 }

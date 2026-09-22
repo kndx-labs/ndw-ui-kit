@@ -1,10 +1,21 @@
-<button
-  ndwu-button
-  variant="primary"
-  icon="add_S"
-  [label]="'table-showcase.overview.add' | localize"
-  (click)="onAdd()"
-></button>
+<ndwu-table-toolbar size="L">
+  <button
+    ndwuTableToolbarStart
+    ndwu-button
+    variant="primary"
+    icon="add_S"
+    [label]="'table-showcase.overview.add' | localize"
+    (click)="onAdd()"
+  ></button>
+  <button
+    ndwuTableToolbarStart
+    ndwu-button
+    variant="secondary"
+    [label]="'table-showcase.overview.remove' | localize"
+    [disabled]="isEmpty()"
+    (click)="onRemove()"
+  ></button>
+</ndwu-table-toolbar>
 
 <ndwu-table
   [dataSource]="rows()"

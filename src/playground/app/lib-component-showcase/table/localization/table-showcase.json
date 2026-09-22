@@ -26,7 +26,7 @@
   "table-showcase": {
     "overview": {
       "title": "Table with all features",
-      "dark-title": "Dark theme",
+      "dark-title": "Table with all features (dark theme)",
       "add": "Add network",
       "loading-start": "Simulate loading",
       "loading-stop": "Stop loading",
@@ -69,7 +69,8 @@
         "moved": "Moved {{name}}"
       },
       "basic-title": "Table without pagination",
-      "basic-hint": "Every row stays on screen, so a row added at the end is visible straight away."
+      "basic-hint": "Every row stays on screen, so a row added at the end is visible straight away.",
+      "remove": "Remove network"
     },
     "tabs": {
       "overview": "Overview"

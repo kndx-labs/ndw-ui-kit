@@ -9,8 +9,9 @@ import {CdkHeaderRowDef} from '@angular/cdk/table';
   }],
 })
 export class NdwuHeaderRowDefDirective extends CdkHeaderRowDef {
-  // `columns` and `sticky` come from the CDK base class, so they keep the
-  // decorator API: a signal input cannot override an inherited member.
+  // `columns` and `sticky` are inherited CDK members, read by the CDK's own
+  // `ngOnChanges`. A signal input would declare new fields instead of overriding
+  // them, so these bindings keep the decorator API. See `ndwu-column-def`.
   @Input('ndwuHeaderRowDef') public override columns: Iterable<string> = [];
 
   @Input({alias: 'ndwuHeaderRowDefSticky', transform: booleanAttribute})

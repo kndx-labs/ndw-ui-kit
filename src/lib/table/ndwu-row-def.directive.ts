@@ -9,8 +9,9 @@ import {CdkRowDef} from '@angular/cdk/table';
   }],
 })
 export class NdwuRowDefDirective<T> extends CdkRowDef<T> {
-  // `columns` and `when` come from the CDK base class, so they keep the
-  // decorator API: a signal input cannot override an inherited member.
+  // `columns` and `when` are inherited CDK members, read by the CDK's own
+  // `ngOnChanges`. A signal input would declare new fields instead of overriding
+  // them, so these bindings keep the decorator API. See `ndwu-column-def`.
   @Input('ndwuRowDefColumns') public override columns: Iterable<string> = [];
   // Undefined means "always", which is what the CDK's own default is.
   @Input('ndwuRowDefWhen') public override when: (index: number, rowData: T) => boolean =

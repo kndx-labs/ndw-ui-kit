@@ -10,6 +10,10 @@
   overflow: hidden;
   border: 1px solid var(--ndwu-table-border-color);
   border-radius: radius.$radius-S;
+
+  // One animated element for the whole placeholder: a per-cell shimmer would
+  // animate a layer for every bar in the table.
+  animation: ndwu-skeleton-pulse 1.6s ease-in-out infinite;
 }
 
 .ndwu-table-skeleton__header {
@@ -49,14 +53,7 @@
   width: 60%;
   height: tokens.$skeleton-bar-height;
   border-radius: radius.$radius-M;
-  background: linear-gradient(
-    90deg,
-    var(--ndwu-table-border-color) 25%,
-    var(--ndwu-table-header-bg) 50%,
-    var(--ndwu-table-border-color) 75%
-  );
-  background-size: 200% 100%;
-  animation: ndwu-skeleton-shimmer 1.5s ease-in-out infinite;
+  background-color: var(--ndwu-table-border-color);
 
   &--header {
     width: 50%;
@@ -65,13 +62,14 @@
   }
 }
 
-@keyframes ndwu-skeleton-shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+@keyframes ndwu-skeleton-pulse {
+  0%,
+  100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ndwu-table-skeleton__bar {
+  .ndwu-table-skeleton__table {
     animation: none;
   }
 }

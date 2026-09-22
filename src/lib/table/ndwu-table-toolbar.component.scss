@@ -10,8 +10,8 @@
   box-sizing: border-box;
   min-height: tokens.$row-height;
 
-  // Figma floats the toolbar controls above the table with no container chrome,
-  // so the table stays a single rounded surface.
+  // The toolbar has no container chrome of its own, so the table below it
+  // stays a single rounded surface.
   padding: spacing.$spacing-12 0;
 }
 

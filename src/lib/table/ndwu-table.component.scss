@@ -13,8 +13,8 @@
   display: block;
   overflow-x: auto;
 
-  // Figma draws the table as a rounded surface with no outer stroke; the
-  // `overflow` above is what clips the header and last row to the corners.
+  // The table is a rounded surface with no outer stroke, so the `overflow`
+  // above is what clips the header and the last row to the corners.
   border-radius: radius.$radius-L;
 
   table {

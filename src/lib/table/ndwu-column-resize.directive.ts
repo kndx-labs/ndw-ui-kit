@@ -11,6 +11,7 @@ import {
   inputBinding,
   output,
 } from '@angular/core';
+import {stopEvent} from '@ndw-ui-kit/core/utils';
 import {NdwuColumnResizeHandleComponent} from './ndwu-column-resize-handle.component';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
@@ -71,13 +72,15 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
   private onPointerDown(handle: HTMLElement, event: PointerEvent): void {
     // Keeps the drag from starting a text selection or a native drag.
-    event.preventDefault();
-    event.stopPropagation();
+    stopEvent(event);
     handle.setPointerCapture(event.pointerId);
 
     const startX = event.clientX;
     const startWidth = this.el.nativeElement.offsetWidth;
     const widthAt = (clientX: number): number => Math.max(MIN_COLUMN_WIDTH, startWidth + (clientX - startX));
+
+    // The width the drag has reached, so a release and a cancel report the same value.
+    let currentWidth = startWidth;
 
     // Pointer capture routes every move and the release back to the grip, so
     // no document-level listeners are needed.
@@ -93,7 +96,8 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
         handle,
         'pointermove',
         (moveEvent: PointerEvent) => {
-          this.applyWidth(handle, widthAt(moveEvent.clientX));
+          currentWidth = widthAt(moveEvent.clientX);
+          this.applyWidth(handle, currentWidth);
         },
       ),
     );
@@ -103,11 +107,11 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
         handle,
         'pointerup',
         (upEvent: PointerEvent) => {
-          const width = widthAt(upEvent.clientX);
+          currentWidth = widthAt(upEvent.clientX);
 
           finish(upEvent);
-          this.applyWidth(handle, width);
-          this.zone.run(() => this.ndwuColumnResized.emit(width));
+          this.applyWidth(handle, currentWidth);
+          this.zone.run(() => this.ndwuColumnResized.emit(currentWidth));
         },
       ),
     );
@@ -119,7 +123,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
         'pointercancel',
         (cancelEvent: PointerEvent) => {
           finish(cancelEvent);
-          this.zone.run(() => this.ndwuColumnResized.emit(this.el.nativeElement.offsetWidth));
+          this.zone.run(() => this.ndwuColumnResized.emit(currentWidth));
         },
       ),
     );
@@ -142,8 +146,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
       return;
     }
 
-    event.preventDefault();
-    event.stopPropagation();
+    stopEvent(event);
 
     const width = Math.max(MIN_COLUMN_WIDTH, this.el.nativeElement.offsetWidth + delta);
 

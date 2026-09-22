@@ -20,6 +20,18 @@
 
 $main-font: roboto, system-ui, monospace;
 
+// The shell is viewport-sized and scrolls inside `.main-content`, so the page
+// itself must not scroll as well: `app-root` is inline by default, which lets
+// the shell's content grow the document and add a second scrollbar.
+app-root {
+  display: block;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
 @include mixins.mobile() {
   body {
     margin: 0;

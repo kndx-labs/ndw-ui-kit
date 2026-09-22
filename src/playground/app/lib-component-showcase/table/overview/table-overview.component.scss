@@ -16,7 +16,7 @@
   // Native controls (checkbox, select, scrollbars) are painted by the browser,
   // not by tokens, so they need telling which scheme they sit in.
   color-scheme: dark;
-  background-color: var(--ndwu-color-gray-0);
-  border-radius: 8px;
   padding: 24px;
+  border-radius: 8px;
+  background-color: var(--ndwu-color-gray-0);
 }

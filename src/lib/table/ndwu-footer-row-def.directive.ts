@@ -1,4 +1,4 @@
-import {Directive, Input, booleanAttribute} from '@angular/core';
+import {Directive, OnChanges, booleanAttribute, input} from '@angular/core';
 import {CdkFooterRowDef} from '@angular/cdk/table';
 
 @Directive({
@@ -8,18 +8,24 @@ import {CdkFooterRowDef} from '@angular/cdk/table';
     useExisting: NdwuFooterRowDefDirective,
   }],
 })
-export class NdwuFooterRowDefDirective extends CdkFooterRowDef {
-  // `columns` and `sticky` are inherited CDK members, read by the CDK's own
-  // `ngOnChanges`. A signal input would declare new fields instead of overriding
-  // them, so these bindings keep the decorator API. See `ndwu-column-def`.
-  @Input('ndwuFooterRowDef') public override columns: Iterable<string> = [];
+export class NdwuFooterRowDefDirective extends CdkFooterRowDef implements OnChanges {
+  public readonly ndwuFooterRowDef = input<Iterable<string>>([]);
 
-  @Input({alias: 'ndwuFooterRowDefSticky', transform: booleanAttribute})
-  public override get sticky(): boolean {
-    return super.sticky;
+  public readonly ndwuFooterRowDefSticky = input(false, {transform: booleanAttribute});
+
+  constructor() {
+    super();
+
+    // The CDK builds its columns differ from the `columns` key of a decorator
+    // driven `ngOnChanges`. A signal input reports its own key instead, so the
+    // differ is primed here with an empty set and fed by `getColumnsDiff`.
+    super.ngOnChanges({});
   }
 
-  public override set sticky(value: boolean) {
-    super.sticky = value;
+  // `columns` and `sticky` are inherited CDK members read by the table itself, so
+  // the signal values are written through to them. See `ndwu-column-def`.
+  public override ngOnChanges(): void {
+    this.columns = this.ndwuFooterRowDef();
+    this.sticky = this.ndwuFooterRowDefSticky();
   }
 }

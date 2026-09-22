@@ -1,4 +1,4 @@
-import {Directive, Input} from '@angular/core';
+import {Directive, OnChanges, input} from '@angular/core';
 import {CdkColumnDef} from '@angular/cdk/table';
 
 @Directive({
@@ -8,19 +8,14 @@ import {CdkColumnDef} from '@angular/cdk/table';
     useExisting: NdwuColumnDefDirective,
   }],
 })
-export class NdwuColumnDefDirective extends CdkColumnDef {
-  // The directive only renames the CDK binding: `ndwuColumnDef` has to end up in
-  // `CdkColumnDef.name`, whose setter derives the cell css classes and the sticky
-  // state. A signal input cannot do that — `input()` declares a new field instead
-  // of overriding the inherited accessor, so the CDK's setter would never run and
-  // the column would render without its classes. The decorator therefore stays,
-  // placed on an override of the accessor so the alias reaches the base setter.
-  @Input('ndwuColumnDef')
-  public override get name(): string {
-    return super.name;
-  }
+export class NdwuColumnDefDirective extends CdkColumnDef implements OnChanges {
+  public readonly ndwuColumnDef = input.required<string>();
 
-  public override set name(value: string) {
-    super.name = value;
+  // The name has to reach `CdkColumnDef.name`, whose setter derives the cell css
+  // classes and the sticky state. A signal input declares a field of its own, so
+  // the value is written through to the inherited accessor here. `ngOnChanges`
+  // runs before the table caches its column defs, so the name is set in time.
+  public ngOnChanges(): void {
+    this.name = this.ndwuColumnDef();
   }
 }

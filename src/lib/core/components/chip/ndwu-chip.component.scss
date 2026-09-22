@@ -5,7 +5,6 @@
 @use 'styles/touch-target' as touch-target;
 
 $statuses: 'default', 'positive', 'negative';
-$icon-size: 20px;
 
 $icon-inset-L: 10px;
 
@@ -132,11 +131,8 @@ $icon-inset-L: 10px;
   }
 }
 
-.ndwu-chip__icon,
-.ndwu-chip__loader {
+.ndwu-chip__icon {
   flex-shrink: 0;
-  width: $icon-size;
-  height: $icon-size;
   color: var(--ndwu-chip-accent);
 }
 

@@ -30,7 +30,10 @@ export type NdwuChipStatus = Values<typeof CHIP_STATUS>;
 /** Chip renders at two sizes only; every other inherited size collapses to one of them. */
 type ChipSize = Extract<Size, 'L' | 'XL'>;
 
-const LOADER_SIZE = 20;
+const LOADER_PARAMS = {
+  [SIZE.L]: {size: 17, spokeWidth: 1.54, spokeHeight: 4.04, spokeOffset: 0.5},
+  [SIZE.XL]: {size: 20, spokeWidth: 1.6, spokeHeight: 4.6, spokeOffset: 0.5},
+} as const;
 
 function toChipSize(size: Size): ChipSize {
   return size === SIZE.XL || size === SIZE.XXL ? SIZE.XL : SIZE.L;
@@ -80,8 +83,6 @@ export class NdwuChipComponent {
   public readonly ariaLabel = input<string | null>(null);
   public readonly maxWidth = input<string | null>(null);
 
-  protected readonly loaderSize = LOADER_SIZE;
-
   private readonly labelSlot = viewChild.required<ElementRef<HTMLElement>>('labelSlot');
 
   private readonly hasSlotContent = signal(false);
@@ -101,6 +102,8 @@ export class NdwuChipComponent {
   }
 
   protected readonly effectiveSize = computed(() => toChipSize(this.sizeSvc.effectiveSize()));
+
+  protected readonly loaderParams = computed(() => LOADER_PARAMS[this.effectiveSize()]);
 
   protected readonly hostClasses = computed(() => {
     const classes = [

@@ -1,7 +1,10 @@
 @if (loading()) {
   <ndwu-spokes-loader
     class="ndwu-chip__loader"
-    [size]="loaderSize"
+    [size]="loaderParams().size"
+    [spokeWidth]="loaderParams().spokeWidth"
+    [spokeHeight]="loaderParams().spokeHeight"
+    [spokeOffset]="loaderParams().spokeOffset"
   />
 } @else if (icon()) {
   <ndwu-icon

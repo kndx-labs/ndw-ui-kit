@@ -3,6 +3,9 @@ import {CdkNoDataRow} from '@angular/cdk/table';
 
 @Directive({
   selector: 'ng-template[ndwuNoDataRow]',
-  providers: [{provide: CdkNoDataRow, useExisting: NdwuNoDataRowDirective}],
+  providers: [{
+    provide: CdkNoDataRow,
+    useExisting: NdwuNoDataRowDirective,
+  }],
 })
 export class NdwuNoDataRowDirective extends CdkNoDataRow {}

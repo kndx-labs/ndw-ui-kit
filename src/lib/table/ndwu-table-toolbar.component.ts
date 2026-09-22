@@ -29,7 +29,7 @@ export class NdwuTableToolbarComponent {
   // `NDWU_SIZE_TOKEN`; the buttons inside size themselves from it.
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
-  protected readonly rootClass = computed(() =>
-    `ndwu-table-toolbar ndwu-table-toolbar--${this.sizeSvc.effectiveSize()}`,
-  );
+  protected readonly rootClass = computed(() => {
+    return `ndwu-table-toolbar ndwu-table-toolbar--${this.sizeSvc.effectiveSize()}`;
+  });
 }

@@ -23,7 +23,9 @@
     [disabled]="!hasPrevious()"
     [attr.aria-label]="effectiveTexts().firstPage | localize"
     (click)="firstPage()"
-  ></button>
+  >
+  </button>
+
   <button
     ndwu-icon-button
     variant="flat"
@@ -32,7 +34,9 @@
     [disabled]="!hasPrevious()"
     [attr.aria-label]="effectiveTexts().previousPage | localize"
     (click)="previousPage()"
-  ></button>
+  >
+  </button>
+
   <button
     ndwu-icon-button
     variant="flat"
@@ -41,7 +45,9 @@
     [disabled]="!hasNext()"
     [attr.aria-label]="effectiveTexts().nextPage | localize"
     (click)="nextPage()"
-  ></button>
+  >
+  </button>
+
   <button
     ndwu-icon-button
     variant="flat"
@@ -50,5 +56,6 @@
     [disabled]="!hasNext()"
     [attr.aria-label]="effectiveTexts().lastPage | localize"
     (click)="lastPage()"
-  ></button>
+  >
+  </button>
 </div>

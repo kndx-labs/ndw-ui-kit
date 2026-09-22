@@ -23,7 +23,12 @@
     </div>
 
     @if (labelHidden()) {
-      <label class="ndwu-toggle__hidden-label" [for]="toggleId">{{ label() }}</label>
+      <label
+        class="ndwu-toggle__hidden-label"
+        [for]="toggleId"
+      >
+        {{ label() }}
+      </label>
     } @else if (label() || secondaryText()) {
       <label [for]="toggleId">
         <ndwu-label-group

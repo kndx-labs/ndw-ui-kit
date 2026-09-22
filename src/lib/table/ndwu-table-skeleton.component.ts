@@ -35,10 +35,12 @@ export class NdwuTableSkeletonComponent {
 
   public readonly skeletonTexts = input<NdwuTableTranslationTexts['skeleton']>();
 
-  protected readonly effectiveTexts = computed(() => ({
-    ...DEFAULT_SKELETON_TEXTS,
-    ...this.skeletonTexts(),
-  }));
+  protected readonly effectiveTexts = computed(() => {
+    return {
+      ...DEFAULT_SKELETON_TEXTS,
+      ...this.skeletonTexts(),
+    };
+  });
 
   protected readonly rowList = computed(() => Array.from({length: this.rows()}, (_, index) => index));
   protected readonly cols = computed(() => Array.from({length: this.columns()}, (_, index) => index));

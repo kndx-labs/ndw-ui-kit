@@ -57,16 +57,18 @@ export class NdwuColumnPinComponent {
     return classes.join(' ');
   });
 
-  protected readonly effectiveTexts = computed(() => ({
-    ...DEFAULT_COLUMN_PIN_TEXTS,
-    ...this.pinTexts(),
-  }));
+  protected readonly effectiveTexts = computed(() => {
+    return {
+      ...DEFAULT_COLUMN_PIN_TEXTS,
+      ...this.pinTexts(),
+    };
+  });
 
   // The name is rendered as hidden text rather than bound to `aria-label`, so a
   // host that sets its own `aria-label` still wins over the default.
-  protected readonly label = computed(() =>
-    this.pinned() ? this.effectiveTexts().unpin : this.effectiveTexts().pin,
-  );
+  protected readonly label = computed(() => {
+    return this.pinned() ? this.effectiveTexts().unpin : this.effectiveTexts().pin;
+  });
 
   protected toggle(event: Event): void {
     // The pin usually sits inside a sort header, which would otherwise sort.

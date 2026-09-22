@@ -34,8 +34,10 @@ export class NdwuColumnResizeHandleComponent {
   public readonly minWidth = input(0);
   public readonly resizeTexts = input<NdwuTableTranslationTexts['columnResize']>();
 
-  protected readonly effectiveTexts = computed(() => ({
-    ...DEFAULT_COLUMN_RESIZE_TEXTS,
-    ...this.resizeTexts(),
-  }));
+  protected readonly effectiveTexts = computed(() => {
+    return {
+      ...DEFAULT_COLUMN_RESIZE_TEXTS,
+      ...this.resizeTexts(),
+    };
+  });
 }

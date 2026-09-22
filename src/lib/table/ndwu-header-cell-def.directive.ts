@@ -3,6 +3,9 @@ import {CdkHeaderCellDef} from '@angular/cdk/table';
 
 @Directive({
   selector: '[ndwuHeaderCellDef]',
-  providers: [{provide: CdkHeaderCellDef, useExisting: NdwuHeaderCellDefDirective}],
+  providers: [{
+    provide: CdkHeaderCellDef,
+    useExisting: NdwuHeaderCellDefDirective,
+  }],
 })
 export class NdwuHeaderCellDefDirective extends CdkHeaderCellDef {}

@@ -3,7 +3,10 @@ import {CdkColumnDef} from '@angular/cdk/table';
 
 @Directive({
   selector: '[ndwuColumnDef]',
-  providers: [{provide: CdkColumnDef, useExisting: NdwuColumnDefDirective}],
+  providers: [{
+    provide: CdkColumnDef,
+    useExisting: NdwuColumnDefDirective,
+  }],
 })
 export class NdwuColumnDefDirective extends CdkColumnDef {
   // `name` is an accessor on the CDK class (setting it also derives the cell

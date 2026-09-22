@@ -129,10 +129,11 @@ export class DeviceTableComponent {
    * feeds it rows and binds its state to the sort directive and the paginator.
    */
   protected readonly dataSource = new NdwuTableDataSource<Device>({
-    filterPredicate: (device, filter) =>
-      device.name.toLowerCase().includes(filter)
-      || device.ip.includes(filter)
-      || device.band.toLowerCase().includes(filter),
+    filterPredicate: (device, filter) => {
+      return device.name.toLowerCase().includes(filter)
+        || device.ip.includes(filter)
+        || device.band.toLowerCase().includes(filter);
+    },
   });
 
   /** Working copy: add and delete mutate it, and it re-seeds if the host swaps the input. */
@@ -321,8 +322,9 @@ export class DeviceTableComponent {
   private randomDevice(): Device {
     const rows = this.rows();
     const id = rows.reduce((max, d) => Math.max(max, d.id), 0) + 1;
-    const pick = <T>(values: readonly [T, ...T[]]): T =>
-      values[Math.floor(Math.random() * values.length)] ?? values[0];
+    const pick = <T>(values: readonly [T, ...T[]]): T => {
+      return values[Math.floor(Math.random() * values.length)] ?? values[0];
+    };
 
     return {
       id,

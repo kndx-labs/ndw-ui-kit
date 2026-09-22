@@ -7,7 +7,10 @@ import {CdkFooterRow, CDK_ROW_TEMPLATE, CdkCellOutlet} from '@angular/cdk/table'
   // The CDK creates rows imperatively and marks them itself; OnPush would keep
   // cell outlets from refreshing when the table re-renders a row.
   changeDetection: ChangeDetectionStrategy.Default,
-  providers: [{provide: CdkFooterRow, useExisting: NdwuFooterRowComponent}],
+  providers: [{
+    provide: CdkFooterRow,
+    useExisting: NdwuFooterRowComponent,
+  }],
   imports: [CdkCellOutlet],
   host: {
     class: 'ndwu-footer-row',

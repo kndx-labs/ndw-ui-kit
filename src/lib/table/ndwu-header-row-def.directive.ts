@@ -3,7 +3,10 @@ import {CdkHeaderRowDef} from '@angular/cdk/table';
 
 @Directive({
   selector: '[ndwuHeaderRowDef]',
-  providers: [{provide: CdkHeaderRowDef, useExisting: NdwuHeaderRowDefDirective}],
+  providers: [{
+    provide: CdkHeaderRowDef,
+    useExisting: NdwuHeaderRowDefDirective,
+  }],
 })
 export class NdwuHeaderRowDefDirective extends CdkHeaderRowDef {
   // `columns` and `sticky` come from the CDK base class, so they keep the

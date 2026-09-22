@@ -79,22 +79,24 @@ export class NdwuPaginatorComponent {
   public readonly totalPages = computed(() => Math.max(1, Math.ceil(this.length() / this.pageSize())));
 
   /** `pageIndex` can outrun the data when the host shrinks `length` without resetting the page. */
-  public readonly currentPage = computed(() =>
-    Math.max(0, Math.min(this.pageIndex(), this.totalPages() - 1)),
-  );
+  public readonly currentPage = computed(() => {
+    return Math.max(0, Math.min(this.pageIndex(), this.totalPages() - 1));
+  });
 
   public readonly hasPrevious = computed(() => this.currentPage() > 0);
   public readonly hasNext = computed(() => this.currentPage() < this.totalPages() - 1);
 
   /** The page sizes as kit options, so the picker is the same dropdown used everywhere else. */
-  protected readonly pageSizeOptionList = computed<NdwuOption[]>(() =>
-    this.pageSizeOptions().map(size => ({value: size, label: `${size}`})),
-  );
+  protected readonly pageSizeOptionList = computed<NdwuOption[]>(() => {
+    return this.pageSizeOptions().map(size => ({value: size, label: `${size}`}));
+  });
 
-  protected readonly effectiveTexts = computed(() => ({
-    ...DEFAULT_PAGINATOR_TEXTS,
-    ...this.paginatorTexts(),
-  }));
+  protected readonly effectiveTexts = computed(() => {
+    return {
+      ...DEFAULT_PAGINATOR_TEXTS,
+      ...this.paginatorTexts(),
+    };
+  });
 
   /** Key plus interpolation params, so the host can translate and reorder it. */
   protected readonly rangeLabel = computed<{key: string; params?: Record<string, number>}>(() => {

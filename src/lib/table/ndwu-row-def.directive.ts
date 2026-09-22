@@ -3,7 +3,10 @@ import {CdkRowDef} from '@angular/cdk/table';
 
 @Directive({
   selector: '[ndwuRowDef]',
-  providers: [{provide: CdkRowDef, useExisting: NdwuRowDefDirective}],
+  providers: [{
+    provide: CdkRowDef,
+    useExisting: NdwuRowDefDirective,
+  }],
 })
 export class NdwuRowDefDirective<T> extends CdkRowDef<T> {
   // `columns` and `when` come from the CDK base class, so they keep the

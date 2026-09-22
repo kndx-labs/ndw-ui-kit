@@ -45,12 +45,15 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
   private handleRef: ComponentRef<NdwuColumnResizeHandleComponent> | null = null;
 
   public ngAfterViewInit(): void {
-    this.handleRef = this.viewContainer.createComponent(NdwuColumnResizeHandleComponent, {
-      bindings: [
-        inputBinding('minWidth', () => MIN_COLUMN_WIDTH),
-        inputBinding('resizeTexts', this.resizeTexts),
-      ],
-    });
+    this.handleRef = this.viewContainer.createComponent(
+      NdwuColumnResizeHandleComponent,
+      {
+        bindings: [
+          inputBinding('minWidth', () => MIN_COLUMN_WIDTH),
+          inputBinding('resizeTexts', this.resizeTexts),
+        ],
+      },
+    );
 
     const handle = this.handleRef.location.nativeElement as HTMLElement;
 
@@ -85,23 +88,41 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
       handle.releasePointerCapture(endEvent.pointerId);
     };
 
-    stops.push(this.renderer.listen(handle, 'pointermove', (moveEvent: PointerEvent) => {
-      this.applyWidth(handle, widthAt(moveEvent.clientX));
-    }));
+    stops.push(
+      this.renderer.listen(
+        handle,
+        'pointermove',
+        (moveEvent: PointerEvent) => {
+          this.applyWidth(handle, widthAt(moveEvent.clientX));
+        },
+      ),
+    );
 
-    stops.push(this.renderer.listen(handle, 'pointerup', (upEvent: PointerEvent) => {
-      const width = widthAt(upEvent.clientX);
+    stops.push(
+      this.renderer.listen(
+        handle,
+        'pointerup',
+        (upEvent: PointerEvent) => {
+          const width = widthAt(upEvent.clientX);
 
-      finish(upEvent);
-      this.applyWidth(handle, width);
-      this.zone.run(() => this.ndwuColumnResized.emit(width));
-    }));
+          finish(upEvent);
+          this.applyWidth(handle, width);
+          this.zone.run(() => this.ndwuColumnResized.emit(width));
+        },
+      ),
+    );
 
     // A cancelled pointer keeps the width it reached; only the drag ends.
-    stops.push(this.renderer.listen(handle, 'pointercancel', (cancelEvent: PointerEvent) => {
-      finish(cancelEvent);
-      this.zone.run(() => this.ndwuColumnResized.emit(this.el.nativeElement.offsetWidth));
-    }));
+    stops.push(
+      this.renderer.listen(
+        handle,
+        'pointercancel',
+        (cancelEvent: PointerEvent) => {
+          finish(cancelEvent);
+          this.zone.run(() => this.ndwuColumnResized.emit(this.el.nativeElement.offsetWidth));
+        },
+      ),
+    );
   }
 
   private onKeydown(handle: HTMLElement, event: KeyboardEvent): void {

@@ -3,7 +3,10 @@ import {CdkFooterRowDef} from '@angular/cdk/table';
 
 @Directive({
   selector: '[ndwuFooterRowDef]',
-  providers: [{provide: CdkFooterRowDef, useExisting: NdwuFooterRowDefDirective}],
+  providers: [{
+    provide: CdkFooterRowDef,
+    useExisting: NdwuFooterRowDefDirective,
+  }],
 })
 export class NdwuFooterRowDefDirective extends CdkFooterRowDef {
   // `columns` and `sticky` come from the CDK base class, so they keep the

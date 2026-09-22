@@ -29,14 +29,16 @@ export class NdwuRowDragHandleComponent {
   protected readonly ICON_NAME = ICON_NAME;
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
-  protected readonly rootClass = computed(() =>
-    `ndwu-row-drag-handle ndwu-row-drag-handle--${this.sizeSvc.effectiveSize()}`,
-  );
+  protected readonly rootClass = computed(() => {
+    return `ndwu-row-drag-handle ndwu-row-drag-handle--${this.sizeSvc.effectiveSize()}`;
+  });
 
   public readonly dragTexts = input<NdwuTableTranslationTexts['rowDragHandle']>();
 
-  protected readonly effectiveTexts = computed(() => ({
-    ...DEFAULT_ROW_DRAG_HANDLE_TEXTS,
-    ...this.dragTexts(),
-  }));
+  protected readonly effectiveTexts = computed(() => {
+    return {
+      ...DEFAULT_ROW_DRAG_HANDLE_TEXTS,
+      ...this.dragTexts(),
+    };
+  });
 }

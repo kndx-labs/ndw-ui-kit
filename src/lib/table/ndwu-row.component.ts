@@ -4,8 +4,7 @@ import {CdkRow, CDK_ROW_TEMPLATE, CdkCellOutlet} from '@angular/cdk/table';
 @Component({
   selector: 'ndwu-row, tr[ndwu-row]',
   template: CDK_ROW_TEMPLATE,
-  // The CDK creates rows imperatively and marks them itself; OnPush would keep
-  // cell outlets from refreshing when the table re-renders a row.
+  // Not OnPush: the CDK renders rows imperatively, and OnPush blocks their cells.
   changeDetection: ChangeDetectionStrategy.Default,
   providers: [{
     provide: CdkRow,

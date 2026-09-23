@@ -17,9 +17,7 @@ import {NdwuSortDirective} from './ndwu-sort.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NdwuIconComponent],
   host: {
-    // The sort target is the inner button, so the cell keeps its native
-    // `columnheader` role and stays out of the tab order; `aria-sort`
-    // belongs on the header cell itself.
+    // The inner button sorts; the cell keeps `columnheader` and `aria-sort`.
     'class': 'ndwu-sort-header',
     '[attr.aria-sort]': 'ariaSort()',
   },
@@ -35,7 +33,6 @@ export class NdwuSortHeaderComponent {
 
   protected readonly isDesc = computed(() => this.isActive() && this.sortState.direction() === 'desc');
 
-  /** Dimmed while inactive, so the neutral state reuses the ascending icon. */
   protected readonly indicatorIcon = computed<IconName>(() => {
     return this.isDesc() ? ICON_NAME.SORTING_REVERSE_S : ICON_NAME.SORTING_DEFAULT_S;
   });

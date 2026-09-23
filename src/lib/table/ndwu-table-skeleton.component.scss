@@ -10,9 +10,6 @@
   overflow: hidden;
   border: 1px solid var(--ndwu-table-border-color);
   border-radius: radius.$radius-S;
-
-  // One animated element for the whole placeholder: a per-cell shimmer would
-  // animate a layer for every bar in the table.
   animation: ndwu-skeleton-pulse 1.6s ease-in-out infinite;
 }
 

@@ -2,8 +2,6 @@
 @use 'styles/mixins' as mixins;
 @use './ndwu-table.tokens' as tokens;
 
-// The drag list and the dragged row are consumer elements, so their drag
-// states live in `ndwu-table.component.scss`; this sheet owns only the grip.
 :host {
   display: inline-flex;
   vertical-align: middle;
@@ -28,7 +26,6 @@
   &:focus-visible {
     @include mixins.focus-ring();
 
-    // Wrapped: the mixin ends in a nested at-rule, which Sass now warns about.
     & {
       border-radius: radius.$radius-S;
     }

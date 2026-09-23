@@ -5,9 +5,7 @@ import type {Observable} from 'rxjs';
 import type {NdwuSortState} from './ndwu-sort.directive';
 
 export interface NdwuTableDataSourceOptions<T> {
-  /** Value a column sorts by; defaults to the row property named like the column. */
   sortAccessor?: (row: T, column: string) => unknown;
-  /** Whether a row survives the current filter; defaults to a match over all own values. */
   filterPredicate?: (row: T, filter: string) => boolean;
   /** Needed only when the source is built outside an injection context. */
   injector?: Injector;
@@ -32,14 +30,6 @@ function compare(a: unknown, b: unknown): number {
   return String(a).localeCompare(String(b));
 }
 
-/**
- * Filtering, sorting and paging for `NdwuTableComponent`, so a host binds state
- * instead of reimplementing the same three steps.
- *
- * The state is signals: bind them to the sort directive and the paginator, and
- * the table re-renders on its own. Create it in an injection context (a field
- * initializer), or pass an `injector`.
- */
 export class NdwuTableDataSource<T> extends DataSource<T> {
   public readonly data: WritableSignal<readonly T[]> = signal<readonly T[]>([]);
   public readonly filter = signal('');
@@ -49,9 +39,8 @@ export class NdwuTableDataSource<T> extends DataSource<T> {
 
   public readonly filtered: Signal<readonly T[]>;
   public readonly sorted: Signal<readonly T[]>;
-  /** The rows the table shows: the current page of the sorted, filtered data. */
   public readonly page: Signal<readonly T[]>;
-  /** Row count after filtering — what the paginator's `length` expects. */
+  /** Row count after filtering. */
   public readonly length: Signal<number>;
   public readonly isSorted: Signal<boolean>;
 
@@ -98,8 +87,7 @@ export class NdwuTableDataSource<T> extends DataSource<T> {
         return rows;
       }
 
-      // Deleting rows can leave the index past the last page, so it is clamped
-      // here rather than by every host that shrinks the data.
+      // Deleting rows can leave the index past the last page.
       const lastPage = Math.max(0, Math.ceil(rows.length / size) - 1);
       const start = Math.min(this.pageIndex(), lastPage) * size;
 
@@ -113,10 +101,7 @@ export class NdwuTableDataSource<T> extends DataSource<T> {
 
   public disconnect(): void {}
 
-  /**
-   * Replays a row drop on the underlying data. The indices are page-relative,
-   * which is what the drop event reports, so paging and filtering both survive.
-   */
+  /** Indices are page-relative, as the drop event reports them. */
   public moveRow(previousIndex: number, currentIndex: number): void {
     const page = this.page();
     const moved = page[previousIndex];

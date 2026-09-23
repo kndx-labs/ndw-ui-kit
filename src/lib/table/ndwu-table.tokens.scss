@@ -1,8 +1,6 @@
 @use 'sass:map';
 @use 'styles/colors' as colors;
 
-// Shared table metrics. Not theme-dependent, so they stay SCSS variables
-// instead of joining the token map, which carries theme-aware colours only.
 $row-height: 48px;
 
 $text-line-height: 20px;

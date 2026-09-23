@@ -4,17 +4,11 @@
 @use './ndwu-table.tokens' as tokens;
 @use 'styles/mixins' as mixins;
 
-// Encapsulation is off here because the rows and cells below are declared in
-// the consumer's template and instantiated by the CDK, so they never carry
-// this component's scoping attribute. Every other table part keeps emulated
-// encapsulation — only the styles that must reach those rows live in this file.
+// Unencapsulated: rows and cells come from the consumer's template.
 
 .ndwu-table {
   display: block;
   overflow-x: auto;
-
-  // The table is a rounded surface with no outer stroke, so the `overflow`
-  // above is what clips the header and the last row to the corners.
   border-radius: radius.$radius-L;
 
   table {
@@ -45,7 +39,6 @@
   &:focus-visible {
     @include mixins.focus-ring();
 
-    // Wrapped: the mixin ends in a nested at-rule, which Sass now warns about.
     & {
       border-radius: radius.$radius-S;
     }
@@ -95,9 +88,7 @@
   box-sizing: border-box;
   height: tokens.$row-height;
 
-  // Vertical space comes from `height` + `vertical-align`, not padding: on a
-  // table cell `height` is only a minimum, so padding on top of a tall inline
-  // child (badge, icon button) would push the row past the 48px design grid.
+  // `height`, not padding: padding pushes rows with tall content past 48px.
   padding: 0 spacing.$spacing-12;
   border-bottom: 1px solid var(--ndwu-table-border-color);
 
@@ -116,8 +107,6 @@
   vertical-align: middle;
   box-sizing: border-box;
   height: tokens.$row-height;
-
-  // See `.ndwu-header-cell` — vertical padding would break the 48px row grid.
   padding: 0 spacing.$spacing-12;
   border-bottom: 1px solid var(--ndwu-table-border-color);
   color: var(--ndwu-table-cell-color);
@@ -131,15 +120,12 @@
   border-top: 1px solid var(--ndwu-table-border-color);
 }
 
-// Applied by the CDK's sticky styler, which also sets `top`/`z-index` inline.
-// Must win over a cell's own positioning, hence !important.
+// `!important`: must beat the cell's own `position`.
 .ndwu-table-sticky {
   position: sticky !important;
 }
 
-// A pinned column scrolls over its neighbours, so it needs its own opaque
-// ground and an edge to separate it from what passes underneath. The row owns
-// the colour — including hover and selected — hence `inherit` over a token.
+// `inherit`, not a token: the row owns hover and selected colours.
 .ndwu-cell.ndwu-table-sticky,
 .ndwu-header-cell.ndwu-table-sticky {
   z-index: 2;
@@ -147,28 +133,20 @@
   background-color: inherit;
 }
 
-// Column resize grip, appended to the header cell by NdwuColumnResizeDirective.
 .ndwu-column-resizable {
   position: relative;
 }
 
-// Row drag states. The drop list and the dragged row are consumer elements, so
-// like the rows above they can only be reached from this unencapsulated sheet.
-// The row being dragged keeps its place in the table, dimmed, while the
-// preview follows the pointer.
 .ndwu-row.cdk-drag-placeholder {
   opacity: 0.3;
 }
 
-// The preview is a clone lifted out of the table, so it has to lay itself out
-// as a table again or the cells collapse onto one line.
+// The preview is cloned outside the table, so it must lay out as one.
 .ndwu-row.cdk-drag-preview {
   display: table;
   box-sizing: border-box;
   border-radius: radius.$radius-S;
   background-color: var(--ndwu-table-cell-bg);
-
-  // The kit has no elevation token yet, so the lift is spelled out here.
   box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
 }
 

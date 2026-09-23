@@ -25,8 +25,6 @@ import {NDWU_SIZE_TOKEN, NdwuSizeDirective} from '@ndw-ui-kit/core';
   },
 })
 export class NdwuTableToolbarComponent {
-  // The toolbar holds host controls, so it only passes the size down through
-  // `NDWU_SIZE_TOKEN`; the buttons inside size themselves from it.
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   protected readonly rootClass = computed(() => {

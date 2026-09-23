@@ -2,8 +2,6 @@
 @use 'styles/mixins' as mixins;
 @use './ndwu-table.tokens' as tokens;
 
-// The pinned column's own cell styling lives in `ndwu-table.component.scss`:
-// the CDK applies it to consumer cells, out of this component's reach.
 :host {
   display: inline-flex;
   vertical-align: middle;
@@ -23,7 +21,6 @@
   &:focus-visible {
     @include mixins.focus-ring();
 
-    // Wrapped: the mixin ends in a nested at-rule, which Sass now warns about.
     & {
       border-radius: radius.$radius-S;
     }

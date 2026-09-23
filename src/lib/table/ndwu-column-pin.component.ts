@@ -16,10 +16,7 @@ const DEFAULT_COLUMN_PIN_TEXTS = {
   unpin: 'Unpin column',
 };
 
-/**
- * Only reports intent: the host binds the column def's `sticky`, which is what
- * actually freezes the column.
- */
+/** Only reports intent: bind it to the column def's `sticky` to freeze the column. */
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'button[ndwuColumnPin]',
@@ -64,8 +61,7 @@ export class NdwuColumnPinComponent {
     };
   });
 
-  // The name is rendered as hidden text rather than bound to `aria-label`, so a
-  // host that sets its own `aria-label` still wins over the default.
+  // Hidden text, not `aria-label`, so a host `aria-label` still wins.
   protected readonly label = computed(() => {
     return this.pinned() ? this.effectiveTexts().unpin : this.effectiveTexts().pin;
   });

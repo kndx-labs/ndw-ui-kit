@@ -19,11 +19,6 @@ const MIN_COLUMN_WIDTH = 40;
 const KEYBOARD_STEP = 8;
 const KEYBOARD_LARGE_STEP = 40;
 
-/**
- * The grip is a component created here rather than declared in a template,
- * because the cell belongs to the host and a sort header may already be the
- * component on that element.
- */
 @Directive({
   selector: '[ndwuColumnResize]',
   exportAs: 'ndwuColumnResize',
@@ -55,7 +50,6 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
     const handle = this.handleRef.location.nativeElement as HTMLElement;
 
-    // The grip is positioned against the header cell, so it is moved inside it.
     this.renderer.appendChild(this.el.nativeElement, handle);
     this.reportWidth(handle, this.el.nativeElement.offsetWidth);
 
@@ -64,7 +58,6 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
   }
 
   private onPointerDown(handle: HTMLElement, event: PointerEvent): void {
-    // Keeps the drag from starting a text selection or a native drag.
     stopEvent(event);
     handle.setPointerCapture(event.pointerId);
 
@@ -74,8 +67,6 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
     let currentWidth = startWidth;
 
-    // Pointer capture routes every move and the release back to the grip, so
-    // no document-level listeners are needed.
     const stops: (() => void)[] = [];
 
     const finish = (endEvent: PointerEvent): void => {
@@ -83,8 +74,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
       handle.releasePointerCapture(endEvent.pointerId);
     };
 
-    // Moves are frequent and change nothing Angular tracks, so this one listener
-    // is native: a `Renderer2` listener would schedule change detection per move.
+    // Native: a `Renderer2` listener would run change detection on every move.
     const onMove = (moveEvent: PointerEvent): void => {
       currentWidth = widthAt(moveEvent.clientX);
       this.applyWidth(handle, currentWidth);
@@ -152,8 +142,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
     this.reportWidth(handle, width);
   }
 
-  // Written straight to the element: a drag updates it from a native listener,
-  // where an input binding would not be picked up until the next render.
+  // Set directly: drags update it outside change detection.
   private reportWidth(handle: HTMLElement, width: number): void {
     this.renderer.setAttribute(handle, 'aria-valuenow', `${Math.round(width)}`);
   }

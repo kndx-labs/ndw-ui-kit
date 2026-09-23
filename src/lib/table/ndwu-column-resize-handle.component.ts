@@ -7,11 +7,6 @@ const DEFAULT_COLUMN_RESIZE_TEXTS = {
   resize: 'Resize column',
 };
 
-/**
- * The grip rendered by `NdwuColumnResizeDirective`. It is a component so the
- * name goes through `LocalizePipe` like every other label in the kit; the
- * directive owns the pointer and keyboard handling.
- */
 @Component({
   selector: 'ndwu-column-resize-handle',
   templateUrl: './ndwu-column-resize-handle.component.html',
@@ -23,7 +18,7 @@ const DEFAULT_COLUMN_RESIZE_TEXTS = {
     'role': 'separator',
     'aria-orientation': 'vertical',
     'tabindex': '0',
-    // A separator takes no name from its content, so the hidden text is referenced.
+    // A separator takes no name from its content.
     '[attr.aria-labelledby]': 'labelId',
     '[attr.aria-valuemin]': 'minWidth()',
   },

@@ -76,7 +76,7 @@ export class NdwuPaginatorComponent {
 
   public readonly totalPages = computed(() => Math.max(1, Math.ceil(this.length() / this.pageSize())));
 
-  /** `pageIndex` can outrun the data when the host shrinks `length` without resetting the page. */
+  /** `pageIndex` clamped: it can outrun the data when `length` shrinks. */
   public readonly currentPage = computed(() => {
     return Math.max(0, Math.min(this.pageIndex(), this.totalPages() - 1));
   });

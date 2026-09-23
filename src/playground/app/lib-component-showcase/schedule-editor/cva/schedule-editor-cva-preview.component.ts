@@ -10,8 +10,8 @@ import {
   type NdwuScheduleEditorLayout,
   type NdwuScheduleEditorMode,
   type NdwuScheduleEditorSizing,
-  type ScheduleValue,
-  type WeekDay,
+  type NdwuScheduleValue,
+  type NdwuWeekDay,
 } from '@ndw-ui-kit/core';
 import {NdwuScheduleEditorFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
@@ -20,7 +20,7 @@ type CvaPreviewTheme = 'light' | 'dark';
 type WeekStart = 'monday' | 'sunday';
 type LayoutOption = 'auto' | NdwuScheduleEditorLayout;
 
-const SUNDAY_FIRST_WEEK_DAYS: WeekDay[] = [
+const SUNDAY_FIRST_WEEK_DAYS: NdwuWeekDay[] = [
   {day: 'sun', label: 'Sun'},
   {day: 'mon', label: 'Mon'},
   {day: 'tue', label: 'Tue'},
@@ -30,7 +30,7 @@ const SUNDAY_FIRST_WEEK_DAYS: WeekDay[] = [
   {day: 'sat', label: 'Sat'},
 ];
 
-const SAMPLE_VALUE: ScheduleValue = {
+const SAMPLE_VALUE: NdwuScheduleValue = {
   mon: [[540, 1080]],
   tue: [[540, 1080]],
   wed: [[540, 1080]],
@@ -62,7 +62,7 @@ export class ScheduleEditorCvaPreviewComponent implements OnInit {
   public readonly sandboxTheme = signal<CvaPreviewTheme>('light');
 
   public readonly sandboxForm = new FormGroup({
-    scheduleValue: new FormControl<ScheduleValue>({...SAMPLE_VALUE}, {nonNullable: true}),
+    scheduleValue: new FormControl<NdwuScheduleValue>({...SAMPLE_VALUE}, {nonNullable: true}),
     mode: new FormControl<NdwuScheduleEditorMode>(NDWU_SCHEDULE_EDITOR_MODE.FULL, {nonNullable: true}),
     forceLayout: new FormControl<LayoutOption>('auto', {nonNullable: true}),
     weekStart: new FormControl<WeekStart>('monday', {nonNullable: true}),
@@ -72,7 +72,7 @@ export class ScheduleEditorCvaPreviewComponent implements OnInit {
     ),
   });
 
-  public weekDays: WeekDay[] = [];
+  public weekDays: NdwuWeekDay[] = [];
 
   public ngOnInit(): void {
     this.updateWeekDays();

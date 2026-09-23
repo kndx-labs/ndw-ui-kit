@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, input} from '@angular/core';
 import {extractPictogramDimsClass, pictogramNameTransform} from './ndwu-pictogram.helpers';
-import {PICTOGRAM_VARIANTS, PictogramVariant} from '../../../pictogram-presets';
+import {NdwuPictogramVariant, PICTOGRAM_VARIANTS} from '../../../pictogram-presets';
 
 @Component({
   selector: 'ndwu-pictogram',
@@ -12,7 +12,7 @@ import {PICTOGRAM_VARIANTS, PictogramVariant} from '../../../pictogram-presets';
 export class NdwuPictogramComponent {
   public readonly name = input.required({transform: pictogramNameTransform});
   public readonly stretched = input(false, {transform: booleanAttribute});
-  public readonly variant = input<PictogramVariant>('DEFAULT');
+  public readonly variant = input<NdwuPictogramVariant>('DEFAULT');
   public readonly firstColor = input<string>('');
   public readonly secondColor = input<string>('');
 

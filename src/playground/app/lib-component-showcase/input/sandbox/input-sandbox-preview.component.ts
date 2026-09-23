@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ICON_NAME, type IconName, SIZE, type Size} from '@ndw-ui-kit/core';
+import {ICON_NAME, type NdwuIconName, type NdwuSize, SIZE} from '@ndw-ui-kit/core';
 import {NdwuInputFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {STRETCH_WIDTH_VALUE, SandboxToolbarComponent, TokenListComponent, type TokenListItem} from '@app/components';
@@ -49,7 +49,7 @@ export class InputSandboxPreviewComponent extends SandboxBaseComponent {
     label: new FormControl<string>('Email Address', {nonNullable: true}),
     placeholder: new FormControl<string>('Enter text', {nonNullable: true}),
     hint: new FormControl<string>('We\'ll never share your email with anyone else', {nonNullable: true}),
-    size: new FormControl<Size>(SIZE.XL, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
     isRequired: new FormControl<boolean>(false, {nonNullable: true}),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),
     isReadonly: new FormControl<boolean>(false, {nonNullable: true}),
@@ -118,7 +118,7 @@ export class InputSandboxPreviewComponent extends SandboxBaseComponent {
     this.previewWidth.set(width);
   }
 
-  public getRightIconName(): IconName | undefined {
+  public getRightIconName(): NdwuIconName | undefined {
     const type = this.sandboxForm.controls.type.value;
     const rightIcon = this.sandboxForm.controls.rightIcon.value;
 

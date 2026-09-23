@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ICON_NAME, type NdwuPasswordStrength, SIZE, type Size} from '@ndw-ui-kit/core';
+import {ICON_NAME, type NdwuPasswordStrength, type NdwuSize, SIZE} from '@ndw-ui-kit/core';
 import {NdwuPasswordInputFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
@@ -94,7 +94,7 @@ export class PasswordInputFieldSandboxComponent extends SandboxBaseComponent {
     label: new FormControl<string>('Password', {nonNullable: true}),
     placeholder: new FormControl<string>('Enter password', {nonNullable: true}),
     hint: new FormControl<string>('Use at least 8 characters', {nonNullable: true}),
-    size: new FormControl<Size>(SIZE.XL, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
     strength: new FormControl<SandboxStrength>('strong', {nonNullable: true}),
     isRequired: new FormControl<boolean>(false, {nonNullable: true}),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),

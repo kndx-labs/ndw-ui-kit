@@ -1,14 +1,14 @@
 import {InjectionToken, Provider} from '@angular/core';
-import {BASE_ICON_NAMES, EXTRA_ICON_NAME, ICON_NAME, IconName} from '../../icon-names';
+import {BASE_ICON_NAMES, EXTRA_ICON_NAME, ICON_NAME, NdwuIconName} from '../../icon-names';
 
 export interface NdwuIconSpriteSource {
   path: string;
-  iconNames: readonly IconName[];
+  iconNames: readonly NdwuIconName[];
 }
 
 export interface NdwuIconSpriteConfig {
   sources: readonly NdwuIconSpriteSource[];
-  fallbackIconName: IconName;
+  fallbackIconName: NdwuIconName;
 }
 
 const CORE_SPRITE_SOURCE: NdwuIconSpriteSource = {
@@ -66,12 +66,12 @@ export const provideAllNdwUiKitIcons = (): Provider => {
  *
  * @param config.path       - URL/path to the custom sprite SVG file served by your app.
  * @param config.iconNames  - The icon names included in the custom sprite.
- *                            Accepts `readonly IconName[]` so you can pass the typed array
+ *                            Accepts `readonly NdwuIconName[]` so you can pass the typed array
  *                            exported by your config file directly.
  */
 export const provideNdwUiKitCustomIcons = (config: {
   path: string;
-  iconNames: readonly IconName[];
+  iconNames: readonly NdwuIconName[];
 }): Provider => {
   const customSource: NdwuIconSpriteSource = {
     path: config.path,

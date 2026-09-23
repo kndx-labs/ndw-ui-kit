@@ -34,7 +34,7 @@ const isIconNameTypeNode = (node: ts.TypeNode | undefined): boolean => {
   }
 
   if (ts.isTypeReferenceNode(node) && ts.isIdentifier(node.typeName)) {
-    return node.typeName.text === 'IconName';
+    return node.typeName.text === 'NdwuIconName';
   }
 
   if (ts.isUnionTypeNode(node) || ts.isIntersectionTypeNode(node)) {
@@ -147,7 +147,7 @@ export const BASE_ICON_NAME = [
 ${entries}
 ] as const;
 
-export type BaseIconName = (typeof BASE_ICON_NAME)[number];
+export type NdwuBaseIconName = (typeof BASE_ICON_NAME)[number];
 `.trimStart();
 };
 
@@ -212,7 +212,7 @@ const main = (): void => {
   const unknownInferredValues = [...inferredValues].filter((value) => !knownValues.has(value)).sort();
 
   if (unknownInferredValues.length > 0) {
-    console.error(chalk.red('Unknown inferred IconName string values detected in src/lib:'));
+    console.error(chalk.red('Unknown inferred NdwuIconName string values detected in src/lib:'));
     unknownInferredValues.forEach((value) => console.error(chalk.red(`  - ${value}`)));
     process.exit(1);
   }

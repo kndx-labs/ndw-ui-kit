@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {SIZE, type Size} from '@ndw-ui-kit/core';
+import {type NdwuSize, SIZE} from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {parseTextareaOptions} from '@app/utils';
@@ -44,7 +44,7 @@ export class SelectFieldSandboxComponent implements OnInit, AfterViewInit {
     label: new FormControl('Country', {nonNullable: true}),
     placeholder: new FormControl('Choose country', {nonNullable: true}),
     hint: new FormControl('', {nonNullable: true}),
-    size: new FormControl<Size>(SIZE.XL, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
     disabled: new FormControl(false, {nonNullable: true}),
     required: new FormControl(false, {nonNullable: true}),
     optionsRaw: new FormControl(DEFAULT_OPTIONS_TEXT, {nonNullable: true}),

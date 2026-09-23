@@ -1,4 +1,4 @@
-import {BUTTON_VARIANT, ButtonVariant, ICON_NAME, type IconName} from '@ndw-ui-kit/core';
+import {BUTTON_VARIANT, ICON_NAME, NdwuButtonVariant, type NdwuIconName} from '@ndw-ui-kit/core';
 
 export const BUTTON_TOKEN_KEYS = [
   'button-primary-bg',
@@ -66,7 +66,7 @@ export const BUTTON_TOKEN_KEYS = [
   'button-loader-color-secondary-negative-focused',
 ] as const;
 
-export const BUTTON_TYPE_TO_PREFIX: Record<ButtonVariant, string> = {
+export const BUTTON_TYPE_TO_PREFIX: Record<NdwuButtonVariant, string> = {
   [BUTTON_VARIANT.PRIMARY]: 'button-primary-',
   [BUTTON_VARIANT.SECONDARY]: 'button-secondary-',
   [BUTTON_VARIANT.TERTIARY]: 'button-tertiary-',
@@ -74,7 +74,7 @@ export const BUTTON_TYPE_TO_PREFIX: Record<ButtonVariant, string> = {
   [BUTTON_VARIANT.SECONDARY_NEGATIVE]: 'button-secondary-negative-',
 };
 
-export const BUTTON_TYPE_LOADER_KEYS: Record<ButtonVariant, readonly string[]> = {
+export const BUTTON_TYPE_LOADER_KEYS: Record<NdwuButtonVariant, readonly string[]> = {
   [BUTTON_VARIANT.PRIMARY]: ['button-loader-color'],
   [BUTTON_VARIANT.SECONDARY]: ['button-loader-color-secondary'],
   [BUTTON_VARIANT.TERTIARY]: ['button-loader-color-tertiary'],
@@ -85,7 +85,7 @@ export const BUTTON_TYPE_LOADER_KEYS: Record<ButtonVariant, readonly string[]> =
   ],
 };
 
-export const SANDBOX_ICONS: IconName[] = [
+export const SANDBOX_ICONS: NdwuIconName[] = [
   ICON_NAME.ADD_S,
   ICON_NAME.CHECK_S,
   ICON_NAME.CLOSE_S,

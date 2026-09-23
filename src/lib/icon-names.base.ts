@@ -35,4 +35,4 @@ export const BASE_ICON_NAME = [
   'warning_S',
 ] as const;
 
-export type BaseIconName = (typeof BASE_ICON_NAME)[number];
+export type NdwuBaseIconName = (typeof BASE_ICON_NAME)[number];

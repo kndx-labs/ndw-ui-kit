@@ -14,7 +14,7 @@ import {SIZE} from '../../../shared.types';
 import {NdwuSizeDirective} from '../../directives';
 import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
 import {NdwuProgressBarComponent, PROGRESS_BAR_COLOR} from '../progress-bar/ndwu-progress-bar.component';
-import type {FileInputValue, TranslationTexts} from './ndwu-file-upload.types';
+import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 @Component({
   selector: 'ndwu-file-upload-header',
@@ -53,12 +53,12 @@ export class NdwuFileUploadHeaderComponent {
     retry: 'Retry',
   };
 
-  public readonly files = input.required<FileInputValue[]>();
+  public readonly files = input.required<NdwuFileInputValue[]>();
   public readonly disabled = input(false, {transform: booleanAttribute});
-  public readonly headerTitleTexts = input<TranslationTexts['header']>();
-  public readonly headerSubtitleTexts = input<TranslationTexts['header']>();
-  public readonly headerActionTexts = input<TranslationTexts['header']>();
-  public readonly headerToggleTexts = input<TranslationTexts['header']>();
+  public readonly headerTitleTexts = input<NdwuTranslationTexts['header']>();
+  public readonly headerSubtitleTexts = input<NdwuTranslationTexts['header']>();
+  public readonly headerActionTexts = input<NdwuTranslationTexts['header']>();
+  public readonly headerToggleTexts = input<NdwuTranslationTexts['header']>();
 
   public readonly cancelAll = output<void>();
   public readonly retryAll = output<void>();

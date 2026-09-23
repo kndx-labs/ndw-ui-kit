@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NOTIFICATION_VARIANT, NdwuNotificationComponent, NotificationVariant} from '@ndw-ui-kit/core';
+import {NOTIFICATION_VARIANT, NdwuNotificationComponent, NdwuNotificationVariant} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';
@@ -51,7 +51,7 @@ export class NotificationSandboxComponent extends SandboxBaseComponent {
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
 
   public readonly sandboxForm = new FormGroup({
-    variant: new FormControl<NotificationVariant>(NOTIFICATION_VARIANT.INFO, {nonNullable: true}),
+    variant: new FormControl<NdwuNotificationVariant>(NOTIFICATION_VARIANT.INFO, {nonNullable: true}),
     message: new FormControl<string>('This is a notification message', {nonNullable: true}),
   });
 
@@ -74,7 +74,7 @@ export class NotificationSandboxComponent extends SandboxBaseComponent {
     return NOTIFICATION_TOKEN_KEYS.map((key) => ({cssVar: tokenKeyToCssVar(key), key}));
   }
 
-  public get previewVariant(): NotificationVariant {
+  public get previewVariant(): NdwuNotificationVariant {
     return this.sandboxForm.controls.variant.value;
   }
 

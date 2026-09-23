@@ -101,10 +101,10 @@ ${extraDeclarations.join(EOL)}
 export const ICON_NAMES = Object.values(ICON_NAME);
 export const BASE_ICON_NAMES = BASE_ICON_NAME;
 
-export type {BaseIconName} from './icon-names.base';
-export type AllIconName = (typeof ICON_NAME)[keyof typeof ICON_NAME];
+export type {NdwuBaseIconName} from './icon-names.base';
+export type NdwuAllIconName = (typeof ICON_NAME)[keyof typeof ICON_NAME];
 
-export type IconName = AllIconName;
+export type NdwuIconName = NdwuAllIconName;
 `.trimStart();
 
     writeFileSync(OUTPUT_FILE, content, 'utf-8');

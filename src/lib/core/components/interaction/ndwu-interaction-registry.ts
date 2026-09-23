@@ -1,5 +1,5 @@
 import {Injectable, type Signal, type WritableSignal, computed, signal} from '@angular/core';
-import {Values} from '../../../shared.types';
+import {NdwuValues} from '../../../shared.types';
 
 export const NDWU_INTERACTION_FOCUS_TYPE = {
   CHECKBOX: 'checkbox',
@@ -10,7 +10,7 @@ export const NDWU_INTERACTION_FOCUS_TYPE = {
   TOGGLE: 'toggle',
 } as const;
 
-export type NdwuInteractionFocusType = Values<typeof NDWU_INTERACTION_FOCUS_TYPE>;
+export type NdwuInteractionFocusType = NdwuValues<typeof NDWU_INTERACTION_FOCUS_TYPE>;
 
 export const NDWU_INTERACTION_FOCUS_TYPES: NdwuInteractionFocusType[] = [
   NDWU_INTERACTION_FOCUS_TYPE.CHECKBOX,

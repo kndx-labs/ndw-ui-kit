@@ -23,18 +23,18 @@ import {scheduleLayoutMobileUtils} from './layout/mobile.schedule-layout';
 import {ScheduleLayout} from './layout/schedule.layout';
 import {NdwuResizeObserverDirective} from '../../directives';
 import {
-  type DayName,
   NDWU_SCHEDULE_EDITOR_LAYOUT,
   NDWU_SCHEDULE_EDITOR_MODE,
   NDWU_SCHEDULE_EDITOR_SIZING,
+  type NdwuDayName,
+  type NdwuScheduleAction,
+  NdwuScheduleBlock,
   type NdwuScheduleEditorLayout,
   type NdwuScheduleEditorMode,
   type NdwuScheduleEditorSizing,
-  type ScheduleAction,
-  ScheduleBlock,
-  ScheduleTimePoint,
-  ScheduleValue,
-  type WeekDay,
+  NdwuScheduleTimePoint,
+  NdwuScheduleValue,
+  type NdwuWeekDay,
 } from './schedule-editor.types';
 import {DAY_TO_NDM_DAY, DEFAULT_WEEK_DAYS} from './schedule-editor.constants';
 import {
@@ -75,19 +75,19 @@ import {
   imports: [NdwuResizeObserverDirective],
 })
 export class NdwuScheduleEditorComponent implements OnDestroy {
-  public readonly value = input<ScheduleValue>({});
+  public readonly value = input<NdwuScheduleValue>({});
   public readonly forceLayout = input<NdwuScheduleEditorLayout | null>(null);
   public readonly mode = input<NdwuScheduleEditorMode>(NDWU_SCHEDULE_EDITOR_MODE.FULL);
   public readonly sizing = input<NdwuScheduleEditorSizing>(NDWU_SCHEDULE_EDITOR_SIZING.SCALE);
   public readonly weekDays = input(
     DEFAULT_WEEK_DAYS,
-    {transform: (value: WeekDay[] | null | undefined) => value ?? DEFAULT_WEEK_DAYS},
+    {transform: (value: NdwuWeekDay[] | null | undefined) => value ?? DEFAULT_WEEK_DAYS},
   );
 
-  public readonly valueChange = output<ScheduleValue>();
-  public readonly actionsChange = output<ScheduleAction[]>();
+  public readonly valueChange = output<NdwuScheduleValue>();
+  public readonly actionsChange = output<NdwuScheduleAction[]>();
 
-  private readonly weekDayLabels: Signal<Partial<Record<DayName, string>>> = computed(() => {
+  private readonly weekDayLabels: Signal<Partial<Record<NdwuDayName, string>>> = computed(() => {
     return Object.fromEntries(this.weekDays().map((wd) => [wd.day, wd.label]));
   });
 
@@ -174,7 +174,7 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
     return Math.max(extent, MIN_GRID_EXTENT_PX);
   });
 
-  private readonly scheduleBlocks: Signal<ScheduleBlock[]> = computed(() => {
+  private readonly scheduleBlocks: Signal<NdwuScheduleBlock[]> = computed(() => {
     return simplifyBlocks(valueToBlocks(this.value(), this.weekDays()));
   });
 
@@ -397,7 +397,7 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
 
     event.preventDefault();
 
-    const point: ScheduleTimePoint = {gridTime: slot.slotIndex * MINUTES_IN_SLOT, gridDay: slot.dayIndex};
+    const point: NdwuScheduleTimePoint = {gridTime: slot.slotIndex * MINUTES_IN_SLOT, gridDay: slot.dayIndex};
 
     const drag: DragState = {
       start: point,
@@ -489,9 +489,9 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
   }
 
   private isTimeOccupied(
-    blocks: ScheduleBlock[],
-    point: ScheduleTimePoint,
-    weekDays: WeekDay[],
+    blocks: NdwuScheduleBlock[],
+    point: NdwuScheduleTimePoint,
+    weekDays: NdwuWeekDay[],
   ): boolean {
     const dayOfWeek = weekDays[point.gridDay];
 
@@ -571,7 +571,7 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
     return {clientX: event.clientX, clientY: event.clientY};
   }
 
-  private pointerToTimeSlot(event: MouseEvent | TouchEvent): ScheduleTimePoint | null {
+  private pointerToTimeSlot(event: MouseEvent | TouchEvent): NdwuScheduleTimePoint | null {
     let clientX: number, clientY: number;
     let target: EventTarget | null;
 

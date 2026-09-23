@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NdwuPictogramComponent} from '../../../../../lib/core/components/pictogram/ndwu-pictogram.component';
-import {PICTOGRAM_NAME, PictogramName} from '../../../../../lib/pictogram-names';
-import {PICTOGRAM_VARIANTS, PictogramVariant} from '../../../../../lib/pictogram-presets';
+import {NdwuPictogramName, PICTOGRAM_NAME} from '../../../../../lib/pictogram-names';
+import {NdwuPictogramVariant, PICTOGRAM_VARIANTS} from '../../../../../lib/pictogram-presets';
 
 @Component({
   selector: 'app-pictogram-sandbox',
@@ -13,12 +13,12 @@ import {PICTOGRAM_VARIANTS, PictogramVariant} from '../../../../../lib/pictogram
 })
 export class PictogramSandboxComponent {
   public readonly PICTOGRAM_NAME = PICTOGRAM_NAME;
-  public readonly allPictograms: PictogramName[] = Object.values(PICTOGRAM_NAME);
-  public readonly allVariants: PictogramVariant[] = Object.keys(PICTOGRAM_VARIANTS) as PictogramVariant[];
+  public readonly allPictograms: NdwuPictogramName[] = Object.values(PICTOGRAM_NAME);
+  public readonly allVariants: NdwuPictogramVariant[] = Object.keys(PICTOGRAM_VARIANTS) as NdwuPictogramVariant[];
 
   public readonly sandboxForm = new FormGroup({
-    name: new FormControl<PictogramName>(PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L, {nonNullable: true}),
-    variant: new FormControl<PictogramVariant>('DEFAULT', {nonNullable: true}),
+    name: new FormControl<NdwuPictogramName>(PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L, {nonNullable: true}),
+    variant: new FormControl<NdwuPictogramVariant>('DEFAULT', {nonNullable: true}),
     stretched: new FormControl<boolean>(false, {nonNullable: true}),
     firstColor: new FormControl<string>(PICTOGRAM_VARIANTS.DEFAULT.firstColor, {nonNullable: true}),
     secondColor: new FormControl<string>(PICTOGRAM_VARIANTS.DEFAULT.secondColor, {nonNullable: true}),
@@ -37,7 +37,7 @@ export class PictogramSandboxComponent {
   public resetSandbox(): void {
     this.sandboxForm.reset({
       name: PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L,
-      variant: 'DEFAULT' as PictogramVariant,
+      variant: 'DEFAULT' as NdwuPictogramVariant,
       stretched: false,
       firstColor: PICTOGRAM_VARIANTS.DEFAULT.firstColor,
       secondColor: PICTOGRAM_VARIANTS.DEFAULT.secondColor,

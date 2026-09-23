@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Signal, computed, signal} from '@angular/core';
-import {ICON_NAME, IconName, NdwuAdaptiveIconComponent, NdwuIconComponent} from '@ndw-ui-kit/core';
+import {ICON_NAME, NdwuAdaptiveIconComponent, NdwuIconComponent, NdwuIconName} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {ShowcaseLayoutComponent} from '@app/components';
@@ -20,7 +20,7 @@ export class IconShowcaseComponent {
   public readonly ICON_NAME = ICON_NAME;
 
   // Sample icons for demonstration
-  public readonly sampleIcons: IconName[] = [
+  public readonly sampleIcons: NdwuIconName[] = [
     ICON_NAME.ADD_L,
     ICON_NAME.CHECK_L,
     ICON_NAME.CLOSE_L,
@@ -40,14 +40,14 @@ export class IconShowcaseComponent {
   ];
 
   // Configurable example state
-  public readonly allIcons: IconName[] = Object.values(ICON_NAME);
-  public readonly selectedIcon = signal<IconName>(ICON_NAME.ADD_L);
+  public readonly allIcons: NdwuIconName[] = Object.values(ICON_NAME);
+  public readonly selectedIcon = signal<NdwuIconName>(ICON_NAME.ADD_L);
   public readonly selectedColor = signal<string>('#000000');
 
   public onIconChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
 
-    this.selectedIcon.set(select.value as IconName);
+    this.selectedIcon.set(select.value as NdwuIconName);
   }
 
   public handleArrowKeys(event: KeyboardEvent): void {

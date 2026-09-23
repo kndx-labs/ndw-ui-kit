@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input} from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {SIZE, Values} from '../../../../shared.types';
-import {IconName} from '../../../../icon-names';
+import {NdwuValues, SIZE} from '../../../../shared.types';
+import {NdwuIconName} from '../../../../icon-names';
 import {NdwuSizeDirective} from '../../../directives';
 import {NdwuIconComponent} from '../../icon/ndwu-icon.component';
 import {NdwuSpokesLoaderComponent} from '../../spokes-loader/ndwu-spokes-loader.component';
@@ -14,7 +14,7 @@ export const BUTTON_VARIANT = {
   SECONDARY_NEGATIVE: 'secondary-negative',
 } as const;
 
-export type ButtonVariant = Values<typeof BUTTON_VARIANT>;
+export type NdwuButtonVariant = NdwuValues<typeof BUTTON_VARIANT>;
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -40,10 +40,10 @@ export type ButtonVariant = Values<typeof BUTTON_VARIANT>;
 export class NdwuButtonComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
-  public readonly variant = input<ButtonVariant>(BUTTON_VARIANT.PRIMARY);
+  public readonly variant = input<NdwuButtonVariant>(BUTTON_VARIANT.PRIMARY);
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly loading = input(false, {transform: booleanAttribute});
-  public readonly icon = input<IconName | null>(null);
+  public readonly icon = input<NdwuIconName | null>(null);
   public readonly label = input<string>('');
 
   protected readonly loaderParams = computed(() => {

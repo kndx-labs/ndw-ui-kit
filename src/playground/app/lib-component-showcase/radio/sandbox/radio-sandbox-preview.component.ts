@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from 
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
-import {type NdwuOption, SIZE, type Size} from '@ndw-ui-kit/core';
+import {type NdwuOption, type NdwuSize, SIZE} from '@ndw-ui-kit/core';
 import {NdwuRadioFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -52,7 +52,7 @@ export class RadioSandboxPreviewComponent extends SandboxBaseComponent {
 
   public readonly sandboxForm = new FormGroup({
     option: new FormControl<string>('option1', {nonNullable: true}),
-    size: new FormControl<Size>(SIZE.XL, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),
   });
 

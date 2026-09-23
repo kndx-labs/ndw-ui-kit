@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from 
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
-import {SIZE, type Size, TOGGLE_COLOR, type ToggleColor} from '@ndw-ui-kit/core';
+import {type NdwuSize, type NdwuToggleColor, SIZE, TOGGLE_COLOR} from '@ndw-ui-kit/core';
 import {NdwuToggleFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -41,8 +41,8 @@ export class ToggleSandboxPreviewComponent extends SandboxBaseComponent {
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
 
   public readonly sandboxForm = new FormGroup({
-    size: new FormControl<Size>(SIZE.XL, {nonNullable: true}),
-    color: new FormControl<ToggleColor>(TOGGLE_COLOR.BRAND, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
+    color: new FormControl<NdwuToggleColor>(TOGGLE_COLOR.BRAND, {nonNullable: true}),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),
     label: new FormControl<string>('Enable notifications', {nonNullable: true}),
     secondaryText: new FormControl<string>('Receive updates about your account activity', {nonNullable: true}),

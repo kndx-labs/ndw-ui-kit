@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import type {ScheduleBlock, ScheduleInterval, ScheduleValue} from '../schedule-editor.types';
+import type {NdwuScheduleBlock, NdwuScheduleInterval, NdwuScheduleValue} from '../schedule-editor.types';
 import {DEFAULT_WEEK_DAYS} from '../schedule-editor.constants';
 import {
   blocksToValue,
@@ -11,7 +11,7 @@ import {
   valueToBlocks,
 } from './schedule-blocks.utils';
 
-const sortBlocks = (blocks: ScheduleBlock[]): ScheduleBlock[] =>
+const sortBlocks = (blocks: NdwuScheduleBlock[]): NdwuScheduleBlock[] =>
   [...blocks].sort((a, b) => a.day - b.day || a.start - b.start);
 
 describe('minutesToTime', () => {
@@ -24,37 +24,37 @@ describe('minutesToTime', () => {
 
 describe('subtractLines', () => {
   it('keeps a disjoint line untouched', () => {
-    const lines: ScheduleInterval[] = [[0, 60]];
+    const lines: NdwuScheduleInterval[] = [[0, 60]];
 
     expect(subtractLines(lines, [120, 180])).toEqual([[0, 60]]);
   });
 
   it('drops a line fully contained in the removed one', () => {
-    const lines: ScheduleInterval[] = [[60, 120]];
+    const lines: NdwuScheduleInterval[] = [[60, 120]];
 
     expect(subtractLines(lines, [0, 180])).toEqual([]);
   });
 
   it('splits a line that contains the removed one', () => {
-    const lines: ScheduleInterval[] = [[0, 180]];
+    const lines: NdwuScheduleInterval[] = [[0, 180]];
 
     expect(subtractLines(lines, [60, 120])).toEqual([[0, 60], [120, 180]]);
   });
 
   it('trims a line overlapping the start of the removed one', () => {
-    const lines: ScheduleInterval[] = [[0, 120]];
+    const lines: NdwuScheduleInterval[] = [[0, 120]];
 
     expect(subtractLines(lines, [60, 180])).toEqual([[0, 60]]);
   });
 
   it('trims a line overlapping the end of the removed one', () => {
-    const lines: ScheduleInterval[] = [[60, 180]];
+    const lines: NdwuScheduleInterval[] = [[60, 180]];
 
     expect(subtractLines(lines, [0, 120])).toEqual([[120, 180]]);
   });
 
   it('applies the removal to every line in the list', () => {
-    const lines: ScheduleInterval[] = [[0, 60], [120, 240], [300, 360]];
+    const lines: NdwuScheduleInterval[] = [[0, 60], [120, 240], [300, 360]];
 
     expect(subtractLines(lines, [180, 330]))
       .toEqual([[0, 60], [120, 180], [330, 360]]);
@@ -63,8 +63,8 @@ describe('subtractLines', () => {
 
 describe('subtractBlocks', () => {
   it('subtracts a single interval from a day', () => {
-    const source: ScheduleBlock[] = [{day: 1, start: 0, stop: 600}];
-    const removed: ScheduleBlock[] = [{day: 1, start: 120, stop: 240}];
+    const source: NdwuScheduleBlock[] = [{day: 1, start: 0, stop: 600}];
+    const removed: NdwuScheduleBlock[] = [{day: 1, start: 120, stop: 240}];
 
     expect(sortBlocks(subtractBlocks(source, removed)))
       .toEqual([
@@ -74,8 +74,8 @@ describe('subtractBlocks', () => {
   });
 
   it('accumulates several removing intervals on the same day', () => {
-    const source: ScheduleBlock[] = [{day: 1, start: 0, stop: 600}];
-    const removed: ScheduleBlock[] = [
+    const source: NdwuScheduleBlock[] = [{day: 1, start: 0, stop: 600}];
+    const removed: NdwuScheduleBlock[] = [
       {day: 1, start: 60, stop: 120},
       {day: 1, start: 300, stop: 360},
     ];
@@ -89,11 +89,11 @@ describe('subtractBlocks', () => {
   });
 
   it('leaves days without a removing interval untouched', () => {
-    const source: ScheduleBlock[] = [
+    const source: NdwuScheduleBlock[] = [
       {day: 1, start: 0, stop: 600},
       {day: 2, start: 0, stop: 600},
     ];
-    const removed: ScheduleBlock[] = [{day: 1, start: 0, stop: 600}];
+    const removed: NdwuScheduleBlock[] = [{day: 1, start: 0, stop: 600}];
 
     expect(sortBlocks(subtractBlocks(source, removed)))
       .toEqual([
@@ -109,19 +109,19 @@ describe('glueBlocks', () => {
   });
 
   it('merges overlapping and adjacent intervals, sorting by start', () => {
-    const intervals: ScheduleInterval[] = [[120, 180], [0, 60], [60, 90]];
+    const intervals: NdwuScheduleInterval[] = [[120, 180], [0, 60], [60, 90]];
 
     expect(glueBlocks(intervals)).toEqual([[0, 90], [120, 180]]);
   });
 
   it('keeps intervals separated by a gap', () => {
-    const intervals: ScheduleInterval[] = [[0, 60], [120, 180]];
+    const intervals: NdwuScheduleInterval[] = [[0, 60], [120, 180]];
 
     expect(glueBlocks(intervals)).toEqual([[0, 60], [120, 180]]);
   });
 
   it('absorbs an interval nested in the previous one', () => {
-    const intervals: ScheduleInterval[] = [[0, 240], [60, 120]];
+    const intervals: NdwuScheduleInterval[] = [[0, 240], [60, 120]];
 
     expect(glueBlocks(intervals)).toEqual([[0, 240]]);
   });
@@ -133,7 +133,7 @@ describe('simplifyBlocks', () => {
   });
 
   it('drops zero-length blocks', () => {
-    const blocks: ScheduleBlock[] = [
+    const blocks: NdwuScheduleBlock[] = [
       {day: 1, start: 60, stop: 60},
       {day: 1, start: 120, stop: 180},
     ];
@@ -143,7 +143,7 @@ describe('simplifyBlocks', () => {
   });
 
   it('merges adjacent blocks within a day but not across days', () => {
-    const blocks: ScheduleBlock[] = [
+    const blocks: NdwuScheduleBlock[] = [
       {day: 1, start: 60, stop: 120},
       {day: 1, start: 120, stop: 180},
       {day: 2, start: 60, stop: 120},
@@ -165,7 +165,7 @@ describe('valueToBlocks and blocksToValue', () => {
   });
 
   it('maps day names to ndm day indices', () => {
-    const value: ScheduleValue = {mon: [[60, 120]], sun: [[0, 30]]};
+    const value: NdwuScheduleValue = {mon: [[60, 120]], sun: [[0, 30]]};
 
     expect(sortBlocks(valueToBlocks(value, DEFAULT_WEEK_DAYS)))
       .toEqual([
@@ -175,7 +175,7 @@ describe('valueToBlocks and blocksToValue', () => {
   });
 
   it('ignores days that are not in the week days list', () => {
-    const value: ScheduleValue = {mon: [[60, 120]], sat: [[0, 30]]};
+    const value: NdwuScheduleValue = {mon: [[60, 120]], sat: [[0, 30]]};
 
     expect(valueToBlocks(value, [{day: 'mon', label: 'Mon'}]))
       .toEqual([
@@ -184,7 +184,7 @@ describe('valueToBlocks and blocksToValue', () => {
   });
 
   it('roundtrips a value through blocks and back', () => {
-    const value: ScheduleValue = {
+    const value: NdwuScheduleValue = {
       mon: [[60, 120]],
       wed: [[0, 30], [600, 720]],
       sun: [[180, 240]],

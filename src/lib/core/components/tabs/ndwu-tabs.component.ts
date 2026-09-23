@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, computed, input, output} from '@angular/core';
-import {type NdwuTabVariant, type NdwuTabWidthMode, type NdwuTabsScrollMode, type TabItem} from './ndwu-tabs.types';
+import {type NdwuTabItem, type NdwuTabVariant, type NdwuTabWidthMode, type NdwuTabsScrollMode} from './ndwu-tabs.types';
 import {NdwuTabItemComponent} from './ndwu-tab-item.component';
-import {SIZE, type Size} from '../../../shared.types';
+import {type NdwuSize, SIZE} from '../../../shared.types';
 
 @Component({
   selector: 'ndwu-tabs',
@@ -16,9 +16,9 @@ import {SIZE, type Size} from '../../../shared.types';
   },
 })
 export class NdwuTabsComponent {
-  public readonly tabs = input.required<TabItem[]>();
+  public readonly tabs = input.required<NdwuTabItem[]>();
   public readonly selectedTabId = input<string | null>(null);
-  public readonly size = input<Size>(SIZE.L);
+  public readonly size = input<NdwuSize>(SIZE.L);
   public readonly variant = input<NdwuTabVariant>('default');
   public readonly scrollMode = input<NdwuTabsScrollMode>('auto');
   public readonly scrollContainerWidth = input<string>('auto');
@@ -39,7 +39,7 @@ export class NdwuTabsComponent {
     return {'--ndwu-tabs-scroll-width': this.scrollContainerWidth()};
   });
 
-  protected onTabSelect(tab: TabItem): void {
+  protected onTabSelect(tab: NdwuTabItem): void {
     if (tab.disabled) {
       return;
     }
@@ -47,7 +47,7 @@ export class NdwuTabsComponent {
     this.tabChange.emit(tab.id);
   }
 
-  protected isTabSelected(tab: TabItem): boolean {
+  protected isTabSelected(tab: NdwuTabItem): boolean {
     return this.selectedTabId() === tab.id;
   }
 }

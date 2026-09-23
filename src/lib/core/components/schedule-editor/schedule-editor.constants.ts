@@ -1,8 +1,8 @@
-import {DayName, WeekDay} from './schedule-editor.types';
+import {NdwuDayName, NdwuWeekDay} from './schedule-editor.types';
 
 /* --------- Constants exported from the library ------------- */
 
-export const DEFAULT_WEEK_DAYS: WeekDay[] = [
+export const DEFAULT_WEEK_DAYS: NdwuWeekDay[] = [
   {day: 'mon', label: 'Mon'},
   {day: 'tue', label: 'Tue'},
   {day: 'wed', label: 'Wed'},
@@ -12,7 +12,7 @@ export const DEFAULT_WEEK_DAYS: WeekDay[] = [
   {day: 'sun', label: 'Sun'},
 ];
 
-export const DAY_TO_NDM_DAY: Record<DayName, number> = {
+export const DAY_TO_NDM_DAY: Record<NdwuDayName, number> = {
   mon: 1,
   tue: 2,
   wed: 3,
@@ -22,7 +22,7 @@ export const DAY_TO_NDM_DAY: Record<DayName, number> = {
   sun: 0,
 };
 
-export const NDM_DAY_TO_DAY: Record<number, DayName> = {
+export const NDM_DAY_TO_DAY: Record<number, NdwuDayName> = {
   0: 'sun',
   1: 'mon',
   2: 'tue',

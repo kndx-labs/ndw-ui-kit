@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
+  type NdwuSize,
+  type NdwuTabItem,
   type NdwuTabVariant,
   type NdwuTabWidthMode,
   NdwuTabsComponent,
   type NdwuTabsScrollMode,
   SIZE,
-  type Size,
-  type TabItem,
 } from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent} from '@app/components';
@@ -31,14 +31,14 @@ export class TabsSandboxComponent {
 
   public readonly sandboxForm = new FormGroup({
     selectedTabId: new FormControl<string>('tab2', {nonNullable: true}),
-    size: new FormControl<Size>(SIZE.L, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(SIZE.L, {nonNullable: true}),
     variant: new FormControl<NdwuTabVariant>('default', {nonNullable: true}),
     scrollMode: new FormControl<NdwuTabsScrollMode>('auto', {nonNullable: true}),
     scrollContainerWidth: new FormControl<string>('368px', {nonNullable: true}),
     tabWidthMode: new FormControl<NdwuTabWidthMode>('content', {nonNullable: true}),
   });
 
-  protected readonly defaultTabs: TabItem[] = [
+  protected readonly defaultTabs: NdwuTabItem[] = [
     {id: 'tab1', label: 'Wi-Fi settings'},
     {id: 'tab2', label: 'Lan configuration'},
     {id: 'tab3', label: 'Port forwarding', disabled: true},
@@ -47,7 +47,7 @@ export class TabsSandboxComponent {
     {id: 'tab6', label: 'Advanced settings'},
   ];
 
-  public readonly tabs = signal<TabItem[]>([...this.defaultTabs]);
+  public readonly tabs = signal<NdwuTabItem[]>([...this.defaultTabs]);
 
   public readonly tabsJson = signal(JSON.stringify(this.defaultTabs, null, 2));
 
@@ -61,7 +61,7 @@ export class TabsSandboxComponent {
 
   public updateTabsFromJson(json: string): void {
     try {
-      const parsed = JSON.parse(json) as TabItem[];
+      const parsed = JSON.parse(json) as NdwuTabItem[];
 
       this.tabs.set(parsed);
     } catch {

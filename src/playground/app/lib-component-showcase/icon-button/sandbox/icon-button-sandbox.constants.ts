@@ -1,4 +1,4 @@
-import {ICON_BUTTON_VARIANT, ICON_NAME, IconName, NdwuOption} from '@ndw-ui-kit/core';
+import {ICON_BUTTON_VARIANT, ICON_NAME, NdwuIconName, NdwuOption} from '@ndw-ui-kit/core';
 
 export const ICON_BUTTON_TOKENS = [
   'icon-button-icon',
@@ -19,7 +19,7 @@ export const ICON_BUTTON_TOKENS = [
   'icon-button-flat-disabled-icon',
 ];
 
-export const ICON_NAMES: IconName[] = [
+export const ICON_NAMES: NdwuIconName[] = [
   ICON_NAME.CHECK_S,
   ICON_NAME.CLOSE_S,
   ICON_NAME.SEARCH_L,

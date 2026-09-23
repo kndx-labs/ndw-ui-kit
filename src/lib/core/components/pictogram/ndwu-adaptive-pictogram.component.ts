@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input} from '@angular/core';
 import {resolveSizeFlags} from '@ndw-ui-kit/core/utils';
-import {PictogramVariant} from '../../../pictogram-presets';
+import {NdwuPictogramVariant} from '../../../pictogram-presets';
 import {NdwuAdaptiveSizeDirective} from '../../directives';
 import {NdwuPictogramComponent} from './ndwu-pictogram.component';
 import {
+  NdwuPictogramBaseName,
+  NdwuPictogramSize,
   PICTOGRAM_SIZE_FALLBACK,
   PICTOGRAM_SIZE_PRIORITY,
-  PictogramBaseName,
-  PictogramSize,
 } from './ndwu-adaptive-pictogram.helpers';
 
 @Component({
@@ -27,13 +27,13 @@ import {
 export class NdwuAdaptivePictogramComponent {
   private readonly adaptiveSvc = inject(NdwuAdaptiveSizeDirective);
 
-  public readonly name = input.required<PictogramBaseName>();
+  public readonly name = input.required<NdwuPictogramBaseName>();
   public readonly stretched = input(false, {transform: booleanAttribute});
-  public readonly variant = input<PictogramVariant>('DEFAULT');
+  public readonly variant = input<NdwuPictogramVariant>('DEFAULT');
   public readonly firstColor = input<string>('');
   public readonly secondColor = input<string>('');
 
-  protected readonly resolvedSize = computed<PictogramSize>(() => {
+  protected readonly resolvedSize = computed<NdwuPictogramSize>(() => {
     return resolveSizeFlags(this.adaptiveSvc.sizeFlags(), PICTOGRAM_SIZE_PRIORITY) ?? PICTOGRAM_SIZE_FALLBACK;
   });
 

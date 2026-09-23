@@ -1,16 +1,16 @@
-import {ICON_NAME, IconName} from '../../../icon-names';
+import {ICON_NAME, NdwuIconName} from '../../../icon-names';
 
 const ICON_VALUES: readonly string[] = Object.values(ICON_NAME);
 
 /**
- * Type guard: true when `value` is a known IconName.
+ * Type guard: true when `value` is a known NdwuIconName.
  */
-export function isIconName(value: string): value is IconName {
+export function isIconName(value: string): value is NdwuIconName {
   return ICON_VALUES.includes(value);
 }
 
 /**
- * Coerces a string or IconName to a valid IconName.
+ * Coerces a string or NdwuIconName to a valid NdwuIconName.
  *
  * 1. If `value` is already a known icon value, returns it.
  * 2. If `value` matches an icon value case-insensitively, returns that icon.
@@ -18,7 +18,7 @@ export function isIconName(value: string): value is IconName {
  *    icon in the catalog. Use this only for optional or legacy inputs; prefer validating
  *    icon names before calling to avoid silent fallback.
  */
-export function iconNameTransform(value: string | IconName): IconName {
+export function iconNameTransform(value: string | NdwuIconName): NdwuIconName {
   if (isIconName(value)) {
     return value;
   }
@@ -43,10 +43,10 @@ export function iconNameTransform(value: string | IconName): IconName {
  * Falls back to configured fallback icon and emits a warning when unavailable.
  */
 export function ensureAvailableIconName(
-  iconName: IconName,
-  availableIconNames: readonly IconName[],
-  fallbackIconName: IconName,
-): IconName {
+  iconName: NdwuIconName,
+  availableIconNames: readonly NdwuIconName[],
+  fallbackIconName: NdwuIconName,
+): NdwuIconName {
   if (availableIconNames.includes(iconName)) {
     return iconName;
   }
@@ -67,10 +67,10 @@ export function ensureAvailableIconName(
 }
 
 /**
- * Gets size CSS class from an IconName (e.g. "add_folder_L" -> "dims-L").
- * Returns `undefined` and logs a console error if no known suffix is present in the IconName.
+ * Gets size CSS class from an NdwuIconName (e.g. "add_folder_L" -> "dims-L").
+ * Returns `undefined` and logs a console error if no known suffix is present in the NdwuIconName.
  */
-export const extractDimsClass = (name: IconName): string | undefined => {
+export const extractDimsClass = (name: NdwuIconName): string | undefined => {
   const match = (name as string).match(/_([A-Z]+)$/);
 
   if (!match) {

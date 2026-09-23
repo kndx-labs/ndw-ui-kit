@@ -3,11 +3,11 @@ import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   BUTTON_VARIANT,
-  type ButtonVariant,
-  type IconName,
   NdwuButtonComponent,
+  type NdwuButtonVariant,
+  type NdwuIconName,
+  type NdwuSize,
   SIZE,
-  type Size,
 } from '@ndw-ui-kit/core';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';
@@ -47,9 +47,9 @@ export class ButtonSandboxComponent extends SandboxBaseComponent {
 
   public readonly sandboxForm = new FormGroup({
     label: new FormControl<string>('Button', {nonNullable: true}),
-    variant: new FormControl<ButtonVariant>(BUTTON_VARIANT.PRIMARY, {nonNullable: true}),
-    size: new FormControl<Size>(SIZE.XL, {nonNullable: true}),
-    icon: new FormControl<IconName | null>(null),
+    variant: new FormControl<NdwuButtonVariant>(BUTTON_VARIANT.PRIMARY, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
+    icon: new FormControl<NdwuIconName | null>(null),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),
     isLoading: new FormControl<boolean>(false, {nonNullable: true}),
   });

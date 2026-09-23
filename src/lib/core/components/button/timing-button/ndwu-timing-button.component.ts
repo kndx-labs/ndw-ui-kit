@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {IconName} from '../../../../icon-names';
+import {NdwuIconName} from '../../../../icon-names';
 import {SIZE} from '../../../../shared.types';
 import {NdwuSizeDirective} from '../../../directives';
 import {NdwuIconComponent} from '../../icon/ndwu-icon.component';
@@ -28,7 +28,7 @@ type TimerState = 'preloading' | 'active' | 'counting';
  * - 'user'    - the user clicked the button before the timer elapsed;
  * - 'timeout' - the countdown reached zero on its own.
  */
-export type TimerEndReason = 'user' | 'timeout';
+export type NdwuTimerEndReason = 'user' | 'timeout';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -61,13 +61,13 @@ export class NdwuTimingButtonComponent implements OnInit {
 
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly loading = input(false, {transform: booleanAttribute});
-  public readonly icon = input<IconName | null>(null);
+  public readonly icon = input<NdwuIconName | null>(null);
   public readonly leftText = input<string>('');
   public readonly rightText = input<string>('');
   public readonly duration = input<number>(15);
   public readonly width = input<string | null>(null);
 
-  public readonly timerEnd = output<TimerEndReason>();
+  public readonly timerEnd = output<NdwuTimerEndReason>();
 
   protected readonly remainingSeconds = signal<number>(0);
   protected readonly progress = signal<number>(0);

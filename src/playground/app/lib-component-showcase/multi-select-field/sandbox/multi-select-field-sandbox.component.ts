@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal} 
 import {CommonModule, JsonPipe} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {ICON_NAME, NdwuIconComponent, NdwuOption, SIZE, type Size} from '@ndw-ui-kit/core';
+import {ICON_NAME, NdwuIconComponent, NdwuOption, type NdwuSize, SIZE} from '@ndw-ui-kit/core';
 import {NdwuMultiSelectDisplayDirective, NdwuMultiSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {ThemeSwitcherComponent} from '@app/components';
 import {parseTextareaOptions} from '@app/utils';
@@ -41,7 +41,7 @@ export class MultiSelectFieldSandboxComponent implements OnInit {
     label: new FormControl('Countries', {nonNullable: true}),
     placeholder: new FormControl('Pick countries', {nonNullable: true}),
     hint: new FormControl('', {nonNullable: true}),
-    size: new FormControl<Size>(SIZE.L, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(SIZE.L, {nonNullable: true}),
     cancelLabel: new FormControl('Cancel', {nonNullable: true}),
     confirmLabel: new FormControl('Confirm', {nonNullable: true}),
     disabled: new FormControl(false, {nonNullable: true}),

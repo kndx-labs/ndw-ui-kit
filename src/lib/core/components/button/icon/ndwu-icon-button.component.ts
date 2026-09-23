@@ -1,7 +1,7 @@
 import {Component, booleanAttribute, computed, inject, input} from '@angular/core';
-import {Values} from '../../../../shared.types';
+import {NdwuValues} from '../../../../shared.types';
 import {NdwuSizeDirective} from '../../../directives';
-import {IconName} from '../../../../icon-names';
+import {NdwuIconName} from '../../../../icon-names';
 import {NdwuIconComponent} from '../../icon/ndwu-icon.component';
 
 export const ICON_BUTTON_VARIANT = {
@@ -10,7 +10,7 @@ export const ICON_BUTTON_VARIANT = {
   SQUARE: 'square',
 } as const;
 
-export type IconButtonVariant = Values<typeof ICON_BUTTON_VARIANT>;
+export type NdwuIconButtonVariant = NdwuValues<typeof ICON_BUTTON_VARIANT>;
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -33,8 +33,8 @@ export type IconButtonVariant = Values<typeof ICON_BUTTON_VARIANT>;
 export class NdwuIconButtonComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
-  public readonly icon = input.required<IconName>();
-  public readonly variant = input<IconButtonVariant>(ICON_BUTTON_VARIANT.SQUARE);
+  public readonly icon = input.required<NdwuIconName>();
+  public readonly variant = input<NdwuIconButtonVariant>(ICON_BUTTON_VARIANT.SQUARE);
   public readonly disabled = input(false, {transform: booleanAttribute});
 
   protected readonly hostClasses = computed(() => {

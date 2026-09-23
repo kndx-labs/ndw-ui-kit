@@ -4,8 +4,8 @@ import {
   NdwuButtonComponent,
   NdwuFormContainerComponent,
   type NdwuOption,
+  type NdwuScheduleValue,
   SIZE,
-  type ScheduleValue,
 } from '@ndw-ui-kit/core';
 import {
   NdwuCheckboxFieldComponent,
@@ -72,7 +72,7 @@ const CITY_OPTIONS: NdwuOption[] = [
   {value: 'new-york', label: 'New York'},
 ];
 
-const DEFAULT_SCHEDULE: ScheduleValue = {
+const DEFAULT_SCHEDULE: NdwuScheduleValue = {
   mon: [[540, 1080]],
   tue: [[540, 1080]],
   wed: [[540, 1080]],
@@ -142,7 +142,7 @@ export class UserProfileFormOverviewComponent {
     marketingEmails: new FormControl(false),
 
     // Schedule
-    schedule: new FormControl<ScheduleValue>(DEFAULT_SCHEDULE),
+    schedule: new FormControl<NdwuScheduleValue>(DEFAULT_SCHEDULE),
 
     // Terms
     termsAccepted: new FormControl(false, [Validators.requiredTrue]),

@@ -1,7 +1,14 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ICON_NAME, type IconName, NdwuBadgeComponent, type NdwuBadgeTone, SIZE, type Size} from '@ndw-ui-kit/core';
+import {
+  ICON_NAME,
+  NdwuBadgeComponent,
+  type NdwuBadgeTone,
+  type NdwuIconName,
+  type NdwuSize,
+  SIZE,
+} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';
@@ -24,7 +31,7 @@ const BADGE_TONE_OPTIONS: {id: NdwuBadgeTone; label: string}[] = [
   {id: 'white', label: 'white'},
 ];
 
-const BADGE_ICON_OPTIONS: IconName[] = [
+const BADGE_ICON_OPTIONS: NdwuIconName[] = [
   ICON_NAME.BELL_ON_S,
   ICON_NAME.INFO_S,
   ICON_NAME.CHECK_S,
@@ -73,8 +80,8 @@ export class BadgeSandboxComponent extends SandboxBaseComponent {
   public readonly sandboxForm = new FormGroup({
     label: new FormControl<string>('Badge label', {nonNullable: true}),
     tone: new FormControl<NdwuBadgeTone>('gray', {nonNullable: true}),
-    size: new FormControl<Size>(SIZE.L, {nonNullable: true}),
-    icon: new FormControl<IconName | null>(null, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(SIZE.L, {nonNullable: true}),
+    icon: new FormControl<NdwuIconName | null>(null, {nonNullable: true}),
     ariaLabel: new FormControl<string>('', {nonNullable: true}),
     maxWidth: new FormControl<string>('', {nonNullable: true}),
   });

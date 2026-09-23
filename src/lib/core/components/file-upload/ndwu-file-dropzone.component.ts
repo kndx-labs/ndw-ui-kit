@@ -14,12 +14,12 @@ import {
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ICON_NAME} from '../../../icon-names';
 import {PICTOGRAM_NAME} from '../../../pictogram-names';
-import type {PictogramVariant} from '../../../pictogram-presets';
+import type {NdwuPictogramVariant} from '../../../pictogram-presets';
 import {SIZE} from '../../../shared.types';
 import {NdwuSizeDirective} from '../../directives';
 import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
 import {NdwuPictogramComponent} from '../pictogram/ndwu-pictogram.component';
-import type {TranslationTexts} from './ndwu-file-upload.types';
+import type {NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 @Component({
   selector: 'ndwu-file-dropzone',
@@ -49,7 +49,7 @@ export class NdwuFileDropzoneComponent {
   public readonly accept = input<string>('');
   public readonly multiple = input(true, {transform: booleanAttribute});
   public readonly disabled = input(false, {transform: booleanAttribute});
-  public readonly dropzoneTexts = input<TranslationTexts['dropzone']>();
+  public readonly dropzoneTexts = input<NdwuTranslationTexts['dropzone']>();
 
   public readonly filesSelected = output<File[]>();
 
@@ -76,7 +76,7 @@ export class NdwuFileDropzoneComponent {
       : PICTOGRAM_NAME.PICTOGRAM_UPLOAD_L;
   });
 
-  protected readonly effectivePictogramVariant = computed<PictogramVariant>(() => {
+  protected readonly effectivePictogramVariant = computed<NdwuPictogramVariant>(() => {
     return this.disabled() ? 'DISABLED' : 'DEFAULT';
   });
 

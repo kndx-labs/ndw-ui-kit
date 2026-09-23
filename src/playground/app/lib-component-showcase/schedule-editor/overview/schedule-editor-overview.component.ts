@@ -4,17 +4,17 @@ import {FormsModule} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
   DEFAULT_WEEK_DAYS,
-  type DayName,
-  type ScheduleAction,
-  type ScheduleValue,
-  type WeekDay,
+  type NdwuDayName,
+  type NdwuScheduleAction,
+  type NdwuScheduleValue,
+  type NdwuWeekDay,
   scheduleValueToActions,
 } from '@ndw-ui-kit/core';
 import {NdwuScheduleEditorFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe, UiKitTranslationService} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
-const SAMPLE_VALUE: ScheduleValue = {
+const SAMPLE_VALUE: NdwuScheduleValue = {
   mon: [[540, 1080]],
   tue: [[540, 1080]],
   wed: [[540, 1080]],
@@ -24,7 +24,7 @@ const SAMPLE_VALUE: ScheduleValue = {
   sun: [],
 };
 
-const SUNDAY_FIRST_WEEK_DAYS: WeekDay[] = [
+const SUNDAY_FIRST_WEEK_DAYS: NdwuWeekDay[] = [
   {day: 'sun', label: 'Sun'},
   {day: 'mon', label: 'Mon'},
   {day: 'tue', label: 'Tue'},
@@ -34,7 +34,7 @@ const SUNDAY_FIRST_WEEK_DAYS: WeekDay[] = [
   {day: 'sat', label: 'Sat'},
 ];
 
-const WEEKDAY_KEYS: Record<DayName, string> = {
+const WEEKDAY_KEYS: Record<NdwuDayName, string> = {
   mon: 'schedule-editor-showcase.weekdays.mon',
   tue: 'schedule-editor-showcase.weekdays.tue',
   wed: 'schedule-editor-showcase.weekdays.wed',
@@ -62,11 +62,11 @@ export class ScheduleEditorOverviewComponent {
   private readonly translationService = inject(UiKitTranslationService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  public scheduleValue: ScheduleValue = {...SAMPLE_VALUE};
-  public weekDays: WeekDay[] = this.buildWeekDays(DEFAULT_WEEK_DAYS);
-  public sundayFirstWeekDays: WeekDay[] = this.buildWeekDays(SUNDAY_FIRST_WEEK_DAYS);
+  public scheduleValue: NdwuScheduleValue = {...SAMPLE_VALUE};
+  public weekDays: NdwuWeekDay[] = this.buildWeekDays(DEFAULT_WEEK_DAYS);
+  public sundayFirstWeekDays: NdwuWeekDay[] = this.buildWeekDays(SUNDAY_FIRST_WEEK_DAYS);
 
-  public get scheduleActions(): ScheduleAction[] {
+  public get scheduleActions(): NdwuScheduleAction[] {
     return scheduleValueToActions(this.scheduleValue, this.weekDays);
   }
 
@@ -80,7 +80,7 @@ export class ScheduleEditorOverviewComponent {
       });
   }
 
-  private buildWeekDays(source: WeekDay[]): WeekDay[] {
+  private buildWeekDays(source: NdwuWeekDay[]): NdwuWeekDay[] {
     return source.map((wd) => {
       return {
         day: wd.day,

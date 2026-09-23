@@ -17,11 +17,11 @@ import {merge} from 'rxjs';
 import {NDWU_VALIDATION_PROCESSOR, NdwuValidationData} from '../../validation';
 import {
   ICON_NAME,
-  type IconName,
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
   NdwuHintDirective,
   NdwuIconComponent,
+  type NdwuIconName,
   NdwuInputDirective,
   NdwuRightIconDirective,
   NdwuSizeDirective,
@@ -60,7 +60,7 @@ export class NdwuInputFieldComponent extends FormFieldBase<string> implements On
   public readonly type = input<'text' | 'password'>('text');
   public readonly readonly = input(false, {transform: booleanAttribute});
 
-  public readonly rightIcon = input<IconName | undefined>(undefined);
+  public readonly rightIcon = input<NdwuIconName | undefined>(undefined);
   public readonly rightIconClicked = output<MouseEvent>();
 
   public readonly showPasswordIconLabel = input<string>('');

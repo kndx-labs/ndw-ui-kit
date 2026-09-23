@@ -1,20 +1,20 @@
-import {Values} from '../../../shared.types';
+import {NdwuValues} from '../../../shared.types';
 
 export const TOGGLE_COLOR = {
   BRAND: 'brand',
   GREEN: 'green',
 } as const;
 
-export type ToggleColor = Values<typeof TOGGLE_COLOR>;
+export type NdwuToggleColor = NdwuValues<typeof TOGGLE_COLOR>;
 
-export const coerceToggleColor = (value: string): ToggleColor => {
+export const coerceToggleColor = (value: string): NdwuToggleColor => {
   const lowerValue = value.toLowerCase();
 
   if (
     Object.values(TOGGLE_COLOR).map(String)
       .includes(lowerValue)
   ) {
-    return lowerValue as ToggleColor;
+    return lowerValue as NdwuToggleColor;
   }
 
   return TOGGLE_COLOR.BRAND;

@@ -4,11 +4,11 @@ import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {
   NdwuAdaptivePictogramComponent,
   NdwuPictogramComponent,
+  NdwuPictogramName,
+  NdwuPictogramSize,
+  NdwuPictogramVariant,
   PICTOGRAM_NAME,
   PICTOGRAM_VARIANTS,
-  PictogramName,
-  PictogramSize,
-  PictogramVariant,
 } from '@ndw-ui-kit/core';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -22,7 +22,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
 export class PictogramOverviewComponent {
   protected readonly pictogramIsDesktop = signal(true);
   protected readonly pictogramIsMobile: Signal<boolean> = computed(() => !this.pictogramIsDesktop());
-  protected readonly pictogramSizeFlags: NdwuSizeFlags<PictogramSize> = {
+  protected readonly pictogramSizeFlags: NdwuSizeFlags<NdwuPictogramSize> = {
     XL: this.pictogramIsDesktop,
     L: this.pictogramIsMobile,
   };
@@ -33,10 +33,10 @@ export class PictogramOverviewComponent {
 
   protected readonly PICTOGRAM_NAME = PICTOGRAM_NAME;
   protected readonly PICTOGRAM_VARIANTS = PICTOGRAM_VARIANTS;
-  protected readonly allVariants: PictogramVariant[] = Object.keys(PICTOGRAM_VARIANTS) as PictogramVariant[];
+  protected readonly allVariants: NdwuPictogramVariant[] = Object.keys(PICTOGRAM_VARIANTS) as NdwuPictogramVariant[];
   protected readonly variantShowcasePictogram = PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L;
 
-  protected readonly samplePictograms: PictogramName[] = [
+  protected readonly samplePictograms: NdwuPictogramName[] = [
     PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L,
     PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_XL,
     PICTOGRAM_NAME.PICTOGRAM_CONNECTION2_L,

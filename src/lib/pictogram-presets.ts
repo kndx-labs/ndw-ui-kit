@@ -21,4 +21,4 @@ export const PICTOGRAM_VARIANTS = {
   },
 } as const;
 
-export type PictogramVariant = keyof typeof PICTOGRAM_VARIANTS;
+export type NdwuPictogramVariant = keyof typeof PICTOGRAM_VARIANTS;

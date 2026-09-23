@@ -1,12 +1,12 @@
-import {PICTOGRAM_NAME, PictogramName} from '../../../pictogram-names';
+import {NdwuPictogramName, PICTOGRAM_NAME} from '../../../pictogram-names';
 
 const PICTOGRAM_VALUES: readonly string[] = Object.values(PICTOGRAM_NAME);
 
-export function isPictogramName(value: string): value is PictogramName {
+export function isPictogramName(value: string): value is NdwuPictogramName {
   return PICTOGRAM_VALUES.includes(value);
 }
 
-export function pictogramNameTransform(value: string | PictogramName): PictogramName {
+export function pictogramNameTransform(value: string | NdwuPictogramName): NdwuPictogramName {
   if (isPictogramName(value)) {
     return value;
   }
@@ -20,7 +20,7 @@ export function pictogramNameTransform(value: string | PictogramName): Pictogram
     return PICTOGRAM_NAME[matchingKey];
   }
 
-  const firstPictogram = PICTOGRAM_VALUES[0] as PictogramName;
+  const firstPictogram = PICTOGRAM_VALUES[0] as NdwuPictogramName;
 
   console.warn(`Invalid pictogram name: "${value}". Using fallback: ${firstPictogram}`);
 
@@ -30,10 +30,10 @@ export function pictogramNameTransform(value: string | PictogramName): Pictogram
 const VALID_SIZE_SUFFIXES = ['L', 'XL'] as const;
 
 /**
- * Gets size CSS class from a PictogramName (e.g. "pictogram_connection1_L" -> "dims-L").
+ * Gets size CSS class from a NdwuPictogramName (e.g. "pictogram_connection1_L" -> "dims-L").
  * Returns `undefined` if no known suffix is present or suffix is not a valid size.
  */
-export const extractPictogramDimsClass = (name: PictogramName): string | undefined => {
+export const extractPictogramDimsClass = (name: NdwuPictogramName): string | undefined => {
   const match = name.match(/_([A-Z]+)$/);
 
   if (!match) {

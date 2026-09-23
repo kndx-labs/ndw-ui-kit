@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, ViewEncapsulation, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NdwuProgressBarComponent, PROGRESS_BAR_COLOR, SIZE, type Size} from '@ndw-ui-kit/core';
+import {NdwuProgressBarComponent, type NdwuSize, PROGRESS_BAR_COLOR, SIZE} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, type TokenListItem} from '@app/components';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -95,8 +95,8 @@ export class ProgressBarSandboxComponent extends SandboxBaseComponent {
     return colorMap[this.sandboxForm.controls.color.value] || PROGRESS_BAR_COLOR.PRIMARY;
   }
 
-  public getSize(): Size {
-    const sizeMap: Record<string, Size> = {
+  public getSize(): NdwuSize {
+    const sizeMap: Record<string, NdwuSize> = {
       L: SIZE.L,
       XL: SIZE.XL,
     };

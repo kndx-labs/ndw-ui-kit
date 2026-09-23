@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {ICON_NAME, IconName} from '../../../icon-names';
+import {ICON_NAME, NdwuIconName} from '../../../icon-names';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
-import {Values} from '../../../shared.types';
+import {NdwuValues} from '../../../shared.types';
 
 export const NOTIFICATION_VARIANT = {
   INFO: 'info',
@@ -11,7 +11,7 @@ export const NOTIFICATION_VARIANT = {
   ERROR: 'error',
 } as const;
 
-export type NotificationVariant = Values<typeof NOTIFICATION_VARIANT>;
+export type NdwuNotificationVariant = NdwuValues<typeof NOTIFICATION_VARIANT>;
 
 @Component({
   selector: 'ndwu-notification',
@@ -21,7 +21,7 @@ export type NotificationVariant = Values<typeof NOTIFICATION_VARIANT>;
   imports: [NdwuIconComponent, LocalizePipe],
 })
 export class NdwuNotificationComponent {
-  public readonly variant = input<NotificationVariant>(NOTIFICATION_VARIANT.INFO);
+  public readonly variant = input<NdwuNotificationVariant>(NOTIFICATION_VARIANT.INFO);
   public readonly message = input<string>('');
 
   protected readonly ICON_NAME = ICON_NAME;
@@ -33,7 +33,7 @@ export class NdwuNotificationComponent {
     ];
   });
 
-  protected readonly variantIcon = computed<IconName>(() => {
+  protected readonly variantIcon = computed<NdwuIconName>(() => {
     switch (this.variant()) {
       case NOTIFICATION_VARIANT.SUCCESS:
         return ICON_NAME.SUCCESS_S;

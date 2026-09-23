@@ -21,7 +21,7 @@ import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interacti
 import {NdwuFileDropzoneComponent} from './ndwu-file-dropzone.component';
 import {NdwuFileItemComponent} from './ndwu-file-item.component';
 import {NdwuFileUploadHeaderComponent} from './ndwu-file-upload-header.component';
-import type {FileInputValue, TranslationTexts} from './ndwu-file-upload.types';
+import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 const COMPACT_WIDTH_THRESHOLD = 510;
 
@@ -86,7 +86,7 @@ export class NdwuFileUploadComponent implements OnInit {
   private readonly hostRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
   private readonly registry = inject(NdwuInteractionRegistry);
-  private readonly DEFAULT_TEXTS: TranslationTexts = {
+  private readonly DEFAULT_TEXTS: NdwuTranslationTexts = {
     status: {
       uploading: 'Uploading...',
       success: 'Uploaded',
@@ -131,17 +131,17 @@ export class NdwuFileUploadComponent implements OnInit {
   public readonly accept = input<string>('');
   public readonly maxSizeMB = input<number>(5);
   public readonly disabled = input(false, {transform: booleanAttribute});
-  public readonly initialFiles = input<FileInputValue[]>([]);
-  public readonly translationTexts = input<TranslationTexts>();
+  public readonly initialFiles = input<NdwuFileInputValue[]>([]);
+  public readonly translationTexts = input<NdwuTranslationTexts>();
 
   public readonly isCollapsed = signal(false);
 
-  public readonly filesChange = output<FileInputValue[]>();
-  public readonly uploadRequest = output<FileInputValue[]>();
+  public readonly filesChange = output<NdwuFileInputValue[]>();
+  public readonly uploadRequest = output<NdwuFileInputValue[]>();
   public readonly focused = output<void>();
   public readonly blurred = output<void>();
 
-  private readonly fileList = signal<FileInputValue[]>([]);
+  private readonly fileList = signal<NdwuFileInputValue[]>([]);
   private readonly registryId = uniqueId('ndwu-file-upload-');
   private readonly focusedState = signal(false);
 
@@ -160,7 +160,7 @@ export class NdwuFileUploadComponent implements OnInit {
 
   public readonly files = computed(() => this.fileList());
 
-  private updateFiles(transform: (files: FileInputValue[]) => FileInputValue[]): void {
+  private updateFiles(transform: (files: NdwuFileInputValue[]) => NdwuFileInputValue[]): void {
     this.fileList.update(files => {
       const updated = transform(files);
 
@@ -170,7 +170,7 @@ export class NdwuFileUploadComponent implements OnInit {
     });
   }
 
-  public updateFileProgress(fileId: string, updates: Partial<FileInputValue>): void {
+  public updateFileProgress(fileId: string, updates: Partial<NdwuFileInputValue>): void {
     this.updateFiles(files =>
       files.map(f => {
         if (f.id !== fileId) {
@@ -180,7 +180,7 @@ export class NdwuFileUploadComponent implements OnInit {
         const merged = {...f, ...updates};
 
         if (f.status === 'error' && updates.status && updates.status !== 'error') {
-          delete (merged as Partial<FileInputValue>).error;
+          delete (merged as Partial<NdwuFileInputValue>).error;
         }
 
         return merged;
@@ -237,7 +237,7 @@ export class NdwuFileUploadComponent implements OnInit {
 
   protected onFilesSelected(fileList: File[]): void {
     const currentFiles = this.fileList();
-    const newFiles: FileInputValue[] = fileList.map(file => {
+    const newFiles: NdwuFileInputValue[] = fileList.map(file => {
       return {
         id: uniqueId('file-'),
         name: file.name,

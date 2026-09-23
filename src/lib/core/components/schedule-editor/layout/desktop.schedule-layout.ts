@@ -1,4 +1,4 @@
-import {ScheduleBlock, ScheduleTimePoint} from '../schedule-editor.types';
+import {NdwuScheduleBlock, NdwuScheduleTimePoint} from '../schedule-editor.types';
 import {minutesToHourShort, minutesToTime} from './schedule-blocks.utils';
 import {ScheduleLayout} from './schedule.layout';
 import {
@@ -70,7 +70,7 @@ export class DesktopScheduleLayout extends ScheduleLayout {
     return {x, y, width, height};
   }
 
-  public coordsToTimeSlot(params: CoordsToTimeSlotParams): ScheduleTimePoint | null {
+  public coordsToTimeSlot(params: CoordsToTimeSlotParams): NdwuScheduleTimePoint | null {
     const {svgPoint, offset, canvasWidth, gridWidth, gridHeight} = params;
     const horizontalBound = canvasWidth - offset.right;
     const x = svgPoint.x < horizontalBound ? svgPoint.x : horizontalBound - 1;
@@ -154,7 +154,7 @@ export class DesktopScheduleLayout extends ScheduleLayout {
     return texts;
   }
 
-  public getTextForBlock(block: ScheduleBlock, timeAxisExtent: number): string[] {
+  public getTextForBlock(block: NdwuScheduleBlock, timeAxisExtent: number): string[] {
     const label = `${minutesToTime(block.start)} - ${minutesToTime(block.stop)}`;
     const requiredPx = BLOCK_TEXT_INSET_PX + label.length * BLOCK_TEXT_GLYPH_WIDTH_PX;
 

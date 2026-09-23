@@ -50,7 +50,7 @@ export const PICTOGRAM_NAME = {
 ${declarations.join(EOL)}
 } as const;
 
-export type PictogramName = (typeof PICTOGRAM_NAME)[keyof typeof PICTOGRAM_NAME];
+export type NdwuPictogramName = (typeof PICTOGRAM_NAME)[keyof typeof PICTOGRAM_NAME];
 `.trimStart();
 
     writeFileSync(OUTPUT_FILE, content, 'utf-8');

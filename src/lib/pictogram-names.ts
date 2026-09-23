@@ -38,4 +38,4 @@ export const PICTOGRAM_NAME = {
   PICTOGRAM_UPLOAD_DISABLED_XL: 'pictogram_upload_disabled_XL',
 } as const;
 
-export type PictogramName = (typeof PICTOGRAM_NAME)[keyof typeof PICTOGRAM_NAME];
+export type NdwuPictogramName = (typeof PICTOGRAM_NAME)[keyof typeof PICTOGRAM_NAME];

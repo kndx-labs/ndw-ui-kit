@@ -9,7 +9,12 @@ import {
   viewChild,
 } from '@angular/core';
 import {NgControl} from '@angular/forms';
-import {type FileInputValue, NdwuFileUploadComponent, NdwuSizeDirective, type TranslationTexts} from '@ndw-ui-kit/core';
+import {
+  type NdwuFileInputValue,
+  NdwuFileUploadComponent,
+  NdwuSizeDirective,
+  type NdwuTranslationTexts,
+} from '@ndw-ui-kit/core';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor} from '../../form-field.utils';
 
@@ -25,16 +30,16 @@ import {setValueAccessor} from '../../form-field.utils';
     inputs: ['ndwuSize: size'],
   }],
 })
-export class NdwuFileUploadFieldComponent extends FormFieldBase<FileInputValue[]> {
+export class NdwuFileUploadFieldComponent extends FormFieldBase<NdwuFileInputValue[]> {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   public readonly multiple = input(true, {transform: booleanAttribute});
   public readonly accept = input<string>('');
   public readonly maxSizeMB = input<number>(5);
-  public readonly translationTexts = input<TranslationTexts>();
+  public readonly translationTexts = input<NdwuTranslationTexts>();
 
-  public readonly filesChange = output<FileInputValue[]>();
-  public readonly uploadRequest = output<FileInputValue[]>();
+  public readonly filesChange = output<NdwuFileInputValue[]>();
+  public readonly uploadRequest = output<NdwuFileInputValue[]>();
 
   private readonly fileUpload = viewChild.required(NdwuFileUploadComponent);
 
@@ -49,7 +54,7 @@ export class NdwuFileUploadFieldComponent extends FormFieldBase<FileInputValue[]
     setValueAccessor(this.ngControl, this);
   }
 
-  public onFilesChange(files: FileInputValue[]): void {
+  public onFilesChange(files: NdwuFileInputValue[]): void {
     this.handleChange(files);
     this.filesChange.emit(files);
   }
@@ -58,7 +63,7 @@ export class NdwuFileUploadFieldComponent extends FormFieldBase<FileInputValue[]
     this.onTouched();
   }
 
-  public updateFileProgress(fileId: string, updates: Partial<FileInputValue>): void {
+  public updateFileProgress(fileId: string, updates: Partial<NdwuFileInputValue>): void {
     this.fileUpload().updateFileProgress(fileId, updates);
   }
 }

@@ -10,18 +10,18 @@ export const PROGRESS_BAR_COLOR = {
   WARNING: 'warning',
 } as const;
 
-export type ProgressBarColor = typeof PROGRESS_BAR_COLOR[keyof typeof PROGRESS_BAR_COLOR];
+export type NdwuProgressBarColor = typeof PROGRESS_BAR_COLOR[keyof typeof PROGRESS_BAR_COLOR];
 
-export const coerceProgressBarColor = (value: unknown): ProgressBarColor => {
-  const val = value as ProgressBarColor;
+export const coerceProgressBarColor = (value: unknown): NdwuProgressBarColor => {
+  const val = value as NdwuProgressBarColor;
 
   return Object.values(PROGRESS_BAR_COLOR).includes(val) ? val : PROGRESS_BAR_COLOR.PRIMARY;
 };
 
-export type ProgressBarMode = 'determinate' | 'indeterminate';
+export type NdwuProgressBarMode = 'determinate' | 'indeterminate';
 
-export const coerceProgressBarMode = (value: unknown): ProgressBarMode => {
-  const val = value as ProgressBarMode;
+export const coerceProgressBarMode = (value: unknown): NdwuProgressBarMode => {
+  const val = value as NdwuProgressBarMode;
 
   return val === 'indeterminate' ? 'indeterminate' : 'determinate';
 };

@@ -1,14 +1,14 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input, output} from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {formatSize, shortenFileName} from '@ndw-ui-kit/core/utils';
-import {ICON_NAME, type IconName} from '../../../icon-names';
+import {ICON_NAME, type NdwuIconName} from '../../../icon-names';
 import {SIZE} from '../../../shared.types';
 import {NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
 import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NdwuProgressBarComponent, PROGRESS_BAR_COLOR} from '../progress-bar/ndwu-progress-bar.component';
-import type {FileInputValue, TranslationTexts} from './ndwu-file-upload.types';
+import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 const COMPACT_WIDTH_THRESHOLD = 360;
 
@@ -76,10 +76,10 @@ export class NdwuFileItemComponent {
     retry: 'Retry',
   };
 
-  public readonly file = input.required<FileInputValue>();
+  public readonly file = input.required<NdwuFileInputValue>();
   public readonly disabled = input(false, {transform: booleanAttribute});
-  public readonly statusTexts = input<TranslationTexts['status']>();
-  public readonly actionTexts = input<TranslationTexts['action']>();
+  public readonly statusTexts = input<NdwuTranslationTexts['status']>();
+  public readonly actionTexts = input<NdwuTranslationTexts['action']>();
 
   public readonly remove = output<string>();
   public readonly retry = output<string>();
@@ -128,7 +128,7 @@ export class NdwuFileItemComponent {
     }
   });
 
-  protected readonly statusIcon = computed<IconName>(() => {
+  protected readonly statusIcon = computed<NdwuIconName>(() => {
     const status = this.file().status;
 
     switch (status) {

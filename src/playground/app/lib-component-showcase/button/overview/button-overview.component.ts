@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
-import {BUTTON_VARIANT, ButtonVariant, ICON_NAME, NdwuButtonComponent, SIZE, Size} from '@ndw-ui-kit/core';
+import {BUTTON_VARIANT, ICON_NAME, NdwuButtonComponent, NdwuButtonVariant, NdwuSize, SIZE} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -22,10 +22,10 @@ export class ButtonOverviewComponent {
   public readonly TYPES = Object.values(BUTTON_VARIANT);
   public readonly SIZES = Object.values(SIZE);
 
-  public loadingButtonType = signal<ButtonVariant | null>(null);
-  public loadingButtonSize = signal<Size | null>(null);
+  public loadingButtonType = signal<NdwuButtonVariant | null>(null);
+  public loadingButtonSize = signal<NdwuSize | null>(null);
 
-  public onButtonClick(type: ButtonVariant, size: Size): void {
+  public onButtonClick(type: NdwuButtonVariant, size: NdwuSize): void {
     this.loadingButtonType.set(type);
     this.loadingButtonSize.set(size);
 
@@ -38,7 +38,7 @@ export class ButtonOverviewComponent {
     );
   }
 
-  public isLoading(type: ButtonVariant, size: Size): boolean {
+  public isLoading(type: NdwuButtonVariant, size: NdwuSize): boolean {
     return this.loadingButtonType() === type && this.loadingButtonSize() === size;
   }
 }

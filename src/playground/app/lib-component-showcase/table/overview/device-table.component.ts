@@ -19,13 +19,9 @@ import {
   NdwuTableToolbarComponent,
   NdwuColumnResizeDirective,
   NdwuTableSkeletonComponent,
-  NdwuRowDragDirective,
-  NdwuRowDraggableDirective,
-  NdwuRowDragHandleComponent,
   NdwuColumnPinComponent,
   NdwuTableTranslationTexts,
 } from '@ndw-ui-kit/core/table';
-import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   ICON_NAME,
@@ -78,9 +74,6 @@ const STATUSES = ['online', 'offline'] as const satisfies readonly Device['statu
     NdwuTableToolbarComponent,
     NdwuColumnResizeDirective,
     NdwuTableSkeletonComponent,
-    NdwuRowDragDirective,
-    NdwuRowDraggableDirective,
-    NdwuRowDragHandleComponent,
     NdwuColumnPinComponent,
     NdwuBadgeComponent,
     NdwuButtonComponent,
@@ -116,9 +109,6 @@ export class DeviceTableComponent {
     columnResize: {
       resize: 'table.columnResize.resize',
     },
-    rowDragHandle: {
-      reorder: 'table.rowDragHandle.reorder',
-    },
   };
 
   public readonly data = input.required<Device[]>();
@@ -138,11 +128,9 @@ export class DeviceTableComponent {
   /** Working copy: add and delete mutate it, and it re-seeds if the host swaps the input. */
   protected readonly rows = this.dataSource.data;
 
-  protected readonly displayedColumns =
-    ['drag', 'select', 'enabled', 'name', 'band', 'ip', 'status', 'actions'];
+  protected readonly displayedColumns = ['select', 'enabled', 'name', 'band', 'ip', 'status', 'actions'];
   /** Mirrors the .col-* widths so the skeleton and the loaded table line up. */
-  protected readonly skeletonWidths =
-    ['40px', '48px', '72px', '170px', '88px', '130px', '96px', '88px'];
+  protected readonly skeletonWidths = ['48px', '72px', '170px', '88px', '130px', '96px', '88px'];
 
   protected readonly namePinned = signal(false);
 
@@ -166,9 +154,6 @@ export class DeviceTableComponent {
   protected readonly sortState = this.dataSource.sort;
   protected readonly pageIndex = this.dataSource.pageIndex;
   protected readonly pageSize = this.dataSource.pageSize;
-
-  /** A sorted table has no meaningful drop target, so reordering is off then. */
-  protected readonly isSorted = this.dataSource.isSorted;
 
   protected readonly visibleRows = this.dataSource.page;
 
@@ -270,16 +255,6 @@ export class DeviceTableComponent {
     }
 
     this.toggledRows.set(next);
-  }
-
-  protected onRowDrop(event: CdkDragDrop<unknown>): void {
-    const moved = this.visibleRows()[event.previousIndex];
-
-    this.dataSource.moveRow(event.previousIndex, event.currentIndex);
-
-    if (moved) {
-      this.lastAction.set({key: 'table-showcase.overview.action.moved', params: {name: moved.name}});
-    }
   }
 
   protected onRowMenu(device: Device): void {

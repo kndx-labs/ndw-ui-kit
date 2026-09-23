@@ -7,3 +7,10 @@ ndwu-table {
   overflow-y: auto;
   max-height: $row-height * ($visible-rows + 1);
 }
+
+.col-drag { width: 40px; }
+
+.drag-cell {
+  padding-right: 0;
+  padding-left: 12px;
+}

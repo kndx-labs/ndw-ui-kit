@@ -65,11 +65,10 @@
         "deleted": "{{name}} gelöscht",
         "deleted-many": "{{count}} Netzwerk(e) gelöscht",
         "row-menu": "Zeilenmenü: {{name}}",
-        "settings": "Spalteneinstellungen",
-        "moved": "{{name}} verschoben"
+        "settings": "Spalteneinstellungen"
       },
       "basic-title": "Tabelle ohne Paginierung",
-      "basic-hint": "Alle Zeilen bleiben sichtbar, eine am Ende hinzugefügte Zeile ist also sofort zu sehen.",
+      "basic-hint": "Alle Zeilen bleiben sichtbar, eine am Ende hinzugefügte Zeile ist also sofort zu sehen. Ohne Sortierung lassen sich Zeilen am Griff verschieben.",
       "remove": "Netzwerk entfernen"
     },
     "tabs": {

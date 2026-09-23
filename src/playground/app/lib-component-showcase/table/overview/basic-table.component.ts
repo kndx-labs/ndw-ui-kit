@@ -11,7 +11,12 @@ import {
   NdwuHeaderRowComponent,
   NdwuRowComponent,
   NdwuTableToolbarComponent,
+  NdwuRowDragDirective,
+  NdwuRowDraggableDirective,
+  NdwuRowDragHandleComponent,
+  NdwuTableTranslationTexts,
 } from '@ndw-ui-kit/core/table';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuBadgeComponent, NdwuButtonComponent} from '@ndw-ui-kit/core';
 import type {Device} from './device-table.component';
@@ -21,7 +26,7 @@ const BANDS = ['2.4 GHz', '5 GHz'] as const;
 /**
  * The plain table: no paginator, so every row stays on screen and a row added
  * at the end is visible straight away. The table scrolls once it outgrows its
- * height limit.
+ * height limit. It has no sort either, so its rows can be reordered by drag.
  */
 @Component({
   selector: 'app-basic-table',
@@ -43,12 +48,19 @@ const BANDS = ['2.4 GHz', '5 GHz'] as const;
     NdwuHeaderRowComponent,
     NdwuRowComponent,
     NdwuTableToolbarComponent,
+    NdwuRowDragDirective,
+    NdwuRowDraggableDirective,
+    NdwuRowDragHandleComponent,
   ],
 })
 export class BasicTableComponent {
   public readonly data = input<readonly Device[]>([]);
 
-  protected readonly displayedColumns = ['name', 'band', 'ip'];
+  protected readonly displayedColumns = ['drag', 'name', 'band', 'ip'];
+
+  protected readonly dragTexts: NdwuTableTranslationTexts['rowDragHandle'] = {
+    reorder: 'table.rowDragHandle.reorder',
+  };
 
   /** Working copy: add and remove mutate it, and it re-seeds if the host swaps the input. */
   protected readonly rows = signal<readonly Device[]>([]);
@@ -81,6 +93,16 @@ export class BasicTableComponent {
         ip: `192.168.1.${100 + current.length}`,
         status: 'online',
       }];
+    });
+  }
+
+  protected onRowDrop(event: CdkDragDrop<unknown>): void {
+    this.rows.update(current => {
+      const next = [...current];
+
+      moveItemInArray(next, event.previousIndex, event.currentIndex);
+
+      return next;
     });
   }
 

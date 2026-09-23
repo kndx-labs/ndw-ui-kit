@@ -77,8 +77,6 @@
       <th ndwuHeaderCell *ndwuHeaderCellDef class="select-cell col-select">
         <ndwu-checkbox
           size="L"
-          labelHidden
-          [label]="'table-showcase.overview.select-all' | localize"
           [checked]="isAllSelected()"
           [indeterminate]="isIndeterminate()"
           (checkedChange)="toggleAll()"
@@ -87,8 +85,6 @@
       <td ndwuCell *ndwuCellDef="let row" class="select-cell">
         <ndwu-checkbox
           size="L"
-          labelHidden
-          [label]="'table-showcase.overview.select-row' | localize: {name: row.name}"
           [checked]="isSelected(row)"
           (checkedChange)="toggleRow(row)"
         />
@@ -102,8 +98,6 @@
       </th>
       <td ndwuCell *ndwuCellDef="let row">
         <ndwu-toggle
-          labelHidden
-          [label]="'table-showcase.overview.toggle-row' | localize: {name: row.name}"
           [checked]="isEnabled(row)"
           (checkedChange)="toggleEnabled(row)"
         />

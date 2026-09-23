@@ -22,27 +22,7 @@
       </label>
     </div>
 
-    @if (labelHidden()) {
-      @if (label()) {
-        <label
-          class="ndwu-toggle__hidden-label"
-          [for]="toggleId"
-        >
-          {{ label() }}
-        </label>
-      }
-
-      <!-- `labelHidden` hides the label text only, so secondary text stays visible. -->
-      @if (secondaryText()) {
-        <label [for]="toggleId">
-          <ndwu-label-group
-            [secondaryText]="secondaryText()"
-            [disabled]="disabled()"
-            [size]="sizeSvc.effectiveSize()"
-          />
-        </label>
-      }
-    } @else if (label() || secondaryText()) {
+    @if (label() || secondaryText()) {
       <label [for]="toggleId">
         <ndwu-label-group
           [label]="label()"

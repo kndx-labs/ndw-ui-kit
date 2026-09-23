@@ -59,12 +59,6 @@ export class NdwuCheckboxComponent {
   public readonly label = input<string>('');
   public readonly secondaryText = input<string>('');
 
-  /**
-   * Keeps `label` as the accessible name while removing it from the layout.
-   * `secondaryText` is not affected and stays visible.
-   */
-  public readonly labelHidden = input(false, {transform: booleanAttribute});
-
   public readonly checkedChange = output<boolean>();
   public readonly blurred = output<void>();
   public readonly focused = output<void>();

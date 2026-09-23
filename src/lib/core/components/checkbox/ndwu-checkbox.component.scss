@@ -227,7 +227,3 @@ $checkbox-indeterminate-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%
     }
   }
 }
-
-.ndwu-checkbox__hidden-label {
-  @include mixins.visually-hidden();
-}

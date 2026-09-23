@@ -4,7 +4,6 @@
 @use 'styles/radius';
 @use 'styles/typography';
 @use 'styles/touch-target' as touch-target;
-@use 'styles/mixins' as mixins;
 
 @mixin toggle($config) {
   $toggle-width: map.get($config, toggle-width);
@@ -192,8 +191,4 @@
       background-color: var(--ndwu-toggle-track-checked-bg);
     }
   }
-}
-
-.ndwu-toggle__hidden-label {
-  @include mixins.visually-hidden();
 }

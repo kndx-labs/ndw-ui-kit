@@ -81,35 +81,22 @@ $utility-tokens: (
   'ndwu-focus-tokens': focus-tokens.$ndwu-focus-tokens,
 );
 
-// Default theme: light theme
 :root {
   @include theme-utils.emit-color-vars(light-theme.$light-theme-colors);
   @include theme-utils.emit-token-groups($component-tokens);
   @include theme-utils.emit-token-groups($utility-tokens);
 }
 
-// Set Roboto as default font-family for all UI components
 :root,
-:root.dark,
 .ndwu-theme-light,
 .ndwu-theme-dark {
   font-family: fonts.$font-family-default;
 }
 
-:root.dark {
-  @include theme-utils.emit-color-vars(dark-theme.$dark-theme-colors);
-  @include theme-utils.emit-token-groups($component-tokens);
-  @include theme-utils.emit-token-groups($utility-tokens);
-}
-
 .ndwu-theme-light {
   @include theme-utils.emit-color-vars(light-theme.$light-theme-colors);
-  @include theme-utils.emit-token-groups($component-tokens);
-  @include theme-utils.emit-token-groups($utility-tokens);
 }
 
 .ndwu-theme-dark {
   @include theme-utils.emit-color-vars(dark-theme.$dark-theme-colors);
-  @include theme-utils.emit-token-groups($component-tokens);
-  @include theme-utils.emit-token-groups($utility-tokens);
 }

@@ -45,7 +45,10 @@
   &:focus-visible {
     @include mixins.focus-ring();
 
-    border-radius: radius.$radius-S;
+    // Wrapped: the mixin ends in a nested at-rule, which Sass now warns about.
+    & {
+      border-radius: radius.$radius-S;
+    }
   }
 }
 

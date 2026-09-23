@@ -20,8 +20,11 @@
   &:focus-visible {
     @include mixins.focus-ring();
 
-    background-color: var(--ndwu-table-header-color);
-    opacity: 0.3;
+    // Wrapped: the mixin ends in a nested at-rule, which Sass now warns about.
+    & {
+      background-color: var(--ndwu-table-header-color);
+      opacity: 0.3;
+    }
   }
 }
 

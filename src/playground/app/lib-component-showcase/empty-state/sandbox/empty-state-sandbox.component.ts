@@ -1,12 +1,12 @@
 import {Component, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
+  NDWU_PICTOGRAM_NAME,
+  NDWU_PICTOGRAM_VARIANTS,
   NdwuButtonComponent,
   NdwuEmptyStateComponent,
   NdwuPictogramBaseName,
   NdwuPictogramVariant,
-  PICTOGRAM_NAME,
-  PICTOGRAM_VARIANTS,
 } from '@ndw-ui-kit/core';
 import {ThemeSwitcherComponent} from '@app/components';
 
@@ -17,14 +17,14 @@ import {ThemeSwitcherComponent} from '@app/components';
   imports: [ReactiveFormsModule, NdwuEmptyStateComponent, NdwuButtonComponent, ThemeSwitcherComponent],
 })
 export class EmptyStateSandboxComponent {
-  public readonly PICTOGRAM_NAME = PICTOGRAM_NAME;
-  public readonly PICTOGRAM_VARIANTS = PICTOGRAM_VARIANTS;
+  public readonly PICTOGRAM_NAME = NDWU_PICTOGRAM_NAME;
+  public readonly PICTOGRAM_VARIANTS = NDWU_PICTOGRAM_VARIANTS;
   public readonly pictogramOptions = [
     ...new Set(
-      Object.values(PICTOGRAM_NAME).map((name) => name.replace(/_(L|XL)$/, '')),
+      Object.values(NDWU_PICTOGRAM_NAME).map((name) => name.replace(/_(L|XL)$/, '')),
     ),
   ] as NdwuPictogramBaseName[];
-  public readonly variantOptions = Object.keys(PICTOGRAM_VARIANTS) as unknown as NdwuPictogramVariant[];
+  public readonly variantOptions = Object.keys(NDWU_PICTOGRAM_VARIANTS) as unknown as NdwuPictogramVariant[];
 
   public readonly sandboxTheme = signal<string>('light');
 

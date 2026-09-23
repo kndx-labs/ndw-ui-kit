@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ThemeSwitcherComponent} from '@app/components';
 import {
-  DEFAULT_WEEK_DAYS,
+  NDWU_DEFAULT_WEEK_DAYS,
   NDWU_SCHEDULE_EDITOR_LAYOUT,
   NDWU_SCHEDULE_EDITOR_MODE,
   NDWU_SCHEDULE_EDITOR_SIZING,
@@ -106,6 +106,6 @@ export class ScheduleEditorCvaPreviewComponent implements OnInit {
   private updateWeekDays(): void {
     const weekStart = this.sandboxForm.controls.weekStart.value;
 
-    this.weekDays = weekStart === 'sunday' ? SUNDAY_FIRST_WEEK_DAYS : DEFAULT_WEEK_DAYS;
+    this.weekDays = weekStart === 'sunday' ? SUNDAY_FIRST_WEEK_DAYS : NDWU_DEFAULT_WEEK_DAYS;
   }
 }

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ICON_NAME, type NdwuIconName, NdwuLinkComponent} from '@ndw-ui-kit/core';
+import {NDWU_ICON_NAME, type NdwuIconName, NdwuLinkComponent} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';
@@ -42,8 +42,8 @@ function tokenKeyToCssVar(key: string): string {
 }
 
 const SANDBOX_ICONS: NdwuIconName[] = [
-  ICON_NAME.EXTERNAL_LINK_S,
-  ICON_NAME.DOWNLOAD_S,
+  NDWU_ICON_NAME.EXTERNAL_LINK_S,
+  NDWU_ICON_NAME.DOWNLOAD_S,
 ];
 
 @Component({
@@ -63,7 +63,7 @@ const SANDBOX_ICONS: NdwuIconName[] = [
 export class LinkSandboxComponent extends SandboxBaseComponent {
   public readonly LINK_STATE = LINK_STATE;
   public readonly SANDBOX_ICONS = SANDBOX_ICONS;
-  public readonly ICON_NAME = ICON_NAME;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
 
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
 
@@ -72,7 +72,7 @@ export class LinkSandboxComponent extends SandboxBaseComponent {
     href: new FormControl<string>('', {nonNullable: true}),
     state: new FormControl<LinkState>(LINK_STATE.DEFAULT, {nonNullable: true}),
     external: new FormControl<boolean>(true, {nonNullable: true}),
-    icon: new FormControl<NdwuIconName>(ICON_NAME.EXTERNAL_LINK_S, {nonNullable: true}),
+    icon: new FormControl<NdwuIconName>(NDWU_ICON_NAME.EXTERNAL_LINK_S, {nonNullable: true}),
   });
 
   public readonly sandboxTokens = new FormGroup(
@@ -112,7 +112,7 @@ export class LinkSandboxComponent extends SandboxBaseComponent {
       href: '#',
       state: LINK_STATE.DEFAULT,
       external: true,
-      icon: ICON_NAME.EXTERNAL_LINK_S,
+      icon: NDWU_ICON_NAME.EXTERNAL_LINK_S,
     };
   }
 

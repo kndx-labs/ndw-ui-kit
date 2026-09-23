@@ -1,6 +1,6 @@
-import {ICON_NAME, NdwuIconName} from '../../../icon-names';
+import {NDWU_ICON_NAME, NdwuIconName} from '../../../icon-names';
 
-const ICON_VALUES: readonly string[] = Object.values(ICON_NAME);
+const ICON_VALUES: readonly string[] = Object.values(NDWU_ICON_NAME);
 
 /**
  * Type guard: true when `value` is a known NdwuIconName.
@@ -24,14 +24,14 @@ export function iconNameTransform(value: string | NdwuIconName): NdwuIconName {
   }
 
   const lowerValue = value.toLowerCase();
-  const matchingKey = (Object.keys(ICON_NAME) as (keyof typeof ICON_NAME)[])
-    .find((key) => ICON_NAME[key].toLowerCase() === lowerValue);
+  const matchingKey = (Object.keys(NDWU_ICON_NAME) as (keyof typeof NDWU_ICON_NAME)[])
+    .find((key) => NDWU_ICON_NAME[key].toLowerCase() === lowerValue);
 
   if (matchingKey !== undefined) {
-    return ICON_NAME[matchingKey];
+    return NDWU_ICON_NAME[matchingKey];
   }
 
-  const fallbackIcon = ICON_NAME.WARNING_S ?? ICON_VALUES[0];
+  const fallbackIcon = NDWU_ICON_NAME.WARNING_S ?? ICON_VALUES[0];
 
   console.warn(`Invalid icon name: "${value}". Using fallback: ${fallbackIcon}`);
 
@@ -58,7 +58,7 @@ export function ensureAvailableIconName(
     return fallbackIconName;
   }
 
-  const firstAvailableIcon = availableIconNames[0] ?? ICON_NAME.WARNING_S ?? ICON_VALUES[0];
+  const firstAvailableIcon = availableIconNames[0] ?? NDWU_ICON_NAME.WARNING_S ?? ICON_VALUES[0];
 
   // dprint-ignore
   console.warn(`[ndwu-icon] Fallback icon "${fallbackIconName}" is not available. Using: ${firstAvailableIcon}.`);

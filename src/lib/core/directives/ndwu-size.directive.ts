@@ -1,5 +1,5 @@
 import {Directive, computed, inject, input} from '@angular/core';
-import {NdwuSize, SIZE} from '../../shared.types';
+import {NDWU_SIZE, NdwuSize} from '../../shared.types';
 import {NDWU_SIZE_TOKEN} from '../tokens';
 
 @Directive({
@@ -12,6 +12,6 @@ export class NdwuSizeDirective {
   public readonly size = input<NdwuSize | undefined>(undefined, {alias: 'ndwuSize'});
 
   public readonly effectiveSize = computed(() => {
-    return this.size() ?? this.parentSize?.() ?? SIZE.XL;
+    return this.size() ?? this.parentSize?.() ?? NDWU_SIZE.XL;
   });
 }

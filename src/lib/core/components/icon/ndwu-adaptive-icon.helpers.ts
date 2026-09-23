@@ -2,9 +2,9 @@ import {NdwuAllIconName} from '../../../icon-names';
 
 export type NdwuIconSize = 'S' | 'L' | 'XL' | 'XXL';
 
-export const ICON_SIZE_PRIORITY: readonly NdwuIconSize[] = ['L', 'S'];
+export const NDWU_ICON_SIZE_PRIORITY: readonly NdwuIconSize[] = ['L', 'S'];
 
-export const ICON_SIZE_FALLBACK: NdwuIconSize = 'L';
+export const NDWU_ICON_SIZE_FALLBACK: NdwuIconSize = 'L';
 
 type BaseWith<Size extends NdwuIconSize, Name = NdwuAllIconName> = Name extends `${infer Base}_${Size}` ? Base : never;
 

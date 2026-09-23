@@ -2,12 +2,12 @@ import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from 
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
-  BUTTON_VARIANT,
+  NDWU_BUTTON_VARIANT,
+  NDWU_SIZE,
   NdwuButtonComponent,
   type NdwuButtonVariant,
   type NdwuIconName,
   type NdwuSize,
-  SIZE,
 } from '@ndw-ui-kit/core';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';
@@ -39,16 +39,16 @@ function tokenKeyToCssVar(key: string): string {
   ],
 })
 export class ButtonSandboxComponent extends SandboxBaseComponent {
-  public readonly BUTTON_TYPE = BUTTON_VARIANT;
-  public readonly SIZE = SIZE;
+  public readonly BUTTON_TYPE = NDWU_BUTTON_VARIANT;
+  public readonly SIZE = NDWU_SIZE;
   public readonly SANDBOX_ICONS = SANDBOX_ICONS;
 
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
 
   public readonly sandboxForm = new FormGroup({
     label: new FormControl<string>('Button', {nonNullable: true}),
-    variant: new FormControl<NdwuButtonVariant>(BUTTON_VARIANT.PRIMARY, {nonNullable: true}),
-    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
+    variant: new FormControl<NdwuButtonVariant>(NDWU_BUTTON_VARIANT.PRIMARY, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.XL, {nonNullable: true}),
     icon: new FormControl<NdwuIconName | null>(null),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),
     isLoading: new FormControl<boolean>(false, {nonNullable: true}),
@@ -86,8 +86,8 @@ export class ButtonSandboxComponent extends SandboxBaseComponent {
   protected override getDefaultFormValues(): Record<string, unknown> {
     return {
       label: 'Button',
-      variant: BUTTON_VARIANT.PRIMARY,
-      size: SIZE.XL,
+      variant: NDWU_BUTTON_VARIANT.PRIMARY,
+      size: NDWU_SIZE.XL,
       icon: null,
       isDisabled: false,
       isLoading: false,

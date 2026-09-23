@@ -16,7 +16,7 @@ import {
 
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuIconName} from '../../../../icon-names';
-import {SIZE} from '../../../../shared.types';
+import {NDWU_SIZE} from '../../../../shared.types';
 import {NdwuSizeDirective} from '../../../directives';
 import {NdwuIconComponent} from '../../icon/ndwu-icon.component';
 import {NdwuSpokesLoaderComponent} from '../../spokes-loader/ndwu-spokes-loader.component';
@@ -103,7 +103,7 @@ export class NdwuTimingButtonComponent implements OnInit {
   protected readonly loaderParams = computed(() => {
     const size = this.sizeSvc.effectiveSize();
 
-    return size === SIZE.XL || size === SIZE.XXL
+    return size === NDWU_SIZE.XL || size === NDWU_SIZE.XXL
       ? {size: 20, spokeWidth: 1.6, spokeHeight: 4.6, spokeOffset: 0.5}
       : {size: 17, spokeWidth: 1.54, spokeHeight: 4.04, spokeOffset: 0.5};
   });

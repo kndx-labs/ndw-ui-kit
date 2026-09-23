@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from 
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
-import {type NdwuSize, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, type NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuCheckboxFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -47,12 +47,12 @@ interface TokenPickerValues extends Record<string, string> {
   ],
 })
 export class CheckboxSandboxPreviewComponent extends SandboxBaseComponent {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
 
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
 
   public readonly sandboxForm = new FormGroup({
-    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.XL, {nonNullable: true}),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),
     label: new FormControl<string>('Accept terms and conditions', {nonNullable: true}),
     secondaryText: new FormControl<string>('By checking this box, you agree to our terms of service', {
@@ -196,7 +196,7 @@ export class CheckboxSandboxPreviewComponent extends SandboxBaseComponent {
 
   protected override getDefaultFormValues(): Record<string, unknown> {
     return {
-      size: SIZE.XL,
+      size: NDWU_SIZE.XL,
       isDisabled: false,
       label: 'Accept terms and conditions',
       secondaryText: 'By checking this box, you agree to our terms of service',

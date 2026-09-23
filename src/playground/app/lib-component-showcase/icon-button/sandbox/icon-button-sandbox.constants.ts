@@ -1,4 +1,4 @@
-import {ICON_BUTTON_VARIANT, ICON_NAME, NdwuIconName, NdwuOption} from '@ndw-ui-kit/core';
+import {NDWU_ICON_BUTTON_VARIANT, NDWU_ICON_NAME, NdwuIconName, NdwuOption} from '@ndw-ui-kit/core';
 
 export const ICON_BUTTON_TOKENS = [
   'icon-button-icon',
@@ -20,15 +20,15 @@ export const ICON_BUTTON_TOKENS = [
 ];
 
 export const ICON_NAMES: NdwuIconName[] = [
-  ICON_NAME.CHECK_S,
-  ICON_NAME.CLOSE_S,
-  ICON_NAME.SEARCH_L,
-  ICON_NAME.EDIT_L,
-  ICON_NAME.TRASH_L,
+  NDWU_ICON_NAME.CHECK_S,
+  NDWU_ICON_NAME.CLOSE_S,
+  NDWU_ICON_NAME.SEARCH_L,
+  NDWU_ICON_NAME.EDIT_L,
+  NDWU_ICON_NAME.TRASH_L,
 ];
 
 export const ICON_BUTTON_VARIANT_OPTIONS: NdwuOption[] = [
-  {value: ICON_BUTTON_VARIANT.SQUARE, label: 'icon-button-showcase.sandbox.button-variant.option.square'},
-  {value: ICON_BUTTON_VARIANT.ROUND, label: 'icon-button-showcase.sandbox.button-variant.option.round'},
-  {value: ICON_BUTTON_VARIANT.FLAT, label: 'icon-button-showcase.sandbox.button-variant.option.flat'},
+  {value: NDWU_ICON_BUTTON_VARIANT.SQUARE, label: 'icon-button-showcase.sandbox.button-variant.option.square'},
+  {value: NDWU_ICON_BUTTON_VARIANT.ROUND, label: 'icon-button-showcase.sandbox.button-variant.option.round'},
+  {value: NDWU_ICON_BUTTON_VARIANT.FLAT, label: 'icon-button-showcase.sandbox.button-variant.option.flat'},
 ];

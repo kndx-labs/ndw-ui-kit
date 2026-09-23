@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input, output} from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {formatSize, shortenFileName} from '@ndw-ui-kit/core/utils';
-import {ICON_NAME, type NdwuIconName} from '../../../icon-names';
-import {SIZE} from '../../../shared.types';
+import {NDWU_ICON_NAME, type NdwuIconName} from '../../../icon-names';
+import {NDWU_SIZE} from '../../../shared.types';
 import {NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
 import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
-import {NdwuProgressBarComponent, PROGRESS_BAR_COLOR} from '../progress-bar/ndwu-progress-bar.component';
+import {NDWU_PROGRESS_BAR_COLOR, NdwuProgressBarComponent} from '../progress-bar/ndwu-progress-bar.component';
 import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 const COMPACT_WIDTH_THRESHOLD = 360;
@@ -45,7 +45,7 @@ export class NdwuFileItemComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   private readonly resizeSvc = inject(NdwuResizeObserverDirective);
   private readonly parentSize = inject(NDWU_SIZE_TOKEN, {optional: true, skipSelf: true});
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   public readonly effectiveSize = computed(() => {
     const explicitSize = this.sizeSvc.size() ?? this.parentSize?.();
@@ -57,8 +57,8 @@ export class NdwuFileItemComponent {
     const width = this.resizeSvc.width();
 
     return this.resizeSvc.measured() && width > 0 && width < COMPACT_WIDTH_THRESHOLD
-      ? SIZE.L
-      : SIZE.XL;
+      ? NDWU_SIZE.L
+      : NDWU_SIZE.XL;
   });
 
   private readonly DEFAULT_STATUS_TEXTS = {
@@ -98,7 +98,7 @@ export class NdwuFileItemComponent {
   protected readonly rootClass = computed(() => {
     const classes = [
       'ndwu-file-item',
-      `ndwu-file-item--${this.effectiveSize() === SIZE.XL ? 'XL' : 'L'}`,
+      `ndwu-file-item--${this.effectiveSize() === NDWU_SIZE.XL ? 'XL' : 'L'}`,
       `ndwu-file-item--${this.file().status}`,
     ];
 
@@ -120,11 +120,11 @@ export class NdwuFileItemComponent {
 
     switch (status) {
       case 'success':
-        return PROGRESS_BAR_COLOR.SUCCESS;
+        return NDWU_PROGRESS_BAR_COLOR.SUCCESS;
       case 'error':
-        return PROGRESS_BAR_COLOR.DANGER;
+        return NDWU_PROGRESS_BAR_COLOR.DANGER;
       default:
-        return PROGRESS_BAR_COLOR.PRIMARY;
+        return NDWU_PROGRESS_BAR_COLOR.PRIMARY;
     }
   });
 
@@ -133,17 +133,17 @@ export class NdwuFileItemComponent {
 
     switch (status) {
       case 'uploading':
-        return ICON_NAME.LOADING_L;
+        return NDWU_ICON_NAME.LOADING_L;
       case 'success':
-        return ICON_NAME.SUCCESS_L;
+        return NDWU_ICON_NAME.SUCCESS_L;
       case 'error':
-        return ICON_NAME.ERROR_L;
+        return NDWU_ICON_NAME.ERROR_L;
       case 'warning':
-        return ICON_NAME.WARNING_L;
+        return NDWU_ICON_NAME.WARNING_L;
       case 'canceled':
-        return ICON_NAME.CLOSE_L;
+        return NDWU_ICON_NAME.CLOSE_L;
       default:
-        return ICON_NAME.FILE_L;
+        return NDWU_ICON_NAME.FILE_L;
     }
   });
 
@@ -157,7 +157,7 @@ export class NdwuFileItemComponent {
   protected readonly formattedSize = computed(() => formatSize(this.file().size));
 
   protected readonly displayFileName = computed(() => {
-    const value = this.effectiveSize() === SIZE.XL ? 40 : 30;
+    const value = this.effectiveSize() === NDWU_SIZE.XL ? 40 : 30;
 
     return shortenFileName(this.file().name, value);
   });

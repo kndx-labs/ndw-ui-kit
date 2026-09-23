@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
+  NDWU_SIZE,
   type NdwuSize,
   type NdwuTabItem,
   type NdwuTabVariant,
   type NdwuTabWidthMode,
   NdwuTabsComponent,
   type NdwuTabsScrollMode,
-  SIZE,
 } from '@ndw-ui-kit/core';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -23,9 +23,9 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class TabsOverviewComponent {
-  protected readonly SIZE = SIZE;
+  protected readonly SIZE = NDWU_SIZE;
 
-  protected readonly sizes: NdwuSize[] = [SIZE.L, SIZE.XL, SIZE.XXL];
+  protected readonly sizes: NdwuSize[] = [NDWU_SIZE.L, NDWU_SIZE.XL, NDWU_SIZE.XXL];
   protected readonly variants: NdwuTabVariant[] = ['default', 'bordered'];
 
   protected readonly exampleTabs: NdwuTabItem[] = [

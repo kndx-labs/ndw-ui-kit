@@ -1,6 +1,6 @@
 import {Component, inject, input} from '@angular/core';
 import {NgControl} from '@angular/forms';
-import {NdwuSizeDirective, type NdwuToggleColor, NdwuToggleComponent, TOGGLE_COLOR} from '@ndw-ui-kit/core';
+import {NDWU_TOGGLE_COLOR, NdwuSizeDirective, type NdwuToggleColor, NdwuToggleComponent} from '@ndw-ui-kit/core';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor} from '../../form-field.utils';
 
@@ -20,7 +20,7 @@ export class NdwuToggleFieldComponent extends FormFieldBase<boolean> {
 
   public readonly label = input<string>('');
   public readonly secondaryText = input<string>('');
-  public readonly color = input<NdwuToggleColor>(TOGGLE_COLOR.BRAND);
+  public readonly color = input<NdwuToggleColor>(NDWU_TOGGLE_COLOR.BRAND);
 
   constructor(
     protected ngControl: NgControl,

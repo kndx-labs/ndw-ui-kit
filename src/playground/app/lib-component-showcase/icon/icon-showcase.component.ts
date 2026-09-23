@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Signal, computed, signal} from '@angular/core';
-import {ICON_NAME, NdwuAdaptiveIconComponent, NdwuIconComponent, NdwuIconName} from '@ndw-ui-kit/core';
+import {NDWU_ICON_NAME, NdwuAdaptiveIconComponent, NdwuIconComponent, NdwuIconName} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {ShowcaseLayoutComponent} from '@app/components';
@@ -17,19 +17,19 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class IconShowcaseComponent {
-  public readonly ICON_NAME = ICON_NAME;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
 
   // Sample icons for demonstration
   public readonly sampleIcons: NdwuIconName[] = [
-    ICON_NAME.ADD_L,
-    ICON_NAME.CHECK_L,
-    ICON_NAME.CLOSE_L,
-    ICON_NAME.SEARCH_L,
-    ICON_NAME.SETTINGS_L,
-    ICON_NAME.EDIT_L,
-    ICON_NAME.TRASH_L,
-    ICON_NAME.DOWNLOAD_L,
-    ICON_NAME.UPLOAD_L,
+    NDWU_ICON_NAME.ADD_L,
+    NDWU_ICON_NAME.CHECK_L,
+    NDWU_ICON_NAME.CLOSE_L,
+    NDWU_ICON_NAME.SEARCH_L,
+    NDWU_ICON_NAME.SETTINGS_L,
+    NDWU_ICON_NAME.EDIT_L,
+    NDWU_ICON_NAME.TRASH_L,
+    NDWU_ICON_NAME.DOWNLOAD_L,
+    NDWU_ICON_NAME.UPLOAD_L,
   ];
 
   public readonly colorExamples = [
@@ -40,8 +40,8 @@ export class IconShowcaseComponent {
   ];
 
   // Configurable example state
-  public readonly allIcons: NdwuIconName[] = Object.values(ICON_NAME);
-  public readonly selectedIcon = signal<NdwuIconName>(ICON_NAME.ADD_L);
+  public readonly allIcons: NdwuIconName[] = Object.values(NDWU_ICON_NAME);
+  public readonly selectedIcon = signal<NdwuIconName>(NDWU_ICON_NAME.ADD_L);
   public readonly selectedColor = signal<string>('#000000');
 
   public onIconChange(event: Event): void {

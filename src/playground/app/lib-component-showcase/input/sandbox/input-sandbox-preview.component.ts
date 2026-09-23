@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ICON_NAME, type NdwuIconName, type NdwuSize, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_ICON_NAME, NDWU_SIZE, type NdwuIconName, type NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuInputFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {STRETCH_WIDTH_VALUE, SandboxToolbarComponent, TokenListComponent, type TokenListItem} from '@app/components';
@@ -38,7 +38,7 @@ interface TokenPickerValues extends Record<string, string> {
   ],
 })
 export class InputSandboxPreviewComponent extends SandboxBaseComponent {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
 
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
   private readonly sandboxToolbar = viewChild(SandboxToolbarComponent);
@@ -49,7 +49,7 @@ export class InputSandboxPreviewComponent extends SandboxBaseComponent {
     label: new FormControl<string>('Email Address', {nonNullable: true}),
     placeholder: new FormControl<string>('Enter text', {nonNullable: true}),
     hint: new FormControl<string>('We\'ll never share your email with anyone else', {nonNullable: true}),
-    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.XL, {nonNullable: true}),
     isRequired: new FormControl<boolean>(false, {nonNullable: true}),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),
     isReadonly: new FormControl<boolean>(false, {nonNullable: true}),
@@ -127,11 +127,11 @@ export class InputSandboxPreviewComponent extends SandboxBaseComponent {
     }
 
     if (rightIcon === 'search') {
-      return ICON_NAME.SEARCH_L;
+      return NDWU_ICON_NAME.SEARCH_L;
     }
 
     if (rightIcon === 'close') {
-      return this.sandboxTheme() === 'dark' ? ICON_NAME.CLOSE_L : ICON_NAME.CLOSE_S;
+      return this.sandboxTheme() === 'dark' ? NDWU_ICON_NAME.CLOSE_L : NDWU_ICON_NAME.CLOSE_S;
     }
 
     return undefined;
@@ -172,7 +172,7 @@ export class InputSandboxPreviewComponent extends SandboxBaseComponent {
       label: 'Email Address',
       placeholder: 'Enter text',
       hint: 'We\'ll never share your email with anyone else',
-      size: SIZE.XL,
+      size: NDWU_SIZE.XL,
       isRequired: false,
       isDisabled: false,
       isReadonly: false,

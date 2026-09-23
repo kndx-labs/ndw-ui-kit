@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
-  DEFAULT_WEEK_DAYS,
+  NDWU_DEFAULT_WEEK_DAYS,
   type NdwuDayName,
   type NdwuScheduleAction,
   type NdwuScheduleValue,
@@ -63,7 +63,7 @@ export class ScheduleEditorOverviewComponent {
   private readonly cdr = inject(ChangeDetectorRef);
 
   public scheduleValue: NdwuScheduleValue = {...SAMPLE_VALUE};
-  public weekDays: NdwuWeekDay[] = this.buildWeekDays(DEFAULT_WEEK_DAYS);
+  public weekDays: NdwuWeekDay[] = this.buildWeekDays(NDWU_DEFAULT_WEEK_DAYS);
   public sundayFirstWeekDays: NdwuWeekDay[] = this.buildWeekDays(SUNDAY_FIRST_WEEK_DAYS);
 
   public get scheduleActions(): NdwuScheduleAction[] {
@@ -74,7 +74,7 @@ export class ScheduleEditorOverviewComponent {
     this.translationService.onLangChange$
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
-        this.weekDays = this.buildWeekDays(DEFAULT_WEEK_DAYS);
+        this.weekDays = this.buildWeekDays(NDWU_DEFAULT_WEEK_DAYS);
         this.sundayFirstWeekDays = this.buildWeekDays(SUNDAY_FIRST_WEEK_DAYS);
         this.cdr.markForCheck();
       });

@@ -90,19 +90,19 @@ const main = (): void => {
 
 import {BASE_ICON_NAME} from './icon-names.base';
 
-export const ICON_NAME = {
+export const NDWU_ICON_NAME = {
 ${declarations.join(EOL)}
 } as const;
 
-export const EXTRA_ICON_NAME = {
+export const NDWU_EXTRA_ICON_NAME = {
 ${extraDeclarations.join(EOL)}
 } as const;
 
-export const ICON_NAMES = Object.values(ICON_NAME);
-export const BASE_ICON_NAMES = BASE_ICON_NAME;
+export const NDWU_ICON_NAMES = Object.values(NDWU_ICON_NAME);
+export const NDWU_BASE_ICON_NAMES = BASE_ICON_NAME;
 
 export type {NdwuBaseIconName} from './icon-names.base';
-export type NdwuAllIconName = (typeof ICON_NAME)[keyof typeof ICON_NAME];
+export type NdwuAllIconName = (typeof NDWU_ICON_NAME)[keyof typeof NDWU_ICON_NAME];
 
 export type NdwuIconName = NdwuAllIconName;
 `.trimStart();

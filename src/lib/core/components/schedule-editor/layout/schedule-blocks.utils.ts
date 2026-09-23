@@ -4,7 +4,7 @@ import {
   NdwuScheduleValue,
   type NdwuWeekDay,
 } from '../schedule-editor.types';
-import {DAY_TO_NDM_DAY, NDM_DAY_TO_DAY} from '../schedule-editor.constants';
+import {NDWU_DAY_TO_NDM_DAY, NDWU_NDM_DAY_TO_DAY} from '../schedule-editor.constants';
 import {DAYS_IN_WEEK, MINUTES_IN_HOUR} from '../ndwu-schedule-editor.constants';
 
 export const minutesToTime = (minutes: number): string => {
@@ -38,7 +38,7 @@ export const valueToBlocks = (
     }
 
     intervals.forEach(([start, stop]) => {
-      blocks.push({day: DAY_TO_NDM_DAY[weekDay.day], start, stop});
+      blocks.push({day: NDWU_DAY_TO_NDM_DAY[weekDay.day], start, stop});
     });
   });
 
@@ -53,7 +53,7 @@ export const blocksToValue = (blocks: NdwuScheduleBlock[], weekDays: NdwuWeekDay
   });
 
   blocks.forEach((block) => {
-    const day = NDM_DAY_TO_DAY[block.day];
+    const day = NDWU_NDM_DAY_TO_DAY[block.day];
 
     if (!day) {
       return;

@@ -5,7 +5,7 @@ import {
   type NdwuScheduleInterval,
 } from '../schedule-editor.types';
 import {MINUTES_IN_DAY, MINUTES_IN_HOUR, MINUTES_IN_WEEK} from '../ndwu-schedule-editor.constants';
-import {ANY_DAY} from '../schedule-editor.constants';
+import {NDWU_ANY_DAY} from '../schedule-editor.constants';
 
 type ScheduleActionList = Array<[number, number[]]>;
 
@@ -131,7 +131,7 @@ function convertIntervalsToActionLists(
 
 function getNdmDayOfTheWeek(days: number[]): string {
   if (days.length === 7) {
-    return ANY_DAY;
+    return NDWU_ANY_DAY;
   }
 
   return days
@@ -152,7 +152,7 @@ export function actionsToBlocks(actions: NdwuScheduleAction[]): NdwuScheduleBloc
     const isStart = item.action === NDWU_SCHEDULE_ACTION.START;
     const dayOffsetMinutes = Number(item.hour) * MINUTES_IN_HOUR + Number(item.min);
 
-    const weekDays = item.dow === ANY_DAY
+    const weekDays = item.dow === NDWU_ANY_DAY
       ? [0, 1, 2, 3, 4, 5, 6]
       : item.dow.split(',').map(Number);
 

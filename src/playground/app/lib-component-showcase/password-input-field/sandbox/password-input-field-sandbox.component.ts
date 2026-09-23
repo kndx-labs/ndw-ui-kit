@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ICON_NAME, type NdwuPasswordStrength, type NdwuSize, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_ICON_NAME, NDWU_SIZE, type NdwuPasswordStrength, type NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuPasswordInputFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
@@ -40,7 +40,7 @@ const DEFAULT_FORM_VALUES = {
   label: 'Password',
   placeholder: 'Enter password',
   hint: 'Use at least 8 characters',
-  size: SIZE.XL,
+  size: NDWU_SIZE.XL,
   strength: 'strong',
   isRequired: false,
   isDisabled: false,
@@ -65,16 +65,16 @@ type SandboxStrength = 'none' | 'weak' | 'average' | 'strong';
   ],
 })
 export class PasswordInputFieldSandboxComponent extends SandboxBaseComponent {
-  public readonly SIZE = SIZE;
-  public readonly ICON_NAME = ICON_NAME;
+  public readonly SIZE = NDWU_SIZE;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
 
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
 
   public readonly SIZE_OPTIONS = [
-    {id: SIZE.S, label: 'S'},
-    {id: SIZE.L, label: 'L'},
-    {id: SIZE.XL, label: 'XL'},
-    {id: SIZE.XXL, label: 'XXL'},
+    {id: NDWU_SIZE.S, label: 'S'},
+    {id: NDWU_SIZE.L, label: 'L'},
+    {id: NDWU_SIZE.XL, label: 'XL'},
+    {id: NDWU_SIZE.XXL, label: 'XXL'},
   ];
 
   public readonly strengthOptions: {id: SandboxStrength; label: string}[] = [
@@ -94,7 +94,7 @@ export class PasswordInputFieldSandboxComponent extends SandboxBaseComponent {
     label: new FormControl<string>('Password', {nonNullable: true}),
     placeholder: new FormControl<string>('Enter password', {nonNullable: true}),
     hint: new FormControl<string>('Use at least 8 characters', {nonNullable: true}),
-    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.XL, {nonNullable: true}),
     strength: new FormControl<SandboxStrength>('strong', {nonNullable: true}),
     isRequired: new FormControl<boolean>(false, {nonNullable: true}),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),

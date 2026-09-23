@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
-  ICON_BUTTON_VARIANT,
-  ICON_NAME,
+  NDWU_ICON_BUTTON_VARIANT,
+  NDWU_ICON_NAME,
+  NDWU_SIZE,
   NdwuIconButtonComponent,
   type NdwuIconButtonVariant,
   type NdwuIconName,
   type NdwuSize,
-  SIZE,
 } from '@ndw-ui-kit/core';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';
@@ -33,8 +33,8 @@ function tokenKeyToCssVar(key: string): string {
   ],
 })
 export class IconButtonSandboxComponent extends SandboxBaseComponent {
-  public readonly SIZE = SIZE;
-  public readonly ICON_BUTTON_VARIANT = ICON_BUTTON_VARIANT;
+  public readonly SIZE = NDWU_SIZE;
+  public readonly ICON_BUTTON_VARIANT = NDWU_ICON_BUTTON_VARIANT;
 
   public readonly ICON_BUTTON_VARIANT_OPTIONS = ICON_BUTTON_VARIANT_OPTIONS;
 
@@ -47,9 +47,9 @@ export class IconButtonSandboxComponent extends SandboxBaseComponent {
   public readonly ICONS = ICON_NAMES;
 
   public readonly sandboxForm = new FormGroup({
-    variant: new FormControl<NdwuIconButtonVariant>(ICON_BUTTON_VARIANT.SQUARE, {nonNullable: true}),
-    size: new FormControl<NdwuSize>(SIZE.L, {nonNullable: true}),
-    icon: new FormControl<NdwuIconName>(ICON_NAME.CHECK_S, {nonNullable: true}),
+    variant: new FormControl<NdwuIconButtonVariant>(NDWU_ICON_BUTTON_VARIANT.SQUARE, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.L, {nonNullable: true}),
+    icon: new FormControl<NdwuIconName>(NDWU_ICON_NAME.CHECK_S, {nonNullable: true}),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),
   });
 
@@ -70,7 +70,7 @@ export class IconButtonSandboxComponent extends SandboxBaseComponent {
     return ICON_BUTTON_TOKENS
       .filter(
         (key) => {
-          const isFlatVariant = variant === ICON_BUTTON_VARIANT.FLAT;
+          const isFlatVariant = variant === NDWU_ICON_BUTTON_VARIANT.FLAT;
           const isFlatToken = key.startsWith('icon-button-flat');
 
           return isFlatVariant === isFlatToken;
@@ -85,7 +85,7 @@ export class IconButtonSandboxComponent extends SandboxBaseComponent {
 
   protected override onInit(): void {
     this.sandboxForm.controls.variant.valueChanges.subscribe((variant) => {
-      if (variant === ICON_BUTTON_VARIANT.FLAT) {
+      if (variant === NDWU_ICON_BUTTON_VARIANT.FLAT) {
         this.sandboxForm.controls.size.disable();
       } else {
         this.sandboxForm.controls.size.enable();
@@ -95,9 +95,9 @@ export class IconButtonSandboxComponent extends SandboxBaseComponent {
 
   protected override getDefaultFormValues(): Record<string, unknown> {
     return {
-      variant: ICON_BUTTON_VARIANT.SQUARE,
-      size: SIZE.L,
-      icon: ICON_NAME.ADD_S,
+      variant: NDWU_ICON_BUTTON_VARIANT.SQUARE,
+      size: NDWU_SIZE.L,
+      icon: NDWU_ICON_NAME.ADD_S,
       isDisabled: false,
     };
   }

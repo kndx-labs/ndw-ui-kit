@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, computed, input, output} from '@angular/core';
 import {type NdwuTabItem, type NdwuTabVariant, type NdwuTabWidthMode, type NdwuTabsScrollMode} from './ndwu-tabs.types';
 import {NdwuTabItemComponent} from './ndwu-tab-item.component';
-import {type NdwuSize, SIZE} from '../../../shared.types';
+import {NDWU_SIZE, type NdwuSize} from '../../../shared.types';
 
 @Component({
   selector: 'ndwu-tabs',
@@ -18,7 +18,7 @@ import {type NdwuSize, SIZE} from '../../../shared.types';
 export class NdwuTabsComponent {
   public readonly tabs = input.required<NdwuTabItem[]>();
   public readonly selectedTabId = input<string | null>(null);
-  public readonly size = input<NdwuSize>(SIZE.L);
+  public readonly size = input<NdwuSize>(NDWU_SIZE.L);
   public readonly variant = input<NdwuTabVariant>('default');
   public readonly scrollMode = input<NdwuTabsScrollMode>('auto');
   public readonly scrollContainerWidth = input<string>('auto');

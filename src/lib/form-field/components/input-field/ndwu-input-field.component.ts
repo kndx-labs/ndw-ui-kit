@@ -16,7 +16,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {merge} from 'rxjs';
 import {NDWU_VALIDATION_PROCESSOR, NdwuValidationData} from '../../validation';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
   NdwuHintDirective,
@@ -81,7 +81,7 @@ export class NdwuInputFieldComponent extends FormFieldBase<string> implements On
   });
 
   protected readonly eyeIcon = computed(() => {
-    return this.isPasswordVisible() ? ICON_NAME.EYE_OFF_S : ICON_NAME.EYE_ON_S;
+    return this.isPasswordVisible() ? NDWU_ICON_NAME.EYE_OFF_S : NDWU_ICON_NAME.EYE_ON_S;
   });
 
   protected readonly eyeIconLabel = computed(() => {

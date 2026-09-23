@@ -12,7 +12,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {NdwuSize, SIZE} from '../../../shared.types';
+import {NDWU_SIZE, NdwuSize} from '../../../shared.types';
 import {
   type NdwuAxisConfigEntry,
   type NdwuAxisElements,
@@ -85,7 +85,7 @@ export class NdwuScrollbarComponent {
     return NdwuScrollbarComponent.AXIS_CONFIG[axis];
   }
 
-  public readonly ndwuScrollbarSize = input<NdwuSize>(SIZE.L);
+  public readonly ndwuScrollbarSize = input<NdwuSize>(NDWU_SIZE.L);
   public readonly ndwuScrollbarAxis = input<'x' | 'y' | 'both'>('both');
   public readonly ndwuScrollbarPrintable = input(true, {transform: booleanAttribute});
   public readonly ndwuScrollbarDisabled = input(false, {transform: booleanAttribute});
@@ -107,7 +107,7 @@ export class NdwuScrollbarComponent {
   protected readonly isDragging = signal(false);
   protected readonly isViewInitialized = signal(false);
   protected readonly normalizedSize = computed(() => {
-    return this.ndwuScrollbarSize() === SIZE.XL ? SIZE.XL : SIZE.L;
+    return this.ndwuScrollbarSize() === NDWU_SIZE.XL ? NDWU_SIZE.XL : NDWU_SIZE.L;
   });
 
   protected readonly normalizedPadding = computed(() => {

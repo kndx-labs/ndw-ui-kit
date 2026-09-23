@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
-import {type NdwuSize, SIZE} from '../../../shared.types';
+import {NDWU_SIZE, type NdwuSize} from '../../../shared.types';
 import {NdwuIconName} from '../../../icon-names';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
@@ -15,7 +15,7 @@ export type NdwuBadgeTone =
   | 'cyan'
   | 'white';
 
-const SIZES_WITH_ICON: NdwuSize[] = [SIZE.XL, SIZE.L];
+const SIZES_WITH_ICON: NdwuSize[] = [NDWU_SIZE.XL, NDWU_SIZE.L];
 
 @Component({
   selector: 'ndwu-badge',

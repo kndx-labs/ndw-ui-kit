@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {ICON_BUTTON_VARIANT, ICON_NAME, NdwuIconButtonComponent, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_ICON_BUTTON_VARIANT, NDWU_ICON_NAME, NDWU_SIZE, NdwuIconButtonComponent} from '@ndw-ui-kit/core';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 @Component({
@@ -13,7 +13,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class IconButtonOverviewComponent {
-  public readonly ICON_NAME = ICON_NAME;
-  public readonly SIZES = Object.values(SIZE).filter((size) => size !== SIZE.S);
-  public readonly VARIANTS = Object.values(ICON_BUTTON_VARIANT);
+  public readonly ICON_NAME = NDWU_ICON_NAME;
+  public readonly SIZES = Object.values(NDWU_SIZE).filter((size) => size !== NDWU_SIZE.S);
+  public readonly VARIANTS = Object.values(NDWU_ICON_BUTTON_VARIANT);
 }

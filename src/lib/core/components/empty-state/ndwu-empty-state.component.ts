@@ -16,7 +16,7 @@ import {NdwuPictogramBaseName} from '../pictogram/ndwu-adaptive-pictogram.helper
 import {NdwuPictogramVariant} from '../../../pictogram-presets';
 import {NdwuAdaptiveSizeDirective, NdwuSizeDirective} from '../../directives';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
-import {SIZE} from '../../../shared.types';
+import {NDWU_SIZE} from '../../../shared.types';
 
 @Component({
   selector: 'ndwu-empty-state',
@@ -59,8 +59,8 @@ export class NdwuEmptyStateComponent {
   public readonly description = input<string>();
 
   protected readonly pictogramFlags: NdwuSizeFlags = {
-    XL: computed(() => this.resolvedSize() === SIZE.XL),
-    L: computed(() => this.resolvedSize() !== SIZE.XL),
+    XL: computed(() => this.resolvedSize() === NDWU_SIZE.XL),
+    L: computed(() => this.resolvedSize() !== NDWU_SIZE.XL),
   };
 
   protected readonly actionsContainer = viewChild<ElementRef<HTMLDivElement>>('actionsContainer');
@@ -69,7 +69,7 @@ export class NdwuEmptyStateComponent {
   protected readonly hostClasses = computed(() => {
     const classList = [
       'ndwu-empty-state',
-      `ndwu-empty-state--${this.resolvedSize() === SIZE.XL ? 'XL' : 'L'}`,
+      `ndwu-empty-state--${this.resolvedSize() === NDWU_SIZE.XL ? 'XL' : 'L'}`,
     ];
 
     if (this.hasActions()) {

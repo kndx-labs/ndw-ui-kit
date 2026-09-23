@@ -4,10 +4,10 @@ import {NdwuPictogramVariant} from '../../../pictogram-presets';
 import {NdwuAdaptiveSizeDirective} from '../../directives';
 import {NdwuPictogramComponent} from './ndwu-pictogram.component';
 import {
+  NDWU_PICTOGRAM_SIZE_FALLBACK,
+  NDWU_PICTOGRAM_SIZE_PRIORITY,
   NdwuPictogramBaseName,
   NdwuPictogramSize,
-  PICTOGRAM_SIZE_FALLBACK,
-  PICTOGRAM_SIZE_PRIORITY,
 } from './ndwu-adaptive-pictogram.helpers';
 
 @Component({
@@ -34,7 +34,7 @@ export class NdwuAdaptivePictogramComponent {
   public readonly secondColor = input<string>('');
 
   protected readonly resolvedSize = computed<NdwuPictogramSize>(() => {
-    return resolveSizeFlags(this.adaptiveSvc.sizeFlags(), PICTOGRAM_SIZE_PRIORITY) ?? PICTOGRAM_SIZE_FALLBACK;
+    return resolveSizeFlags(this.adaptiveSvc.sizeFlags(), NDWU_PICTOGRAM_SIZE_PRIORITY) ?? NDWU_PICTOGRAM_SIZE_FALLBACK;
   });
 
   protected readonly effectiveName = computed(() => `${this.name()}_${this.resolvedSize()}`);

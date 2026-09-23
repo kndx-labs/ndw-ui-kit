@@ -1,7 +1,7 @@
 import {Component, DestroyRef, OnInit, input, signal} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {
-  DEFAULT_WEEK_DAYS,
+  NDWU_DEFAULT_WEEK_DAYS,
   NDWU_SCHEDULE_EDITOR_MODE,
   NDWU_SCHEDULE_EDITOR_SIZING,
   NdwuScheduleEditorComponent,
@@ -27,8 +27,8 @@ export class NdwuScheduleEditorFieldComponent extends FormFieldBase<NdwuSchedule
   public readonly mode = input<NdwuScheduleEditorMode>(NDWU_SCHEDULE_EDITOR_MODE.FULL);
   public readonly sizing = input<NdwuScheduleEditorSizing>(NDWU_SCHEDULE_EDITOR_SIZING.SCALE);
   public readonly weekDays = input(
-    DEFAULT_WEEK_DAYS,
-    {transform: (value: NdwuWeekDay[] | null | undefined) => value ?? DEFAULT_WEEK_DAYS},
+    NDWU_DEFAULT_WEEK_DAYS,
+    {transform: (value: NdwuWeekDay[] | null | undefined) => value ?? NDWU_DEFAULT_WEEK_DAYS},
   );
 
   protected readonly isInvalid = signal<boolean>(false);

@@ -9,11 +9,11 @@ import {
   output,
 } from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {ICON_NAME} from '../../../icon-names';
-import {SIZE} from '../../../shared.types';
+import {NDWU_ICON_NAME} from '../../../icon-names';
+import {NDWU_SIZE} from '../../../shared.types';
 import {NdwuSizeDirective} from '../../directives';
 import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
-import {NdwuProgressBarComponent, PROGRESS_BAR_COLOR} from '../progress-bar/ndwu-progress-bar.component';
+import {NDWU_PROGRESS_BAR_COLOR, NdwuProgressBarComponent} from '../progress-bar/ndwu-progress-bar.component';
 import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 @Component({
@@ -33,7 +33,7 @@ import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.
 })
 export class NdwuFileUploadHeaderComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   private readonly DEFAULT_HEADER_TEXTS = {
     title: {
@@ -88,7 +88,7 @@ export class NdwuFileUploadHeaderComponent {
   protected readonly rootClass = computed(() => {
     const classes = [
       'ndwu-file-upload-header',
-      `ndwu-file-upload-header--${this.sizeSvc.effectiveSize() === SIZE.XL ? 'XL' : 'L'}`,
+      `ndwu-file-upload-header--${this.sizeSvc.effectiveSize() === NDWU_SIZE.XL ? 'XL' : 'L'}`,
     ];
 
     return classes.join(' ');
@@ -140,26 +140,26 @@ export class NdwuFileUploadHeaderComponent {
 
   protected readonly progressColor = computed(() => {
     if (this.allDone() && this.hasWarnings()) {
-      return PROGRESS_BAR_COLOR.WARNING;
+      return NDWU_PROGRESS_BAR_COLOR.WARNING;
     }
 
     if (this.allDone()) {
-      return PROGRESS_BAR_COLOR.SUCCESS;
+      return NDWU_PROGRESS_BAR_COLOR.SUCCESS;
     }
 
     if (this.hasErrors()) {
-      return PROGRESS_BAR_COLOR.DANGER;
+      return NDWU_PROGRESS_BAR_COLOR.DANGER;
     }
 
     if (this.hasWarnings()) {
-      return PROGRESS_BAR_COLOR.WARNING;
+      return NDWU_PROGRESS_BAR_COLOR.WARNING;
     }
 
     if (this.allCanceled()) {
-      return PROGRESS_BAR_COLOR.PRIMARY;
+      return NDWU_PROGRESS_BAR_COLOR.PRIMARY;
     }
 
-    return PROGRESS_BAR_COLOR.PRIMARY;
+    return NDWU_PROGRESS_BAR_COLOR.PRIMARY;
   });
 
   protected readonly headerTitle = computed(() => {

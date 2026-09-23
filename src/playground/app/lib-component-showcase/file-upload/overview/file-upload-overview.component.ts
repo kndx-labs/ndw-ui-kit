@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, Signal, computed, signal, viewChild} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
+  NDWU_SIZE,
   type NdwuFileInputValue,
   NdwuFileItemComponent,
   NdwuFileUploadComponent,
   type NdwuSize,
   type NdwuTranslationTexts,
-  SIZE,
 } from '@ndw-ui-kit/core';
 import {NdwuFileUploadFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
@@ -28,7 +28,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class FileUploadOverviewComponent implements OnDestroy {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
 
   public readonly fileUploadIsDesktop = signal(true);
   public readonly fileUploadIsMobile: Signal<boolean> = computed(() => !this.fileUploadIsDesktop());

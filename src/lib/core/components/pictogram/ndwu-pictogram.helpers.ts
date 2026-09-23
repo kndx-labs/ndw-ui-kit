@@ -1,6 +1,6 @@
-import {NdwuPictogramName, PICTOGRAM_NAME} from '../../../pictogram-names';
+import {NDWU_PICTOGRAM_NAME, NdwuPictogramName} from '../../../pictogram-names';
 
-const PICTOGRAM_VALUES: readonly string[] = Object.values(PICTOGRAM_NAME);
+const PICTOGRAM_VALUES: readonly string[] = Object.values(NDWU_PICTOGRAM_NAME);
 
 export function isPictogramName(value: string): value is NdwuPictogramName {
   return PICTOGRAM_VALUES.includes(value);
@@ -12,12 +12,12 @@ export function pictogramNameTransform(value: string | NdwuPictogramName): NdwuP
   }
 
   const lowerValue = value.toLowerCase();
-  const matchingKey = (Object.keys(PICTOGRAM_NAME) as (keyof typeof PICTOGRAM_NAME)[]).find(
-    (key) => PICTOGRAM_NAME[key].toLowerCase() === lowerValue,
+  const matchingKey = (Object.keys(NDWU_PICTOGRAM_NAME) as (keyof typeof NDWU_PICTOGRAM_NAME)[]).find(
+    (key) => NDWU_PICTOGRAM_NAME[key].toLowerCase() === lowerValue,
   );
 
   if (matchingKey !== undefined) {
-    return PICTOGRAM_NAME[matchingKey];
+    return NDWU_PICTOGRAM_NAME[matchingKey];
   }
 
   const firstPictogram = PICTOGRAM_VALUES[0] as NdwuPictogramName;

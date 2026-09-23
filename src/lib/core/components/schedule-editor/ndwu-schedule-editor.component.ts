@@ -36,7 +36,7 @@ import {
   NdwuScheduleValue,
   type NdwuWeekDay,
 } from './schedule-editor.types';
-import {DAY_TO_NDM_DAY, DEFAULT_WEEK_DAYS} from './schedule-editor.constants';
+import {NDWU_DAY_TO_NDM_DAY, NDWU_DEFAULT_WEEK_DAYS} from './schedule-editor.constants';
 import {
   AxisLabel,
   BlockRect,
@@ -80,8 +80,8 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
   public readonly mode = input<NdwuScheduleEditorMode>(NDWU_SCHEDULE_EDITOR_MODE.FULL);
   public readonly sizing = input<NdwuScheduleEditorSizing>(NDWU_SCHEDULE_EDITOR_SIZING.SCALE);
   public readonly weekDays = input(
-    DEFAULT_WEEK_DAYS,
-    {transform: (value: NdwuWeekDay[] | null | undefined) => value ?? DEFAULT_WEEK_DAYS},
+    NDWU_DEFAULT_WEEK_DAYS,
+    {transform: (value: NdwuWeekDay[] | null | undefined) => value ?? NDWU_DEFAULT_WEEK_DAYS},
   );
 
   public readonly valueChange = output<NdwuScheduleValue>();
@@ -500,7 +500,7 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
     }
 
     return blocks.some((block) => {
-      return block.day === DAY_TO_NDM_DAY[dayOfWeek.day]
+      return block.day === NDWU_DAY_TO_NDM_DAY[dayOfWeek.day]
         && block.start <= point.gridTime
         && block.stop > point.gridTime;
     });

@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NdwuPictogramComponent} from '../../../../../lib/core/components/pictogram/ndwu-pictogram.component';
-import {NdwuPictogramName, PICTOGRAM_NAME} from '../../../../../lib/pictogram-names';
-import {NdwuPictogramVariant, PICTOGRAM_VARIANTS} from '../../../../../lib/pictogram-presets';
+import {NDWU_PICTOGRAM_NAME, NdwuPictogramName} from '../../../../../lib/pictogram-names';
+import {NDWU_PICTOGRAM_VARIANTS, NdwuPictogramVariant} from '../../../../../lib/pictogram-presets';
 
 @Component({
   selector: 'app-pictogram-sandbox',
@@ -12,21 +12,21 @@ import {NdwuPictogramVariant, PICTOGRAM_VARIANTS} from '../../../../../lib/picto
   imports: [ReactiveFormsModule, NdwuPictogramComponent],
 })
 export class PictogramSandboxComponent {
-  public readonly PICTOGRAM_NAME = PICTOGRAM_NAME;
-  public readonly allPictograms: NdwuPictogramName[] = Object.values(PICTOGRAM_NAME);
-  public readonly allVariants: NdwuPictogramVariant[] = Object.keys(PICTOGRAM_VARIANTS) as NdwuPictogramVariant[];
+  public readonly PICTOGRAM_NAME = NDWU_PICTOGRAM_NAME;
+  public readonly allPictograms: NdwuPictogramName[] = Object.values(NDWU_PICTOGRAM_NAME);
+  public readonly allVariants: NdwuPictogramVariant[] = Object.keys(NDWU_PICTOGRAM_VARIANTS) as NdwuPictogramVariant[];
 
   public readonly sandboxForm = new FormGroup({
-    name: new FormControl<NdwuPictogramName>(PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L, {nonNullable: true}),
+    name: new FormControl<NdwuPictogramName>(NDWU_PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L, {nonNullable: true}),
     variant: new FormControl<NdwuPictogramVariant>('DEFAULT', {nonNullable: true}),
     stretched: new FormControl<boolean>(false, {nonNullable: true}),
-    firstColor: new FormControl<string>(PICTOGRAM_VARIANTS.DEFAULT.firstColor, {nonNullable: true}),
-    secondColor: new FormControl<string>(PICTOGRAM_VARIANTS.DEFAULT.secondColor, {nonNullable: true}),
+    firstColor: new FormControl<string>(NDWU_PICTOGRAM_VARIANTS.DEFAULT.firstColor, {nonNullable: true}),
+    secondColor: new FormControl<string>(NDWU_PICTOGRAM_VARIANTS.DEFAULT.secondColor, {nonNullable: true}),
   });
 
   public onVariantChange(): void {
     const variant = this.sandboxForm.controls.variant.value;
-    const preset = PICTOGRAM_VARIANTS[variant];
+    const preset = NDWU_PICTOGRAM_VARIANTS[variant];
 
     this.sandboxForm.patchValue({
       firstColor: preset.firstColor,
@@ -36,11 +36,11 @@ export class PictogramSandboxComponent {
 
   public resetSandbox(): void {
     this.sandboxForm.reset({
-      name: PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L,
+      name: NDWU_PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L,
       variant: 'DEFAULT' as NdwuPictogramVariant,
       stretched: false,
-      firstColor: PICTOGRAM_VARIANTS.DEFAULT.firstColor,
-      secondColor: PICTOGRAM_VARIANTS.DEFAULT.secondColor,
+      firstColor: NDWU_PICTOGRAM_VARIANTS.DEFAULT.firstColor,
+      secondColor: NDWU_PICTOGRAM_VARIANTS.DEFAULT.secondColor,
     });
   }
 }

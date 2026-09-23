@@ -12,10 +12,10 @@ import {
   viewChild,
 } from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {ICON_NAME} from '../../../icon-names';
-import {PICTOGRAM_NAME} from '../../../pictogram-names';
+import {NDWU_ICON_NAME} from '../../../icon-names';
+import {NDWU_PICTOGRAM_NAME} from '../../../pictogram-names';
 import type {NdwuPictogramVariant} from '../../../pictogram-presets';
-import {SIZE} from '../../../shared.types';
+import {NDWU_SIZE} from '../../../shared.types';
 import {NdwuSizeDirective} from '../../directives';
 import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
 import {NdwuPictogramComponent} from '../pictogram/ndwu-pictogram.component';
@@ -38,7 +38,7 @@ import type {NdwuTranslationTexts} from './ndwu-file-upload.types';
 })
 export class NdwuFileDropzoneComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   private readonly DEFAULT_DROPZONE_TEXTS = {
     title: 'Upload file',
@@ -67,13 +67,13 @@ export class NdwuFileDropzoneComponent {
 
     if (this.disabled()) {
       return isXl
-        ? PICTOGRAM_NAME.PICTOGRAM_UPLOAD_DISABLED_XL
-        : PICTOGRAM_NAME.PICTOGRAM_UPLOAD_DISABLED_L;
+        ? NDWU_PICTOGRAM_NAME.PICTOGRAM_UPLOAD_DISABLED_XL
+        : NDWU_PICTOGRAM_NAME.PICTOGRAM_UPLOAD_DISABLED_L;
     }
 
     return isXl
-      ? PICTOGRAM_NAME.PICTOGRAM_UPLOAD_XL
-      : PICTOGRAM_NAME.PICTOGRAM_UPLOAD_L;
+      ? NDWU_PICTOGRAM_NAME.PICTOGRAM_UPLOAD_XL
+      : NDWU_PICTOGRAM_NAME.PICTOGRAM_UPLOAD_L;
   });
 
   protected readonly effectivePictogramVariant = computed<NdwuPictogramVariant>(() => {
@@ -85,7 +85,7 @@ export class NdwuFileDropzoneComponent {
   public readonly isDragOver = signal(false);
 
   protected readonly resolvedSize = computed(() => {
-    return this.sizeSvc.effectiveSize() === SIZE.XL ? SIZE.XL : SIZE.L;
+    return this.sizeSvc.effectiveSize() === NDWU_SIZE.XL ? NDWU_SIZE.XL : NDWU_SIZE.L;
   });
 
   protected readonly rootClass = computed(() => {

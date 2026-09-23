@@ -1,5 +1,5 @@
 import {NdwuScheduleArea, NdwuScheduleBlock, NdwuScheduleTimePoint, type NdwuWeekDay} from '../schedule-editor.types';
-import {DAY_TO_NDM_DAY} from '../schedule-editor.constants';
+import {NDWU_DAY_TO_NDM_DAY} from '../schedule-editor.constants';
 import {
   AxisLabel,
   BlockRect,
@@ -168,7 +168,7 @@ export abstract class ScheduleLayout {
         continue;
       }
 
-      newBlocks.push({day: DAY_TO_NDM_DAY[weekDay.day], start: startTime, stop: endTime});
+      newBlocks.push({day: NDWU_DAY_TO_NDM_DAY[weekDay.day], start: startTime, stop: endTime});
     }
 
     const updated = isRemove ? subtractBlocks(blocks, newBlocks) : [...blocks, ...newBlocks];
@@ -177,7 +177,7 @@ export abstract class ScheduleLayout {
   }
 
   protected findDayIndex(weekDays: NdwuWeekDay[], block: NdwuScheduleBlock): number {
-    return weekDays.findIndex((weekDay) => DAY_TO_NDM_DAY[weekDay.day] === block.day);
+    return weekDays.findIndex((weekDay) => NDWU_DAY_TO_NDM_DAY[weekDay.day] === block.day);
   }
 
   private getOccupiedSlots(weekDays: NdwuWeekDay[], blocks: NdwuScheduleBlock[]): Map<number, Set<number>> {

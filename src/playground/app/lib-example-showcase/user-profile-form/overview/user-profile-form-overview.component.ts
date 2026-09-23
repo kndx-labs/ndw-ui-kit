@@ -1,11 +1,11 @@
 import {ChangeDetectionStrategy, Component, ViewEncapsulation, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {
+  NDWU_SIZE,
   NdwuButtonComponent,
   NdwuFormContainerComponent,
   type NdwuOption,
   type NdwuScheduleValue,
-  SIZE,
 } from '@ndw-ui-kit/core';
 import {
   NdwuCheckboxFieldComponent,
@@ -104,7 +104,7 @@ const DEFAULT_SCHEDULE: NdwuScheduleValue = {
   ],
 })
 export class UserProfileFormOverviewComponent {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
 
   public readonly countryOptions = COUNTRY_OPTIONS;
   public readonly timezoneOptions = TIMEZONE_OPTIONS;

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {type NdwuSize, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, type NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {parseTextareaOptions} from '@app/utils';
@@ -34,7 +34,7 @@ const DEFAULT_OPTIONS_TEXT = 'Germany\nSwitzerland\nAustria\nFrance\nItaly';
 export class SelectFieldSandboxComponent implements OnInit, AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
 
-  protected readonly SIZE = SIZE;
+  protected readonly SIZE = NDWU_SIZE;
   protected readonly sandboxTheme = signal<SandboxTheme>('light');
   protected readonly options = signal<ReturnType<typeof parseTextareaOptions>>([]);
   protected readonly sandboxToolbar = viewChild(SandboxToolbarComponent);
@@ -44,7 +44,7 @@ export class SelectFieldSandboxComponent implements OnInit, AfterViewInit {
     label: new FormControl('Country', {nonNullable: true}),
     placeholder: new FormControl('Choose country', {nonNullable: true}),
     hint: new FormControl('', {nonNullable: true}),
-    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.XL, {nonNullable: true}),
     disabled: new FormControl(false, {nonNullable: true}),
     required: new FormControl(false, {nonNullable: true}),
     optionsRaw: new FormControl(DEFAULT_OPTIONS_TEXT, {nonNullable: true}),
@@ -102,7 +102,7 @@ export class SelectFieldSandboxComponent implements OnInit, AfterViewInit {
       label: 'Country',
       placeholder: 'Choose country',
       hint: '',
-      size: SIZE.XL,
+      size: NDWU_SIZE.XL,
       disabled: false,
       required: false,
       optionsRaw: DEFAULT_OPTIONS_TEXT,

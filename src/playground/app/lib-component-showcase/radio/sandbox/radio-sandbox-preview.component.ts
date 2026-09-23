@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from 
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
-import {type NdwuOption, type NdwuSize, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, type NdwuOption, type NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuRadioFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -36,7 +36,7 @@ interface TokenPickerValues extends Record<string, string> {
   ],
 })
 export class RadioSandboxPreviewComponent extends SandboxBaseComponent {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
 
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
 
@@ -52,7 +52,7 @@ export class RadioSandboxPreviewComponent extends SandboxBaseComponent {
 
   public readonly sandboxForm = new FormGroup({
     option: new FormControl<string>('option1', {nonNullable: true}),
-    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.XL, {nonNullable: true}),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),
   });
 
@@ -148,7 +148,7 @@ export class RadioSandboxPreviewComponent extends SandboxBaseComponent {
   protected override getDefaultFormValues(): Record<string, unknown> {
     return {
       option: 'option1',
-      size: SIZE.XL,
+      size: NDWU_SIZE.XL,
       isDisabled: false,
     };
   }

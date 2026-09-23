@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
 import {type NdwuIconName} from '../../../icon-names';
-import {type NdwuSize, SIZE} from '../../../shared.types';
+import {NDWU_SIZE, type NdwuSize} from '../../../shared.types';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NdwuBadgeComponent, type NdwuBadgeTone} from '../badge/ndwu-badge.component';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
@@ -27,7 +27,7 @@ export class NdwuTabItemComponent {
   public readonly label = input.required<string>();
   public readonly selected = input(false);
   public readonly disabled = input(false);
-  public readonly size = input<NdwuSize>(SIZE.L);
+  public readonly size = input<NdwuSize>(NDWU_SIZE.L);
   public readonly variant = input<'default' | 'bordered'>('default');
   public readonly icon = input<NdwuIconName | null>(null);
   public readonly badge = input<string | null>(null);
@@ -80,10 +80,10 @@ export class NdwuTabItemComponent {
     const size = this.size();
 
     const value = {
-      [SIZE.S]: SIZE.S,
-      [SIZE.L]: SIZE.S,
-      [SIZE.XL]: SIZE.L,
-      [SIZE.XXL]: SIZE.L,
+      [NDWU_SIZE.S]: NDWU_SIZE.S,
+      [NDWU_SIZE.L]: NDWU_SIZE.S,
+      [NDWU_SIZE.XL]: NDWU_SIZE.L,
+      [NDWU_SIZE.XXL]: NDWU_SIZE.L,
     }[size];
 
     return value;

@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import type {NdwuScheduleBlock, NdwuScheduleInterval, NdwuScheduleValue} from '../schedule-editor.types';
-import {DEFAULT_WEEK_DAYS} from '../schedule-editor.constants';
+import {NDWU_DEFAULT_WEEK_DAYS} from '../schedule-editor.constants';
 import {
   blocksToValue,
   glueBlocks,
@@ -159,15 +159,15 @@ describe('simplifyBlocks', () => {
 
 describe('valueToBlocks and blocksToValue', () => {
   it('returns no blocks for an empty value', () => {
-    expect(valueToBlocks(null, DEFAULT_WEEK_DAYS)).toEqual([]);
-    expect(valueToBlocks(undefined, DEFAULT_WEEK_DAYS)).toEqual([]);
-    expect(valueToBlocks({}, DEFAULT_WEEK_DAYS)).toEqual([]);
+    expect(valueToBlocks(null, NDWU_DEFAULT_WEEK_DAYS)).toEqual([]);
+    expect(valueToBlocks(undefined, NDWU_DEFAULT_WEEK_DAYS)).toEqual([]);
+    expect(valueToBlocks({}, NDWU_DEFAULT_WEEK_DAYS)).toEqual([]);
   });
 
   it('maps day names to ndm day indices', () => {
     const value: NdwuScheduleValue = {mon: [[60, 120]], sun: [[0, 30]]};
 
-    expect(sortBlocks(valueToBlocks(value, DEFAULT_WEEK_DAYS)))
+    expect(sortBlocks(valueToBlocks(value, NDWU_DEFAULT_WEEK_DAYS)))
       .toEqual([
         {day: 0, start: 0, stop: 30},
         {day: 1, start: 60, stop: 120},
@@ -190,7 +190,7 @@ describe('valueToBlocks and blocksToValue', () => {
       sun: [[180, 240]],
     };
 
-    const roundtripped = blocksToValue(valueToBlocks(value, DEFAULT_WEEK_DAYS), DEFAULT_WEEK_DAYS);
+    const roundtripped = blocksToValue(valueToBlocks(value, NDWU_DEFAULT_WEEK_DAYS), NDWU_DEFAULT_WEEK_DAYS);
 
     expect(roundtripped)
       .toEqual({

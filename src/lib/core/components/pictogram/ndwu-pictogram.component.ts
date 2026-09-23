@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, input} from '@angular/core';
 import {extractPictogramDimsClass, pictogramNameTransform} from './ndwu-pictogram.helpers';
-import {NdwuPictogramVariant, PICTOGRAM_VARIANTS} from '../../../pictogram-presets';
+import {NDWU_PICTOGRAM_VARIANTS, NdwuPictogramVariant} from '../../../pictogram-presets';
 
 @Component({
   selector: 'ndwu-pictogram',
@@ -31,7 +31,7 @@ export class NdwuPictogramComponent {
   protected readonly svgStyle = computed(() => {
     const styles: Record<string, string> = {};
     const variant = this.variant();
-    const preset = PICTOGRAM_VARIANTS[variant];
+    const preset = NDWU_PICTOGRAM_VARIANTS[variant];
 
     styles['--pictogram-first-color'] = this.firstColor() || preset.firstColor;
     styles['--pictogram-second-color'] = this.secondColor() || preset.secondColor;

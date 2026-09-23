@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, computed, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {type NdwuSize, NdwuTimingButtonComponent, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, type NdwuSize, NdwuTimingButtonComponent} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent} from '@app/components';
 import {CssUtils} from '@app/utils';
@@ -36,7 +36,7 @@ function tokenKeyToCssVar(key: string): string {
   ],
 })
 export class TimingButtonSandboxComponent extends SandboxBaseComponent {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
 
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
 
@@ -47,7 +47,7 @@ export class TimingButtonSandboxComponent extends SandboxBaseComponent {
   public readonly sandboxForm = new FormGroup({
     leftText: new FormControl<string>('Button', {nonNullable: true}),
     rightText: new FormControl<string>('s', {nonNullable: true}),
-    size: new FormControl<NdwuSize>(SIZE.XL, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.XL, {nonNullable: true}),
     state: new FormControl<TimingButtonSandboxState>('default', {nonNullable: true}),
     duration: new FormControl<number>(15, {nonNullable: true}),
   });
@@ -89,7 +89,7 @@ export class TimingButtonSandboxComponent extends SandboxBaseComponent {
     return {
       leftText: 'Button',
       rightText: 's',
-      size: SIZE.XL,
+      size: NDWU_SIZE.XL,
       state: 'default',
       duration: 15,
     };

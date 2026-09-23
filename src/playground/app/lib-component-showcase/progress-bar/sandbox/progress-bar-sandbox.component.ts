@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, ViewEncapsulation, signal, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NdwuProgressBarComponent, type NdwuSize, PROGRESS_BAR_COLOR, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_PROGRESS_BAR_COLOR, NDWU_SIZE, NdwuProgressBarComponent, type NdwuSize} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, type TokenListItem} from '@app/components';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -42,8 +42,8 @@ const DEFAULT_FORM_VALUES = {
   ],
 })
 export class ProgressBarSandboxComponent extends SandboxBaseComponent {
-  public readonly SIZE = SIZE;
-  public readonly PROGRESS_BAR_COLOR = PROGRESS_BAR_COLOR;
+  public readonly SIZE = NDWU_SIZE;
+  public readonly PROGRESS_BAR_COLOR = NDWU_PROGRESS_BAR_COLOR;
 
   public readonly tokenList: readonly TokenListItem[] = [
     {cssVar: COLOR_VAR, key: 'trackBg'},
@@ -86,22 +86,22 @@ export class ProgressBarSandboxComponent extends SandboxBaseComponent {
 
   public getColor(): string {
     const colorMap: Record<string, string> = {
-      primary: PROGRESS_BAR_COLOR.PRIMARY,
-      success: PROGRESS_BAR_COLOR.SUCCESS,
-      danger: PROGRESS_BAR_COLOR.DANGER,
-      warning: PROGRESS_BAR_COLOR.WARNING,
+      primary: NDWU_PROGRESS_BAR_COLOR.PRIMARY,
+      success: NDWU_PROGRESS_BAR_COLOR.SUCCESS,
+      danger: NDWU_PROGRESS_BAR_COLOR.DANGER,
+      warning: NDWU_PROGRESS_BAR_COLOR.WARNING,
     };
 
-    return colorMap[this.sandboxForm.controls.color.value] || PROGRESS_BAR_COLOR.PRIMARY;
+    return colorMap[this.sandboxForm.controls.color.value] || NDWU_PROGRESS_BAR_COLOR.PRIMARY;
   }
 
   public getSize(): NdwuSize {
     const sizeMap: Record<string, NdwuSize> = {
-      L: SIZE.L,
-      XL: SIZE.XL,
+      L: NDWU_SIZE.L,
+      XL: NDWU_SIZE.XL,
     };
 
-    return sizeMap[this.sandboxForm.controls.size.value] || SIZE.XL;
+    return sizeMap[this.sandboxForm.controls.size.value] || NDWU_SIZE.XL;
   }
 
   public getMode(): 'determinate' | 'indeterminate' {

@@ -15,7 +15,7 @@ const SRC_LIB_DIR = join(SRC_DIR, 'lib');
 const SPRITE_ICONS_DIR = join(SCRIPTS_DATA_DIR, 'sprite-icons');
 const OUTPUT_FILE = join(SRC_LIB_DIR, 'icon-names.base.ts');
 
-const ICON_MEMBER_RE = /\bICON_NAME\.([A-Z0-9_]+)/g;
+const ICON_MEMBER_RE = /\b(?:NDWU_)?ICON_NAME\.([A-Z0-9_]+)/g;
 
 const extractMembersFromText = (text: string): Set<string> => {
   const members = new Set<string>();
@@ -66,7 +66,8 @@ const collectFromTsSource = (filePath: string): {members: Set<string>; inferredV
 
   const visit = (node: ts.Node): void => {
     if (
-      ts.isPropertyAccessExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === 'ICON_NAME'
+      ts.isPropertyAccessExpression(node) && ts.isIdentifier(node.expression)
+      && node.expression.text === 'NDWU_ICON_NAME'
     ) {
       members.add(node.name.text);
     }
@@ -204,8 +205,8 @@ const main = (): void => {
   const unknownMembers = [...usedMembers].filter((member) => !memberToValue.has(member)).sort();
 
   if (unknownMembers.length > 0) {
-    console.error(chalk.red('Unknown ICON_NAME members detected in src/lib:'));
-    unknownMembers.forEach((member) => console.error(chalk.red(`  - ICON_NAME.${member}`)));
+    console.error(chalk.red('Unknown NDWU_ICON_NAME members detected in src/lib:'));
+    unknownMembers.forEach((member) => console.error(chalk.red(`  - NDWU_ICON_NAME.${member}`)));
     process.exit(1);
   }
 

@@ -2,12 +2,12 @@ import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from 
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
+  NDWU_SIZE,
   NdwuBadgeComponent,
   type NdwuBadgeTone,
   type NdwuIconName,
   type NdwuSize,
-  SIZE,
 } from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
@@ -32,11 +32,11 @@ const BADGE_TONE_OPTIONS: {id: NdwuBadgeTone; label: string}[] = [
 ];
 
 const BADGE_ICON_OPTIONS: NdwuIconName[] = [
-  ICON_NAME.BELL_ON_S,
-  ICON_NAME.INFO_S,
-  ICON_NAME.CHECK_S,
-  ICON_NAME.CLOSE_S,
-  ICON_NAME.WARNING_S,
+  NDWU_ICON_NAME.BELL_ON_S,
+  NDWU_ICON_NAME.INFO_S,
+  NDWU_ICON_NAME.CHECK_S,
+  NDWU_ICON_NAME.CLOSE_S,
+  NDWU_ICON_NAME.WARNING_S,
 ];
 
 const TOKEN_TO_CSS_VAR: Record<string, string> = {
@@ -70,8 +70,8 @@ function tokenKeyToCssVar(key: string): string {
   ],
 })
 export class BadgeSandboxComponent extends SandboxBaseComponent {
-  public readonly SIZE = SIZE;
-  public readonly ICON_NAME = ICON_NAME;
+  public readonly SIZE = NDWU_SIZE;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
   public readonly BADGE_TONE_OPTIONS = BADGE_TONE_OPTIONS;
   public readonly BADGE_ICON_OPTIONS = BADGE_ICON_OPTIONS;
 
@@ -80,7 +80,7 @@ export class BadgeSandboxComponent extends SandboxBaseComponent {
   public readonly sandboxForm = new FormGroup({
     label: new FormControl<string>('Badge label', {nonNullable: true}),
     tone: new FormControl<NdwuBadgeTone>('gray', {nonNullable: true}),
-    size: new FormControl<NdwuSize>(SIZE.L, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.L, {nonNullable: true}),
     icon: new FormControl<NdwuIconName | null>(null, {nonNullable: true}),
     ariaLabel: new FormControl<string>('', {nonNullable: true}),
     maxWidth: new FormControl<string>('', {nonNullable: true}),
@@ -129,7 +129,7 @@ export class BadgeSandboxComponent extends SandboxBaseComponent {
     return {
       label: 'Badge label',
       tone: 'gray',
-      size: SIZE.L,
+      size: NDWU_SIZE.L,
       icon: null,
       ariaLabel: '',
       maxWidth: '',

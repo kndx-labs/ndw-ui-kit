@@ -1,17 +1,17 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {ICON_NAME, NdwuIconName} from '../../../icon-names';
+import {NDWU_ICON_NAME, NdwuIconName} from '../../../icon-names';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NdwuValues} from '../../../shared.types';
 
-export const NOTIFICATION_VARIANT = {
+export const NDWU_NOTIFICATION_VARIANT = {
   INFO: 'info',
   SUCCESS: 'success',
   WARNING: 'warning',
   ERROR: 'error',
 } as const;
 
-export type NdwuNotificationVariant = NdwuValues<typeof NOTIFICATION_VARIANT>;
+export type NdwuNotificationVariant = NdwuValues<typeof NDWU_NOTIFICATION_VARIANT>;
 
 @Component({
   selector: 'ndwu-notification',
@@ -21,10 +21,10 @@ export type NdwuNotificationVariant = NdwuValues<typeof NOTIFICATION_VARIANT>;
   imports: [NdwuIconComponent, LocalizePipe],
 })
 export class NdwuNotificationComponent {
-  public readonly variant = input<NdwuNotificationVariant>(NOTIFICATION_VARIANT.INFO);
+  public readonly variant = input<NdwuNotificationVariant>(NDWU_NOTIFICATION_VARIANT.INFO);
   public readonly message = input<string>('');
 
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   protected readonly hostClasses = computed(() => {
     return [
@@ -35,15 +35,15 @@ export class NdwuNotificationComponent {
 
   protected readonly variantIcon = computed<NdwuIconName>(() => {
     switch (this.variant()) {
-      case NOTIFICATION_VARIANT.SUCCESS:
-        return ICON_NAME.SUCCESS_S;
-      case NOTIFICATION_VARIANT.WARNING:
-        return ICON_NAME.WARNING_S;
-      case NOTIFICATION_VARIANT.ERROR:
-        return ICON_NAME.ERROR_S;
-      case NOTIFICATION_VARIANT.INFO:
+      case NDWU_NOTIFICATION_VARIANT.SUCCESS:
+        return NDWU_ICON_NAME.SUCCESS_S;
+      case NDWU_NOTIFICATION_VARIANT.WARNING:
+        return NDWU_ICON_NAME.WARNING_S;
+      case NDWU_NOTIFICATION_VARIANT.ERROR:
+        return NDWU_ICON_NAME.ERROR_S;
+      case NDWU_NOTIFICATION_VARIANT.INFO:
       default:
-        return ICON_NAME.INFO_S;
+        return NDWU_ICON_NAME.INFO_S;
     }
   });
 }

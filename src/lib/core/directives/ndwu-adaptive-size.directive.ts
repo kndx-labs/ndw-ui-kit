@@ -1,8 +1,8 @@
 import {Directive, computed, input} from '@angular/core';
 import {NdwuSizeFlags, resolveSizeFlags} from '@ndw-ui-kit/core/utils';
-import {NdwuSize, SIZE} from '../../shared.types';
+import {NDWU_SIZE, NdwuSize} from '../../shared.types';
 
-const SIZE_PRIORITY: readonly NdwuSize[] = [SIZE.XXL, SIZE.XL, SIZE.L, SIZE.S];
+const SIZE_PRIORITY: readonly NdwuSize[] = [NDWU_SIZE.XXL, NDWU_SIZE.XL, NDWU_SIZE.L, NDWU_SIZE.S];
 
 @Directive({
   selector: '[ndwuAdaptiveSize]',

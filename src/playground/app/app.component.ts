@@ -4,7 +4,7 @@ import {NavigationEnd, Router, RouterModule} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {filter} from 'rxjs';
-import {ICON_NAME, NdwuIconComponent, NdwuModalService, NdwuScrollbarComponent} from '@ndw-ui-kit/core';
+import {NDWU_ICON_NAME, NdwuIconComponent, NdwuModalService, NdwuScrollbarComponent} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {IndexPageComponent, InteractionDebugPanelComponent} from '@app/components';
 import {DebugSettingsDialogComponent} from '@app/components/debug-settings-dialog/debug-settings-dialog.component';
@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
   public readonly currentLang = signal<string>('en');
   public readonly isMobileMenuOpen = signal<boolean>(false);
   public readonly isSidebarCollapsed = signal<boolean>(false);
-  public readonly ICON_NAME = ICON_NAME;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
 
   public readonly selectedComponent = signal<ComponentName | null>(null);
   public readonly selectedExample = signal<ExampleName | null>(null);

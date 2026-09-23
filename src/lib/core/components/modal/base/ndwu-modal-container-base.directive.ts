@@ -2,7 +2,7 @@
 import {DOCUMENT, DestroyRef, Directive, ElementRef, afterNextRender, computed, inject, viewChild} from '@angular/core';
 import {CdkPortalOutlet, ComponentPortal, TemplatePortal} from '@angular/cdk/portal';
 import {InteractivityChecker} from '@angular/cdk/a11y';
-import {ICON_NAME} from '../../../../icon-names';
+import {NDWU_ICON_NAME} from '../../../../icon-names';
 import {NDWU_MODAL_CONFIG, NDWU_MODAL_DATA, NDWU_MODAL_REF} from '../ndwu-modal.tokens';
 import type {NdwuModalButton, NdwuResolvedModalConfig} from '../ndwu-modal.types';
 import type {NdwuModalRef} from '../ndwu-modal-ref';
@@ -11,7 +11,7 @@ import {NDWU_MODAL_SLOT_REGISTRY} from '../ndwu-modal-slot-registry';
 
 @Directive()
 export class NdwuModalContainerBaseDirective {
-  public readonly ICON_NAME = ICON_NAME;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
 
   public readonly modalRef = inject<NdwuModalRef>(NDWU_MODAL_REF);
   public readonly config = inject<NdwuResolvedModalConfig>(NDWU_MODAL_CONFIG);

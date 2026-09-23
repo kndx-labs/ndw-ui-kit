@@ -14,7 +14,7 @@ import {
   signal,
 } from '@angular/core';
 import {deepMerge, uniqueId} from '@ndw-ui-kit/core/utils';
-import {SIZE} from '../../../shared.types';
+import {NDWU_SIZE} from '../../../shared.types';
 import {NdwuAdaptiveSizeDirective, NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
@@ -79,8 +79,8 @@ export class NdwuFileUploadComponent implements OnInit {
     const width = this.resizeSvc.width();
 
     return this.resizeSvc.measured() && width > 0 && width < COMPACT_WIDTH_THRESHOLD
-      ? SIZE.L
-      : SIZE.XL;
+      ? NDWU_SIZE.L
+      : NDWU_SIZE.XL;
   });
 
   private readonly hostRef = inject<ElementRef<HTMLElement>>(ElementRef);

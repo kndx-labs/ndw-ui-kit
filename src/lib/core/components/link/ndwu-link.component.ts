@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {ICON_NAME, NdwuIconName} from '../../../icon-names';
+import {NDWU_ICON_NAME, NdwuIconName} from '../../../icon-names';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 
 @Component({
@@ -27,7 +27,7 @@ export class NdwuLinkComponent {
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly target = input<string | null>(null);
   public readonly rel = input<string | null>(null);
-  public readonly icon = input<NdwuIconName | null>(ICON_NAME.EXTERNAL_LINK_S);
+  public readonly icon = input<NdwuIconName | null>(NDWU_ICON_NAME.EXTERNAL_LINK_S);
   public readonly external = input(false, {transform: booleanAttribute});
 
   protected readonly hostClasses = computed(() => {

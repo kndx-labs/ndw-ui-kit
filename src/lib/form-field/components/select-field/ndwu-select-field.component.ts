@@ -20,8 +20,8 @@ import {
   NdwuStyledGroupHeaderComponent,
   NdwuStyledListboxComponent,
   NdwuStyledOptionComponent,
-  normalizeOptions,
-  resolveOptionsAdapter,
+  ndwuNormalizeOptions,
+  ndwuResolveOptionsAdapter,
 } from '@ndw-ui-kit/core';
 import {LocalizeIfPipe, LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
@@ -90,9 +90,9 @@ export class NdwuSelectFieldComponent<T = NdwuOption> extends SelectFieldBase<st
 
   // == Component-specific ====================================================
   protected readonly normalizedOptions = computed<NdwuOption[]>(() => {
-    return normalizeOptions(
+    return ndwuNormalizeOptions(
       this.options(),
-      resolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
+      ndwuResolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
     );
   });
 

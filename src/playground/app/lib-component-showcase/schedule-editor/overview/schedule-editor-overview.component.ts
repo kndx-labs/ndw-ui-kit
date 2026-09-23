@@ -8,7 +8,7 @@ import {
   type NdwuScheduleAction,
   type NdwuScheduleValue,
   type NdwuWeekDay,
-  scheduleValueToActions,
+  ndwuScheduleValueToActions,
 } from '@ndw-ui-kit/core';
 import {NdwuScheduleEditorFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe, UiKitTranslationService} from '@ndw-ui-kit/core/l10n';
@@ -67,7 +67,7 @@ export class ScheduleEditorOverviewComponent {
   public sundayFirstWeekDays: NdwuWeekDay[] = this.buildWeekDays(SUNDAY_FIRST_WEEK_DAYS);
 
   public get scheduleActions(): NdwuScheduleAction[] {
-    return scheduleValueToActions(this.scheduleValue, this.weekDays);
+    return ndwuScheduleValueToActions(this.scheduleValue, this.weekDays);
   }
 
   constructor() {

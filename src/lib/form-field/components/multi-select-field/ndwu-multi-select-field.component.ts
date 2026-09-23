@@ -23,8 +23,8 @@ import {
   NdwuStyledGroupHeaderComponent,
   NdwuStyledListboxComponent,
   NdwuStyledOptionComponent,
-  normalizeOptions,
-  resolveOptionsAdapter,
+  ndwuNormalizeOptions,
+  ndwuResolveOptionsAdapter,
 } from '@ndw-ui-kit/core';
 import {
   NdwuComboboxDirective,
@@ -107,9 +107,9 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends SelectFieldBa
   });
 
   protected readonly normalizedOptions = computed<NdwuOption[]>(() => {
-    return normalizeOptions(
+    return ndwuNormalizeOptions(
       this.options(),
-      resolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
+      ndwuResolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
     );
   });
 

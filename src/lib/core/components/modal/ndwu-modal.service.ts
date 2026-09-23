@@ -7,10 +7,10 @@ import {filter} from 'rxjs/operators';
 import {HANDSET_BREAKPOINT, applyThemeClass, normalizeClass} from '@ndw-ui-kit/core/utils';
 import {MobileScrollLockStrategy} from '@ndw-ui-kit/core/popover';
 import {
-  DrawerCloseStrategy,
   NDWU_DRAWER_BACKDROP_CLASS,
   NDWU_DRAWER_OVERLAY_DEFAULTS,
   NDWU_DRAWER_PANEL_CLASS,
+  NdwuDrawerCloseStrategy,
   NdwuDrawerContainerComponent,
 } from './drawer';
 import {ImmediateCloseStrategy} from './close-strategy';
@@ -56,7 +56,7 @@ export class NdwuModalService {
   private readonly breakpointObserver = inject(BreakpointObserver);
 
   private readonly immediateCloseStrategy = new ImmediateCloseStrategy();
-  private readonly drawerCloseStrategy = new DrawerCloseStrategy();
+  private readonly drawerCloseStrategy = new NdwuDrawerCloseStrategy();
 
   private readonly openModals = signal<NdwuModalRef[]>([]);
   public readonly openModalCount = computed(() => this.openModals().length);
@@ -259,7 +259,7 @@ export class NdwuModalService {
       });
   }
 
-  private createOverlay(overlayCreationParams: OverlayCreationParams,): OverlayRef {
+  private createOverlay(overlayCreationParams: OverlayCreationParams): OverlayRef {
     const {positionStrategy, backdropClass, panelClass, desktopSize, config, isHandset} = overlayCreationParams;
 
     const overlayConfig: OverlayConfig = {

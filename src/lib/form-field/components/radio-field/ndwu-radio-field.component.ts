@@ -7,8 +7,8 @@ import {
   NdwuRadioButtonComponent,
   NdwuRadioGroupComponent,
   NdwuSizeDirective,
-  normalizeOptions,
-  resolveOptionsAdapter,
+  ndwuNormalizeOptions,
+  ndwuResolveOptionsAdapter,
 } from '@ndw-ui-kit/core';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor} from '../../form-field.utils';
@@ -33,9 +33,9 @@ export class NdwuRadioFieldComponent<T = NdwuOption> extends FormFieldBase<strin
   public readonly optionAdapter = input<NdwuOptionAdapter<T> | undefined>(undefined);
 
   protected readonly normalizedOptions = computed<NdwuOption[]>(() => {
-    return normalizeOptions(
+    return ndwuNormalizeOptions(
       this.options(),
-      resolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
+      ndwuResolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
     );
   });
 

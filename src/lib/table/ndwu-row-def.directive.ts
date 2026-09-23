@@ -25,8 +25,10 @@ export class NdwuRowDefDirective<T> extends CdkRowDef<T> implements OnChanges {
     super.ngOnChanges({});
   }
 
-  // `columns` and `when` are inherited CDK fields read by the table itself, so
-  // the signal values are written through to them. See `ndwu-column-def`.
+  // `columns` and `when` are inherited CDK members read by the table itself, so
+  // the signal values are written through to them. `ngOnChanges` rather than a
+  // once-only hook, because swapping the bound column list, to hide or reorder
+  // columns, must reach the CDK too. See `ndwu-column-def`.
   public override ngOnChanges(): void {
     this.columns = this.ndwuRowDefColumns();
     this.when = this.ndwuRowDefWhen();

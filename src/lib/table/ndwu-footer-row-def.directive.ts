@@ -23,7 +23,9 @@ export class NdwuFooterRowDefDirective extends CdkFooterRowDef implements OnChan
   }
 
   // `columns` and `sticky` are inherited CDK members read by the table itself, so
-  // the signal values are written through to them. See `ndwu-column-def`.
+  // the signal values are written through to them. `ngOnChanges` rather than a
+  // once-only hook, because swapping the bound column list, to hide or reorder
+  // columns, must reach the CDK too. See `ndwu-column-def`.
   public override ngOnChanges(): void {
     this.columns = this.ndwuFooterRowDef();
     this.sticky = this.ndwuFooterRowDefSticky();

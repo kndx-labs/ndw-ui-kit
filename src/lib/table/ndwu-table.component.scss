@@ -112,14 +112,6 @@
   white-space: nowrap;
 }
 
-// Sticky header. Opt in with `class="ndwu-header-row--sticky"` on the header row.
-// Beats the `position: relative` above on specificity, which the resize grip needs.
-.ndwu-header-row--sticky .ndwu-header-cell {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
 .ndwu-cell {
   display: table-cell;
   vertical-align: middle;

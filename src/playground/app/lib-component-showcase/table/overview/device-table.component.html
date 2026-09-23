@@ -222,7 +222,7 @@
     </ng-container>
 
     <!-- 2. Sticky header -->
-    <ndwu-header-row *ndwuHeaderRowDef="displayedColumns" class="ndwu-header-row--sticky" />
+    <ndwu-header-row *ndwuHeaderRowDef="displayedColumns; sticky: true" />
     <ndwu-row
       *ndwuRowDef="let row; columns: displayedColumns"
       [ndwuRowDraggable]="row"

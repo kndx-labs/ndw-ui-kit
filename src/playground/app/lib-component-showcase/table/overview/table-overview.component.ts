@@ -28,6 +28,5 @@ const DEVICES: Device[] = [
 export class TableOverviewComponent {
   protected readonly devices = DEVICES;
 
-  /** The plain table shows every row it has, so the demo keeps the list short. */
   protected readonly basicDevices = DEVICES.slice(0, 5);
 }

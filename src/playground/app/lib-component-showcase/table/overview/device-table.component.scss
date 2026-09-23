@@ -1,5 +1,3 @@
-// Every colour here comes from a theme token, so wrapping this component in
-// `.ndwu-theme-dark` is all that's needed to render the dark variant.
 :host {
   display: block;
 }
@@ -25,8 +23,6 @@
   text-align: right;
   white-space: nowrap;
 
-  // The icon button is `display: flex`, so without this the two buttons stack
-  // as block boxes and push the row past the 48px grid.
   button {
     display: inline-flex;
     vertical-align: middle;
@@ -68,11 +64,9 @@
 }
 
 .no-data-cell {
-  // The empty state brings its own spacing and typography.
   padding: 0;
 }
 
-// Matches the box of the size="L" kit buttons it sits next to.
 .toolbar-search {
   height: 32px;
   padding: 0 12px;
@@ -90,8 +84,6 @@
   }
 }
 
-// Scrolling must live on ndwu-table itself: it sets overflow-x, so it is the
-// nearest scroll container and therefore what the sticky header sticks to.
 ndwu-table.table-scroll {
   max-height: 400px;
   overflow-y: auto;

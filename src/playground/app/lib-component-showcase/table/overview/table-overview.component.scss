@@ -9,12 +9,7 @@
   }
 }
 
-// `.ndwu-theme-dark` remaps the whole gray scale on this element, so the same
-// token names used by the light section resolve to dark values here. Only the
-// section's own surface needs stating; everything inside inherits the theme.
 .dark-example {
-  // Native controls (checkbox, select, scrollbars) are painted by the browser,
-  // not by tokens, so they need telling which scheme they sit in.
   color-scheme: dark;
   padding: 24px;
   border-radius: 8px;

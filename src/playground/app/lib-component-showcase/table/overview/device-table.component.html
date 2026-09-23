@@ -1,4 +1,3 @@
-<!-- 1. Toolbar -->
 <ndwu-table-toolbar size="L">
   <button
     ndwuTableToolbarStart
@@ -15,7 +14,6 @@
     [label]="(loading() ? 'table-showcase.overview.loading-stop' : 'table-showcase.overview.loading-start') | localize"
     (click)="toggleLoading()"
   ></button>
-  <!-- Spec: the text action only applies to the current selection. -->
   <button
     ndwuTableToolbarStart
     ndwu-button
@@ -51,7 +49,6 @@
   ></button>
 </ndwu-table-toolbar>
 
-<!-- 5. Loading skeleton -->
 @if (loading()) {
   <ndwu-table-skeleton
     [rows]="pageSize()"
@@ -60,7 +57,6 @@
     [skeletonTexts]="translationTexts.skeleton"
   />
 } @else {
-  <!-- Main table with 2. sticky header, 3. column resize, 4. row expansion -->
   <ndwu-table
     class="table-scroll"
     [dataSource]="dataSource"
@@ -72,7 +68,6 @@
     (ndwuSortChange)="onSortChange($event)"
   >
 
-    <!-- Select column -->
     <ng-container ndwuColumnDef="select">
       <th ndwuHeaderCell *ndwuHeaderCellDef class="select-cell col-select">
         <ndwu-checkbox
@@ -91,7 +86,6 @@
       </td>
     </ng-container>
 
-    <!-- Toggle column -->
     <ng-container ndwuColumnDef="enabled">
       <th ndwuHeaderCell *ndwuHeaderCellDef class="col-enabled">
         {{ 'table-showcase.overview.columns.enabled' | localize }}
@@ -104,7 +98,6 @@
       </td>
     </ng-container>
 
-    <!-- Name column (sortable, resizable, pinnable) -->
     <ng-container ndwuColumnDef="name" [sticky]="namePinned()">
       <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="name" ndwuColumnResize class="col-name" [resizeTexts]="translationTexts.columnResize">
         {{ 'table-showcase.overview.columns.name' | localize }}
@@ -130,7 +123,6 @@
       </td>
     </ng-container>
 
-    <!-- Band column (sortable) -->
     <ng-container ndwuColumnDef="band">
       <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="band" class="col-band">
         {{ 'table-showcase.overview.columns.band' | localize }}
@@ -140,7 +132,6 @@
       </td>
     </ng-container>
 
-    <!-- IP column -->
     <ng-container ndwuColumnDef="ip">
       <th ndwuHeaderCell *ndwuHeaderCellDef class="col-ip">
         {{ 'table-showcase.overview.columns.ip' | localize }}
@@ -148,7 +139,6 @@
       <td ndwuCell *ndwuCellDef="let row">{{ row.ip }}</td>
     </ng-container>
 
-    <!-- Status column (sortable) -->
     <ng-container ndwuColumnDef="status">
       <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="status" class="col-status">
         {{ 'table-showcase.overview.columns.status' | localize }}
@@ -159,7 +149,6 @@
       </td>
     </ng-container>
 
-    <!-- Actions column: spec pairs a context menu with a direct delete. -->
     <ng-container ndwuColumnDef="actions">
       <th ndwuHeaderCell *ndwuHeaderCellDef class="col-actions"></th>
       <td ndwuCell *ndwuCellDef="let row" class="actions-cell">
@@ -180,7 +169,6 @@
       </td>
     </ng-container>
 
-    <!-- 4. Expandable detail column -->
     <ng-container ndwuColumnDef="expandedDetail">
       <td ndwuCell *ndwuCellDef="let row" [attr.colspan]="displayedColumns.length" class="detail-cell">
         <div class="detail-content">
@@ -198,13 +186,11 @@
       </td>
     </ng-container>
 
-    <!-- 2. Sticky header -->
     <ndwu-header-row *ndwuHeaderRowDef="displayedColumns; sticky: true" />
     <ndwu-row
       *ndwuRowDef="let row; columns: displayedColumns"
       [class.ndwu-row--selected]="isSelected(row)"
     />
-    <!-- Detail row, always rendered and revealed by class (the CDK pattern) -->
     <ndwu-row
       *ndwuRowDef="let row; columns: ['expandedDetail']; when: isDetailRow"
       class="ndwu-row--detail"
@@ -224,7 +210,6 @@
   </ndwu-table>
 }
 
-<!-- Bound two-way to the same data source the table reads, so paging it pages the table. -->
 <ndwu-paginator
   size="L"
   [length]="dataSource.length()"

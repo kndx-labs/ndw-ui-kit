@@ -23,11 +23,6 @@ import type {Device} from './device-table.component';
 
 const BANDS = ['2.4 GHz', '5 GHz'] as const;
 
-/**
- * The plain table: no paginator, so every row stays on screen and a row added
- * at the end is visible straight away. The table scrolls once it outgrows its
- * height limit. It has no sort either, so its rows can be reordered by drag.
- */
 @Component({
   selector: 'app-basic-table',
   templateUrl: './basic-table.component.html',
@@ -62,7 +57,6 @@ export class BasicTableComponent {
     reorder: 'table.rowDragHandle.reorder',
   };
 
-  /** Working copy: add and remove mutate it, and it re-seeds if the host swaps the input. */
   protected readonly rows = signal<readonly Device[]>([]);
 
   protected readonly isEmpty = computed(() => {

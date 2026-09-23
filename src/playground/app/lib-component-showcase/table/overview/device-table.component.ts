@@ -88,7 +88,6 @@ const STATUSES = ['online', 'offline'] as const satisfies readonly Device['statu
 export class DeviceTableComponent {
   protected readonly ICON_NAME = ICON_NAME;
 
-  /** Overrides the library's English defaults with keys from the app dictionary. */
   protected readonly translationTexts: NdwuTableTranslationTexts = {
     paginator: {
       itemsPerPage: 'table.paginator.itemsPerPage',
@@ -113,10 +112,6 @@ export class DeviceTableComponent {
 
   public readonly data = input.required<Device[]>();
 
-  /**
-   * The kit data source owns filtering, sorting and paging; the component only
-   * feeds it rows and binds its state to the sort directive and the paginator.
-   */
   protected readonly dataSource = new NdwuTableDataSource<Device>({
     filterPredicate: (device, filter) => {
       return device.name.toLowerCase().includes(filter)
@@ -125,30 +120,18 @@ export class DeviceTableComponent {
     },
   });
 
-  /** Working copy: add and delete mutate it, and it re-seeds if the host swaps the input. */
   protected readonly rows = this.dataSource.data;
 
   protected readonly displayedColumns = ['select', 'enabled', 'name', 'band', 'ip', 'status', 'actions'];
-  /** Mirrors the .col-* widths so the skeleton and the loaded table line up. */
   protected readonly skeletonWidths = ['48px', '72px', '170px', '88px', '130px', '96px', '88px'];
 
   protected readonly namePinned = signal(false);
 
-  /**
-   * Selection is signal state, not a `SelectionModel`: the header checkbox and
-   * the toolbar counter read it from `computed`s, which only re-run when a
-   * signal they read changes.
-   */
   private readonly selectedIds = signal<ReadonlySet<number>>(new Set());
   protected readonly selectedCount = computed(() => this.selectedIds().size);
   protected readonly loading = signal(false);
   protected readonly expandedRows = signal<Set<number>>(new Set());
-  /** Only rows the user flipped; every other row follows the device's own status. */
   private readonly toggledRows = signal<ReadonlySet<number>>(new Set());
-  /**
-   * Echoes the last toolbar/row action, so the stubs are visible in the demo.
-   * Stored as key plus params, so it re-renders in the new language on switch.
-   */
   protected readonly lastAction = signal<ActionMessage | null>(null);
 
   protected readonly sortState = this.dataSource.sort;
@@ -163,7 +146,6 @@ export class DeviceTableComponent {
     effect(() => this.rows.set(this.data()));
   }
 
-  /** Header checkbox and its indeterminate state cover the current page only. */
   private readonly pageSelectedCount = computed(() => {
     const ids = this.selectedIds();
 
@@ -270,7 +252,6 @@ export class DeviceTableComponent {
     const device = this.randomDevice();
 
     this.rows.update(rows => [...rows, device]);
-    // The row is appended, so the paginated demo jumps to the page holding it.
     this.pageIndex.set(Math.max(0, Math.ceil(this.rows().length / this.pageSize()) - 1));
     this.lastAction.set({key: 'table-showcase.overview.action.added', params: {name: device.name}});
   }
@@ -301,7 +282,6 @@ export class DeviceTableComponent {
       id,
       name: `${pick(NAME_PREFIXES)}-${1000 + Math.floor(Math.random() * 9000)}`,
       band: pick(BANDS),
-      // Keep the host octet clear of the 1-120 range the seed data uses.
       ip: `192.168.1.${121 + Math.floor(Math.random() * 130)}`,
       status: pick(STATUSES),
     };
@@ -310,7 +290,6 @@ export class DeviceTableComponent {
   private removeRows(doomed: readonly Device[]): void {
     const ids = new Set(doomed.map(d => d.id));
 
-    // The data source clamps the page index itself when the data shrinks.
     this.rows.update(rows => rows.filter(d => !ids.has(d.id)));
     this.selectedIds.update(set => new Set([...set].filter(id => !ids.has(id))));
     this.expandedRows.update(set => new Set([...set].filter(id => !ids.has(id))));
@@ -320,7 +299,6 @@ export class DeviceTableComponent {
     this.lastAction.set({key: 'table-showcase.overview.action.settings'});
   }
 
-  /** Demo-only derived detail values; the dictionary supplies the wording around them. */
   protected macFor(device: Device): string {
     return `AA:BB:CC:${device.id.toString().padStart(2, '0')}:DD:EE`;
   }

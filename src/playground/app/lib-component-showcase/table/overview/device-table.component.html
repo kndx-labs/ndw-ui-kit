@@ -248,12 +248,12 @@
   </ndwu-table>
 }
 
+<!-- Bound two-way to the same data source the table reads, so paging it pages the table. -->
 <ndwu-paginator
   size="L"
   [length]="dataSource.length()"
-  [pageSize]="pageSize()"
-  [pageIndex]="pageIndex()"
+  [(pageSize)]="dataSource.pageSize"
+  [(pageIndex)]="dataSource.pageIndex"
   [pageSizeOptions]="[5, 10]"
   [paginatorTexts]="translationTexts.paginator"
-  (page)="onPageChange($event)"
 />

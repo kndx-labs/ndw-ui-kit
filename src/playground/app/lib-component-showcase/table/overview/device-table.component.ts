@@ -16,7 +16,6 @@ import {
   NdwuSortHeaderComponent,
   NdwuSortState,
   NdwuPaginatorComponent,
-  NdwuPageEvent,
   NdwuTableToolbarComponent,
   NdwuColumnResizeDirective,
   NdwuTableSkeletonComponent,
@@ -233,11 +232,6 @@ export class DeviceTableComponent {
   protected onSortChange(state: NdwuSortState): void {
     this.sortState.set(state);
     this.pageIndex.set(0);
-  }
-
-  protected onPageChange(event: NdwuPageEvent): void {
-    this.pageIndex.set(event.pageIndex);
-    this.pageSize.set(event.pageSize);
   }
 
   protected toggleExpand(id: number): void {

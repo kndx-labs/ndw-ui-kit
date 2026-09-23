@@ -8,7 +8,6 @@ const DEFAULT_ROW_DRAG_HANDLE_TEXTS = {
   reorder: 'Reorder row',
 };
 
-/** The grip in the leading cell; dragging starts here, not anywhere on the row. */
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'button[ndwuRowDragHandle]',

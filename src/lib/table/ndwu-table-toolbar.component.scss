@@ -9,13 +9,9 @@
   align-items: center;
   box-sizing: border-box;
   min-height: tokens.$row-height;
-
-  // The toolbar has no container chrome of its own, so the table below it
-  // stays a single rounded surface.
   padding: spacing.$spacing-12 0;
 }
 
-// The toolbar holds host controls, so size only scales the space around them.
 :host(.ndwu-table-toolbar--S) {
   gap: spacing.$spacing-8;
   padding: spacing.$spacing-4 0;

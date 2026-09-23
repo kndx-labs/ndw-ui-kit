@@ -12,8 +12,6 @@
   align-items: center;
 }
 
-// The cell is not the sort target, the button is, so it carries the reset,
-// the pointer affordance and the focus ring.
 .ndwu-sort-header__button {
   display: inline-flex;
   gap: spacing.$spacing-4;
@@ -37,7 +35,6 @@
   }
 }
 
-// The icon paints with `currentColor`, so colour and dimming are set here.
 .ndwu-sort-header__indicator {
   color: var(--ndwu-table-header-color);
   opacity: 0.4;

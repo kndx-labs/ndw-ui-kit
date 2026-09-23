@@ -17,8 +17,8 @@ const DEFAULT_COLUMN_PIN_TEXTS = {
 };
 
 /**
- * Pin toggle for a column header. It only reports intent: the host binds the
- * column def's `sticky`, which is what actually freezes the column.
+ * Only reports intent: the host binds the column def's `sticky`, which is what
+ * actually freezes the column.
  */
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

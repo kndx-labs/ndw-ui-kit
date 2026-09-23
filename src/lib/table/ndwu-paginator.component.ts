@@ -69,8 +69,6 @@ export class NdwuPaginatorComponent {
   public readonly length = input(0);
   public readonly paginatorTexts = input<NdwuTableTranslationTexts['paginator']>();
 
-  // Paging is driven from inside the component as well as from the host, so
-  // these are models rather than plain inputs.
   public readonly pageIndex = model(0);
   public readonly pageSize = model(10);
 
@@ -86,7 +84,6 @@ export class NdwuPaginatorComponent {
   public readonly hasPrevious = computed(() => this.currentPage() > 0);
   public readonly hasNext = computed(() => this.currentPage() < this.totalPages() - 1);
 
-  /** The page sizes as kit options, so the picker is the same dropdown used everywhere else. */
   protected readonly pageSizeOptionList = computed<NdwuOption[]>(() => {
     return this.pageSizeOptions().map(size => ({value: size, label: `${size}`}));
   });
@@ -98,7 +95,6 @@ export class NdwuPaginatorComponent {
     };
   });
 
-  /** Key plus interpolation params, so the host can translate and reorder it. */
   protected readonly rangeLabel = computed<{key: string; params?: Record<string, number>}>(() => {
     const texts = this.effectiveTexts();
     const length = this.length();

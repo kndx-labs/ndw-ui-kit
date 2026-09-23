@@ -16,7 +16,6 @@
     opacity: 0.3;
   }
 
-  // The grip is keyboard-operable, so it needs a visible focus.
   &:focus-visible {
     @include mixins.focus-ring();
 

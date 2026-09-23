@@ -16,14 +16,13 @@ import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
 const MIN_COLUMN_WIDTH = 40;
 
-/** Keyboard step, and the larger step taken while a modifier is held. */
 const KEYBOARD_STEP = 8;
 const KEYBOARD_LARGE_STEP = 40;
 
 /**
- * Adds a resize grip to a header cell. The grip is a component created here
- * rather than declared in a template, because the cell belongs to the host and
- * a sort header may already be the component on that element.
+ * The grip is a component created here rather than declared in a template,
+ * because the cell belongs to the host and a sort header may already be the
+ * component on that element.
  */
 @Directive({
   selector: '[ndwuColumnResize]',
@@ -73,7 +72,6 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
     const startWidth = this.el.nativeElement.offsetWidth;
     const widthAt = (clientX: number): number => Math.max(MIN_COLUMN_WIDTH, startWidth + (clientX - startX));
 
-    // The width the drag has reached, so a release and a cancel report the same value.
     let currentWidth = startWidth;
 
     // Pointer capture routes every move and the release back to the grip, so

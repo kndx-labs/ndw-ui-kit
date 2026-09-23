@@ -12,8 +12,6 @@ export interface NdwuSortState {
   exportAs: 'ndwuSort',
 })
 export class NdwuSortDirective {
-  // Sorting is toggled from the headers, so the state is a model: the host may
-  // seed it and is notified through `ndwuSortChange`.
   public readonly active = model('', {alias: 'ndwuSortActive'});
   public readonly direction = model<NdwuSortDirection>('', {alias: 'ndwuSortDirection'});
 

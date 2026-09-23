@@ -20,8 +20,6 @@
   }
 }
 
-// Keeps text in the accessibility tree while removing it from the layout.
-// Used for icon-only controls that ship a default accessible name.
 @mixin visually-hidden() {
   position: absolute;
   overflow: hidden;

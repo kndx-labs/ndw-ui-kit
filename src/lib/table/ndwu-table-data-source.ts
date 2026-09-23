@@ -53,7 +53,6 @@ export class NdwuTableDataSource<T> extends DataSource<T> {
   public readonly page: Signal<readonly T[]>;
   /** Row count after filtering — what the paginator's `length` expects. */
   public readonly length: Signal<number>;
-  /** `true` while a sort is active, which is when row reordering makes no sense. */
   public readonly isSorted: Signal<boolean>;
 
   private readonly injector: Injector;
@@ -112,9 +111,7 @@ export class NdwuTableDataSource<T> extends DataSource<T> {
     return toObservable(this.page, {injector: this.injector});
   }
 
-  public disconnect(): void {
-    // The signal pipeline has nothing to tear down.
-  }
+  public disconnect(): void {}
 
   /**
    * Replays a row drop on the underlying data. The indices are page-relative,

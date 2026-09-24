@@ -83,11 +83,11 @@ export class NdwuChipComponent {
 
   constructor() {
     afterNextRender(() => {
-      const slotText = Boolean(this.labelSlot().nativeElement.textContent?.trim());
+      const hasLabelText = Boolean(this.labelSlot().nativeElement.textContent?.trim());
 
-      this.hasSlotContent.set(slotText);
+      this.hasSlotContent.set(hasLabelText);
 
-      if (isDevMode() && !slotText && !this.ariaLabel()) {
+      if (isDevMode() && !hasLabelText && !this.ariaLabel()) {
         console.warn(
           '[ndwu-chip] An icon-only chip has no accessible name. Provide [ariaLabel] with a descriptive name.',
         );

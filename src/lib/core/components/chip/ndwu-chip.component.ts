@@ -12,12 +12,13 @@ import {
   viewChild,
 } from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {SIZE, type Size, type Values} from '../../../shared.types';
+import {SIZE, type Values} from '../../../shared.types';
 import {IconName} from '../../../icon-names';
 import {NdwuSizeDirective} from '../../directives';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NdwuSpokesLoaderComponent} from '../spokes-loader/ndwu-spokes-loader.component';
+import {toChipSize} from './ndwu-chip.helpers';
 
 export const CHIP_STATUS = {
   DEFAULT: 'default',
@@ -27,17 +28,10 @@ export const CHIP_STATUS = {
 
 export type NdwuChipStatus = Values<typeof CHIP_STATUS>;
 
-/** Chip renders at two sizes only; every other inherited size collapses to one of them. */
-type ChipSize = Extract<Size, 'L' | 'XL'>;
-
 const LOADER_PARAMS = {
   [SIZE.L]: {size: 17, spokeWidth: 1.54, spokeHeight: 4.04, spokeOffset: 0.5},
   [SIZE.XL]: {size: 20, spokeWidth: 1.6, spokeHeight: 4.6, spokeOffset: 0.5},
 } as const;
-
-function toChipSize(size: Size): ChipSize {
-  return size === SIZE.XL || size === SIZE.XXL ? SIZE.XL : SIZE.L;
-}
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

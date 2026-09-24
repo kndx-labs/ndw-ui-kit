@@ -2,7 +2,7 @@
 @use 'styles/padding';
 @use 'styles/radius';
 @use 'styles/typography';
-@use 'styles/touch-target' as touch-target;
+@use 'styles/touch-target';
 
 $statuses: 'default', 'positive', 'negative';
 

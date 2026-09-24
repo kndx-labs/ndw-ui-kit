@@ -1,0 +1,61 @@
+@if (pageSizeOptions().length > 1) {
+  <div class="ndwu-paginator__size">
+    <span class="ndwu-paginator__size-label">{{ effectiveTexts().itemsPerPage | localize }}</span>
+    <ndwu-select-field
+      class="ndwu-paginator__select"
+      [size]="sizeSvc.effectiveSize()"
+      [options]="pageSizeOptionList()"
+      [ngModel]="pageSize()"
+      [ngModelOptions]="{standalone: true}"
+      (ngModelChange)="onPageSizeChange($event)"
+    />
+  </div>
+}
+<div class="ndwu-paginator__range">
+  {{ rangeLabel().key | localize: rangeLabel().params }}
+</div>
+<div class="ndwu-paginator__controls">
+  <button
+    ndwu-icon-button
+    variant="flat"
+    [size]="sizeSvc.effectiveSize()"
+    [icon]="ICON_NAME.FIRST_S"
+    [disabled]="!hasPrevious()"
+    [attr.aria-label]="effectiveTexts().firstPage | localize"
+    (click)="firstPage()"
+  >
+  </button>
+
+  <button
+    ndwu-icon-button
+    variant="flat"
+    [size]="sizeSvc.effectiveSize()"
+    [icon]="ICON_NAME.CHEVRON_LEFT_S"
+    [disabled]="!hasPrevious()"
+    [attr.aria-label]="effectiveTexts().previousPage | localize"
+    (click)="previousPage()"
+  >
+  </button>
+
+  <button
+    ndwu-icon-button
+    variant="flat"
+    [size]="sizeSvc.effectiveSize()"
+    [icon]="ICON_NAME.CHEVRON_RIGHT_S"
+    [disabled]="!hasNext()"
+    [attr.aria-label]="effectiveTexts().nextPage | localize"
+    (click)="nextPage()"
+  >
+  </button>
+
+  <button
+    ndwu-icon-button
+    variant="flat"
+    [size]="sizeSvc.effectiveSize()"
+    [icon]="ICON_NAME.LAST_S"
+    [disabled]="!hasNext()"
+    [attr.aria-label]="effectiveTexts().lastPage | localize"
+    (click)="lastPage()"
+  >
+  </button>
+</div>

@@ -1,0 +1,218 @@
+<ndwu-table-toolbar size="L">
+  <button
+    ndwuTableToolbarStart
+    ndwu-button
+    variant="primary"
+    icon="add_S"
+    [label]="'table-showcase.overview.add' | localize"
+    (click)="onAdd()"
+  ></button>
+  <button
+    ndwuTableToolbarStart
+    ndwu-button
+    variant="secondary"
+    [label]="(loading() ? 'table-showcase.overview.loading-stop' : 'table-showcase.overview.loading-start') | localize"
+    (click)="toggleLoading()"
+  ></button>
+  <button
+    ndwuTableToolbarStart
+    ndwu-button
+    variant="ghost"
+    [label]="'table-showcase.overview.delete-selected' | localize"
+    [disabled]="selectedCount() === 0"
+    (click)="onDeleteSelected()"
+  ></button>
+  <input
+    ndwuTableToolbarStart
+    class="toolbar-search"
+    type="text"
+    [attr.aria-label]="'table-showcase.overview.filter' | localize"
+    [attr.placeholder]="'table-showcase.overview.filter' | localize"
+    (input)="onFilterChange($event)"
+  />
+
+  @if (lastAction(); as action) {
+    <span ndwuTableToolbarEnd class="toolbar-action" role="status">
+      {{ action.key | localize: action.params }}
+    </span>
+  }
+  <span ndwuTableToolbarEnd class="toolbar-count">
+    {{ 'table-showcase.overview.selected-count' | localize: {selected: selectedCount(), total: rows().length} }}
+  </span>
+  <button
+    ndwuTableToolbarEnd
+    ndwu-icon-button
+    icon="settings_S"
+    variant="flat"
+    [attr.aria-label]="'table-showcase.overview.settings' | localize"
+    (click)="onSettings()"
+  ></button>
+</ndwu-table-toolbar>
+
+@if (loading()) {
+  <ndwu-table-skeleton
+    [rows]="pageSize()"
+    [columns]="displayedColumns.length"
+    [columnWidths]="skeletonWidths"
+    [skeletonTexts]="translationTexts.skeleton"
+  />
+} @else {
+  <ndwu-table
+    class="table-scroll"
+    [dataSource]="dataSource"
+    [trackBy]="trackById"
+    [multiTemplateDataRows]="true"
+    [(ndwuSort)]="dataSource.sort"
+    (ndwuSortChange)="pageIndex.set(0)"
+  >
+
+    <ng-container ndwuColumnDef="select">
+      <th ndwuHeaderCell *ndwuHeaderCellDef class="select-cell col-select">
+        <ndwu-checkbox
+          size="L"
+          [checked]="isAllSelected()"
+          [indeterminate]="isIndeterminate()"
+          (checkedChange)="toggleAll()"
+        />
+      </th>
+      <td ndwuCell *ndwuCellDef="let row" class="select-cell">
+        <ndwu-checkbox
+          size="L"
+          [checked]="isSelected(row)"
+          (checkedChange)="toggleRow(row)"
+        />
+      </td>
+    </ng-container>
+
+    <ng-container ndwuColumnDef="enabled">
+      <th ndwuHeaderCell *ndwuHeaderCellDef class="col-enabled">
+        {{ 'table-showcase.overview.columns.enabled' | localize }}
+      </th>
+      <td ndwuCell *ndwuCellDef="let row">
+        <ndwu-toggle
+          [checked]="isEnabled(row)"
+          (checkedChange)="toggleEnabled(row)"
+        />
+      </td>
+    </ng-container>
+
+    <ng-container ndwuColumnDef="name" [sticky]="namePinned()">
+      <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="name" ndwuColumnResize class="col-name" [resizeTexts]="translationTexts.columnResize">
+        {{ 'table-showcase.overview.columns.name' | localize }}
+        <button
+          ndwuColumnPin
+          size="L"
+          [pinned]="namePinned()"
+          (pinnedChange)="namePinned.set($event)"
+          [pinTexts]="translationTexts.columnPin"
+        ></button>
+      </th>
+      <td ndwuCell *ndwuCellDef="let row">
+        <button
+          type="button"
+          class="ndwu-table__expand-icon"
+          [attr.aria-expanded]="isExpanded(row.id)"
+          [attr.aria-label]="(isExpanded(row.id) ? 'table-showcase.overview.collapse' : 'table-showcase.overview.expand') | localize: {name: row.name}"
+          (click)="toggleExpand(row.id)"
+        >
+          <ndwu-icon [name]="isExpanded(row.id) ? ICON_NAME.CHEVRON_DOWN_S : ICON_NAME.CHEVRON_RIGHT_S" />
+        </button>
+        {{ row.name }}
+      </td>
+    </ng-container>
+
+    <ng-container ndwuColumnDef="band">
+      <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="band" class="col-band">
+        {{ 'table-showcase.overview.columns.band' | localize }}
+      </th>
+      <td ndwuCell *ndwuCellDef="let row">
+        <ndwu-badge size="S" tone="gray">{{ row.band }}</ndwu-badge>
+      </td>
+    </ng-container>
+
+    <ng-container ndwuColumnDef="ip">
+      <th ndwuHeaderCell *ndwuHeaderCellDef class="col-ip">
+        {{ 'table-showcase.overview.columns.ip' | localize }}
+      </th>
+      <td ndwuCell *ndwuCellDef="let row">{{ row.ip }}</td>
+    </ng-container>
+
+    <ng-container ndwuColumnDef="status">
+      <th ndwuHeaderCell *ndwuHeaderCellDef ndwuSortHeader="status" class="col-status">
+        {{ 'table-showcase.overview.columns.status' | localize }}
+      </th>
+      <td ndwuCell *ndwuCellDef="let row">
+        <span class="status-dot" [class.online]="row.status === 'online'" [class.offline]="row.status === 'offline'"></span>
+        {{ 'table-showcase.overview.status.' + row.status | localize }}
+      </td>
+    </ng-container>
+
+    <ng-container ndwuColumnDef="actions">
+      <th ndwuHeaderCell *ndwuHeaderCellDef class="col-actions"></th>
+      <td ndwuCell *ndwuCellDef="let row" class="actions-cell">
+        <button
+          ndwu-icon-button
+          icon="menu_kebab_S"
+          variant="flat"
+          [attr.aria-label]="'table-showcase.overview.row-menu' | localize: {name: row.name}"
+          (click)="onRowMenu(row)"
+        ></button>
+        <button
+          ndwu-icon-button
+          icon="trash_S"
+          variant="flat"
+          [attr.aria-label]="'table-showcase.overview.delete-row' | localize: {name: row.name}"
+          (click)="onDelete(row)"
+        ></button>
+      </td>
+    </ng-container>
+
+    <ng-container ndwuColumnDef="expandedDetail">
+      <td ndwuCell *ndwuCellDef="let row" [attr.colspan]="displayedColumns.length" class="detail-cell">
+        <div class="detail-content">
+          <strong>{{ row.name }}</strong> —
+          {{
+            'table-showcase.overview.detail' | localize: {
+              mac: macFor(row),
+              signal: row.status === 'online'
+                ? ('table-showcase.overview.detail-signal' | localize: {dbm: dbmFor(row)})
+                : ('table-showcase.overview.detail-signal-na' | localize),
+              seen: (row.status === 'online' ? 'table-showcase.overview.seen-now' : 'table-showcase.overview.seen-ago') | localize
+            }
+          }}
+        </div>
+      </td>
+    </ng-container>
+
+    <ndwu-header-row *ndwuHeaderRowDef="displayedColumns; sticky: true" />
+    <ndwu-row
+      *ndwuRowDef="let row; columns: displayedColumns"
+      [class.ndwu-row--selected]="isSelected(row)"
+    />
+    <ndwu-row
+      *ndwuRowDef="let row; columns: ['expandedDetail']; when: isDetailRow"
+      class="ndwu-row--detail"
+      [class.detail-hidden]="!isExpanded(row.id)"
+    />
+
+    <ng-template ndwuNoDataRow>
+      <td class="no-data-cell" [attr.colspan]="displayedColumns.length">
+        <ndwu-empty-state
+          size="L"
+          pictogram="pictogram_empty"
+          [header]="'table-showcase.overview.no-data' | localize"
+          [description]="'table-showcase.overview.no-data-hint' | localize"
+        />
+      </td>
+    </ng-template>
+  </ndwu-table>
+}
+
+<ndwu-paginator
+  size="L"
+  [length]="dataSource.length()"
+  [(pageSize)]="dataSource.pageSize"
+  [(pageIndex)]="dataSource.pageIndex"
+  [pageSizeOptions]="[5, 10]"
+  [paginatorTexts]="translationTexts.paginator"
+/>

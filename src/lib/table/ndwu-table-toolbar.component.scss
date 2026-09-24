@@ -1,0 +1,44 @@
+@use 'styles/spacing' as spacing;
+@use './ndwu-table.tokens' as tokens;
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing.$spacing-12;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: tokens.$row-height;
+  padding: spacing.$spacing-12 0;
+}
+
+:host(.ndwu-table-toolbar--S) {
+  gap: spacing.$spacing-8;
+  padding: spacing.$spacing-4 0;
+}
+
+:host(.ndwu-table-toolbar--L) {
+  gap: spacing.$spacing-8;
+  padding: spacing.$spacing-8 0;
+}
+
+:host(.ndwu-table-toolbar--XXL) {
+  gap: spacing.$spacing-16;
+  padding: spacing.$spacing-16 0;
+}
+
+.ndwu-table-toolbar__start {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: spacing.$spacing-8;
+  align-items: center;
+  min-width: 0;
+}
+
+.ndwu-table-toolbar__end {
+  display: flex;
+  flex-shrink: 0;
+  gap: spacing.$spacing-8;
+  align-items: center;
+}

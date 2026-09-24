@@ -1,0 +1,18 @@
+<section class="table-overview">
+  <h3>{{ 'table-showcase.overview.title' | localize }}</h3>
+  <app-device-table [data]="devices" />
+</section>
+
+<section class="table-overview">
+  <h3>{{ 'table-showcase.overview.basic-title' | localize }}</h3>
+  <p>{{ 'table-showcase.overview.basic-hint' | localize }}</p>
+  <app-basic-table [data]="basicDevices" />
+</section>
+
+<section class="table-overview">
+  <h3>{{ 'table-showcase.overview.dark-title' | localize }}</h3>
+
+  <div class="dark-example ndwu-theme-dark">
+    <app-device-table [data]="devices" />
+  </div>
+</section>

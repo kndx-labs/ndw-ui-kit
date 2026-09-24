@@ -1,0 +1,14 @@
+<ng-content select="caption" />
+<ng-content select="colgroup, col" />
+<table>
+  <thead role="rowgroup">
+    <ng-container headerRowOutlet />
+  </thead>
+  <tbody role="rowgroup">
+    <ng-container rowOutlet />
+    <ng-container noDataRowOutlet />
+  </tbody>
+  <tfoot role="rowgroup">
+    <ng-container footerRowOutlet />
+  </tfoot>
+</table>

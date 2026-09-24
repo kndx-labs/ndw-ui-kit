@@ -1,0 +1,75 @@
+{
+  "table": {
+    "paginator": {
+      "itemsPerPage": "Items per page",
+      "range": "{{start}}-{{end}} of {{length}}",
+      "rangeEmpty": "0 of 0",
+      "firstPage": "First page",
+      "previousPage": "Previous page",
+      "nextPage": "Next page",
+      "lastPage": "Last page"
+    },
+    "skeleton": {
+      "loading": "Loading table data"
+    },
+    "columnResize": {
+      "resize": "Resize column"
+    },
+    "columnPin": {
+      "pin": "Pin column",
+      "unpin": "Unpin column"
+    },
+    "rowDragHandle": {
+      "reorder": "Reorder row"
+    }
+  },
+  "table-showcase": {
+    "overview": {
+      "title": "Table with all features",
+      "dark-title": "Table with all features (dark theme)",
+      "add": "Add network",
+      "loading-start": "Simulate loading",
+      "loading-stop": "Stop loading",
+      "delete-selected": "Delete selected",
+      "filter": "Filter networks",
+      "settings": "Column settings",
+      "selected-count": "Selected: {{selected}}/{{total}}",
+      "expand": "Expand details for {{name}}",
+      "collapse": "Collapse details for {{name}}",
+      "row-menu": "More actions for {{name}}",
+      "delete-row": "Delete {{name}}",
+      "no-data": "No networks found.",
+      "no-data-hint": "Try a different filter.",
+      "reorder-row": "Reorder {{name}}",
+      "columns": {
+        "enabled": "Enabled",
+        "name": "Network SSID",
+        "band": "Band",
+        "ip": "IP Address",
+        "status": "Status"
+      },
+      "status": {
+        "online": "online",
+        "offline": "offline"
+      },
+      "detail": "MAC: {{mac}} · Signal: {{signal}} · Last seen: {{seen}}",
+      "detail-signal": "-{{dbm}} dBm",
+      "detail-signal-na": "N/A",
+      "seen-now": "now",
+      "seen-ago": "2h ago",
+      "action": {
+        "added": "Added {{name}}",
+        "deleted": "Deleted {{name}}",
+        "deleted-many": "Deleted {{count}} network(s)",
+        "row-menu": "Row menu: {{name}}",
+        "settings": "Column settings"
+      },
+      "basic-title": "Table without pagination",
+      "basic-hint": "Every row stays on screen, so a row added at the end is visible straight away. With no sort, rows can be reordered by their grip.",
+      "remove": "Remove network"
+    },
+    "tabs": {
+      "overview": "Overview"
+    }
+  }
+}

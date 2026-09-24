@@ -42,7 +42,7 @@ export type NdwuTimerEndReason = 'user' | 'timeout';
     NdwuSpokesLoaderComponent,
   ],
   host: {
-    'attr.type': 'button',
+    'type': 'button',
     '[class]': 'hostClasses()',
     '[disabled]': 'disabled()',
     '[style.--ndwu-timing-button-fill]': 'fillWidth()',

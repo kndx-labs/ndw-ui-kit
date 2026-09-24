@@ -20,6 +20,15 @@
 
 $main-font: roboto, system-ui, monospace;
 
+app-root {
+  display: block;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
 @include mixins.mobile() {
   body {
     margin: 0;

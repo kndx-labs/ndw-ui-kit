@@ -16,6 +16,10 @@
       "name": "Checkbox",
       "description": "Binary choice input for forms and lists."
     },
+    "ndwu-chip": {
+      "name": "Chip",
+      "description": "Compact interactive token with optional leading icon."
+    },
     "ndwu-context-menu": {
       "name": "Context Menu",
       "description": "Menu opened by right-click or trigger button."
@@ -99,6 +103,10 @@
     "ndwu-spokes-loader": {
       "name": "Spokes Loader",
       "description": "Animated loading spinner."
+    },
+    "ndwu-table": {
+      "name": "Table",
+      "description": "Data table with selection, sorting, and pagination."
     },
     "ndwu-tabs": {
       "name": "Tabs",

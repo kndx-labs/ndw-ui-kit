@@ -18,7 +18,7 @@ export type NdwuIconButtonVariant = NdwuValues<typeof NDWU_ICON_BUTTON_VARIANT>;
   templateUrl: './ndwu-icon-button.component.html',
   styleUrl: './ndwu-icon-button.component.scss',
   host: {
-    'attr.type': 'button',
+    'type': 'button',
     '[class]': 'hostClasses()',
     '[disabled]': 'disabled() || null',
   },

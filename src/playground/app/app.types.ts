@@ -26,10 +26,12 @@ export type ComponentName =
   | 'ndwu-badge'
   | 'ndwu-notification'
   | 'ndwu-card'
+  | 'ndwu-chip'
   | 'ndwu-tabs'
   | 'ndwu-pictogram'
   | 'ndwu-empty-state'
-  | 'ndwu-scrollbar';
+  | 'ndwu-scrollbar'
+  | 'ndwu-table';
 
 export interface MenuFlatItem {
   type: 'item';

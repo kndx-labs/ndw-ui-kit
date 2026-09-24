@@ -1,0 +1,23 @@
+<div
+  class="ndwu-table-skeleton__table"
+  aria-busy="true"
+  aria-live="polite"
+  [attr.aria-label]="effectiveTexts().loading | localize"
+>
+  <div class="ndwu-table-skeleton__header">
+    @for (col of cols(); track col) {
+      <div class="ndwu-table-skeleton__header-cell" [style.flex]="flexFor(col)">
+        <div class="ndwu-table-skeleton__bar ndwu-table-skeleton__bar--header"></div>
+      </div>
+    }
+  </div>
+  @for (row of rowList(); track row) {
+    <div class="ndwu-table-skeleton__row">
+      @for (col of cols(); track col) {
+        <div class="ndwu-table-skeleton__cell" [style.flex]="flexFor(col)">
+          <div class="ndwu-table-skeleton__bar" [style.width.%]="barWidth(col)"></div>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -16,6 +16,10 @@
       "name": "Kontrollkästchen",
       "description": "Binäre Auswahl für Formulare und Listen."
     },
+    "ndwu-chip": {
+      "name": "Chip",
+      "description": "Kompaktes interaktives Element mit optionalem führenden Symbol."
+    },
     "ndwu-context-menu": {
       "name": "Kontextmenü",
       "description": "Menü per Rechtsklick oder Auslöser-Schaltfläche."
@@ -99,6 +103,10 @@
     "ndwu-spokes-loader": {
       "name": "Ladeanimation",
       "description": "Animierter Lade-Spinner."
+    },
+    "ndwu-table": {
+      "name": "Tabelle",
+      "description": "Datentabelle mit Auswahl, Sortierung und Paginierung."
     },
     "ndwu-tabs": {
       "name": "Tabs",

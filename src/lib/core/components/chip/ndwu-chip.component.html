@@ -1,0 +1,26 @@
+@if (loading()) {
+  <ndwu-spokes-loader
+    class="ndwu-chip__loader"
+    [size]="loaderParams().size"
+    [spokeWidth]="loaderParams().spokeWidth"
+    [spokeHeight]="loaderParams().spokeHeight"
+    [spokeOffset]="loaderParams().spokeOffset"
+  />
+} @else if (icon()) {
+  <ndwu-icon
+    class="ndwu-chip__icon"
+    name="{{ icon() }}"
+    aria-hidden="true"
+  />
+}
+
+<span
+  #labelSlot
+  class="ndwu-chip__label"
+>
+  @if (label()) {
+    {{ label() | localize }}
+  } @else {
+    <ng-content></ng-content>
+  }
+</span>

@@ -1,0 +1,45 @@
+@use 'styles/spacing' as spacing;
+@use 'styles/radius' as radius;
+@use 'styles/mixins' as mixins;
+
+:host {
+  user-select: none;
+}
+
+.ndwu-sort-header__inner {
+  display: inline-flex;
+  gap: spacing.$spacing-4;
+  align-items: center;
+}
+
+.ndwu-sort-header__button {
+  display: inline-flex;
+  gap: spacing.$spacing-4;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:focus-visible {
+    @include mixins.focus-ring();
+
+    & {
+      border-radius: radius.$radius-S;
+    }
+  }
+}
+
+.ndwu-sort-header__indicator {
+  color: var(--ndwu-table-header-color);
+  opacity: 0.4;
+
+  &--active {
+    color: var(--ndwu-table-cell-color);
+    opacity: 1;
+  }
+}

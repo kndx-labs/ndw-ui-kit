@@ -1,0 +1,16 @@
+<div class="ndwu-sort-header__inner">
+  <button
+    type="button"
+    class="ndwu-sort-header__button"
+    (click)="onSort()"
+  >
+    <span class="ndwu-sort-header__content"><ng-content /></span>
+    <ndwu-icon
+      class="ndwu-sort-header__indicator"
+      [class.ndwu-sort-header__indicator--active]="isActive()"
+      [name]="indicatorIcon()"
+      aria-hidden="true"
+    />
+  </button>
+  <ng-content select="[ndwuColumnPin], [ndwuSortHeaderAction]" />
+</div>

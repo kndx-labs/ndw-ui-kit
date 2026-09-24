@@ -13,6 +13,8 @@
 export const BASE_ICON_NAME = [
   'chevron_down_L',
   'chevron_down_S',
+  'chevron_left_S',
+  'chevron_right_S',
   'chevron_up_S',
   'close_L',
   'close_S',
@@ -23,7 +25,9 @@ export const BASE_ICON_NAME = [
   'eye_off_S',
   'eye_on_S',
   'file_L',
+  'first_S',
   'info_S',
+  'last_S',
   'loading_L',
   'menu_drag_S',
   'pin_S',

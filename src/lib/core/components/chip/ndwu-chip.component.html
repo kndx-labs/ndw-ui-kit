@@ -14,7 +14,10 @@
   />
 }
 
-<span class="ndwu-chip__label" #labelSlot>
+<span
+  #labelSlot
+  class="ndwu-chip__label"
+>
   @if (label()) {
     {{ label() | localize }}
   } @else {

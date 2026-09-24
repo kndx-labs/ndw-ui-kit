@@ -45,8 +45,6 @@ $icon-inset-L: 10px;
       --ndwu-chip-hover-border: var(--ndwu-chip-#{$status}-hover-border);
       --ndwu-chip-active-bg: var(--ndwu-chip-#{$status}-active-bg);
       --ndwu-chip-active-border: var(--ndwu-chip-#{$status}-active-border);
-      --ndwu-chip-focus-bg: var(--ndwu-chip-#{$status}-focus-bg);
-      --ndwu-chip-focus-border: var(--ndwu-chip-#{$status}-focus-border);
       --ndwu-chip-focus-ring: var(--ndwu-chip-#{$status}-focus-ring);
     }
   }
@@ -92,9 +90,7 @@ $icon-inset-L: 10px;
     background-color: var(--ndwu-chip-hover-bg);
   }
 
-  &:focus:not(.ndwu-chip--disabled) {
-    border-color: var(--ndwu-chip-focus-border);
-    background-color: var(--ndwu-chip-focus-bg);
+  &:focus {
     outline: none;
   }
 

@@ -2,7 +2,7 @@
 
 // The positive/negative statuses are chip colours, not the kit's semantic
 // positive/negative states: every status keeps the standard brand focus ring
-// and only the focused border picks up the status colour.
+// and leaves its border untouched while focused.
 $ndwu-chip-tokens: (
   // Foreground (text) — shared by every status
   chip-fg: colors.$gray-80,
@@ -21,8 +21,6 @@ $ndwu-chip-tokens: (
   chip-default-hover-border: colors.$brand-20,
   chip-default-active-bg: colors.$brand-5,
   chip-default-active-border: colors.$brand-50,
-  chip-default-focus-bg: colors.$brand-10,
-  chip-default-focus-border: transparent,
   chip-default-focus-ring: var(--ndwu-fx-focused-default),
 
   // Positive (green)
@@ -33,8 +31,6 @@ $ndwu-chip-tokens: (
   chip-positive-hover-border: colors.$green-20,
   chip-positive-active-bg: colors.$green-5,
   chip-positive-active-border: colors.$green-50,
-  chip-positive-focus-bg: colors.$green-10,
-  chip-positive-focus-border: colors.$green-40,
   chip-positive-focus-ring: var(--ndwu-fx-focused-default),
 
   // Negative (red)
@@ -45,7 +41,5 @@ $ndwu-chip-tokens: (
   chip-negative-hover-border: colors.$red-20,
   chip-negative-active-bg: colors.$red-5,
   chip-negative-active-border: colors.$red-50,
-  chip-negative-focus-bg: colors.$red-10,
-  chip-negative-focus-border: colors.$red-30,
   chip-negative-focus-ring: var(--ndwu-fx-focused-default),
 );

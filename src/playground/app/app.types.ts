@@ -30,7 +30,8 @@ export type ComponentName =
   | 'ndwu-tabs'
   | 'ndwu-pictogram'
   | 'ndwu-empty-state'
-  | 'ndwu-scrollbar';
+  | 'ndwu-scrollbar'
+  | 'ndwu-table';
 
 export interface MenuFlatItem {
   type: 'item';

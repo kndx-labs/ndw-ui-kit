@@ -104,6 +104,10 @@
       "name": "Ladeanimation",
       "description": "Animierter Lade-Spinner."
     },
+    "ndwu-table": {
+      "name": "Tabelle",
+      "description": "Datentabelle mit Auswahl, Sortierung und Paginierung."
+    },
     "ndwu-tabs": {
       "name": "Tabs",
       "description": "Umschaltbare Inhaltsbereiche innerhalb eines Panels."

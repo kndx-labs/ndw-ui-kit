@@ -1,0 +1,39 @@
+@use 'sass:map';
+@use 'styles/colors' as colors;
+
+$row-height: 48px;
+
+$text-line-height: 20px;
+
+$icon-size-S: 20px;
+
+$resize-handle-width: 4px;
+
+$page-size-width: 88px;
+
+$skeleton-bar-height: 12px;
+$skeleton-header-bar-height: 14px;
+
+// Hit area per kit size, matching `ndwu-icon-button`.
+$control-sizes: (
+  'S': 24px,
+  'L': 32px,
+  'XL': 44px,
+  'XXL': 56px,
+);
+
+@mixin control-size($size) {
+  width: map.get($control-sizes, $size);
+  height: map.get($control-sizes, $size);
+}
+
+$ndwu-table-tokens: (
+  table-border-color: colors.$gray-20,
+  table-header-bg: colors.$gray-5,
+  table-header-color: colors.$gray-60,
+  table-cell-bg: colors.$gray-0,
+  table-cell-color: colors.$gray-80,
+  table-row-hover-bg: colors.$gray-10,
+  table-row-selected-bg: colors.$brand-10,
+  table-row-selected-hover-bg: colors.$brand-15,
+);

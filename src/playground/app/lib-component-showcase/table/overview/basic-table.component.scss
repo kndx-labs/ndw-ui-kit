@@ -1,0 +1,15 @@
+$visible-rows: 6;
+$row-height: 48px;
+
+ndwu-table {
+  display: block;
+  overflow-y: auto;
+  max-height: $row-height * ($visible-rows + 1);
+}
+
+.col-drag { width: 40px; }
+
+.drag-cell {
+  padding-right: 0;
+  padding-left: 12px;
+}

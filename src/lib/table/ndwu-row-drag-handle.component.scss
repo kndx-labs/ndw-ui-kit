@@ -1,0 +1,59 @@
+@use 'styles/radius' as radius;
+@use 'styles/mixins' as mixins;
+@use './ndwu-table.tokens' as tokens;
+
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ndwu-table-header-color);
+  cursor: pointer;
+
+  /* stylelint-disable plugin/no-unsupported-browser-features */
+  @supports (cursor: grab) {
+    cursor: grab;
+  }
+  /* stylelint-enable plugin/no-unsupported-browser-features */
+
+  &:hover {
+    color: var(--ndwu-table-cell-color);
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring();
+
+    & {
+      border-radius: radius.$radius-S;
+    }
+  }
+}
+
+:host(.ndwu-row-drag-handle--S) {
+  @include tokens.control-size('S');
+}
+
+:host(.ndwu-row-drag-handle--L) {
+  @include tokens.control-size('L');
+}
+
+:host(.ndwu-row-drag-handle--XL) {
+  @include tokens.control-size('XL');
+}
+
+:host(.ndwu-row-drag-handle--XXL) {
+  @include tokens.control-size('XXL');
+}
+
+:host-context(.cdk-drag-disabled),
+:host-context(.ndwu-row-drag-list.cdk-drop-list-disabled) {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.ndwu-row-drag-handle__label {
+  @include mixins.visually-hidden();
+}

@@ -1,0 +1,17 @@
+.table-overview {
+  padding: 24px;
+
+  h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ndwu-color-gray-80);
+  }
+}
+
+.dark-example {
+  color-scheme: dark;
+  padding: 24px;
+  border-radius: 8px;
+  background-color: var(--ndwu-color-gray-0);
+}

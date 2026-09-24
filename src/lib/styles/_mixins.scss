@@ -19,3 +19,14 @@
     outline: 2px solid Highlight;
   }
 }
+
+@mixin visually-hidden() {
+  position: absolute;
+  overflow: hidden;
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+}

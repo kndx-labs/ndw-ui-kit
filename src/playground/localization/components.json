@@ -104,6 +104,10 @@
       "name": "Spokes Loader",
       "description": "Animated loading spinner."
     },
+    "ndwu-table": {
+      "name": "Table",
+      "description": "Data table with selection, sorting, and pagination."
+    },
     "ndwu-tabs": {
       "name": "Tabs",
       "description": "Switchable content sections within a single panel."

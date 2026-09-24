@@ -30,6 +30,7 @@ import {TabsShowcaseComponent} from './tabs/tabs-showcase.component';
 import {PictogramShowcaseComponent} from './pictogram/pictogram-showcase.component';
 import {EmptyStateShowcaseComponent} from './empty-state/empty-state-showcase.component';
 import {ScrollbarShowcaseComponent} from './scrollbar/scrollbar-showcase.component';
+import {TableShowcaseComponent} from './table/table-showcase.component';
 
 export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-badge': BadgeShowcaseComponent,
@@ -62,4 +63,5 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-pictogram': PictogramShowcaseComponent,
   'ndwu-empty-state': EmptyStateShowcaseComponent,
   'ndwu-scrollbar': ScrollbarShowcaseComponent,
+  'ndwu-table': TableShowcaseComponent,
 };

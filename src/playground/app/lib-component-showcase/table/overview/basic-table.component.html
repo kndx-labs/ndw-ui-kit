@@ -1,0 +1,63 @@
+<ndwu-table-toolbar size="L">
+  <button
+    ndwuTableToolbarStart
+    ndwu-button
+    variant="primary"
+    icon="add_S"
+    [label]="'table-showcase.overview.add' | localize"
+    (click)="onAdd()"
+  ></button>
+  <button
+    ndwuTableToolbarStart
+    ndwu-button
+    variant="secondary"
+    [label]="'table-showcase.overview.remove' | localize"
+    [disabled]="isEmpty()"
+    (click)="onRemove()"
+  ></button>
+</ndwu-table-toolbar>
+
+<ndwu-table
+  [dataSource]="rows()"
+  [trackBy]="trackById"
+  ndwuRowDrag
+  (ndwuRowDrop)="onRowDrop($event)"
+>
+  <ng-container ndwuColumnDef="drag">
+    <th ndwuHeaderCell *ndwuHeaderCellDef class="drag-cell col-drag"></th>
+    <td ndwuCell *ndwuCellDef="let row" class="drag-cell">
+      <button
+        ndwuRowDragHandle
+        size="L"
+        [dragTexts]="dragTexts"
+        [attr.aria-label]="'table-showcase.overview.reorder-row' | localize: {name: row.name}"
+      ></button>
+    </td>
+  </ng-container>
+
+  <ng-container ndwuColumnDef="name">
+    <th ndwuHeaderCell *ndwuHeaderCellDef>
+      {{ 'table-showcase.overview.columns.name' | localize }}
+    </th>
+    <td ndwuCell *ndwuCellDef="let row">{{ row.name }}</td>
+  </ng-container>
+
+  <ng-container ndwuColumnDef="band">
+    <th ndwuHeaderCell *ndwuHeaderCellDef>
+      {{ 'table-showcase.overview.columns.band' | localize }}
+    </th>
+    <td ndwuCell *ndwuCellDef="let row">
+      <ndwu-badge size="S" tone="gray">{{ row.band }}</ndwu-badge>
+    </td>
+  </ng-container>
+
+  <ng-container ndwuColumnDef="ip">
+    <th ndwuHeaderCell *ndwuHeaderCellDef>
+      {{ 'table-showcase.overview.columns.ip' | localize }}
+    </th>
+    <td ndwuCell *ndwuCellDef="let row">{{ row.ip }}</td>
+  </ng-container>
+
+  <ndwu-header-row *ndwuHeaderRowDef="displayedColumns" />
+  <ndwu-row *ndwuRowDef="let row; columns: displayedColumns" [ndwuRowDraggable]="row" />
+</ndwu-table>

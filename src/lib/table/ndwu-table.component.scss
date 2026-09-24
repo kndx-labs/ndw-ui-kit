@@ -1,0 +1,156 @@
+@use 'styles/spacing' as spacing;
+@use 'styles/typography' as typography;
+@use 'styles/radius' as radius;
+@use './ndwu-table.tokens' as tokens;
+@use 'styles/mixins' as mixins;
+
+// Unencapsulated: rows and cells come from the consumer's template.
+
+.ndwu-table {
+  display: block;
+  overflow-x: auto;
+  border-radius: radius.$radius-L;
+
+  table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+}
+
+.ndwu-table__expand-icon {
+  display: inline-flex;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
+  width: tokens.$icon-size-S;
+  height: tokens.$icon-size-S;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ndwu-table-header-color);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ndwu-table-cell-color);
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring();
+
+    & {
+      border-radius: radius.$radius-S;
+    }
+  }
+}
+
+.ndwu-header-row {
+  display: table-row;
+  background-color: var(--ndwu-table-header-bg);
+}
+
+.ndwu-row {
+  display: table-row;
+  background-color: var(--ndwu-table-cell-bg);
+
+  &:hover {
+    background-color: var(--ndwu-table-row-hover-bg);
+  }
+
+  &--selected {
+    background-color: var(--ndwu-table-row-selected-bg);
+
+    &:hover {
+      background-color: var(--ndwu-table-row-selected-hover-bg);
+    }
+  }
+
+  &--expandable {
+    cursor: pointer;
+  }
+
+  &--detail > td {
+    padding: spacing.$spacing-16;
+    border-bottom: 1px solid var(--ndwu-table-border-color);
+    color: var(--ndwu-table-cell-color);
+  }
+}
+
+.ndwu-footer-row {
+  display: table-row;
+}
+
+.ndwu-header-cell {
+  position: relative;
+  display: table-cell;
+  vertical-align: middle;
+  box-sizing: border-box;
+  height: tokens.$row-height;
+
+  // `height`, not padding: padding pushes rows with tall content past 48px.
+  padding: 0 spacing.$spacing-12;
+  border-bottom: 1px solid var(--ndwu-table-border-color);
+
+  // Opaque so rows scrolling under a sticky header stay hidden.
+  background-color: var(--ndwu-table-header-bg);
+  color: var(--ndwu-table-header-color);
+  font-weight: 500;
+  font-size: typography.$fontSize-small;
+  line-height: tokens.$text-line-height;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ndwu-cell {
+  display: table-cell;
+  vertical-align: middle;
+  box-sizing: border-box;
+  height: tokens.$row-height;
+  padding: 0 spacing.$spacing-12;
+  border-bottom: 1px solid var(--ndwu-table-border-color);
+  color: var(--ndwu-table-cell-color);
+  font-size: typography.$fontSize-small;
+  line-height: tokens.$text-line-height;
+}
+
+.ndwu-footer-cell {
+  display: table-cell;
+  padding: spacing.$spacing-12;
+  border-top: 1px solid var(--ndwu-table-border-color);
+}
+
+// `!important`: must beat the cell's own `position`.
+.ndwu-table-sticky {
+  position: sticky !important;
+}
+
+// `inherit`, not a token: the row owns hover and selected colours.
+.ndwu-cell.ndwu-table-sticky,
+.ndwu-header-cell.ndwu-table-sticky {
+  z-index: 2;
+  border-right: 1px solid var(--ndwu-table-border-color);
+  background-color: inherit;
+}
+
+.ndwu-column-resizable {
+  position: relative;
+}
+
+.ndwu-row.cdk-drag-placeholder {
+  opacity: 0.3;
+}
+
+// The preview is cloned outside the table, so it must lay out as one.
+.ndwu-row.cdk-drag-preview {
+  display: table;
+  box-sizing: border-box;
+  border-radius: radius.$radius-S;
+  background-color: var(--ndwu-table-cell-bg);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+}
+
+.ndwu-row.cdk-drag-animating,
+.ndwu-row-drag-list.cdk-drop-list-dragging .ndwu-row:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}

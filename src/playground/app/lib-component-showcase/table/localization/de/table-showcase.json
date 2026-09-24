@@ -1,0 +1,75 @@
+{
+  "table": {
+    "paginator": {
+      "itemsPerPage": "Einträge pro Seite",
+      "range": "{{start}}-{{end}} von {{length}}",
+      "rangeEmpty": "0 von 0",
+      "firstPage": "Erste Seite",
+      "previousPage": "Vorherige Seite",
+      "nextPage": "Nächste Seite",
+      "lastPage": "Letzte Seite"
+    },
+    "skeleton": {
+      "loading": "Tabellendaten werden geladen"
+    },
+    "columnResize": {
+      "resize": "Spaltenbreite ändern"
+    },
+    "columnPin": {
+      "pin": "Spalte anheften",
+      "unpin": "Spalte lösen"
+    },
+    "rowDragHandle": {
+      "reorder": "Zeile verschieben"
+    }
+  },
+  "table-showcase": {
+    "overview": {
+      "title": "Tabelle mit allen Funktionen",
+      "dark-title": "Tabelle mit allen Funktionen (dunkles Theme)",
+      "add": "Netzwerk hinzufügen",
+      "loading-start": "Laden simulieren",
+      "loading-stop": "Laden stoppen",
+      "delete-selected": "Auswahl löschen",
+      "filter": "Netzwerke filtern",
+      "settings": "Spalteneinstellungen",
+      "selected-count": "Ausgewählt: {{selected}}/{{total}}",
+      "expand": "Details für {{name}} einblenden",
+      "collapse": "Details für {{name}} ausblenden",
+      "row-menu": "Weitere Aktionen für {{name}}",
+      "delete-row": "{{name}} löschen",
+      "no-data": "Keine Netzwerke gefunden.",
+      "no-data-hint": "Versuchen Sie einen anderen Filter.",
+      "reorder-row": "{{name}} verschieben",
+      "columns": {
+        "enabled": "Aktiviert",
+        "name": "Netzwerk-SSID",
+        "band": "Band",
+        "ip": "IP-Adresse",
+        "status": "Status"
+      },
+      "status": {
+        "online": "online",
+        "offline": "offline"
+      },
+      "detail": "MAC: {{mac}} · Signal: {{signal}} · Zuletzt gesehen: {{seen}}",
+      "detail-signal": "-{{dbm}} dBm",
+      "detail-signal-na": "N/V",
+      "seen-now": "jetzt",
+      "seen-ago": "vor 2 Std.",
+      "action": {
+        "added": "{{name}} hinzugefügt",
+        "deleted": "{{name}} gelöscht",
+        "deleted-many": "{{count}} Netzwerk(e) gelöscht",
+        "row-menu": "Zeilenmenü: {{name}}",
+        "settings": "Spalteneinstellungen"
+      },
+      "basic-title": "Tabelle ohne Paginierung",
+      "basic-hint": "Alle Zeilen bleiben sichtbar, eine am Ende hinzugefügte Zeile ist also sofort zu sehen. Ohne Sortierung lassen sich Zeilen am Griff verschieben.",
+      "remove": "Netzwerk entfernen"
+    },
+    "tabs": {
+      "overview": "Übersicht"
+    }
+  }
+}

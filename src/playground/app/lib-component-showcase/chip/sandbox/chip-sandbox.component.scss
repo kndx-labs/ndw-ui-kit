@@ -1,0 +1,12 @@
+// Sandbox layout and controls: shared in _sandbox.scss (loaded from app root).
+
+button[ndwu-chip] {
+  border-color: var(--ndwu-chip-override-border, var(--ndwu-chip-border)) !important;
+  background-color: var(--ndwu-chip-override-bg, var(--ndwu-chip-bg)) !important;
+  color: var(--ndwu-chip-override-fg, var(--ndwu-chip-fg)) !important;
+
+  .ndwu-chip__icon,
+  .ndwu-chip__loader {
+    color: var(--ndwu-chip-override-accent, var(--ndwu-chip-accent)) !important;
+  }
+}

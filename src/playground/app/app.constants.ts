@@ -26,6 +26,7 @@ export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-drawer',
   'ndwu-badge',
   'ndwu-card',
+  'ndwu-chip',
   'ndwu-tabs',
   'ndwu-pictogram',
   'ndwu-empty-state',
@@ -59,6 +60,7 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-drawer': ['overview'],
   'ndwu-badge': ['overview', 'sandbox'],
   'ndwu-card': ['overview', 'sandbox'],
+  'ndwu-chip': ['overview', 'sandbox'],
   'ndwu-tabs': ['overview', 'sandbox'],
   'ndwu-pictogram': ['overview', 'sandbox'],
   'ndwu-empty-state': ['overview', 'sandbox'],
@@ -83,6 +85,7 @@ export const READY_FOR_REVIEW_COMPONENTS: ComponentName[] = [
   'ndwu-timing-button',
   'ndwu-toggle',
   'ndwu-card',
+  'ndwu-chip',
 ];
 
 export const SHOWCASE_NAMES: Record<string, string> = {
@@ -112,6 +115,7 @@ export const SHOWCASE_NAMES: Record<string, string> = {
   'ndwu-drawer': 'Drawer',
   'ndwu-badge': 'Badge',
   'ndwu-card': 'Card',
+  'ndwu-chip': 'Chip',
   'ndwu-tabs': 'Tabs',
   'ndwu-pictogram': 'Pictogram',
   'ndwu-empty-state': 'Empty State',
@@ -137,6 +141,7 @@ export const MENU_ITEMS: MenuItem[] = [
   },
   {type: 'item', name: 'ndwu-card'},
   {type: 'item', name: 'ndwu-checkbox'},
+  {type: 'item', name: 'ndwu-chip'},
   {
     type: 'group',
     label: 'Modal',

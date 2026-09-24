@@ -16,6 +16,10 @@
       "name": "Checkbox",
       "description": "Binary choice input for forms and lists."
     },
+    "ndwu-chip": {
+      "name": "Chip",
+      "description": "Compact interactive token with optional leading icon."
+    },
     "ndwu-context-menu": {
       "name": "Context Menu",
       "description": "Menu opened by right-click or trigger button."

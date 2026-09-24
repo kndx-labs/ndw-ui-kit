@@ -2,6 +2,7 @@ import type {Type} from '@angular/core';
 import type {ComponentName} from '@app/app.types';
 import {BadgeShowcaseComponent} from './badge/badge-showcase.component';
 import {CardShowcaseComponent} from './card/card-showcase.component';
+import {ChipShowcaseComponent} from './chip/chip-showcase.component';
 import {ButtonShowcaseComponent} from './button/button-showcase.component';
 import {TimingButtonShowcaseComponent} from './timing-button/timing-button-showcase.component';
 import {CheckboxShowcaseComponent} from './checkbox/checkbox-showcase.component';
@@ -56,6 +57,7 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-file-upload': FileUploadShowcaseComponent,
   'ndwu-toggle': ToggleShowcaseComponent,
   'ndwu-card': CardShowcaseComponent,
+  'ndwu-chip': ChipShowcaseComponent,
   'ndwu-tabs': TabsShowcaseComponent,
   'ndwu-pictogram': PictogramShowcaseComponent,
   'ndwu-empty-state': EmptyStateShowcaseComponent,

@@ -1,0 +1,45 @@
+@use 'styles/colors';
+
+// The positive/negative statuses are chip colours, not the kit's semantic
+// positive/negative states: every status keeps the standard brand focus ring
+// and leaves its border untouched while focused.
+$ndwu-chip-tokens: (
+  // Foreground (text) — shared by every status
+  chip-fg: colors.$gray-80,
+
+  // Disabled — shared by every status
+  chip-disabled-bg: colors.$gray-10,
+  chip-disabled-border: colors.$gray-15,
+  chip-disabled-fg: colors.$gray-40,
+  chip-disabled-accent: colors.$gray-40,
+
+  // Default (brand)
+  chip-default-bg: colors.$brand-10,
+  chip-default-border: colors.$brand-15,
+  chip-default-accent: colors.$brand-50,
+  chip-default-hover-bg: colors.$brand-5,
+  chip-default-hover-border: colors.$brand-20,
+  chip-default-active-bg: colors.$brand-5,
+  chip-default-active-border: colors.$brand-50,
+  chip-default-focus-ring: var(--ndwu-fx-focused-default),
+
+  // Positive (green)
+  chip-positive-bg: colors.$green-10,
+  chip-positive-border: colors.$green-15,
+  chip-positive-accent: colors.$green-50,
+  chip-positive-hover-bg: colors.$green-5,
+  chip-positive-hover-border: colors.$green-20,
+  chip-positive-active-bg: colors.$green-5,
+  chip-positive-active-border: colors.$green-50,
+  chip-positive-focus-ring: var(--ndwu-fx-focused-default),
+
+  // Negative (red)
+  chip-negative-bg: colors.$red-10,
+  chip-negative-border: colors.$red-15,
+  chip-negative-accent: colors.$red-50,
+  chip-negative-hover-bg: colors.$red-5,
+  chip-negative-hover-border: colors.$red-20,
+  chip-negative-active-bg: colors.$red-5,
+  chip-negative-active-border: colors.$red-50,
+  chip-negative-focus-ring: var(--ndwu-fx-focused-default),
+);

@@ -14,7 +14,6 @@ import {
   NdwuNoDataRowDirective,
   NdwuSortDirective,
   NdwuSortHeaderComponent,
-  NdwuSortState,
   NdwuPaginatorComponent,
   NdwuTableToolbarComponent,
   NdwuColumnResizeDirective,
@@ -134,7 +133,6 @@ export class DeviceTableComponent {
   private readonly toggledRows = signal<ReadonlySet<number>>(new Set());
   protected readonly lastAction = signal<ActionMessage | null>(null);
 
-  protected readonly sortState = this.dataSource.sort;
   protected readonly pageIndex = this.dataSource.pageIndex;
   protected readonly pageSize = this.dataSource.pageSize;
 
@@ -193,11 +191,6 @@ export class DeviceTableComponent {
 
   protected onFilterChange(event: Event): void {
     this.dataSource.filter.set((event.target as HTMLInputElement).value);
-    this.pageIndex.set(0);
-  }
-
-  protected onSortChange(state: NdwuSortState): void {
-    this.sortState.set(state);
     this.pageIndex.set(0);
   }
 

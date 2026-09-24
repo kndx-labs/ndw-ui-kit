@@ -1,4 +1,4 @@
-import {Directive, model, output} from '@angular/core';
+import {Directive, model} from '@angular/core';
 
 export type NdwuSortDirection = 'asc' | 'desc' | '';
 
@@ -12,26 +12,20 @@ export interface NdwuSortState {
   exportAs: 'ndwuSort',
 })
 export class NdwuSortDirective {
-  public readonly active = model('', {alias: 'ndwuSortActive'});
-  public readonly direction = model<NdwuSortDirection>('', {alias: 'ndwuSortDirection'});
-
-  public readonly ndwuSortChange = output<NdwuSortState>();
+  public readonly state = model<NdwuSortState>({active: '', direction: ''}, {alias: 'ndwuSort'});
 
   public sort(id: string): void {
-    if (this.active() === id) {
-      const next = this.nextDirection(this.direction());
+    const {active, direction} = this.state();
 
-      this.direction.set(next);
+    if (active !== id) {
+      this.state.set({active: id, direction: 'asc'});
 
-      if (next === '') {
-        this.active.set('');
-      }
-    } else {
-      this.active.set(id);
-      this.direction.set('asc');
+      return;
     }
 
-    this.ndwuSortChange.emit({active: this.active(), direction: this.direction()});
+    const next = this.nextDirection(direction);
+
+    this.state.set({active: next === '' ? '' : id, direction: next});
   }
 
   private nextDirection(current: NdwuSortDirection): NdwuSortDirection {

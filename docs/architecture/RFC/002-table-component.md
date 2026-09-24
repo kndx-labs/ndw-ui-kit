@@ -72,7 +72,7 @@ sorting or paging, e.g. on the server.
 
 | Class                         | Selector                    | Role                                                                                                   |
 |-------------------------------|-----------------------------|--------------------------------------------------------------------------------------------------------|
-| `NdwuSortDirective`           | `[ndwuSort]` on the table   | Sort state: `ndwuSortActive`, `ndwuSortDirection` models; cycles `asc → desc → ''`; emits `ndwuSortChange` |
+| `NdwuSortDirective`           | `[ndwuSort]` on the table   | Sort state: one `ndwuSort` model of `NdwuSortState`; cycles `asc → desc → ''`; emits `ndwuSortChange` |
 | `NdwuSortHeaderComponent`     | `th[ndwuSortHeader="id"]`   | Button inside the header cell that calls `sort(id)`; sets `aria-sort`; projects `[ndwuColumnPin]`, `[ndwuSortHeaderAction]` |
 | `NdwuColumnPinComponent`      | `button[ndwuColumnPin]`     | Toggle with `pinned` input and `pinnedChange` output; `aria-pressed`; stops the click from sorting     |
 | `NdwuColumnResizeDirective`   | `th[ndwuColumnResize]`      | Creates the grip in the cell; pointer drag sets the cell width (min 40px); emits `ndwuColumnResized`  |
@@ -101,7 +101,7 @@ missing fields fall back to English.
 
 | Concern          | Reported by                        | Owned by the host as                        | Applied by                         |
 |------------------|------------------------------------|---------------------------------------------|------------------------------------|
-| Sort             | `ndwuSortChange`                   | `dataSource.sort`                           | `NdwuTableDataSource.sorted`       |
+| Sort             | `[(ndwuSort)]`                     | `dataSource.sort`                           | `NdwuTableDataSource.sorted`       |
 | Filter           | host input (e.g. toolbar search)   | `dataSource.filter`                         | `NdwuTableDataSource.filtered`     |
 | Page             | paginator `pageIndex` / `pageSize` | `dataSource.pageIndex` / `pageSize`         | `NdwuTableDataSource.page`         |
 | Pinned column    | `pinnedChange`                     | a signal bound to `[sticky]` on the column  | CDK sticky styler                  |
@@ -128,10 +128,8 @@ The device table in the playground uses every part. Shortened:
     [dataSource]="dataSource"                         /* <- NdwuTableDataSource or a plain array */
     [trackBy]="trackById"
     [multiTemplateDataRows]="true"                    /* <- needed for the detail row */
-    ndwuSort                                          /* <- sort state container */
-    [ndwuSortActive]="dataSource.sort().active"
-    [ndwuSortDirection]="dataSource.sort().direction"
-    (ndwuSortChange)="dataSource.sort.set($event)"
+    [(ndwuSort)]="dataSource.sort"                    /* <- sort state, written back to the data source */
+    (ndwuSortChange)="dataSource.pageIndex.set(0)"    /* <- optional: back to the first page */
   >
     <ng-container ndwuColumnDef="name" [sticky]="namePinned()">  /* <- pin applied here */
       <th ndwuHeaderCell *ndwuHeaderCellDef
@@ -167,6 +165,9 @@ The device table in the playground uses every part. Shortened:
   [(pageIndex)]="dataSource.pageIndex"
 />
 ```
+
+To sort elsewhere, e.g. on the server, bind one way and handle the change:
+`[ndwuSort]="sort()" (ndwuSortChange)="loadPage($event)"`.
 
 Row drag uses a separate table, because it cannot be combined with sort:
 
@@ -205,9 +206,9 @@ NdwuSortHeaderComponent.onSort()
   V
 NdwuSortDirective.sort(id)
   │  same column: asc → desc → '' (cleared); other column: asc
-  │  emits ndwuSortChange({active, direction})
+  │  sets the ndwuSort model, which emits ndwuSortChange({active, direction})
   V
-Host: dataSource.sort.set(state)
+[(ndwuSort)] writes it to dataSource.sort
   │
   V
 NdwuTableDataSource: sorted → page recompute

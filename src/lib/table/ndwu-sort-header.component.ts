@@ -28,10 +28,12 @@ export class NdwuSortHeaderComponent {
   public readonly id = input.required<string>({alias: 'ndwuSortHeader'});
 
   protected readonly isActive = computed(() => {
-    return this.sortState.active() === this.id() && this.sortState.direction() !== '';
+    const {active, direction} = this.sortState.state();
+
+    return active === this.id() && direction !== '';
   });
 
-  protected readonly isDesc = computed(() => this.isActive() && this.sortState.direction() === 'desc');
+  protected readonly isDesc = computed(() => this.isActive() && this.sortState.state().direction === 'desc');
 
   protected readonly indicatorIcon = computed<IconName>(() => {
     return this.isDesc() ? ICON_NAME.SORTING_REVERSE_S : ICON_NAME.SORTING_DEFAULT_S;
@@ -42,7 +44,7 @@ export class NdwuSortHeaderComponent {
       return null;
     }
 
-    return this.sortState.direction() === 'asc' ? 'ascending' : 'descending';
+    return this.sortState.state().direction === 'asc' ? 'ascending' : 'descending';
   });
 
   protected onSort(): void {

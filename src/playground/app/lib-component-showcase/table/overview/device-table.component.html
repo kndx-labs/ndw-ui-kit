@@ -62,10 +62,8 @@
     [dataSource]="dataSource"
     [trackBy]="trackById"
     [multiTemplateDataRows]="true"
-    ndwuSort
-    [ndwuSortActive]="sortState().active"
-    [ndwuSortDirection]="sortState().direction"
-    (ndwuSortChange)="onSortChange($event)"
+    [(ndwuSort)]="dataSource.sort"
+    (ndwuSortChange)="pageIndex.set(0)"
   >
 
     <ng-container ndwuColumnDef="select">

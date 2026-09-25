@@ -170,7 +170,7 @@
 
   // ── Focus ring (global) ────────────────────────────────────────────────────────
   .ndwu-toggle__input:focus-visible + .ndwu-toggle__track {
-    box-shadow: 0 0 0 1px white, 0 0 0 3px var(--ndwu-toggle-focus-color);
+    box-shadow: 0 0 0 1px var(--ndwu-toggle-focus-gap-color),0 0 0 3px var(--ndwu-toggle-focus-color);
   }
 
   // CSS variables for label-group component

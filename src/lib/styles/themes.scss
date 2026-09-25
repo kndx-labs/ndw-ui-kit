@@ -99,8 +99,12 @@ $utility-tokens: (
 
 .ndwu-theme-light {
   @include theme-utils.emit-color-vars(light-theme.$light-theme-colors);
+  @include theme-utils.emit-token-groups($component-tokens);
+  @include theme-utils.emit-token-groups($utility-tokens);
 }
 
 .ndwu-theme-dark {
   @include theme-utils.emit-color-vars(dark-theme.$dark-theme-colors);
+  @include theme-utils.emit-token-groups($component-tokens);
+  @include theme-utils.emit-token-groups($utility-tokens);
 }

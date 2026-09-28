@@ -1,0 +1,28 @@
+.validators-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 560px;
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 500;
+    font-size: 0.85rem;
+    font-family: monospace;
+  }
+
+  &__errors {
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--color-gray-10);
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+  }
+}

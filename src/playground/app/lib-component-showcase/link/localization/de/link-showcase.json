@@ -18,6 +18,10 @@
     "state-pressed": "Gedrückt",
     "state-focused": "Fokus",
     "state-visited": "Besucht",
-    "state-disabled": "Deaktiviert"
+    "state-disabled": "Deaktiviert",
+    "router-links": "Router-Links",
+    "router-link-sandbox": "Sandbox-Tab",
+    "router-link-button": "Button-Seite",
+    "router-link-disabled": "Deaktiviert"
   }
 }

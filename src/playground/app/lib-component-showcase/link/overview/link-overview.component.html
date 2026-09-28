@@ -24,5 +24,30 @@
         }
       </div>
     </div>
+
+    <!-- ndwuLink has no router dependency: RouterLink is imported by the consumer and applied to the same <a> -->
+    <div class="state-section">
+      <h4>{{ 'link-showcase.router-links' | localize }}</h4>
+      <div class="states-list">
+        <div class="states-list__row">
+          <span class="states-list__label">{{ 'link-showcase.router-link-sandbox' | localize }}</span>
+          <a ndwuLink routerLink="/component/ndwu-link/sandbox">
+            <code>routerLink="/component/ndwu-link/sandbox"</code>
+          </a>
+        </div>
+        <div class="states-list__row">
+          <span class="states-list__label">{{ 'link-showcase.router-link-button' | localize }}</span>
+          <a ndwuLink [routerLink]="['/component', 'ndwu-button']">
+            <code>[routerLink]="['/component', 'ndwu-button']"</code>
+          </a>
+        </div>
+        <div class="states-list__row">
+          <span class="states-list__label">{{ 'link-showcase.router-link-disabled' | localize }}</span>
+          <a ndwuLink routerLink="/component/ndwu-link/sandbox" disabled>
+            <code>routerLink="/component/ndwu-link/sandbox" disabled</code>
+          </a>
+        </div>
+      </div>
+    </div>
   </ng-template>
 </app-showcase-layout>

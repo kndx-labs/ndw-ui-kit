@@ -18,6 +18,10 @@
     "state-pressed": "Pressed",
     "state-focused": "Focused",
     "state-visited": "Visited",
-    "state-disabled": "Disabled"
+    "state-disabled": "Disabled",
+    "router-links": "Router links",
+    "router-link-sandbox": "Sandbox tab",
+    "router-link-button": "Button page",
+    "router-link-disabled": "Disabled"
   }
 }

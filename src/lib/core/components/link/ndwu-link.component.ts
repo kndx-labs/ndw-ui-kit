@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, input} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import {stopEventImmediately} from '@ndw-ui-kit/core/utils';
 import {ICON_NAME, IconName} from '../../../icon-names';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 
@@ -12,18 +12,14 @@ import {NdwuIconComponent} from '../icon/ndwu-icon.component';
   imports: [NdwuIconComponent],
   host: {
     '[attr.aria-disabled]': 'disabled() || null',
-    '[attr.tabindex]': 'disabled() ? -1 : 0',
-    '[attr.href]': 'href()',
+    '[attr.tabindex]': 'disabled() ? -1 : null',
     '[attr.target]': 'target()',
     '[attr.rel]': 'effectiveRel()',
-    '[routerLink]': 'routerLink()',
     '[class]': 'hostClasses()',
+    '(click)': 'onClick($event)',
   },
-  hostDirectives: [RouterLink],
 })
 export class NdwuLinkComponent {
-  public readonly href = input<string | null>(null);
-  public readonly routerLink = input<unknown | null>(null);
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly target = input<string | null>(null);
   public readonly rel = input<string | null>(null);
@@ -39,6 +35,15 @@ export class NdwuLinkComponent {
 
     return classes.join(' ');
   });
+
+  protected onClick(event: MouseEvent): void {
+    if (!this.disabled()) {
+      return;
+    }
+
+    // Blocks native navigation and listeners added after this one (e.g. RouterLink on the same element)
+    stopEventImmediately(event);
+  }
 
   protected readonly effectiveRel = computed(() => {
     const rel = this.rel();

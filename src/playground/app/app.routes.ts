@@ -1,15 +1,11 @@
 import {Routes} from '@angular/router';
 import {AppComponent} from './app.component';
 import {COMPONENTS_LIST, COMPONENT_TABS, EXAMPLES_LIST, WIDGETS_LIST, WIDGET_TABS} from './app.constants';
+import type {ComponentName, WidgetName} from './app.types';
 
-function buildShowcaseRoutes(
-  prefix: string,
-  names: readonly string[],
-  tabsByName: Record<string, readonly string[]>,
-): Routes {
-  return names.map((name) => {
-    const tabs = tabsByName[name] ?? [];
-    const tabRoutes = tabs.map((tabId) => {
+const componentRoutes: Routes = COMPONENTS_LIST.map(
+  (componentName: ComponentName) => {
+    const tabRoutes = COMPONENT_TABS[componentName].map((tabId) => {
       return {
         path: tabId,
         children: [] as Routes,
@@ -17,10 +13,10 @@ function buildShowcaseRoutes(
     });
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const firstTab = tabs[0]!;
+    const firstTab = COMPONENT_TABS[componentName][0]!;
 
     return {
-      path: `${prefix}/${name}`,
+      path: `component/${componentName}`,
       component: AppComponent,
       children: [
         {
@@ -31,12 +27,48 @@ function buildShowcaseRoutes(
         ...tabRoutes,
       ],
     };
-  });
-}
+  },
+);
 
-function buildFallbackRoute(prefix: string, param: string): Routes[number] {
-  return {
-    path: `${prefix}/:${param}`,
+const widgetRoutes: Routes = WIDGETS_LIST.map(
+  (widgetName: WidgetName) => {
+    const tabRoutes = WIDGET_TABS[widgetName].map((tabId) => {
+      return {
+        path: tabId,
+        children: [] as Routes,
+      };
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const firstTab = WIDGET_TABS[widgetName][0]!;
+
+    return {
+      path: `widget/${widgetName}`,
+      component: AppComponent,
+      children: [
+        {
+          path: '',
+          redirectTo: firstTab,
+          pathMatch: 'full',
+        },
+        ...tabRoutes,
+      ],
+    };
+  },
+);
+
+const exampleRoutes: Routes = EXAMPLES_LIST.map((name) => ({
+  path: `example/${name}`,
+  component: AppComponent,
+  children: [],
+}));
+
+export const routes: Routes = [
+  ...componentRoutes,
+  ...widgetRoutes,
+  ...exampleRoutes,
+  {
+    path: 'component/:componentName',
     component: AppComponent,
     children: [
       {
@@ -49,24 +81,22 @@ function buildFallbackRoute(prefix: string, param: string): Routes[number] {
         children: [],
       },
     ],
-  };
-}
-
-const componentRoutes = buildShowcaseRoutes('component', COMPONENTS_LIST, COMPONENT_TABS);
-const widgetRoutes = buildShowcaseRoutes('widget', WIDGETS_LIST, WIDGET_TABS);
-
-const exampleRoutes: Routes = EXAMPLES_LIST.map((name) => ({
-  path: `example/${name}`,
-  component: AppComponent,
-  children: [],
-}));
-
-export const routes: Routes = [
-  ...componentRoutes,
-  ...widgetRoutes,
-  ...exampleRoutes,
-  buildFallbackRoute('component', 'componentName'),
-  buildFallbackRoute('widget', 'widgetName'),
+  },
+  {
+    path: 'widget/:widgetName',
+    component: AppComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'overview',
+        pathMatch: 'full',
+      },
+      {
+        path: 'overview',
+        children: [],
+      },
+    ],
+  },
   {
     path: '',
     component: AppComponent,

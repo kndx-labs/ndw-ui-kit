@@ -12,7 +12,7 @@ import {
   type NdwuScheduleEditorSizing,
   type NdwuScheduleValue,
   type NdwuWeekDay,
-} from '@ndw-ui-kit/core';
+} from '@ndw-ui-kit/core/widgets';
 import {NdwuScheduleEditorFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 

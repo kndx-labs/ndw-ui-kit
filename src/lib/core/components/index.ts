@@ -40,5 +40,4 @@ export * from './toggle/ndwu-toggle.types';
 export * from './popover/';
 export * from './progress-bar/ndwu-progress-bar.component';
 export * from './tooltip/';
-export * from './schedule-editor/';
 export * from './tabs/';

@@ -381,7 +381,7 @@ module.exports = tseslint.config(
     },
   },
   {
-    files: ['src/lib/core/components/schedule-editor/**/*.ts'],
+    files: ['src/lib/widgets/schedule-editor/**/*.ts'],
     rules: {
       // allowing `x` as a variable name makes sense for code that manipulates 2D coordinates
       'id-blacklist': OFF,

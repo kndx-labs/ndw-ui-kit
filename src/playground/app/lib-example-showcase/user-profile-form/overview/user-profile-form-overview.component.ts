@@ -1,12 +1,7 @@
 import {ChangeDetectionStrategy, Component, ViewEncapsulation, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {
-  NDWU_SIZE,
-  NdwuButtonComponent,
-  NdwuFormContainerComponent,
-  type NdwuOption,
-  type NdwuScheduleValue,
-} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, NdwuButtonComponent, NdwuFormContainerComponent, type NdwuOption} from '@ndw-ui-kit/core';
+import {type NdwuScheduleValue} from '@ndw-ui-kit/core/widgets';
 import {
   NdwuCheckboxFieldComponent,
   NdwuInputFieldComponent,

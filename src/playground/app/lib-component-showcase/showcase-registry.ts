@@ -22,7 +22,6 @@ import {ScheduleEditorShowcaseComponent} from './schedule-editor/schedule-editor
 import {SelectFieldShowcaseComponent} from './select-field/select-field-showcase.component';
 import {SpokesLoaderShowcaseComponent} from './spokes-loader/spokes-loader-showcase.component';
 import {ProgressBarShowcaseComponent} from './progress-bar/progress-bar-showcase.component';
-import {FileUploadShowcaseComponent} from './file-upload/file-upload-showcase.component';
 import {ToggleShowcaseComponent} from './toggle/toggle-showcase.component';
 import {TooltipShowcaseComponent} from './tooltip/tooltip-showcase.component';
 import {PopoverShowcaseComponent} from './popover/popover-showcase.component';
@@ -54,7 +53,6 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-drawer': DrawerShowcaseComponent,
   'ndwu-spokes-loader': SpokesLoaderShowcaseComponent,
   'ndwu-progress-bar': ProgressBarShowcaseComponent,
-  'ndwu-file-upload': FileUploadShowcaseComponent,
   'ndwu-toggle': ToggleShowcaseComponent,
   'ndwu-card': CardShowcaseComponent,
   'ndwu-chip': ChipShowcaseComponent,

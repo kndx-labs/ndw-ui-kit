@@ -1,6 +1,8 @@
 export type ExampleName = 'user-profile-form';
 
-export type WidgetName = 'ndwu-empty-state';
+export type WidgetName =
+  | 'ndwu-empty-state'
+  | 'ndwu-file-upload';
 
 export type ComponentName =
   | 'ndwu-button'
@@ -23,7 +25,6 @@ export type ComponentName =
   | 'ndwu-schedule-editor'
   | 'ndwu-spokes-loader'
   | 'ndwu-progress-bar'
-  | 'ndwu-file-upload'
   | 'ndwu-toggle'
   | 'ndwu-badge'
   | 'ndwu-notification'

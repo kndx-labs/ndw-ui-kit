@@ -4,10 +4,10 @@ import {
   NDWU_PICTOGRAM_NAME,
   NDWU_PICTOGRAM_VARIANTS,
   NdwuButtonComponent,
-  NdwuEmptyStateComponent,
   NdwuPictogramBaseName,
   NdwuPictogramVariant,
 } from '@ndw-ui-kit/core';
+import {NdwuEmptyStateComponent} from '@ndw-ui-kit/core/widgets';
 import {ThemeSwitcherComponent} from '@app/components';
 
 @Component({

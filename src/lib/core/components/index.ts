@@ -24,7 +24,6 @@ export * from './icon/ndwu-adaptive-icon.helpers';
 export * from './pictogram/ndwu-adaptive-pictogram.component';
 export * from './pictogram/ndwu-adaptive-pictogram.helpers';
 export * from './pictogram/ndwu-pictogram.component';
-export * from './empty-state/ndwu-empty-state.component';
 export * from './label-group/ndwu-label-group.component';
 export * from './link/ndwu-link.component';
 export * from './notification/ndwu-notification.component';

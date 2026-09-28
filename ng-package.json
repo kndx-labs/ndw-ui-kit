@@ -4,6 +4,7 @@
     "src/lib/styles/**/*.scss",
     "src/lib/core/**/*.scss",
     "src/lib/form-field/**/*.scss",
+    "src/lib/widgets/**/*.scss",
     "src/lib/assets/**/*"
   ],
   "lib": {

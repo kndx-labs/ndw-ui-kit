@@ -27,11 +27,11 @@ import {
   NdwuBadgeComponent,
   NdwuButtonComponent,
   NdwuCheckboxComponent,
-  NdwuEmptyStateComponent,
   NdwuIconButtonComponent,
   NdwuIconComponent,
   NdwuToggleComponent,
 } from '@ndw-ui-kit/core';
+import {NdwuEmptyStateComponent} from '@ndw-ui-kit/core/widgets';
 
 export interface Device {
   id: number;

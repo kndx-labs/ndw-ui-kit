@@ -18,7 +18,6 @@ import {InputShowcaseComponent} from './input/input-showcase.component';
 import {PasswordInputFieldShowcaseComponent} from './password-input-field/password-input-field-showcase.component';
 import {MultiSelectFieldShowcaseComponent} from './multi-select-field/multi-select-field-showcase.component';
 import {RadioShowcaseComponent} from './radio/radio-showcase.component';
-import {ScheduleEditorShowcaseComponent} from './schedule-editor/schedule-editor-showcase.component';
 import {SelectFieldShowcaseComponent} from './select-field/select-field-showcase.component';
 import {SpokesLoaderShowcaseComponent} from './spokes-loader/spokes-loader-showcase.component';
 import {ProgressBarShowcaseComponent} from './progress-bar/progress-bar-showcase.component';
@@ -43,7 +42,6 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-input': InputShowcaseComponent,
   'ndwu-password-input-field': PasswordInputFieldShowcaseComponent,
   'ndwu-radio': RadioShowcaseComponent,
-  'ndwu-schedule-editor': ScheduleEditorShowcaseComponent,
   'ndwu-select-field': SelectFieldShowcaseComponent,
   'ndwu-multi-select-field': MultiSelectFieldShowcaseComponent,
   'ndwu-context-menu': ContextMenuShowcaseComponent,

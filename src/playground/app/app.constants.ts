@@ -12,7 +12,6 @@ export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-link',
   'ndwu-notification',
   'ndwu-radio',
-  'ndwu-schedule-editor',
   'ndwu-spokes-loader',
   'ndwu-progress-bar',
   'ndwu-toggle',
@@ -45,7 +44,6 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-link': ['overview', 'sandbox'],
   'ndwu-notification': ['overview', 'sandbox'],
   'ndwu-radio': ['overview', 'ng-model', 'cva'],
-  'ndwu-schedule-editor': ['overview', 'cva'],
   'ndwu-spokes-loader': ['sandbox'],
   'ndwu-progress-bar': ['overview', 'sandbox'],
   'ndwu-toggle': ['overview', 'ng-model', 'cva'],
@@ -68,11 +66,13 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
 export const WIDGETS_LIST: WidgetName[] = [
   'ndwu-empty-state',
   'ndwu-file-upload',
+  'ndwu-schedule-editor',
 ];
 
 export const WIDGET_TABS: Record<WidgetName, readonly string[]> = {
   'ndwu-empty-state': ['overview', 'sandbox'],
   'ndwu-file-upload': ['overview'],
+  'ndwu-schedule-editor': ['overview', 'cva'],
 };
 
 export const READY_FOR_REVIEW_COMPONENTS: (ComponentName | WidgetName)[] = [
@@ -176,7 +176,6 @@ export const MENU_ITEMS: MenuItem[] = [
   {type: 'item', name: 'ndwu-progress-bar'},
   {type: 'item', name: 'ndwu-notification'},
   {type: 'item', name: 'ndwu-radio'},
-  {type: 'item', name: 'ndwu-schedule-editor'},
   {type: 'item', name: 'ndwu-spokes-loader'},
   {type: 'item', name: 'ndwu-toggle'},
   {type: 'item', name: 'ndwu-tooltip'},

@@ -1,10 +1,10 @@
-import {Component, ViewEncapsulation, ChangeDetectionStrategy} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
 import {
   CDK_TABLE,
   CdkTable,
   DataRowOutlet,
-  HeaderRowOutlet,
   FooterRowOutlet,
+  HeaderRowOutlet,
   NoDataRowOutlet,
 } from '@angular/cdk/table';
 import {_DisposeViewRepeaterStrategy, _VIEW_REPEATER_STRATEGY} from '@angular/cdk/collections';

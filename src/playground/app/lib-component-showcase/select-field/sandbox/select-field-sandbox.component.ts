@@ -8,10 +8,10 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NDWU_SIZE, type NdwuSize} from '@ndw-ui-kit/core';
-import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {NdwuSelectFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {parseTextareaOptions} from '@app/utils';
 import {STRETCH_WIDTH_VALUE, SandboxToolbarComponent} from '@app/components';
@@ -84,7 +84,7 @@ export class SelectFieldSandboxComponent implements OnInit, AfterViewInit {
     }
 
     if (this.sandboxForm.controls.required.value) {
-      selectCtrl.setValidators(Validators.required);
+      selectCtrl.setValidators(NdwuValidators.required());
     } else {
       selectCtrl.clearValidators();
     }

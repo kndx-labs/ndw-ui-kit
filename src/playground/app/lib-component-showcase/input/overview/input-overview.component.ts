@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   NDWU_ICON_NAME,
   NDWU_SIZE,
@@ -10,9 +10,9 @@ import {
   NdwuInputDirective,
   NdwuSuffixDirective,
 } from '@ndw-ui-kit/core';
-import {NdwuHelperMessageComponent, NdwuInputFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {NdwuHelperMessageComponent, NdwuInputFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
-import {ERROR_KEY, ValidatorFactory} from '@app/validation';
+import {EMAIL_VALIDATOR, ERROR_KEY, VALIDATION_REGEXES} from '@app/validation';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 @Component({
@@ -63,7 +63,7 @@ export class InputOverviewComponent implements OnInit {
   });
 
   public inputRequiredInvalid = new FormGroup({
-    input: new FormControl('invalid@', [Validators.email, Validators.required]),
+    input: new FormControl('invalid@', [EMAIL_VALIDATOR, NdwuValidators.required()]),
   });
 
   public inputPassword = new FormGroup({
@@ -90,7 +90,7 @@ export class InputOverviewComponent implements OnInit {
     input: new FormControl(
       'invalid: ü',
       [
-        ValidatorFactory.regexValidatorConstructor(ERROR_KEY.ASCII_ONLY),
+        NdwuValidators.pattern(VALIDATION_REGEXES[ERROR_KEY.ASCII_ONLY], 'error.ascii-only'),
       ],
     ),
   });

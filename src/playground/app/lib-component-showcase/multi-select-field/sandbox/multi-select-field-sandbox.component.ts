@@ -1,9 +1,13 @@
 import {ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal} from '@angular/core';
 import {CommonModule, JsonPipe} from '@angular/common';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NDWU_ICON_NAME, NDWU_SIZE, NdwuIconComponent, NdwuOption, type NdwuSize} from '@ndw-ui-kit/core';
-import {NdwuMultiSelectDisplayDirective, NdwuMultiSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {
+  NdwuMultiSelectDisplayDirective,
+  NdwuMultiSelectFieldComponent,
+  NdwuValidators,
+} from '@ndw-ui-kit/core/form-field';
 import {ThemeSwitcherComponent} from '@app/components';
 import {parseTextareaOptions} from '@app/utils';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
@@ -76,7 +80,7 @@ export class MultiSelectFieldSandboxComponent implements OnInit {
     }
 
     if (this.sandboxForm.controls.required.value) {
-      selectCtrl.setValidators(Validators.required);
+      selectCtrl.setValidators(NdwuValidators.required());
     } else {
       selectCtrl.clearValidators();
     }

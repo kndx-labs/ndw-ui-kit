@@ -9,12 +9,8 @@ import {
   viewChild,
 } from '@angular/core';
 import {NgControl} from '@angular/forms';
-import {
-  type NdwuFileInputValue,
-  NdwuFileUploadComponent,
-  NdwuSizeDirective,
-  type NdwuTranslationTexts,
-} from '@ndw-ui-kit/core';
+import {NdwuSizeDirective} from '@ndw-ui-kit/core';
+import {type NdwuFileInputValue, NdwuFileUploadComponent, type NdwuTranslationTexts} from '@ndw-ui-kit/core/widgets';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor} from '../../form-field.utils';
 

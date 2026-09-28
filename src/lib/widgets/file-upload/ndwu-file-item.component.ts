@@ -1,13 +1,18 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input, output} from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {formatSize, shortenFileName} from '@ndw-ui-kit/core/utils';
-import {NDWU_ICON_NAME, type NdwuIconName} from '../../../icon-names';
-import {NDWU_SIZE} from '../../../shared.types';
-import {NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
-import {NDWU_SIZE_TOKEN} from '../../tokens';
-import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
-import {NdwuIconComponent} from '../icon/ndwu-icon.component';
-import {NDWU_PROGRESS_BAR_COLOR, NdwuProgressBarComponent} from '../progress-bar/ndwu-progress-bar.component';
+import {
+  NDWU_ICON_NAME,
+  NDWU_PROGRESS_BAR_COLOR,
+  NDWU_SIZE,
+  NDWU_SIZE_TOKEN,
+  NdwuButtonComponent,
+  NdwuIconComponent,
+  type NdwuIconName,
+  NdwuProgressBarComponent,
+  NdwuResizeObserverDirective,
+  NdwuSizeDirective,
+} from '@ndw-ui-kit/core';
 import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 const COMPACT_WIDTH_THRESHOLD = 360;

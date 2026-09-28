@@ -29,23 +29,26 @@
     <div class="state-section">
       <h4>{{ 'link-showcase.router-links' | localize }}</h4>
       <div class="states-list">
-        <div class="states-list__row">
-          <span class="states-list__label">{{ 'link-showcase.router-link-sandbox' | localize }}</span>
-          <a ndwuLink routerLink="/component/ndwu-link/sandbox">
-            <code>routerLink="/component/ndwu-link/sandbox"</code>
-          </a>
+        <div class="states-list__row states-list__row--baseline">
+          <span class="states-list__label">{{ 'link-showcase.router-link-string' | localize }}</span>
+          <div class="states-list__example">
+            <a ndwuLink routerLink="/component/ndwu-link/sandbox">{{ 'link-showcase.router-link-open-sandbox' | localize }}</a>
+            <code class="states-list__class">routerLink="/component/ndwu-link/sandbox"</code>
+          </div>
         </div>
-        <div class="states-list__row">
-          <span class="states-list__label">{{ 'link-showcase.router-link-button' | localize }}</span>
-          <a ndwuLink [routerLink]="['/component', 'ndwu-button']">
-            <code>[routerLink]="['/component', 'ndwu-button']"</code>
-          </a>
+        <div class="states-list__row states-list__row--baseline">
+          <span class="states-list__label">{{ 'link-showcase.router-link-array' | localize }}</span>
+          <div class="states-list__example">
+            <a ndwuLink [routerLink]="['/component', 'ndwu-button']">{{ 'link-showcase.router-link-go-to-button' | localize }}</a>
+            <code class="states-list__class">[routerLink]="['/component', 'ndwu-button']"</code>
+          </div>
         </div>
-        <div class="states-list__row">
+        <div class="states-list__row states-list__row--baseline">
           <span class="states-list__label">{{ 'link-showcase.router-link-disabled' | localize }}</span>
-          <a ndwuLink routerLink="/component/ndwu-link/sandbox" disabled>
-            <code>routerLink="/component/ndwu-link/sandbox" disabled</code>
-          </a>
+          <div class="states-list__example">
+            <a ndwuLink routerLink="/component/ndwu-link/sandbox" disabled>{{ 'link-showcase.router-link-open-sandbox' | localize }}</a>
+            <code class="states-list__class">routerLink="/component/ndwu-link/sandbox" disabled</code>
+          </div>
         </div>
       </div>
     </div>

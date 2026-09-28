@@ -20,8 +20,10 @@
     "state-visited": "Visited",
     "state-disabled": "Disabled",
     "router-links": "Router links",
-    "router-link-sandbox": "Sandbox tab",
-    "router-link-button": "Button page",
-    "router-link-disabled": "Disabled"
+    "router-link-disabled": "Disabled",
+    "router-link-string": "String",
+    "router-link-array": "Array",
+    "router-link-open-sandbox": "Open sandbox",
+    "router-link-go-to-button": "Go to Button"
   }
 }

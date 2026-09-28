@@ -390,7 +390,7 @@ name is used that was not included in the configured set.
 Pictograms are a separate set of ~10 two-colored icons used inside certain `@ndw-ui-kit/core`
 components. Those icons are merged into an additional SVG sprite file (`ndw-ui-kit.pictogram.sprite.svg`)
 that should be included in your app's assets if you use any component that relies
-on pictograms (e.g., `NdwuEmptyStateComponent`).
+on pictograms (e.g., `NdwuEmptyStateComponent` from `@ndw-ui-kit/core/widgets`).
 
 ### Localization
 
@@ -488,6 +488,25 @@ to a wrapping container:
 Tip: inspect component styles (or playground examples) to find the exact token
 names used by a specific component.
 
+### Widgets
+
+Composite components that are built on top of basic ones have a separate
+entry point (`@ndw-ui-kit/core/widgets`), so apps that don't use them
+don't pull them in together with basic components.
+
+| Component              | Description                   |
+|------------------------|-------------------------------|
+| `ndwu-empty-state`     | Empty state with a pictogram  |
+| `ndwu-file-upload`     | File dropzone with file list  |
+| `ndwu-schedule-editor` | Weekly schedule editor canvas |
+
+```typescript
+import {NdwuEmptyStateComponent} from '@ndw-ui-kit/core/widgets';
+```
+
+Their form control wrappers (`ndwu-file-upload-field`, `ndwu-schedule-editor-field`)
+stay in `@ndw-ui-kit/core/form-field`.
+
 ### Form field components (CVA)
 
 The `ndw-ui-kit` provides a number o CVA components for common form controls (checkbox, input, select, etc.).
@@ -495,15 +514,15 @@ These implement Angular's
 [`ControlValueAccessor`](https://angular.dev/api/forms/ControlValueAccessor)
 and have a separate entry point (`@ndw-ui-kit/core/form-field`).
 
-| Component                 | Description            |
-|---------------------------|------------------------|
-| `ndwu-checkbox-field`     | Checkbox (two-state)   |
-| `ndwu-input-field`        | Text/password input    |
-| `ndwu-multi-select-field` | Multi-option select    |
-| `ndwu-radio-field`        | Radio button list      |
-| `ndwu-schedule-editor`    | Weekly schedule editor |
-| `ndwu-select-field`       | Single-option select   |
-| `ndwu-toggle-field`       | Toggle switch          |
+| Component                    | Description            |
+|------------------------------|------------------------|
+| `ndwu-checkbox-field`        | Checkbox (two-state)   |
+| `ndwu-input-field`           | Text/password input    |
+| `ndwu-multi-select-field`    | Multi-option select    |
+| `ndwu-radio-field`           | Radio button list      |
+| `ndwu-schedule-editor-field` | Weekly schedule editor |
+| `ndwu-select-field`          | Single-option select   |
+| `ndwu-toggle-field`          | Toggle switch          |
 
 #### Custom option lists
 

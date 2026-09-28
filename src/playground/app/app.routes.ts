@@ -55,18 +55,6 @@ function buildFallbackRoute(prefix: string, param: string): Routes[number] {
 const componentRoutes = buildShowcaseRoutes('component', COMPONENTS_LIST, COMPONENT_TABS);
 const widgetRoutes = buildShowcaseRoutes('widget', WIDGETS_LIST, WIDGET_TABS);
 
-const legacyWidgetRedirects: Routes = WIDGETS_LIST.flatMap((name) => [
-  {
-    path: `component/${name}`,
-    redirectTo: `widget/${name}`,
-    pathMatch: 'full' as const,
-  },
-  {
-    path: `component/${name}/:tab`,
-    redirectTo: `widget/${name}/:tab`,
-  },
-]);
-
 const exampleRoutes: Routes = EXAMPLES_LIST.map((name) => ({
   path: `example/${name}`,
   component: AppComponent,
@@ -76,7 +64,6 @@ const exampleRoutes: Routes = EXAMPLES_LIST.map((name) => ({
 export const routes: Routes = [
   ...componentRoutes,
   ...widgetRoutes,
-  ...legacyWidgetRedirects,
   ...exampleRoutes,
   buildFallbackRoute('component', 'componentName'),
   buildFallbackRoute('widget', 'widgetName'),

@@ -54,6 +54,25 @@
       }
     </ul>
 
+    <h2>{{ 'app.table' | localize }}</h2>
+    <ul>
+      @for (component of TABLE_MENU_ITEMS; track component) {
+        <li class="nav-item">
+          <button
+            class="nav-button"
+            [class.active]="selectedComponent() === component"
+            (click)="selectComponent(component)"
+            type="button"
+          >
+            <span class="nav-button__label">{{ 'components.' + component + '.name' | localize }}</span>
+            @if (isReadyForReview(component)) {
+              <sup class="nav-badge nav-badge--ready">{{ 'app.ready-for-review' | localize }}</sup>
+            }
+          </button>
+        </li>
+      }
+    </ul>
+
     <h2>{{ 'app.widgets' | localize }}</h2>
     <ul>
       @for (widget of WIDGETS_LIST; track widget) {

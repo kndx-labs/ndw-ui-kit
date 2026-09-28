@@ -137,6 +137,10 @@ export const EXAMPLE_NAMES: Record<ExampleName, string> = {
   'user-profile-form': 'User Profile Form',
 };
 
+export const TABLE_MENU_ITEMS: ComponentName[] = [
+  'ndwu-table',
+];
+
 export const MENU_ITEMS: MenuItem[] = [
   {type: 'item', name: 'ndwu-badge'},
   {
@@ -183,5 +187,4 @@ export const MENU_ITEMS: MenuItem[] = [
   {type: 'item', name: 'ndwu-tabs'},
   {type: 'item', name: 'ndwu-pictogram'},
   {type: 'item', name: 'ndwu-scrollbar'},
-  {type: 'item', name: 'ndwu-table'},
 ];

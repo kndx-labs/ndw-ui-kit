@@ -22,6 +22,7 @@ import {
   MENU_ITEMS,
   READY_FOR_REVIEW_COMPONENTS,
   SHOWCASE_NAMES,
+  TABLE_MENU_ITEMS,
   WIDGETS_LIST,
   WIDGET_TABS,
 } from './app.constants';
@@ -46,6 +47,7 @@ import {
 })
 export class AppComponent implements OnInit {
   public readonly MENU_ITEMS = MENU_ITEMS;
+  public readonly TABLE_MENU_ITEMS = TABLE_MENU_ITEMS;
   public readonly SHOWCASE_NAMES = SHOWCASE_NAMES;
   public readonly COMPONENTS_LIST = COMPONENTS_LIST;
   public readonly WIDGETS_LIST = WIDGETS_LIST;

@@ -5,7 +5,7 @@
   @if (label()) {
     <ndwu-floating-label
       [label]="label()"
-      [required]="required()"
+      [required]="ndwuRequired()"
     />
   }
 
@@ -23,7 +23,7 @@
     [popoverTrapFocus]="isMobileViewport()"
     [attr.id]="id"
     [attr.aria-labelledby]="label() ? formField()?.labelId() : null"
-    [attr.aria-required]="required() ? 'true' : null"
+    [attr.aria-required]="ndwuRequired() ? 'true' : null"
     [attr.aria-invalid]="invalid() ? 'true' : null"
     class="ndwu-multi-select-field__trigger ndwu-form-field__input"
     (focus)="focused.set(true)"

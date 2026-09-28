@@ -65,7 +65,7 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
   public readonly hint = input<string>('');
-  public readonly required = input(false, {transform: booleanAttribute});
+  public readonly ndwuRequired = input(false, {transform: booleanAttribute});
 
   public readonly strength = input<NdwuPasswordStrength | null>(null);
   public readonly strengthHintTexts = input<NdwuPasswordStrengthHintTexts>({});

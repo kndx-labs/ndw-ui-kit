@@ -56,7 +56,7 @@ export class NdwuInputFieldComponent extends FormFieldBase<string> implements On
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
   public readonly hint = input<string>('');
-  public readonly required = input(false, {transform: booleanAttribute});
+  public readonly ndwuRequired = input(false, {transform: booleanAttribute});
   public readonly type = input<'text' | 'password'>('text');
   public readonly readonly = input(false, {transform: booleanAttribute});
 

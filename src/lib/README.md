@@ -392,6 +392,21 @@ components. Those icons are merged into an additional SVG sprite file (`ndw-ui-k
 that should be included in your app's assets if you use any component that relies
 on pictograms (e.g., `NdwuEmptyStateComponent`).
 
+### Router loader
+
+`<ndwu-router-loader>` is an animated two-colored loader. The SVG is inlined, so it needs no sprite asset.
+
+```html
+<ndwu-router-loader />                            <!-- XL, 100×100 (default) -->
+<ndwu-router-loader size="L" />                   <!-- L, 64×64 -->
+<ndwu-router-loader firstColor="#66AC20" secondColor="#D4ECBD" />
+```
+
+- By default, colors come from the `--ndwu-router-loader-first-color` / `--ndwu-router-loader-second-color`
+  tokens and follow the active theme. `firstColor` / `secondColor` override them for a single instance.
+- The accessible name defaults to `Loading` and goes through the `localize` pipe. Use `ariaLabel` to change it.
+- With `prefers-reduced-motion: reduce`, the animation is turned off.
+
 ### Localization
 
 Choose one of the following translation providers:

@@ -33,6 +33,8 @@ export * from './radio/radio-button/ndwu-radio-button.component';
 export * from './radio/radio-group/ndwu-radio-group.component';
 export * from './scrollbar/ndwu-scrollbar.component';
 export * from './scrollbar/ndwu-scrollbar.types';
+export * from './router-loader/ndwu-router-loader.component';
+export * from './router-loader/ndwu-router-loader.types';
 export * from './spokes-loader/ndwu-spokes-loader.component';
 export * from './styled-dropdown/';
 export * from './styled-listbox/';

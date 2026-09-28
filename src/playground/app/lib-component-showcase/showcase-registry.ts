@@ -20,6 +20,7 @@ import {MultiSelectFieldShowcaseComponent} from './multi-select-field/multi-sele
 import {RadioShowcaseComponent} from './radio/radio-showcase.component';
 import {ScheduleEditorShowcaseComponent} from './schedule-editor/schedule-editor-showcase.component';
 import {SelectFieldShowcaseComponent} from './select-field/select-field-showcase.component';
+import {RouterLoaderShowcaseComponent} from './router-loader/router-loader-showcase.component';
 import {SpokesLoaderShowcaseComponent} from './spokes-loader/spokes-loader-showcase.component';
 import {ProgressBarShowcaseComponent} from './progress-bar/progress-bar-showcase.component';
 import {FileUploadShowcaseComponent} from './file-upload/file-upload-showcase.component';
@@ -54,6 +55,7 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-dialog': DialogShowcaseComponent,
   'ndwu-drawer': DrawerShowcaseComponent,
   'ndwu-spokes-loader': SpokesLoaderShowcaseComponent,
+  'ndwu-router-loader': RouterLoaderShowcaseComponent,
   'ndwu-progress-bar': ProgressBarShowcaseComponent,
   'ndwu-file-upload': FileUploadShowcaseComponent,
   'ndwu-toggle': ToggleShowcaseComponent,

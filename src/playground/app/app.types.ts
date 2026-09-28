@@ -20,6 +20,7 @@ export type ComponentName =
   | 'ndwu-drawer'
   | 'ndwu-schedule-editor'
   | 'ndwu-spokes-loader'
+  | 'ndwu-router-loader'
   | 'ndwu-progress-bar'
   | 'ndwu-file-upload'
   | 'ndwu-toggle'

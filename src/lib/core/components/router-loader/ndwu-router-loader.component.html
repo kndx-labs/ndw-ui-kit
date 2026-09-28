@@ -1,0 +1,65 @@
+@let g = geometry();
+
+<svg
+  class="ndwu-router-loader"
+  role="img"
+  fill="none"
+  [attr.width]="g.size"
+  [attr.height]="g.size"
+  [attr.viewBox]="viewBox()"
+  [attr.aria-label]="ariaLabel() | localize"
+  [style]="svgStyle()"
+>
+  <path
+    class="ndwu-router-loader__segment ndwu-router-loader__segment--frame ndwu-router-loader__shadow"
+    pathLength="100"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    [attr.d]="g.shadowPath"
+    [attr.stroke-width]="g.shadowStrokeWidth"
+  />
+
+  <g
+    class="ndwu-router-loader__accent-stroke"
+    stroke-width="2.4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path
+      class="ndwu-router-loader__segment ndwu-router-loader__segment--left"
+      pathLength="100"
+      [attr.d]="g.leftAntennaPath"
+    />
+    <path
+      class="ndwu-router-loader__segment ndwu-router-loader__segment--frame"
+      pathLength="100"
+      [attr.d]="g.framePath"
+    />
+    <path
+      class="ndwu-router-loader__segment ndwu-router-loader__segment--right"
+      pathLength="100"
+      [attr.d]="g.rightAntennaPath"
+    />
+  </g>
+
+  <g [attr.transform]="'translate(' + g.ledsX[1] + ' ' + g.ledsY + ')'">
+    <g class="ndwu-router-loader__halo">
+      <circle
+        class="ndwu-router-loader__accent-stroke"
+        stroke-width="2.4"
+        [attr.r]="g.ledRadius"
+      />
+    </g>
+  </g>
+
+  @for (x of g.ledsX; track $index) {
+    <g [attr.transform]="'translate(' + x + ' ' + g.ledsY + ')'">
+      <g class="ndwu-router-loader__led ndwu-router-loader__led--{{ $index }}">
+        <circle
+          class="ndwu-router-loader__accent-fill"
+          [attr.r]="g.ledRadius"
+        />
+      </g>
+    </g>
+  }
+</svg>

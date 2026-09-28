@@ -612,6 +612,68 @@ and the internal normalized option list (`normalizedOptions`):
 The NDW UI Kit shows validation errors for CVA components (currently
 `ndwu-input-field`). Errors are only displayed after the control is `touched`.
 
+##### Built-in validators
+
+Angular's `Validators` return errors without a message key, so the fields show
+no text for them. Use `NdwuValidators` instead. It validates exactly like
+`Validators` and adds a translation key (`errorLabel`) to each error:
+
+```typescript
+import {NdwuValidators} from '@ndw-ui-kit/core/form-field';
+
+name: new FormControl('', [
+  NdwuValidators.required(),
+  NdwuValidators.minLength(3),
+  NdwuValidators.maxLength(20, 'signup.name-too-long'), // overrides the default key
+]),
+```
+
+Add the default keys to your translations. The error fields are passed as
+placeholders:
+
+| Validator | Default key | Placeholders |
+|---|---|---|
+| `NdwuValidators.required()` | `ndwu.validation.required` | none |
+| `NdwuValidators.requiredTrue()` | `ndwu.validation.required-true` | none |
+| `NdwuValidators.email()` | `ndwu.validation.email` | none |
+| `NdwuValidators.min(min)` | `ndwu.validation.min` | `min`, `actual` |
+| `NdwuValidators.max(max)` | `ndwu.validation.max` | `max`, `actual` |
+| `NdwuValidators.minLength(n)` | `ndwu.validation.min-length` | `requiredLength`, `actualLength` |
+| `NdwuValidators.maxLength(n)` | `ndwu.validation.max-length` | `requiredLength`, `actualLength` |
+| `NdwuValidators.pattern(p)` | `ndwu.validation.pattern` | `requiredPattern`, `actualValue` |
+
+```json
+{
+  "ndwu": {
+    "validation": {
+      "required": "This field is required",
+      "min-length": "Enter at least {{requiredLength}} characters"
+    }
+  }
+}
+```
+
+The keys are also available as constants in `NDWU_VALIDATION_ERROR_LABEL`.
+Angular's error names don't change, so `control.hasError('minlength')` still
+works.
+
+To show the required mark on a field, use the `ndwuRequired` input. Don't
+add Angular's `required`, `email`, `minlength`, `maxlength` or `pattern`
+attributes to ndwu fields. They attach Angular's own validator directives,
+whose errors have no key and replace the `NdwuValidators` errors:
+
+```html
+<ndwu-input-field label="signup.name" formControlName="name" ndwuRequired />
+```
+
+To add a key to any other validator, wrap it:
+
+```typescript
+import {ndwuWrapValidator} from '@ndw-ui-kit/core/form-field';
+
+login: new FormControl('', [ndwuWrapValidator(loginFormatValidator, 'signup.login-format')]),
+```
+
 ##### How it works
 
 A validator returns `ValidatorResult` (either `null` for success or `ErrorResult`):
@@ -648,8 +710,9 @@ export interface NdwuValidationData {
 
 #### Custom validation processor
 
-Override the built-in processor via the `NDWU_VALIDATION_PROCESSOR` token if your
-validators return errors in a different shape (e.g. built-in Angular validators):
+For built-in Angular validators, prefer `NdwuValidators` (see above). Override the
+built-in processor via the `NDWU_VALIDATION_PROCESSOR` token only if your
+validators return errors in a different shape that you can't wrap:
 
 ```typescript
 import {AbstractControl} from '@angular/forms';

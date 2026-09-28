@@ -29,7 +29,7 @@
 }
 
 .ndwu-router-loader__segment {
-  animation-duration: 1.5s;
+  animation-duration: var(--router-loader-duration, 1.5s);
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
@@ -255,7 +255,7 @@
 }
 
 .ndwu-router-loader__led {
-  animation-duration: 1.5s;
+  animation-duration: var(--router-loader-duration, 1.5s);
   animation-timing-function: cubic-bezier(.33, 0, .67, 1);
   animation-iteration-count: infinite;
 }
@@ -382,8 +382,8 @@
 
 .ndwu-router-loader__halo {
   animation:
-    ndwu-router-loader-halo-op 1.5s infinite cubic-bezier(.33, 0, .67, 1),
-    ndwu-router-loader-halo-sc 1.5s infinite cubic-bezier(.33, 0, .67, 1);
+    ndwu-router-loader-halo-op var(--router-loader-duration, 1.5s) infinite cubic-bezier(.33, 0, .67, 1),
+    ndwu-router-loader-halo-sc var(--router-loader-duration, 1.5s) infinite cubic-bezier(.33, 0, .67, 1);
 }
 
 @keyframes ndwu-router-loader-halo-op {

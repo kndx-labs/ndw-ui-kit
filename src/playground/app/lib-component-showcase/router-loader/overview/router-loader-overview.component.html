@@ -30,5 +30,20 @@
         </figure>
       </div>
     </div>
+
+    <div class="router-loader-section">
+      <h4>{{ 'router-loader-showcase.duration' | localize }}</h4>
+      <div class="router-loader-row">
+        @for (duration of [750, 1500, 3000]; track duration) {
+          <figure class="router-loader-example">
+            <ndwu-router-loader
+              size="L"
+              [duration]="duration"
+            />
+            <figcaption><code>[duration]="{{ duration }}"</code></figcaption>
+          </figure>
+        }
+      </div>
+    </div>
   </ng-template>
 </app-showcase-layout>

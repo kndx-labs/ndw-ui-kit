@@ -2,6 +2,15 @@ import {NdwuRouterLoaderGeometry, NdwuRouterLoaderSize} from './ndwu-router-load
 
 export const ROUTER_LOADER_SIZE_FALLBACK: NdwuRouterLoaderSize = 'XL';
 
+export const ROUTER_LOADER_DURATION_FALLBACK = 1500; // ms, matches the design
+
+// Non-numeric and non-positive values fall back to the design duration instead of stopping the animation
+export const coerceRouterLoaderDuration = (value: unknown): number => {
+  const duration = Number(value);
+
+  return Number.isFinite(duration) && duration > 0 ? duration : ROUTER_LOADER_DURATION_FALLBACK;
+};
+
 export const coerceRouterLoaderSize = (value: unknown): NdwuRouterLoaderSize => {
   return value === 'L' || value === 'XL' ? value : ROUTER_LOADER_SIZE_FALLBACK;
 };

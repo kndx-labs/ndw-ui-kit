@@ -1,8 +1,10 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
+  ROUTER_LOADER_DURATION_FALLBACK,
   ROUTER_LOADER_GEOMETRY,
   ROUTER_LOADER_SIZE_FALLBACK,
+  coerceRouterLoaderDuration,
   coerceRouterLoaderSize,
 } from './ndwu-router-loader.helpers';
 
@@ -17,6 +19,7 @@ export class NdwuRouterLoaderComponent {
   public readonly size = input(ROUTER_LOADER_SIZE_FALLBACK, {transform: coerceRouterLoaderSize});
   public readonly firstColor = input<string>('');
   public readonly secondColor = input<string>('');
+  public readonly duration = input(ROUTER_LOADER_DURATION_FALLBACK, {transform: coerceRouterLoaderDuration}); // ms, one full cycle
   public readonly ariaLabel = input<string>('Loading');
 
   protected readonly geometry = computed(() => ROUTER_LOADER_GEOMETRY[this.size()]);
@@ -32,6 +35,7 @@ export class NdwuRouterLoaderComponent {
     return {
       '--router-loader-first-color': this.firstColor() || null,
       '--router-loader-second-color': this.secondColor() || null,
+      '--router-loader-duration': `${this.duration()}ms`,
     };
   });
 }

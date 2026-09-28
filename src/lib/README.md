@@ -400,10 +400,12 @@ on pictograms (e.g., `NdwuEmptyStateComponent`).
 <ndwu-router-loader />                            <!-- XL, 100×100 (default) -->
 <ndwu-router-loader size="L" />                   <!-- L, 64×64 -->
 <ndwu-router-loader firstColor="#66AC20" secondColor="#D4ECBD" />
+<ndwu-router-loader [duration]="3000" />         <!-- one cycle in ms, 1500 by default -->
 ```
 
 - By default, colors come from the `--ndwu-router-loader-first-color` / `--ndwu-router-loader-second-color`
   tokens and follow the active theme. `firstColor` / `secondColor` override them for a single instance.
+- `duration` scales the whole animation cycle proportionally. Non-positive or non-numeric values fall back to 1500.
 - The accessible name defaults to `Loading` and goes through the `localize` pipe. Use `ariaLabel` to change it.
 - With `prefers-reduced-motion: reduce`, the animation is turned off.
 

@@ -12,7 +12,8 @@ import {NdwuSearchComponent, SearchItem} from '@app/components/search/ndwu-searc
 import {PlaygroundDebugService} from '@app/services/playground-debug.service';
 import {ComponentShowcaseComponent} from './lib-component-showcase/component-showcase.component';
 import {ExampleShowcaseComponent} from './lib-example-showcase/example-showcase.component';
-import type {ComponentName, ExampleName} from './app.types';
+import {WidgetShowcaseComponent} from './lib-widget-showcase/widget-showcase.component';
+import type {ComponentName, ExampleName, WidgetName} from './app.types';
 import {
   COMPONENTS_LIST,
   COMPONENT_TABS,
@@ -21,6 +22,8 @@ import {
   MENU_ITEMS,
   READY_FOR_REVIEW_COMPONENTS,
   SHOWCASE_NAMES,
+  WIDGETS_LIST,
+  WIDGET_TABS,
 } from './app.constants';
 
 @Component({
@@ -38,12 +41,14 @@ import {
     NdwuIconComponent,
     NdwuScrollbarComponent,
     RouterModule,
+    WidgetShowcaseComponent,
   ],
 })
 export class AppComponent implements OnInit {
   public readonly MENU_ITEMS = MENU_ITEMS;
   public readonly SHOWCASE_NAMES = SHOWCASE_NAMES;
   public readonly COMPONENTS_LIST = COMPONENTS_LIST;
+  public readonly WIDGETS_LIST = WIDGETS_LIST;
   public readonly EXAMPLES_LIST = EXAMPLES_LIST;
   public readonly EXAMPLE_NAMES = EXAMPLE_NAMES;
 
@@ -61,12 +66,13 @@ export class AppComponent implements OnInit {
   public readonly ICON_NAME = NDWU_ICON_NAME;
 
   public readonly selectedComponent = signal<ComponentName | null>(null);
+  public readonly selectedWidget = signal<WidgetName | null>(null);
   public readonly selectedExample = signal<ExampleName | null>(null);
   public readonly expandedGroups = signal<Set<string>>(new Set());
 
   protected readonly isDebugDialogOpen = signal<boolean>(false);
 
-  public isReadyForReview(component: ComponentName): boolean {
+  public isReadyForReview(component: ComponentName | WidgetName): boolean {
     return READY_FOR_REVIEW_COMPONENTS.includes(component);
   }
 
@@ -166,6 +172,7 @@ export class AppComponent implements OnInit {
     // Root/index page - nothing selected
     if (url === '/' || url === '') {
       this.selectedExample.set(null);
+      this.selectedWidget.set(null);
       this.selectedComponent.set(null);
 
       return;
@@ -181,6 +188,32 @@ export class AppComponent implements OnInit {
     }
 
     this.selectedExample.set(null);
+
+    const widgetMatch = url.match(/\/widget\/([^/]+)/);
+    const widgetName = (widgetMatch?.[1] as WidgetName) ?? null;
+
+    if (widgetName && WIDGETS_LIST.includes(widgetName)) {
+      this.selectedWidget.set(widgetName);
+      this.selectedComponent.set(null);
+
+      return;
+    }
+
+    this.selectedWidget.set(null);
+
+    if (widgetName) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const fallback = WIDGETS_LIST[0]!;
+
+      void this.router.navigate(
+        ['/widget', fallback, WIDGET_TABS[fallback][0]],
+        {
+          replaceUrl: true,
+        },
+      );
+
+      return;
+    }
 
     const match = url.match(/\/component\/([^/]+)/);
     const componentName = (match?.[1] as ComponentName) ?? null;
@@ -208,9 +241,16 @@ export class AppComponent implements OnInit {
     void this.router.navigate(['/example', example]);
   }
 
+  public selectWidget(widget: WidgetName): void {
+    this.selectedWidget.set(widget);
+    this.isMobileMenuOpen.set(false);
+    void this.router.navigate(['/widget', widget, WIDGET_TABS[widget][0]]);
+  }
+
   public selectComponent(component: ComponentName): void {
     // Update signal immediately for instant feedback
     this.selectedComponent.set(component);
+    this.selectedWidget.set(null);
 
     // Close mobile menu when component is selected
     this.isMobileMenuOpen.set(false);
@@ -269,6 +309,7 @@ export class AppComponent implements OnInit {
         searchData,
         categories: [
           {type: 'component', label: 'Components'},
+          {type: 'widget', label: 'Widgets'},
           {type: 'example', label: 'Examples'},
         ],
         placeholder: 'Search components...',
@@ -294,6 +335,14 @@ export class AppComponent implements OnInit {
       route: ['/component', name, COMPONENT_TABS[name][0] ?? 'overview'],
     }));
 
+    const widgetItems = WIDGETS_LIST.map((name) => ({
+      id: name,
+      type: 'widget' as const,
+      label: SHOWCASE_NAMES[name] ?? name,
+      description: `Widget showcase: ${name}`,
+      route: ['/widget', name, WIDGET_TABS[name][0] ?? 'overview'],
+    }));
+
     const exampleItems = EXAMPLES_LIST.map((name) => ({
       id: name,
       type: 'example' as const,
@@ -302,7 +351,7 @@ export class AppComponent implements OnInit {
       route: ['/example', name],
     }));
 
-    return [...componentItems, ...exampleItems];
+    return [...componentItems, ...widgetItems, ...exampleItems];
   }
 
   public openDebugSettingsDialog(): void {

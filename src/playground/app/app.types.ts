@@ -1,5 +1,7 @@
 export type ExampleName = 'user-profile-form';
 
+export type WidgetName = 'ndwu-empty-state';
+
 export type ComponentName =
   | 'ndwu-button'
   | 'ndwu-timing-button'
@@ -29,7 +31,6 @@ export type ComponentName =
   | 'ndwu-chip'
   | 'ndwu-tabs'
   | 'ndwu-pictogram'
-  | 'ndwu-empty-state'
   | 'ndwu-scrollbar'
   | 'ndwu-table';
 

@@ -20,6 +20,7 @@ export class ShowcaseTabsShellComponent implements OnInit {
   protected readonly destroyRef = inject(DestroyRef);
   protected readonly router = inject(Router);
 
+  public readonly routePrefix = input<string>('component');
   public readonly routeBase = input.required<string>();
   public readonly tabs = input.required<readonly Tab[]>();
   public readonly defaultTabId = input.required<string>();
@@ -49,7 +50,7 @@ export class ShowcaseTabsShellComponent implements OnInit {
     this.currentContentType.set(this.tabContentMap()[tab] ?? null);
 
     void this.router.navigate(
-      ['/component', this.routeBase(), tab],
+      ['/', this.routePrefix(), this.routeBase(), tab],
       {
         queryParamsHandling: 'preserve',
         preserveFragment: true,

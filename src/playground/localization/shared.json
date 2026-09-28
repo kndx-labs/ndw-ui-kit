@@ -3,6 +3,7 @@
     "title": "NDW UI Kit Demo",
     "components": "Components",
     "navigation": "Navigation",
+    "widgets": "Widgets",
     "examples": "Examples",
     "menu": "Menu",
     "close-menu": "Close menu",

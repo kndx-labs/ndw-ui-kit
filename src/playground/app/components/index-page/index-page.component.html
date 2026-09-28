@@ -1,24 +1,49 @@
 <div class="index-page">
   <div class="index-page__header">
     <app-logo class="index-page__logo"></app-logo>
-    <p class="index-page__subtitle">{{ COMPONENTS.length }} {{ 'app.components' | localize }} <span class="index-page__version">v{{ LIB_INFO.version }}</span></p>
+    <p class="index-page__subtitle">
+      {{ COMPONENTS.length }} {{ 'app.components' | localize }} · {{ WIDGETS.length }} {{ 'app.widgets' | localize }}
+      <span class="index-page__version">v{{ LIB_INFO.version }}</span>
+    </p>
   </div>
 
+  <h2 class="index-page__section-title">{{ 'app.components' | localize }}</h2>
   <div class="index-page__grid">
     @for (component of COMPONENTS; track component) {
-      <button
-        type="button"
-        class="component-card"
-        (click)="select(component)"
-      >
-        <div class="component-card__header">
-          <span class="component-card__name">{{ 'components.' + component + '.name' | localize }}</span>
-          @if (isReadyForReview(component)) {
-            <span class="component-card__badge">{{ 'app.ready' | localize }}</span>
-          }
-        </div>
-        <p class="component-card__description">{{ 'components.' + component + '.description' | localize }}</p>
-      </button>
+      <ng-container
+        [ngTemplateOutlet]="card"
+        [ngTemplateOutletContext]="{$implicit: component}"
+      />
+    }
+  </div>
+
+  <h2 class="index-page__section-title">{{ 'app.widgets' | localize }}</h2>
+  <div class="index-page__grid">
+    @for (widget of WIDGETS; track widget) {
+      <ng-container
+        [ngTemplateOutlet]="card"
+        [ngTemplateOutletContext]="{$implicit: widget, widget: true}"
+      />
     }
   </div>
 </div>
+
+<ng-template
+  #card
+  let-name
+  let-widget="widget"
+>
+  <button
+    type="button"
+    class="component-card"
+    (click)="widget ? selectWidget(name) : select(name)"
+  >
+    <div class="component-card__header">
+      <span class="component-card__name">{{ 'components.' + name + '.name' | localize }}</span>
+      @if (isReadyForReview(name)) {
+        <span class="component-card__badge">{{ 'app.ready' | localize }}</span>
+      }
+    </div>
+    <p class="component-card__description">{{ 'components.' + name + '.description' | localize }}</p>
+  </button>
+</ng-template>

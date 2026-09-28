@@ -1,4 +1,4 @@
-import type {ComponentName, ExampleName, MenuItem} from './app.types';
+import type {ComponentName, ExampleName, MenuItem, WidgetName} from './app.types';
 
 export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-button',
@@ -29,7 +29,6 @@ export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-chip',
   'ndwu-tabs',
   'ndwu-pictogram',
-  'ndwu-empty-state',
   'ndwu-scrollbar',
   'ndwu-table',
 ];
@@ -64,12 +63,19 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-chip': ['overview', 'sandbox'],
   'ndwu-tabs': ['overview', 'sandbox'],
   'ndwu-pictogram': ['overview', 'sandbox'],
-  'ndwu-empty-state': ['overview', 'sandbox'],
   'ndwu-scrollbar': ['overview'],
   'ndwu-table': ['overview'],
 };
 
-export const READY_FOR_REVIEW_COMPONENTS: ComponentName[] = [
+export const WIDGETS_LIST: WidgetName[] = [
+  'ndwu-empty-state',
+];
+
+export const WIDGET_TABS: Record<WidgetName, readonly string[]> = {
+  'ndwu-empty-state': ['overview', 'sandbox'],
+};
+
+export const READY_FOR_REVIEW_COMPONENTS: (ComponentName | WidgetName)[] = [
   'ndwu-badge',
   'ndwu-button',
   'ndwu-checkbox',
@@ -178,7 +184,6 @@ export const MENU_ITEMS: MenuItem[] = [
   {type: 'item', name: 'ndwu-popover'},
   {type: 'item', name: 'ndwu-tabs'},
   {type: 'item', name: 'ndwu-pictogram'},
-  {type: 'item', name: 'ndwu-empty-state'},
   {type: 'item', name: 'ndwu-scrollbar'},
   {type: 'item', name: 'ndwu-table'},
 ];

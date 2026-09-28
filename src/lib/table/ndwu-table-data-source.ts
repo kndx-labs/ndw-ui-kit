@@ -17,9 +17,11 @@ function defaultSortAccessor<T>(row: T, column: string): unknown {
 
 function defaultFilterPredicate<T>(row: T, filter: string): boolean {
   return Object.values(row as Record<string, unknown>)
-    .some(value => String(value)
-      .toLowerCase()
-      .includes(filter));
+    .some(value => {
+      return String(value)
+        .toLowerCase()
+        .includes(filter);
+    });
 }
 
 function compare(a: unknown, b: unknown): number {

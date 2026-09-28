@@ -1,5 +1,5 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
-import {CdkFooterRow, CDK_ROW_TEMPLATE, CdkCellOutlet} from '@angular/cdk/table';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {CDK_ROW_TEMPLATE, CdkCellOutlet, CdkFooterRow} from '@angular/cdk/table';
 
 @Component({
   selector: 'ndwu-footer-row, tr[ndwu-footer-row]',

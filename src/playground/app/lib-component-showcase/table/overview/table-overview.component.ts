@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {DeviceTableComponent, Device} from './device-table.component';
+import {Device, DeviceTableComponent} from './device-table.component';
 import {BasicTableComponent} from './basic-table.component';
 
 const DEVICES: Device[] = [

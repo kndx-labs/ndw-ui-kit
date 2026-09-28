@@ -1,10 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  computed,
-  inject,
-  input,
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
 import {ICON_NAME, IconName, NdwuIconComponent} from '@ndw-ui-kit/core';
 import {NdwuSortDirective} from './ndwu-sort.directive';
 

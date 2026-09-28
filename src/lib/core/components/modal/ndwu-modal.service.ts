@@ -259,7 +259,7 @@ export class NdwuModalService {
       });
   }
 
-  private createOverlay(overlayCreationParams: OverlayCreationParams,): OverlayRef {
+  private createOverlay(overlayCreationParams: OverlayCreationParams): OverlayRef {
     const {positionStrategy, backdropClass, panelClass, desktopSize, config, isHandset} = overlayCreationParams;
 
     const overlayConfig: OverlayConfig = {

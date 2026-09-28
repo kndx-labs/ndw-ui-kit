@@ -1,19 +1,19 @@
 import {ChangeDetectionStrategy, Component, computed, effect, input, signal} from '@angular/core';
 import {
-  NdwuTableComponent,
+  NdwuCellDefDirective,
+  NdwuCellDirective,
   NdwuColumnDefDirective,
   NdwuHeaderCellDefDirective,
-  NdwuCellDefDirective,
   NdwuHeaderCellDirective,
-  NdwuCellDirective,
-  NdwuHeaderRowDefDirective,
-  NdwuRowDefDirective,
   NdwuHeaderRowComponent,
+  NdwuHeaderRowDefDirective,
   NdwuRowComponent,
-  NdwuTableToolbarComponent,
+  NdwuRowDefDirective,
   NdwuRowDragDirective,
-  NdwuRowDraggableDirective,
   NdwuRowDragHandleComponent,
+  NdwuRowDraggableDirective,
+  NdwuTableComponent,
+  NdwuTableToolbarComponent,
   NdwuTableTranslationTexts,
 } from '@ndw-ui-kit/core/table';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';

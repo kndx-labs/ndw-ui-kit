@@ -1,18 +1,10 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  computed,
-  inject,
-  input,
-  model,
-  output,
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, input, model, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {
   ICON_NAME,
   NDWU_SIZE_TOKEN,
-  type NdwuOption,
   NdwuIconButtonComponent,
+  type NdwuOption,
   NdwuSizeDirective,
 } from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';

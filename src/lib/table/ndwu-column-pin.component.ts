@@ -1,12 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  booleanAttribute,
-  computed,
-  inject,
-  input,
-  output,
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input, output} from '@angular/core';
 import {ICON_NAME, NdwuIconComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';

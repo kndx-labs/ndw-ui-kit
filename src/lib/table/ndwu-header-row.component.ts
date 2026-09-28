@@ -1,5 +1,5 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
-import {CdkHeaderRow, CDK_ROW_TEMPLATE, CdkCellOutlet} from '@angular/cdk/table';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {CDK_ROW_TEMPLATE, CdkCellOutlet, CdkHeaderRow} from '@angular/cdk/table';
 
 @Component({
   selector: 'ndwu-header-row, tr[ndwu-header-row]',

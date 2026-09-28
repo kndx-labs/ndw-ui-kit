@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, computed, inject, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
 import {CdkDragHandle} from '@angular/cdk/drag-drop';
 import {ICON_NAME, NdwuIconComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';

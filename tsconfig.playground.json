@@ -12,6 +12,7 @@
       "@ndw-ui-kit/core/utils": ["./src/lib/utils/index.ts"],
       "@ndw-ui-kit/core/aria": ["./src/lib/aria/index.ts"],
       "@ndw-ui-kit/core/l10n": ["./src/lib/l10n/index.ts"],
+      "@ndw-ui-kit/core/l10n/ngx-translate": ["./src/lib/l10n/ngx-translate/index.ts"],
       "@ndw-ui-kit/core/popover": ["./src/lib/popover/index.ts"],
       "@ndw-ui-kit/core/form-field": ["./src/lib/form-field/index.ts"],
       "@ndw-ui-kit/core/table": ["./src/lib/table/index.ts"],

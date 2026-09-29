@@ -405,10 +405,14 @@ Choose one of the following translation providers:
 
 - **Ngx-Translate Integration (depends on `@ngx-translate/core`):**
   ```typescript
-  import {provideNdwUiKitNgxTranslate} from '@ndw-ui-kit/core/l10n';
+  import {provideNdwUiKitNgxTranslate} from '@ndw-ui-kit/core/l10n/ngx-translate';
 
   providers: [provideNdwUiKitNgxTranslate()]
   ```
+
+  > Since this version the ngx-translate integration lives in a separate entry point
+  > `@ndw-ui-kit/core/l10n/ngx-translate` (previously exported from `@ndw-ui-kit/core/l10n`),
+  > so the package no longer requires `@ngx-translate/core` unless you import it.
 
 ### Component size
 

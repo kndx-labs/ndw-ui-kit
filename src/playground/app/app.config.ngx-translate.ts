@@ -11,7 +11,7 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import {TranslateService, provideTranslateService} from '@ngx-translate/core';
 import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 import {firstValueFrom} from 'rxjs';
-import {provideNdwUiKitNgxTranslate} from '@ndw-ui-kit/core/l10n';
+import {provideNdwUiKitNgxTranslate} from '@ndw-ui-kit/core/l10n/ngx-translate';
 import {provideAllNdwUiKitIcons} from '@ndw-ui-kit/core';
 import {routes} from './app.routes';
 

@@ -1,13 +1,5 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  booleanAttribute,
-  computed,
-  inject,
-  input,
-  output,
-} from '@angular/core';
-import {ICON_NAME, NdwuIconComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
+import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input, output} from '@angular/core';
+import {NDWU_ICON_NAME, NdwuIconComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
@@ -36,7 +28,7 @@ const DEFAULT_COLUMN_PIN_TEXTS = {
   },
 })
 export class NdwuColumnPinComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   public readonly pinned = input(false, {transform: booleanAttribute});

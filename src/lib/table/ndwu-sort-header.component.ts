@@ -1,11 +1,5 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  computed,
-  inject,
-  input,
-} from '@angular/core';
-import {ICON_NAME, IconName, NdwuIconComponent} from '@ndw-ui-kit/core';
+import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
+import {NDWU_ICON_NAME, NdwuIconComponent, NdwuIconName} from '@ndw-ui-kit/core';
 import {NdwuSortDirective} from './ndwu-sort.directive';
 
 @Component({
@@ -35,8 +29,8 @@ export class NdwuSortHeaderComponent {
 
   protected readonly isDesc = computed(() => this.isActive() && this.sortState.state().direction === 'desc');
 
-  protected readonly indicatorIcon = computed<IconName>(() => {
-    return this.isDesc() ? ICON_NAME.SORTING_REVERSE_S : ICON_NAME.SORTING_DEFAULT_S;
+  protected readonly indicatorIcon = computed<NdwuIconName>(() => {
+    return this.isDesc() ? NDWU_ICON_NAME.SORTING_REVERSE_S : NDWU_ICON_NAME.SORTING_DEFAULT_S;
   });
 
   protected readonly ariaSort = computed(() => {

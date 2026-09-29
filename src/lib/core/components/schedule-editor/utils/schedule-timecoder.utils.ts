@@ -1,6 +1,11 @@
-import {SCHEDULE_ACTION, type ScheduleAction, ScheduleBlock, type ScheduleInterval} from '../schedule-editor.types';
+import {
+  NDWU_SCHEDULE_ACTION,
+  type NdwuScheduleAction,
+  NdwuScheduleBlock,
+  type NdwuScheduleInterval,
+} from '../schedule-editor.types';
 import {MINUTES_IN_DAY, MINUTES_IN_HOUR, MINUTES_IN_WEEK} from '../ndwu-schedule-editor.constants';
-import {ANY_DAY} from '../schedule-editor.constants';
+import {NDWU_ANY_DAY} from '../schedule-editor.constants';
 
 type ScheduleActionList = Array<[number, number[]]>;
 
@@ -28,7 +33,7 @@ function findNearestStopFlag(stopFlags: number[], startFlag: number): number {
   return result;
 }
 
-function convertBlocksToIntervals(blocks: ScheduleBlock[]): ScheduleInterval[] {
+function convertBlocksToIntervals(blocks: NdwuScheduleBlock[]): NdwuScheduleInterval[] {
   return blocks.map((block) => {
     const shift = MINUTES_IN_DAY * block.day;
     const start = shift + block.start;
@@ -40,7 +45,7 @@ function convertBlocksToIntervals(blocks: ScheduleBlock[]): ScheduleInterval[] {
   });
 }
 
-function mergeIntervals(intervals: ScheduleInterval[]): ScheduleInterval[] {
+function mergeIntervals(intervals: NdwuScheduleInterval[]): NdwuScheduleInterval[] {
   let hasUnmergedIntervals = true;
 
   while (hasUnmergedIntervals) {
@@ -53,7 +58,7 @@ function mergeIntervals(intervals: ScheduleInterval[]): ScheduleInterval[] {
         continue;
       }
 
-      const toMergeWithIndex = intervals.findIndex((_interval: ScheduleInterval) => {
+      const toMergeWithIndex = intervals.findIndex((_interval: NdwuScheduleInterval) => {
         return interval[1] % MINUTES_IN_WEEK === _interval[0] % MINUTES_IN_WEEK;
       });
 
@@ -105,7 +110,7 @@ function appendNewAction(actionTime: number, actionsList: ScheduleActionList): S
 }
 
 function convertIntervalsToActionLists(
-  intervals: ScheduleInterval[],
+  intervals: NdwuScheduleInterval[],
 ): {startActions: ScheduleActionList; stopActions: ScheduleActionList} {
   return intervals.reduce(
     (acc, block) => {
@@ -126,7 +131,7 @@ function convertIntervalsToActionLists(
 
 function getNdmDayOfTheWeek(days: number[]): string {
   if (days.length === 7) {
-    return ANY_DAY;
+    return NDWU_ANY_DAY;
   }
 
   return days
@@ -135,7 +140,7 @@ function getNdmDayOfTheWeek(days: number[]): string {
     .join(',');
 }
 
-export function actionsToBlocks(actions: ScheduleAction[]): ScheduleBlock[] {
+export function actionsToBlocks(actions: NdwuScheduleAction[]): NdwuScheduleBlock[] {
   if (!actions?.length) {
     return [];
   }
@@ -144,10 +149,10 @@ export function actionsToBlocks(actions: ScheduleAction[]): ScheduleBlock[] {
   const stopFlagsArray: number[] = [];
 
   actions.forEach((item) => {
-    const isStart = item.action === SCHEDULE_ACTION.START;
+    const isStart = item.action === NDWU_SCHEDULE_ACTION.START;
     const dayOffsetMinutes = Number(item.hour) * MINUTES_IN_HOUR + Number(item.min);
 
-    const weekDays = item.dow === ANY_DAY
+    const weekDays = item.dow === NDWU_ANY_DAY
       ? [0, 1, 2, 3, 4, 5, 6]
       : item.dow.split(',').map(Number);
 
@@ -162,7 +167,7 @@ export function actionsToBlocks(actions: ScheduleAction[]): ScheduleBlock[] {
 
   startFlagsArray.sort((a, b) => a - b);
 
-  const linesArray: ScheduleInterval[] = [];
+  const linesArray: NdwuScheduleInterval[] = [];
 
   startFlagsArray.forEach((startFlag) => {
     linesArray.push([
@@ -171,7 +176,7 @@ export function actionsToBlocks(actions: ScheduleAction[]): ScheduleBlock[] {
     ]);
   });
 
-  const blocks: ScheduleBlock[] = [];
+  const blocks: NdwuScheduleBlock[] = [];
 
   linesArray.forEach((l) => {
     const startDay = Math.floor(l[0] / MINUTES_IN_DAY);
@@ -193,12 +198,12 @@ export function actionsToBlocks(actions: ScheduleAction[]): ScheduleBlock[] {
   return blocks;
 }
 
-export function blocksToActions(blocks: ScheduleBlock[]): ScheduleAction[] {
+export function blocksToActions(blocks: NdwuScheduleBlock[]): NdwuScheduleAction[] {
   const intervals = convertBlocksToIntervals(blocks);
   const nonIntersectingIntervals = mergeIntervals(intervals);
   const {startActions, stopActions} = convertIntervalsToActionLists(nonIntersectingIntervals);
 
-  const actionsArray: ScheduleAction[] = [];
+  const actionsArray: NdwuScheduleAction[] = [];
 
   [startActions, stopActions].forEach((actions, index) => {
     actions.forEach((action) => {
@@ -206,7 +211,7 @@ export function blocksToActions(blocks: ScheduleBlock[]): ScheduleAction[] {
       const days = action[1].sort((a, b) => a - b);
 
       actionsArray.push({
-        action: index === 0 ? SCHEDULE_ACTION.START : SCHEDULE_ACTION.STOP,
+        action: index === 0 ? NDWU_SCHEDULE_ACTION.START : NDWU_SCHEDULE_ACTION.STOP,
         hour: String(Math.floor(time / MINUTES_IN_HOUR)),
         min: String(time % 60),
         dow: getNdmDayOfTheWeek(days),

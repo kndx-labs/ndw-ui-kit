@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, Signal, computed, signal, viewChild} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
-  type FileInputValue,
+  NDWU_SIZE,
+  type NdwuFileInputValue,
   NdwuFileItemComponent,
   NdwuFileUploadComponent,
-  SIZE,
-  type Size,
-  type TranslationTexts,
+  type NdwuSize,
+  type NdwuTranslationTexts,
 } from '@ndw-ui-kit/core';
 import {NdwuFileUploadFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
@@ -28,11 +28,11 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class FileUploadOverviewComponent implements OnDestroy {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
 
   public readonly fileUploadIsDesktop = signal(true);
   public readonly fileUploadIsMobile: Signal<boolean> = computed(() => !this.fileUploadIsDesktop());
-  public readonly fileUploadSizeFlags: NdwuSizeFlags<Size> = {
+  public readonly fileUploadSizeFlags: NdwuSizeFlags<NdwuSize> = {
     XL: this.fileUploadIsDesktop,
     L: this.fileUploadIsMobile,
   };
@@ -41,7 +41,7 @@ export class FileUploadOverviewComponent implements OnDestroy {
     this.fileUploadIsDesktop.update((isDesktop) => !isDesktop);
   }
 
-  public readonly translationTexts: TranslationTexts = {
+  public readonly translationTexts: NdwuTranslationTexts = {
     status: {
       uploading: 'file-upload.status.uploading',
       success: 'file-upload.status.success',
@@ -82,7 +82,7 @@ export class FileUploadOverviewComponent implements OnDestroy {
     },
   };
 
-  public readonly fileItemFiles: FileInputValue[] = [
+  public readonly fileItemFiles: NdwuFileInputValue[] = [
     {
       id: 'item-queued',
       name: 'Queued_for_later.docx',
@@ -106,7 +106,7 @@ export class FileUploadOverviewComponent implements OnDestroy {
     },
   ];
 
-  public readonly fileItemBarFiles: FileInputValue[] = [
+  public readonly fileItemBarFiles: NdwuFileInputValue[] = [
     {
       id: 'bar-uploading',
       name: 'Document_in_progress.pdf',
@@ -140,7 +140,7 @@ export class FileUploadOverviewComponent implements OnDestroy {
     },
   ];
 
-  public readonly mixedStateFiles: FileInputValue[] = [
+  public readonly mixedStateFiles: NdwuFileInputValue[] = [
     {
       id: 'mixed-uploading',
       name: 'Document_in_progress.pdf',
@@ -200,20 +200,20 @@ export class FileUploadOverviewComponent implements OnDestroy {
   protected cvaUploadRef = viewChild<NdwuFileUploadFieldComponent>('cvaUploadRef');
 
   public readonly fileUploadCvaForm = new FormGroup({
-    files: new FormControl<FileInputValue[]>([], {nonNullable: true}),
+    files: new FormControl<NdwuFileInputValue[]>([], {nonNullable: true}),
   });
 
   private readonly uploadIntervals = new Map<string, ReturnType<typeof setInterval>>();
 
-  protected onUploadRequestSingle(files: FileInputValue[]): void {
+  protected onUploadRequestSingle(files: NdwuFileInputValue[]): void {
     this.startSimUploads(files, this.singleUploadRef());
   }
 
-  protected onUploadRequestMultiple(files: FileInputValue[]): void {
+  protected onUploadRequestMultiple(files: NdwuFileInputValue[]): void {
     this.startSimUploads(files, this.multipleUploadRef());
   }
 
-  protected onUploadRequestCva(files: FileInputValue[]): void {
+  protected onUploadRequestCva(files: NdwuFileInputValue[]): void {
     if (!this.cvaUploadRef()) {
       return;
     }
@@ -249,25 +249,25 @@ export class FileUploadOverviewComponent implements OnDestroy {
     });
   }
 
-  protected onFilesChangedCva(files: FileInputValue[]): void {
+  protected onFilesChangedCva(files: NdwuFileInputValue[]): void {
     this.syncFilesState(files);
   }
 
-  protected onFilesChangedSingle(files: FileInputValue[]): void {
+  protected onFilesChangedSingle(files: NdwuFileInputValue[]): void {
     this.syncFilesState(files);
   }
 
-  protected onFilesChangedMultiple(files: FileInputValue[]): void {
+  protected onFilesChangedMultiple(files: NdwuFileInputValue[]): void {
     this.syncFilesState(files);
   }
 
-  private startSimUploads(files: FileInputValue[], comp?: NdwuFileUploadComponent): void {
+  private startSimUploads(files: NdwuFileInputValue[], comp?: NdwuFileUploadComponent): void {
     if (!comp) { return; }
 
     files.filter(f => f.status === 'queued').forEach(f => this.startSimForFile(f, comp));
   }
 
-  private startSimForFile(file: FileInputValue, comp: NdwuFileUploadComponent): void {
+  private startSimForFile(file: NdwuFileInputValue, comp: NdwuFileUploadComponent): void {
     let progress = file.progress ?? 0;
 
     // Ensure the component shows uploading state immediately
@@ -289,7 +289,7 @@ export class FileUploadOverviewComponent implements OnDestroy {
     this.uploadIntervals.set(file.id, interval);
   }
 
-  private syncFilesState(files: FileInputValue[]): void {
+  private syncFilesState(files: NdwuFileInputValue[]): void {
     const currentIds = new Set(files.map(f => f.id));
 
     // Clear intervals for files that were removed or reached terminal states

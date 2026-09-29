@@ -1,19 +1,19 @@
-export type FileUploadStatus = 'queued' | 'uploading' | 'success' | 'error' | 'warning' | 'canceled';
+export type NdwuFileUploadStatus = 'queued' | 'uploading' | 'success' | 'error' | 'warning' | 'canceled';
 
-export interface FileInputValue {
+export interface NdwuFileInputValue {
   id: string;
   name: string;
   size: number;
   type?: string;
   progress: number;
-  status: FileUploadStatus;
+  status: NdwuFileUploadStatus;
   error?: string;
   /** Consumer-driven flag indicating the error is retryable. The library never sets this field. */
   isRetryable?: boolean;
   file?: File;
 }
 
-export interface TranslationTexts {
+export interface NdwuTranslationTexts {
   status?: {
     uploading?: string;
     success?: string;

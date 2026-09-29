@@ -15,7 +15,7 @@ import {
 import {NgControl} from '@angular/forms';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   type NdwuControl,
   NdwuFormFieldComponent,
   type NdwuInteractionFocusType,
@@ -101,8 +101,8 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   // == Shared computed signals ===============================================
   protected readonly chevronIcon = computed(() => {
     return (this.combobox()?.expanded() ?? false)
-      ? ICON_NAME.CHEVRON_UP_S
-      : ICON_NAME.CHEVRON_DOWN_S;
+      ? NDWU_ICON_NAME.CHEVRON_UP_S
+      : NDWU_ICON_NAME.CHEVRON_DOWN_S;
   });
 
   protected readonly panelClass = computed(() => {

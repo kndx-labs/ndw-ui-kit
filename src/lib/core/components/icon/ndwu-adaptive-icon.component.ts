@@ -2,7 +2,12 @@ import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angu
 import {resolveSizeFlags} from '@ndw-ui-kit/core/utils';
 import {NdwuAdaptiveSizeDirective} from '../../directives';
 import {NdwuIconComponent} from './ndwu-icon.component';
-import {ICON_SIZE_FALLBACK, ICON_SIZE_PRIORITY, IconBaseName, IconSize} from './ndwu-adaptive-icon.helpers';
+import {
+  NDWU_ICON_SIZE_FALLBACK,
+  NDWU_ICON_SIZE_PRIORITY,
+  NdwuIconBaseName,
+  NdwuIconSize,
+} from './ndwu-adaptive-icon.helpers';
 
 @Component({
   selector: 'ndwu-adaptive-icon',
@@ -18,10 +23,10 @@ import {ICON_SIZE_FALLBACK, ICON_SIZE_PRIORITY, IconBaseName, IconSize} from './
 export class NdwuAdaptiveIconComponent {
   private readonly adaptiveSvc = inject(NdwuAdaptiveSizeDirective);
 
-  public readonly name = input.required<IconBaseName>();
+  public readonly name = input.required<NdwuIconBaseName>();
 
-  protected readonly resolvedSize = computed<IconSize>(() => {
-    return resolveSizeFlags(this.adaptiveSvc.sizeFlags(), ICON_SIZE_PRIORITY) ?? ICON_SIZE_FALLBACK;
+  protected readonly resolvedSize = computed<NdwuIconSize>(() => {
+    return resolveSizeFlags(this.adaptiveSvc.sizeFlags(), NDWU_ICON_SIZE_PRIORITY) ?? NDWU_ICON_SIZE_FALLBACK;
   });
 
   protected readonly effectiveName = computed(() => `${this.name()}_${this.resolvedSize()}`);

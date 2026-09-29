@@ -1,5 +1,12 @@
 import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
-import {BUTTON_VARIANT, ButtonVariant, ICON_NAME, NdwuButtonComponent, SIZE, Size} from '@ndw-ui-kit/core';
+import {
+  NDWU_BUTTON_VARIANT,
+  NDWU_ICON_NAME,
+  NDWU_SIZE,
+  NdwuButtonComponent,
+  NdwuButtonVariant,
+  NdwuSize,
+} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -15,17 +22,17 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class ButtonOverviewComponent {
-  public readonly BUTTON_TYPE = BUTTON_VARIANT;
-  public readonly ICON_NAME = ICON_NAME;
-  public readonly SIZE = SIZE;
+  public readonly BUTTON_TYPE = NDWU_BUTTON_VARIANT;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
+  public readonly SIZE = NDWU_SIZE;
 
-  public readonly TYPES = Object.values(BUTTON_VARIANT);
-  public readonly SIZES = Object.values(SIZE);
+  public readonly TYPES = Object.values(NDWU_BUTTON_VARIANT);
+  public readonly SIZES = Object.values(NDWU_SIZE);
 
-  public loadingButtonType = signal<ButtonVariant | null>(null);
-  public loadingButtonSize = signal<Size | null>(null);
+  public loadingButtonType = signal<NdwuButtonVariant | null>(null);
+  public loadingButtonSize = signal<NdwuSize | null>(null);
 
-  public onButtonClick(type: ButtonVariant, size: Size): void {
+  public onButtonClick(type: NdwuButtonVariant, size: NdwuSize): void {
     this.loadingButtonType.set(type);
     this.loadingButtonSize.set(size);
 
@@ -38,7 +45,7 @@ export class ButtonOverviewComponent {
     );
   }
 
-  public isLoading(type: ButtonVariant, size: Size): boolean {
+  public isLoading(type: NdwuButtonVariant, size: NdwuSize): boolean {
     return this.loadingButtonType() === type && this.loadingButtonSize() === size;
   }
 }

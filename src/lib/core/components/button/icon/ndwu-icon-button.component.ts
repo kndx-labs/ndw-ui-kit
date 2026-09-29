@@ -1,16 +1,16 @@
 import {Component, booleanAttribute, computed, inject, input} from '@angular/core';
-import {Values} from '../../../../shared.types';
+import {NdwuValues} from '../../../../shared.types';
 import {NdwuSizeDirective} from '../../../directives';
-import {IconName} from '../../../../icon-names';
+import {NdwuIconName} from '../../../../icon-names';
 import {NdwuIconComponent} from '../../icon/ndwu-icon.component';
 
-export const ICON_BUTTON_VARIANT = {
+export const NDWU_ICON_BUTTON_VARIANT = {
   FLAT: 'flat',
   ROUND: 'round',
   SQUARE: 'square',
 } as const;
 
-export type IconButtonVariant = Values<typeof ICON_BUTTON_VARIANT>;
+export type NdwuIconButtonVariant = NdwuValues<typeof NDWU_ICON_BUTTON_VARIANT>;
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -33,8 +33,8 @@ export type IconButtonVariant = Values<typeof ICON_BUTTON_VARIANT>;
 export class NdwuIconButtonComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
-  public readonly icon = input.required<IconName>();
-  public readonly variant = input<IconButtonVariant>(ICON_BUTTON_VARIANT.SQUARE);
+  public readonly icon = input.required<NdwuIconName>();
+  public readonly variant = input<NdwuIconButtonVariant>(NDWU_ICON_BUTTON_VARIANT.SQUARE);
   public readonly disabled = input(false, {transform: booleanAttribute});
 
   protected readonly hostClasses = computed(() => {
@@ -43,9 +43,9 @@ export class NdwuIconButtonComponent {
       `ndwu-icon-button--${this.variant()}`,
     ];
 
-    // For the `ICON_BUTTON_VARIANT.FLAT` variant, we add the size class based on the icon size.
+    // For the `NDWU_ICON_BUTTON_VARIANT.FLAT` variant, we add the size class based on the icon size.
     // Icon names end with either '_L' or '_S' for 24x24 and 20x20 icons, respectively.
-    if (this.variant() === ICON_BUTTON_VARIANT.FLAT) {
+    if (this.variant() === NDWU_ICON_BUTTON_VARIANT.FLAT) {
       const iconNameChunks = this.icon().split('_');
       const iconSizeSuffix = iconNameChunks[iconNameChunks.length - 1];
 

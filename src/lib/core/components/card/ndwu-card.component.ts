@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, computed, inject} from '@angular/core';
 import {NdwuSizeDirective} from '../../directives';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
-import {SIZE} from '../../../shared.types';
+import {NDWU_SIZE} from '../../../shared.types';
 
 @Component({
   selector: 'ndwu-card',
@@ -30,7 +30,7 @@ export class NdwuCardComponent {
 
   protected readonly rootClass = computed(() => {
     const size = this.sizeSvc.effectiveSize();
-    const cardSize = size === SIZE.S ? 'L' : size;
+    const cardSize = size === NDWU_SIZE.S ? 'L' : size;
 
     return `ndwu-card ndwu-card--${cardSize}`;
   });

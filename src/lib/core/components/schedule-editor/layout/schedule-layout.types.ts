@@ -1,4 +1,4 @@
-import type {DayName, ScheduleBlock, ScheduleTimePoint, WeekDay} from '../schedule-editor.types';
+import type {NdwuDayName, NdwuScheduleBlock, NdwuScheduleTimePoint, NdwuWeekDay} from '../schedule-editor.types';
 
 export interface Offset {
   x: number;
@@ -67,8 +67,8 @@ export interface AxisLabel {
 }
 
 export interface DragState {
-  start: ScheduleTimePoint;
-  end: ScheduleTimePoint;
+  start: NdwuScheduleTimePoint;
+  end: NdwuScheduleTimePoint;
   removing: boolean;
 }
 
@@ -96,21 +96,21 @@ export interface GetBlockRectsParams {
   offset: ScheduleEditorOffset;
   gridWidth: number;
   gridHeight: number;
-  weekDays: WeekDay[];
-  blocks: ScheduleBlock[];
+  weekDays: NdwuWeekDay[];
+  blocks: NdwuScheduleBlock[];
 }
 
 export interface GetSlotRectsParams {
   offset: ScheduleEditorOffset;
   gridWidth: number;
   gridHeight: number;
-  weekDays: WeekDay[];
-  blocks: ScheduleBlock[];
+  weekDays: NdwuWeekDay[];
+  blocks: NdwuScheduleBlock[];
 }
 
 export interface GetGridBlockParams {
-  block: ScheduleBlock;
-  weekDays: WeekDay[];
+  block: NdwuScheduleBlock;
+  weekDays: NdwuWeekDay[];
   offset: ScheduleEditorOffset;
   gridWidth: number;
   gridHeight: number;
@@ -118,8 +118,8 @@ export interface GetGridBlockParams {
 }
 
 export interface GenerateBlockFromPointsParams {
-  p1: ScheduleTimePoint;
-  p2: ScheduleTimePoint;
+  p1: NdwuScheduleTimePoint;
+  p2: NdwuScheduleTimePoint;
   offset: ScheduleEditorOffset;
   gridWidth: number;
   gridHeight: number;
@@ -136,8 +136,8 @@ export interface CoordsToTimeSlotParams {
 
 export interface GetAxesTextParams {
   isFullMode: boolean;
-  weekDays: WeekDay[];
-  weekdayLabels: Partial<Record<DayName, string>>;
+  weekDays: NdwuWeekDay[];
+  weekdayLabels: Partial<Record<NdwuDayName, string>>;
   offset: ScheduleEditorOffset;
   gridWidth: number;
   gridHeight: number;

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input} from '@angular/core';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
-import {SIZE} from '../../../../shared.types';
+import {NDWU_SIZE} from '../../../../shared.types';
 import {NdwuLabelGroupComponent} from '../../label-group/ndwu-label-group.component';
 import {NDWU_RADIO_GROUP} from '../radio.types';
 
@@ -35,7 +35,7 @@ export class NdwuRadioButtonComponent {
   });
 
   protected readonly effectiveSize = computed(() => {
-    return this.radioGroup?.effectiveSize() ?? SIZE.XL;
+    return this.radioGroup?.effectiveSize() ?? NDWU_SIZE.XL;
   });
 
   public selectThis(): void {

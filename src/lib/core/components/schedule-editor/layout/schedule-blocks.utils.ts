@@ -1,5 +1,10 @@
-import {ScheduleBlock, type ScheduleInterval, ScheduleValue, type WeekDay} from '../schedule-editor.types';
-import {DAY_TO_NDM_DAY, NDM_DAY_TO_DAY} from '../schedule-editor.constants';
+import {
+  NdwuScheduleBlock,
+  type NdwuScheduleInterval,
+  NdwuScheduleValue,
+  type NdwuWeekDay,
+} from '../schedule-editor.types';
+import {NDWU_DAY_TO_NDM_DAY, NDWU_NDM_DAY_TO_DAY} from '../schedule-editor.constants';
 import {DAYS_IN_WEEK, MINUTES_IN_HOUR} from '../ndwu-schedule-editor.constants';
 
 export const minutesToTime = (minutes: number): string => {
@@ -15,12 +20,15 @@ export const minutesToHourShort = (minutes: number): string => {
   return h < 10 ? `0${h}` : String(h);
 };
 
-export const valueToBlocks = (value: ScheduleValue | null | undefined, weekDays: WeekDay[]): ScheduleBlock[] => {
+export const valueToBlocks = (
+  value: NdwuScheduleValue | null | undefined,
+  weekDays: NdwuWeekDay[],
+): NdwuScheduleBlock[] => {
   if (!value) {
     return [];
   }
 
-  const blocks: ScheduleBlock[] = [];
+  const blocks: NdwuScheduleBlock[] = [];
 
   weekDays.forEach((weekDay) => {
     const intervals = value[weekDay.day];
@@ -30,22 +38,22 @@ export const valueToBlocks = (value: ScheduleValue | null | undefined, weekDays:
     }
 
     intervals.forEach(([start, stop]) => {
-      blocks.push({day: DAY_TO_NDM_DAY[weekDay.day], start, stop});
+      blocks.push({day: NDWU_DAY_TO_NDM_DAY[weekDay.day], start, stop});
     });
   });
 
   return blocks;
 };
 
-export const blocksToValue = (blocks: ScheduleBlock[], weekDays: WeekDay[]): ScheduleValue => {
-  const value: ScheduleValue = {};
+export const blocksToValue = (blocks: NdwuScheduleBlock[], weekDays: NdwuWeekDay[]): NdwuScheduleValue => {
+  const value: NdwuScheduleValue = {};
 
   weekDays.forEach((weekDay) => {
     value[weekDay.day] = [];
   });
 
   blocks.forEach((block) => {
-    const day = NDM_DAY_TO_DAY[block.day];
+    const day = NDWU_NDM_DAY_TO_DAY[block.day];
 
     if (!day) {
       return;
@@ -69,9 +77,9 @@ export const blocksToValue = (blocks: ScheduleBlock[], weekDays: WeekDay[]): Sch
   return value;
 };
 
-const blocksToLines = (blocks: ScheduleBlock[]): ScheduleInterval[][] => {
-  const lines: ScheduleInterval[][] = new Array<ScheduleInterval[]>(DAYS_IN_WEEK)
-    .fill(null as unknown as ScheduleInterval[])
+const blocksToLines = (blocks: NdwuScheduleBlock[]): NdwuScheduleInterval[][] => {
+  const lines: NdwuScheduleInterval[][] = new Array<NdwuScheduleInterval[]>(DAYS_IN_WEEK)
+    .fill(null as unknown as NdwuScheduleInterval[])
     .map(() => []);
 
   blocks.forEach((b) => {
@@ -87,8 +95,8 @@ const blocksToLines = (blocks: ScheduleBlock[]): ScheduleInterval[][] => {
   return lines;
 };
 
-export const subtractLines = (lines: ScheduleInterval[], line: ScheduleInterval): ScheduleInterval[] => {
-  const newArr: ScheduleInterval[] = [];
+export const subtractLines = (lines: NdwuScheduleInterval[], line: NdwuScheduleInterval): NdwuScheduleInterval[] => {
+  const newArr: NdwuScheduleInterval[] = [];
 
   for (const fromLine of lines) {
     if (fromLine[0] >= line[0] && fromLine[1] <= line[1]) {
@@ -121,10 +129,10 @@ export const subtractLines = (lines: ScheduleInterval[], line: ScheduleInterval)
   return newArr;
 };
 
-export function subtractBlocks(sourceArray: ScheduleBlock[], blocks: ScheduleBlock[]): ScheduleBlock[] {
+export function subtractBlocks(sourceArray: NdwuScheduleBlock[], blocks: NdwuScheduleBlock[]): NdwuScheduleBlock[] {
   const days1 = blocksToLines(sourceArray);
   const days2 = blocksToLines(blocks);
-  const subtractedArr: ScheduleBlock[] = [];
+  const subtractedArr: NdwuScheduleBlock[] = [];
 
   Object.keys(days1)
     .map(Number)
@@ -163,13 +171,13 @@ export function subtractBlocks(sourceArray: ScheduleBlock[], blocks: ScheduleBlo
   return subtractedArr;
 }
 
-export function glueBlocks(arr: ScheduleInterval[]): ScheduleInterval[] {
+export function glueBlocks(arr: NdwuScheduleInterval[]): NdwuScheduleInterval[] {
   if (arr.length <= 1) {
     return arr;
   }
 
   const sorted = [...arr].sort((a, b) => a[0] - b[0]);
-  const result: ScheduleInterval[] = sorted[0] ? [sorted[0]] : [];
+  const result: NdwuScheduleInterval[] = sorted[0] ? [sorted[0]] : [];
 
   for (let i = 1; i < sorted.length; i++) {
     const last = result.at(-1);
@@ -189,12 +197,12 @@ export function glueBlocks(arr: ScheduleInterval[]): ScheduleInterval[] {
   return result;
 }
 
-export function simplifyBlocks(blocks: ScheduleBlock[]): ScheduleBlock[] {
+export function simplifyBlocks(blocks: NdwuScheduleBlock[]): NdwuScheduleBlock[] {
   if (blocks.length === 0) {
     return [];
   }
 
-  const result: ScheduleBlock[] = [];
+  const result: NdwuScheduleBlock[] = [];
   const linesInfo = blocksToLines(blocks);
 
   linesInfo.forEach((info, line) => {

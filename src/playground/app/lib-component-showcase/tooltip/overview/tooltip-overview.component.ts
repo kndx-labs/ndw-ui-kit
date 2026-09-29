@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NdwuButtonComponent,
   NdwuIconComponent,
   NdwuPopoverAlign,
@@ -30,7 +30,7 @@ const ALIGNS: readonly NdwuPopoverAlign[] = ['center', 'start', 'end'];
   ],
 })
 export class TooltipOverviewComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   protected readonly multilineText =
     'Copy hexadecimal value to clipboard Copy hexadecimal value to clipboard value to clipboard '

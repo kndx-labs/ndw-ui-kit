@@ -19,7 +19,7 @@ export const NDWU_DEFAULT_OPTION_ADAPTER: NdwuOptionAdapter<NdwuOption> = {
  * Resolves the option adapter from the resolution chain:
  *   explicit adapter > DI config > built-in identity adapter for NdwuOption.
  */
-export function resolveOptionsAdapter<T>(
+export function ndwuResolveOptionsAdapter<T>(
   explicitAdapter: NdwuOptionAdapter<T> | undefined,
   diConfig: NdwuOptionConfig<unknown> | null,
 ): NdwuOptionAdapter<T> {
@@ -36,7 +36,7 @@ function resolve<T, R>(item: T, selector: Extract<keyof T, string> | ((item: T) 
   return item[selector] as unknown as R;
 }
 
-export function normalizeOptions<T>(
+export function ndwuNormalizeOptions<T>(
   items: readonly T[],
   adapter: NdwuOptionAdapter<T>,
 ): NdwuOption[] {
@@ -50,19 +50,19 @@ export function normalizeOptions<T>(
 
       if (value === null || value === undefined) {
         console.warn(
-          `[ndw-ui-kit] normalizeOptions: item at index ${index} resolved value to ${value} via adapter.`,
+          `[ndw-ui-kit] ndwuNormalizeOptions: item at index ${index} resolved value to ${value} via adapter.`,
         );
       }
 
       if (label === null || label === undefined) {
         console.warn(
-          `[ndw-ui-kit] normalizeOptions: item at index ${index} resolved label to ${label} via adapter.`,
+          `[ndw-ui-kit] ndwuNormalizeOptions: item at index ${index} resolved label to ${label} via adapter.`,
         );
       }
 
       if (seen.has(value)) {
         console.warn(
-          `[ndw-ui-kit] normalizeOptions: duplicate value "${value}" at index ${index}. @for tracking may break.`,
+          `[ndw-ui-kit] ndwuNormalizeOptions: duplicate value "${value}" at index ${index}. @for tracking may break.`,
         );
       }
     }

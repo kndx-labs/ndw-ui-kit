@@ -23,7 +23,7 @@ import {
 } from '@ndw-ui-kit/core/table';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NdwuBadgeComponent,
   NdwuButtonComponent,
   NdwuCheckboxComponent,
@@ -85,7 +85,7 @@ const STATUSES = ['online', 'offline'] as const satisfies readonly Device['statu
   ],
 })
 export class DeviceTableComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   protected readonly translationTexts: NdwuTableTranslationTexts = {
     paginator: {

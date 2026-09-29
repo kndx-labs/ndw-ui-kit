@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NDWU_MODAL_DATA,
   NDWU_MODAL_REF,
   NdwuIconComponent,
@@ -69,7 +69,7 @@ export interface SearchModalData {
   },
 })
 export class NdwuSearchComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   private readonly modalData = inject<SearchModalData>(NDWU_MODAL_DATA);
   private readonly modalRef = inject(NDWU_MODAL_REF, {optional: true}) as NdwuModalRef<SearchItem> | null;

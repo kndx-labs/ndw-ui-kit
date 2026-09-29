@@ -1,4 +1,4 @@
-import {ScheduleBlock, ScheduleTimePoint} from '../schedule-editor.types';
+import {NdwuScheduleBlock, NdwuScheduleTimePoint} from '../schedule-editor.types';
 import {minutesToHourShort, minutesToTime} from './schedule-blocks.utils';
 import {ScheduleLayout} from './schedule.layout';
 import {
@@ -71,7 +71,7 @@ export class MobileScheduleLayout extends ScheduleLayout {
     return {x, y, width, height};
   }
 
-  public coordsToTimeSlot(params: CoordsToTimeSlotParams): ScheduleTimePoint | null {
+  public coordsToTimeSlot(params: CoordsToTimeSlotParams): NdwuScheduleTimePoint | null {
     const {svgPoint, offset, canvasWidth, gridWidth, gridHeight} = params;
     const horizontalBound = canvasWidth - offset.right;
     const x = svgPoint.x < horizontalBound ? svgPoint.x : horizontalBound - 1;
@@ -163,7 +163,7 @@ export class MobileScheduleLayout extends ScheduleLayout {
     return texts;
   }
 
-  public getTextForBlock(block: ScheduleBlock, timeAxisExtent: number): string[] {
+  public getTextForBlock(block: NdwuScheduleBlock, timeAxisExtent: number): string[] {
     if (timeAxisExtent < MIN_BLOCK_TEXT_MOBILE_PX) {
       return [];
     }

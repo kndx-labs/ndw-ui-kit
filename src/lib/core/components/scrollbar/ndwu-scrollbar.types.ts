@@ -1,25 +1,25 @@
-export type ScrollbarAxis = 'x' | 'y';
+export type NdwuScrollbarAxis = 'x' | 'y';
 
-export interface AxisElements {
+export interface NdwuAxisElements {
   readonly track: HTMLElement;
   readonly thumb: HTMLElement;
 }
 
-export interface AxisMetrics {
+export interface NdwuAxisMetrics {
   readonly contentSize: number;
   readonly clientSize: number;
   readonly scrollOffset: number;
   readonly trackSize: number;
 }
 
-export interface DragState {
-  readonly axis: ScrollbarAxis;
+export interface NdwuDragState {
+  readonly axis: NdwuScrollbarAxis;
   readonly pointerId: number;
   readonly pointerOffset: number;
   readonly trackStart: number;
 }
 
-export type AxisConfigEntry =
+export type NdwuAxisConfigEntry =
   | {
     readonly contentSize: 'scrollHeight';
     readonly clientSize: 'clientHeight';

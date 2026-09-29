@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NDWU_MODAL_REF,
   NdwuButtonComponent,
   NdwuFormContainerComponent,
@@ -33,7 +33,7 @@ import {ERROR_KEY, Validator, ValidatorFactory} from '@app/validation';
   ],
 })
 export class FormDialogComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   protected readonly form: FormGroup;
 

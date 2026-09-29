@@ -12,11 +12,11 @@ import {
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {NdwuAdaptivePictogramComponent} from '../pictogram/ndwu-adaptive-pictogram.component';
-import {PictogramBaseName} from '../pictogram/ndwu-adaptive-pictogram.helpers';
-import {PictogramVariant} from '../../../pictogram-presets';
+import {NdwuPictogramBaseName} from '../pictogram/ndwu-adaptive-pictogram.helpers';
+import {NdwuPictogramVariant} from '../../../pictogram-presets';
 import {NdwuAdaptiveSizeDirective, NdwuSizeDirective} from '../../directives';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
-import {SIZE} from '../../../shared.types';
+import {NDWU_SIZE} from '../../../shared.types';
 
 @Component({
   selector: 'ndwu-empty-state',
@@ -53,14 +53,14 @@ export class NdwuEmptyStateComponent {
     return this.adaptiveSvc.adaptiveSize() ?? this.sizeSvc.effectiveSize();
   });
 
-  public readonly pictogram = input.required<PictogramBaseName>();
-  public readonly pictogramVariant = input<PictogramVariant>('DEFAULT');
+  public readonly pictogram = input.required<NdwuPictogramBaseName>();
+  public readonly pictogramVariant = input<NdwuPictogramVariant>('DEFAULT');
   public readonly header = input<string>();
   public readonly description = input<string>();
 
   protected readonly pictogramFlags: NdwuSizeFlags = {
-    XL: computed(() => this.resolvedSize() === SIZE.XL),
-    L: computed(() => this.resolvedSize() !== SIZE.XL),
+    XL: computed(() => this.resolvedSize() === NDWU_SIZE.XL),
+    L: computed(() => this.resolvedSize() !== NDWU_SIZE.XL),
   };
 
   protected readonly actionsContainer = viewChild<ElementRef<HTMLDivElement>>('actionsContainer');
@@ -69,7 +69,7 @@ export class NdwuEmptyStateComponent {
   protected readonly hostClasses = computed(() => {
     const classList = [
       'ndwu-empty-state',
-      `ndwu-empty-state--${this.resolvedSize() === SIZE.XL ? 'XL' : 'L'}`,
+      `ndwu-empty-state--${this.resolvedSize() === NDWU_SIZE.XL ? 'XL' : 'L'}`,
     ];
 
     if (this.hasActions()) {

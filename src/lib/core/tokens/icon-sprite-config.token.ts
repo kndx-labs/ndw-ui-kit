@@ -1,24 +1,24 @@
 import {InjectionToken, Provider} from '@angular/core';
-import {BASE_ICON_NAMES, EXTRA_ICON_NAME, ICON_NAME, IconName} from '../../icon-names';
+import {NDWU_BASE_ICON_NAMES, NDWU_EXTRA_ICON_NAME, NDWU_ICON_NAME, NdwuIconName} from '../../icon-names';
 
 export interface NdwuIconSpriteSource {
   path: string;
-  iconNames: readonly IconName[];
+  iconNames: readonly NdwuIconName[];
 }
 
 export interface NdwuIconSpriteConfig {
   sources: readonly NdwuIconSpriteSource[];
-  fallbackIconName: IconName;
+  fallbackIconName: NdwuIconName;
 }
 
 const CORE_SPRITE_SOURCE: NdwuIconSpriteSource = {
   path: 'assets/ndw-ui-kit.sprite.svg',
-  iconNames: BASE_ICON_NAMES,
+  iconNames: NDWU_BASE_ICON_NAMES,
 };
 
 const EXTRA_SPRITE_SOURCE: NdwuIconSpriteSource = {
   path: 'assets/ndw-ui-kit.extra.sprite.svg',
-  iconNames: Object.values(EXTRA_ICON_NAME),
+  iconNames: Object.values(NDWU_EXTRA_ICON_NAME),
 };
 
 export const NDWU_ICON_SPRITE_CONFIG = new InjectionToken<NdwuIconSpriteConfig>(
@@ -27,7 +27,7 @@ export const NDWU_ICON_SPRITE_CONFIG = new InjectionToken<NdwuIconSpriteConfig>(
     factory: () => {
       return {
         sources: [CORE_SPRITE_SOURCE],
-        fallbackIconName: ICON_NAME.WARNING_S,
+        fallbackIconName: NDWU_ICON_NAME.WARNING_S,
       };
     },
   },
@@ -38,7 +38,7 @@ export const provideAllNdwUiKitIcons = (): Provider => {
     provide: NDWU_ICON_SPRITE_CONFIG,
     useValue: {
       sources: [CORE_SPRITE_SOURCE, EXTRA_SPRITE_SOURCE],
-      fallbackIconName: ICON_NAME.WARNING_S,
+      fallbackIconName: NDWU_ICON_NAME.WARNING_S,
     } satisfies NdwuIconSpriteConfig,
   };
 };
@@ -66,12 +66,12 @@ export const provideAllNdwUiKitIcons = (): Provider => {
  *
  * @param config.path       - URL/path to the custom sprite SVG file served by your app.
  * @param config.iconNames  - The icon names included in the custom sprite.
- *                            Accepts `readonly IconName[]` so you can pass the typed array
+ *                            Accepts `readonly NdwuIconName[]` so you can pass the typed array
  *                            exported by your config file directly.
  */
 export const provideNdwUiKitCustomIcons = (config: {
   path: string;
-  iconNames: readonly IconName[];
+  iconNames: readonly NdwuIconName[];
 }): Provider => {
   const customSource: NdwuIconSpriteSource = {
     path: config.path,
@@ -82,7 +82,7 @@ export const provideNdwUiKitCustomIcons = (config: {
     provide: NDWU_ICON_SPRITE_CONFIG,
     useValue: {
       sources: [CORE_SPRITE_SOURCE, customSource],
-      fallbackIconName: ICON_NAME.WARNING_S,
+      fallbackIconName: NDWU_ICON_NAME.WARNING_S,
     } satisfies NdwuIconSpriteConfig,
   };
 };

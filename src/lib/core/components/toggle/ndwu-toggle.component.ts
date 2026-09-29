@@ -14,7 +14,7 @@ import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuSizeDirective} from '../../directives';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
 import {NdwuLabelGroupComponent} from '../label-group/ndwu-label-group.component';
-import {TOGGLE_COLOR, coerceToggleColor} from './ndwu-toggle.types';
+import {NDWU_TOGGLE_COLOR, ndwuCoerceToggleColor} from './ndwu-toggle.types';
 
 @Component({
   selector: 'ndwu-toggle',
@@ -34,7 +34,7 @@ export class NdwuToggleComponent {
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly label = input<string>('');
   public readonly secondaryText = input<string>('');
-  public readonly color = input(TOGGLE_COLOR.BRAND, {transform: coerceToggleColor});
+  public readonly color = input(NDWU_TOGGLE_COLOR.BRAND, {transform: ndwuCoerceToggleColor});
 
   public readonly checkedChange = output<boolean>();
   public readonly blurred = output<void>();

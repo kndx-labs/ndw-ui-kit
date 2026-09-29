@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, computed, inject, input, model, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NDWU_SIZE_TOKEN,
   NdwuIconButtonComponent,
   type NdwuOption,
@@ -52,7 +52,7 @@ const DEFAULT_PAGINATOR_TEXTS = {
   },
 })
 export class NdwuPaginatorComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   protected readonly rootClass = computed(() => `ndwu-paginator ndwu-paginator--${this.sizeSvc.effectiveSize()}`);

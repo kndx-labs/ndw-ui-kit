@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {NdwuCardComponent, SIZE, type Size} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, NdwuCardComponent, type NdwuSize} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -15,5 +15,5 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class CardOverviewComponent {
-  protected readonly sizes: Size[] = [SIZE.L, SIZE.XL, SIZE.XXL];
+  protected readonly sizes: NdwuSize[] = [NDWU_SIZE.L, NDWU_SIZE.XL, NDWU_SIZE.XXL];
 }

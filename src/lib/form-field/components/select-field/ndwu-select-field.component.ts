@@ -1,8 +1,9 @@
 import {Component, booleanAttribute, computed, inject, input, viewChild} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NDWU_OPTION_CONFIG,
+  NDWU_SIZE,
   type NdwuControl,
   NdwuControlProviderDirective,
   NdwuDropdownPanelComponent,
@@ -19,9 +20,8 @@ import {
   NdwuStyledGroupHeaderComponent,
   NdwuStyledListboxComponent,
   NdwuStyledOptionComponent,
-  SIZE,
-  normalizeOptions,
-  resolveOptionsAdapter,
+  ndwuNormalizeOptions,
+  ndwuResolveOptionsAdapter,
 } from '@ndw-ui-kit/core';
 import {LocalizeIfPipe, LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
@@ -65,7 +65,7 @@ import {type NdwuSelectRenderRow, buildSelectRenderRows} from '../../classes/sel
   }],
 })
 export class NdwuSelectFieldComponent<T = NdwuOption> extends SelectFieldBase<string | number> implements NdwuControl {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
   protected readonly diOptionConfig = inject(NDWU_OPTION_CONFIG, {optional: true}) ?? null;
 
   protected readonly triggerResize = viewChild.required(NdwuResizeObserverDirective);
@@ -85,14 +85,14 @@ export class NdwuSelectFieldComponent<T = NdwuOption> extends SelectFieldBase<st
   }
 
   protected readonly dropdownSize = computed(() => {
-    return this.isMobileViewport() ? SIZE.XL : this.sizeSvc.effectiveSize();
+    return this.isMobileViewport() ? NDWU_SIZE.XL : this.sizeSvc.effectiveSize();
   });
 
   // == Component-specific ====================================================
   protected readonly normalizedOptions = computed<NdwuOption[]>(() => {
-    return normalizeOptions(
+    return ndwuNormalizeOptions(
       this.options(),
-      resolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
+      ndwuResolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
     );
   });
 

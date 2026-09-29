@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
 import {CdkDragHandle} from '@angular/cdk/drag-drop';
-import {ICON_NAME, NdwuIconComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
+import {NDWU_ICON_NAME, NdwuIconComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
@@ -25,7 +25,7 @@ const DEFAULT_ROW_DRAG_HANDLE_TEXTS = {
   },
 })
 export class NdwuRowDragHandleComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   protected readonly rootClass = computed(() => {

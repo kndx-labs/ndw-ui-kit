@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
-import {NdwuTimingButtonComponent, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, NdwuTimingButtonComponent} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -15,7 +15,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class TimingButtonOverviewComponent {
-  public readonly SIZES = Object.values(SIZE).filter((size) => size !== SIZE.S);
+  public readonly SIZES = Object.values(NDWU_SIZE).filter((size) => size !== NDWU_SIZE.S);
 
   public timerLoading = signal(false);
   public timerVisible = signal(true);

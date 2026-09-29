@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Signal, computed, signal} from '@angular/core';
-import {NdwuButtonComponent, NdwuEmptyStateComponent, Size} from '@ndw-ui-kit/core';
+import {NdwuButtonComponent, NdwuEmptyStateComponent, NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
@@ -14,7 +14,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
 export class EmptyStateOverviewComponent {
   protected readonly emptyStateIsDesktop = signal(true);
   protected readonly emptyStateIsMobile: Signal<boolean> = computed(() => !this.emptyStateIsDesktop());
-  protected readonly emptyStateSizeFlags: NdwuSizeFlags<Size> = {
+  protected readonly emptyStateSizeFlags: NdwuSizeFlags<NdwuSize> = {
     XL: this.emptyStateIsDesktop,
     L: this.emptyStateIsMobile,
   };

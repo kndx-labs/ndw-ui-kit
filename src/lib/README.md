@@ -341,7 +341,7 @@ preserving runtime checks inside `<ndwu-icon>`.
 }
 ```
 
-Icon names are string values of `EXTRA_ICON_NAME` exported from `@ndw-ui-kit/core`.
+Icon names are string values of `NDWU_EXTRA_ICON_NAME` exported from `@ndw-ui-kit/core`.
 The CLI validates every name and exits an error for any unknown name.
 
 ##### 2. Generate the sprite
@@ -417,14 +417,14 @@ support every value). Specify size on individual components:
 
 ```html
 
-<ndwu-button [size]="SIZE.L">Submit</ndwu-button>
+<ndwu-button [size]="NDWU_SIZE.L">Submit</ndwu-button>
 ```
 
 Use `ndwu-form-container` to set size for all child components at once:
 
 ```html
 
-<ndwu-form-container [size]="SIZE.XL">
+<ndwu-form-container [size]="NDWU_SIZE.XL">
   <ndwu-form-field>
     <ndwu-label>Email</ndwu-label>
     <input ndwuInput formControlName="email"/>
@@ -437,7 +437,7 @@ Size resolution priority:
 
 1. Explicit `[size]` on the component itself
 2. Inherited from the nearest parent container
-3. Default (`SIZE.XL`)
+3. Default (`NDWU_SIZE.XL`)
 
 ### Component tokens
 

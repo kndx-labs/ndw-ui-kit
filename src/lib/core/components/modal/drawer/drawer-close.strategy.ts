@@ -4,7 +4,7 @@ import type {NdwuModalCloseStrategy} from '../close-strategy';
 import {NDWU_DRAWER_CLOSE_FALLBACK_DURATION} from './ndwu-drawer.constants';
 import {onAnimationEndOrFallback} from '../wait-for-animation-end';
 
-export class DrawerCloseStrategy implements NdwuModalCloseStrategy {
+export class NdwuDrawerCloseStrategy implements NdwuModalCloseStrategy {
   public close(overlayRef: OverlayRef): Observable<void> {
     return new Observable<void>((subscriber) => {
       const drawerEl = overlayRef.overlayElement.querySelector<HTMLElement>('.ndwu-drawer');

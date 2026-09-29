@@ -10,7 +10,7 @@ import {
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NdwuButtonComponent,
   NdwuDialogContainerComponent,
   NdwuModalActionsDirective,
@@ -45,7 +45,7 @@ import {ScrollableDialogComponent} from '../dialog/scrollable-dialog/scrollable-
   ],
 })
 export class DrawerShowcaseComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   protected readonly httpClient = inject(HttpClient);
   protected readonly modalService = inject(NdwuModalService);

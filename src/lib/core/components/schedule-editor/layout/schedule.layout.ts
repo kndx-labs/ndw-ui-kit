@@ -1,5 +1,5 @@
-import {ScheduleArea, ScheduleBlock, ScheduleTimePoint, type WeekDay} from '../schedule-editor.types';
-import {DAY_TO_NDM_DAY} from '../schedule-editor.constants';
+import {NdwuScheduleArea, NdwuScheduleBlock, NdwuScheduleTimePoint, type NdwuWeekDay} from '../schedule-editor.types';
+import {NDWU_DAY_TO_NDM_DAY} from '../schedule-editor.constants';
 import {
   AxisLabel,
   BlockRect,
@@ -34,11 +34,11 @@ export abstract class ScheduleLayout {
 
   public abstract generateBlockFromPoints(params: GenerateBlockFromPointsParams): ScheduleGridBlock;
 
-  public abstract coordsToTimeSlot(params: CoordsToTimeSlotParams): ScheduleTimePoint | null;
+  public abstract coordsToTimeSlot(params: CoordsToTimeSlotParams): NdwuScheduleTimePoint | null;
 
   public abstract getAxesText(params: GetAxesTextParams): AxisLabel[];
 
-  public abstract getTextForBlock(block: ScheduleBlock, timeAxisExtent: number): string[];
+  public abstract getTextForBlock(block: NdwuScheduleBlock, timeAxisExtent: number): string[];
 
   public abstract getGridLines(params: GetGridLinesParams): GridLine[];
 
@@ -79,7 +79,7 @@ export abstract class ScheduleLayout {
     return Array.from({length: DAYS_IN_WEEK}, (_, i) => (i + 1) * slotSize + offset);
   }
 
-  public normalizePointsArea(p1: ScheduleTimePoint, p2: ScheduleTimePoint): ScheduleArea {
+  public normalizePointsArea(p1: NdwuScheduleTimePoint, p2: NdwuScheduleTimePoint): NdwuScheduleArea {
     const startTime = Math.min(p1.gridTime, p2.gridTime);
     // A drag selects its end slot inclusively, so the exclusive end of the area
     // is one slot past the last selected one.
@@ -149,17 +149,17 @@ export abstract class ScheduleLayout {
 
   public applyChange(
     params: {
-      blocks: ScheduleBlock[];
-      p1: ScheduleTimePoint;
-      p2: ScheduleTimePoint;
-      weekDays: WeekDay[];
+      blocks: NdwuScheduleBlock[];
+      p1: NdwuScheduleTimePoint;
+      p2: NdwuScheduleTimePoint;
+      weekDays: NdwuWeekDay[];
       isRemove?: boolean;
     },
-  ): ScheduleBlock[] {
+  ): NdwuScheduleBlock[] {
     const {blocks, p1, p2, weekDays, isRemove} = params;
     const {startTime, startDay, endTime, endDay} = this.normalizePointsArea(p1, p2);
 
-    const newBlocks: ScheduleBlock[] = [];
+    const newBlocks: NdwuScheduleBlock[] = [];
 
     for (let i = startDay; i <= endDay; i++) {
       const weekDay = weekDays[i];
@@ -168,7 +168,7 @@ export abstract class ScheduleLayout {
         continue;
       }
 
-      newBlocks.push({day: DAY_TO_NDM_DAY[weekDay.day], start: startTime, stop: endTime});
+      newBlocks.push({day: NDWU_DAY_TO_NDM_DAY[weekDay.day], start: startTime, stop: endTime});
     }
 
     const updated = isRemove ? subtractBlocks(blocks, newBlocks) : [...blocks, ...newBlocks];
@@ -176,11 +176,11 @@ export abstract class ScheduleLayout {
     return simplifyBlocks(updated);
   }
 
-  protected findDayIndex(weekDays: WeekDay[], block: ScheduleBlock): number {
-    return weekDays.findIndex((weekDay) => DAY_TO_NDM_DAY[weekDay.day] === block.day);
+  protected findDayIndex(weekDays: NdwuWeekDay[], block: NdwuScheduleBlock): number {
+    return weekDays.findIndex((weekDay) => NDWU_DAY_TO_NDM_DAY[weekDay.day] === block.day);
   }
 
-  private getOccupiedSlots(weekDays: WeekDay[], blocks: ScheduleBlock[]): Map<number, Set<number>> {
+  private getOccupiedSlots(weekDays: NdwuWeekDay[], blocks: NdwuScheduleBlock[]): Map<number, Set<number>> {
     const occupied = new Map<number, Set<number>>();
 
     blocks.forEach((block) => {

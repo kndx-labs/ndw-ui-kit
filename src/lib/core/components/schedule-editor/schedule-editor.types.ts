@@ -1,22 +1,22 @@
-import {Values} from '../../../shared.types';
+import {NdwuValues} from '../../../shared.types';
 
 /* --------- Types exported from the library ------------- */
 
-export enum SCHEDULE_ACTION {
+export enum NDWU_SCHEDULE_ACTION {
   START = 'start',
   STOP = 'stop',
 }
 
-export interface ScheduleAction {
-  action: SCHEDULE_ACTION;
+export interface NdwuScheduleAction {
+  action: NDWU_SCHEDULE_ACTION;
   min: string;
   hour: string;
   dow: string;
 }
 
-export type ScheduleInterval = [number, number];
+export type NdwuScheduleInterval = [number, number];
 
-export type DayName =
+export type NdwuDayName =
   | 'mon'
   | 'tue'
   | 'wed'
@@ -25,8 +25,8 @@ export type DayName =
   | 'sat'
   | 'sun';
 
-export interface WeekDay {
-  day: DayName;
+export interface NdwuWeekDay {
+  day: NdwuDayName;
   label: string;
 }
 
@@ -35,14 +35,14 @@ export const NDWU_SCHEDULE_EDITOR_MODE = {
   FULL: 'full',
 } as const;
 
-export type NdwuScheduleEditorMode = Values<typeof NDWU_SCHEDULE_EDITOR_MODE>;
+export type NdwuScheduleEditorMode = NdwuValues<typeof NDWU_SCHEDULE_EDITOR_MODE>;
 
 export const NDWU_SCHEDULE_EDITOR_LAYOUT = {
   DESKTOP: 'desktop',
   MOBILE: 'mobile',
 } as const;
 
-export type NdwuScheduleEditorLayout = Values<typeof NDWU_SCHEDULE_EDITOR_LAYOUT>;
+export type NdwuScheduleEditorLayout = NdwuValues<typeof NDWU_SCHEDULE_EDITOR_LAYOUT>;
 
 export const NDWU_SCHEDULE_EDITOR_SIZING = {
   FIXED: 'fixed',
@@ -50,23 +50,23 @@ export const NDWU_SCHEDULE_EDITOR_SIZING = {
   FILL: 'fill',
 } as const;
 
-export type NdwuScheduleEditorSizing = Values<typeof NDWU_SCHEDULE_EDITOR_SIZING>;
+export type NdwuScheduleEditorSizing = NdwuValues<typeof NDWU_SCHEDULE_EDITOR_SIZING>;
 
-export type ScheduleValue = Partial<Record<DayName, ScheduleInterval[]>>;
+export type NdwuScheduleValue = Partial<Record<NdwuDayName, NdwuScheduleInterval[]>>;
 
-export interface ScheduleTimePoint {
+export interface NdwuScheduleTimePoint {
   gridTime: number;
   gridDay: number;
 }
 
-export interface ScheduleArea {
+export interface NdwuScheduleArea {
   startTime: number;
   endTime: number;
   startDay: number;
   endDay: number;
 }
 
-export interface ScheduleBlock {
+export interface NdwuScheduleBlock {
   start: number;
   stop: number;
   day: number;

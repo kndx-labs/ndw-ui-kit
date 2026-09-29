@@ -16,12 +16,12 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {merge} from 'rxjs';
 import {NDWU_VALIDATION_PROCESSOR, NdwuValidationData} from '../../validation';
 import {
-  ICON_NAME,
-  type IconName,
+  NDWU_ICON_NAME,
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
   NdwuHintDirective,
   NdwuIconComponent,
+  type NdwuIconName,
   NdwuInputDirective,
   NdwuRightIconDirective,
   NdwuSizeDirective,
@@ -60,7 +60,7 @@ export class NdwuInputFieldComponent extends FormFieldBase<string> implements On
   public readonly type = input<'text' | 'password'>('text');
   public readonly readonly = input(false, {transform: booleanAttribute});
 
-  public readonly rightIcon = input<IconName | undefined>(undefined);
+  public readonly rightIcon = input<NdwuIconName | undefined>(undefined);
   public readonly rightIconClicked = output<MouseEvent>();
 
   public readonly showPasswordIconLabel = input<string>('');
@@ -81,7 +81,7 @@ export class NdwuInputFieldComponent extends FormFieldBase<string> implements On
   });
 
   protected readonly eyeIcon = computed(() => {
-    return this.isPasswordVisible() ? ICON_NAME.EYE_OFF_S : ICON_NAME.EYE_ON_S;
+    return this.isPasswordVisible() ? NDWU_ICON_NAME.EYE_OFF_S : NDWU_ICON_NAME.EYE_ON_S;
   });
 
   protected readonly eyeIconLabel = computed(() => {

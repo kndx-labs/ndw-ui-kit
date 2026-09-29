@@ -46,11 +46,11 @@ const main = (): void => {
     const content = `
 ${getCodegenComment(__filename)}
 
-export const PICTOGRAM_NAME = {
+export const NDWU_PICTOGRAM_NAME = {
 ${declarations.join(EOL)}
 } as const;
 
-export type PictogramName = (typeof PICTOGRAM_NAME)[keyof typeof PICTOGRAM_NAME];
+export type NdwuPictogramName = (typeof NDWU_PICTOGRAM_NAME)[keyof typeof NDWU_PICTOGRAM_NAME];
 `.trimStart();
 
     writeFileSync(OUTPUT_FILE, content, 'utf-8');

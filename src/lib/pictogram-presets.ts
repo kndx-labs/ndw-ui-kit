@@ -1,4 +1,4 @@
-export const PICTOGRAM_VARIANTS = {
+export const NDWU_PICTOGRAM_VARIANTS = {
   DEFAULT: {
     firstColor: '#219CDE',
     secondColor: '#E0EEFD',
@@ -21,4 +21,4 @@ export const PICTOGRAM_VARIANTS = {
   },
 } as const;
 
-export type PictogramVariant = keyof typeof PICTOGRAM_VARIANTS;
+export type NdwuPictogramVariant = keyof typeof NDWU_PICTOGRAM_VARIANTS;

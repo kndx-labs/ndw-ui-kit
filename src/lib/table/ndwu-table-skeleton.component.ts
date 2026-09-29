@@ -1,10 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  computed,
-  input,
-  numberAttribute,
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, input, numberAttribute} from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 

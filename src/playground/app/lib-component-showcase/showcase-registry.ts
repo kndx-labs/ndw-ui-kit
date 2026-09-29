@@ -18,8 +18,8 @@ import {InputShowcaseComponent} from './input/input-showcase.component';
 import {PasswordInputFieldShowcaseComponent} from './password-input-field/password-input-field-showcase.component';
 import {MultiSelectFieldShowcaseComponent} from './multi-select-field/multi-select-field-showcase.component';
 import {RadioShowcaseComponent} from './radio/radio-showcase.component';
-import {SelectFieldShowcaseComponent} from './select-field/select-field-showcase.component';
 import {RouterLoaderShowcaseComponent} from './router-loader/router-loader-showcase.component';
+import {SelectFieldShowcaseComponent} from './select-field/select-field-showcase.component';
 import {SpokesLoaderShowcaseComponent} from './spokes-loader/spokes-loader-showcase.component';
 import {ProgressBarShowcaseComponent} from './progress-bar/progress-bar-showcase.component';
 import {ToggleShowcaseComponent} from './toggle/toggle-showcase.component';
@@ -50,8 +50,8 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-popover': PopoverShowcaseComponent,
   'ndwu-dialog': DialogShowcaseComponent,
   'ndwu-drawer': DrawerShowcaseComponent,
-  'ndwu-spokes-loader': SpokesLoaderShowcaseComponent,
   'ndwu-router-loader': RouterLoaderShowcaseComponent,
+  'ndwu-spokes-loader': SpokesLoaderShowcaseComponent,
   'ndwu-progress-bar': ProgressBarShowcaseComponent,
   'ndwu-toggle': ToggleShowcaseComponent,
   'ndwu-card': CardShowcaseComponent,

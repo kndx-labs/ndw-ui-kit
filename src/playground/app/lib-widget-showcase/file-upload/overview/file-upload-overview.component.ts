@@ -1,13 +1,12 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, Signal, computed, signal, viewChild} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {NDWU_SIZE, type NdwuSize} from '@ndw-ui-kit/core';
 import {
-  NDWU_SIZE,
   type NdwuFileInputValue,
   NdwuFileItemComponent,
   NdwuFileUploadComponent,
-  type NdwuSize,
   type NdwuTranslationTexts,
-} from '@ndw-ui-kit/core';
+} from '@ndw-ui-kit/core/widgets';
 import {NdwuFileUploadFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';

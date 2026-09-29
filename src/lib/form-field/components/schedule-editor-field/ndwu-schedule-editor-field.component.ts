@@ -10,7 +10,7 @@ import {
   type NdwuScheduleEditorSizing,
   type NdwuScheduleValue,
   type NdwuWeekDay,
-} from '@ndw-ui-kit/core';
+} from '@ndw-ui-kit/core/widgets';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor, syncIsInvalid} from '../../form-field.utils';
 

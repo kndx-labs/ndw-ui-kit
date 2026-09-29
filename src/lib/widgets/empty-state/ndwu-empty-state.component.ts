@@ -11,12 +11,15 @@ import {
 } from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
-import {NdwuAdaptivePictogramComponent} from '../pictogram/ndwu-adaptive-pictogram.component';
-import {NdwuPictogramBaseName} from '../pictogram/ndwu-adaptive-pictogram.helpers';
-import {NdwuPictogramVariant} from '../../../pictogram-presets';
-import {NdwuAdaptiveSizeDirective, NdwuSizeDirective} from '../../directives';
-import {NDWU_SIZE_TOKEN} from '../../tokens';
-import {NDWU_SIZE} from '../../../shared.types';
+import {
+  NDWU_SIZE,
+  NDWU_SIZE_TOKEN,
+  NdwuAdaptivePictogramComponent,
+  NdwuAdaptiveSizeDirective,
+  NdwuPictogramBaseName,
+  NdwuPictogramVariant,
+  NdwuSizeDirective,
+} from '@ndw-ui-kit/core';
 
 @Component({
   selector: 'ndwu-empty-state',

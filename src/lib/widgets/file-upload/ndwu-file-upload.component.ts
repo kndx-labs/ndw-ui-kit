@@ -14,10 +14,15 @@ import {
   signal,
 } from '@angular/core';
 import {deepMerge, uniqueId} from '@ndw-ui-kit/core/utils';
-import {NDWU_SIZE} from '../../../shared.types';
-import {NdwuAdaptiveSizeDirective, NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
-import {NDWU_SIZE_TOKEN} from '../../tokens';
-import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
+import {
+  NDWU_INTERACTION_FOCUS_TYPE,
+  NDWU_SIZE,
+  NDWU_SIZE_TOKEN,
+  NdwuAdaptiveSizeDirective,
+  NdwuInteractionRegistry,
+  NdwuResizeObserverDirective,
+  NdwuSizeDirective,
+} from '@ndw-ui-kit/core';
 import {NdwuFileDropzoneComponent} from './ndwu-file-dropzone.component';
 import {NdwuFileItemComponent} from './ndwu-file-item.component';
 import {NdwuFileUploadHeaderComponent} from './ndwu-file-upload-header.component';

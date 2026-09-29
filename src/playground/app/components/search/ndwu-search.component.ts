@@ -20,7 +20,7 @@ import {
 } from '@ndw-ui-kit/core';
 import {NdwuInputFieldComponent} from '@ndw-ui-kit/core/form-field';
 
-export type SearchContentType = 'component' | 'example';
+export type SearchContentType = 'component' | 'widget' | 'example';
 
 export interface SearchItem {
   id: string;

@@ -16,12 +16,12 @@ import {
 import {toSignal} from '@angular/core/rxjs-interop';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map} from 'rxjs/operators';
+import {NdwuResizeObserverDirective} from '@ndw-ui-kit/core';
 import {blocksToActions} from './utils/schedule-timecoder.utils';
 import {blocksToValue, minutesToTime, simplifyBlocks, valueToBlocks} from './layout/schedule-blocks.utils';
 import {scheduleLayoutDesktopUtils} from './layout/desktop.schedule-layout';
 import {scheduleLayoutMobileUtils} from './layout/mobile.schedule-layout';
 import {ScheduleLayout} from './layout/schedule.layout';
-import {NdwuResizeObserverDirective} from '../../directives';
 import {
   NDWU_SCHEDULE_EDITOR_LAYOUT,
   NDWU_SCHEDULE_EDITOR_MODE,

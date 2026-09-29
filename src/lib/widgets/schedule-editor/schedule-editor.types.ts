@@ -1,4 +1,4 @@
-import {NdwuValues} from '../../../shared.types';
+import {NdwuValues} from '@ndw-ui-kit/core';
 
 /* --------- Types exported from the library ------------- */
 

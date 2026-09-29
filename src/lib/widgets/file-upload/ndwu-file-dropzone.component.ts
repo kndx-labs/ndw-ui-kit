@@ -12,13 +12,15 @@ import {
   viewChild,
 } from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {NDWU_ICON_NAME} from '../../../icon-names';
-import {NDWU_PICTOGRAM_NAME} from '../../../pictogram-names';
-import type {NdwuPictogramVariant} from '../../../pictogram-presets';
-import {NDWU_SIZE} from '../../../shared.types';
-import {NdwuSizeDirective} from '../../directives';
-import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
-import {NdwuPictogramComponent} from '../pictogram/ndwu-pictogram.component';
+import {
+  NDWU_ICON_NAME,
+  NDWU_PICTOGRAM_NAME,
+  NDWU_SIZE,
+  NdwuButtonComponent,
+  NdwuPictogramComponent,
+  type NdwuPictogramVariant,
+  NdwuSizeDirective,
+} from '@ndw-ui-kit/core';
 import type {NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 @Component({

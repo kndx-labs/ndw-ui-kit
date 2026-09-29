@@ -9,11 +9,14 @@ import {
   output,
 } from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {NDWU_ICON_NAME} from '../../../icon-names';
-import {NDWU_SIZE} from '../../../shared.types';
-import {NdwuSizeDirective} from '../../directives';
-import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
-import {NDWU_PROGRESS_BAR_COLOR, NdwuProgressBarComponent} from '../progress-bar/ndwu-progress-bar.component';
+import {
+  NDWU_ICON_NAME,
+  NDWU_PROGRESS_BAR_COLOR,
+  NDWU_SIZE,
+  NdwuButtonComponent,
+  NdwuProgressBarComponent,
+  NdwuSizeDirective,
+} from '@ndw-ui-kit/core';
 import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 @Component({

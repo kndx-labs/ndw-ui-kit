@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Signal, computed, signal} from '@angular/core';
-import {NdwuButtonComponent, NdwuEmptyStateComponent, NdwuSize} from '@ndw-ui-kit/core';
+import {NdwuButtonComponent, NdwuSize} from '@ndw-ui-kit/core';
+import {NdwuEmptyStateComponent} from '@ndw-ui-kit/core/widgets';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';

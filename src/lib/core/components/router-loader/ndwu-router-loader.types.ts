@@ -2,6 +2,7 @@ export type NdwuRouterLoaderSize = 'L' | 'XL';
 
 export interface NdwuRouterLoaderGeometry {
   size: number;
+  viewBox: string;
   shadowPath: string;
   shadowStrokeWidth: number;
   framePath: string;

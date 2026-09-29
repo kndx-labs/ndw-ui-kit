@@ -3,10 +3,9 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   ROUTER_LOADER_DURATION_FALLBACK,
   ROUTER_LOADER_GEOMETRY,
-  ROUTER_LOADER_SIZE_FALLBACK,
   coerceRouterLoaderDuration,
-  coerceRouterLoaderSize,
 } from './ndwu-router-loader.helpers';
+import {NdwuRouterLoaderSize} from './ndwu-router-loader.types';
 
 @Component({
   selector: 'ndwu-router-loader',
@@ -16,19 +15,13 @@ import {
   imports: [LocalizePipe],
 })
 export class NdwuRouterLoaderComponent {
-  public readonly size = input(ROUTER_LOADER_SIZE_FALLBACK, {transform: coerceRouterLoaderSize});
+  public readonly size = input<NdwuRouterLoaderSize>('XL');
   public readonly firstColor = input<string>('');
   public readonly secondColor = input<string>('');
   public readonly duration = input(ROUTER_LOADER_DURATION_FALLBACK, {transform: coerceRouterLoaderDuration}); // ms, one full cycle
-  public readonly ariaLabel = input<string>('Loading');
+  public readonly ariaLabel = input<string>('Loading'); // empty string hides the loader from assistive tech
 
   protected readonly geometry = computed(() => ROUTER_LOADER_GEOMETRY[this.size()]);
-
-  protected readonly viewBox = computed(() => {
-    const size = this.geometry().size;
-
-    return `0 0 ${size} ${size}`;
-  });
 
   // Empty inputs fall back to the theme tokens (see the component SCSS)
   protected readonly svgStyle = computed(() => {

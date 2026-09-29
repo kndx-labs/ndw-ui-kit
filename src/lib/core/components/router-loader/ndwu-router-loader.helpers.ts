@@ -1,24 +1,21 @@
+import {getCoerceToClampedNumberTransform} from '@ndw-ui-kit/core/utils';
 import {NdwuRouterLoaderGeometry, NdwuRouterLoaderSize} from './ndwu-router-loader.types';
 
-export const ROUTER_LOADER_SIZE_FALLBACK: NdwuRouterLoaderSize = 'XL';
-
 export const ROUTER_LOADER_DURATION_FALLBACK = 1500; // ms, matches the design
+export const ROUTER_LOADER_DURATION_MIN = 500; // ms, keeps fades slower than 3 flashes per second
+export const ROUTER_LOADER_DURATION_MAX = 10000; // ms
 
-// Non-numeric and non-positive values fall back to the design duration instead of stopping the animation
-export const coerceRouterLoaderDuration = (value: unknown): number => {
-  const duration = Number(value);
-
-  return Number.isFinite(duration) && duration > 0 ? duration : ROUTER_LOADER_DURATION_FALLBACK;
-};
-
-export const coerceRouterLoaderSize = (value: unknown): NdwuRouterLoaderSize => {
-  return value === 'L' || value === 'XL' ? value : ROUTER_LOADER_SIZE_FALLBACK;
-};
+export const coerceRouterLoaderDuration = getCoerceToClampedNumberTransform(
+  ROUTER_LOADER_DURATION_FALLBACK,
+  ROUTER_LOADER_DURATION_MIN,
+  ROUTER_LOADER_DURATION_MAX,
+);
 
 // Geometry of `router_loader_sync_2_4px_L_64` / `router_loader_sync_2_4px_XL_100` from the design
 export const ROUTER_LOADER_GEOMETRY: Record<NdwuRouterLoaderSize, NdwuRouterLoaderGeometry> = {
   L: {
     size: 64,
+    viewBox: '0 0 64 64',
     shadowPath:
       'M14.308 34C24.769 34 35.231 34 45.692 34C48.071 34 50 35.927 50 38.305C50 41.435 50 44.565 50 47.695C50 50.073 48.071 52 45.692 52C35.231 52 24.769 52 14.308 52C11.929 52 10 50.073 10 47.695C10 44.565 10 41.435 10 38.305C10 35.927 11.929 34 14.308 34Z',
     shadowStrokeWidth: 3.584,
@@ -32,6 +29,7 @@ export const ROUTER_LOADER_GEOMETRY: Record<NdwuRouterLoaderSize, NdwuRouterLoad
   },
   XL: {
     size: 100,
+    viewBox: '0 0 100 100',
     shadowPath:
       'M21.897 53C38.632 53 55.368 53 72.103 53C75.912 53 79 55.999 79 59.698C79 64.566 79 69.434 79 74.302C79 78.001 75.912 81 72.103 81C55.368 81 38.632 81 21.897 81C18.088 81 15 78.001 15 74.302C15 69.434 15 64.566 15 59.698C15 55.999 18.088 53 21.897 53Z',
     shadowStrokeWidth: 5.6,

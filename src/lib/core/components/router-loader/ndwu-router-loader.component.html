@@ -1,13 +1,15 @@
 @let g = geometry();
+@let label = ariaLabel() | localize;
 
 <svg
   class="ndwu-router-loader"
-  role="img"
   fill="none"
+  [attr.role]="label ? 'progressbar' : null"
+  [attr.aria-label]="label || null"
+  [attr.aria-hidden]="label ? null : 'true'"
   [attr.width]="g.size"
   [attr.height]="g.size"
-  [attr.viewBox]="viewBox()"
-  [attr.aria-label]="ariaLabel() | localize"
+  [attr.viewBox]="g.viewBox"
   [style]="svgStyle()"
 >
   <path

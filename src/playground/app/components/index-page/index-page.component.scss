@@ -24,6 +24,17 @@
     font-size: 1rem;
   }
 
+  &__section-title {
+    margin: 32px 0 16px;
+    color: #333;
+    font-weight: 600;
+    font-size: 1.25rem;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
   &__grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

@@ -1,6 +1,6 @@
 import {Directive, computed, input} from '@angular/core';
-import {SIZE, type Size} from '../../../../shared.types';
-import {BUTTON_VARIANT, type ButtonVariant} from '../../index';
+import {NDWU_SIZE, type NdwuSize} from '../../../../shared.types';
+import {NDWU_BUTTON_VARIANT, type NdwuButtonVariant} from '../../index';
 
 // Simplified version of NdwuButtonComponent with faster initial render.
 // Does not support built-in label or icon;
@@ -12,8 +12,8 @@ import {BUTTON_VARIANT, type ButtonVariant} from '../../index';
   },
 })
 export class NdwuButtonBaseDirective {
-  public readonly variant = input<ButtonVariant>(BUTTON_VARIANT.PRIMARY);
-  public readonly size = input<Size>(SIZE.XL);
+  public readonly variant = input<NdwuButtonVariant>(NDWU_BUTTON_VARIANT.PRIMARY);
+  public readonly size = input<NdwuSize>(NDWU_SIZE.XL);
 
   protected readonly hostClasses = computed(() => {
     return `ndwu-button-style ndwu-button-style--${this.variant()} ndwu-button-style--${this.size()}`;

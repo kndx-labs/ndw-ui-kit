@@ -341,7 +341,7 @@ preserving runtime checks inside `<ndwu-icon>`.
 }
 ```
 
-Icon names are string values of `EXTRA_ICON_NAME` exported from `@ndw-ui-kit/core`.
+Icon names are string values of `NDWU_EXTRA_ICON_NAME` exported from `@ndw-ui-kit/core`.
 The CLI validates every name and exits an error for any unknown name.
 
 ##### 2. Generate the sprite
@@ -390,7 +390,7 @@ name is used that was not included in the configured set.
 Pictograms are a separate set of ~10 two-colored icons used inside certain `@ndw-ui-kit/core`
 components. Those icons are merged into an additional SVG sprite file (`ndw-ui-kit.pictogram.sprite.svg`)
 that should be included in your app's assets if you use any component that relies
-on pictograms (e.g., `NdwuEmptyStateComponent`).
+on pictograms (e.g., `NdwuEmptyStateComponent` from `@ndw-ui-kit/core/widgets`).
 
 ### Router loader
 
@@ -434,14 +434,14 @@ support every value). Specify size on individual components:
 
 ```html
 
-<ndwu-button [size]="SIZE.L">Submit</ndwu-button>
+<ndwu-button [size]="NDWU_SIZE.L">Submit</ndwu-button>
 ```
 
 Use `ndwu-form-container` to set size for all child components at once:
 
 ```html
 
-<ndwu-form-container [size]="SIZE.XL">
+<ndwu-form-container [size]="NDWU_SIZE.XL">
   <ndwu-form-field>
     <ndwu-label>Email</ndwu-label>
     <input ndwuInput formControlName="email"/>
@@ -454,7 +454,7 @@ Size resolution priority:
 
 1. Explicit `[size]` on the component itself
 2. Inherited from the nearest parent container
-3. Default (`SIZE.XL`)
+3. Default (`NDWU_SIZE.XL`)
 
 ### Component tokens
 
@@ -505,6 +505,25 @@ to a wrapping container:
 Tip: inspect component styles (or playground examples) to find the exact token
 names used by a specific component.
 
+### Widgets
+
+Composite components that are built on top of basic ones have a separate
+entry point (`@ndw-ui-kit/core/widgets`), so apps that don't use them
+don't pull them in together with basic components.
+
+| Component              | Description                   |
+|------------------------|-------------------------------|
+| `ndwu-empty-state`     | Empty state with a pictogram  |
+| `ndwu-file-upload`     | File dropzone with file list  |
+| `ndwu-schedule-editor` | Weekly schedule editor canvas |
+
+```typescript
+import {NdwuEmptyStateComponent} from '@ndw-ui-kit/core/widgets';
+```
+
+Their form control wrappers (`ndwu-file-upload-field`, `ndwu-schedule-editor-field`)
+stay in `@ndw-ui-kit/core/form-field`.
+
 ### Form field components (CVA)
 
 The `ndw-ui-kit` provides a number o CVA components for common form controls (checkbox, input, select, etc.).
@@ -512,15 +531,15 @@ These implement Angular's
 [`ControlValueAccessor`](https://angular.dev/api/forms/ControlValueAccessor)
 and have a separate entry point (`@ndw-ui-kit/core/form-field`).
 
-| Component                 | Description            |
-|---------------------------|------------------------|
-| `ndwu-checkbox-field`     | Checkbox (two-state)   |
-| `ndwu-input-field`        | Text/password input    |
-| `ndwu-multi-select-field` | Multi-option select    |
-| `ndwu-radio-field`        | Radio button list      |
-| `ndwu-schedule-editor`    | Weekly schedule editor |
-| `ndwu-select-field`       | Single-option select   |
-| `ndwu-toggle-field`       | Toggle switch          |
+| Component                    | Description            |
+|------------------------------|------------------------|
+| `ndwu-checkbox-field`        | Checkbox (two-state)   |
+| `ndwu-input-field`           | Text/password input    |
+| `ndwu-multi-select-field`    | Multi-option select    |
+| `ndwu-radio-field`           | Radio button list      |
+| `ndwu-schedule-editor-field` | Weekly schedule editor |
+| `ndwu-select-field`          | Single-option select   |
+| `ndwu-toggle-field`          | Toggle switch          |
 
 #### Custom option lists
 

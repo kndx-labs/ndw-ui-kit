@@ -1,5 +1,5 @@
 import type {Type, ViewContainerRef} from '@angular/core';
-import type {ButtonVariant} from '../button/button/ndwu-button.component';
+import type {NdwuButtonVariant} from '../button/button/ndwu-button.component';
 import {NdwuTheme} from '../../../shared.types';
 import type {NdwuModalRef} from './ndwu-modal-ref';
 
@@ -19,7 +19,7 @@ export type NdwuModalSizeProp =
 
 export interface NdwuModalButton {
   label: string;
-  variant?: ButtonVariant;
+  variant?: NdwuButtonVariant;
   result?: unknown;
   onClick?: (ref: NdwuModalRef) => void;
 }
@@ -63,7 +63,7 @@ export interface NdwuConfirmModalConfig {
   description?: string;
   confirmText?: string;
   cancelText?: string;
-  confirmVariant?: ButtonVariant;
+  confirmVariant?: NdwuButtonVariant;
   theme?: NdwuTheme;
 }
 

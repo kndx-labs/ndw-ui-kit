@@ -1,10 +1,10 @@
 import {InjectionToken, Signal} from '@angular/core';
-import {Size} from '../../../shared.types';
+import {NdwuSize} from '../../../shared.types';
 
 export interface NdwuRadioGroup {
   readonly disabled: Signal<boolean>;
   readonly groupName: Signal<string>;
-  readonly effectiveSize: Signal<Size>;
+  readonly effectiveSize: Signal<NdwuSize>;
 
   isSelected(value: string | number): boolean;
   select(value: string | number): void;

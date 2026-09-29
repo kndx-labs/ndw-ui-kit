@@ -1,5 +1,10 @@
 export type ExampleName = 'user-profile-form';
 
+export type WidgetName =
+  | 'ndwu-empty-state'
+  | 'ndwu-file-upload'
+  | 'ndwu-schedule-editor';
+
 export type ComponentName =
   | 'ndwu-button'
   | 'ndwu-timing-button'
@@ -18,11 +23,9 @@ export type ComponentName =
   | 'ndwu-popover'
   | 'ndwu-dialog'
   | 'ndwu-drawer'
-  | 'ndwu-schedule-editor'
   | 'ndwu-spokes-loader'
   | 'ndwu-router-loader'
   | 'ndwu-progress-bar'
-  | 'ndwu-file-upload'
   | 'ndwu-toggle'
   | 'ndwu-badge'
   | 'ndwu-notification'
@@ -30,7 +33,6 @@ export type ComponentName =
   | 'ndwu-chip'
   | 'ndwu-tabs'
   | 'ndwu-pictogram'
-  | 'ndwu-empty-state'
   | 'ndwu-scrollbar'
   | 'ndwu-table';
 

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {SIZE, TOGGLE_COLOR} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, NDWU_TOGGLE_COLOR} from '@ndw-ui-kit/core';
 import {NdwuToggleFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
@@ -18,8 +18,8 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class ToggleOverviewComponent {
-  public readonly SIZE = SIZE;
-  public readonly TOGGLE_COLOR = TOGGLE_COLOR;
+  public readonly SIZE = NDWU_SIZE;
+  public readonly TOGGLE_COLOR = NDWU_TOGGLE_COLOR;
 
   public toggleDefault = new FormGroup({
     toggle: new FormControl(false),

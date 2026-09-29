@@ -13,7 +13,7 @@ import {NgControl} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {merge} from 'rxjs';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
   type NdwuHelperMessageStatus,
@@ -142,7 +142,7 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
   });
 
   protected readonly eyeIcon = computed(() => {
-    return this.isPasswordVisible() ? ICON_NAME.EYE_OFF_S : ICON_NAME.EYE_ON_S;
+    return this.isPasswordVisible() ? NDWU_ICON_NAME.EYE_OFF_S : NDWU_ICON_NAME.EYE_ON_S;
   });
 
   protected readonly eyeIconLabel = computed(() => {

@@ -11,6 +11,7 @@
  * Sources scanned (each may contain localization/ dirs):
  *   src/playground/localization/              — shared & orphaned keys
  *   src/playground/app/lib-component-showcase/ ** /localization/
+ *   src/playground/app/lib-widget-showcase/ ** /localization/
  *   src/playground/app/lib-example-showcase/ ** /localization/
  *
  * Output:
@@ -32,6 +33,7 @@ const DEV_LANG = 'en';
 const SCAN_ROOTS = [
   join(ROOT, 'src/playground/localization'),
   join(ROOT, 'src/playground/app/lib-component-showcase'),
+  join(ROOT, 'src/playground/app/lib-widget-showcase'),
   join(ROOT, 'src/playground/app/lib-example-showcase'),
 ];
 
@@ -127,6 +129,7 @@ function deepMerge(base, overlay) {
 const locDirs = [
   join(ROOT, 'src/playground/localization'),
   ...findLocalizationDirs(join(ROOT, 'src/playground/app/lib-component-showcase')),
+  ...findLocalizationDirs(join(ROOT, 'src/playground/app/lib-widget-showcase')),
   ...findLocalizationDirs(join(ROOT, 'src/playground/app/lib-example-showcase')),
 ];
 

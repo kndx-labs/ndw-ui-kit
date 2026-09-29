@@ -12,25 +12,25 @@ import {
   viewChild,
 } from '@angular/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {SIZE, type Values} from '../../../shared.types';
-import {IconName} from '../../../icon-names';
+import {NDWU_SIZE, type NdwuValues} from '../../../shared.types';
+import {NdwuIconName} from '../../../icon-names';
 import {NdwuSizeDirective} from '../../directives';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NdwuSpokesLoaderComponent} from '../spokes-loader/ndwu-spokes-loader.component';
-import {toChipSize} from './ndwu-chip.helpers';
+import {ndwuToChipSize} from './ndwu-chip.helpers';
 
-export const CHIP_STATUS = {
+export const NDWU_CHIP_STATUS = {
   DEFAULT: 'default',
   POSITIVE: 'positive',
   NEGATIVE: 'negative',
 } as const;
 
-export type NdwuChipStatus = Values<typeof CHIP_STATUS>;
+export type NdwuChipStatus = NdwuValues<typeof NDWU_CHIP_STATUS>;
 
 const LOADER_PARAMS = {
-  [SIZE.L]: {size: 17, spokeWidth: 1.54, spokeHeight: 4.04, spokeOffset: 0.5},
-  [SIZE.XL]: {size: 20, spokeWidth: 1.6, spokeHeight: 4.6, spokeOffset: 0.5},
+  [NDWU_SIZE.L]: {size: 17, spokeWidth: 1.54, spokeHeight: 4.04, spokeOffset: 0.5},
+  [NDWU_SIZE.XL]: {size: 20, spokeWidth: 1.6, spokeHeight: 4.6, spokeOffset: 0.5},
 } as const;
 
 @Component({
@@ -60,7 +60,7 @@ const LOADER_PARAMS = {
     {
       provide: NDWU_SIZE_TOKEN,
       useFactory: (sizeDirective: NdwuSizeDirective) => {
-        return () => toChipSize(sizeDirective.effectiveSize());
+        return () => ndwuToChipSize(sizeDirective.effectiveSize());
       },
       deps: [NdwuSizeDirective],
     },
@@ -69,8 +69,8 @@ const LOADER_PARAMS = {
 export class NdwuChipComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
-  public readonly status = input<NdwuChipStatus>(CHIP_STATUS.DEFAULT);
-  public readonly icon = input<IconName | null>(null);
+  public readonly status = input<NdwuChipStatus>(NDWU_CHIP_STATUS.DEFAULT);
+  public readonly icon = input<NdwuIconName | null>(null);
   public readonly label = input<string>('');
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly loading = input(false, {transform: booleanAttribute});
@@ -95,7 +95,7 @@ export class NdwuChipComponent {
     });
   }
 
-  protected readonly effectiveSize = computed(() => toChipSize(this.sizeSvc.effectiveSize()));
+  protected readonly effectiveSize = computed(() => ndwuToChipSize(this.sizeSvc.effectiveSize()));
 
   protected readonly loaderParams = computed(() => LOADER_PARAMS[this.effectiveSize()]);
 

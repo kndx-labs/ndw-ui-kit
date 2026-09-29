@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {ICON_NAME, NdwuBadgeComponent, type NdwuBadgeTone, SIZE, type Size} from '@ndw-ui-kit/core';
+import {NDWU_ICON_NAME, NDWU_SIZE, NdwuBadgeComponent, type NdwuBadgeTone, type NdwuSize} from '@ndw-ui-kit/core';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 @Component({
@@ -13,7 +13,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class BadgeOverviewComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   protected readonly tones: NdwuBadgeTone[] = [
     'gray',
@@ -26,5 +26,5 @@ export class BadgeOverviewComponent {
     'white',
   ];
 
-  protected readonly sizes: Size[] = [SIZE.S, SIZE.L, SIZE.XL];
+  protected readonly sizes: NdwuSize[] = [NDWU_SIZE.S, NDWU_SIZE.L, NDWU_SIZE.XL];
 }

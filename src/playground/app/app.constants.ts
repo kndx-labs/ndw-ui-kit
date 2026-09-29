@@ -1,4 +1,4 @@
-import type {ComponentName, ExampleName, MenuItem} from './app.types';
+import type {ComponentName, ExampleName, MenuItem, WidgetName} from './app.types';
 
 export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-button',
@@ -12,11 +12,9 @@ export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-link',
   'ndwu-notification',
   'ndwu-radio',
-  'ndwu-schedule-editor',
   'ndwu-spokes-loader',
   'ndwu-router-loader',
   'ndwu-progress-bar',
-  'ndwu-file-upload',
   'ndwu-toggle',
   'ndwu-select-field',
   'ndwu-multi-select-field',
@@ -30,7 +28,6 @@ export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-chip',
   'ndwu-tabs',
   'ndwu-pictogram',
-  'ndwu-empty-state',
   'ndwu-scrollbar',
   'ndwu-table',
 ];
@@ -48,11 +45,9 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-link': ['overview', 'sandbox'],
   'ndwu-notification': ['overview', 'sandbox'],
   'ndwu-radio': ['overview', 'ng-model', 'cva'],
-  'ndwu-schedule-editor': ['overview', 'cva'],
   'ndwu-spokes-loader': ['sandbox'],
   'ndwu-router-loader': ['overview'],
   'ndwu-progress-bar': ['overview', 'sandbox'],
-  'ndwu-file-upload': ['overview'],
   'ndwu-toggle': ['overview', 'ng-model', 'cva'],
   'ndwu-select-field': ['overview', 'sandbox'],
   'ndwu-multi-select-field': ['overview', 'sandbox'],
@@ -66,12 +61,23 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-chip': ['overview', 'sandbox'],
   'ndwu-tabs': ['overview', 'sandbox'],
   'ndwu-pictogram': ['overview', 'sandbox'],
-  'ndwu-empty-state': ['overview', 'sandbox'],
   'ndwu-scrollbar': ['overview'],
   'ndwu-table': ['overview'],
 };
 
-export const READY_FOR_REVIEW_COMPONENTS: ComponentName[] = [
+export const WIDGETS_LIST: WidgetName[] = [
+  'ndwu-empty-state',
+  'ndwu-file-upload',
+  'ndwu-schedule-editor',
+];
+
+export const WIDGET_TABS: Record<WidgetName, readonly string[]> = {
+  'ndwu-empty-state': ['overview', 'sandbox'],
+  'ndwu-file-upload': ['overview'],
+  'ndwu-schedule-editor': ['overview', 'cva'],
+};
+
+export const READY_FOR_REVIEW_COMPONENTS: (ComponentName | WidgetName)[] = [
   'ndwu-badge',
   'ndwu-button',
   'ndwu-checkbox',
@@ -134,6 +140,10 @@ export const EXAMPLE_NAMES: Record<ExampleName, string> = {
   'user-profile-form': 'User Profile Form',
 };
 
+export const TABLE_MENU_ITEMS: ComponentName[] = [
+  'ndwu-table',
+];
+
 export const MENU_ITEMS: MenuItem[] = [
   {type: 'item', name: 'ndwu-badge'},
   {
@@ -171,10 +181,8 @@ export const MENU_ITEMS: MenuItem[] = [
   {type: 'item', name: 'ndwu-password-input-field'},
   {type: 'item', name: 'ndwu-link'},
   {type: 'item', name: 'ndwu-progress-bar'},
-  {type: 'item', name: 'ndwu-file-upload'},
   {type: 'item', name: 'ndwu-notification'},
   {type: 'item', name: 'ndwu-radio'},
-  {type: 'item', name: 'ndwu-schedule-editor'},
   {type: 'item', name: 'ndwu-spokes-loader'},
   {type: 'item', name: 'ndwu-router-loader'},
   {type: 'item', name: 'ndwu-toggle'},
@@ -182,7 +190,5 @@ export const MENU_ITEMS: MenuItem[] = [
   {type: 'item', name: 'ndwu-popover'},
   {type: 'item', name: 'ndwu-tabs'},
   {type: 'item', name: 'ndwu-pictogram'},
-  {type: 'item', name: 'ndwu-empty-state'},
   {type: 'item', name: 'ndwu-scrollbar'},
-  {type: 'item', name: 'ndwu-table'},
 ];

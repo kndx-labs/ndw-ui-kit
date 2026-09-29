@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
-  CHIP_STATUS,
-  ICON_NAME,
-  type IconName,
+  NDWU_CHIP_STATUS,
+  NDWU_ICON_NAME,
+  NDWU_SIZE,
   NdwuChipComponent,
   type NdwuChipStatus,
-  SIZE,
-  type Size,
+  type NdwuIconName,
+  type NdwuSize,
 } from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
@@ -22,17 +22,17 @@ const CHIP_COLOR_TOKENS = [
 ] as const;
 
 const CHIP_STATUS_OPTIONS: {id: NdwuChipStatus; label: string}[] = [
-  {id: CHIP_STATUS.DEFAULT, label: 'default'},
-  {id: CHIP_STATUS.POSITIVE, label: 'positive'},
-  {id: CHIP_STATUS.NEGATIVE, label: 'negative'},
+  {id: NDWU_CHIP_STATUS.DEFAULT, label: 'default'},
+  {id: NDWU_CHIP_STATUS.POSITIVE, label: 'positive'},
+  {id: NDWU_CHIP_STATUS.NEGATIVE, label: 'negative'},
 ];
 
-const CHIP_ICON_OPTIONS: IconName[] = [
-  ICON_NAME.DOWNLOAD_S,
-  ICON_NAME.CHECK_S,
-  ICON_NAME.CLOSE_S,
-  ICON_NAME.INFO_S,
-  ICON_NAME.WARNING_S,
+const CHIP_ICON_OPTIONS: NdwuIconName[] = [
+  NDWU_ICON_NAME.DOWNLOAD_S,
+  NDWU_ICON_NAME.CHECK_S,
+  NDWU_ICON_NAME.CLOSE_S,
+  NDWU_ICON_NAME.INFO_S,
+  NDWU_ICON_NAME.WARNING_S,
 ];
 
 const TOKEN_TO_CSS_VAR: Record<string, string> = {
@@ -69,8 +69,8 @@ function tokenKeyToCssVar(key: string): string {
   ],
 })
 export class ChipSandboxComponent extends SandboxBaseComponent {
-  public readonly SIZE = SIZE;
-  public readonly ICON_NAME = ICON_NAME;
+  public readonly SIZE = NDWU_SIZE;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
   public readonly CHIP_STATUS_OPTIONS = CHIP_STATUS_OPTIONS;
   public readonly CHIP_ICON_OPTIONS = CHIP_ICON_OPTIONS;
 
@@ -78,9 +78,9 @@ export class ChipSandboxComponent extends SandboxBaseComponent {
 
   public readonly sandboxForm = new FormGroup({
     label: new FormControl<string>(DEFAULT_LABEL, {nonNullable: true}),
-    status: new FormControl<NdwuChipStatus>(CHIP_STATUS.DEFAULT, {nonNullable: true}),
-    size: new FormControl<Size>(SIZE.XL, {nonNullable: true}),
-    icon: new FormControl<IconName | null>(ICON_NAME.DOWNLOAD_S, {nonNullable: true}),
+    status: new FormControl<NdwuChipStatus>(NDWU_CHIP_STATUS.DEFAULT, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.XL, {nonNullable: true}),
+    icon: new FormControl<NdwuIconName | null>(NDWU_ICON_NAME.DOWNLOAD_S, {nonNullable: true}),
     disabled: new FormControl<boolean>(false, {nonNullable: true}),
     loading: new FormControl<boolean>(false, {nonNullable: true}),
     ariaLabel: new FormControl<string>('', {nonNullable: true}),
@@ -125,9 +125,9 @@ export class ChipSandboxComponent extends SandboxBaseComponent {
   protected override getDefaultFormValues(): Record<string, unknown> {
     return {
       label: DEFAULT_LABEL,
-      status: CHIP_STATUS.DEFAULT,
-      size: SIZE.XL,
-      icon: ICON_NAME.DOWNLOAD_S,
+      status: NDWU_CHIP_STATUS.DEFAULT,
+      size: NDWU_SIZE.XL,
+      icon: NDWU_ICON_NAME.DOWNLOAD_S,
       disabled: false,
       loading: false,
       ariaLabel: '',

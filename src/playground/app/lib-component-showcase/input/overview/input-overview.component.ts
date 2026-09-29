@@ -1,14 +1,14 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
+  NDWU_SIZE,
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
   NdwuHintDirective,
   NdwuIconComponent,
   NdwuInputDirective,
   NdwuSuffixDirective,
-  SIZE,
 } from '@ndw-ui-kit/core';
 import {NdwuHelperMessageComponent, NdwuInputFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
@@ -35,8 +35,8 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
   ],
 })
 export class InputOverviewComponent implements OnInit {
-  public readonly SIZE = SIZE;
-  public readonly ICON_NAME = ICON_NAME;
+  public readonly SIZE = NDWU_SIZE;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
 
   public inputDefault = new FormGroup({
     input: new FormControl(''),

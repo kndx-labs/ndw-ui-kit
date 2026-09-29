@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from 
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
-import {SIZE, type Size, TOGGLE_COLOR, type ToggleColor} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, NDWU_TOGGLE_COLOR, type NdwuSize, type NdwuToggleColor} from '@ndw-ui-kit/core';
 import {NdwuToggleFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -35,14 +35,14 @@ interface TokenPickerValues extends Record<string, string> {
   ],
 })
 export class ToggleSandboxPreviewComponent extends SandboxBaseComponent {
-  public readonly SIZE = SIZE;
-  public readonly TOGGLE_COLOR = TOGGLE_COLOR;
+  public readonly SIZE = NDWU_SIZE;
+  public readonly TOGGLE_COLOR = NDWU_TOGGLE_COLOR;
 
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
 
   public readonly sandboxForm = new FormGroup({
-    size: new FormControl<Size>(SIZE.XL, {nonNullable: true}),
-    color: new FormControl<ToggleColor>(TOGGLE_COLOR.BRAND, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.XL, {nonNullable: true}),
+    color: new FormControl<NdwuToggleColor>(NDWU_TOGGLE_COLOR.BRAND, {nonNullable: true}),
     isDisabled: new FormControl<boolean>(false, {nonNullable: true}),
     label: new FormControl<string>('Enable notifications', {nonNullable: true}),
     secondaryText: new FormControl<string>('Receive updates about your account activity', {nonNullable: true}),
@@ -135,8 +135,8 @@ export class ToggleSandboxPreviewComponent extends SandboxBaseComponent {
   protected override getDefaultFormValues(): Record<string, unknown> {
     return {
       toggleValue: false,
-      size: SIZE.XL,
-      color: TOGGLE_COLOR.BRAND,
+      size: NDWU_SIZE.XL,
+      color: NDWU_TOGGLE_COLOR.BRAND,
       isDisabled: false,
       label: 'Enable notifications',
       secondaryText: 'Receive updates about your account activity',

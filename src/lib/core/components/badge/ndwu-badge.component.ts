@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
-import {SIZE, type Size} from '../../../shared.types';
-import {IconName} from '../../../icon-names';
+import {NDWU_SIZE, type NdwuSize} from '../../../shared.types';
+import {NdwuIconName} from '../../../icon-names';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
 import {NdwuSizeDirective} from '../../directives';
@@ -15,7 +15,7 @@ export type NdwuBadgeTone =
   | 'cyan'
   | 'white';
 
-const SIZES_WITH_ICON: Size[] = [SIZE.XL, SIZE.L];
+const SIZES_WITH_ICON: NdwuSize[] = [NDWU_SIZE.XL, NDWU_SIZE.L];
 
 @Component({
   selector: 'ndwu-badge',
@@ -46,7 +46,7 @@ export class NdwuBadgeComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   public readonly tone = input<NdwuBadgeTone>('gray');
-  public readonly icon = input<IconName | null>(null);
+  public readonly icon = input<NdwuIconName | null>(null);
   public readonly ariaLabel = input<string | null>(null);
   public readonly maxWidth = input<string | null>(null);
   public readonly disabled = input(false);

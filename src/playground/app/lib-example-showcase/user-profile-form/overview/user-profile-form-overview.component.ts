@@ -1,12 +1,7 @@
 import {ChangeDetectionStrategy, Component, ViewEncapsulation, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {
-  NdwuButtonComponent,
-  NdwuFormContainerComponent,
-  type NdwuOption,
-  SIZE,
-  type ScheduleValue,
-} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, NdwuButtonComponent, NdwuFormContainerComponent, type NdwuOption} from '@ndw-ui-kit/core';
+import {type NdwuScheduleValue} from '@ndw-ui-kit/core/widgets';
 import {
   NdwuCheckboxFieldComponent,
   NdwuInputFieldComponent,
@@ -72,7 +67,7 @@ const CITY_OPTIONS: NdwuOption[] = [
   {value: 'new-york', label: 'New York'},
 ];
 
-const DEFAULT_SCHEDULE: ScheduleValue = {
+const DEFAULT_SCHEDULE: NdwuScheduleValue = {
   mon: [[540, 1080]],
   tue: [[540, 1080]],
   wed: [[540, 1080]],
@@ -104,7 +99,7 @@ const DEFAULT_SCHEDULE: ScheduleValue = {
   ],
 })
 export class UserProfileFormOverviewComponent {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
 
   public readonly countryOptions = COUNTRY_OPTIONS;
   public readonly timezoneOptions = TIMEZONE_OPTIONS;
@@ -142,7 +137,7 @@ export class UserProfileFormOverviewComponent {
     marketingEmails: new FormControl(false),
 
     // Schedule
-    schedule: new FormControl<ScheduleValue>(DEFAULT_SCHEDULE),
+    schedule: new FormControl<NdwuScheduleValue>(DEFAULT_SCHEDULE),
 
     // Terms
     termsAccepted: new FormControl(false, [Validators.requiredTrue]),

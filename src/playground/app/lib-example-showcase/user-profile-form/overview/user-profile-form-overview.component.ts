@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, ViewEncapsulation, signal} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_SIZE, NdwuButtonComponent, NdwuFormContainerComponent, type NdwuOption} from '@ndw-ui-kit/core';
 import {type NdwuScheduleValue} from '@ndw-ui-kit/core/widgets';
 import {
@@ -10,9 +10,11 @@ import {
   NdwuScheduleEditorFieldComponent,
   NdwuSelectFieldComponent,
   NdwuToggleFieldComponent,
+  NdwuValidators,
 } from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
+import {EMAIL_VALIDATOR} from '@app/validation';
 
 const COUNTRY_OPTIONS: NdwuOption[] = [
   {value: 'de', label: 'Germany'},
@@ -113,16 +115,16 @@ export class UserProfileFormOverviewComponent {
 
   public readonly form = new FormGroup({
     // Personal Info
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    firstName: new FormControl('', [NdwuValidators.required()]),
+    lastName: new FormControl('', [NdwuValidators.required()]),
+    email: new FormControl('', [NdwuValidators.required(), EMAIL_VALIDATOR]),
     phone: new FormControl(''),
     city: new FormControl(''),
 
     // Account
-    role: new FormControl('editor', [Validators.required]),
-    country: new FormControl('de', [Validators.required]),
-    skills: new FormControl<string[]>([], [Validators.required]),
+    role: new FormControl('editor', [NdwuValidators.required()]),
+    country: new FormControl('de', [NdwuValidators.required()]),
+    skills: new FormControl<string[]>([], [NdwuValidators.required()]),
 
     // Preferences
     language: new FormControl('en'),
@@ -140,7 +142,7 @@ export class UserProfileFormOverviewComponent {
     schedule: new FormControl<NdwuScheduleValue>(DEFAULT_SCHEDULE),
 
     // Terms
-    termsAccepted: new FormControl(false, [Validators.requiredTrue]),
+    termsAccepted: new FormControl(false, [NdwuValidators.requiredTrue()]),
   });
 
   public onSubmit(): void {

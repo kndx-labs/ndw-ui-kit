@@ -90,8 +90,18 @@
     }
   },
   "error": {
-    "ascii-only": "Only numbers and characters from Latin alphabet are allowed",
-    "required": "This field is required",
-    "email": "Please enter a valid email address"
+    "ascii-only": "Only numbers and characters from Latin alphabet are allowed"
+  },
+  "ndwu": {
+    "validation": {
+      "required": "This field is required",
+      "required-true": "This field must be checked",
+      "email": "Enter a valid email address",
+      "min": "Value must be at least {{min}}",
+      "max": "Value must be at most {{max}}",
+      "min-length": "Enter at least {{requiredLength}} characters",
+      "max-length": "Enter no more than {{requiredLength}} characters",
+      "pattern": "Value has an invalid format"
+    }
   }
 }

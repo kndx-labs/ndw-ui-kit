@@ -1,0 +1,23 @@
+{
+  "validators-example": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "fields": {
+      "required": "Name",
+      "required-true": "I accept the terms",
+      "email": "Email",
+      "min": "Age",
+      "max": "Age",
+      "min-length": "Username",
+      "max-length": "Nickname",
+      "pattern": "PIN",
+      "overridden": "Nickname",
+      "wrapped": "Login"
+    },
+    "custom": {
+      "max-length": "Nicknames are limited to {{requiredLength}} characters",
+      "no-spaces": "Spaces aren't allowed"
+    }
+  }
+}

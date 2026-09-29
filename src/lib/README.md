@@ -612,6 +612,33 @@ and the internal normalized option list (`normalizedOptions`):
 The NDW UI Kit shows validation errors for CVA components (currently
 `ndwu-input-field`). Errors are only displayed after the control is `touched`.
 
+##### Built-in validators
+
+Angular's `Validators` return errors without a message key, so the fields show
+no text for them. Use `NdwuValidators` instead. They validate like Angular's
+and add a translation key to each error:
+
+```typescript
+import {NdwuValidators, ndwuWrapValidator} from '@ndw-ui-kit/core/form-field';
+
+name: new FormControl('', [
+  NdwuValidators.required(),                                 // 'ndwu.validation.required'
+  NdwuValidators.minLength(3),                               // 'ndwu.validation.min-length'
+  NdwuValidators.maxLength(20, 'signup.name-too-long'),      // custom key
+  ndwuWrapValidator(noSpacesValidator, 'signup.no-spaces'),  // any other validator
+]),
+```
+
+Add the `ndwu.validation.*` keys to your translations. The error fields become
+placeholders, e.g. `"Enter at least {{requiredLength}} characters"`. The keys
+are exported as `NDWU_VALIDATION_ERROR_LABEL`. For the full key and placeholder
+list and the design, see
+[ADR 009](https://github.com/kndx-labs/ndw-ui-kit/blob/master/docs/architecture/ADR/009-ndwu-validators-wrapper.md).
+
+Use the `ndwuRequired` input to show the required mark. Don't put Angular's
+`required`, `email`, `minlength`, `maxlength` or `pattern` attributes on ndwu
+fields: their validator directives replace the `NdwuValidators` errors.
+
 ##### How it works
 
 A validator returns `ValidatorResult` (either `null` for success or `ErrorResult`):
@@ -648,8 +675,9 @@ export interface NdwuValidationData {
 
 #### Custom validation processor
 
-Override the built-in processor via the `NDWU_VALIDATION_PROCESSOR` token if your
-validators return errors in a different shape (e.g. built-in Angular validators):
+For built-in Angular validators, prefer `NdwuValidators` (see above). Override the
+built-in processor via the `NDWU_VALIDATION_PROCESSOR` token only if your
+validators return errors in a different shape that you can't wrap:
 
 ```typescript
 import {AbstractControl} from '@angular/forms';

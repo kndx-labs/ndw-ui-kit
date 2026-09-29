@@ -1,0 +1,28 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <form class="validators-overview" [formGroup]="form">
+      @for (section of INPUT_SECTIONS; track section.control) {
+        <div class="validators-overview__section">
+          <h4 class="validators-overview__title">{{ section.title }}</h4>
+          <ndwu-input-field
+            [formControlName]="section.control"
+            [label]="section.label"
+          />
+          <pre class="validators-overview__errors">{{ form.get(section.control)?.errors | json }}</pre>
+        </div>
+      }
+
+      <div class="validators-overview__section">
+        <h4 class="validators-overview__title">NdwuValidators.requiredTrue()</h4>
+        <ndwu-checkbox-field
+          formControlName="requiredTrue"
+          label="validators-example.fields.required-true"
+        />
+        <pre class="validators-overview__errors">{{ form.controls.requiredTrue.errors | json }}</pre>
+      </div>
+    </form>
+  </ng-template>
+</app-showcase-layout>

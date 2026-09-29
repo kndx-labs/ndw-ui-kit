@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_SIZE, NdwuOption, NdwuOptionGroup} from '@ndw-ui-kit/core';
-import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {NdwuSelectFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {
   CONTINENT_GROUPS,
@@ -76,7 +76,7 @@ export class SelectFieldOverviewComponent {
   });
 
   protected readonly formRequired = new FormGroup({
-    country: new FormControl('', Validators.required),
+    country: new FormControl('', NdwuValidators.required()),
   });
 
   protected readonly formSizes = new FormGroup({

@@ -1,4 +1,4 @@
-export type ExampleName = 'user-profile-form';
+export type ExampleName = 'user-profile-form' | 'validators';
 
 export type WidgetName =
   | 'ndwu-empty-state'

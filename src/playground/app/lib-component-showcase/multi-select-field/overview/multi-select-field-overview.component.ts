@@ -1,7 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_SIZE, NdwuOptionGroup} from '@ndw-ui-kit/core';
-import {NdwuMultiSelectDisplayDirective, NdwuMultiSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {
+  NdwuMultiSelectDisplayDirective,
+  NdwuMultiSelectFieldComponent,
+  NdwuValidators,
+} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {
   CONTINENT_GROUPS,
@@ -41,7 +45,7 @@ export class MultiSelectFieldOverviewComponent {
   });
 
   protected readonly formRequired = new FormGroup({
-    countries: new FormControl<string[]>([], Validators.required),
+    countries: new FormControl<string[]>([], NdwuValidators.required()),
   });
 
   protected readonly formCustomDisplay = new FormGroup({

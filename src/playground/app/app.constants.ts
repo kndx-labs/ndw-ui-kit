@@ -131,10 +131,11 @@ export const SHOWCASE_NAMES: Record<string, string> = {
   'ndwu-table': 'Table',
 };
 
-export const EXAMPLES_LIST: ExampleName[] = ['user-profile-form'];
+export const EXAMPLES_LIST: ExampleName[] = ['user-profile-form', 'validators'];
 
 export const EXAMPLE_NAMES: Record<ExampleName, string> = {
   'user-profile-form': 'User Profile Form',
+  'validators': 'Validators',
 };
 
 export const TABLE_MENU_ITEMS: ComponentName[] = [

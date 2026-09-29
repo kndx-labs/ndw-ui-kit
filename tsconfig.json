@@ -31,6 +31,9 @@
       ],
       "@ndw-ui-kit/core/table": [
         "src/lib/table/index.ts"
+      ],
+      "@ndw-ui-kit/core/widgets": [
+        "src/lib/widgets/index.ts"
       ]
     },
     "skipLibCheck": true,

@@ -1,0 +1,10 @@
+{
+  "router-loader-showcase": {
+    "tabs": {
+      "overview": "Übersicht"
+    },
+    "sizes": "Größen",
+    "custom-colors": "Eigene Farben",
+    "duration": "Dauer"
+  }
+}

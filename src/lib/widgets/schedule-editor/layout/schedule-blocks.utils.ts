@@ -1,0 +1,219 @@
+import {
+  NdwuScheduleBlock,
+  type NdwuScheduleInterval,
+  NdwuScheduleValue,
+  type NdwuWeekDay,
+} from '../schedule-editor.types';
+import {NDWU_DAY_TO_NDM_DAY, NDWU_NDM_DAY_TO_DAY} from '../schedule-editor.constants';
+import {DAYS_IN_WEEK, MINUTES_IN_HOUR} from '../ndwu-schedule-editor.constants';
+
+export const minutesToTime = (minutes: number): string => {
+  const h = Math.floor(minutes / MINUTES_IN_HOUR);
+  const m = minutes - h * MINUTES_IN_HOUR;
+
+  return `${h < 10 ? `0${h}` : h}:${m < 10 ? `0${m}` : m}`;
+};
+
+export const minutesToHourShort = (minutes: number): string => {
+  const h = Math.floor(minutes / MINUTES_IN_HOUR);
+
+  return h < 10 ? `0${h}` : String(h);
+};
+
+export const valueToBlocks = (
+  value: NdwuScheduleValue | null | undefined,
+  weekDays: NdwuWeekDay[],
+): NdwuScheduleBlock[] => {
+  if (!value) {
+    return [];
+  }
+
+  const blocks: NdwuScheduleBlock[] = [];
+
+  weekDays.forEach((weekDay) => {
+    const intervals = value[weekDay.day];
+
+    if (!intervals) {
+      return;
+    }
+
+    intervals.forEach(([start, stop]) => {
+      blocks.push({day: NDWU_DAY_TO_NDM_DAY[weekDay.day], start, stop});
+    });
+  });
+
+  return blocks;
+};
+
+export const blocksToValue = (blocks: NdwuScheduleBlock[], weekDays: NdwuWeekDay[]): NdwuScheduleValue => {
+  const value: NdwuScheduleValue = {};
+
+  weekDays.forEach((weekDay) => {
+    value[weekDay.day] = [];
+  });
+
+  blocks.forEach((block) => {
+    const day = NDWU_NDM_DAY_TO_DAY[block.day];
+
+    if (!day) {
+      return;
+    }
+
+    const weekDay = weekDays.find((wd) => wd.day === day);
+
+    if (!weekDay) {
+      return;
+    }
+
+    const scheduleForDay = value[weekDay.day];
+
+    if (!scheduleForDay) {
+      return;
+    }
+
+    scheduleForDay.push([block.start, block.stop]);
+  });
+
+  return value;
+};
+
+const blocksToLines = (blocks: NdwuScheduleBlock[]): NdwuScheduleInterval[][] => {
+  const lines: NdwuScheduleInterval[][] = new Array<NdwuScheduleInterval[]>(DAYS_IN_WEEK)
+    .fill(null as unknown as NdwuScheduleInterval[])
+    .map(() => []);
+
+  blocks.forEach((b) => {
+    const {start, stop, day} = b;
+    const key = Number(day);
+    const dayLines = lines[key];
+
+    if (dayLines) {
+      dayLines.push([start, stop]);
+    }
+  });
+
+  return lines;
+};
+
+export const subtractLines = (lines: NdwuScheduleInterval[], line: NdwuScheduleInterval): NdwuScheduleInterval[] => {
+  const newArr: NdwuScheduleInterval[] = [];
+
+  for (const fromLine of lines) {
+    if (fromLine[0] >= line[0] && fromLine[1] <= line[1]) {
+      continue;
+    }
+
+    if (fromLine[0] < line[0] && fromLine[1] > line[1]) {
+      newArr.push([fromLine[0], line[0]]);
+      newArr.push([line[1], fromLine[1]]);
+      continue;
+    }
+
+    const isOverlappingStart = fromLine[0] < line[0] && fromLine[1] <= line[1] && fromLine[1] >= line[0];
+
+    if (isOverlappingStart) {
+      newArr.push([fromLine[0], line[0]]);
+      continue;
+    }
+
+    const isOverlappingEnd = fromLine[0] >= line[0] && line[1] < fromLine[1] && fromLine[0] <= line[1];
+
+    if (isOverlappingEnd) {
+      newArr.push([line[1], fromLine[1]]);
+      continue;
+    }
+
+    newArr.push(fromLine);
+  }
+
+  return newArr;
+};
+
+export function subtractBlocks(sourceArray: NdwuScheduleBlock[], blocks: NdwuScheduleBlock[]): NdwuScheduleBlock[] {
+  const days1 = blocksToLines(sourceArray);
+  const days2 = blocksToLines(blocks);
+  const subtractedArr: NdwuScheduleBlock[] = [];
+
+  Object.keys(days1)
+    .map(Number)
+    .forEach((day) => {
+      const sourceLines = days1[day];
+      const removingLines = days2[day];
+
+      if (!sourceLines || !removingLines) {
+        return;
+      }
+
+      // Each removing interval is applied to the result of the previous one,
+      // not to the original day lines.
+      days1[day] = removingLines.reduce(
+        (lines, line) => subtractLines(lines, line),
+        sourceLines,
+      );
+    });
+
+  Object.keys(days1)
+    .map(Number)
+    .forEach((day) => {
+      const dayLines = days1[day];
+
+      if (!dayLines) {
+        return;
+      }
+
+      dayLines.forEach((line) => {
+        const [start, stop] = line;
+
+        subtractedArr.push({start, stop, day});
+      });
+    });
+
+  return subtractedArr;
+}
+
+export function glueBlocks(arr: NdwuScheduleInterval[]): NdwuScheduleInterval[] {
+  if (arr.length <= 1) {
+    return arr;
+  }
+
+  const sorted = [...arr].sort((a, b) => a[0] - b[0]);
+  const result: NdwuScheduleInterval[] = sorted[0] ? [sorted[0]] : [];
+
+  for (let i = 1; i < sorted.length; i++) {
+    const last = result.at(-1);
+    const curr = sorted[i];
+
+    if (!last || !curr) {
+      continue;
+    }
+
+    if (curr[0] <= last[1]) {
+      last[1] = Math.max(last[1], curr[1]);
+    } else {
+      result.push(curr);
+    }
+  }
+
+  return result;
+}
+
+export function simplifyBlocks(blocks: NdwuScheduleBlock[]): NdwuScheduleBlock[] {
+  if (blocks.length === 0) {
+    return [];
+  }
+
+  const result: NdwuScheduleBlock[] = [];
+  const linesInfo = blocksToLines(blocks);
+
+  linesInfo.forEach((info, line) => {
+    glueBlocks(info).forEach((b) => {
+      const [start, stop] = b;
+
+      if (Math.abs(start - stop) > 0) {
+        result.push({start, stop, day: Number(line)});
+      }
+    });
+  });
+
+  return result;
+}

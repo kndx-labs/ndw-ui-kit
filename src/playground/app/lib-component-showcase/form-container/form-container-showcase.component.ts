@@ -1,9 +1,10 @@
 import {ChangeDetectionStrategy, Component, OnInit, inject} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NdwuFormContainerComponent, SIZE} from '@ndw-ui-kit/core';
-import {NdwuCheckboxFieldComponent, NdwuInputFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {NDWU_SIZE, NdwuFormContainerComponent} from '@ndw-ui-kit/core';
+import {NdwuCheckboxFieldComponent, NdwuInputFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
+import {EMAIL_VALIDATOR} from '@app/validation';
 import {NDWU_SIZE_TOKEN} from 'src/lib/core/tokens';
 
 @Component({
@@ -13,7 +14,7 @@ import {NDWU_SIZE_TOKEN} from 'src/lib/core/tokens';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{
     provide: NDWU_SIZE_TOKEN,
-    useValue: () => SIZE.XXL,
+    useValue: () => NDWU_SIZE.XXL,
   }],
   imports: [
     ReactiveFormsModule,
@@ -25,7 +26,7 @@ import {NDWU_SIZE_TOKEN} from 'src/lib/core/tokens';
   ],
 })
 export class FormContainerShowcaseComponent implements OnInit {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
   protected readonly sizeToken = inject(NDWU_SIZE_TOKEN);
 
   // Form container forms
@@ -48,9 +49,9 @@ export class FormContainerShowcaseComponent implements OnInit {
   });
 
   public formContainerWithInvalid = new FormGroup({
-    email: new FormControl('invalid@', [Validators.email, Validators.required]),
+    email: new FormControl('invalid@', [EMAIL_VALIDATOR, NdwuValidators.required()]),
     password: new FormControl(''),
-    checkbox: new FormControl(false, [Validators.requiredTrue]),
+    checkbox: new FormControl(false, [NdwuValidators.requiredTrue()]),
   });
 
   public formContainerInheritance = new FormGroup({

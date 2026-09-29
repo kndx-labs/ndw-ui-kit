@@ -2,13 +2,13 @@ import {ChangeDetectionStrategy, Component, Signal, computed, signal} from '@ang
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {
+  NDWU_PICTOGRAM_NAME,
+  NDWU_PICTOGRAM_VARIANTS,
   NdwuAdaptivePictogramComponent,
   NdwuPictogramComponent,
-  PICTOGRAM_NAME,
-  PICTOGRAM_VARIANTS,
-  PictogramName,
-  PictogramSize,
-  PictogramVariant,
+  NdwuPictogramName,
+  NdwuPictogramSize,
+  NdwuPictogramVariant,
 } from '@ndw-ui-kit/core';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -22,7 +22,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
 export class PictogramOverviewComponent {
   protected readonly pictogramIsDesktop = signal(true);
   protected readonly pictogramIsMobile: Signal<boolean> = computed(() => !this.pictogramIsDesktop());
-  protected readonly pictogramSizeFlags: NdwuSizeFlags<PictogramSize> = {
+  protected readonly pictogramSizeFlags: NdwuSizeFlags<NdwuPictogramSize> = {
     XL: this.pictogramIsDesktop,
     L: this.pictogramIsMobile,
   };
@@ -31,15 +31,17 @@ export class PictogramOverviewComponent {
     this.pictogramIsDesktop.update((isDesktop) => !isDesktop);
   }
 
-  protected readonly PICTOGRAM_NAME = PICTOGRAM_NAME;
-  protected readonly PICTOGRAM_VARIANTS = PICTOGRAM_VARIANTS;
-  protected readonly allVariants: PictogramVariant[] = Object.keys(PICTOGRAM_VARIANTS) as PictogramVariant[];
-  protected readonly variantShowcasePictogram = PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L;
+  protected readonly PICTOGRAM_NAME = NDWU_PICTOGRAM_NAME;
+  protected readonly PICTOGRAM_VARIANTS = NDWU_PICTOGRAM_VARIANTS;
+  protected readonly allVariants: NdwuPictogramVariant[] = Object.keys(
+    NDWU_PICTOGRAM_VARIANTS,
+  ) as NdwuPictogramVariant[];
+  protected readonly variantShowcasePictogram = NDWU_PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L;
 
-  protected readonly samplePictograms: PictogramName[] = [
-    PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L,
-    PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_XL,
-    PICTOGRAM_NAME.PICTOGRAM_CONNECTION2_L,
-    PICTOGRAM_NAME.PICTOGRAM_INFO3_L,
+  protected readonly samplePictograms: NdwuPictogramName[] = [
+    NDWU_PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_L,
+    NDWU_PICTOGRAM_NAME.PICTOGRAM_CONNECTION1_XL,
+    NDWU_PICTOGRAM_NAME.PICTOGRAM_CONNECTION2_L,
+    NDWU_PICTOGRAM_NAME.PICTOGRAM_INFO3_L,
   ];
 }

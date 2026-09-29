@@ -1,27 +1,27 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input} from '@angular/core';
 import {positiveNumberAttribute, uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuSizeDirective} from '../../directives';
-import {SIZE} from '../../../shared.types';
+import {NDWU_SIZE} from '../../../shared.types';
 
-export const PROGRESS_BAR_COLOR = {
+export const NDWU_PROGRESS_BAR_COLOR = {
   PRIMARY: 'primary',
   SUCCESS: 'success',
   DANGER: 'danger',
   WARNING: 'warning',
 } as const;
 
-export type ProgressBarColor = typeof PROGRESS_BAR_COLOR[keyof typeof PROGRESS_BAR_COLOR];
+export type NdwuProgressBarColor = typeof NDWU_PROGRESS_BAR_COLOR[keyof typeof NDWU_PROGRESS_BAR_COLOR];
 
-export const coerceProgressBarColor = (value: unknown): ProgressBarColor => {
-  const val = value as ProgressBarColor;
+export const ndwuCoerceProgressBarColor = (value: unknown): NdwuProgressBarColor => {
+  const val = value as NdwuProgressBarColor;
 
-  return Object.values(PROGRESS_BAR_COLOR).includes(val) ? val : PROGRESS_BAR_COLOR.PRIMARY;
+  return Object.values(NDWU_PROGRESS_BAR_COLOR).includes(val) ? val : NDWU_PROGRESS_BAR_COLOR.PRIMARY;
 };
 
-export type ProgressBarMode = 'determinate' | 'indeterminate';
+export type NdwuProgressBarMode = 'determinate' | 'indeterminate';
 
-export const coerceProgressBarMode = (value: unknown): ProgressBarMode => {
-  const val = value as ProgressBarMode;
+export const ndwuCoerceProgressBarMode = (value: unknown): NdwuProgressBarMode => {
+  const val = value as NdwuProgressBarMode;
 
   return val === 'indeterminate' ? 'indeterminate' : 'determinate';
 };
@@ -42,10 +42,10 @@ export class NdwuProgressBarComponent {
 
   public readonly value = input(0, {transform: positiveNumberAttribute});
   public readonly max = input(100, {transform: positiveNumberAttribute});
-  public readonly color = input(PROGRESS_BAR_COLOR.PRIMARY, {transform: coerceProgressBarColor});
+  public readonly color = input(NDWU_PROGRESS_BAR_COLOR.PRIMARY, {transform: ndwuCoerceProgressBarColor});
   public readonly label = input<string>('');
   public readonly disabled = input(false, {transform: booleanAttribute});
-  public readonly mode = input('determinate', {transform: coerceProgressBarMode});
+  public readonly mode = input('determinate', {transform: ndwuCoerceProgressBarMode});
 
   protected readonly isIndeterminate = computed(() => this.mode() === 'indeterminate');
 
@@ -64,7 +64,7 @@ export class NdwuProgressBarComponent {
     const classes = [
       'ndwu-progress-bar',
       `ndwu-progress-bar--${this.color()}`,
-      `ndwu-progress-bar--${this.sizeSvc.effectiveSize() === SIZE.XL ? 'XL' : 'L'}`,
+      `ndwu-progress-bar--${this.sizeSvc.effectiveSize() === NDWU_SIZE.XL ? 'XL' : 'L'}`,
     ];
 
     if (this.disabled()) {

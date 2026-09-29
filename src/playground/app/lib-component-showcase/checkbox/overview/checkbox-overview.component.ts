@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, computed, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NdwuCheckboxComponent, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, NdwuCheckboxComponent} from '@ndw-ui-kit/core';
 import {NdwuCheckboxFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
@@ -19,7 +19,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   ],
 })
 export class CheckboxOverviewComponent {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
 
   // Two-layer (parent + 3 children) state
   public readonly twoLayerChild1 = signal(false);

@@ -5,7 +5,7 @@
 
 import {BASE_ICON_NAME} from './icon-names.base';
 
-export const ICON_NAME = {
+export const NDWU_ICON_NAME = {
   ADD_L: 'add_L',
   ADD_S: 'add_S',
   ADD_FOLDER_L: 'add_folder_L',
@@ -371,7 +371,7 @@ export const ICON_NAME = {
   WISP_S: 'wisp_S',
 } as const;
 
-export const EXTRA_ICON_NAME = {
+export const NDWU_EXTRA_ICON_NAME = {
   ADD_L: 'add_L',
   ADD_S: 'add_S',
   ADD_FOLDER_L: 'add_folder_L',
@@ -706,10 +706,10 @@ export const EXTRA_ICON_NAME = {
   WISP_S: 'wisp_S',
 } as const;
 
-export const ICON_NAMES = Object.values(ICON_NAME);
-export const BASE_ICON_NAMES = BASE_ICON_NAME;
+export const NDWU_ICON_NAMES = Object.values(NDWU_ICON_NAME);
+export const NDWU_BASE_ICON_NAMES = BASE_ICON_NAME;
 
-export type {BaseIconName} from './icon-names.base';
-export type AllIconName = (typeof ICON_NAME)[keyof typeof ICON_NAME];
+export type {NdwuBaseIconName} from './icon-names.base';
+export type NdwuAllIconName = (typeof NDWU_ICON_NAME)[keyof typeof NDWU_ICON_NAME];
 
-export type IconName = AllIconName;
+export type NdwuIconName = NdwuAllIconName;

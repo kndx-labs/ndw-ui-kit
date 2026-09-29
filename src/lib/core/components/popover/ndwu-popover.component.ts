@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, TemplateRef, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ICON_NAME} from '../../../icon-names';
+import {NDWU_ICON_NAME} from '../../../icon-names';
 import {NdwuIconButtonComponent} from '../button/icon/ndwu-icon-button.component';
 import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
 import type {NdwuPopoverButton} from './ndwu-popover.types';
@@ -27,7 +27,7 @@ import {
   ],
 })
 export class NdwuPopoverComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   protected readonly popoverId = inject(NDWU_POPOVER_ID, {optional: true}) ?? null;
   protected readonly title = inject(NDWU_POPOVER_TITLE, {optional: true}) ?? null;

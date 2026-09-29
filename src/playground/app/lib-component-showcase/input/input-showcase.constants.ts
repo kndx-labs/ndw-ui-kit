@@ -1,7 +1,7 @@
-import {NdwuOption, SIZE} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, NdwuOption} from '@ndw-ui-kit/core';
 
 export const SIZE_OPTIONS: NdwuOption[] = [
-  {value: SIZE.L, label: 'common.sizes.l'},
-  {value: SIZE.XL, label: 'common.sizes.xl'},
-  {value: SIZE.XXL, label: 'common.sizes.xxl'},
+  {value: NDWU_SIZE.L, label: 'common.sizes.l'},
+  {value: NDWU_SIZE.XL, label: 'common.sizes.xl'},
+  {value: NDWU_SIZE.XXL, label: 'common.sizes.xxl'},
 ];

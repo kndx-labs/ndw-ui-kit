@@ -18,6 +18,12 @@
     "state-pressed": "Pressed",
     "state-focused": "Focused",
     "state-visited": "Visited",
-    "state-disabled": "Disabled"
+    "state-disabled": "Disabled",
+    "router-links": "Router links",
+    "router-link-disabled": "Disabled",
+    "router-link-string": "String",
+    "router-link-array": "Array",
+    "router-link-open-sandbox": "Open sandbox",
+    "router-link-go-to-button": "Go to Button"
   }
 }

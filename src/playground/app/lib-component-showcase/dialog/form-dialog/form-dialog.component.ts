@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NDWU_MODAL_REF,
   NdwuButtonComponent,
   NdwuFormContainerComponent,
@@ -12,8 +12,8 @@ import {
   NdwuPopoverDirective,
 } from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {NdwuInputFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {ERROR_KEY, Validator, ValidatorFactory} from '@app/validation';
+import {NdwuInputFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
+import {EMAIL_VALIDATOR} from '@app/validation';
 
 @Component({
   selector: 'app-form-dialog',
@@ -33,7 +33,7 @@ import {ERROR_KEY, Validator, ValidatorFactory} from '@app/validation';
   ],
 })
 export class FormDialogComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   protected readonly form: FormGroup;
 
@@ -47,7 +47,7 @@ export class FormDialogComponent {
         {
           nonNullable: true,
           validators: [
-            Validator.required,
+            NdwuValidators.required(),
           ],
         },
       ),
@@ -56,8 +56,8 @@ export class FormDialogComponent {
         {
           nonNullable: true,
           validators: [
-            Validator.required,
-            ValidatorFactory.regexValidatorConstructor(ERROR_KEY.EMAIL),
+            NdwuValidators.required(),
+            EMAIL_VALIDATOR,
           ],
         },
       ),

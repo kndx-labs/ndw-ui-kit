@@ -1,18 +1,18 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
+  NDWU_SIZE,
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
   NdwuHintDirective,
   NdwuIconComponent,
   NdwuInputDirective,
   NdwuSuffixDirective,
-  SIZE,
 } from '@ndw-ui-kit/core';
-import {NdwuHelperMessageComponent, NdwuInputFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {NdwuHelperMessageComponent, NdwuInputFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
-import {ERROR_KEY, ValidatorFactory} from '@app/validation';
+import {EMAIL_VALIDATOR, ERROR_KEY, VALIDATION_REGEXES} from '@app/validation';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 @Component({
@@ -35,8 +35,8 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
   ],
 })
 export class InputOverviewComponent implements OnInit {
-  public readonly SIZE = SIZE;
-  public readonly ICON_NAME = ICON_NAME;
+  public readonly SIZE = NDWU_SIZE;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
 
   public inputDefault = new FormGroup({
     input: new FormControl(''),
@@ -63,7 +63,7 @@ export class InputOverviewComponent implements OnInit {
   });
 
   public inputRequiredInvalid = new FormGroup({
-    input: new FormControl('invalid@', [Validators.email, Validators.required]),
+    input: new FormControl('invalid@', [EMAIL_VALIDATOR, NdwuValidators.required()]),
   });
 
   public inputPassword = new FormGroup({
@@ -90,7 +90,7 @@ export class InputOverviewComponent implements OnInit {
     input: new FormControl(
       'invalid: ü',
       [
-        ValidatorFactory.regexValidatorConstructor(ERROR_KEY.ASCII_ONLY),
+        NdwuValidators.pattern(VALIDATION_REGEXES[ERROR_KEY.ASCII_ONLY], 'error.ascii-only'),
       ],
     ),
   });

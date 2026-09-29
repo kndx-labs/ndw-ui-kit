@@ -11,7 +11,7 @@ import {HttpClient} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NdwuButtonComponent,
   NdwuDialogContainerComponent,
   NdwuModalActionsDirective,
@@ -59,7 +59,7 @@ interface User {
   ],
 })
 export class DialogShowcaseComponent {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   protected readonly httpClient = inject(HttpClient);
   protected readonly modalService = inject(NdwuModalService);

@@ -92,6 +92,10 @@
       "name": "Zeitplan-Editor",
       "description": "Steuerelement zum Definieren wiederkehrender Zeitpläne."
     },
+    "ndwu-router-loader": {
+      "name": "Router Loader",
+      "description": "Animierter Router-Loader."
+    },
     "ndwu-scrollbar": {
       "name": "Scrollleiste",
       "description": "Benutzerdefiniert gestalteter scrollbarer Container."

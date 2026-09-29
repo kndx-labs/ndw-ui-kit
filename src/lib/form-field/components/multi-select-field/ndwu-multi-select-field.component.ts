@@ -2,8 +2,9 @@ import {Component, booleanAttribute, computed, contentChild, inject, input, sign
 import {NgTemplateOutlet} from '@angular/common';
 import {NgControl} from '@angular/forms';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NDWU_OPTION_CONFIG,
+  NDWU_SIZE,
   NdwuButtonBaseDirective,
   NdwuCheckboxComponent,
   type NdwuControl,
@@ -22,9 +23,8 @@ import {
   NdwuStyledGroupHeaderComponent,
   NdwuStyledListboxComponent,
   NdwuStyledOptionComponent,
-  SIZE,
-  normalizeOptions,
-  resolveOptionsAdapter,
+  ndwuNormalizeOptions,
+  ndwuResolveOptionsAdapter,
 } from '@ndw-ui-kit/core';
 import {
   NdwuComboboxDirective,
@@ -76,7 +76,7 @@ import {type NdwuSelectRenderRow, buildSelectRenderRows} from '../../classes/sel
 })
 export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends SelectFieldBase<(string | number)[]>
   implements NdwuControl {
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
   protected readonly displayTemplate = contentChild(NdwuMultiSelectDisplayDirective);
   protected readonly diOptionConfig = inject(NDWU_OPTION_CONFIG, {optional: true}) ?? null;
 
@@ -86,7 +86,7 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends SelectFieldBa
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
   public readonly hint = input<string>('');
-  public readonly required = input(false, {transform: booleanAttribute});
+  public readonly ndwuRequired = input(false, {transform: booleanAttribute});
   public readonly options = input<readonly T[]>([]);
   public readonly optionAdapter = input<NdwuOptionAdapter<T> | undefined>(undefined);
   public readonly showSelectAll = input(true, {transform: booleanAttribute});
@@ -103,13 +103,13 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends SelectFieldBa
   protected readonly pendingSelection = signal<(string | number)[]>([]);
 
   protected readonly dropdownSize = computed(() => {
-    return this.isMobileViewport() ? SIZE.XL : this.sizeSvc.effectiveSize();
+    return this.isMobileViewport() ? NDWU_SIZE.XL : this.sizeSvc.effectiveSize();
   });
 
   protected readonly normalizedOptions = computed<NdwuOption[]>(() => {
-    return normalizeOptions(
+    return ndwuNormalizeOptions(
       this.options(),
-      resolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
+      ndwuResolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
     );
   });
 

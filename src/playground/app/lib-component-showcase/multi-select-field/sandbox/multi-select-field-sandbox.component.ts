@@ -1,9 +1,13 @@
 import {ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal} from '@angular/core';
 import {CommonModule, JsonPipe} from '@angular/common';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {ICON_NAME, NdwuIconComponent, NdwuOption, SIZE, type Size} from '@ndw-ui-kit/core';
-import {NdwuMultiSelectDisplayDirective, NdwuMultiSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {NDWU_ICON_NAME, NDWU_SIZE, NdwuIconComponent, NdwuOption, type NdwuSize} from '@ndw-ui-kit/core';
+import {
+  NdwuMultiSelectDisplayDirective,
+  NdwuMultiSelectFieldComponent,
+  NdwuValidators,
+} from '@ndw-ui-kit/core/form-field';
 import {ThemeSwitcherComponent} from '@app/components';
 import {parseTextareaOptions} from '@app/utils';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
@@ -32,8 +36,8 @@ type DisplayMode = 'default' | 'count' | 'chips';
 export class MultiSelectFieldSandboxComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
-  protected readonly SIZE = SIZE;
-  protected readonly ICON_NAME = ICON_NAME;
+  protected readonly SIZE = NDWU_SIZE;
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
   protected readonly sandboxTheme = signal<SandboxTheme>('light');
   protected readonly options = signal<ReturnType<typeof parseTextareaOptions>>([]);
 
@@ -41,7 +45,7 @@ export class MultiSelectFieldSandboxComponent implements OnInit {
     label: new FormControl('Countries', {nonNullable: true}),
     placeholder: new FormControl('Pick countries', {nonNullable: true}),
     hint: new FormControl('', {nonNullable: true}),
-    size: new FormControl<Size>(SIZE.L, {nonNullable: true}),
+    size: new FormControl<NdwuSize>(NDWU_SIZE.L, {nonNullable: true}),
     cancelLabel: new FormControl('Cancel', {nonNullable: true}),
     confirmLabel: new FormControl('Confirm', {nonNullable: true}),
     disabled: new FormControl(false, {nonNullable: true}),
@@ -76,7 +80,7 @@ export class MultiSelectFieldSandboxComponent implements OnInit {
     }
 
     if (this.sandboxForm.controls.required.value) {
-      selectCtrl.setValidators(Validators.required);
+      selectCtrl.setValidators(NdwuValidators.required());
     } else {
       selectCtrl.clearValidators();
     }
@@ -102,7 +106,7 @@ export class MultiSelectFieldSandboxComponent implements OnInit {
       label: 'Countries',
       placeholder: 'Pick countries',
       hint: '',
-      size: SIZE.L,
+      size: NDWU_SIZE.L,
       cancelLabel: 'Cancel',
       confirmLabel: 'Confirm',
       disabled: false,

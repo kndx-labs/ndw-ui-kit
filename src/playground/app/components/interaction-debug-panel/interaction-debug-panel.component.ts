@@ -12,7 +12,7 @@ import {
   viewChild,
 } from '@angular/core';
 import {
-  ICON_NAME,
+  NDWU_ICON_NAME,
   NDWU_INTERACTION_FOCUS_TYPES,
   NdwuIconComponent,
   NdwuInteractionRegistry,
@@ -38,7 +38,7 @@ export class InteractionDebugPanelComponent implements OnInit, AfterViewInit {
   private dragOffset: {x: number; y: number} | null = null;
   private cleanupDragListeners: (() => void) | null = null;
 
-  public readonly ICON_NAME = ICON_NAME;
+  public readonly ICON_NAME = NDWU_ICON_NAME;
   public readonly isCollapsed = signal(false);
   public readonly position = signal<{left: number; top: number} | null>(null);
   public readonly openModalCount = computed(() => this.modalService.openModalCount());

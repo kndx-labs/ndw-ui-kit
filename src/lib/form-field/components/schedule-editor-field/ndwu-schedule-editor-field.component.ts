@@ -1,16 +1,16 @@
 import {Component, DestroyRef, OnInit, input, signal} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {
-  DEFAULT_WEEK_DAYS,
+  NDWU_DEFAULT_WEEK_DAYS,
   NDWU_SCHEDULE_EDITOR_MODE,
   NDWU_SCHEDULE_EDITOR_SIZING,
   NdwuScheduleEditorComponent,
   type NdwuScheduleEditorLayout,
   type NdwuScheduleEditorMode,
   type NdwuScheduleEditorSizing,
-  type ScheduleValue,
-  type WeekDay,
-} from '@ndw-ui-kit/core';
+  type NdwuScheduleValue,
+  type NdwuWeekDay,
+} from '@ndw-ui-kit/core/widgets';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor, syncIsInvalid} from '../../form-field.utils';
 
@@ -22,13 +22,13 @@ import {setValueAccessor, syncIsInvalid} from '../../form-field.utils';
   },
   imports: [NdwuScheduleEditorComponent],
 })
-export class NdwuScheduleEditorFieldComponent extends FormFieldBase<ScheduleValue> implements OnInit {
+export class NdwuScheduleEditorFieldComponent extends FormFieldBase<NdwuScheduleValue> implements OnInit {
   public readonly forceLayout = input<NdwuScheduleEditorLayout | null>(null);
   public readonly mode = input<NdwuScheduleEditorMode>(NDWU_SCHEDULE_EDITOR_MODE.FULL);
   public readonly sizing = input<NdwuScheduleEditorSizing>(NDWU_SCHEDULE_EDITOR_SIZING.SCALE);
   public readonly weekDays = input(
-    DEFAULT_WEEK_DAYS,
-    {transform: (value: WeekDay[] | null | undefined) => value ?? DEFAULT_WEEK_DAYS},
+    NDWU_DEFAULT_WEEK_DAYS,
+    {transform: (value: NdwuWeekDay[] | null | undefined) => value ?? NDWU_DEFAULT_WEEK_DAYS},
   );
 
   protected readonly isInvalid = signal<boolean>(false);
@@ -51,7 +51,7 @@ export class NdwuScheduleEditorFieldComponent extends FormFieldBase<ScheduleValu
     syncIsInvalid(control, this.isInvalid, this.destroyRef$);
   }
 
-  public onValueChange(value: ScheduleValue): void {
+  public onValueChange(value: NdwuScheduleValue): void {
     this.handleChange(value);
   }
 }

@@ -21,6 +21,10 @@
     display: flex;
     gap: 16px;
     align-items: center;
+
+    &--baseline {
+      align-items: baseline;
+    }
   }
 
   &__label {
@@ -31,6 +35,14 @@
     font-size: 0.8rem;
   }
 
+  &__example {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    min-width: 0;
+  }
+
   &__class {
     padding: 2px 6px;
     border-radius: 4px;
@@ -38,6 +50,7 @@
     color: var(--color-gray-60);
     font-size: 0.75rem;
     font-family: monospace;
+    overflow-wrap: anywhere;
   }
 
 }

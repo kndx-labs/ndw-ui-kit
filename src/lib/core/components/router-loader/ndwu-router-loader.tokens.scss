@@ -1,0 +1,6 @@
+@use 'styles/colors';
+
+$ndwu-router-loader-tokens: (
+  router-loader-first-color: colors.$brand-40,
+  router-loader-second-color: colors.$brand-10,
+);

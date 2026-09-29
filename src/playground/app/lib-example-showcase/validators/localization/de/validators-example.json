@@ -1,0 +1,23 @@
+{
+  "validators-example": {
+    "tabs": {
+      "overview": "Übersicht"
+    },
+    "fields": {
+      "required": "Name",
+      "required-true": "Ich akzeptiere die Bedingungen",
+      "email": "E-Mail",
+      "min": "Alter",
+      "max": "Alter",
+      "min-length": "Benutzername",
+      "max-length": "Spitzname",
+      "pattern": "PIN",
+      "overridden": "Spitzname",
+      "wrapped": "Login"
+    },
+    "custom": {
+      "max-length": "Spitznamen sind auf {{requiredLength}} Zeichen begrenzt",
+      "no-spaces": "Leerzeichen sind nicht erlaubt"
+    }
+  }
+}

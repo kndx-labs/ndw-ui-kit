@@ -1,12 +1,12 @@
-export const SIZE = {
+export const NDWU_SIZE = {
   S: 'S',
   L: 'L',
   XL: 'XL',
   XXL: 'XXL',
 } as const;
 
-export type Values<T> = T[keyof T];
-export type Size = Values<typeof SIZE>;
+export type NdwuValues<T> = T[keyof T];
+export type NdwuSize = NdwuValues<typeof NDWU_SIZE>;
 
 export interface NdwuOption {
   value: string | number;

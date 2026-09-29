@@ -1,12 +1,7 @@
 import {ChangeDetectionStrategy, Component, ViewEncapsulation, signal} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {
-  NdwuButtonComponent,
-  NdwuFormContainerComponent,
-  type NdwuOption,
-  SIZE,
-  type ScheduleValue,
-} from '@ndw-ui-kit/core';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {NDWU_SIZE, NdwuButtonComponent, NdwuFormContainerComponent, type NdwuOption} from '@ndw-ui-kit/core';
+import {type NdwuScheduleValue} from '@ndw-ui-kit/core/widgets';
 import {
   NdwuCheckboxFieldComponent,
   NdwuInputFieldComponent,
@@ -15,9 +10,11 @@ import {
   NdwuScheduleEditorFieldComponent,
   NdwuSelectFieldComponent,
   NdwuToggleFieldComponent,
+  NdwuValidators,
 } from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
+import {EMAIL_VALIDATOR} from '@app/validation';
 
 const COUNTRY_OPTIONS: NdwuOption[] = [
   {value: 'de', label: 'Germany'},
@@ -72,7 +69,7 @@ const CITY_OPTIONS: NdwuOption[] = [
   {value: 'new-york', label: 'New York'},
 ];
 
-const DEFAULT_SCHEDULE: ScheduleValue = {
+const DEFAULT_SCHEDULE: NdwuScheduleValue = {
   mon: [[540, 1080]],
   tue: [[540, 1080]],
   wed: [[540, 1080]],
@@ -104,7 +101,7 @@ const DEFAULT_SCHEDULE: ScheduleValue = {
   ],
 })
 export class UserProfileFormOverviewComponent {
-  public readonly SIZE = SIZE;
+  public readonly SIZE = NDWU_SIZE;
 
   public readonly countryOptions = COUNTRY_OPTIONS;
   public readonly timezoneOptions = TIMEZONE_OPTIONS;
@@ -118,16 +115,16 @@ export class UserProfileFormOverviewComponent {
 
   public readonly form = new FormGroup({
     // Personal Info
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    firstName: new FormControl('', [NdwuValidators.required()]),
+    lastName: new FormControl('', [NdwuValidators.required()]),
+    email: new FormControl('', [NdwuValidators.required(), EMAIL_VALIDATOR]),
     phone: new FormControl(''),
     city: new FormControl(''),
 
     // Account
-    role: new FormControl('editor', [Validators.required]),
-    country: new FormControl('de', [Validators.required]),
-    skills: new FormControl<string[]>([], [Validators.required]),
+    role: new FormControl('editor', [NdwuValidators.required()]),
+    country: new FormControl('de', [NdwuValidators.required()]),
+    skills: new FormControl<string[]>([], [NdwuValidators.required()]),
 
     // Preferences
     language: new FormControl('en'),
@@ -142,10 +139,10 @@ export class UserProfileFormOverviewComponent {
     marketingEmails: new FormControl(false),
 
     // Schedule
-    schedule: new FormControl<ScheduleValue>(DEFAULT_SCHEDULE),
+    schedule: new FormControl<NdwuScheduleValue>(DEFAULT_SCHEDULE),
 
     // Terms
-    termsAccepted: new FormControl(false, [Validators.requiredTrue]),
+    termsAccepted: new FormControl(false, [NdwuValidators.requiredTrue()]),
   });
 
   public onSubmit(): void {

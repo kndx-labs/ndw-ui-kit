@@ -172,7 +172,7 @@ const main = async (): Promise<void> => {
     console.error(chalk.red('Unknown icon name(s) — no matching SVG found in the package:'));
     invalid.forEach((name) => console.error(chalk.red(`  ✗ ${name}`)));
     console.error(
-      chalk.yellow('\nValid icon names are the values of EXTRA_ICON_NAME exported from @ndw-ui-kit/core.'),
+      chalk.yellow('\nValid icon names are the values of NDWU_EXTRA_ICON_NAME exported from @ndw-ui-kit/core.'),
     );
     process.exit(1);
   }

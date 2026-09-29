@@ -341,7 +341,7 @@ preserving runtime checks inside `<ndwu-icon>`.
 }
 ```
 
-Icon names are string values of `EXTRA_ICON_NAME` exported from `@ndw-ui-kit/core`.
+Icon names are string values of `NDWU_EXTRA_ICON_NAME` exported from `@ndw-ui-kit/core`.
 The CLI validates every name and exits an error for any unknown name.
 
 ##### 2. Generate the sprite
@@ -390,7 +390,24 @@ name is used that was not included in the configured set.
 Pictograms are a separate set of ~10 two-colored icons used inside certain `@ndw-ui-kit/core`
 components. Those icons are merged into an additional SVG sprite file (`ndw-ui-kit.pictogram.sprite.svg`)
 that should be included in your app's assets if you use any component that relies
-on pictograms (e.g., `NdwuEmptyStateComponent`).
+on pictograms (e.g., `NdwuEmptyStateComponent` from `@ndw-ui-kit/core/widgets`).
+
+### Router loader
+
+`<ndwu-router-loader>` is an animated two-colored loader. The SVG is inlined, so it needs no sprite asset.
+
+```html
+<ndwu-router-loader />                            <!-- XL, 100×100 (default) -->
+<ndwu-router-loader size="L" />                   <!-- L, 64×64 -->
+<ndwu-router-loader firstColor="#66AC20" secondColor="#D4ECBD" />
+<ndwu-router-loader [duration]="3000" />         <!-- one cycle in ms, 1500 by default -->
+```
+
+- By default, colors come from the `--ndwu-router-loader-first-color` / `--ndwu-router-loader-second-color`
+  tokens and follow the active theme. `firstColor` / `secondColor` override them for a single instance.
+- `duration` scales the whole animation cycle proportionally. Non-positive or non-numeric values fall back to 1500.
+- The accessible name defaults to `Loading` and goes through the `localize` pipe. Use `ariaLabel` to change it.
+- With `prefers-reduced-motion: reduce`, the animation is turned off.
 
 ### Localization
 
@@ -421,14 +438,14 @@ support every value). Specify size on individual components:
 
 ```html
 
-<ndwu-button [size]="SIZE.L">Submit</ndwu-button>
+<ndwu-button [size]="NDWU_SIZE.L">Submit</ndwu-button>
 ```
 
 Use `ndwu-form-container` to set size for all child components at once:
 
 ```html
 
-<ndwu-form-container [size]="SIZE.XL">
+<ndwu-form-container [size]="NDWU_SIZE.XL">
   <ndwu-form-field>
     <ndwu-label>Email</ndwu-label>
     <input ndwuInput formControlName="email"/>
@@ -441,7 +458,7 @@ Size resolution priority:
 
 1. Explicit `[size]` on the component itself
 2. Inherited from the nearest parent container
-3. Default (`SIZE.XL`)
+3. Default (`NDWU_SIZE.XL`)
 
 ### Component tokens
 
@@ -492,6 +509,25 @@ to a wrapping container:
 Tip: inspect component styles (or playground examples) to find the exact token
 names used by a specific component.
 
+### Widgets
+
+Composite components that are built on top of basic ones have a separate
+entry point (`@ndw-ui-kit/core/widgets`), so apps that don't use them
+don't pull them in together with basic components.
+
+| Component              | Description                   |
+|------------------------|-------------------------------|
+| `ndwu-empty-state`     | Empty state with a pictogram  |
+| `ndwu-file-upload`     | File dropzone with file list  |
+| `ndwu-schedule-editor` | Weekly schedule editor canvas |
+
+```typescript
+import {NdwuEmptyStateComponent} from '@ndw-ui-kit/core/widgets';
+```
+
+Their form control wrappers (`ndwu-file-upload-field`, `ndwu-schedule-editor-field`)
+stay in `@ndw-ui-kit/core/form-field`.
+
 ### Form field components (CVA)
 
 The `ndw-ui-kit` provides a number o CVA components for common form controls (checkbox, input, select, etc.).
@@ -499,15 +535,15 @@ These implement Angular's
 [`ControlValueAccessor`](https://angular.dev/api/forms/ControlValueAccessor)
 and have a separate entry point (`@ndw-ui-kit/core/form-field`).
 
-| Component                 | Description            |
-|---------------------------|------------------------|
-| `ndwu-checkbox-field`     | Checkbox (two-state)   |
-| `ndwu-input-field`        | Text/password input    |
-| `ndwu-multi-select-field` | Multi-option select    |
-| `ndwu-radio-field`        | Radio button list      |
-| `ndwu-schedule-editor`    | Weekly schedule editor |
-| `ndwu-select-field`       | Single-option select   |
-| `ndwu-toggle-field`       | Toggle switch          |
+| Component                    | Description            |
+|------------------------------|------------------------|
+| `ndwu-checkbox-field`        | Checkbox (two-state)   |
+| `ndwu-input-field`           | Text/password input    |
+| `ndwu-multi-select-field`    | Multi-option select    |
+| `ndwu-radio-field`           | Radio button list      |
+| `ndwu-schedule-editor-field` | Weekly schedule editor |
+| `ndwu-select-field`          | Single-option select   |
+| `ndwu-toggle-field`          | Toggle switch          |
 
 #### Custom option lists
 
@@ -597,6 +633,33 @@ and the internal normalized option list (`normalizedOptions`):
 The NDW UI Kit shows validation errors for CVA components (currently
 `ndwu-input-field`). Errors are only displayed after the control is `touched`.
 
+##### Built-in validators
+
+Angular's `Validators` return errors without a message key, so the fields show
+no text for them. Use `NdwuValidators` instead. They validate like Angular's
+and add a translation key to each error:
+
+```typescript
+import {NdwuValidators, ndwuWrapValidator} from '@ndw-ui-kit/core/form-field';
+
+name: new FormControl('', [
+  NdwuValidators.required(),                                 // 'ndwu.validation.required'
+  NdwuValidators.minLength(3),                               // 'ndwu.validation.min-length'
+  NdwuValidators.maxLength(20, 'signup.name-too-long'),      // custom key
+  ndwuWrapValidator(noSpacesValidator, 'signup.no-spaces'),  // any other validator
+]),
+```
+
+Add the `ndwu.validation.*` keys to your translations. The error fields become
+placeholders, e.g. `"Enter at least {{requiredLength}} characters"`. The keys
+are exported as `NDWU_VALIDATION_ERROR_LABEL`. For the full key and placeholder
+list and the design, see
+[ADR 009](https://github.com/kndx-labs/ndw-ui-kit/blob/master/docs/architecture/ADR/009-ndwu-validators-wrapper.md).
+
+Use the `ndwuRequired` input to show the required mark. Don't put Angular's
+`required`, `email`, `minlength`, `maxlength` or `pattern` attributes on ndwu
+fields: their validator directives replace the `NdwuValidators` errors.
+
 ##### How it works
 
 A validator returns `ValidatorResult` (either `null` for success or `ErrorResult`):
@@ -633,8 +696,9 @@ export interface NdwuValidationData {
 
 #### Custom validation processor
 
-Override the built-in processor via the `NDWU_VALIDATION_PROCESSOR` token if your
-validators return errors in a different shape (e.g. built-in Angular validators):
+For built-in Angular validators, prefer `NdwuValidators` (see above). Override the
+built-in processor via the `NDWU_VALIDATION_PROCESSOR` token only if your
+validators return errors in a different shape that you can't wrap:
 
 ```typescript
 import {AbstractControl} from '@angular/forms';

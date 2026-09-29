@@ -3,6 +3,8 @@
     "title": "NDW UI Kit Demo",
     "components": "Komponenten",
     "navigation": "Navigation",
+    "table": "Tabelle",
+    "widgets": "Widgets",
     "examples": "Beispiele",
     "menu": "Menü",
     "close-menu": "Menü schließen",
@@ -87,8 +89,18 @@
     }
   },
   "error": {
-    "ascii-only": "Nur ASCII-Zeichen sind erlaubt",
-    "required": "Dieses Feld ist erforderlich",
-    "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+    "ascii-only": "Nur ASCII-Zeichen sind erlaubt"
+  },
+  "ndwu": {
+    "validation": {
+      "required": "Dieses Feld ist erforderlich",
+      "required-true": "Dieses Feld muss aktiviert sein",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "min": "Der Wert muss mindestens {{min}} sein",
+      "max": "Der Wert darf höchstens {{max}} sein",
+      "min-length": "Geben Sie mindestens {{requiredLength}} Zeichen ein",
+      "max-length": "Geben Sie höchstens {{requiredLength}} Zeichen ein",
+      "pattern": "Der Wert hat ein ungültiges Format"
+    }
   }
 }

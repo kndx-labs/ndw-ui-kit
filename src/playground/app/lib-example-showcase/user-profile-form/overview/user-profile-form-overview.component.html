@@ -21,13 +21,13 @@
               formControlName="firstName"
               [label]="'user-profile-form-example.fields.first-name' | localize"
               [placeholder]="'user-profile-form-example.placeholders.first-name' | localize"
-              required
+              ndwuRequired
             />
             <ndwu-input-field
               formControlName="lastName"
               [label]="'user-profile-form-example.fields.last-name' | localize"
               [placeholder]="'user-profile-form-example.placeholders.last-name' | localize"
-              required
+              ndwuRequired
             />
           </div>
 
@@ -35,7 +35,7 @@
             formControlName="email"
             [label]="'user-profile-form-example.fields.email' | localize"
             [placeholder]="'user-profile-form-example.placeholders.email' | localize"
-            required
+            ndwuRequired
           />
 
           <div class="profile-form__row">
@@ -62,7 +62,7 @@
             [label]="'user-profile-form-example.fields.country' | localize"
             [placeholder]="'user-profile-form-example.placeholders.country' | localize"
             [options]="countryOptions"
-            required
+            ndwuRequired
           />
 
           <ndwu-multi-select-field
@@ -70,7 +70,7 @@
             [label]="'user-profile-form-example.fields.skills' | localize"
             [placeholder]="'user-profile-form-example.placeholders.skills' | localize"
             [options]="skillOptions"
-            required
+            ndwuRequired
           />
         </section>
 

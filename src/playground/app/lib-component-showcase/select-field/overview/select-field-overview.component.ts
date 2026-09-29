@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NdwuOption, NdwuOptionGroup, SIZE} from '@ndw-ui-kit/core';
-import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {NDWU_SIZE, NdwuOption, NdwuOptionGroup} from '@ndw-ui-kit/core';
+import {NdwuSelectFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {
   CONTINENT_GROUPS,
@@ -30,7 +30,7 @@ const createLongString = (len: number, char: string = 'W') => {
   ],
 })
 export class SelectFieldOverviewComponent {
-  public readonly SIZES = Object.values(SIZE).filter((size) => size !== SIZE.S);
+  public readonly SIZES = Object.values(NDWU_SIZE).filter((size) => size !== NDWU_SIZE.S);
 
   protected readonly countryOptions = COUNTRY_OPTIONS;
   protected readonly countryOptionsLongList = COUNTRY_OPTIONS_LONG_LIST;
@@ -76,7 +76,7 @@ export class SelectFieldOverviewComponent {
   });
 
   protected readonly formRequired = new FormGroup({
-    country: new FormControl('', Validators.required),
+    country: new FormControl('', NdwuValidators.required()),
   });
 
   protected readonly formSizes = new FormGroup({

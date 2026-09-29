@@ -1,4 +1,4 @@
-import {BUTTON_VARIANT, ButtonVariant, ICON_NAME, type IconName} from '@ndw-ui-kit/core';
+import {NDWU_BUTTON_VARIANT, NDWU_ICON_NAME, NdwuButtonVariant, type NdwuIconName} from '@ndw-ui-kit/core';
 
 export const BUTTON_TOKEN_KEYS = [
   'button-primary-bg',
@@ -66,31 +66,31 @@ export const BUTTON_TOKEN_KEYS = [
   'button-loader-color-secondary-negative-focused',
 ] as const;
 
-export const BUTTON_TYPE_TO_PREFIX: Record<ButtonVariant, string> = {
-  [BUTTON_VARIANT.PRIMARY]: 'button-primary-',
-  [BUTTON_VARIANT.SECONDARY]: 'button-secondary-',
-  [BUTTON_VARIANT.TERTIARY]: 'button-tertiary-',
-  [BUTTON_VARIANT.GHOST]: 'button-ghost-',
-  [BUTTON_VARIANT.SECONDARY_NEGATIVE]: 'button-secondary-negative-',
+export const BUTTON_TYPE_TO_PREFIX: Record<NdwuButtonVariant, string> = {
+  [NDWU_BUTTON_VARIANT.PRIMARY]: 'button-primary-',
+  [NDWU_BUTTON_VARIANT.SECONDARY]: 'button-secondary-',
+  [NDWU_BUTTON_VARIANT.TERTIARY]: 'button-tertiary-',
+  [NDWU_BUTTON_VARIANT.GHOST]: 'button-ghost-',
+  [NDWU_BUTTON_VARIANT.SECONDARY_NEGATIVE]: 'button-secondary-negative-',
 };
 
-export const BUTTON_TYPE_LOADER_KEYS: Record<ButtonVariant, readonly string[]> = {
-  [BUTTON_VARIANT.PRIMARY]: ['button-loader-color'],
-  [BUTTON_VARIANT.SECONDARY]: ['button-loader-color-secondary'],
-  [BUTTON_VARIANT.TERTIARY]: ['button-loader-color-tertiary'],
-  [BUTTON_VARIANT.GHOST]: ['button-loader-color-ghost'],
-  [BUTTON_VARIANT.SECONDARY_NEGATIVE]: [
+export const BUTTON_TYPE_LOADER_KEYS: Record<NdwuButtonVariant, readonly string[]> = {
+  [NDWU_BUTTON_VARIANT.PRIMARY]: ['button-loader-color'],
+  [NDWU_BUTTON_VARIANT.SECONDARY]: ['button-loader-color-secondary'],
+  [NDWU_BUTTON_VARIANT.TERTIARY]: ['button-loader-color-tertiary'],
+  [NDWU_BUTTON_VARIANT.GHOST]: ['button-loader-color-ghost'],
+  [NDWU_BUTTON_VARIANT.SECONDARY_NEGATIVE]: [
     'button-loader-color-secondary-negative',
     'button-loader-color-secondary-negative-focused',
   ],
 };
 
-export const SANDBOX_ICONS: IconName[] = [
-  ICON_NAME.ADD_S,
-  ICON_NAME.CHECK_S,
-  ICON_NAME.CLOSE_S,
-  ICON_NAME.SEARCH_L,
-  ICON_NAME.EDIT_S,
-  ICON_NAME.TRASH_S,
-  ICON_NAME.CHEVRON_RIGHT_S,
+export const SANDBOX_ICONS: NdwuIconName[] = [
+  NDWU_ICON_NAME.ADD_S,
+  NDWU_ICON_NAME.CHECK_S,
+  NDWU_ICON_NAME.CLOSE_S,
+  NDWU_ICON_NAME.SEARCH_L,
+  NDWU_ICON_NAME.EDIT_S,
+  NDWU_ICON_NAME.TRASH_S,
+  NDWU_ICON_NAME.CHEVRON_RIGHT_S,
 ];

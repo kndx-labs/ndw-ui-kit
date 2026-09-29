@@ -18,17 +18,15 @@ import {InputShowcaseComponent} from './input/input-showcase.component';
 import {PasswordInputFieldShowcaseComponent} from './password-input-field/password-input-field-showcase.component';
 import {MultiSelectFieldShowcaseComponent} from './multi-select-field/multi-select-field-showcase.component';
 import {RadioShowcaseComponent} from './radio/radio-showcase.component';
-import {ScheduleEditorShowcaseComponent} from './schedule-editor/schedule-editor-showcase.component';
+import {RouterLoaderShowcaseComponent} from './router-loader/router-loader-showcase.component';
 import {SelectFieldShowcaseComponent} from './select-field/select-field-showcase.component';
 import {SpokesLoaderShowcaseComponent} from './spokes-loader/spokes-loader-showcase.component';
 import {ProgressBarShowcaseComponent} from './progress-bar/progress-bar-showcase.component';
-import {FileUploadShowcaseComponent} from './file-upload/file-upload-showcase.component';
 import {ToggleShowcaseComponent} from './toggle/toggle-showcase.component';
 import {TooltipShowcaseComponent} from './tooltip/tooltip-showcase.component';
 import {PopoverShowcaseComponent} from './popover/popover-showcase.component';
 import {TabsShowcaseComponent} from './tabs/tabs-showcase.component';
 import {PictogramShowcaseComponent} from './pictogram/pictogram-showcase.component';
-import {EmptyStateShowcaseComponent} from './empty-state/empty-state-showcase.component';
 import {ScrollbarShowcaseComponent} from './scrollbar/scrollbar-showcase.component';
 import {TableShowcaseComponent} from './table/table-showcase.component';
 
@@ -45,7 +43,6 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-input': InputShowcaseComponent,
   'ndwu-password-input-field': PasswordInputFieldShowcaseComponent,
   'ndwu-radio': RadioShowcaseComponent,
-  'ndwu-schedule-editor': ScheduleEditorShowcaseComponent,
   'ndwu-select-field': SelectFieldShowcaseComponent,
   'ndwu-multi-select-field': MultiSelectFieldShowcaseComponent,
   'ndwu-context-menu': ContextMenuShowcaseComponent,
@@ -53,15 +50,14 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-popover': PopoverShowcaseComponent,
   'ndwu-dialog': DialogShowcaseComponent,
   'ndwu-drawer': DrawerShowcaseComponent,
+  'ndwu-router-loader': RouterLoaderShowcaseComponent,
   'ndwu-spokes-loader': SpokesLoaderShowcaseComponent,
   'ndwu-progress-bar': ProgressBarShowcaseComponent,
-  'ndwu-file-upload': FileUploadShowcaseComponent,
   'ndwu-toggle': ToggleShowcaseComponent,
   'ndwu-card': CardShowcaseComponent,
   'ndwu-chip': ChipShowcaseComponent,
   'ndwu-tabs': TabsShowcaseComponent,
   'ndwu-pictogram': PictogramShowcaseComponent,
-  'ndwu-empty-state': EmptyStateShowcaseComponent,
   'ndwu-scrollbar': ScrollbarShowcaseComponent,
   'ndwu-table': TableShowcaseComponent,
 };

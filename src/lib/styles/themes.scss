@@ -16,6 +16,7 @@
 @use 'core/components/styled-listbox/ndwu-styled-option.tokens' as ndwu-styled-option-tokens;
 @use 'core/components/styled-listbox/ndwu-styled-group-header.tokens' as ndwu-styled-group-header-tokens;
 @use 'core/components/spokes-loader/ndwu-spokes-loader.tokens' as ndwu-spokes-loader-tokens;
+@use 'core/components/router-loader/ndwu-router-loader.tokens' as ndwu-router-loader-tokens;
 @use 'core/components/toggle/ndwu-toggle.tokens' as ndwu-toggle-tokens;
 @use 'core/components/tooltip/ndwu-tooltip.tokens' as ndwu-tooltip-tokens;
 @use 'core/components/popover/ndwu-popover.tokens' as ndwu-popover-tokens;
@@ -63,6 +64,7 @@ $component-tokens: (
   'ndwu-styled-option': ndwu-styled-option-tokens.$ndwu-styled-option-tokens,
   'ndwu-styled-group-header': ndwu-styled-group-header-tokens.$ndwu-styled-group-header-tokens,
   'ndwu-spokes-loader': ndwu-spokes-loader-tokens.$ndwu-spokes-loader-tokens,
+  'ndwu-router-loader': ndwu-router-loader-tokens.$ndwu-router-loader-tokens,
   'ndwu-tooltip': ndwu-tooltip-tokens.$ndwu-tooltip-tokens,
   'ndwu-popover': ndwu-popover-tokens.$ndwu-popover-tokens,
   'ndwu-modal': ndwu-modal-tokens.$ndwu-modal-tokens,

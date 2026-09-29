@@ -92,6 +92,10 @@
       "name": "Schedule Editor",
       "description": "Control for defining recurring schedules."
     },
+    "ndwu-router-loader": {
+      "name": "Router Loader",
+      "description": "Animated router loader."
+    },
     "ndwu-scrollbar": {
       "name": "Scrollbar",
       "description": "Custom-styled scrollable container."

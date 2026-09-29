@@ -1,0 +1,423 @@
+// Animation: `router_loader_sync_2_4px` from the design (Claude Design, "Router Loader SVG 2.4px")
+
+:host {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ndwu-router-loader {
+  // Private vars are set from `firstColor` / `secondColor`, theme tokens are the fallback
+  --router-loader-accent: var(--router-loader-first-color, var(--ndwu-router-loader-first-color));
+  --router-loader-shadow: var(--router-loader-second-color, var(--ndwu-router-loader-second-color));
+
+  display: block;
+  flex-shrink: 0;
+}
+
+.ndwu-router-loader__accent-stroke {
+  fill: none;
+  stroke: var(--router-loader-accent);
+}
+
+.ndwu-router-loader__accent-fill {
+  fill: var(--router-loader-accent);
+}
+
+.ndwu-router-loader__shadow {
+  stroke: var(--router-loader-shadow);
+}
+
+.ndwu-router-loader__segment {
+  animation-duration: var(--router-loader-duration);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.ndwu-router-loader__segment--left {
+  animation-name: ndwu-router-loader-seg0, ndwu-router-loader-draw-op;
+}
+
+.ndwu-router-loader__segment--frame {
+  animation-name: ndwu-router-loader-seg1, ndwu-router-loader-draw-op;
+}
+
+.ndwu-router-loader__segment--right {
+  animation-name: ndwu-router-loader-seg2, ndwu-router-loader-draw-op;
+}
+
+@keyframes ndwu-router-loader-seg0 {
+  0% {
+    stroke-dasharray: 0 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 0;
+  }
+
+  4.167% {
+    stroke-dasharray: 15.481 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  8.333% {
+    stroke-dasharray: 57.682 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  12.5% {
+    stroke-dasharray: 100 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  45.833% {
+    stroke-dasharray: 94.274 100;
+    stroke-dashoffset: -5.726;
+    stroke-opacity: 1;
+  }
+
+  50% {
+    stroke-dasharray: 61.998 100;
+    stroke-dashoffset: -38.002;
+    stroke-opacity: 1;
+  }
+
+  54.167% {
+    stroke-dasharray: 6.818 100;
+    stroke-dashoffset: -93.182;
+    stroke-opacity: 1;
+  }
+
+  58.333% {
+    stroke-dasharray: 0 100;
+    stroke-dashoffset: -100;
+    stroke-opacity: 0;
+  }
+
+  100% {
+    stroke-dasharray: 0 100;
+    stroke-dashoffset: -100;
+    stroke-opacity: 0;
+  }
+}
+
+@keyframes ndwu-router-loader-seg1 {
+  0% {
+    stroke-dasharray: 0 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 0;
+  }
+
+  12.5% {
+    stroke-dasharray: 5.107 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  16.667% {
+    stroke-dasharray: 24.421 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  20.833% {
+    stroke-dasharray: 45.662 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  25% {
+    stroke-dasharray: 67.224 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  29.167% {
+    stroke-dasharray: 87.501 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  33.333% {
+    stroke-dasharray: 100 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  58.333% {
+    stroke-dasharray: 83.626 100;
+    stroke-dashoffset: -16.374;
+    stroke-opacity: 1;
+  }
+
+  62.5% {
+    stroke-dasharray: 62.963 100;
+    stroke-dashoffset: -37.037;
+    stroke-opacity: 1;
+  }
+
+  66.667% {
+    stroke-dasharray: 41.337 100;
+    stroke-dashoffset: -58.663;
+    stroke-opacity: 1;
+  }
+
+  70.833% {
+    stroke-dasharray: 20.353 100;
+    stroke-dashoffset: -79.647;
+    stroke-opacity: 1;
+  }
+
+  75% {
+    stroke-dasharray: 1.616 100;
+    stroke-dashoffset: -98.384;
+    stroke-opacity: 1;
+  }
+
+  79.167% {
+    stroke-dasharray: 0 100;
+    stroke-dashoffset: -100;
+    stroke-opacity: 0;
+  }
+
+  100% {
+    stroke-dasharray: 0 100;
+    stroke-dashoffset: -100;
+    stroke-opacity: 0;
+  }
+}
+
+@keyframes ndwu-router-loader-seg2 {
+  0% {
+    stroke-dasharray: 0 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 0;
+  }
+
+  33.333% {
+    stroke-dasharray: 19.381 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  37.5% {
+    stroke-dasharray: 70.489 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  41.667% {
+    stroke-dasharray: 97.421 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  45.833% {
+    stroke-dasharray: 100 100;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  79.167% {
+    stroke-dasharray: 47.409 100;
+    stroke-dashoffset: -52.591;
+    stroke-opacity: 1;
+  }
+
+  83.333% {
+    stroke-dasharray: 10.043 100;
+    stroke-dashoffset: -89.957;
+    stroke-opacity: 1;
+  }
+
+  87.5% {
+    stroke-dasharray: 0 100;
+    stroke-dashoffset: -100;
+    stroke-opacity: 0;
+  }
+
+  100% {
+    stroke-dasharray: 0 100;
+    stroke-dashoffset: -100;
+    stroke-opacity: 0;
+  }
+}
+
+@keyframes ndwu-router-loader-draw-op {
+  0%, 73.333% {
+    opacity: 1;
+  }
+
+  93.333%, 100% {
+    opacity: 0;
+  }
+}
+
+.ndwu-router-loader__led {
+  animation-duration: var(--router-loader-duration);
+  animation-timing-function: cubic-bezier(.33, 0, .67, 1);
+  animation-iteration-count: infinite;
+}
+
+.ndwu-router-loader__led--0 {
+  animation-name: ndwu-router-loader-led0-op, ndwu-router-loader-led0-sc;
+}
+
+@keyframes ndwu-router-loader-led0-op {
+  0% {
+    opacity: 0;
+  }
+
+  6.667%, 73.333% {
+    opacity: 1;
+  }
+
+  86.667%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ndwu-router-loader-led0-sc {
+  0%, 6.667% {
+    transform: scale(.3);
+  }
+
+  15% {
+    transform: scale(1.28);
+  }
+
+  23.334%, 73.333% {
+    transform: scale(1);
+  }
+
+  80% {
+    transform: scale(1.5);
+  }
+
+  93.333%, 100% {
+    transform: scale(1);
+  }
+}
+
+.ndwu-router-loader__led--1 {
+  animation-name: ndwu-router-loader-led1-op, ndwu-router-loader-led1-sc;
+}
+
+@keyframes ndwu-router-loader-led1-op {
+  0% {
+    opacity: 0;
+  }
+
+  20%, 73.333% {
+    opacity: 1;
+  }
+
+  86.667%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ndwu-router-loader-led1-sc {
+  0%, 20% {
+    transform: scale(.3);
+  }
+
+  28.333% {
+    transform: scale(1.28);
+  }
+
+  36.667%, 73.333% {
+    transform: scale(1);
+  }
+
+  80% {
+    transform: scale(1.5);
+  }
+
+  93.333%, 100% {
+    transform: scale(1);
+  }
+}
+
+.ndwu-router-loader__led--2 {
+  animation-name: ndwu-router-loader-led2-op, ndwu-router-loader-led2-sc;
+}
+
+@keyframes ndwu-router-loader-led2-op {
+  0% {
+    opacity: 0;
+  }
+
+  33.333%, 73.333% {
+    opacity: 1;
+  }
+
+  86.667%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ndwu-router-loader-led2-sc {
+  0%, 33.333% {
+    transform: scale(.3);
+  }
+
+  41.666% {
+    transform: scale(1.28);
+  }
+
+  50%, 73.333% {
+    transform: scale(1);
+  }
+
+  80% {
+    transform: scale(1.5);
+  }
+
+  93.333%, 100% {
+    transform: scale(1);
+  }
+}
+
+.ndwu-router-loader__halo {
+  animation:
+    ndwu-router-loader-halo-op var(--router-loader-duration) infinite cubic-bezier(.33, 0, .67, 1),
+    ndwu-router-loader-halo-sc var(--router-loader-duration) infinite cubic-bezier(.33, 0, .67, 1);
+}
+
+@keyframes ndwu-router-loader-halo-op {
+  0%, 46.667% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: .55;
+  }
+
+  76.667%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ndwu-router-loader-halo-sc {
+  0%, 46.667% {
+    transform: scale(.6);
+  }
+
+  76.667%, 100% {
+    transform: scale(3.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ndwu-router-loader__segment,
+  .ndwu-router-loader__led,
+  .ndwu-router-loader__halo {
+    animation: none;
+  }
+
+  .ndwu-router-loader__halo {
+    opacity: 0;
+  }
+}

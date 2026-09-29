@@ -1,0 +1,49 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="router-loader-section">
+      <h4>{{ 'router-loader-showcase.sizes' | localize }}</h4>
+      <div class="router-loader-row">
+        <figure class="router-loader-example">
+          <ndwu-router-loader size="L" />
+          <figcaption><code>size="L"</code></figcaption>
+        </figure>
+        <figure class="router-loader-example">
+          <ndwu-router-loader size="XL" />
+          <figcaption><code>size="XL"</code></figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="router-loader-section">
+      <h4>{{ 'router-loader-showcase.custom-colors' | localize }}</h4>
+      <div class="router-loader-row">
+        <figure class="router-loader-example">
+          <ndwu-router-loader
+            size="L"
+            firstColor="var(--ndwu-color-green-40)"
+            secondColor="var(--ndwu-color-green-10)"
+          />
+          <figcaption><code>firstColor="var(--ndwu-color-green-40)" secondColor="var(--ndwu-color-green-10)"</code></figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="router-loader-section">
+      <h4>{{ 'router-loader-showcase.duration' | localize }}</h4>
+      <div class="router-loader-row">
+        @for (duration of [750, 1500, 3000]; track duration) {
+          <figure class="router-loader-example">
+            <ndwu-router-loader
+              size="L"
+              [duration]="duration"
+            />
+            <figcaption><code>[duration]="{{ duration }}"</code></figcaption>
+          </figure>
+        }
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

@@ -23,6 +23,7 @@ export type ComponentName =
   | 'ndwu-popover'
   | 'ndwu-dialog'
   | 'ndwu-drawer'
+  | 'ndwu-router-loader'
   | 'ndwu-spokes-loader'
   | 'ndwu-progress-bar'
   | 'ndwu-toggle'

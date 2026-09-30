@@ -4,6 +4,7 @@ import {USER_PROFILE_FORM_TAB_CONTENT} from './user-profile-form-tab-content';
 
 const USER_PROFILE_FORM_TABS: readonly Tab[] = [
   {id: 'overview', label: 'user-profile-form-example.tabs.overview'},
+  {id: 'autofill', label: 'user-profile-form-example.tabs.autofill'},
 ];
 
 @Component({

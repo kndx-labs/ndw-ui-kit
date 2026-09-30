@@ -6,6 +6,8 @@
     "styles/**/*.scss",
     "core/**/*.scss",
     "form-field/**/*.scss",
+    "popover/**/*.scss",
+    "table/**/*.scss",
     "widgets/**/*.scss",
     "assets/**/*",
     "LICENSE.txt",

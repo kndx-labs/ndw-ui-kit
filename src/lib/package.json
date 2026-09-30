@@ -28,6 +28,10 @@
   },
   "sideEffects": false,
   "exports": {
+    "./styles/*.scss": {
+      "sass": "./styles/*.scss",
+      "style": "./styles/*.scss"
+    },
     "./styles/*": {
       "sass": "./styles/*.scss",
       "style": "./styles/*.scss"

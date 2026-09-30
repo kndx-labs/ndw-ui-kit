@@ -12,6 +12,8 @@ $ndwu-form-field-tokens: (
   form-field-outline-border-color: colors.$brand-50, // TODO: remove legacy alias at next minor bump
   form-field-focus-border-color: colors.$brand-50,
   form-field-focus-bg: colors.$gray-0,
+  form-field-focus-ring: var(--ndwu-fx-focused-default),
+  form-field-invalid-focus-ring: var(--ndwu-fx-focused-negative),
   form-field-disabled-bg: colors.$gray-10,
   form-field-disabled-text: colors.$gray-30,
   form-field-disabled-border-color: colors.$gray-20,
@@ -24,7 +26,5 @@ $ndwu-form-field-tokens: (
   form-field-required-asterisk-color: colors.$red-40,
   form-field-icon-color: colors.$gray-100,
   form-field-icon-hover-color: colors.$brand-30,
-  form-field-icon-focus-color: colors.$brand-50,
-  form-field-icon-invalid-color: colors.$red-40,
   form-field-icon-disabled-color: colors.$gray-30
 );

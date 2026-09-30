@@ -177,17 +177,9 @@ ndwu-form-field {
     position: absolute;
   }
 
-  // Hover/focus coloring for suffix (to match right-icon behavior)
+  // Hover coloring for suffix (to match right-icon behavior)
   &__wrapper:hover &__suffix {
     color: var(--ndwu-form-field-icon-hover-color);
-  }
-
-  &__input:focus ~ &__suffix {
-    color: var(--ndwu-form-field-icon-focus-color);
-  }
-
-  &__input--invalid ~ &__suffix {
-    color: var(--ndwu-form-field-icon-invalid-color);
   }
 
   // Disabled input should also "disable" suffix visuals/interactions
@@ -237,7 +229,7 @@ ndwu-form-field {
     }
 
     &:focus:not([readonly]) {
-      @include mixins.focus-ring();
+      @include mixins.focus-ring(var(--ndwu-form-field-focus-ring));
 
       & {
         border-color: transparent;
@@ -250,6 +242,8 @@ ndwu-form-field {
     }
 
     &--invalid {
+      --ndwu-form-field-focus-ring: var(--ndwu-form-field-invalid-focus-ring);
+
       border-color: var(--ndwu-form-field-invalid-border-color);
 
       &:hover:not(:disabled, [readonly]) {
@@ -333,23 +327,6 @@ ndwu-form-field {
 
   &__wrapper:hover:not(&--readonly) &__right-icon:not(:disabled) {
     color: var(--ndwu-form-field-icon-hover-color, var(--ndwu-form-field-hover-border-color));
-  }
-
-  &__input:focus ~ &__right-icon:not(:disabled) {
-    color: var(--ndwu-form-field-icon-focus-color, var(--ndwu-form-field-focus-border-color));
-  }
-
-  &__input--invalid ~ &__right-icon:not(:disabled) {
-    color: var(--ndwu-form-field-icon-invalid-color, var(--ndwu-form-field-invalid-border-color));
-  }
-
-  // Invalid state takes precedence over hover
-  &__wrapper:hover &__input--invalid ~ &__right-icon:not(:disabled) {
-    color: var(--ndwu-form-field-icon-invalid-color, var(--ndwu-form-field-invalid-border-color));
-  }
-
-  &__input--invalid:focus ~ &__right-icon:not(:disabled) {
-    color: var(--ndwu-form-field-icon-invalid-color, var(--ndwu-form-field-invalid-border-color));
   }
 
   &__input:disabled ~ &__right-icon {

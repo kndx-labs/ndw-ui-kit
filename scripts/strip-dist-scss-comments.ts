@@ -1,8 +1,9 @@
 #!/usr/bin/env tsx
 
-// Strips comments from all SCSS asset files in dist/ndw-ui-kit
-// This should be done before publishing the library to npmjs.org,
-// because comments in the SCSS files can reference private links (e.g., issue-tracker items).
+// Post-processes all SCSS asset files in dist/ndw-ui-kit before publishing:
+// - strips comments, because they can reference private links (e.g., issue-tracker items);
+// - rewrites root-relative `@use`/`@forward` paths (resolved via `styleIncludePaths` in the repo)
+//   to paths relative to the current file, so consumers need no `includePaths`/`loadPaths`.
 //
 // This script uses `postcss-scss` to parse files as SCSS ASTs.
 // Both block (/* */) and single-line (//) comments are removed.

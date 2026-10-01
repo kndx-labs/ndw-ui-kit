@@ -65,6 +65,18 @@ repeat the same `assets` and `styles` entries in each build configuration you us
 }
 ```
 
+The package exports `@ndw-ui-kit/core/styles/*` and `@ndw-ui-kit/core/assets/*`,
+so other bundlers (e.g. Vite) can import them by package name without extra
+`includePaths` or `loadPaths`:
+
+```scss
+@use '@ndw-ui-kit/core/styles/themes';
+```
+
+```ts
+import spriteUrl from '@ndw-ui-kit/core/assets/ndw-ui-kit.sprite.svg?url';
+```
+
 ### Theming
 
 The NDW UI kit has two built-in themes: light and dark.

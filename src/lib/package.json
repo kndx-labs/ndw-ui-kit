@@ -27,6 +27,17 @@
     }
   },
   "sideEffects": false,
+  "exports": {
+    "./styles/*.scss": {
+      "sass": "./styles/*.scss",
+      "style": "./styles/*.scss"
+    },
+    "./styles/*": {
+      "sass": "./styles/*.scss",
+      "style": "./styles/*.scss"
+    },
+    "./assets/*": "./assets/*"
+  },
   "dependencies": {
     "tslib": "2.8.1",
     "svg-sprite": "2.0.4"

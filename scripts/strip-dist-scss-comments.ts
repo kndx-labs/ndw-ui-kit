@@ -1,20 +1,22 @@
 #!/usr/bin/env tsx
 
-// Strips comments from all SCSS asset files in dist/ndw-ui-kit
-// This should be done before publishing the library to npmjs.org,
-// because comments in the SCSS files can reference private links (e.g., issue-tracker items).
+// Post-processes all SCSS asset files in dist/ndw-ui-kit before publishing:
+// - strips comments, because they can reference private links (e.g., issue-tracker items);
+// - rewrites root-relative `@use`/`@forward` paths (resolved via `styleIncludePaths` in the repo)
+//   to paths relative to the current file, so consumers need no `includePaths`/`loadPaths`.
 //
 // This script uses `postcss-scss` to parse files as SCSS ASTs.
 // Both block (/* */) and single-line (//) comments are removed.
 
-import {readFileSync, writeFileSync} from 'node:fs';
-import {resolve} from 'node:path';
+import {existsSync, readFileSync, statSync, writeFileSync} from 'node:fs';
+import {basename, dirname, join, relative, resolve, sep} from 'node:path';
 import {glob} from 'fast-glob';
 import postcss from 'postcss';
 import postcssScss from 'postcss-scss';
 import {ROOT_DIR} from './conf';
 
 const DIST_DIR = resolve(ROOT_DIR, 'dist/ndw-ui-kit');
+const URL_PATTERN = /^(['"])(.+?)\1/;
 
 const stripCommentsPlugin: postcss.Plugin = {
   postcssPlugin: 'strip-comments',
@@ -23,12 +25,60 @@ const stripCommentsPlugin: postcss.Plugin = {
   },
 };
 
+const isFile = (path: string): boolean => existsSync(path) && statSync(path).isFile();
+
+const resolvesFrom = (dir: string, url: string): boolean => {
+  const target = resolve(dir, url);
+  const parent = dirname(target);
+  const name = basename(target);
+
+  return [
+    target,
+    `${target}.scss`,
+    join(parent, `_${name}.scss`),
+    join(target, 'index.scss'),
+    join(target, '_index.scss'),
+  ].some(isFile);
+};
+
+const rewriteUrl = (file: string, url: string): string => {
+  const fileDir = dirname(file);
+
+  if (url.startsWith('sass:') || resolvesFrom(fileDir, url)) {
+    return url;
+  }
+
+  if (!resolvesFrom(DIST_DIR, url)) {
+    throw new Error(`Cannot resolve "${url}" in ${file}`);
+  }
+
+  const relativeUrl = relative(fileDir, resolve(DIST_DIR, url)).replaceAll(sep, '/');
+
+  return relativeUrl.startsWith('.') ? relativeUrl : `./${relativeUrl}`;
+};
+
+const rewriteImportsPlugin = (file: string): postcss.Plugin => {
+  const rewrite = (node: postcss.AtRule): void => {
+    node.params = node.params.replace(URL_PATTERN, (_, quote: string, url: string) => {
+      return `${quote}${rewriteUrl(file, url)}${quote}`;
+    });
+  };
+
+  return {
+    postcssPlugin: 'rewrite-imports',
+    AtRule: {
+      use: rewrite,
+      forward: rewrite,
+    },
+  };
+};
+
 async function main(): Promise<void> {
   const files = await glob('**/*.scss', {cwd: DIST_DIR, absolute: true});
 
   for (const file of files) {
     const original = readFileSync(file, 'utf-8');
-    const result = await postcss([stripCommentsPlugin]).process(original, {
+    const result = await postcss([stripCommentsPlugin, rewriteImportsPlugin(file)]).process(original, {
       syntax: postcssScss,
       from: file,
       to: file,

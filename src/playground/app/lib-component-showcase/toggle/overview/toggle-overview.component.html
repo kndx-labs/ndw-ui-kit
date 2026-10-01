@@ -138,5 +138,57 @@
       />
     </form>
   </div>
+
+  <div class="state-section">
+    <h4>{{ 'toggle-showcase.native-form' | localize }}</h4>
+    <p>{{ 'toggle-showcase.native-form-description' | localize }}</p>
+    <form
+      class="native-form"
+      (submit)="toast.showFormData($event)"
+    >
+      <ndwu-toggle
+        name="notifications"
+        value="enabled"
+        label="toggle-showcase.enable-notifications"
+        secondaryText="toggle-showcase.notifications-secondary"
+      />
+      <ndwu-toggle
+        name="auto-save"
+        label="toggle-showcase.auto-save"
+        secondaryText="toggle-showcase.no-value-secondary"
+      />
+      <button
+        ndwu-button
+        type="submit"
+        label="common.submit"
+      ></button>
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'toggle-showcase.external-label' | localize }}</h4>
+    <p>{{ 'toggle-showcase.external-label-description' | localize }}</p>
+    <div class="native-form__row">
+      <label [for]="idPrefix + 'toggle-showcase-dark-mode'">{{ 'toggle-showcase.dark-mode-enabled' | localize }}</label>
+      <ndwu-toggle
+        [id]="idPrefix + 'toggle-showcase-dark-mode'"
+        [aria-describedby]="idPrefix + 'toggle-showcase-dark-mode-hint'"
+      />
+    </div>
+    <span [id]="idPrefix + 'toggle-showcase-dark-mode-hint'">{{ 'toggle-showcase.dark-mode-secondary' | localize }}</span>
+
+    <form
+      class="native-form__row"
+      [formGroup]="toggleExternalLabel"
+    >
+      <label [for]="idPrefix + 'toggle-showcase-auto-save'">{{ 'toggle-showcase.auto-save' | localize }}</label>
+      <ndwu-toggle-field
+        formControlName="toggle"
+        [inputId]="idPrefix + 'toggle-showcase-auto-save'"
+      />
+    </form>
+  </div>
   </ng-template>
 </app-showcase-layout>
+
+<app-toast #toast />

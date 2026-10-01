@@ -2,7 +2,7 @@
   lightTitleKey="common.themes.light"
   darkTitleKey="common.themes.dark"
 >
-  <ng-template>
+  <ng-template let-idPrefix="idPrefix">
     <div class="state-section">
       <h4>{{ 'checkbox-showcase.default' | localize }}</h4>
       <form [formGroup]="checkboxDefault">
@@ -111,5 +111,57 @@
         secondaryText="checkbox-showcase.disabled-secondary"
       />
     </div>
+
+    <div class="state-section">
+      <h4>{{ 'checkbox-showcase.native-form' | localize }}</h4>
+      <p>{{ 'checkbox-showcase.native-form-description' | localize }}</p>
+      <form
+        class="native-form"
+        (submit)="toast.showFormData($event)"
+      >
+        <ndwu-checkbox
+          name="terms"
+          value="accepted"
+          required
+          label="checkbox-showcase.accept-terms"
+          secondaryText="checkbox-showcase.required-native-secondary"
+        />
+        <ndwu-checkbox
+          name="newsletter"
+          label="checkbox-showcase.newsletter-subscription"
+          secondaryText="checkbox-showcase.no-value-secondary"
+        />
+        <div class="native-form__row">
+          <ndwu-checkbox
+            name="remember"
+            value="yes"
+            [aria-label]="'checkbox-showcase.remember-me' | localize"
+            [aria-describedby]="idPrefix + 'checkbox-remember-hint'"
+          />
+          <span [id]="idPrefix + 'checkbox-remember-hint'">{{ 'checkbox-showcase.aria-label-hint' | localize }}</span>
+        </div>
+        <button
+          ndwu-button
+          type="submit"
+          label="common.submit"
+        ></button>
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'checkbox-showcase.required-reactive' | localize }}</h4>
+      <p>{{ 'checkbox-showcase.required-reactive-description' | localize }}</p>
+      <form [formGroup]="checkboxRequired">
+        <ndwu-checkbox-field
+          formControlName="checkbox"
+          ndwuRequired
+          label="checkbox-showcase.accept-terms"
+          secondaryText="checkbox-showcase.terms-secondary"
+        />
+      </form>
+      <p>{{ 'common.form-valid' | localize }}: {{ checkboxRequired.valid }}</p>
+    </div>
   </ng-template>
 </app-showcase-layout>
+
+<app-toast #toast />

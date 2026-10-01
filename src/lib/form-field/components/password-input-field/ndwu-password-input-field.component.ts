@@ -95,7 +95,7 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
 
   protected readonly inputClass = computed(() => {
     if (this.inputStatus() === 'error') {
-      return 'ndwu-form-field__input--error';
+      return 'ndwu-form-field__input--invalid';
     }
 
     return '';

@@ -95,12 +95,12 @@ $checkbox-indeterminate-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%
     }
 
     &:focus-visible {
-      @include mixins.focus-ring();
+      @include mixins.focus-ring(var(--ndwu-checkbox-focus-ring));
     }
 
     &:focus-visible:checked,
     &:focus-visible:indeterminate {
-      @include mixins.focus-ring(var(--ndwu-fx-focused-primary));
+      @include mixins.focus-ring(var(--ndwu-checkbox-checked-focus-ring));
     }
 
     &:checked {
@@ -158,6 +158,9 @@ $checkbox-indeterminate-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%
     }
 
     &--invalid {
+      --ndwu-checkbox-focus-ring: var(--ndwu-checkbox-invalid-focus-ring);
+      --ndwu-checkbox-checked-focus-ring: var(--ndwu-checkbox-invalid-focus-ring);
+
       border-color: var(--ndwu-checkbox-invalid-border-color);
 
       &:hover:not(:disabled) {
@@ -167,10 +170,6 @@ $checkbox-indeterminate-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%
       &:focus {
         border-color: var(--ndwu-checkbox-invalid-border-color);
         outline: none;
-      }
-
-      &:focus-visible {
-        @include mixins.focus-ring();
       }
     }
 

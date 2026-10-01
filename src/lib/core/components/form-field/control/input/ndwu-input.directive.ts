@@ -46,6 +46,10 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
 
   protected readonly hasValue = signal<boolean>(false);
 
+  protected readonly nativeInteracted = signal<boolean>(false);
+  protected readonly nativeInvalid = signal<boolean>(false);
+  protected readonly nativeDisabled = signal<boolean>(false);
+
   /**
    * Browsers (Chrome/Edge) expose autofilled value via `:autofill` only, `el.value` stays empty
    * and no `input` event fires until user interacts with the page.
@@ -54,10 +58,17 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
   protected readonly isAutofilled = signal<boolean>(false);
 
   protected readonly ariaInvalid = signal<boolean>(false);
-  protected readonly nativeInvalid = signal<boolean>(false);
-  protected readonly nativeDisabled = signal<boolean>(false);
 
   public readonly readonly = input(false, {transform: booleanAttribute});
+
+  // Explicit value from outside; `null` means "not set, compute from validity".
+  // The alias lets consumers write `aria-invalid` (like `@Input('aria-label')` in Angular Material),
+  // so the directive's own attribute writes don't mix with the outside value.
+  public readonly ariaInvalidInput = input<boolean | null, unknown>(null, {
+    // eslint-disable-next-line @angular-eslint/no-input-rename
+    alias: 'aria-invalid',
+    transform: (value: unknown) => (value === null || value === undefined ? null : booleanAttribute(value)),
+  });
 
   protected readonly controlDisabled = signal<boolean>(false);
   protected readonly controlInteracted = signal<boolean>(false);
@@ -88,7 +99,7 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
       return this.errorState();
     }
 
-    return this.nativeInvalid() || this.ariaInvalid();
+    return this.ariaInvalidInput() ?? (this.nativeInvalid() && this.nativeInteracted());
   });
 
   @HostBinding('attr.id')
@@ -106,12 +117,6 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
 
   @HostBinding('attr.aria-invalid')
   protected get ariaInvalidAttr(): 'true' | null {
-    // For Angular forms, ensure `aria-invalid` reflects the effective invalid state.
-    // For non-forms, consumers can set `aria-invalid` themselves (we observe it).
-    if (!this.hasAngularControl()) {
-      return null;
-    }
-
     return this.effectiveInvalid() ? 'true' : null;
   }
 
@@ -167,6 +172,7 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
     } else {
       // non-forms inputs: keep state in sync with native attributes when they change.
       this.installAttributeObserver();
+      this.installFormResetListener();
     }
   }
 
@@ -178,6 +184,7 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
   @HostListener('blur')
   protected onBlur(): void {
     this.focused.set(false);
+    this.nativeInteracted.set(true);
   }
 
   @HostListener('animationstart', ['$event'])
@@ -192,6 +199,7 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
   @HostListener('input')
   protected onInput(): void {
     // keeps floating label in sync for both forms and non-forms.
+    this.nativeInteracted.set(true);
     this.syncFromNativeValue();
     this.syncFromNativeValidity();
   }
@@ -236,7 +244,6 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
     this.idSignal.set(this.el.nativeElement.id || this.generatedId);
     this.syncFromNativeValue();
     this.nativeDisabled.set(this.el.nativeElement.disabled);
-    this.syncFromNativeAriaInvalid();
     this.syncFromNativeValidity();
   }
 
@@ -244,13 +251,12 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
     this.hasValue.set(this.el.nativeElement.value.length > 0);
   }
 
-  protected syncFromNativeAriaInvalid(): void {
-    const attr = this.el.nativeElement.getAttribute('aria-invalid');
-
-    this.ariaInvalid.set(attr === 'true');
-  }
-
   protected syncFromNativeValidity(): void {
+    // With Angular forms the control state is the source of truth.
+    if (this.hasAngularControl()) {
+      return;
+    }
+
     const el = this.el.nativeElement;
 
     if (typeof el.matches !== 'function') {
@@ -282,9 +288,6 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
             this.syncFromNativeValue();
             this.syncFromNativeValidity();
             break;
-          case 'aria-invalid':
-            this.syncFromNativeAriaInvalid();
-            break;
           default:
             break;
         }
@@ -295,11 +298,33 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
       this.el.nativeElement,
       {
         attributes: true,
-        attributeFilter: ['id', 'disabled', 'value', 'aria-invalid'],
+        attributeFilter: ['id', 'disabled', 'value'],
       },
     );
 
     this.destroyRef.onDestroy(() => observer.disconnect());
+  }
+
+  protected installFormResetListener(): void {
+    const form = this.el.nativeElement.form;
+
+    if (!form) {
+      return;
+    }
+
+    const onReset = (): void => {
+      this.nativeInteracted.set(false);
+
+      // `reset` fires before the browser restores initial values.
+      setTimeout(() => {
+        this.syncFromNativeValue();
+        this.syncFromNativeValidity();
+      });
+    };
+
+    form.addEventListener('reset', onReset);
+
+    this.destroyRef.onDestroy(() => form.removeEventListener('reset', onReset));
   }
 
   protected getAngularControl(): NgControl['control'] | null {

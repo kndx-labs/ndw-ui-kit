@@ -643,6 +643,18 @@ and the internal normalized option list (`normalizedOptions`):
 The NDW UI Kit shows validation errors for CVA components (currently
 `ndwu-input-field`). Errors are only displayed after the control is `touched`.
 
+##### `ndwuInput` without Angular forms
+
+Without Angular forms the directive tracks interaction itself. Native
+`:invalid` state shows only after `input` or `blur`; `form.reset()` clears it.
+The result is written to `aria-invalid`.
+
+To set the state explicitly, use `aria-invalid="true|false"` or
+`[aria-invalid]="expr"`. It overrides computed state. Do not use
+`[attr.aria-invalid]`: it writes the attribute directly and conflicts with
+the directive. With Angular forms the control state is used and
+`aria-invalid` input is ignored.
+
 ##### Built-in validators
 
 Angular's `Validators` return errors without a message key, so the fields show

@@ -7,6 +7,7 @@ export * from './multi-select-field/ndwu-multi-select-field.component';
 export * from './password-input-field/ndwu-password-input-field.component';
 export * from './radio-field/ndwu-radio-field.component';
 export * from './select-field/ndwu-select-field.component';
+export * from './textarea-field/ndwu-textarea-actions.directive';
 export * from './textarea-field/ndwu-textarea-field.component';
 export * from './toggle-field/ndwu-toggle-field.component';
 export * from './schedule-editor-field/ndwu-schedule-editor-field.component';

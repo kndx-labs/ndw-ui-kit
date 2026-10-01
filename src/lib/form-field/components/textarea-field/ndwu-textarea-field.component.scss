@@ -122,8 +122,8 @@
 
   &__resizer {
     position: absolute;
-    right: 3px;
-    bottom: 3px;
+    right: calc(3px + var(--ndwu-textarea-field-scrollbar-width, 0px));
+    bottom: calc(3px + var(--ndwu-textarea-field-scrollbar-height, 0px));
     z-index: 1;
     display: flex;
     color: var(--ndwu-textarea-field-resizer-color);
@@ -137,7 +137,20 @@
     cursor: not-allowed;
   }
 
+  &__actions {
+    position: absolute;
+    top: var(--ndwu-textarea-field-inset);
+    right: calc(var(--ndwu-textarea-field-inset) + var(--ndwu-textarea-field-scrollbar-width, 0px));
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-16;
+    padding: padding.$padding-4;
+  }
+
   &--XXL &__box {
+    --ndwu-textarea-field-inset: #{padding.$padding-16};
+
     height: 166px;
     min-height: 58px;
   }
@@ -157,6 +170,8 @@
   }
 
   &--XL &__box {
+    --ndwu-textarea-field-inset: #{padding.$padding-12};
+
     height: 130px;
     min-height: 50px;
   }
@@ -177,6 +192,8 @@
 
   &--L &__box,
   &--S &__box {
+    --ndwu-textarea-field-inset: #{padding.$padding-8};
+
     height: 100px;
     min-height: 35px;
     border-radius: radius.$radius-M;
@@ -196,5 +213,13 @@
     padding: padding.$padding-8;
     font-size: typography.$fontSize-xxsmall;
     line-height: 17px;
+  }
+
+  & &__box--has-actions {
+    min-height: calc(var(--ndwu-textarea-field-inset) + var(--ndwu-textarea-field-actions-height, 0px) + 32px);
+  }
+
+  & &__box--has-actions &__control {
+    padding-right: calc(var(--ndwu-textarea-field-inset) + 40px);
   }
 }

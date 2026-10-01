@@ -8,6 +8,12 @@
     "filled": "Filled, required",
     "sizes": "Sizes",
     "line-numbers": "Line numbers",
+    "actions": {
+      "title": "With actions",
+      "reformat": "Reformat",
+      "copy": "Copy",
+      "clear": "Clear"
+    },
     "invalid": "Invalid",
     "disabled": "Disabled",
     "readonly": "Readonly",

@@ -76,6 +76,43 @@
     </div>
 
     <div class="state-section">
+      <h4>{{ 'textarea-field-showcase.actions.title' | localize }}</h4>
+      <form [formGroup]="actionsForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-field-showcase.label"
+          placeholder="textarea-field-showcase.placeholder"
+          hint="textarea-field-showcase.hint"
+          showLineNumbers
+        >
+          <div ndwuTextareaActions>
+            <button
+              ndwuIconButton
+              icon="reformat_S"
+              variant="flat"
+              [attr.aria-label]="'textarea-field-showcase.actions.reformat' | localize"
+              (click)="reformat()"
+            ></button>
+            <button
+              ndwuIconButton
+              icon="copy_S"
+              variant="flat"
+              [attr.aria-label]="'textarea-field-showcase.actions.copy' | localize"
+              (click)="copy()"
+            ></button>
+            <button
+              ndwuIconButton
+              icon="close_S"
+              variant="flat"
+              [attr.aria-label]="'textarea-field-showcase.actions.clear' | localize"
+              (click)="clear()"
+            ></button>
+          </div>
+        </ndwu-textarea-field>
+      </form>
+    </div>
+
+    <div class="state-section">
       <h4>{{ 'textarea-field-showcase.invalid' | localize }}</h4>
       <form [formGroup]="invalidForm">
         <ndwu-textarea-field

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE} from '@ndw-ui-kit/core';
-import {NdwuTextareaFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
+import {NDWU_SIZE, NdwuIconButtonComponent} from '@ndw-ui-kit/core';
+import {NdwuTextareaActionsDirective, NdwuTextareaFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -28,6 +28,8 @@ const SAMPLE_CONFIG = [
   imports: [
     ReactiveFormsModule,
     LocalizePipe,
+    NdwuIconButtonComponent,
+    NdwuTextareaActionsDirective,
     NdwuTextareaFieldComponent,
     ShowcaseLayoutComponent,
   ],
@@ -55,6 +57,10 @@ export class TextareaFieldOverviewComponent implements OnInit {
     l: new FormControl(SAMPLE_CONFIG),
   });
 
+  public readonly actionsForm = new FormGroup({
+    text: new FormControl(SAMPLE_CONFIG, {nonNullable: true}),
+  });
+
   public readonly invalidForm = new FormGroup({
     text: new FormControl('', [NdwuValidators.required()]),
   });
@@ -73,5 +79,20 @@ export class TextareaFieldOverviewComponent implements OnInit {
 
   public ngOnInit(): void {
     this.invalidForm.controls.text.markAsTouched();
+  }
+
+  public reformat(): void {
+    const control = this.actionsForm.controls.text;
+    const lines = control.value.split('\n').map((line) => line.trimEnd());
+
+    control.setValue(lines.join('\n').trim());
+  }
+
+  public copy(): void {
+    void navigator.clipboard?.writeText(this.actionsForm.controls.text.value);
+  }
+
+  public clear(): void {
+    this.actionsForm.controls.text.setValue('');
   }
 }

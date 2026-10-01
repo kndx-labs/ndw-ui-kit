@@ -7,6 +7,7 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   computed,
+  contentChild,
   effect,
   inject,
   input,
@@ -24,6 +25,7 @@ import {
   NdwuFormFieldComponent,
   NdwuHintDirective,
   NdwuInteractionRegistry,
+  NdwuResizeObserverDirective,
   NdwuSizeDirective,
 } from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
@@ -32,6 +34,7 @@ import {NDWU_VALIDATION_PROCESSOR, type NdwuValidationData} from '../../validati
 import {FormFieldBase} from '../../classes/form-field-base';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 import {setValueAccessor} from '../../form-field.utils';
+import {NdwuTextareaActionsDirective} from './ndwu-textarea-actions.directive';
 
 interface ResizeStart {
   pointerY: number;
@@ -51,6 +54,7 @@ interface ResizeStart {
     NdwuFormFieldComponent,
     NdwuHelperMessageComponent,
     NdwuHintDirective,
+    NdwuResizeObserverDirective,
   ],
   hostDirectives: [{
     directive: NdwuSizeDirective,
@@ -86,10 +90,15 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
   protected readonly invalid = signal<boolean>(false);
   protected readonly scrollTop = signal<number>(0);
   protected readonly height = signal<number | null>(null);
+  protected readonly scrollbarWidth = signal<number>(0);
+  protected readonly scrollbarHeight = signal<number>(0);
   protected readonly extractedValidation = signal<NdwuValidationData | null>(null);
 
   protected readonly box = viewChild.required<ElementRef<HTMLElement>>('box');
   protected readonly textarea = viewChild.required<ElementRef<HTMLTextAreaElement>>('textarea');
+  protected readonly actions = contentChild(NdwuTextareaActionsDirective);
+
+  protected readonly hasActions = computed(() => !!this.actions());
 
   protected readonly hostClass = computed(() => {
     return `ndwu-textarea-field ndwu-textarea-field--${this.sizeSvc.effectiveSize()}`;
@@ -108,6 +117,10 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
   protected readonly hasHelperMessage = computed(() => {
     return !!this.errorMessage() || !!this.hint();
   });
+
+  protected readonly scrollbarOffsetX = computed(() => `${this.scrollbarWidth()}px`);
+  protected readonly scrollbarOffsetY = computed(() => `${this.scrollbarHeight()}px`);
+  protected readonly actionsHeight = computed(() => `${this.actions()?.size.height() ?? 0}px`);
 
   protected readonly lineNumbers = computed(() => {
     const lineCount = this.value().split('\n').length;
@@ -197,6 +210,13 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
 
   protected onScroll(): void {
     this.scrollTop.set(this.textarea().nativeElement.scrollTop);
+  }
+
+  protected onTextareaResize(): void {
+    const {offsetWidth, clientWidth, offsetHeight, clientHeight} = this.textarea().nativeElement;
+
+    this.scrollbarWidth.set(offsetWidth - clientWidth);
+    this.scrollbarHeight.set(offsetHeight - clientHeight);
   }
 
   protected onResizeStart(event: PointerEvent): void {

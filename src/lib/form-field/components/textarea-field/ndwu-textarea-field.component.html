@@ -10,6 +10,7 @@
     #box
     class="ndwu-textarea-field__box"
     [ndwuControlProvider]="this"
+    [class.ndwu-textarea-field__box--focused]="focused() && !readonly()"
     [class.ndwu-textarea-field__box--invalid]="invalid()"
     [class.ndwu-textarea-field__box--disabled]="isDisabledState()"
     [class.ndwu-textarea-field__box--readonly]="readonly()"
@@ -61,8 +62,7 @@
         aria-hidden="true"
         (pointerdown)="onResizeStart($event)"
         (pointermove)="onResizeMove($event)"
-        (pointerup)="onResizeEnd()"
-        (pointercancel)="onResizeEnd()"
+        (lostpointercapture)="onResizeEnd()"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path

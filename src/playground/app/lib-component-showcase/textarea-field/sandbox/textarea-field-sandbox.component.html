@@ -36,7 +36,30 @@
             [readonly]="sandboxForm.controls.isReadonly.value"
             [resizable]="sandboxForm.controls.isResizable.value"
             [showLineNumbers]="sandboxForm.controls.showLineNumbers.value"
-          />
+          >
+            @if (sandboxForm.controls.showActions.value) {
+              <div ndwuTextareaActions>
+                <button
+                  ndwuIconButton
+                  icon="reformat_S"
+                  variant="flat"
+                  [attr.aria-label]="'textarea-field-showcase.actions.reformat' | localize"
+                ></button>
+                <button
+                  ndwuIconButton
+                  icon="copy_S"
+                  variant="flat"
+                  [attr.aria-label]="'textarea-field-showcase.actions.copy' | localize"
+                ></button>
+                <button
+                  ndwuIconButton
+                  icon="close_S"
+                  variant="flat"
+                  [attr.aria-label]="'textarea-field-showcase.actions.clear' | localize"
+                ></button>
+              </div>
+            }
+          </ndwu-textarea-field>
         </form>
       </div>
     </div>
@@ -90,6 +113,10 @@
             <label class="sandbox__checkbox">
               <input type="checkbox" formControlName="showLineNumbers" />
               <span>{{ 'textarea-field-showcase.sandbox.line-numbers' | localize }}</span>
+            </label>
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="showActions" />
+              <span>{{ 'textarea-field-showcase.sandbox.actions' | localize }}</span>
             </label>
           </div>
 

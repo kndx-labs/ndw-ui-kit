@@ -26,6 +26,7 @@
       "readonly": "Readonly",
       "resizable": "Resizable",
       "line-numbers": "Line numbers",
+      "actions": "Actions",
       "tokens": "Textarea Tokens",
       "inherit": "Inherit"
     }

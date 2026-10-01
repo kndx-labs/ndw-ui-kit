@@ -32,8 +32,9 @@
       background-color: var(--ndwu-form-field-hover-bg);
     }
 
-    &:focus-within {
-      @include mixins.focus-ring();
+    &--focused,
+    &--focused:hover {
+      @include mixins.focus-ring(var(--ndwu-form-field-focus-ring));
 
       & {
         border-color: transparent;
@@ -42,23 +43,24 @@
     }
 
     &--invalid {
+      --ndwu-form-field-focus-ring: var(--ndwu-form-field-invalid-focus-ring);
+
       border-color: var(--ndwu-form-field-invalid-border-color);
 
       &:hover {
         border-color: var(--ndwu-form-field-invalid-hover-border-color);
       }
+    }
 
-      &:focus-within {
-        border-color: var(--ndwu-form-field-invalid-border-color);
-      }
+    &--invalid#{&}--focused,
+    &--invalid#{&}--focused:hover {
+      border-color: var(--ndwu-form-field-invalid-border-color);
     }
 
     &--readonly,
-    &--readonly:hover,
-    &--readonly:focus-within {
+    &--readonly:hover {
       border-color: var(--ndwu-form-field-readonly-border-color);
       background-color: var(--ndwu-form-field-readonly-bg);
-      box-shadow: none;
     }
 
     &--disabled,

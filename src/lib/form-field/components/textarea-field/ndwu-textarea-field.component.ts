@@ -120,6 +120,7 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
 
   protected readonly scrollbarOffsetX = computed(() => `${this.scrollbarWidth()}px`);
   protected readonly scrollbarOffsetY = computed(() => `${this.scrollbarHeight()}px`);
+  protected readonly actionsWidth = computed(() => `${this.actions()?.size.width() ?? 0}px`);
   protected readonly actionsHeight = computed(() => `${this.actions()?.size.height() ?? 0}px`);
 
   protected readonly lineNumbers = computed(() => {

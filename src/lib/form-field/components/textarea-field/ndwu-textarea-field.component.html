@@ -17,6 +17,7 @@
     [class.ndwu-textarea-field__box--has-actions]="hasActions()"
     [style.--ndwu-textarea-field-scrollbar-width]="scrollbarOffsetX()"
     [style.--ndwu-textarea-field-scrollbar-height]="scrollbarOffsetY()"
+    [style.--ndwu-textarea-field-actions-width]="actionsWidth()"
     [style.--ndwu-textarea-field-actions-height]="actionsHeight()"
     [style.height.px]="height()"
   >
@@ -53,6 +54,10 @@
       (scroll)="onScroll()"
       (elementResize)="onTextareaResize()"
     ></textarea>
+
+    @if (hasActions()) {
+      <div class="ndwu-textarea-field__actions-mask" aria-hidden="true"></div>
+    }
 
     <ng-content select="[ndwuTextareaActions]" />
 

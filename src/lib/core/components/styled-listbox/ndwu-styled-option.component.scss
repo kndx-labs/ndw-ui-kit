@@ -92,7 +92,9 @@
 
 :host-context(.ndwu-dropdown-panel--sheet) {
   flex-shrink: 0;
-  padding: #{padding.$padding-12} #{spacing.$spacing-16};
+  height: auto;
+  min-height: var(--ndwu-styled-option-height, 44px);
+  padding: calc((var(--ndwu-styled-option-height, 44px) - var(--ndwu-styled-option-line-height, 20px)) / 2) #{spacing.$spacing-16};
 
   // Shorten via ellipsis if the options longer than 2 lines @ mobile
   // @see internal design spec (styled option)

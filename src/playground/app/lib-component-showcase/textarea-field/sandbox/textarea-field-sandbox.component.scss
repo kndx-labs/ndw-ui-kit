@@ -1,0 +1,18 @@
+.sandbox__preview-surface {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 120px;
+  padding: 24px;
+  border-radius: 8px;
+  background-color: #f8fafc;
+}
+
+.sandbox__preview-surface.ndwu-theme-dark {
+  background-color: #1e293b;
+}
+
+.sandbox__preview-form {
+  width: 100%;
+  max-width: 400px;
+}

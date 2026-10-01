@@ -1,0 +1,27 @@
+{
+  "textarea-field-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "default": "Default (empty)",
+    "filled": "Filled, required",
+    "sizes": "Sizes",
+    "line-numbers": "Line numbers",
+    "invalid": "Invalid",
+    "disabled": "Disabled",
+    "readonly": "Readonly",
+    "not-resizable": "Not resizable",
+    "label": "Comment",
+    "placeholder": "Enter text",
+    "hint": "This is helper text",
+    "sandbox": {
+      "hint": "Hint",
+      "readonly": "Readonly",
+      "resizable": "Resizable",
+      "line-numbers": "Line numbers",
+      "tokens": "Textarea Tokens",
+      "inherit": "Inherit"
+    }
+  }
+}

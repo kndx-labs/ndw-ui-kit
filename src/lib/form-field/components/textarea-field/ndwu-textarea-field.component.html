@@ -1,0 +1,83 @@
+<ndwu-form-field [size]="sizeSvc.size()" [readonly]="readonly()">
+  @if (label()) {
+    <ndwu-floating-label
+      [label]="label()"
+      [required]="ndwuRequired()"
+    />
+  }
+
+  <div
+    #box
+    class="ndwu-textarea-field__box"
+    [ndwuControlProvider]="this"
+    [class.ndwu-textarea-field__box--invalid]="invalid()"
+    [class.ndwu-textarea-field__box--disabled]="isDisabledState()"
+    [class.ndwu-textarea-field__box--readonly]="readonly()"
+    [style.height.px]="height()"
+  >
+    @if (showLineNumbers()) {
+      <div class="ndwu-textarea-field__gutter" aria-hidden="true">
+        <div
+          class="ndwu-textarea-field__line-numbers"
+          [style.transform]="`translateY(${-scrollTop()}px)`"
+        >
+          @for (line of lineNumbers(); track line) {
+            <span class="ndwu-textarea-field__line-number">{{ line }}</span>
+          }
+        </div>
+      </div>
+    }
+
+    <textarea
+      #textarea
+      class="ndwu-textarea-field__control"
+      [id]="id"
+      [value]="value()"
+      [placeholder]="placeholder() ? (placeholder() | localize) : ''"
+      [disabled]="isDisabledState()"
+      [readonly]="readonly()"
+      [attr.wrap]="showLineNumbers() ? 'off' : null"
+      [attr.aria-label]="ariaLabel() ? (ariaLabel() | localize) : null"
+      [attr.aria-required]="ndwuRequired() ? 'true' : null"
+      [attr.aria-invalid]="invalid() ? 'true' : null"
+      [attr.aria-describedby]="hasHelperMessage() ? hintId : null"
+      (input)="onInput($event)"
+      (focus)="focused.set(true)"
+      (blur)="onBlur()"
+      (scroll)="onScroll()"
+    ></textarea>
+
+    @if (resizable()) {
+      <span
+        class="ndwu-textarea-field__resizer"
+        aria-hidden="true"
+        (pointerdown)="onResizeStart($event)"
+        (pointermove)="onResizeMove($event)"
+        (pointerup)="onResizeEnd()"
+        (pointercancel)="onResizeEnd()"
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            fill="currentColor"
+            d="M16.0009 9.75053C16.3016 9.44982 16.7901 9.44982 17.0908 9.75053C17.3913 10.0512 17.3914 10.5397 17.0908 10.8404L10.8408 17.0904C10.5401 17.391 10.0516 17.391 9.75092 17.0904C9.45021 16.7897 9.45021 16.3012 9.75092 16.0005L16.0009 9.75053Z"
+          />
+          <path
+            fill="currentColor"
+            d="M14.7509 2.87553C15.0516 2.57482 15.5401 2.57482 15.8408 2.87553C16.1413 3.17624 16.1414 3.66471 15.8408 3.96537L3.96576 15.8404C3.6651 16.141 3.17663 16.141 2.87592 15.8404C2.57521 15.5397 2.57521 15.0512 2.87592 14.7505L14.7509 2.87553Z"
+          />
+        </svg>
+      </span>
+    }
+  </div>
+
+  @if (hasHelperMessage()) {
+    <ndwu-helper-message
+      ndwuHint
+      [id]="hintId"
+      [status]="errorMessage() ? 'error' : 'default'"
+      [errorMessage]="errorMessage()"
+      [helperMessage]="hint()"
+      [validationData]="validationData()"
+    />
+  }
+</ndwu-form-field>

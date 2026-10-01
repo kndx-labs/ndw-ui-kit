@@ -1,0 +1,27 @@
+{
+  "textarea-field-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "default": "Standard (leer)",
+    "filled": "Ausgefüllt, erforderlich",
+    "sizes": "Größen",
+    "line-numbers": "Zeilennummern",
+    "invalid": "Ungültig",
+    "disabled": "Deaktiviert",
+    "readonly": "Schreibgeschützt",
+    "not-resizable": "Nicht größenveränderbar",
+    "label": "Kommentar",
+    "placeholder": "Text eingeben",
+    "hint": "Dies ist ein Hilfetext",
+    "sandbox": {
+      "hint": "Hinweis",
+      "readonly": "Schreibgeschützt",
+      "resizable": "Größenveränderbar",
+      "line-numbers": "Zeilennummern",
+      "tokens": "Textarea-Tokens",
+      "inherit": "Vererben"
+    }
+  }
+}

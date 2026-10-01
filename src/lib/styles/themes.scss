@@ -35,6 +35,7 @@
 @use 'core/components/scrollbar/ndwu-scrollbar.tokens' as ndwu-scrollbar-tokens;
 @use 'table/ndwu-table.tokens' as ndwu-table-tokens;
 @use 'form-field/components/helper-message/ndwu-helper-message.tokens' as ndwu-helper-message-tokens;
+@use 'form-field/components/textarea-field/ndwu-textarea-field.tokens' as ndwu-textarea-field-tokens;
 @use 'styles/focus-tokens' as focus-tokens;
 
 $ndwu-emit-font-faces: false !default;
@@ -55,6 +56,7 @@ $component-tokens: (
   'ndwu-timing-button': ndwu-timing-button-tokens.$ndwu-timing-button-tokens,
   'ndwu-link': ndwu-link-tokens.$ndwu-link-tokens,
   'ndwu-helper-message': ndwu-helper-message-tokens.$ndwu-helper-message-tokens,
+  'ndwu-textarea-field': ndwu-textarea-field-tokens.$ndwu-textarea-field-tokens,
   'ndwu-toggle': ndwu-toggle-tokens.$ndwu-toggle-tokens,
   'ndwu-radio-group': ndwu-radio-group-tokens.$ndwu-radio-group-tokens,
   'ndwu-label-group': ndwu-label-group-tokens.$ndwu-label-group-tokens,

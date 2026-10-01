@@ -1,0 +1,14 @@
+.state-section {
+  max-width: 400px;
+  margin-bottom: 32px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+}

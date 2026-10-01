@@ -31,6 +31,8 @@ export type NdwuButtonVariant = NdwuValues<typeof NDWU_BUTTON_VARIANT>;
     'type': 'button',
     '[class]': 'hostClasses()',
     '[disabled]': 'disabled()',
+    '(keydown)': 'onKey($event)',
+    '(keyup)': 'onKey($event)',
   },
   hostDirectives: [{
     directive: NdwuSizeDirective,
@@ -73,4 +75,10 @@ export class NdwuButtonComponent {
 
     return classes.join(' ');
   });
+
+  protected onKey(event: KeyboardEvent): void {
+    if (this.loading() && event.key !== 'Tab') {
+      event.preventDefault();
+    }
+  }
 }

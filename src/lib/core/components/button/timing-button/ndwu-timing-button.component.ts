@@ -48,6 +48,8 @@ export type NdwuTimerEndReason = 'user' | 'timeout';
     '[style.--ndwu-timing-button-fill]': 'fillWidth()',
     '[style.--ndwu-timing-button-width]': 'width()',
     '(click)': 'onButtonClick()',
+    '(keydown)': 'onKey($event)',
+    '(keyup)': 'onKey($event)',
   },
   hostDirectives: [{
     directive: NdwuSizeDirective,
@@ -140,6 +142,12 @@ export class NdwuTimingButtonComponent implements OnInit {
     });
 
     this.destroyRef.onDestroy(() => this.stopCountdown());
+  }
+
+  protected onKey(event: KeyboardEvent): void {
+    if (this.loading() && event.key !== 'Tab') {
+      event.preventDefault();
+    }
   }
 
   protected onButtonClick(): void {

@@ -39,6 +39,57 @@
     </div>
 
     <div class="state-section">
+      <h4>Without Angular forms: native validation (shown after input/blur, cleared on reset)</h4>
+      <form>
+        <ndwu-form-field>
+          <ndwu-floating-label
+            [label]="'input-showcase.required-field' | localize"
+            [required]="true"
+          />
+          <input
+            ndwuInput
+            required
+            [placeholder]="'input-showcase.enter-text-placeholder' | localize"
+          />
+        </ndwu-form-field>
+
+        <br/>
+        <button
+          ndwuButton
+          type="reset"
+          variant="secondary"
+        >
+          Reset form
+        </button>
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>Without Angular forms: explicit aria-invalid="true" (shown immediately)</h4>
+      <ndwu-form-field>
+        <ndwu-floating-label [label]="'input-showcase.invalid-input' | localize"/>
+        <input
+          ndwuInput
+          aria-invalid="true"
+          [placeholder]="'input-showcase.enter-text-placeholder' | localize"
+        />
+      </ndwu-form-field>
+    </div>
+
+    <div class="state-section">
+      <h4>Without Angular forms: [aria-invalid] override (required, but forced valid)</h4>
+      <ndwu-form-field>
+        <ndwu-floating-label [label]="'input-showcase.required-field' | localize"/>
+        <input
+          ndwuInput
+          required
+          [aria-invalid]="false"
+          [placeholder]="'input-showcase.enter-text-placeholder' | localize"
+        />
+      </ndwu-form-field>
+    </div>
+
+    <div class="state-section">
       <h4>{{ 'common.sizes.l' | localize }}</h4>
       <form [formGroup]="inputSizeL">
         <ndwu-input-field

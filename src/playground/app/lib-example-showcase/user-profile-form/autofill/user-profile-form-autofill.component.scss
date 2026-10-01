@@ -1,0 +1,28 @@
+.profile-autofill {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 560px;
+  padding-bottom: 24px;
+
+  &__title {
+    margin: 0 0 4px;
+    color: var(--color-gray-50);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__hint {
+    margin: 0 0 8px;
+    color: var(--color-gray-50);
+    font-size: 0.875rem;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 8px;
+  }
+}

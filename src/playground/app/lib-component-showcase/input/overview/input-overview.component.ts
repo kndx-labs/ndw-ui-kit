@@ -3,6 +3,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   NDWU_ICON_NAME,
   NDWU_SIZE,
+  NdwuButtonComponent,
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
   NdwuHintDirective,
@@ -22,6 +23,7 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
+    NdwuButtonComponent,
     NdwuInputFieldComponent,
     NdwuFormFieldComponent,
     NdwuFloatingLabelComponent,

@@ -7,6 +7,17 @@
 @use 'styles/mixins';
 @use 'styles/typography';
 
+// Empty keyframes: only used to get `animationstart` when the browser toggles
+// `:autofill` (see `NdwuInputDirective`). Component uses ViewEncapsulation.None,
+// so names are prefixed.
+@keyframes ndwu-autofill-start {
+  /* empty */
+}
+
+@keyframes ndwu-autofill-end {
+  /* empty */
+}
+
 ndwu-form-field {
   display: block;
   min-width: 0;
@@ -222,6 +233,23 @@ ndwu-form-field {
       opacity: 0;
       transition: opacity animations.$duration-default animations.$easing-default;
     }
+
+    // stylelint-disable plugin/no-unsupported-browser-features
+    &:autofill {
+      animation: ndwu-autofill-start 0s 1ms;
+    }
+
+    &:not(:autofill) {
+      animation: ndwu-autofill-end 0s 1ms;
+    }
+
+    // keep own background instead of the browser autofill color
+    // (floating label uses the same `--ndwu-form-field-bg`).
+    &:-webkit-autofill {
+      transition: background-color 600000s 0s, color 600000s 0s;
+      -webkit-text-fill-color: var(--ndwu-form-field-text);
+    }
+    // stylelint-enable plugin/no-unsupported-browser-features
 
     &:hover:not(:disabled, [readonly]) {
       border-color: var(--ndwu-form-field-hover-border-color, var(--ndwu-form-field-border-color));

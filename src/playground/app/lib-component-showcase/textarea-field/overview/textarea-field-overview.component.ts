@@ -8,16 +8,16 @@ import {ShowcaseLayoutComponent} from '@app/components';
 const SAMPLE_TEXT = 'This is a textarea';
 
 const SAMPLE_CONFIG = [
-  'interface GigabitEthernet0/Vlan2',
-  '    description "Home network"',
-  '    security-level private',
-  '    ip address 192.168.1.1 255.255.255.0',
-  '    ip mtu 1500',
-  '    up',
-  '!',
-  'ip dhcp pool _WEBADMIN',
-  '    range 192.168.1.33 192.168.1.152',
-  '    bind GigabitEthernet0/Vlan2',
+  'server:',
+  '  host: example.com',
+  '  port: 8080',
+  '  description: "Local development server"',
+  '  timeout: 30',
+  '',
+  'logging:',
+  '  level: info',
+  '  format: "{time} {level} {message}"',
+  '  file: logs/app.log',
 ].join('\n');
 
 @Component({

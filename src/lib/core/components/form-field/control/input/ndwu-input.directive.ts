@@ -51,7 +51,7 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
    * and no `input` event fires until user interacts with the page.
    * Detected via `animationstart` on empty keyframes (see `ndwu-form-field.component.scss`).
    */
-  protected readonly autofilled = signal<boolean>(false);
+  protected readonly isAutofilled = signal<boolean>(false);
 
   protected readonly ariaInvalid = signal<boolean>(false);
   protected readonly nativeInvalid = signal<boolean>(false);
@@ -72,7 +72,7 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
   });
 
   public get empty(): boolean {
-    return !this.hasValue() && !this.autofilled();
+    return !this.hasValue() && !this.isAutofilled();
   }
 
   public get disabled(): boolean {
@@ -183,9 +183,9 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
   @HostListener('animationstart', ['$event'])
   protected onAnimationStart(event: AnimationEvent): void {
     if (event.animationName === 'ndwu-autofill-start') {
-      this.autofilled.set(true);
+      this.isAutofilled.set(true);
     } else if (event.animationName === 'ndwu-autofill-end') {
-      this.autofilled.set(false);
+      this.isAutofilled.set(false);
     }
   }
 

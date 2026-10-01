@@ -46,6 +46,13 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
 
   protected readonly hasValue = signal<boolean>(false);
 
+  /**
+   * Browsers (Chrome/Edge) expose autofilled value via `:autofill` only, `el.value` stays empty
+   * and no `input` event fires until user interacts with the page.
+   * Detected via `animationstart` on empty keyframes (see `ndwu-form-field.component.scss`).
+   */
+  protected readonly isAutofilled = signal<boolean>(false);
+
   protected readonly ariaInvalid = signal<boolean>(false);
   protected readonly nativeInvalid = signal<boolean>(false);
   protected readonly nativeDisabled = signal<boolean>(false);
@@ -65,7 +72,7 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
   });
 
   public get empty(): boolean {
-    return !this.hasValue();
+    return !this.hasValue() && !this.isAutofilled();
   }
 
   public get disabled(): boolean {
@@ -171,6 +178,15 @@ export class NdwuInputDirective implements OnInit, NdwuControl {
   @HostListener('blur')
   protected onBlur(): void {
     this.focused.set(false);
+  }
+
+  @HostListener('animationstart', ['$event'])
+  protected onAnimationStart(event: AnimationEvent): void {
+    if (event.animationName === 'ndwu-autofill-start') {
+      this.isAutofilled.set(true);
+    } else if (event.animationName === 'ndwu-autofill-end') {
+      this.isAutofilled.set(false);
+    }
   }
 
   @HostListener('input')

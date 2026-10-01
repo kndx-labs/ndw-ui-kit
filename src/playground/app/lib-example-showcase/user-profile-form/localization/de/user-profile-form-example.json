@@ -1,7 +1,8 @@
 {
   "user-profile-form-example": {
     "tabs": {
-      "overview": "Übersicht"
+      "overview": "Übersicht",
+      "autofill": "Autofill"
     },
     "success": "Profil erfolgreich gespeichert!",
     "sections": {
@@ -46,6 +47,15 @@
       "city": "Stadt suchen",
       "country": "Land auswählen",
       "skills": "Kenntnisse auswählen"
+    },
+    "autofill": {
+      "hint": "Zugangsdaten im Browser speichern (ein Formular absenden), dann Seite ohne Interaktion neu laden.",
+      "field-forms": "ndwu-input-field + Angular-Formulare",
+      "compound-forms": "input[ndwuInput] + Angular-Formulare",
+      "compound-native": "input[ndwuInput] ohne Formulare",
+      "username": "Benutzername",
+      "password": "Passwort",
+      "sign-in": "Anmelden"
     },
     "actions": {
       "save": "Änderungen speichern",

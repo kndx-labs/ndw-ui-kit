@@ -1,7 +1,8 @@
 {
   "user-profile-form-example": {
     "tabs": {
-      "overview": "Overview"
+      "overview": "Overview",
+      "autofill": "Autofill"
     },
     "success": "Profile saved successfully!",
     "sections": {
@@ -44,6 +45,15 @@
       "city": "New York",
       "country": "United States",
       "skills": "JavaScript, Angular, TypeScript"
+    },
+    "autofill": {
+      "hint": "Save credentials in the browser (submit any form once), then reload the page without interacting.",
+      "field-forms": "ndwu-input-field + Angular forms",
+      "compound-forms": "input[ndwuInput] + Angular forms",
+      "compound-native": "input[ndwuInput] without forms",
+      "username": "Username",
+      "password": "Password",
+      "sign-in": "Sign in"
     },
     "actions": {
       "save": "Save",

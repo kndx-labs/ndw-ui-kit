@@ -1,0 +1,85 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <ndwu-form-container [size]="SIZE.XL">
+      <p class="profile-autofill__hint">{{ 'user-profile-form-example.autofill.hint' | localize }}</p>
+
+      <!-- ndwu-input-field + Angular forms -->
+      <form class="profile-autofill" [formGroup]="form" (submit)="onSubmit($event)">
+        <h3 class="profile-autofill__title">{{ 'user-profile-form-example.autofill.field-forms' | localize }}</h3>
+
+        <ndwu-input-field
+          formControlName="username"
+          [label]="'user-profile-form-example.autofill.username' | localize"
+          ndwuRequired
+        />
+        <ndwu-input-field
+          formControlName="password"
+          type="password"
+          [label]="'user-profile-form-example.autofill.password' | localize"
+          ndwuRequired
+        />
+
+        <div class="profile-autofill__actions">
+          <button
+            ndwu-button
+            type="submit"
+            [label]="'user-profile-form-example.autofill.sign-in' | localize"
+          ></button>
+        </div>
+      </form>
+
+      <!-- input[ndwuInput] + Angular forms -->
+      <form class="profile-autofill" [formGroup]="compoundForm" (submit)="onSubmit($event)">
+        <h3 class="profile-autofill__title">{{ 'user-profile-form-example.autofill.compound-forms' | localize }}</h3>
+
+        <ndwu-form-field>
+          <ndwu-floating-label [label]="'user-profile-form-example.autofill.username' | localize"/>
+          <input ndwuInput formControlName="username" name="username" type="text" autocomplete="username"/>
+        </ndwu-form-field>
+        <ndwu-form-field>
+          <ndwu-floating-label [label]="'user-profile-form-example.autofill.password' | localize"/>
+          <input
+            ndwuInput
+            formControlName="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+          />
+        </ndwu-form-field>
+
+        <div class="profile-autofill__actions">
+          <button
+            ndwu-button
+            type="submit"
+            [label]="'user-profile-form-example.autofill.sign-in' | localize"
+          ></button>
+        </div>
+      </form>
+
+      <!-- input[ndwuInput] without Angular forms -->
+      <form class="profile-autofill" (submit)="onSubmit($event)">
+        <h3 class="profile-autofill__title">{{ 'user-profile-form-example.autofill.compound-native' | localize }}</h3>
+
+        <ndwu-form-field>
+          <ndwu-floating-label [label]="'user-profile-form-example.autofill.username' | localize"/>
+          <input ndwuInput name="username" type="text" autocomplete="username"/>
+        </ndwu-form-field>
+        <ndwu-form-field>
+          <ndwu-floating-label [label]="'user-profile-form-example.autofill.password' | localize"/>
+          <input ndwuInput name="password" type="password" autocomplete="current-password"/>
+        </ndwu-form-field>
+
+        <div class="profile-autofill__actions">
+          <button
+            ndwu-button
+            type="submit"
+            [label]="'user-profile-form-example.autofill.sign-in' | localize"
+          ></button>
+        </div>
+      </form>
+    </ndwu-form-container>
+  </ng-template>
+</app-showcase-layout>

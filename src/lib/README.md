@@ -545,6 +545,16 @@ and have a separate entry point (`@ndw-ui-kit/core/form-field`).
 | `ndwu-select-field`          | Single-option select   |
 | `ndwu-toggle-field`          | Toggle switch          |
 
+#### Browser autofill
+
+`ndwuInput` tracks browser autofill (`:autofill`) to keep the floating label raised
+over an autofilled value.
+
+Known limitation: Chrome/Edge autofill on page load only displays the value.
+Until the first user interaction with the page, both `el.value` and the Angular control
+value stay empty.
+This can't be fixed on the library side.
+
 #### Custom option lists
 
 Select, multi-select, and radio components accept either `NdwuOption[]` directly

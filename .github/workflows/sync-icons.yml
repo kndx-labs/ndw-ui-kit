@@ -8,6 +8,8 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       NOTIFY_WEBHOOK_URL: ${{ secrets.NOTIFY_WEBHOOK_URL }}
@@ -20,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          token: ${{ secrets.SYNC_SOURCE_TOKEN }}
+          token: ${{ secrets.SYNC_SOURCE_TOKEN || secrets.GITHUB_TOKEN }}
 
       # -------------------------------------------------------
       # Environment setup

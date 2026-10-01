@@ -1,9 +1,12 @@
 #!/usr/bin/env tsx
 
 import {existsSync, readdirSync} from 'node:fs';
+import {createRequire} from 'node:module';
 import {join, resolve} from 'node:path';
-import {compile} from 'sass';
+import type * as Sass from 'sass';
 import {ROOT_DIR} from './conf';
+
+const {compile} = createRequire(require.resolve('@angular/build'))('sass') as typeof Sass;
 
 const DIST_DIR = resolve(ROOT_DIR, 'dist/ndw-ui-kit');
 const CLI_FILE = join(DIST_DIR, 'tools/build-custom-sprite.mjs');

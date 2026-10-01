@@ -28,13 +28,33 @@ import {NDWU_TOGGLE_COLOR, ndwuCoerceToggleColor} from './ndwu-toggle.types';
     directive: NdwuSizeDirective,
     inputs: ['ndwuSize: size'],
   }],
+  host: {
+    '[attr.id]': 'null',
+    '[attr.aria-label]': 'null',
+    '[attr.aria-labelledby]': 'null',
+    '[attr.aria-describedby]': 'null',
+  },
 })
 export class NdwuToggleComponent {
+  protected readonly componentId = uniqueId('ndwu-toggle-');
+
+  public readonly id = input<string>('');
+
+  protected readonly inputId = computed(() => {
+    return this.id() || this.componentId;
+  });
+
   public readonly checked = input(false, {transform: booleanAttribute});
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly label = input<string>('');
   public readonly secondaryText = input<string>('');
   public readonly color = input(NDWU_TOGGLE_COLOR.BRAND, {transform: ndwuCoerceToggleColor});
+
+  public readonly name = input<string | null>(null);
+  public readonly value = input<string | null>(null);
+  public readonly ariaLabel = input<string | null>(null, {alias: 'aria-label'});
+  public readonly ariaLabelledby = input<string | null>(null, {alias: 'aria-labelledby'});
+  public readonly ariaDescribedby = input<string | null>(null, {alias: 'aria-describedby'});
 
   public readonly checkedChange = output<boolean>();
   public readonly blurred = output<void>();
@@ -43,17 +63,16 @@ export class NdwuToggleComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   protected readonly destroyRef = inject(DestroyRef);
   protected readonly registry = inject(NdwuInteractionRegistry);
-  protected readonly toggleId: string = uniqueId('ndwu-toggle-');
   protected readonly focusedState = signal(false);
 
   constructor() {
     // sync `focus` state with `NdwuInteractionRegistry`
     effect(() => {
-      this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.TOGGLE, this.toggleId, this.focusedState());
+      this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.TOGGLE, this.inputId(), this.focusedState());
     });
 
     this.destroyRef.onDestroy(() => {
-      this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.TOGGLE, this.toggleId, false);
+      this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.TOGGLE, this.inputId(), false);
     });
   }
 

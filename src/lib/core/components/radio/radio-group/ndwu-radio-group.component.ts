@@ -4,6 +4,7 @@ import {
   DestroyRef,
   ElementRef,
   HostListener,
+  booleanAttribute,
   computed,
   effect,
   inject,
@@ -40,6 +41,7 @@ export class NdwuRadioGroupComponent implements NdwuRadioGroup {
   public readonly name = input<string | undefined>(undefined);
   public readonly value = input<string | number>('');
   public readonly disabled = input<boolean>(false);
+  public readonly required = input(false, {transform: booleanAttribute});
 
   public readonly valueChange = output<string | number>();
   public readonly blurred = output<void>();

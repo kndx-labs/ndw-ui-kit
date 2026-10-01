@@ -12,6 +12,10 @@ import {NDWU_RADIO_GROUP} from '../radio.types';
   imports: [
     NdwuLabelGroupComponent,
   ],
+  host: {
+    '[attr.id]': 'null',
+    '[attr.aria-describedby]': 'null',
+  },
 })
 export class NdwuRadioButtonComponent {
   public readonly value = input<string | number>('');
@@ -19,8 +23,20 @@ export class NdwuRadioButtonComponent {
   public readonly secondaryText = input<string>('');
   public readonly disabled = input(false, {transform: booleanAttribute});
 
-  protected readonly inputId = uniqueId('ndwu-radio-');
+  public readonly ariaDescribedby = input<string | null>(null, {alias: 'aria-describedby'});
+
+  protected readonly componentId = uniqueId('ndwu-radio-');
   private readonly radioGroup = inject(NDWU_RADIO_GROUP, {optional: true});
+
+  public readonly id = input<string>('');
+
+  protected readonly inputId = computed(() => {
+    return this.id() || this.componentId;
+  });
+
+  protected readonly effectiveRequired = computed(() => {
+    return this.radioGroup?.required() ?? false;
+  });
 
   protected readonly effectiveDisabled = computed(() => {
     return this.disabled() || (this.radioGroup?.disabled() ?? false);

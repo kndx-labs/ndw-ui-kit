@@ -21,14 +21,16 @@ export class ToastComponent {
   protected readonly message = signal<string | null>(null);
 
   private hideTimer: ReturnType<typeof setTimeout> | null = null;
+  private destroyRef = inject(DestroyRef);
 
   constructor() {
-    inject(DestroyRef).onDestroy(() => this.clearTimer());
+    this.destroyRef.onDestroy(() => this.clearTimer());
   }
 
   public show(message: string): void {
     this.clearTimer();
     this.message.set(message);
+
     this.hideTimer = setTimeout(() => this.message.set(null), HIDE_DELAY_MS);
   }
 
@@ -47,6 +49,7 @@ export class ToastComponent {
   private clearTimer(): void {
     if (this.hideTimer !== null) {
       clearTimeout(this.hideTimer);
+
       this.hideTimer = null;
     }
   }

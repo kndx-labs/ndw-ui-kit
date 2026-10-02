@@ -27,6 +27,14 @@
     "terms-secondary": "By checking this box, you agree to our terms of service",
     "newsletter-secondary": "Receive updates and special offers",
     "disabled-secondary": "This checkbox is disabled",
-    "disabled-checked-secondary": "This checkbox is checked and disabled"
+    "disabled-checked-secondary": "This checkbox is checked and disabled",
+    "native-form": "Native form submit",
+    "native-form-description": "name, value and required are passed to the native input. Submit shows FormData; the browser blocks submit until the required box is checked.",
+    "required-native-secondary": "name=\"terms\", value=\"accepted\", required",
+    "no-value-secondary": "name=\"newsletter\" without value: sends \"on\"",
+    "remember-me": "Remember me",
+    "aria-label-hint": "No visible label: accessible name comes from aria-label",
+    "required-reactive": "Required (reactive forms)",
+    "required-reactive-description": "ndwuRequired only marks the field. Validation comes from Validators.requiredTrue on the control."
   }
 }

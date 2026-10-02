@@ -3,6 +3,7 @@ import {NdwuSize} from '../../../shared.types';
 
 export interface NdwuRadioGroup {
   readonly disabled: Signal<boolean>;
+  readonly required: Signal<boolean>;
   readonly groupName: Signal<string>;
   readonly effectiveSize: Signal<NdwuSize>;
 

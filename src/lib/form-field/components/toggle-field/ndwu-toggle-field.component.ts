@@ -20,6 +20,7 @@ export class NdwuToggleFieldComponent extends FormFieldBase<boolean> {
 
   public readonly label = input<string>('');
   public readonly secondaryText = input<string>('');
+  public readonly inputId = input<string>('');
   public readonly color = input<NdwuToggleColor>(NDWU_TOGGLE_COLOR.BRAND);
 
   constructor(

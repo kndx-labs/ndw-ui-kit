@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NdwuRadioButtonComponent, NdwuRadioGroupComponent} from '@ndw-ui-kit/core';
+import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {NDWU_SIZE, NdwuButtonComponent, NdwuRadioButtonComponent, NdwuRadioGroupComponent} from '@ndw-ui-kit/core';
+import {NdwuRadioFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {ShowcaseLayoutComponent} from '@app/components';
+import {ShowcaseLayoutComponent, ToastComponent} from '@app/components';
 
 @Component({
   selector: 'app-radio-overview',
@@ -13,8 +14,11 @@ import {ShowcaseLayoutComponent} from '@app/components';
     ReactiveFormsModule,
     NdwuRadioGroupComponent,
     NdwuRadioButtonComponent,
+    NdwuRadioFieldComponent,
+    NdwuButtonComponent,
     LocalizePipe,
     ShowcaseLayoutComponent,
+    ToastComponent,
   ],
 })
 export class RadioOverviewComponent {
@@ -51,4 +55,15 @@ export class RadioOverviewComponent {
   public radioDisabledWithText = new FormGroup({
     option: new FormControl<string | number>({value: '', disabled: true}),
   });
+
+  public radioRequired = new FormGroup({
+    option: new FormControl<string | number>('', {nonNullable: true, validators: Validators.required}),
+  });
+
+  public readonly radioRequiredOptions = [
+    {value: 'option1', label: 'radio-showcase.option-1'},
+    {value: 'option2', label: 'radio-showcase.option-2'},
+  ];
+
+  public readonly nativePlan = signal<string | number>('');
 }

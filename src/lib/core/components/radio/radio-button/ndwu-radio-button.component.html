@@ -12,10 +12,12 @@
       type="radio"
       class="ndwu-radio__input"
       [name]="groupName()"
-      [id]="inputId"
+      [id]="inputId()"
       [value]="value()"
       [checked]="isChecked()"
       [disabled]="effectiveDisabled()"
+      [attr.required]="effectiveRequired() || null"
+      [attr.aria-describedby]="ariaDescribedby()"
       (change)="selectThis()"
     />
   </div>
@@ -25,7 +27,7 @@
     <label
       class="ndwu-radio__label"
       [class.ndwu-radio__label--disabled]="effectiveDisabled()"
-      [for]="inputId"
+      [for]="inputId()"
     >
       <ndwu-label-group
         [label]="label()"

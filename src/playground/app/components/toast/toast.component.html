@@ -1,0 +1,11 @@
+@if (message(); as text) {
+  <div
+    class="toast"
+    role="status"
+  >
+    <ndwu-notification
+      [variant]="NOTIFICATION_VARIANT.SUCCESS"
+      [message]="text"
+    />
+  </div>
+}

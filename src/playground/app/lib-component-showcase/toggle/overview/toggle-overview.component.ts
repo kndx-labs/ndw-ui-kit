@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NDWU_TOGGLE_COLOR} from '@ndw-ui-kit/core';
+import {NDWU_SIZE, NDWU_TOGGLE_COLOR, NdwuButtonComponent, NdwuToggleComponent} from '@ndw-ui-kit/core';
 import {NdwuToggleFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {ShowcaseLayoutComponent} from '@app/components';
+import {ShowcaseLayoutComponent, ToastComponent} from '@app/components';
 
 @Component({
   selector: 'app-toggle-overview',
@@ -13,8 +13,11 @@ import {ShowcaseLayoutComponent} from '@app/components';
   imports: [
     ReactiveFormsModule,
     NdwuToggleFieldComponent,
+    NdwuToggleComponent,
+    NdwuButtonComponent,
     LocalizePipe,
     ShowcaseLayoutComponent,
+    ToastComponent,
   ],
 })
 export class ToggleOverviewComponent {
@@ -70,6 +73,10 @@ export class ToggleOverviewComponent {
   });
 
   public toggleWithSecondaryText = new FormGroup({
+    toggle: new FormControl(false),
+  });
+
+  public toggleExternalLabel = new FormGroup({
     toggle: new FormControl(false),
   });
 }

@@ -8,23 +8,28 @@
         type="checkbox"
         role="switch"
         class="ndwu-toggle__input"
-        [id]="toggleId"
+        [id]="inputId()"
         [checked]="checked()"
         [disabled]="disabled()"
+        [attr.name]="name()"
+        [attr.value]="value()"
+        [attr.aria-label]="ariaLabel()"
+        [attr.aria-labelledby]="ariaLabelledby()"
+        [attr.aria-describedby]="ariaDescribedby()"
         (change)="onToggleChange($event)"
         (focus)="onFocus()"
         (blur)="onBlur()"
       />
       <label
         class="ndwu-toggle__track"
-        [for]="toggleId"
+        [for]="inputId()"
       >
         <span class="ndwu-toggle__knob"></span>
       </label>
     </div>
 
     @if (label() || secondaryText()) {
-      <label [for]="toggleId">
+      <label [for]="inputId()">
         <ndwu-label-group
           [label]="label()"
           [secondaryText]="secondaryText()"

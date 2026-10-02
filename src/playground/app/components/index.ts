@@ -6,5 +6,6 @@ export * from './showcase-layout/showcase-layout.component';
 export * from './showcase-tabs-shell/showcase-tabs-shell.component';
 export * from './tabs/tabs.component';
 export * from './theme-switcher/theme-switcher.component';
+export * from './toast/toast.component';
 export * from './token-list/token-list.component';
 export * from './search/';

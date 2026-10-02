@@ -29,6 +29,12 @@ import {NdwuLabelGroupComponent} from '../label-group/ndwu-label-group.component
     directive: NdwuSizeDirective,
     inputs: ['ndwuSize: size'],
   }],
+  host: {
+    '[attr.id]': 'null',
+    '[attr.aria-label]': 'null',
+    '[attr.aria-labelledby]': 'null',
+    '[attr.aria-describedby]': 'null',
+  },
 })
 export class NdwuCheckboxComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
@@ -38,21 +44,18 @@ export class NdwuCheckboxComponent {
   protected readonly inputRef = viewChild<ElementRef<HTMLInputElement>>('checkboxInput');
   protected readonly focusedState = signal(false);
 
-  public readonly id = input(
-    '',
-    {
-      transform: (value: unknown) => {
-        return typeof value === 'string' && !!value
-          ? value
-          : this.componentId;
-      },
-    },
-  );
-
+  public readonly id = input<string>('');
   public readonly checked = input(false, {transform: booleanAttribute});
   public readonly indeterminate = input(false, {transform: booleanAttribute});
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly invalid = input(false, {transform: booleanAttribute});
+  public readonly required = input(false, {transform: booleanAttribute});
+
+  public readonly name = input<string | null>(null);
+  public readonly value = input<string | null>(null);
+  public readonly ariaLabel = input<string | null>(null, {alias: 'aria-label'});
+  public readonly ariaLabelledby = input<string | null>(null, {alias: 'aria-labelledby'});
+  public readonly ariaDescribedby = input<string | null>(null, {alias: 'aria-describedby'});
 
   public readonly inputTabIndex = input<number | null>(null);
 
@@ -62,6 +65,10 @@ export class NdwuCheckboxComponent {
   public readonly checkedChange = output<boolean>();
   public readonly blurred = output<void>();
   public readonly focused = output<void>();
+
+  protected readonly inputId = computed(() => {
+    return this.id() || this.componentId;
+  });
 
   constructor() {
     effect(() => {
@@ -77,11 +84,11 @@ export class NdwuCheckboxComponent {
     effect(() => {
       const focused = this.focusedState();
 
-      this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.CHECKBOX, this.id(), focused);
+      this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.CHECKBOX, this.inputId(), focused);
     });
 
     this.destroyRef.onDestroy(() => {
-      this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.CHECKBOX, this.id(), false);
+      this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.CHECKBOX, this.inputId(), false);
     });
   }
 

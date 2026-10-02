@@ -45,11 +45,6 @@ export class NdwuCheckboxComponent {
   protected readonly focusedState = signal(false);
 
   public readonly id = input<string>('');
-
-  protected readonly inputId = computed(() => {
-    return this.id() || this.componentId;
-  });
-
   public readonly checked = input(false, {transform: booleanAttribute});
   public readonly indeterminate = input(false, {transform: booleanAttribute});
   public readonly disabled = input(false, {transform: booleanAttribute});
@@ -70,6 +65,10 @@ export class NdwuCheckboxComponent {
   public readonly checkedChange = output<boolean>();
   public readonly blurred = output<void>();
   public readonly focused = output<void>();
+
+  protected readonly inputId = computed(() => {
+    return this.id() || this.componentId;
+  });
 
   constructor() {
     effect(() => {

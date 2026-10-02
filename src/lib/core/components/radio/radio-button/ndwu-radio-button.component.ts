@@ -18,17 +18,15 @@ import {NDWU_RADIO_GROUP} from '../radio.types';
   },
 })
 export class NdwuRadioButtonComponent {
+  public readonly id = input<string>('');
   public readonly value = input<string | number>('');
   public readonly label = input<string>('');
   public readonly secondaryText = input<string>('');
   public readonly disabled = input(false, {transform: booleanAttribute});
-
   public readonly ariaDescribedby = input<string | null>(null, {alias: 'aria-describedby'});
 
   protected readonly componentId = uniqueId('ndwu-radio-');
-  private readonly radioGroup = inject(NDWU_RADIO_GROUP, {optional: true});
-
-  public readonly id = input<string>('');
+  protected readonly radioGroup = inject(NDWU_RADIO_GROUP, {optional: true});
 
   protected readonly inputId = computed(() => {
     return this.id() || this.componentId;

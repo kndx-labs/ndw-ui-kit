@@ -39,11 +39,6 @@ export class NdwuToggleComponent {
   protected readonly componentId = uniqueId('ndwu-toggle-');
 
   public readonly id = input<string>('');
-
-  protected readonly inputId = computed(() => {
-    return this.id() || this.componentId;
-  });
-
   public readonly checked = input(false, {transform: booleanAttribute});
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly label = input<string>('');
@@ -64,6 +59,10 @@ export class NdwuToggleComponent {
   protected readonly destroyRef = inject(DestroyRef);
   protected readonly registry = inject(NdwuInteractionRegistry);
   protected readonly focusedState = signal(false);
+
+  protected readonly inputId = computed(() => {
+    return this.id() || this.componentId;
+  });
 
   constructor() {
     // sync `focus` state with `NdwuInteractionRegistry`

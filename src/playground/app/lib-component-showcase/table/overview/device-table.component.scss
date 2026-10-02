@@ -4,11 +4,11 @@
 
 .status-dot {
   display: inline-block;
+  vertical-align: middle;
   width: 8px;
   height: 8px;
-  border-radius: 50%;
   margin-right: 6px;
-  vertical-align: middle;
+  border-radius: 50%;
 
   &.online {
     background-color: var(--ndwu-color-green-50);
@@ -35,9 +35,9 @@
 
 .toolbar-count,
 .toolbar-action {
+  color: var(--ndwu-color-gray-60);
   font-size: 14px;
   line-height: 20px;
-  color: var(--ndwu-color-gray-60);
   white-space: nowrap;
 }
 
@@ -54,8 +54,8 @@
 .col-actions { width: 88px; }
 
 .select-cell {
-  padding-left: 16px;
   padding-right: 16px;
+  padding-left: 16px;
 
   ndwu-checkbox {
     display: inline-flex;
@@ -68,16 +68,16 @@
 }
 
 .toolbar-search {
+  box-sizing: border-box;
+  width: 220px;
   height: 32px;
   padding: 0 12px;
   border: 1px solid var(--ndwu-color-gray-20);
   border-radius: 6px;
   background: var(--ndwu-color-gray-0);
+  outline: none;
   color: var(--ndwu-color-gray-80);
   font-size: 14px;
-  width: 220px;
-  box-sizing: border-box;
-  outline: none;
 
   &:focus {
     border-color: var(--ndwu-color-brand-50);
@@ -85,8 +85,8 @@
 }
 
 ndwu-table.table-scroll {
-  max-height: 400px;
   overflow-y: auto;
+  max-height: 400px;
 }
 
 td.detail-cell {
@@ -95,9 +95,9 @@ td.detail-cell {
 }
 
 .detail-content {
+  color: var(--ndwu-color-gray-60);
   font-size: 13px;
   line-height: 20px;
-  color: var(--ndwu-color-gray-60);
 }
 
 .detail-hidden {

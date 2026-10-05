@@ -1,0 +1,42 @@
+<div class="ndwu-accordion-item__header">
+  <ndwu-icon
+    class="ndwu-accordion-item__chevron"
+    name="chevron_down_L"
+    [stretched]="true"
+    aria-hidden="true"
+  />
+
+  <button
+    #trigger
+    type="button"
+    class="ndwu-accordion-item__trigger"
+    [id]="headerId"
+    [disabled]="disabled()"
+    [attr.aria-expanded]="expanded()"
+    [attr.aria-controls]="panelId"
+    (click)="toggle()"
+  >
+    <ng-content select="[ndwuAccordionHeader]" />
+  </button>
+
+  <div class="ndwu-accordion-item__actions">
+    <ng-content select="[ndwuAccordionHeaderActions]" />
+  </div>
+</div>
+
+<div
+  class="ndwu-accordion-item__panel"
+  role="region"
+  [id]="panelId"
+  [attr.aria-labelledby]="headerId"
+>
+  <div class="ndwu-accordion-item__panel-inner">
+    <div class="ndwu-accordion-item__content">
+      <ng-content select="[ndwuAccordionContent]" />
+
+      @if (contentRendered() && contentTemplate(); as content) {
+        <ng-container [ngTemplateOutlet]="content.templateRef" />
+      }
+    </div>
+  </div>
+</div>

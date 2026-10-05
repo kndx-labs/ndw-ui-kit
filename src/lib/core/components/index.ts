@@ -1,3 +1,4 @@
+export * from './accordion/';
 export * from './badge/ndwu-badge.component';
 export * from './button/base/ndwu-button-base.directive';
 export * from './button/button/ndwu-button.component';

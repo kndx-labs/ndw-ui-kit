@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {ChangeDetectionStrategy, Component, OnInit, signal} from '@angular/core';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   NDWU_ICON_NAME,
   NDWU_SIZE,
@@ -22,6 +22,7 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
   styleUrl: './input-overview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     NdwuButtonComponent,
     NdwuInputFieldComponent,
@@ -104,6 +105,8 @@ export class InputOverviewComponent implements OnInit {
   public inputReadonlyWithIcon = new FormGroup({
     input: new FormControl('Readonly with icon'),
   });
+
+  public readonly ngModelValue = signal('');
 
   public onClearClick(): void {
     this.inputWithClearIcon.get('input')?.setValue('');

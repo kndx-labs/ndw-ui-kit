@@ -31,6 +31,7 @@
           [size]="sandboxForm.controls.size.value"
           [icon]="sandboxForm.controls.icon.value"
           [label]="sandboxForm.controls.label.value"
+          [selectable]="sandboxForm.controls.selectable.value"
           [selected]="sandboxForm.controls.selected.value"
           [removable]="sandboxForm.controls.removable.value"
           [disabled]="sandboxForm.controls.disabled.value"
@@ -79,6 +80,11 @@
                 <option [ngValue]="iconName">{{ iconName }}</option>
               }
             </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-selectable">Selectable</label>
+            <input id="sandbox-selectable" class="sandbox__control-input" type="checkbox" formControlName="selectable"/>
           </div>
 
           <div class="sandbox__control-row">

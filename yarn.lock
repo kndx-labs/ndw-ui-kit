@@ -3418,22 +3418,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stylistic/eslint-plugin@npm:5.10.0":
-  version: 5.10.0
-  resolution: "@stylistic/eslint-plugin@npm:5.10.0"
-  dependencies:
-    "@eslint-community/eslint-utils": "npm:^4.9.1"
-    "@typescript-eslint/types": "npm:^8.56.0"
-    eslint-visitor-keys: "npm:^4.2.1"
-    espree: "npm:^10.4.0"
-    estraverse: "npm:^5.3.0"
-    picomatch: "npm:^4.0.3"
-  peerDependencies:
-    eslint: ^9.0.0 || ^10.0.0
-  checksum: 10c0/2cc6e592d5b2ab691290cc39ed377c0f6226667b367ffc6a0bf3a4bf6dd36b011d17c83f377600a48946f6bb037390b35a8b3c273b3c40d161c00b44512a129e
-  languageName: node
-  linkType: hard
-
 "@total-typescript/ts-reset@npm:0.6.1":
   version: 0.6.1
   resolution: "@total-typescript/ts-reset@npm:0.6.1"
@@ -4066,7 +4050,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:8.68.0, @typescript-eslint/types@npm:^8.0.0, @typescript-eslint/types@npm:^8.56.0, @typescript-eslint/types@npm:^8.68.0":
+"@typescript-eslint/types@npm:8.68.0, @typescript-eslint/types@npm:^8.0.0, @typescript-eslint/types@npm:^8.68.0":
   version: 8.68.0
   resolution: "@typescript-eslint/types@npm:8.68.0"
   checksum: 10c0/c7e64094de90ff81a53572651e670f7566163df8a14ffd6c5822212d8412db590976a9a2aaed965b390cefe389e9ec3d498862127212ca840a4a80527dae6972
@@ -6460,7 +6444,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"estraverse@npm:^5.1.0, estraverse@npm:^5.2.0, estraverse@npm:^5.3.0":
+"estraverse@npm:^5.1.0, estraverse@npm:^5.2.0":
   version: 5.3.0
   resolution: "estraverse@npm:5.3.0"
   checksum: 10c0/1ff9447b96263dec95d6d67431c5e0771eb9776427421260a3e2f0fdd5d6bd4f8e37a7338f5ad2880c9f143450c9b1e4fc2069060724570a49cf9cf0312bd107
@@ -8688,7 +8672,6 @@ __metadata:
     "@eslint/js": "npm:9.39.5"
     "@ngx-translate/core": "npm:18.0.0"
     "@ngx-translate/http-loader": "npm:18.0.0"
-    "@stylistic/eslint-plugin": "npm:5.10.0"
     "@total-typescript/ts-reset": "npm:0.6.1"
     "@tsconfig/strictest": "npm:2.0.8"
     "@types/d3": "npm:7.4.3"
@@ -8739,16 +8722,6 @@ __metadata:
     xml2js: "npm:0.6.2"
     yargs: "npm:18.1.0"
     zone.js: "npm:~0.15.1"
-  peerDependencies:
-    "@angular/cdk": 20.x
-    "@angular/common": 20.x
-    "@angular/core": 20.x
-    "@angular/forms": 20.x
-    "@angular/router": 20.x
-    "@ngx-translate/core": 18.x
-  peerDependenciesMeta:
-    "@ngx-translate/core":
-      optional: true
   languageName: unknown
   linkType: soft
 

@@ -6,7 +6,6 @@ const compat = require('eslint-plugin-compat');
 const ngEslint = require('angular-eslint');
 const globals = require('globals');
 const {fixupPluginRules} = require('@eslint/compat');
-const stylistic = require('@stylistic/eslint-plugin');
 const _import = require('eslint-plugin-import');
 const jsdoc = require('eslint-plugin-jsdoc');
 const preferArrow = require('eslint-plugin-prefer-arrow');
@@ -35,11 +34,9 @@ const JS_RULE_OVERRIDES = {
 
   'space-before-function-paren': OFF,
   'brace-style': OFF,
-  'curly': ERROR,
-  'eol-last': ERROR,
   'eqeqeq': [ERROR, 'always'],
   'guard-for-in': ERROR,
-  'id-blacklist': [1, 'e', 'cb', 'x'],
+  'id-denylist': [WARN, 'e', 'cb', 'x'],
   'id-match': OFF,
   'import/no-deprecated': WARN,
   'jsdoc/no-types': ERROR,
@@ -72,13 +69,6 @@ const JS_RULE_OVERRIDES = {
   'no-restricted-imports': [ERROR, 'rxjs/Rx'],
   'no-throw-literal': ERROR,
 
-  'no-trailing-spaces': [
-    ERROR,
-    {
-      'ignoreComments': true,
-    },
-  ],
-
   'no-undef-init': ERROR,
   'no-underscore-dangle': OFF,
   'no-unused-labels': ERROR,
@@ -98,8 +88,6 @@ const JS_RULE_OVERRIDES = {
   'quote-props': [WARN, 'consistent-as-needed'],
   'prefer-arrow/prefer-arrow-functions': [OFF],
   'object-shorthand': OFF,
-  'quotes': [ERROR, 'single'],
-  'object-curly-spacing': [ERROR, 'never'],
 
   'padding-line-between-statements': [
     WARN,
@@ -153,25 +141,6 @@ const JS_RULE_OVERRIDES = {
 
   'one-var': OFF,
   'newline-per-chained-call': WARN,
-
-  // @stylistic rule overrides
-  '@stylistic/quotes': [ERROR, 'single'],
-  '@stylistic/semi': OFF,
-  '@stylistic/type-annotation-spacing': ERROR,
-  '@stylistic/member-delimiter-style': [
-    ERROR,
-    {
-      'multiline': {
-        'delimiter': 'semi',
-        'requireLast': true,
-      },
-
-      'singleline': {
-        'delimiter': 'semi',
-        'requireLast': false,
-      },
-    },
-  ],
 };
 
 // ------------------------------------
@@ -181,7 +150,7 @@ const TS_RULE_OVERRIDES = {
   '@typescript-eslint/array-type': OFF,
   '@typescript-eslint/interface-name-prefix': OFF,
   '@typescript-eslint/no-empty-function': OFF,
-  '@typescript-eslint/no-explicit-any': OFF,
+  '@typescript-eslint/no-explicit-any': WARN,
   '@typescript-eslint/no-inferrable-types': OFF,
   '@typescript-eslint/no-non-null-assertion': ERROR,
   '@typescript-eslint/no-parameter-properties': OFF,
@@ -246,7 +215,6 @@ const TS_RULE_OVERRIDES = {
   '@typescript-eslint/no-use-before-define': WARN,
   '@typescript-eslint/consistent-type-assertions': OFF,
 
-  // requires `strictNullChecks`
   '@typescript-eslint/prefer-nullish-coalescing': OFF,
 
   '@typescript-eslint/no-unused-vars': [
@@ -286,7 +254,7 @@ const NG_RULE_OVERRIDES = {
   ],
 
   '@angular-eslint/no-empty-lifecycle-method': OFF,
-  '@angular-eslint/prefer-inject': OFF,
+  '@angular-eslint/prefer-inject': WARN,
   '@angular-eslint/component-class-suffix': ERROR,
   '@angular-eslint/contextual-lifecycle': ERROR,
   '@angular-eslint/directive-class-suffix': ERROR,
@@ -328,7 +296,6 @@ module.exports = tseslint.config(
       import: fixupPluginRules(_import),
       jsdoc,
       'prefer-arrow': preferArrow,
-      '@stylistic': stylistic,
     },
 
     // This allows your inline Component templates to be extracted and linted with the same
@@ -355,36 +322,10 @@ module.exports = tseslint.config(
   },
   // Extra configuration for TS files in specific directories
   {
-    files: ['src/api/**/*.ts'],
-    rules: {
-      '@typescript-eslint/no-unsafe-return': OFF,
-      '@typescript-eslint/explicit-module-boundary-types': OFF,
-    },
-  },
-  {
-    files: ['src/domain/net2/**/*.ts'],
-    rules: {
-      '@typescript-eslint/no-unsafe-declaration-merging': OFF,
-    },
-  },
-  {
-    files: ['src/domain/net2/entity/**/*.ts'],
-    rules: {
-      '@typescript-eslint/no-empty-object-type': OFF,
-    },
-  },
-  {
-    files: ['src/app/features/wizards-initial-setup/components/isw-schematic/**/*.ts'],
-    rules: {
-      // allowing `x` as a variable name makes sense for code that manipulates 2D coordinates
-      'id-blacklist': [1, 'e', 'cb'],
-    },
-  },
-  {
     files: ['src/lib/widgets/schedule-editor/**/*.ts'],
     rules: {
       // allowing `x` as a variable name makes sense for code that manipulates 2D coordinates
-      'id-blacklist': OFF,
+      'id-denylist': OFF,
     },
   },
   {
@@ -409,7 +350,6 @@ module.exports = tseslint.config(
       import: fixupPluginRules(_import),
       jsdoc,
       'prefer-arrow': preferArrow,
-      '@stylistic': stylistic,
     },
 
     rules: {
@@ -422,7 +362,7 @@ module.exports = tseslint.config(
     files: ['scripts/figma/**/*.ts'],
     rules: {
       // Figma API response types use x/y for offsets and sync scripts are procedural.
-      'id-blacklist': [WARN, 'e', 'cb'],
+      'id-denylist': [WARN, 'e', 'cb'],
       'max-lines-per-function': OFF,
     },
   },

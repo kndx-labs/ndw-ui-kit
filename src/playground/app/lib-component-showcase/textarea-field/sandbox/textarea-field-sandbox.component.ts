@@ -10,10 +10,10 @@ import {CssUtils} from '@app/utils';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
 
 const TEXTAREA_TOKENS = [
-  'textarea-field-gutter-bg',
-  'textarea-field-gutter-border-color',
-  'textarea-field-gutter-text',
-  'textarea-field-resizer-color',
+  'textarea-gutter-bg',
+  'textarea-gutter-border-color',
+  'textarea-gutter-text',
+  'textarea-resizer-color',
 ] as const;
 
 const DEFAULT_FORM_VALUES = {

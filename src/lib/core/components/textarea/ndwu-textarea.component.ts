@@ -17,7 +17,9 @@ import {
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
+import {NDWU_ICON_NAME} from '../../../icon-names';
 import {NDWU_CONTROL, type NdwuControl} from '../form-field/control/ndwu-control';
+import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
 
 interface ResizeStart {
@@ -33,6 +35,7 @@ interface ResizeStart {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LocalizePipe,
+    NdwuIconComponent,
     NdwuResizeObserverDirective,
   ],
   providers: [{
@@ -68,6 +71,7 @@ export class NdwuTextareaComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   protected readonly registry = inject(NdwuInteractionRegistry);
   protected readonly destroyRef = inject(DestroyRef);
+  protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   public readonly value = input<string>('');
   public readonly id = input<string>('');

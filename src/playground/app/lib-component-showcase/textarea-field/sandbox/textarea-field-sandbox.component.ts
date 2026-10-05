@@ -2,8 +2,8 @@ import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from 
 import {CommonModule} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NdwuIconButtonComponent, type NdwuSize} from '@ndw-ui-kit/core';
-import {NdwuTextareaActionsDirective, NdwuTextareaFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {NDWU_SIZE, NdwuIconButtonComponent, type NdwuSize, NdwuTextareaActionsDirective} from '@ndw-ui-kit/core';
+import {NdwuTextareaFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';

@@ -43,3 +43,4 @@ export * from './popover/';
 export * from './progress-bar/ndwu-progress-bar.component';
 export * from './tooltip/';
 export * from './tabs/';
+export * from './textarea/';

@@ -1,0 +1,8 @@
+@use 'styles/colors';
+
+$ndwu-textarea-tokens: (
+  textarea-gutter-bg: colors.$gray-10,
+  textarea-gutter-border-color: colors.$gray-15,
+  textarea-gutter-text: colors.$gray-40,
+  textarea-resizer-color: colors.$gray-40,
+);

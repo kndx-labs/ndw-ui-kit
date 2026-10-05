@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NdwuIconButtonComponent} from '@ndw-ui-kit/core';
-import {NdwuTextareaActionsDirective, NdwuTextareaFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
+import {NDWU_SIZE, NdwuIconButtonComponent, NdwuTextareaActionsDirective} from '@ndw-ui-kit/core';
+import {NdwuTextareaFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 

@@ -24,7 +24,7 @@ export class NdwuToggleFieldComponent extends FormFieldBase<boolean> {
   public readonly color = input<NdwuToggleColor>(NDWU_TOGGLE_COLOR.BRAND);
 
   constructor(
-    protected ngControl: NgControl,
+    protected override ngControl: NgControl,
   ) {
     super(false);
     setValueAccessor(this.ngControl, this);

@@ -34,7 +34,7 @@ export class NdwuScheduleEditorFieldComponent extends FormFieldBase<NdwuSchedule
   protected readonly isInvalid = signal<boolean>(false);
 
   constructor(
-    protected ngControl: NgControl,
+    protected override ngControl: NgControl,
     protected readonly destroyRef$: DestroyRef,
   ) {
     super({});

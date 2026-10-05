@@ -1,14 +1,43 @@
-import {ControlValueAccessor} from '@angular/forms';
+import {DestroyRef, Directive, computed, inject, signal} from '@angular/core';
+import {ControlValueAccessor, NgControl} from '@angular/forms';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {merge} from 'rxjs';
+import {NDWU_VALIDATION_PROCESSOR} from '../validation/validation-processor.token';
+import type {NdwuValidationData} from '../validation';
+import {setValueAccessor} from '../form-field.utils';
 
+@Directive() // to be able to use the Angular DI mechanism
 export abstract class FormFieldBase<T> implements ControlValueAccessor {
+  protected readonly ngControl = inject(NgControl, {self: true, optional: true});
+  protected readonly destroyRef = inject(DestroyRef);
+  protected readonly validationExtractor = inject(NDWU_VALIDATION_PROCESSOR);
+
   protected inputValue: T;
   protected isDisabled: boolean = false;
-  protected isTouched: boolean = false;
+
+  /** `control.invalid && (control.touched || control.dirty)` */
+  public readonly invalid = signal<boolean>(false);
+
+  protected readonly extractedValidation = signal<NdwuValidationData | null>(null);
+
+  protected readonly errorMessage = computed(() => {
+    return this.invalid() ? this.extractedValidation()?.errorMessage ?? '' : '';
+  });
+
+  protected readonly validationData = computed(() => {
+    return this.extractedValidation()?.validationData ?? {};
+  });
+
+  private isValidationStateInitialized: boolean = false;
 
   constructor(
     defaultValue: T,
   ) {
     this.inputValue = defaultValue;
+
+    if (this.ngControl) {
+      setValueAccessor(this.ngControl, this);
+    }
   }
 
   /** Writes a new value to the element. */
@@ -49,9 +78,7 @@ export abstract class FormFieldBase<T> implements ControlValueAccessor {
    * The registered callback function called
    * when a blur event occurs on the input element.
    */
-  public onTouched(): void {
-    this.isTouched = true;
-  }
+  public onTouched = (): void => {};
 
   /** Default change handler */
   public handleChange(value: T): void {
@@ -59,5 +86,32 @@ export abstract class FormFieldBase<T> implements ControlValueAccessor {
 
     this.onChange(value);
     this.onTouched();
+  }
+
+  /**
+   * Syncs `invalid` and `extractedValidation` with the bound control.
+   * Call from `ngOnInit`: `FormControlName` gets its control only after
+   * the directive's `ngOnChanges`. No-op without a control; idempotent.
+   */
+  protected initValidationState(): void {
+    const control = this.ngControl?.control;
+
+    if (!control || this.isValidationStateInitialized) {
+      return;
+    }
+
+    this.isValidationStateInitialized = true;
+
+    const update = (): void => {
+      this.invalid.set(control.invalid && (control.touched || control.dirty));
+      this.extractedValidation.set(this.validationExtractor(control));
+    };
+
+    update();
+
+    // `events` covers touched/pristine changes that don't emit `statusChanges`
+    merge(control.statusChanges, control.valueChanges, control.events)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(update);
   }
 }

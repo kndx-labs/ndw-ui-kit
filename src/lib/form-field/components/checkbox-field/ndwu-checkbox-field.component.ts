@@ -24,7 +24,7 @@ export class NdwuCheckboxFieldComponent extends FormFieldBase<boolean> implement
   protected readonly isInvalid = signal<boolean>(false);
 
   constructor(
-    protected ngControl: NgControl,
+    protected override ngControl: NgControl,
     protected readonly destroyRef$: DestroyRef,
   ) {
     super(false);

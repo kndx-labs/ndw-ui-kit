@@ -41,7 +41,7 @@ export class NdwuRadioFieldComponent<T = NdwuOption> extends FormFieldBase<strin
   });
 
   constructor(
-    protected ngControl: NgControl,
+    protected override ngControl: NgControl,
   ) {
     super('');
     setValueAccessor(this.ngControl, this);

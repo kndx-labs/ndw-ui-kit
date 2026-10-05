@@ -6,6 +6,7 @@
 @use '../ndwu-modal-mixins' as modal;
 
 .ndwu-drawer {
+  // Keep in sync with NDWU_DRAWER_WIDTH
   --drawer-width: 700px;
 
   position: relative;
@@ -37,7 +38,7 @@
     animation: ndwu-drawer-slide-out 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
-  &--xl {
+  &--xxl {
     --drawer-width: 1200px;
   }
 

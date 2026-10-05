@@ -36,7 +36,7 @@ const SELECT_FOCUS_TYPE: NdwuInteractionFocusType = 'select';
  * This class provides:
  * - NdwuControl contract properties.
  * - Mobile-viewport detection, panel class, panel expansion tracking.
- * - Reactive `invalid` state tracking, and `setDisabledState` override.
+ * - Reactive `isInvalid` state tracking, and `setDisabledState` override.
  *
  * Subclasses must declare their own @input() bindings and HTML template.
  * Subclasses must contain `<ndwu-form-field>`.

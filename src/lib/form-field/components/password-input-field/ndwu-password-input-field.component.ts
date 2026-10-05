@@ -58,7 +58,7 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
 
   protected readonly isPasswordVisible = signal<boolean>(false);
   protected readonly inputStatus = computed(() => {
-    if (this.invalid() || this.strength() === 'weak') {
+    if (this.isInvalid() || this.strength() === 'weak') {
       return 'error';
     }
 
@@ -74,7 +74,7 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
   });
 
   protected readonly hintStatus = computed((): NdwuHelperMessageStatus => {
-    if (this.invalid() || this.strength() === 'weak') {
+    if (this.isInvalid() || this.strength() === 'weak') {
       return 'error';
     }
 
@@ -83,7 +83,7 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
 
   protected readonly internalHint = computed(() => {
     const strength = this.strength();
-    const isInvalid = this.invalid();
+    const isInvalid = this.isInvalid();
     const hintTexts = this.strengthHintTexts();
 
     if (isInvalid) {

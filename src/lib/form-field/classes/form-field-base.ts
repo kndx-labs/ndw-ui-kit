@@ -16,12 +16,12 @@ export abstract class FormFieldBase<T> implements ControlValueAccessor {
   protected isDisabled: boolean = false;
 
   /** `control.invalid && (control.touched || control.dirty)` */
-  public readonly invalid = signal<boolean>(false);
+  public readonly isInvalid = signal<boolean>(false);
 
   protected readonly extractedValidation = signal<NdwuValidationData | null>(null);
 
   protected readonly errorMessage = computed(() => {
-    return this.invalid() ? this.extractedValidation()?.errorMessage ?? '' : '';
+    return this.isInvalid() ? this.extractedValidation()?.errorMessage ?? '' : '';
   });
 
   protected readonly validationData = computed(() => {
@@ -89,8 +89,8 @@ export abstract class FormFieldBase<T> implements ControlValueAccessor {
   }
 
   /**
-   * Syncs `invalid` and `extractedValidation` with the bound control.
-   * Call from `ngOnInit`: `FormControlName` gets its control only after
+   * Syncs `isInvalid` and `extractedValidation` with the bound control.
+   * Call this from `ngOnInit`: `FormControlName` gets its control only after
    * the directive's `ngOnChanges`. No-op without a control; idempotent.
    */
   protected initValidationState(): void {
@@ -103,7 +103,7 @@ export abstract class FormFieldBase<T> implements ControlValueAccessor {
     this.isValidationStateInitialized = true;
 
     const update = (): void => {
-      this.invalid.set(control.invalid && (control.touched || control.dirty));
+      this.isInvalid.set(control.invalid && (control.touched || control.dirty));
       this.extractedValidation.set(this.validationExtractor(control));
     };
 

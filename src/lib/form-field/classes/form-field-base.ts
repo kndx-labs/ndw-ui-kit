@@ -1,10 +1,8 @@
 import {DestroyRef, Directive, computed, inject, signal} from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {merge} from 'rxjs';
 import {NDWU_VALIDATION_PROCESSOR} from '../validation/validation-processor.token';
 import type {NdwuValidationData} from '../validation';
-import {setValueAccessor} from '../form-field.utils';
+import {isControlInvalid, onControlStateChange, setValueAccessor} from '../form-field.utils';
 
 @Directive() // to be able to use the Angular DI mechanism
 export abstract class FormFieldBase<T> implements ControlValueAccessor {
@@ -102,16 +100,13 @@ export abstract class FormFieldBase<T> implements ControlValueAccessor {
 
     this.isValidationStateInitialized = true;
 
-    const update = (): void => {
-      this.isInvalid.set(control.invalid && (control.touched || control.dirty));
-      this.extractedValidation.set(this.validationExtractor(control));
-    };
-
-    update();
-
-    // `events` covers touched/pristine changes that don't emit `statusChanges`
-    merge(control.statusChanges, control.valueChanges, control.events)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(update);
+    onControlStateChange(
+      control,
+      this.destroyRef,
+      () => {
+        this.isInvalid.set(isControlInvalid(control));
+        this.extractedValidation.set(this.validationExtractor(control));
+      },
+    );
   }
 }

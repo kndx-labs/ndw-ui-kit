@@ -1,4 +1,4 @@
-import {Component, DestroyRef, OnInit, booleanAttribute, inject, input, signal} from '@angular/core';
+import {Component, DestroyRef, OnInit, booleanAttribute, inject, input} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {NdwuCheckboxComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
 import {FormFieldBase} from '../../classes/form-field-base';
@@ -20,8 +20,6 @@ export class NdwuCheckboxFieldComponent extends FormFieldBase<boolean> implement
   public readonly secondaryText = input<string>('');
   public readonly inputId = input<string>('');
   public readonly ndwuRequired = input(false, {transform: booleanAttribute});
-
-  protected readonly isInvalid = signal<boolean>(false);
 
   constructor(
     protected override ngControl: NgControl,

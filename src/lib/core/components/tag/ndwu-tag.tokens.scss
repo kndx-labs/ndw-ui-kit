@@ -17,7 +17,6 @@ $ndwu-tag-tokens: (
   tag-default-active-border: colors.$gray-30,
   tag-default-selected-bg: colors.$gray-50,
   tag-default-selected-border: colors.$gray-20,
-  tag-default-selected-focus-ring: var(--ndwu-fx-focused-default),
 
   tag-negative-bg: colors.$red-10,
   tag-negative-border: colors.$red-15,
@@ -27,7 +26,6 @@ $ndwu-tag-tokens: (
   tag-negative-active-border: colors.$red-40,
   tag-negative-selected-bg: colors.$red-50,
   tag-negative-selected-border: colors.$red-20,
-  tag-negative-selected-focus-ring: var(--ndwu-fx-focused-default),
 
   tag-positive-bg: colors.$green-10,
   tag-positive-border: colors.$green-15,
@@ -37,7 +35,6 @@ $ndwu-tag-tokens: (
   tag-positive-active-border: colors.$green-50,
   tag-positive-selected-bg: colors.$green-50,
   tag-positive-selected-border: colors.$green-30,
-  tag-positive-selected-focus-ring: var(--ndwu-fx-focused-default),
 
   tag-warning-bg: colors.$yellow-10,
   tag-warning-border: colors.$yellow-15,
@@ -47,7 +44,6 @@ $ndwu-tag-tokens: (
   tag-warning-active-border: colors.$yellow-50,
   tag-warning-selected-bg: colors.$yellow-40,
   tag-warning-selected-border: colors.$yellow-30,
-  tag-warning-selected-focus-ring: var(--ndwu-fx-focused-default),
 
   tag-info-bg: colors.$brand-10,
   tag-info-border: colors.$brand-15,
@@ -67,7 +63,6 @@ $ndwu-tag-tokens: (
   tag-violet-active-border: colors.$violet-50,
   tag-violet-selected-bg: colors.$violet-50,
   tag-violet-selected-border: colors.$violet-30,
-  tag-violet-selected-focus-ring: var(--ndwu-fx-focused-default),
 
   tag-cyan-bg: colors.$cyan-10,
   tag-cyan-border: colors.$cyan-15,
@@ -77,5 +72,4 @@ $ndwu-tag-tokens: (
   tag-cyan-active-border: colors.$cyan-50,
   tag-cyan-selected-bg: colors.$cyan-50,
   tag-cyan-selected-border: colors.$cyan-30,
-  tag-cyan-selected-focus-ring: var(--ndwu-fx-focused-default),
 );

@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   booleanAttribute,
   computed,
   inject,
@@ -14,7 +15,7 @@ import {type NdwuValues} from '../../../shared.types';
 import {NdwuSizeDirective} from '../../directives';
 import {NDWU_SIZE_TOKEN} from '../../tokens';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
-import {ndwuToTagSize} from './ndwu-tag.helpers';
+import {ndwuToChipSize} from '../chip/ndwu-chip.helpers';
 
 export const NDWU_TAG_STATUS = {
   DEFAULT: 'default',
@@ -27,8 +28,6 @@ export const NDWU_TAG_STATUS = {
 } as const;
 
 export type NdwuTagStatus = NdwuValues<typeof NDWU_TAG_STATUS>;
-
-export const NDWU_TAG_LABEL_MAX_LENGTH = 18;
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -44,7 +43,7 @@ export const NDWU_TAG_LABEL_MAX_LENGTH = 18;
     'type': 'button',
     '[class]': 'hostClasses()',
     '[disabled]': 'disabled()',
-    '[attr.aria-pressed]': 'selected()',
+    '[attr.aria-pressed]': 'selectable() ? selected() : null',
     '[attr.aria-label]': 'ariaLabel()',
     '[attr.aria-keyshortcuts]': 'removable() ? "Delete Backspace" : null',
     '[style.max-width]': 'maxWidth()',
@@ -60,7 +59,7 @@ export const NDWU_TAG_LABEL_MAX_LENGTH = 18;
     {
       provide: NDWU_SIZE_TOKEN,
       useFactory: (sizeDirective: NdwuSizeDirective) => {
-        return () => ndwuToTagSize(sizeDirective.effectiveSize());
+        return () => ndwuToChipSize(sizeDirective.effectiveSize());
       },
       deps: [NdwuSizeDirective],
     },
@@ -68,13 +67,14 @@ export const NDWU_TAG_LABEL_MAX_LENGTH = 18;
 })
 export class NdwuTagComponent {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   protected readonly CLOSE_ICON = NDWU_ICON_NAME.CLOSE_XS;
-  protected readonly LABEL_MAX_LENGTH = NDWU_TAG_LABEL_MAX_LENGTH;
 
   public readonly status = input<NdwuTagStatus>(NDWU_TAG_STATUS.DEFAULT);
   public readonly icon = input<NdwuIconName | null>(null);
   public readonly label = input<string>('');
+  public readonly selectable = input(false, {transform: booleanAttribute});
   public readonly selected = model(false);
   public readonly removable = input(false, {transform: booleanAttribute});
   public readonly disabled = input(false, {transform: booleanAttribute});
@@ -83,7 +83,7 @@ export class NdwuTagComponent {
 
   public readonly removed = output<void>();
 
-  protected readonly effectiveSize = computed(() => ndwuToTagSize(this.sizeSvc.effectiveSize()));
+  protected readonly effectiveSize = computed(() => ndwuToChipSize(this.sizeSvc.effectiveSize()));
 
   protected readonly hostClasses = computed(() => {
     const classes = [
@@ -104,23 +104,44 @@ export class NdwuTagComponent {
   });
 
   protected toggle(): void {
-    if (!this.disabled()) {
+    if (this.selectable()) {
       this.selected.update((selected) => !selected);
     }
   }
 
   protected onRemoveClick(event: MouseEvent): void {
     event.stopPropagation();
-
-    if (!this.disabled()) {
-      this.removed.emit();
-    }
+    this.remove();
   }
 
   protected onRemoveKey(event: Event): void {
-    if (this.removable() && !this.disabled()) {
+    if (this.removable()) {
       event.preventDefault();
-      this.removed.emit();
+      this.remove();
     }
+  }
+
+  private remove(): void {
+    const host = this.elementRef.nativeElement;
+    const nextFocus = host.ownerDocument.activeElement === host ? this.findSiblingTag(host) : null;
+
+    this.removed.emit();
+    nextFocus?.focus();
+  }
+
+  private findSiblingTag(host: HTMLElement): HTMLElement | null {
+    for (const direction of ['nextElementSibling', 'previousElementSibling'] as const) {
+      let sibling = host[direction];
+
+      while (sibling) {
+        if (sibling instanceof HTMLButtonElement && sibling.classList.contains('ndwu-tag') && !sibling.disabled) {
+          return sibling;
+        }
+
+        sibling = sibling[direction];
+      }
+    }
+
+    return null;
   }
 }

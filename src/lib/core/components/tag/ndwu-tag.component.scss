@@ -44,7 +44,6 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
       --ndwu-tag-active-border: var(--ndwu-tag-#{$status}-active-border);
       --ndwu-tag-selected-bg: var(--ndwu-tag-#{$status}-selected-bg);
       --ndwu-tag-selected-border: var(--ndwu-tag-#{$status}-selected-border);
-      --ndwu-tag-selected-focus-ring: var(--ndwu-tag-#{$status}-selected-focus-ring);
     }
   }
 
@@ -64,12 +63,12 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
     line-height: 23px;
   }
 
-  &:hover:not(.ndwu-tag--disabled, .ndwu-tag--selected, :focus-visible) {
+  &:hover:not(.ndwu-tag--disabled, .ndwu-tag--selected) {
     border-color: var(--ndwu-tag-hover-border);
     background-color: var(--ndwu-tag-hover-bg);
   }
 
-  &:active:not(.ndwu-tag--disabled, .ndwu-tag--selected, :focus-visible) {
+  &:active:not(.ndwu-tag--disabled, .ndwu-tag--selected) {
     border-color: var(--ndwu-tag-active-border);
     background-color: var(--ndwu-tag-active-bg);
   }
@@ -84,15 +83,15 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
     outline: none;
   }
 
-  &:focus-visible {
-    border-color: transparent;
-  }
-
   &:focus-visible:not(.ndwu-tag--disabled) {
     @include mixins.focus-ring(var(--ndwu-tag-focus-ring));
 
-    &.ndwu-tag--selected {
-      @include mixins.focus-ring(var(--ndwu-tag-selected-focus-ring));
+    & {
+      border-color: transparent;
+    }
+
+    &.ndwu-tag--status-info.ndwu-tag--selected {
+      @include mixins.focus-ring(var(--ndwu-tag-info-selected-focus-ring));
     }
   }
 
@@ -111,10 +110,7 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
 
 .ndwu-tag__label {
   overflow: hidden;
+  max-width: 18ch;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.ndwu-tag__sr-label {
-  @include mixins.visually-hidden();
 }

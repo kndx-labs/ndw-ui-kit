@@ -1,0 +1,17 @@
+{
+  "accordion-showcase": {
+    "tabs": {
+      "overview": "Übersicht"
+    },
+    "overview": {
+      "single": "Einzeln (Standard)",
+      "multi": "Mehrfach",
+      "chevron-end": "Chevron am Ende",
+      "disabled": "Deaktiviert",
+      "lazy": "Einzelnes Element mit Lazy-Inhalt",
+      "lazy-title": "Inhalt wird beim ersten Aufklappen gerendert",
+      "expanded": "Aufgeklappt",
+      "installed": "Installiert"
+    }
+  }
+}

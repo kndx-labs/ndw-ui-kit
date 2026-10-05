@@ -1,0 +1,17 @@
+{
+  "accordion-showcase": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "overview": {
+      "single": "Single (default)",
+      "multi": "Multi",
+      "chevron-end": "Chevron at the end",
+      "disabled": "Disabled",
+      "lazy": "Standalone item with lazy content",
+      "lazy-title": "Content is rendered on first expand",
+      "expanded": "Expanded",
+      "installed": "Installed"
+    }
+  }
+}

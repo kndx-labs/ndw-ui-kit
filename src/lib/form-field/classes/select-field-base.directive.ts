@@ -135,8 +135,8 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
 
   // == Shared methods ========================================================
   /**
-   * Trigger blur handler. Same as MatSelect: blur with closed panel marks
-   * the control as touched; with open panel, `onPanelClosed()` does that.
+   * Trigger blur handler. Blur with closed panel marks the control as touched;
+   * with open panel, `onPanelClosed()` does that.
    */
   protected onTriggerBlur(): void {
     this.focused.set(false);

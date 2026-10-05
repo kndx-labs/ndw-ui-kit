@@ -88,7 +88,7 @@ export abstract class FormFieldBase<T> implements ControlValueAccessor {
 
   /**
    * Syncs `isInvalid` and `extractedValidation` with the bound control.
-   * Call this from `ngOnInit`: `FormControlName` gets its control only after
+   * Call this method from `ngOnInit`: `FormControlName` gets its control only after
    * the directive's `ngOnChanges`. No-op without a control; idempotent.
    */
   protected initValidationState(): void {

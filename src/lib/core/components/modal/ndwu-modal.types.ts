@@ -94,19 +94,25 @@ interface NdwuModalOpenTemplateBaseOptions<TemplateContext extends object> {
   context?: TemplateContext;
 }
 
+export interface NdwuDialogOpenTemplateOptions<ModalData, TemplateContext extends object>
+  extends NdwuModalOpenTemplateBaseOptions<TemplateContext> {
+  type: 'dialog';
+  config?: NdwuDialogConfig<ModalData>;
+}
+
+export interface NdwuDrawerOpenTemplateOptions<ModalData, TemplateContext extends object>
+  extends NdwuModalOpenTemplateBaseOptions<TemplateContext> {
+  type: 'drawer';
+  config?: NdwuDrawerConfig<ModalData>;
+}
+
 export type NdwuModalOpenTemplateOptions<
   ModalData = unknown,
   ReturnT = unknown,
   TemplateContext extends object = NdwuModalTemplateContext<ModalData, ReturnT>,
 > =
-  | NdwuModalOpenTemplateBaseOptions<TemplateContext> & {
-    type: 'dialog';
-    config?: NdwuDialogConfig<ModalData>;
-  }
-  | NdwuModalOpenTemplateBaseOptions<TemplateContext> & {
-    type: 'drawer';
-    config?: NdwuDrawerConfig<ModalData>;
-  };
+  | NdwuDialogOpenTemplateOptions<ModalData, TemplateContext>
+  | NdwuDrawerOpenTemplateOptions<ModalData, TemplateContext>;
 
 export type NdwuModalType = 'dialog' | 'drawer';
 

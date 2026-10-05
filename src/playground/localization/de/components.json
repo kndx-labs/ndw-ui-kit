@@ -116,6 +116,10 @@
       "name": "Tabs",
       "description": "Umschaltbare Inhaltsbereiche innerhalb eines Panels."
     },
+    "ndwu-tag": {
+      "name": "Tag",
+      "description": "Auswählbare Kennzeichnung zum Hervorheben, Kategorisieren oder Filtern."
+    },
     "ndwu-timing-button": {
       "name": "Zeitgesteuerte Schaltfläche",
       "description": "Schaltfläche mit verzögerter oder zeitgesteuerter Aktion."

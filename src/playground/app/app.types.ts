@@ -32,6 +32,7 @@ export type ComponentName =
   | 'ndwu-card'
   | 'ndwu-chip'
   | 'ndwu-tabs'
+  | 'ndwu-tag'
   | 'ndwu-pictogram'
   | 'ndwu-scrollbar'
   | 'ndwu-table';

@@ -116,6 +116,10 @@
       "name": "Tabs",
       "description": "Switchable content sections within a single panel."
     },
+    "ndwu-tag": {
+      "name": "Tag",
+      "description": "Selectable label to highlight, categorize, or filter items."
+    },
     "ndwu-timing-button": {
       "name": "Timing Button",
       "description": "Button with a delayed or timed action."

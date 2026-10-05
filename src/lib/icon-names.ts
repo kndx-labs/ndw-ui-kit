@@ -416,7 +416,6 @@ export const NDWU_EXTRA_ICON_NAME = {
   CLIENT_S: 'client_S',
   CLOCK_L: 'clock_L',
   CLOCK_S: 'clock_S',
-  CLOSE_XS: 'close_XS',
   COLLAPSE_L: 'collapse_L',
   COLLAPSE_S: 'collapse_S',
   COPY_L: 'copy_L',

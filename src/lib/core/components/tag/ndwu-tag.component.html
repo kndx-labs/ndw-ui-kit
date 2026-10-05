@@ -1,0 +1,33 @@
+@if (icon()) {
+  <ndwu-icon
+    class="ndwu-tag__icon"
+    name="{{ icon() }}"
+    aria-hidden="true"
+  />
+}
+
+@if (label()) {
+  @let text = label() | localize;
+
+  @if (text.length > LABEL_MAX_LENGTH) {
+    <span
+      class="ndwu-tag__label"
+      aria-hidden="true"
+      [title]="text"
+    >{{ text.slice(0, LABEL_MAX_LENGTH).trimEnd() }}…</span>
+    <span class="ndwu-tag__sr-label">{{ text }}</span>
+  } @else {
+    <span class="ndwu-tag__label">{{ text }}</span>
+  }
+} @else {
+  <span class="ndwu-tag__label"><ng-content /></span>
+}
+
+@if (removable()) {
+  <ndwu-icon
+    class="ndwu-tag__close"
+    name="{{ CLOSE_ICON }}"
+    aria-hidden="true"
+    (click)="onRemoveClick($event)"
+  />
+}

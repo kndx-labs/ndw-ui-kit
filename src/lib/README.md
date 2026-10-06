@@ -421,6 +421,22 @@ on pictograms (e.g., `NdwuEmptyStateComponent` from `@ndw-ui-kit/core/widgets`).
 - The accessible name defaults to `Loading` and goes through the `localize` pipe. Use `ariaLabel` to change it.
 - With `prefers-reduced-motion: reduce`, the animation is turned off.
 
+### Tag
+
+Use `<button ndwu-tag>` for interactive tags and `<span ndwu-tag>` for static ones.
+
+```html
+<button ndwu-tag selectable [(selected)]="isActive" label="Online"></button>
+<button ndwu-tag removable label="Wi-Fi" (removed)="removeFilter('wifi')"></button>
+<span ndwu-tag status="positive" label="Connected"></span>
+```
+
+- `selectable` and `removable` work only on `<button>`. A `<span>` tag is not focusable and ignores both.
+- A removable tag announces `Remove` after its label. The text goes through the `localize` pipe; use `removeLabel` to change it.
+  `ariaLabel` replaces the whole accessible name, so include the remove action in it yourself.
+- `Delete` and `Backspace` on a focused removable tag emit `removed` and call `preventDefault()`.
+  The event still bubbles, so document-level keyboard shortcuts must skip events with `defaultPrevented`.
+
 ### Localization
 
 Choose one of the following translation providers:

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {
   NDWU_MODAL_REF,
   NdwuButtonComponent,
@@ -23,14 +23,11 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
   ],
 })
 export class NestedModalDialogComponent {
+  protected readonly modalRef = inject<NdwuModalRef>(NDWU_MODAL_REF);
+  protected modalService = inject(NdwuModalService);
+
   protected get isParent(): boolean {
     return !!(this.modalRef.config.data as Record<string, unknown> | undefined)?.['isParent'];
-  }
-
-  constructor(
-    @Inject(NDWU_MODAL_REF) protected readonly modalRef: NdwuModalRef,
-    protected modalService: NdwuModalService,
-  ) {
   }
 
   protected openNestedDialog(): void {

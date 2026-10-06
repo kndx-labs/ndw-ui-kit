@@ -1,4 +1,4 @@
-/* eslint id-blacklist: 0 */
+/* eslint id-denylist: 0 */
 import {
   AfterViewInit,
   ChangeDetectionStrategy,

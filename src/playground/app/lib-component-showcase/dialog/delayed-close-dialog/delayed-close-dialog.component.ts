@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, inject, signal} from '@angular/core';
 import {Observable} from 'rxjs';
 import {
   NDWU_MODAL_REF,
@@ -26,9 +26,7 @@ export class DelayedCloseDialogComponent implements OnInit {
   protected readonly isClosing = signal(false);
   protected readonly progress = signal(100);
 
-  constructor(
-    @Inject(NDWU_MODAL_REF) protected readonly modalRef: NdwuModalRef,
-  ) {}
+  protected readonly modalRef = inject<NdwuModalRef>(NDWU_MODAL_REF);
 
   public ngOnInit(): void {
     this.modalRef.setCloseHandler(

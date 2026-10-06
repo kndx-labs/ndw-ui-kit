@@ -1,6 +1,6 @@
 {
   "name": "ndw-ui-kit",
-  "version": "0.0.1",
+  "private": true,
   "scripts": {
     "clean": "rimraf dist",
     "prepare": "husky",
@@ -33,20 +33,6 @@
     "build:to-publish": "yarn run build && yarn run emit-custom-sprite-cli && yarn run copy-custom-sprite-sources && yarn run verify:publish-artifacts",
     "publish:lib": "tsx scripts/publish.ts"
   },
-  "private": true,
-  "peerDependencies": {
-    "@angular/cdk": "20.x",
-    "@angular/common": "20.x",
-    "@angular/core": "20.x",
-    "@angular/forms": "20.x",
-    "@angular/router": "20.x",
-    "@ngx-translate/core": "18.x"
-  },
-  "peerDependenciesMeta": {
-    "@ngx-translate/core": {
-      "optional": true
-    }
-  },
   "sideEffects": false,
   "dependencies": {
     "tslib": "2.8.1"
@@ -67,7 +53,6 @@
     "@eslint/js": "9.39.5",
     "@ngx-translate/core": "18.0.0",
     "@ngx-translate/http-loader": "18.0.0",
-    "@stylistic/eslint-plugin": "5.10.0",
     "@total-typescript/ts-reset": "0.6.1",
     "@tsconfig/strictest": "2.0.8",
     "@types/d3": "7.4.3",

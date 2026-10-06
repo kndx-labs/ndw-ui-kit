@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   OnInit,
@@ -15,6 +17,7 @@ import {merge} from 'rxjs';
 import {
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
+  type NdwuHelperMessageStatus,
   NdwuHintDirective,
   NdwuSizeDirective,
   NdwuTextareaComponent,
@@ -28,6 +31,7 @@ import {setValueAccessor} from '../../form-field.utils';
 @Component({
   selector: 'ndwu-textarea-field',
   templateUrl: './ndwu-textarea-field.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NdwuFloatingLabelComponent,
     NdwuFormFieldComponent,
@@ -41,6 +45,9 @@ import {setValueAccessor} from '../../form-field.utils';
   }],
 })
 export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements OnInit {
+  protected readonly ngControl = inject(NgControl);
+  protected readonly destroyRef = inject(DestroyRef);
+  protected readonly cdr = inject(ChangeDetectorRef);
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   protected readonly validationExtractor = inject(NDWU_VALIDATION_PROCESSOR);
 
@@ -55,11 +62,11 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
 
   protected readonly hintId = `${uniqueId('ndwu-textarea-field-')}-hint`;
 
-  protected readonly invalid = signal<boolean>(false);
+  protected readonly isInvalid = signal<boolean>(false);
   protected readonly extractedValidation = signal<NdwuValidationData | null>(null);
 
   protected readonly errorMessage = computed(() => {
-    return this.invalid()
+    return this.isInvalid()
       ? this.extractedValidation()?.errorMessage ?? ''
       : '';
   });
@@ -72,12 +79,13 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
     return !!this.errorMessage() || !!this.hint();
   });
 
+  protected readonly hintStatus = computed((): NdwuHelperMessageStatus => {
+    return this.errorMessage() ? 'error' : 'default';
+  });
+
   protected readonly textarea = viewChild.required(NdwuTextareaComponent);
 
-  constructor(
-    protected ngControl: NgControl,
-    protected readonly destroyRef$: DestroyRef,
-  ) {
+  constructor() {
     super('');
     setValueAccessor(this.ngControl, this);
   }
@@ -90,7 +98,7 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
     }
 
     const updateValidationState = (): void => {
-      this.invalid.set(control.invalid && (control.touched || control.dirty));
+      this.isInvalid.set(control.invalid && (control.touched || control.dirty));
       this.extractedValidation.set(this.validationExtractor(control));
     };
 
@@ -98,13 +106,19 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
 
     merge(control.statusChanges, control.valueChanges, control.events)
       .pipe(
-        takeUntilDestroyed(this.destroyRef$),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(updateValidationState);
   }
 
   public override writeValue(value: string | null): void {
     super.writeValue(value ?? '');
+    this.cdr.markForCheck();
+  }
+
+  public override setDisabledState(isDisabled: boolean): void {
+    super.setDisabledState(isDisabled);
+    this.cdr.markForCheck();
   }
 
   public onBlur(): void {

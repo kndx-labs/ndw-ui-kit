@@ -3,7 +3,6 @@ import {
   Component,
   DestroyRef,
   ElementRef,
-  ViewEncapsulation,
   booleanAttribute,
   computed,
   effect,
@@ -27,7 +26,6 @@ import {type NdwuTextareaResizeStart} from './ndwu-textarea.types';
   selector: 'ndwu-textarea',
   templateUrl: './ndwu-textarea.component.html',
   styleUrl: './ndwu-textarea.component.scss',
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LocalizePipe,

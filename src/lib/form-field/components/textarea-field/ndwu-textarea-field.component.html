@@ -15,7 +15,7 @@
     [required]="ndwuRequired()"
     [disabled]="isDisabled"
     [readonly]="readonly()"
-    [invalid]="invalid()"
+    [invalid]="isInvalid()"
     [resizable]="resizable()"
     [showLineNumbers]="showLineNumbers()"
     (valueChange)="onValueChange($event)"
@@ -28,7 +28,7 @@
     <ndwu-helper-message
       ndwuHint
       [id]="hintId"
-      [status]="errorMessage() ? 'error' : 'default'"
+      [status]="hintStatus()"
       [errorMessage]="errorMessage()"
       [helperMessage]="hint()"
       [validationData]="validationData()"

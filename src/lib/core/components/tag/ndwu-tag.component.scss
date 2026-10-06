@@ -9,6 +9,7 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
 
 :host {
   appearance: none;
+  position: relative;
   display: inline-flex;
   vertical-align: middle;
   align-items: center;
@@ -32,8 +33,6 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
     box-shadow 0.2s ease-in-out;
 
   // stylelint-disable-next-line order/order
-  @include touch-target.touchable();
-
   @each $status in $statuses {
     &.ndwu-tag--status-#{$status} {
       --ndwu-tag-bg: var(--ndwu-tag-#{$status}-bg);
@@ -45,6 +44,10 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
       --ndwu-tag-selected-bg: var(--ndwu-tag-#{$status}-selected-bg);
       --ndwu-tag-selected-border: var(--ndwu-tag-#{$status}-selected-border);
     }
+  }
+
+  &:not(.ndwu-tag--static) {
+    @include touch-target.touchable();
   }
 
   &.ndwu-tag--size-L {
@@ -63,12 +66,16 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
     line-height: 23px;
   }
 
-  &:hover:not(.ndwu-tag--disabled, .ndwu-tag--selected) {
+  &.ndwu-tag--static {
+    cursor: default;
+  }
+
+  &:hover:not(.ndwu-tag--disabled, .ndwu-tag--selected, .ndwu-tag--static) {
     border-color: var(--ndwu-tag-hover-border);
     background-color: var(--ndwu-tag-hover-bg);
   }
 
-  &:active:not(.ndwu-tag--disabled, .ndwu-tag--selected) {
+  &:active:not(.ndwu-tag--disabled, .ndwu-tag--selected, .ndwu-tag--static) {
     border-color: var(--ndwu-tag-active-border);
     background-color: var(--ndwu-tag-active-bg);
   }
@@ -106,6 +113,10 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
 .ndwu-tag__icon,
 .ndwu-tag__close {
   flex-shrink: 0;
+}
+
+.ndwu-tag__remove-label {
+  @include mixins.visually-hidden();
 }
 
 .ndwu-tag__label {

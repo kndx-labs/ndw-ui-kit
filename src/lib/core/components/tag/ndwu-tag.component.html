@@ -14,11 +14,12 @@
   }
 </span>
 
-@if (removable()) {
+@if (canRemove()) {
   <ndwu-icon
     class="ndwu-tag__close"
     [name]="CLOSE_ICON"
     aria-hidden="true"
     (click)="onRemoveClick($event)"
   />
+  <span class="ndwu-tag__remove-label">{{ removeLabel() | localize }}</span>
 }

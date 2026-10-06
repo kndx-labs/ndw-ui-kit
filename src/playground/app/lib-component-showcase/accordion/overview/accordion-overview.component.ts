@@ -37,20 +37,19 @@ interface AccordionExampleItem {
 export class AccordionOverviewComponent {
   protected readonly items: readonly AccordionExampleItem[] = [
     {
-      title: 'Initial setup wizard',
-      description:
-        'Provides the core wireless functionality. This component will be installed automatically if needed.',
-      badges: ['Initial Setup Wizard', 'Wi-Fi System controller', 'WPA Enterprise'],
+      title: 'Notifications',
+      description: 'Choose which events send you a message and how it is delivered.',
+      badges: ['E-mail', 'Push', 'SMS'],
     },
     {
-      title: 'Package manager',
-      description: 'Lightweight package management system based upon OPKG.',
-      badges: ['OPKG'],
+      title: 'Backups',
+      description: 'Snapshots are created daily and kept for 30 days.',
+      badges: ['Daily'],
     },
     {
-      title: 'VPN server',
-      description: 'For access of the VPN server\'s clients to the Internet.',
-      badges: ['IPsec', 'WireGuard'],
+      title: 'Access control',
+      description: 'Manage who can view and edit shared resources.',
+      badges: ['Owner', 'Editor'],
     },
   ];
 

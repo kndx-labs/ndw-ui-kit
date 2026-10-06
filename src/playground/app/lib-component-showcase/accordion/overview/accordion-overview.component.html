@@ -20,7 +20,7 @@
             <span ndwuAccordionHeader>{{ item.title }}</span>
             <ndwu-checkbox
               ndwuAccordionHeaderActions
-              [label]="'accordion-showcase.overview.installed' | localize"
+              [label]="'accordion-showcase.overview.enabled' | localize"
               [checked]="true"
             />
             <div ndwuAccordionContent>
@@ -62,6 +62,39 @@
             </div>
           </ndwu-accordion-item>
         }
+      </ndwu-accordion>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'accordion-showcase.overview.nested' | localize }}</h4>
+      <ndwu-accordion multi>
+        <ndwu-accordion-item [expanded]="true">
+          <span ndwuAccordionHeader>{{ 'accordion-showcase.overview.nested-outer-start' | localize }}</span>
+          <div ndwuAccordionContent>
+            <ndwu-accordion
+              multi
+              chevronPosition="end"
+            >
+              @for (item of items; track item.title) {
+                <ndwu-accordion-item
+                  [chevronPosition]="$last ? 'start' : null"
+                  [expanded]="$first"
+                >
+                  <span ndwuAccordionHeader>{{ item.title }}</span>
+                  <div ndwuAccordionContent>
+                    <ng-container *ngTemplateOutlet="itemContent; context: {$implicit: item}" />
+                  </div>
+                </ndwu-accordion-item>
+              }
+            </ndwu-accordion>
+          </div>
+        </ndwu-accordion-item>
+        <ndwu-accordion-item chevronPosition="end">
+          <span ndwuAccordionHeader>{{ 'accordion-showcase.overview.nested-outer-end' | localize }}</span>
+          <div ndwuAccordionContent>
+            <ng-container *ngTemplateOutlet="itemContent; context: {$implicit: items[0]}" />
+          </div>
+        </ndwu-accordion-item>
       </ndwu-accordion>
     </div>
 

@@ -11,7 +11,10 @@
       "lazy": "Standalone item with lazy content",
       "lazy-title": "Content is rendered on first expand",
       "expanded": "Expanded",
-      "installed": "Installed"
+      "enabled": "Enabled",
+      "nested": "Nested accordions and per-item chevron override",
+      "nested-outer-start": "Outer item: chevron at the start (inherited)",
+      "nested-outer-end": "Outer item: chevron at the end (item override)"
     }
   }
 }

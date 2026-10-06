@@ -4,8 +4,6 @@
 @use 'styles/animations';
 @use 'styles/mixins';
 
-$chevron-size: 20px;
-
 :host {
   display: block;
   border-top: 1px solid var(--ndwu-accordion-divider-color);
@@ -29,30 +27,29 @@ $chevron-size: 20px;
   padding-block: padding.$padding-16;
   transition: background-color animations.$duration-default ease;
 
-  :host(:not(.ndwu-accordion-item--disabled)) &:hover {
+  :host(:not(.ndwu-accordion-item--disabled)) > &:hover {
     background: var(--ndwu-accordion-header-hover-bg);
   }
 }
 
+// `>` keeps state classes from leaking into nested accordion items
 .ndwu-accordion-item__chevron {
   flex-shrink: 0;
-  width: $chevron-size;
-  height: $chevron-size;
   color: var(--ndwu-accordion-chevron-color);
 
   // rotated chevron gets its own layer and may cover the stretched trigger
   pointer-events: none;
   transition: transform animations.$duration-long animations.$easing-default;
 
-  :host(.ndwu-accordion-item--chevron-end) & {
+  :host(.ndwu-accordion-item--chevron-end) > .ndwu-accordion-item__header > & {
     order: 1;
   }
 
-  :host(.ndwu-accordion-item--expanded) & {
+  :host(.ndwu-accordion-item--expanded) > .ndwu-accordion-item__header > & {
     transform: rotate(180deg);
   }
 
-  :host(.ndwu-accordion-item--disabled) & {
+  :host(.ndwu-accordion-item--disabled) > .ndwu-accordion-item__header > & {
     color: var(--ndwu-accordion-disabled-color);
   }
 }
@@ -118,7 +115,7 @@ $chevron-size: 20px;
     grid-template-rows animations.$duration-long animations.$easing-default,
     visibility animations.$duration-long;
 
-  :host(.ndwu-accordion-item--expanded) & {
+  :host(.ndwu-accordion-item--expanded) > & {
     grid-template-rows: 1fr;
     visibility: visible;
   }
@@ -137,11 +134,11 @@ $chevron-size: 20px;
   line-height: 20px;
   letter-spacing: typography.$letterSpacing-L;
 
-  :host(.ndwu-accordion-item--chevron-end) & {
+  :host(.ndwu-accordion-item--chevron-end) > .ndwu-accordion-item__panel > .ndwu-accordion-item__panel-inner > & {
     padding-inline-start: 0;
   }
 
-  :host(.ndwu-accordion-item--disabled) & {
+  :host(.ndwu-accordion-item--disabled) > .ndwu-accordion-item__panel > .ndwu-accordion-item__panel-inner > & {
     color: var(--ndwu-accordion-disabled-color);
   }
 }

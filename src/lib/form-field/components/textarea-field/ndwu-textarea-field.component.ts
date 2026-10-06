@@ -1,9 +1,7 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   OnInit,
-  ViewEncapsulation,
   booleanAttribute,
   computed,
   inject,
@@ -30,9 +28,6 @@ import {setValueAccessor} from '../../form-field.utils';
 @Component({
   selector: 'ndwu-textarea-field',
   templateUrl: './ndwu-textarea-field.component.html',
-  styleUrl: './ndwu-textarea-field.component.scss',
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NdwuFloatingLabelComponent,
     NdwuFormFieldComponent,
@@ -44,15 +39,10 @@ import {setValueAccessor} from '../../form-field.utils';
     directive: NdwuSizeDirective,
     inputs: ['ndwuSize: size'],
   }],
-  host: {
-    class: 'ndwu-textarea-field',
-  },
 })
 export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements OnInit {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   protected readonly validationExtractor = inject(NDWU_VALIDATION_PROCESSOR);
-  protected readonly destroyRef = inject(DestroyRef);
-  protected readonly ngControl = inject(NgControl);
 
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
@@ -65,12 +55,8 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
 
   protected readonly hintId = `${uniqueId('ndwu-textarea-field-')}-hint`;
 
-  protected readonly value = signal<string>('');
-  protected readonly isDisabledState = signal<boolean>(false);
   protected readonly invalid = signal<boolean>(false);
   protected readonly extractedValidation = signal<NdwuValidationData | null>(null);
-
-  protected readonly textarea = viewChild.required(NdwuTextareaComponent);
 
   protected readonly errorMessage = computed(() => {
     return this.invalid()
@@ -86,13 +72,18 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
     return !!this.errorMessage() || !!this.hint();
   });
 
-  constructor() {
+  protected readonly textarea = viewChild.required(NdwuTextareaComponent);
+
+  constructor(
+    protected ngControl: NgControl,
+    protected readonly destroyRef$: DestroyRef,
+  ) {
     super('');
     setValueAccessor(this.ngControl, this);
   }
 
   public ngOnInit(): void {
-    const control = this.ngControl.control;
+    const control = this.ngControl?.control;
 
     if (!control) {
       return;
@@ -107,29 +98,24 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
 
     merge(control.statusChanges, control.valueChanges, control.events)
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this.destroyRef$),
       )
       .subscribe(updateValidationState);
   }
 
   public override writeValue(value: string | null): void {
-    const nextValue = value ?? '';
-
-    super.writeValue(nextValue);
-    this.value.set(nextValue);
+    super.writeValue(value ?? '');
   }
 
-  public override setDisabledState(isDisabled: boolean): void {
-    super.setDisabledState(isDisabled);
-    this.isDisabledState.set(isDisabled);
+  public onBlur(): void {
+    this.onTouched();
+  }
+
+  public onValueChange(value: string): void {
+    this.handleChange(value);
   }
 
   public setFocus(): void {
     this.textarea().focus();
-  }
-
-  protected onValueChange(value: string): void {
-    this.value.set(value);
-    this.handleChange(value);
   }
 }

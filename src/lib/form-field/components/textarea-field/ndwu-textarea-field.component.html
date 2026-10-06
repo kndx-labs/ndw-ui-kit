@@ -8,18 +8,18 @@
 
   <ndwu-textarea
     [size]="sizeSvc.size()"
-    [value]="value()"
+    [value]="inputValue"
     [placeholder]="placeholder()"
     [ariaLabel]="ariaLabel()"
     [ariaDescribedby]="hasHelperMessage() ? hintId : null"
     [required]="ndwuRequired()"
-    [disabled]="isDisabledState()"
+    [disabled]="isDisabled"
     [readonly]="readonly()"
     [invalid]="invalid()"
     [resizable]="resizable()"
     [showLineNumbers]="showLineNumbers()"
     (valueChange)="onValueChange($event)"
-    (blurred)="onTouched()"
+    (blurred)="onBlur()"
   >
     <ng-content select="[ndwuTextareaActions]" ngProjectAs="[ndwuTextareaActions]" />
   </ndwu-textarea>

@@ -2,12 +2,16 @@
 import {DOCUMENT, DestroyRef, Directive, ElementRef, afterNextRender, computed, inject, viewChild} from '@angular/core';
 import {CdkPortalOutlet, ComponentPortal, TemplatePortal} from '@angular/cdk/portal';
 import {InteractivityChecker} from '@angular/cdk/a11y';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {map} from 'rxjs';
 import {NDWU_ICON_NAME} from '../../../../icon-names';
 import {NDWU_MODAL_CONFIG, NDWU_MODAL_DATA, NDWU_MODAL_REF} from '../ndwu-modal.tokens';
 import type {NdwuModalButton, NdwuResolvedModalConfig} from '../ndwu-modal.types';
 import type {NdwuModalRef} from '../ndwu-modal-ref';
 import {NDWU_MODAL_BASE_CONFIG_DEFAULTS} from '../ndwu-modal.constants';
 import {NDWU_MODAL_SLOT_REGISTRY} from '../ndwu-modal-slot-registry';
+import {HANDSET_BREAKPOINT} from '@ndw-ui-kit/core/utils';
 
 @Directive()
 export class NdwuModalContainerBaseDirective {
@@ -84,6 +88,16 @@ export class NdwuModalContainerBaseDirective {
   });
 
   public readonly isCloseButtonDisabled = computed(() => this.config.disableClose === true);
+
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly isHandset = toSignal(
+    this.breakpointObserver.observe(HANDSET_BREAKPOINT).pipe(map((r) => r.matches)),
+    {initialValue: this.breakpointObserver.isMatched(HANDSET_BREAKPOINT)},
+  );
+
+  public readonly closeIcon = computed(() => {
+    return this.isHandset() ? NDWU_ICON_NAME.CLOSE_S : NDWU_ICON_NAME.CLOSE_L;
+  });
 
   public readonly trapFocus = computed(() => this.config.trapFocus ?? true);
   public readonly isAutoFocusEnabled = computed(() => this.config.autoFocus !== false);

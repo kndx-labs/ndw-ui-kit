@@ -63,6 +63,17 @@
     top: spacing.$spacing-16;
     right: spacing.$spacing-16;
   }
+
+  /* stylelint-disable-next-line order/order */
+  @include mixins.mobile() {
+    margin-right: -2px;
+
+    &--floating {
+      top: spacing.$spacing-16 - 2px;
+      right: spacing.$spacing-16 - 2px;
+      margin-right: 0;
+    }
+  }
 }
 
 .ndwu-popover__body {

@@ -53,11 +53,6 @@
 }
 
 .ndwu-select-field__panel-close {
-  display: flex;
   flex-shrink: 0;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
+  margin-right: -2px;
 }

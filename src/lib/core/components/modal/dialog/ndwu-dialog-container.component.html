@@ -104,7 +104,7 @@
         ndwuIconButton
         class="ndwu-dialog__close-btn"
         variant="flat"
-        [icon]="ICON_NAME.CLOSE_L"
+        [icon]="closeIcon()"
         [disabled]="isCloseButtonDisabled()"
         [attr.aria-label]="closeButtonAriaLabel()"
         (click)="handleClose()"

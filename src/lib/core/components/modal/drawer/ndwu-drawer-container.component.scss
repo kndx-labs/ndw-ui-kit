@@ -180,17 +180,13 @@
     }
 
     &__close-btn {
-      top: spacing.$spacing-16;
-      right: spacing.$spacing-16;
-
-      &::after {
-        display: none;
-      }
+      top: spacing.$spacing-16 - 2px;
+      right: spacing.$spacing-16 - 2px;
     }
 
     &__title {
-      font-size: 18px;
-      line-height: 25px;
+      line-height: 28px;
+      letter-spacing: typography.$letterSpacing-S;
     }
 
     &__description {

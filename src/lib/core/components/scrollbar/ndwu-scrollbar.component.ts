@@ -180,8 +180,8 @@ export class NdwuScrollbarComponent {
     this.contentEl().nativeElement.scrollTo(options);
   }
 
-  public scrollBy(options: ScrollToOptions): void {
-    this.contentEl().nativeElement.scrollBy(options);
+  public refresh(): void {
+    this.scheduleRecalculate();
   }
 
   private registerStaticListeners(content: HTMLElement): void {
@@ -215,7 +215,6 @@ export class NdwuScrollbarComponent {
         content,
         {
           childList: true,
-          characterData: true,
           subtree: true,
         },
       );

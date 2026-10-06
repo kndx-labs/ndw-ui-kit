@@ -3,8 +3,7 @@ import {
   Component,
   DestroyRef,
   ElementRef,
-  Injector,
-  afterNextRender,
+  afterRenderEffect,
   booleanAttribute,
   computed,
   effect,
@@ -54,7 +53,6 @@ export class NdwuTextareaComponent implements NdwuControl {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   protected readonly registry = inject(NdwuInteractionRegistry);
   protected readonly destroyRef = inject(DestroyRef);
-  protected readonly injector = inject(Injector);
   protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   public readonly value = input<string>('');
@@ -113,6 +111,11 @@ export class NdwuTextareaComponent implements NdwuControl {
     this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.INPUT, this.id, this.focused());
   });
 
+  protected readonly refreshScrollbarOnValueChange = afterRenderEffect(() => {
+    this.currentValue();
+    this.scrollbar().refresh();
+  });
+
   private resizeStart: NdwuTextareaResizeStart | null = null;
 
   constructor() {
@@ -138,21 +141,10 @@ export class NdwuTextareaComponent implements NdwuControl {
   }
 
   protected onInput(event: Event): void {
-    const el = event.target as HTMLTextAreaElement;
-    const {value, scrollTop, scrollLeft} = el;
+    const {value} = event.target as HTMLTextAreaElement;
 
     this.currentValue.set(value);
     this.valueChange.emit(value);
-
-    if (!scrollTop && !scrollLeft) {
-      return;
-    }
-
-    afterNextRender(() => {
-      el.scrollTop = 0;
-      el.scrollLeft = 0;
-      this.scrollbar().scrollBy({top: scrollTop, left: scrollLeft});
-    }, {injector: this.injector});
   }
 
   protected onBlur(): void {

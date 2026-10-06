@@ -143,8 +143,12 @@ $textarea-sizes: (
     pointer-events: none;
 
     &::after {
-      content: ' ';
+      content: '\A\00a0';
     }
+  }
+
+  &__box--line-numbers &__replica {
+    margin-right: 2ch;
   }
 
   &__control {

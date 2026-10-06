@@ -1,4 +1,4 @@
-import type {Type, ViewContainerRef} from '@angular/core';
+import type {Injector, Type, ViewContainerRef} from '@angular/core';
 import type {NdwuButtonVariant} from '../button/button/ndwu-button.component';
 import {NDWU_SIZE, NdwuTheme} from '../../../shared.types';
 import type {NdwuModalRef} from './ndwu-modal-ref';
@@ -49,6 +49,13 @@ export interface NdwuModalBaseConfig<ModalData = unknown> {
   restoreFocus?: boolean;
   closeButtonAriaLabel?: string;
   stackingOnMobile?: 'stack' | 'replace' | 'none';
+  /**
+   * Parent injector for the modal container and its content.
+   * Defaults to the injector of `NdwuModalService` (root).
+   * Pass a route- or component-level injector to make its providers
+   * available inside the modal.
+   */
+  injector?: Injector;
 }
 
 export interface NdwuDialogConfig<ModalData = unknown> extends NdwuModalBaseConfig<ModalData> {

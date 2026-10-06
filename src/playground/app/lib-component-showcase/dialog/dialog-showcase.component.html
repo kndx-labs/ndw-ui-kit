@@ -263,6 +263,28 @@
     </div>
 
     <div class="state-section">
+      <h4>Custom injector</h4>
+      <p>Content resolves providers of the passed injector (here: a provider of this showcase component).</p>
+
+      <div class="button-row">
+        <button
+          ndwuButton
+          variant="primary"
+          label="Open with custom injector"
+          (click)="openCustomInjectorDialog(theme, true)"
+        >
+        </button>
+        <button
+          ndwuButton
+          variant="secondary"
+          label="Open with default injector"
+          (click)="openCustomInjectorDialog(theme, false)"
+        >
+        </button>
+      </div>
+    </div>
+
+    <div class="state-section">
       <h4>{{ 'dialog-showcase.overview.sections.drawer-dialog-stacking' | localize }}</h4>
       <p>{{ 'dialog-showcase.overview.drawer-dialog-stacking.description' | localize }}</p>
 

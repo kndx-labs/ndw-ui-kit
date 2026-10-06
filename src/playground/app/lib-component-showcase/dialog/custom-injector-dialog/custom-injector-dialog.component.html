@@ -1,0 +1,10 @@
+<div ndwuModalBody>
+  @if (scopedService) {
+    <p>Resolved component-level service: <b>{{ scopedService.label }}</b></p>
+  } @else {
+    <p>Component-level service is not available: modal uses the root injector.</p>
+  }
+</div>
+<div ndwuModalFooter>
+  <button ndwuButton variant="primary" label="Close" (click)="closeDialog()"></button>
+</div>

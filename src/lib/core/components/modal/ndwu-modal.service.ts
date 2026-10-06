@@ -356,7 +356,7 @@ export class NdwuModalService {
     ];
 
     return Injector.create({
-      parent: this.injector,
+      parent: config.injector ?? this.injector,
       providers,
     });
   }

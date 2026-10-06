@@ -1,5 +1,7 @@
 import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {merge} from 'rxjs';
 import {
   NDWU_ICON_NAME,
   NDWU_SIZE,
@@ -39,6 +41,12 @@ const TOKEN_TO_READ_CSS_VAR: Record<string, string> = {
   'tag-override-bg': '--ndwu-tag-bg',
   'tag-override-border': '--ndwu-tag-border',
   'tag-override-fg': '--ndwu-tag-fg',
+};
+
+const TOKEN_TO_READ_SELECTED_CSS_VAR: Record<string, string> = {
+  'tag-override-bg': '--ndwu-tag-selected-bg',
+  'tag-override-border': '--ndwu-tag-selected-border',
+  'tag-override-fg': '--ndwu-tag-selected-fg',
 };
 
 const DEFAULT_LABEL = 'Tag name';
@@ -92,11 +100,16 @@ export class TagSandboxComponent extends SandboxBaseComponent {
 
   public readonly tokenPickerValues = signal<Record<string, string>>({});
 
-  protected override readonly tokenMapping: TokenMapping[] = TAG_COLOR_TOKENS.map((key) => ({
-    key,
-    cssVar: TOKEN_TO_CSS_VAR[key] ?? '',
-    readCssVar: TOKEN_TO_READ_CSS_VAR[key],
-  }));
+  protected override get tokenMapping(): TokenMapping[] {
+    const {selectable, selected} = this.sandboxForm.controls;
+    const readCssVars = selectable.value && selected.value ? TOKEN_TO_READ_SELECTED_CSS_VAR : TOKEN_TO_READ_CSS_VAR;
+
+    return TAG_COLOR_TOKENS.map((key) => ({
+      key,
+      cssVar: TOKEN_TO_CSS_VAR[key] ?? '',
+      readCssVar: readCssVars[key],
+    }));
+  }
 
   public tokenListForCurrentType(): readonly TokenListItem[] {
     return TAG_COLOR_TOKENS.map((key) => ({
@@ -124,9 +137,9 @@ export class TagSandboxComponent extends SandboxBaseComponent {
       this.sandboxTokens.reset(this.getTokenResetValues());
     });
 
-    this.sandboxForm.controls.selected.valueChanges.subscribe(() => {
-      this.scheduleTokenPickerRefresh();
-    });
+    merge(this.sandboxForm.controls.selectable.valueChanges, this.sandboxForm.controls.selected.valueChanges)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.scheduleTokenPickerRefresh());
   }
 
   protected override getDefaultFormValues(): Record<string, unknown> {

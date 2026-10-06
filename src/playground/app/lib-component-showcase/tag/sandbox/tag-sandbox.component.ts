@@ -45,6 +45,8 @@ const TOKEN_TO_READ_SELECTED_CSS_VAR: Record<string, string> = {
 
 const DEFAULT_LABEL = 'Tag name';
 
+const DEFAULT_REMOVE_LABEL = 'Remove';
+
 @Component({
   selector: 'app-tag-sandbox',
   templateUrl: './tag-sandbox.component.html',
@@ -77,6 +79,7 @@ export class TagSandboxComponent extends SandboxBaseComponent {
     removable: new FormControl<boolean>(true, {nonNullable: true}),
     disabled: new FormControl<boolean>(false, {nonNullable: true}),
     ariaLabel: new FormControl<string>('', {nonNullable: true}),
+    removeLabel: new FormControl<string>(DEFAULT_REMOVE_LABEL, {nonNullable: true}),
     maxWidth: new FormControl<string>('', {nonNullable: true}),
   });
 
@@ -143,6 +146,7 @@ export class TagSandboxComponent extends SandboxBaseComponent {
       removable: true,
       disabled: false,
       ariaLabel: '',
+      removeLabel: DEFAULT_REMOVE_LABEL,
       maxWidth: '',
     };
   }

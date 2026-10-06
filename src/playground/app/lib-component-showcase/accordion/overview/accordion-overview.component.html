@@ -1,0 +1,131 @@
+<ng-template #itemContent let-item>
+  <p class="item-description">{{ item.description }}</p>
+  <div class="item-badges">
+    @for (badge of item.badges; track badge) {
+      <ndwu-badge>{{ badge }}</ndwu-badge>
+    }
+  </div>
+</ng-template>
+
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>{{ 'accordion-showcase.overview.single' | localize }}</h4>
+      <ndwu-accordion>
+        @for (item of items; track item.title) {
+          <ndwu-accordion-item [expanded]="$first">
+            <span ndwuAccordionHeader>{{ item.title }}</span>
+            <ndwu-checkbox
+              ndwuAccordionHeaderActions
+              [label]="'accordion-showcase.overview.enabled' | localize"
+              [checked]="true"
+            />
+            <div ndwuAccordionContent>
+              <ng-container *ngTemplateOutlet="itemContent; context: {$implicit: item}" />
+            </div>
+          </ndwu-accordion-item>
+        }
+      </ndwu-accordion>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'accordion-showcase.overview.multi' | localize }}</h4>
+      <ndwu-accordion multi>
+        @for (item of items; track item.title) {
+          <ndwu-accordion-item [expanded]="!$last">
+            <span ndwuAccordionHeader>{{ item.title }}</span>
+            <ndwu-toggle
+              ndwuAccordionHeaderActions
+              [checked]="$first"
+              [aria-label]="item.title"
+            />
+            <div ndwuAccordionContent>
+              <ng-container *ngTemplateOutlet="itemContent; context: {$implicit: item}" />
+            </div>
+          </ndwu-accordion-item>
+        }
+      </ndwu-accordion>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'accordion-showcase.overview.chevron-end' | localize }}</h4>
+      <ndwu-accordion chevronPosition="end">
+        @for (item of items; track item.title) {
+          <ndwu-accordion-item>
+            <span ndwuAccordionHeader>{{ item.title }}</span>
+            <ndwu-badge ndwuAccordionHeaderActions tone="blue">{{ item.badges.length }}</ndwu-badge>
+            <div ndwuAccordionContent>
+              <ng-container *ngTemplateOutlet="itemContent; context: {$implicit: item}" />
+            </div>
+          </ndwu-accordion-item>
+        }
+      </ndwu-accordion>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'accordion-showcase.overview.nested' | localize }}</h4>
+      <ndwu-accordion multi>
+        <ndwu-accordion-item [expanded]="true">
+          <span ndwuAccordionHeader>{{ 'accordion-showcase.overview.nested-outer-start' | localize }}</span>
+          <div ndwuAccordionContent>
+            <ndwu-accordion
+              multi
+              chevronPosition="end"
+            >
+              @for (item of items; track item.title) {
+                <ndwu-accordion-item
+                  [chevronPosition]="$last ? 'start' : null"
+                  [expanded]="$first"
+                >
+                  <span ndwuAccordionHeader>{{ item.title }}</span>
+                  <div ndwuAccordionContent>
+                    <ng-container *ngTemplateOutlet="itemContent; context: {$implicit: item}" />
+                  </div>
+                </ndwu-accordion-item>
+              }
+            </ndwu-accordion>
+          </div>
+        </ndwu-accordion-item>
+        <ndwu-accordion-item chevronPosition="end">
+          <span ndwuAccordionHeader>{{ 'accordion-showcase.overview.nested-outer-end' | localize }}</span>
+          <div ndwuAccordionContent>
+            <ng-container *ngTemplateOutlet="itemContent; context: {$implicit: items[0]}" />
+          </div>
+        </ndwu-accordion-item>
+      </ndwu-accordion>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'accordion-showcase.overview.disabled' | localize }}</h4>
+      <ndwu-accordion>
+        @for (item of items; track item.title) {
+          <ndwu-accordion-item
+            [disabled]="!$first"
+            [expanded]="$last"
+          >
+            <span ndwuAccordionHeader>{{ item.title }}</span>
+            <div ndwuAccordionContent>
+              <ng-container *ngTemplateOutlet="itemContent; context: {$implicit: item}" />
+            </div>
+          </ndwu-accordion-item>
+        }
+      </ndwu-accordion>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'accordion-showcase.overview.lazy' | localize }}</h4>
+      <ndwu-accordion-item [(expanded)]="controlledExpanded">
+        <span ndwuAccordionHeader>{{ 'accordion-showcase.overview.lazy-title' | localize }}</span>
+        <ng-template ndwuAccordionContent>
+          <ng-container *ngTemplateOutlet="itemContent; context: {$implicit: items[0]}" />
+        </ng-template>
+      </ndwu-accordion-item>
+      <p class="state-hint">
+        {{ 'accordion-showcase.overview.expanded' | localize }}: {{ controlledExpanded() }}
+      </p>
+    </div>
+  </ng-template>
+</app-showcase-layout>

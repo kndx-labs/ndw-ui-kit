@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   NDWU_ICON_NAME,
@@ -35,12 +35,12 @@ import {EMAIL_VALIDATOR} from '@app/validation';
 export class FormDialogComponent {
   protected readonly ICON_NAME = NDWU_ICON_NAME;
 
+  protected formBuilder = inject(FormBuilder);
+  protected modalRef = inject<NdwuModalRef>(NDWU_MODAL_REF);
+
   protected readonly form: FormGroup;
 
-  constructor(
-    protected formBuilder: FormBuilder,
-    @Inject(NDWU_MODAL_REF) protected modalRef: NdwuModalRef,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       name: new FormControl(
         '',

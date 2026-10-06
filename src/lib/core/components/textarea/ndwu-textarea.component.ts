@@ -3,9 +3,12 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  Injector,
+  afterNextRender,
   booleanAttribute,
   computed,
   effect,
+  forwardRef,
   inject,
   input,
   linkedSignal,
@@ -17,9 +20,11 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
 import {NDWU_ICON_NAME} from '../../../icon-names';
+import {NDWU_SIZE, type NdwuSize} from '../../../shared.types';
 import {NDWU_CONTROL, type NdwuControl} from '../form-field/control/ndwu-control';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
+import {NdwuScrollbarComponent} from '../scrollbar/ndwu-scrollbar.component';
 import {type NdwuTextareaResizeStart} from './ndwu-textarea.types';
 
 @Component({
@@ -31,27 +36,11 @@ import {type NdwuTextareaResizeStart} from './ndwu-textarea.types';
     LocalizePipe,
     NdwuIconComponent,
     NdwuResizeObserverDirective,
+    NdwuScrollbarComponent,
   ],
   providers: [{
     provide: NDWU_CONTROL,
-    useFactory: (): NdwuControl => {
-      const textarea = inject(NdwuTextareaComponent);
-
-      return {
-        get id(): string {
-          return textarea.controlId();
-        },
-        get empty(): boolean {
-          return !textarea.currentValue();
-        },
-        get disabled(): boolean {
-          return textarea.disabled();
-        },
-        focused: textarea.focused,
-        readonly: textarea.readonly,
-        shouldLabelFloat: true,
-      };
-    },
+    useExisting: forwardRef(() => NdwuTextareaComponent),
   }],
   hostDirectives: [{
     directive: NdwuSizeDirective,
@@ -61,19 +50,22 @@ import {type NdwuTextareaResizeStart} from './ndwu-textarea.types';
     '[class]': 'hostClass()',
   },
 })
-export class NdwuTextareaComponent {
+export class NdwuTextareaComponent implements NdwuControl {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   protected readonly registry = inject(NdwuInteractionRegistry);
   protected readonly destroyRef = inject(DestroyRef);
+  protected readonly injector = inject(Injector);
   protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   public readonly value = input<string>('');
-  public readonly id = input<string>('');
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  public readonly idInput = input<string>('', {alias: 'id'});
   public readonly placeholder = input<string>('');
   public readonly ariaLabel = input<string>('');
   public readonly ariaDescribedby = input<string | null>(null);
   public readonly required = input(false, {transform: booleanAttribute});
-  public readonly disabled = input(false, {transform: booleanAttribute});
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  public readonly disabledInput = input(false, {alias: 'disabled', transform: booleanAttribute});
   public readonly readonly = input(false, {transform: booleanAttribute});
   public readonly invalid = input(false, {transform: booleanAttribute});
   public readonly resizable = input(true, {transform: booleanAttribute});
@@ -84,20 +76,18 @@ export class NdwuTextareaComponent {
 
   public readonly focused = signal<boolean>(false);
   public readonly currentValue = linkedSignal(() => this.value());
+  public readonly shouldLabelFloat = true;
 
   protected readonly generatedId = uniqueId('ndwu-textarea-');
 
-  public readonly controlId = computed(() => this.id() || this.generatedId);
-  protected readonly scrollTop = signal<number>(0);
   protected readonly height = linkedSignal({
     source: () => ({size: this.sizeSvc.effectiveSize(), resizable: this.resizable()}),
     computation: (): number | null => null,
   });
-  protected readonly scrollbarWidth = signal<number>(0);
-  protected readonly scrollbarHeight = signal<number>(0);
 
   protected readonly box = viewChild.required<ElementRef<HTMLElement>>('box');
   protected readonly textarea = viewChild.required<ElementRef<HTMLTextAreaElement>>('textarea');
+  protected readonly scrollbar = viewChild.required(NdwuScrollbarComponent);
   protected readonly actionsSlot = viewChild.required('actionsSlot', {read: NdwuResizeObserverDirective});
 
   protected readonly hasActions = computed(() => this.actionsSlot().width() > 0);
@@ -106,8 +96,10 @@ export class NdwuTextareaComponent {
     return `ndwu-textarea ndwu-textarea--${this.sizeSvc.effectiveSize()}`;
   });
 
-  protected readonly scrollbarOffsetX = computed(() => `${this.scrollbarWidth()}px`);
-  protected readonly scrollbarOffsetY = computed(() => `${this.scrollbarHeight()}px`);
+  protected readonly scrollbarSize = computed<NdwuSize>(() => {
+    return this.sizeSvc.effectiveSize() === NDWU_SIZE.L ? NDWU_SIZE.L : NDWU_SIZE.XL;
+  });
+
   protected readonly actionsWidth = computed(() => `${this.actionsSlot().width()}px`);
   protected readonly actionsHeight = computed(() => `${this.actionsSlot().height()}px`);
 
@@ -118,28 +110,27 @@ export class NdwuTextareaComponent {
   });
 
   protected readonly syncFocusedWithRegistry = effect(() => {
-    this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.INPUT, this.controlId(), this.focused());
-  });
-
-  protected readonly syncWheelListener = effect((onCleanup) => {
-    if (!this.showLineNumbers()) {
-      return;
-    }
-
-    const el = this.textarea().nativeElement;
-    const listener = (event: WheelEvent): void => this.onWheel(event);
-
-    this.scrollTop.set(el.scrollTop);
-    el.addEventListener('wheel', listener, {passive: false});
-    onCleanup(() => el.removeEventListener('wheel', listener));
+    this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.INPUT, this.id, this.focused());
   });
 
   private resizeStart: NdwuTextareaResizeStart | null = null;
 
   constructor() {
     this.destroyRef.onDestroy(() => {
-      this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.INPUT, this.controlId(), false);
+      this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.INPUT, this.id, false);
     });
+  }
+
+  public get id(): string {
+    return this.idInput() || this.generatedId;
+  }
+
+  public get disabled(): boolean {
+    return this.disabledInput();
+  }
+
+  public get empty(): boolean {
+    return !this.currentValue();
   }
 
   public focus(): void {
@@ -147,10 +138,21 @@ export class NdwuTextareaComponent {
   }
 
   protected onInput(event: Event): void {
-    const {value} = event.target as HTMLTextAreaElement;
+    const el = event.target as HTMLTextAreaElement;
+    const {value, scrollTop, scrollLeft} = el;
 
     this.currentValue.set(value);
     this.valueChange.emit(value);
+
+    if (!scrollTop && !scrollLeft) {
+      return;
+    }
+
+    afterNextRender(() => {
+      el.scrollTop = 0;
+      el.scrollLeft = 0;
+      this.scrollbar().scrollBy({top: scrollTop, left: scrollLeft});
+    }, {injector: this.injector});
   }
 
   protected onBlur(): void {
@@ -158,23 +160,8 @@ export class NdwuTextareaComponent {
     this.blurred.emit();
   }
 
-  protected onScroll(): void {
-    if (!this.showLineNumbers()) {
-      return;
-    }
-
-    this.scrollTop.set(this.textarea().nativeElement.scrollTop);
-  }
-
-  protected onTextareaResize(): void {
-    const {offsetWidth, clientWidth, offsetHeight, clientHeight} = this.textarea().nativeElement;
-
-    this.scrollbarWidth.set(offsetWidth - clientWidth);
-    this.scrollbarHeight.set(offsetHeight - clientHeight);
-  }
-
   protected onResizeStart(event: PointerEvent): void {
-    if (event.button !== 0 || this.disabled()) {
+    if (event.button !== 0 || this.disabled) {
       return;
     }
 
@@ -199,40 +186,5 @@ export class NdwuTextareaComponent {
 
   protected onResizeEnd(): void {
     this.resizeStart = null;
-  }
-
-  private onWheel(event: WheelEvent): void {
-    if (event.ctrlKey) {
-      return;
-    }
-
-    const el = this.textarea().nativeElement;
-    const unit = this.wheelDeltaUnit(event.deltaMode, el);
-    const swapAxes = event.shiftKey && !event.deltaX;
-    const deltaX = (swapAxes ? event.deltaY : event.deltaX) * unit;
-    const deltaY = (swapAxes ? 0 : event.deltaY) * unit;
-    const {scrollTop, scrollLeft} = el;
-
-    el.scrollTop = scrollTop + deltaY;
-    el.scrollLeft = scrollLeft + deltaX;
-
-    if (el.scrollTop === scrollTop && el.scrollLeft === scrollLeft) {
-      return;
-    }
-
-    event.preventDefault();
-    this.scrollTop.set(el.scrollTop);
-  }
-
-  private wheelDeltaUnit(deltaMode: number, el: HTMLTextAreaElement): number {
-    if (deltaMode === WheelEvent.DOM_DELTA_LINE) {
-      return parseFloat(getComputedStyle(el).lineHeight) || 16;
-    }
-
-    if (deltaMode === WheelEvent.DOM_DELTA_PAGE) {
-      return el.clientHeight;
-    }
-
-    return 1;
   }
 }

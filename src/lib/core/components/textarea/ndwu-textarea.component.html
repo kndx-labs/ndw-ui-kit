@@ -3,52 +3,14 @@
   class="ndwu-textarea__box ndwu-form-field__input"
   [class.ndwu-form-field__input--invalid]="invalid()"
   [class.ndwu-textarea__box--focused]="focused() && !readonly()"
-  [class.ndwu-textarea__box--disabled]="disabled()"
+  [class.ndwu-textarea__box--disabled]="disabled"
   [class.ndwu-textarea__box--readonly]="readonly()"
   [class.ndwu-textarea__box--has-actions]="hasActions()"
-  [style.--ndwu-textarea-scrollbar-width]="scrollbarOffsetX()"
-  [style.--ndwu-textarea-scrollbar-height]="scrollbarOffsetY()"
+  [class.ndwu-textarea__box--line-numbers]="showLineNumbers()"
   [style.--ndwu-textarea-actions-width]="actionsWidth()"
   [style.--ndwu-textarea-actions-height]="actionsHeight()"
   [style.height.px]="height()"
 >
-  @if (showLineNumbers()) {
-    <div
-      class="ndwu-textarea__gutter"
-      aria-hidden="true"
-    >
-      <div
-        class="ndwu-textarea__line-numbers"
-        [style.transform]="`translateY(${-scrollTop()}px)`"
-      >
-        @for (line of lineNumbers(); track line) {
-          <span class="ndwu-textarea__line-number">{{ line }}</span>
-        }
-      </div>
-    </div>
-  }
-
-  <textarea
-    #textarea
-    class="ndwu-textarea__control"
-    [ndwuResizeObserver]="resizable() || hasActions()"
-    [id]="controlId()"
-    [value]="currentValue()"
-    [placeholder]="placeholder() ? (placeholder() | localize) : ''"
-    [disabled]="disabled()"
-    [readonly]="readonly()"
-    [attr.wrap]="showLineNumbers() ? 'off' : null"
-    [attr.aria-label]="ariaLabel() ? (ariaLabel() | localize) : null"
-    [attr.aria-required]="required() ? 'true' : null"
-    [attr.aria-invalid]="invalid() ? 'true' : null"
-    [attr.aria-describedby]="ariaDescribedby()"
-    (input)="onInput($event)"
-    (focus)="focused.set(true)"
-    (blur)="onBlur()"
-    (scroll)="onScroll()"
-    (elementResize)="onTextareaResize()"
-  ></textarea>
-
   @if (hasActions()) {
     <div
       class="ndwu-textarea__actions-mask"
@@ -56,6 +18,51 @@
     >
     </div>
   }
+
+  <div
+    class="ndwu-textarea__viewport"
+    ndwuScrollbar
+    [ndwuScrollbarSize]="scrollbarSize()"
+  >
+    <div class="ndwu-textarea__content">
+      @if (showLineNumbers()) {
+        <div
+          class="ndwu-textarea__gutter"
+          aria-hidden="true"
+        >
+          @for (line of lineNumbers(); track line) {
+            <span class="ndwu-textarea__line-number">{{ line }}</span>
+          }
+        </div>
+      }
+
+      <div class="ndwu-textarea__sizer">
+        <span
+          class="ndwu-textarea__replica"
+          aria-hidden="true"
+        >{{ currentValue() }}</span>
+
+        <textarea
+          #textarea
+          class="ndwu-textarea__control"
+          rows="1"
+          [id]="id"
+          [value]="currentValue()"
+          [placeholder]="placeholder() ? (placeholder() | localize) : ''"
+          [disabled]="disabled"
+          [readonly]="readonly()"
+          [attr.wrap]="showLineNumbers() ? 'off' : null"
+          [attr.aria-label]="ariaLabel() ? (ariaLabel() | localize) : null"
+          [attr.aria-required]="required() ? 'true' : null"
+          [attr.aria-invalid]="invalid() ? 'true' : null"
+          [attr.aria-describedby]="ariaDescribedby()"
+          (input)="onInput($event)"
+          (focus)="focused.set(true)"
+          (blur)="onBlur()"
+        ></textarea>
+      </div>
+    </div>
+  </div>
 
   <div
     #actionsSlot

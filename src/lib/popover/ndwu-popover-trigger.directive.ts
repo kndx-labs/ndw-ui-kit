@@ -18,13 +18,21 @@ import {
   type NdwuPopoverControllerFactory,
 } from './ndwu-popover-controller';
 import {NDWU_POPOVER_DEFAULT_CONTENT, NDWU_POPOVER_TRIGGER_DEFAULTS} from './ndwu-popover.tokens';
-import type {NdwuDynamicContent, NdwuPopoverConfig, NdwuPopoverTriggerType} from './ndwu-popover.types';
+import type {
+  NdwuDynamicContent,
+  NdwuPopoverConfig,
+  NdwuPopoverOrigin,
+  NdwuPopoverTriggerType,
+} from './ndwu-popover.types';
 import {NdwuTapGestureDetector} from './ndwu-tap-gesture-detector';
 import {NdwuPopoverInteractionController, type NdwuPopoverInteractionCtx} from './ndwu-popover-interaction-controller';
 
 export interface NdwuOverlayConfig {
   providers: Provider[];
   controllerConfig?: Record<string, unknown>;
+  /** Default overlay origin; an `originPoint`/`originElement` passed to `open()` takes precedence. */
+  originPoint?: NdwuPopoverConfig['originPoint'];
+  originElement?: NdwuPopoverConfig['originElement'];
 }
 
 /**
@@ -124,6 +132,9 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
   protected controller: NdwuPopoverController | null = null;
 
   protected overlayConfigFactory: (() => NdwuOverlayConfig) | null = null;
+
+  // Set by scheduleShow(): the next open registers the hover bridge even without a hover/focus trigger.
+  protected bridgeNextOpen = false;
 
   public registerOverlayConfig(factory: () => NdwuOverlayConfig): void {
     this.overlayConfigFactory = factory;
@@ -231,7 +242,14 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
   }
 
   public open(config: NdwuPopoverConfig): void {
-    if (this.disabled() || this.isOpen()) {
+    if (this.disabled()) {
+      return;
+    }
+
+    if (this.isOpen()) {
+      // An explicit open wins over a hide scheduled earlier (e.g. pointer left, then focus came in).
+      this.interaction.cancelScheduledHide();
+
       return;
     }
 
@@ -242,9 +260,11 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
     controller.open(this.mergeOverlayConfig(config));
     this.opened.emit();
 
-    if (this.hasTriggerType('hover') || this.hasTriggerType('focus')) {
+    if (this.bridgeNextOpen || this.hasTriggerType('hover') || this.hasTriggerType('focus')) {
       this.interaction.registerHoverBridge();
     }
+
+    this.bridgeNextOpen = false;
 
     if (this.hasTriggerType('click')) {
       this.interaction.registerOutsideClickClose();
@@ -252,12 +272,40 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
   }
 
   public close(options?: {focusOrigin?: boolean}): void {
+    // Before the controller guard: a show scheduled before the first open must be cancelled too.
+    this.interaction.dispose();
+
     if (!this.controller) {
       return;
     }
 
-    this.interaction.dispose();
     this.controller.close(options);
+  }
+
+  /**
+   * Opens after `showDelay`, like a hover on the host. For triggers whose targets aren't the host
+   * (e.g. `triggerOn="manual"` with one popover for many targets). When already open, only cancels
+   * a pending hide, so moving between targets keeps the overlay open.
+   */
+  public scheduleShow(): void {
+    if (this.disabled()) {
+      return;
+    }
+
+    this.bridgeNextOpen = !this.isOpen();
+    this.interaction.scheduleShow();
+  }
+
+  /** Closes after `hideDelay`, unless the pointer moves onto the overlay or `scheduleShow()` is called. */
+  public scheduleHide(): void {
+    this.interaction.scheduleHide();
+  }
+
+  /** Re-anchors the open overlay to another origin without closing it (if the controller supports it). */
+  public setOrigin(origin: NdwuPopoverOrigin): void {
+    if (this.isOpen()) {
+      this.controller?.setOrigin(origin);
+    }
   }
 
   /**
@@ -354,6 +402,11 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
   ): NdwuPopoverConfig {
     const overlayConfig = this.overlayConfigFactory?.();
     const extraProviders = overlayConfig?.providers ?? [];
+    // An origin passed to open() replaces the wrapper's default origin as a whole.
+    const hasOverrideOrigin = overrides.originPoint !== undefined || overrides.originElement !== undefined;
+    const originSource = hasOverrideOrigin ? overrides : overlayConfig;
+    const originPoint = originSource?.originPoint;
+    const originElement = originSource?.originElement;
 
     return {
       content: overrides.content,
@@ -363,7 +416,8 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       minWidth: overrides.minWidth ?? this.popoverMinWidth(),
       trapFocus: overrides.trapFocus ?? this.effectivePopoverTrapFocus(),
       closeOnOriginClick: overrides.closeOnOriginClick ?? this.popoverCloseOnOriginClick(),
-      ...(overrides.originPoint !== undefined ? {originPoint: overrides.originPoint} : {}),
+      ...(originPoint !== undefined ? {originPoint} : {}),
+      ...(originElement !== undefined ? {originElement} : {}),
       ...(overlayConfig?.controllerConfig !== undefined
         ? {controllerConfig: overlayConfig.controllerConfig}
         : {}),

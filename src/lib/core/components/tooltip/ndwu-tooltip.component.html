@@ -3,6 +3,17 @@
   class="ndwu-tooltip"
   [class.ndwu-tooltip--multiline]="isMultiline()"
   role="tooltip"
-  aria-live="polite"
+  [attr.aria-live]="isLive() ? 'polite' : null"
   [style.max-width]="maxWidth"
-><span #contentBox [innerHTML]="content"></span></div>
+>
+  <!--
+    String content uses an inline <span>: multiline is detected via getClientRects(), which returns
+    one rect per wrapped line only for inline elements. Template content may contain block elements
+    (invalid inside <span>, and they break the per-line rects), so it uses a <div> measured by height.
+  -->
+  @if (template) {
+    <div #contentBox><ng-container *ngTemplateOutlet="template; context: templateContext()" /></div>
+  } @else {
+    <span #contentBox [innerHTML]="content"></span>
+  }
+</div>

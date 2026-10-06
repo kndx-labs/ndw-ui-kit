@@ -110,7 +110,7 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
 
 .ndwu-tag__label {
   overflow: hidden;
-  max-width: 18ch;
+  max-width: var(--ndwu-tag-label-max-width, 18ch);
   text-overflow: ellipsis;
   white-space: nowrap;
 }

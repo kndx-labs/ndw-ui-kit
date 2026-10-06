@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   booleanAttribute,
   computed,
@@ -47,6 +48,7 @@ export type NdwuTagStatus = NdwuValues<typeof NDWU_TAG_STATUS>;
     '[attr.aria-label]': 'ariaLabel()',
     '[attr.aria-keyshortcuts]': 'removable() ? "Delete Backspace" : null',
     '[style.max-width]': 'maxWidth()',
+    '[style.--ndwu-tag-label-max-width]': 'maxWidth() ? "none" : null',
     '(click)': 'toggle()',
     '(keydown.delete)': 'onRemoveKey($event)',
     '(keydown.backspace)': 'onRemoveKey($event)',
@@ -83,6 +85,8 @@ export class NdwuTagComponent {
 
   public readonly removed = output<void>();
 
+  private focusAfterRemoval: HTMLElement | null = null;
+
   protected readonly effectiveSize = computed(() => ndwuToChipSize(this.sizeSvc.effectiveSize()));
 
   protected readonly hostClasses = computed(() => {
@@ -92,7 +96,7 @@ export class NdwuTagComponent {
       `ndwu-tag--size-${this.effectiveSize()}`,
     ];
 
-    if (this.selected()) {
+    if (this.selectable() && this.selected()) {
       classes.push('ndwu-tag--selected');
     }
 
@@ -102,6 +106,10 @@ export class NdwuTagComponent {
 
     return classes.join(' ');
   });
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => this.restoreFocus());
+  }
 
   protected toggle(): void {
     if (this.selectable()) {
@@ -123,10 +131,23 @@ export class NdwuTagComponent {
 
   private remove(): void {
     const host = this.elementRef.nativeElement;
-    const nextFocus = host.ownerDocument.activeElement === host ? this.findSiblingTag(host) : null;
 
+    this.focusAfterRemoval = host.ownerDocument.activeElement === host ? this.findSiblingTag(host) : null;
     this.removed.emit();
-    nextFocus?.focus();
+  }
+
+  private restoreFocus(): void {
+    const target = this.focusAfterRemoval;
+
+    if (!target?.isConnected) {
+      return;
+    }
+
+    const {activeElement, body} = target.ownerDocument;
+
+    if (!activeElement || activeElement === body || activeElement === this.elementRef.nativeElement) {
+      target.focus();
+    }
   }
 
   private findSiblingTag(host: HTMLElement): HTMLElement | null {

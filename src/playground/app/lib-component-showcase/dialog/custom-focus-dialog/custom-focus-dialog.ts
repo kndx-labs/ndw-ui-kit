@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {
   NDWU_MODAL_REF,
   NdwuButtonComponent,
@@ -18,10 +18,7 @@ import {
   ],
 })
 export class CustomFocusDialogComponent {
-  constructor(
-    @Inject(NDWU_MODAL_REF) protected readonly modalRef: NdwuModalRef,
-  ) {
-  }
+  protected readonly modalRef = inject<NdwuModalRef>(NDWU_MODAL_REF);
 
   protected closeDialog(): void {
     this.modalRef.close();

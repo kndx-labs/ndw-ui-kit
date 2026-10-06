@@ -89,7 +89,10 @@ export class NdwuTextareaComponent {
 
   public readonly controlId = computed(() => this.id() || this.generatedId);
   protected readonly scrollTop = signal<number>(0);
-  protected readonly height = signal<number | null>(null);
+  protected readonly height = linkedSignal({
+    source: () => ({size: this.sizeSvc.effectiveSize(), resizable: this.resizable()}),
+    computation: (): number | null => null,
+  });
   protected readonly scrollbarWidth = signal<number>(0);
   protected readonly scrollbarHeight = signal<number>(0);
 
@@ -126,6 +129,7 @@ export class NdwuTextareaComponent {
     const el = this.textarea().nativeElement;
     const listener = (event: WheelEvent): void => this.onWheel(event);
 
+    this.scrollTop.set(el.scrollTop);
     el.addEventListener('wheel', listener, {passive: false});
     onCleanup(() => el.removeEventListener('wheel', listener));
   });
@@ -155,6 +159,10 @@ export class NdwuTextareaComponent {
   }
 
   protected onScroll(): void {
+    if (!this.showLineNumbers()) {
+      return;
+    }
+
     this.scrollTop.set(this.textarea().nativeElement.scrollTop);
   }
 
@@ -184,7 +192,9 @@ export class NdwuTextareaComponent {
       return;
     }
 
-    this.height.set(Math.max(0, this.resizeStart.height + event.clientY - this.resizeStart.pointerY));
+    const clampedHeight = Math.max(0, this.resizeStart.height + event.clientY - this.resizeStart.pointerY);
+
+    this.height.set(clampedHeight);
   }
 
   protected onResizeEnd(): void {

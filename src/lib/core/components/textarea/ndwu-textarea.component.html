@@ -13,7 +13,10 @@
   [style.height.px]="height()"
 >
   @if (showLineNumbers()) {
-    <div class="ndwu-textarea__gutter" aria-hidden="true">
+    <div
+      class="ndwu-textarea__gutter"
+      aria-hidden="true"
+    >
       <div
         class="ndwu-textarea__line-numbers"
         [style.transform]="`translateY(${-scrollTop()}px)`"
@@ -47,7 +50,11 @@
   ></textarea>
 
   @if (hasActions()) {
-    <div class="ndwu-textarea__actions-mask" aria-hidden="true"></div>
+    <div
+      class="ndwu-textarea__actions-mask"
+      aria-hidden="true"
+    >
+    </div>
   }
 
   <div

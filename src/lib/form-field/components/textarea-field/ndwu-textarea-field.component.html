@@ -1,4 +1,7 @@
-<ndwu-form-field [size]="sizeSvc.size()" [readonly]="readonly()">
+<ndwu-form-field
+  [size]="sizeSvc.size()"
+  [readonly]="readonly()"
+>
   @if (label()) {
     <ndwu-floating-label
       [label]="label()"
@@ -21,7 +24,10 @@
     (valueChange)="onValueChange($event)"
     (blurred)="onBlur()"
   >
-    <ng-content select="[ndwuTextareaActions]" ngProjectAs="[ndwuTextareaActions]" />
+    <ng-content
+      select="[ndwuTextareaActions]"
+      ngProjectAs="[ndwuTextareaActions]"
+    />
   </ndwu-textarea>
 
   @if (hasHelperMessage()) {

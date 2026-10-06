@@ -31,12 +31,6 @@ const TAG_ICON_OPTIONS: NdwuIconName[] = [
   NDWU_ICON_NAME.WARNING_S,
 ];
 
-const TOKEN_TO_CSS_VAR: Record<string, string> = {
-  'tag-override-bg': '--ndwu-tag-override-bg',
-  'tag-override-border': '--ndwu-tag-override-border',
-  'tag-override-fg': '--ndwu-tag-override-fg',
-};
-
 const TOKEN_TO_READ_CSS_VAR: Record<string, string> = {
   'tag-override-bg': '--ndwu-tag-bg',
   'tag-override-border': '--ndwu-tag-border',
@@ -50,10 +44,6 @@ const TOKEN_TO_READ_SELECTED_CSS_VAR: Record<string, string> = {
 };
 
 const DEFAULT_LABEL = 'Tag name';
-
-function tokenKeyToCssVar(key: string): string {
-  return CssUtils.tokenKeyToCssVar(key);
-}
 
 @Component({
   selector: 'app-tag-sandbox',
@@ -106,14 +96,14 @@ export class TagSandboxComponent extends SandboxBaseComponent {
 
     return TAG_COLOR_TOKENS.map((key) => ({
       key,
-      cssVar: TOKEN_TO_CSS_VAR[key] ?? '',
+      cssVar: CssUtils.tokenKeyToCssVar(key),
       readCssVar: readCssVars[key],
     }));
   }
 
   public tokenListForCurrentType(): readonly TokenListItem[] {
     return TAG_COLOR_TOKENS.map((key) => ({
-      cssVar: tokenKeyToCssVar(key),
+      cssVar: CssUtils.tokenKeyToCssVar(key),
       key,
     }));
   }
@@ -133,9 +123,9 @@ export class TagSandboxComponent extends SandboxBaseComponent {
   }
 
   protected override onInit(): void {
-    this.sandboxForm.controls.status.valueChanges.subscribe(() => {
-      this.sandboxTokens.reset(this.getTokenResetValues());
-    });
+    this.sandboxForm.controls.status.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.sandboxTokens.reset(this.getTokenResetValues()));
 
     merge(this.sandboxForm.controls.selectable.valueChanges, this.sandboxForm.controls.selected.valueChanges)
       .pipe(takeUntilDestroyed(this.destroyRef))

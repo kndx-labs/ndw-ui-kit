@@ -1,8 +1,8 @@
 <div
   #box
-  class="ndwu-textarea__box"
+  class="ndwu-textarea__box ndwu-form-field__input"
+  [class.ndwu-form-field__input--invalid]="invalid()"
   [class.ndwu-textarea__box--focused]="focused() && !readonly()"
-  [class.ndwu-textarea__box--invalid]="invalid()"
   [class.ndwu-textarea__box--disabled]="disabled()"
   [class.ndwu-textarea__box--readonly]="readonly()"
   [class.ndwu-textarea__box--has-actions]="hasActions()"
@@ -43,7 +43,6 @@
     (focus)="focused.set(true)"
     (blur)="onBlur()"
     (scroll)="onScroll()"
-    (wheel)="onWheel($event)"
     (elementResize)="onTextareaResize()"
   ></textarea>
 

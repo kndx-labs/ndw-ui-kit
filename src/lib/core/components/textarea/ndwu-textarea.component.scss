@@ -1,73 +1,87 @@
-@use 'styles/animations';
-@use 'styles/fonts';
+@use 'sass:map';
 @use 'styles/mixins';
 @use 'styles/padding';
-@use 'styles/radius';
 @use 'styles/spacing';
 @use 'styles/typography';
 
+@mixin textarea($config) {
+  --ndwu-textarea-inset: #{map.get($config, inset)};
+
+  .ndwu-textarea__box.ndwu-form-field__input {
+    height: map.get($config, height);
+    min-height: map.get($config, min-height);
+    padding: 0;
+  }
+
+  .ndwu-textarea__gutter {
+    min-width: map.get($config, gutter-width);
+    padding: var(--ndwu-textarea-inset) map.get($config, gutter-padding-x);
+    font-size: map.get($config, gutter-font-size);
+  }
+}
+
 .ndwu-textarea {
-  display: block;
-  min-width: 0;
+  $sizes: (
+    'L': (
+      inset: padding.$padding-8,
+      height: 100px,
+      min-height: 35px,
+      gutter-width: 32px,
+      gutter-padding-x: padding.$padding-8,
+      gutter-font-size: typography.$fontSize-xxsmall,
+    ),
+    'XL': (
+      inset: padding.$padding-12,
+      height: 130px,
+      min-height: 50px,
+      gutter-width: 40px,
+      gutter-padding-x: padding.$padding-12,
+      gutter-font-size: typography.$fontSize-small,
+    ),
+    'XXL': (
+      inset: padding.$padding-16,
+      height: 166px,
+      min-height: 58px,
+      gutter-width: 40px,
+      gutter-padding-x: padding.$padding-12,
+      gutter-font-size: typography.$fontSize-small,
+    ),
+  );
+
+  @each $size, $config in $sizes {
+    &--#{$size} {
+      @include textarea($config);
+    }
+  }
+
+  & {
+    display: block;
+    min-width: 0;
+  }
 
   &__box {
     position: relative;
     display: flex;
     overflow: hidden;
     box-sizing: border-box;
-    border: 1px solid var(--ndwu-form-field-border-color);
-    border-radius: radius.$radius-L;
-    background-color: var(--ndwu-form-field-bg);
-    transition:
-      border-color animations.$duration-default animations.$easing-default,
-      background-color animations.$duration-default animations.$easing-default,
-      box-shadow animations.$duration-default animations.$easing-default;
+  }
 
-    @media (prefers-reduced-motion: reduce) {
-      transition: none;
+  & &__box--focused {
+    @include mixins.focus-ring(var(--ndwu-form-field-focus-ring));
+
+    & {
+      border-color: transparent;
+      background-color: var(--ndwu-form-field-focus-bg, var(--ndwu-form-field-bg));
     }
 
-    &:hover {
-      border-color: var(--ndwu-form-field-hover-border-color);
-      background-color: var(--ndwu-form-field-hover-bg);
-    }
-
-    &--focused,
-    &--focused:hover {
-      @include mixins.focus-ring(var(--ndwu-form-field-focus-ring));
-
-      & {
-        border-color: transparent;
-        background-color: var(--ndwu-form-field-focus-bg);
-      }
-    }
-
-    &--invalid {
-      --ndwu-form-field-focus-ring: var(--ndwu-form-field-invalid-focus-ring);
-
-      border-color: var(--ndwu-form-field-invalid-border-color);
-
-      &:hover {
-        border-color: var(--ndwu-form-field-invalid-hover-border-color);
-      }
-    }
-
-    &--invalid#{&}--focused,
-    &--invalid#{&}--focused:hover {
+    &.ndwu-form-field__input--invalid {
       border-color: var(--ndwu-form-field-invalid-border-color);
     }
+  }
 
-    &--readonly,
-    &--readonly:hover {
-      border-color: var(--ndwu-form-field-readonly-border-color);
-      background-color: var(--ndwu-form-field-readonly-bg);
-    }
-
-    &--disabled,
-    &--disabled:hover {
-      border-color: var(--ndwu-form-field-disabled-border-color);
-      background-color: var(--ndwu-form-field-disabled-bg);
-    }
+  & &__box--readonly.ndwu-form-field__input:hover {
+    border-color: var(--ndwu-form-field-readonly-border-color, var(--ndwu-form-field-border-color));
+    background-color: var(--ndwu-form-field-readonly-bg);
   }
 
   &__control {
@@ -76,11 +90,13 @@
     box-sizing: border-box;
     min-width: 0;
     margin: 0;
+    padding: var(--ndwu-textarea-inset);
     border: none;
     background: transparent;
     outline: none;
-    color: var(--ndwu-form-field-text);
-    font-family: fonts.$font-family-default;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
     // stylelint-disable-next-line plugin/no-unsupported-browser-features
     resize: none;
 
@@ -90,12 +106,10 @@
     }
 
     &[readonly] {
-      color: var(--ndwu-form-field-readonly-text);
       cursor: default;
     }
 
     &:disabled {
-      color: var(--ndwu-form-field-disabled-text);
       cursor: not-allowed;
     }
   }
@@ -107,7 +121,6 @@
     border-right: 1px solid var(--ndwu-textarea-gutter-border-color);
     background-color: var(--ndwu-textarea-gutter-bg);
     color: var(--ndwu-textarea-gutter-text);
-    font-family: fonts.$font-family-default;
     text-align: center;
     user-select: none;
     font-variant-numeric: tabular-nums;
@@ -163,74 +176,7 @@
     background-color: inherit;
   }
 
-  &--XXL &__box {
-    --ndwu-textarea-inset: #{padding.$padding-16};
-
-    height: 166px;
-    min-height: 58px;
-  }
-
-  &--XXL &__control {
-    padding: padding.$padding-16;
-    font-size: typography.$fontSize-medium;
-    line-height: 24px;
-    letter-spacing: typography.$letterSpacing-S;
-  }
-
-  &--XXL &__gutter {
-    min-width: 40px;
-    padding: padding.$padding-16 padding.$padding-12;
-    font-size: typography.$fontSize-small;
-    line-height: 24px;
-  }
-
-  &--XL &__box {
-    --ndwu-textarea-inset: #{padding.$padding-12};
-
-    height: 130px;
-    min-height: 50px;
-  }
-
-  &--XL &__control {
-    padding: padding.$padding-12;
-    font-size: typography.$fontSize-medium;
-    line-height: 24px;
-    letter-spacing: typography.$letterSpacing-S;
-  }
-
-  &--XL &__gutter {
-    min-width: 40px;
-    padding: padding.$padding-12;
-    font-size: typography.$fontSize-small;
-    line-height: 24px;
-  }
-
-  &--L &__box,
-  &--S &__box {
-    --ndwu-textarea-inset: #{padding.$padding-8};
-
-    height: 100px;
-    min-height: 35px;
-    border-radius: radius.$radius-M;
-  }
-
-  &--L &__control,
-  &--S &__control {
-    padding: padding.$padding-8;
-    font-size: typography.$fontSize-xsmall;
-    line-height: 17px;
-    letter-spacing: typography.$letterSpacing-L;
-  }
-
-  &--L &__gutter,
-  &--S &__gutter {
-    min-width: 32px;
-    padding: padding.$padding-8;
-    font-size: typography.$fontSize-xxsmall;
-    line-height: 17px;
-  }
-
-  & &__box--has-actions {
+  & &__box--has-actions.ndwu-form-field__input {
     --ndwu-textarea-actions-space: calc(var(--ndwu-textarea-actions-width, 0px) + var(--ndwu-textarea-inset) + 8px);
 
     min-height: calc(var(--ndwu-textarea-inset) + var(--ndwu-textarea-actions-height, 0px) + var(--ndwu-textarea-scrollbar-height, 0px) + 24px);

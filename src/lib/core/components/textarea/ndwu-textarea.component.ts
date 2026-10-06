@@ -21,11 +21,7 @@ import {NDWU_ICON_NAME} from '../../../icon-names';
 import {NDWU_CONTROL, type NdwuControl} from '../form-field/control/ndwu-control';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
-
-interface ResizeStart {
-  pointerY: number;
-  height: number;
-}
+import {type NdwuTextareaResizeStart} from './ndwu-textarea.types';
 
 @Component({
   selector: 'ndwu-textarea',
@@ -124,7 +120,19 @@ export class NdwuTextareaComponent {
     this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.INPUT, this.controlId(), this.focused());
   });
 
-  private resizeStart: ResizeStart | null = null;
+  protected readonly syncWheelListener = effect((onCleanup) => {
+    if (!this.showLineNumbers()) {
+      return;
+    }
+
+    const el = this.textarea().nativeElement;
+    const listener = (event: WheelEvent): void => this.onWheel(event);
+
+    el.addEventListener('wheel', listener, {passive: false});
+    onCleanup(() => el.removeEventListener('wheel', listener));
+  });
+
+  private resizeStart: NdwuTextareaResizeStart | null = null;
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -150,29 +158,6 @@ export class NdwuTextareaComponent {
 
   protected onScroll(): void {
     this.scrollTop.set(this.textarea().nativeElement.scrollTop);
-  }
-
-  protected onWheel(event: WheelEvent): void {
-    if (!this.showLineNumbers() || event.ctrlKey) {
-      return;
-    }
-
-    const el = this.textarea().nativeElement;
-    const unit = this.wheelDeltaUnit(event.deltaMode, el);
-    const swapAxes = event.shiftKey && !event.deltaX;
-    const deltaX = (swapAxes ? event.deltaY : event.deltaX) * unit;
-    const deltaY = (swapAxes ? 0 : event.deltaY) * unit;
-    const {scrollTop, scrollLeft} = el;
-
-    el.scrollTop = scrollTop + deltaY;
-    el.scrollLeft = scrollLeft + deltaX;
-
-    if (el.scrollTop === scrollTop && el.scrollLeft === scrollLeft) {
-      return;
-    }
-
-    event.preventDefault();
-    this.scrollTop.set(el.scrollTop);
   }
 
   protected onTextareaResize(): void {
@@ -206,6 +191,29 @@ export class NdwuTextareaComponent {
 
   protected onResizeEnd(): void {
     this.resizeStart = null;
+  }
+
+  private onWheel(event: WheelEvent): void {
+    if (event.ctrlKey) {
+      return;
+    }
+
+    const el = this.textarea().nativeElement;
+    const unit = this.wheelDeltaUnit(event.deltaMode, el);
+    const swapAxes = event.shiftKey && !event.deltaX;
+    const deltaX = (swapAxes ? event.deltaY : event.deltaX) * unit;
+    const deltaY = (swapAxes ? 0 : event.deltaY) * unit;
+    const {scrollTop, scrollLeft} = el;
+
+    el.scrollTop = scrollTop + deltaY;
+    el.scrollLeft = scrollLeft + deltaX;
+
+    if (el.scrollTop === scrollTop && el.scrollLeft === scrollLeft) {
+      return;
+    }
+
+    event.preventDefault();
+    this.scrollTop.set(el.scrollTop);
   }
 
   private wheelDeltaUnit(deltaMode: number, el: HTMLTextAreaElement): number {

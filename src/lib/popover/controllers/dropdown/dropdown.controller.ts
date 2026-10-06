@@ -178,7 +178,7 @@ export class NdwuDropdownController extends NdwuPopoverController {
       offsetY: OFFSET_DROPUP,
     };
 
-    /* eslint-disable id-blacklist -- CDK flexibleConnectedTo point origin API uses x/y */
+    /* eslint-disable id-denylist -- CDK flexibleConnectedTo point origin API uses x/y */
     const origin = config.originPoint
       ? {x: config.originPoint.clientX, y: config.originPoint.clientY}
       : this.getPositionOrigin();

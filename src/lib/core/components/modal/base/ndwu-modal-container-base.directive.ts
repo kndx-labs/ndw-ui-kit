@@ -6,7 +6,7 @@ import {NDWU_ICON_NAME} from '../../../../icon-names';
 import {NDWU_MODAL_CONFIG, NDWU_MODAL_DATA, NDWU_MODAL_REF} from '../ndwu-modal.tokens';
 import type {NdwuModalButton, NdwuResolvedModalConfig} from '../ndwu-modal.types';
 import type {NdwuModalRef} from '../ndwu-modal-ref';
-import {NDWU_MODAL_CONFIG_DEFAULTS} from '../ndwu-modal.constants';
+import {NDWU_MODAL_BASE_CONFIG_DEFAULTS} from '../ndwu-modal.constants';
 import {NDWU_MODAL_SLOT_REGISTRY} from '../ndwu-modal-slot-registry';
 
 @Directive()
@@ -145,7 +145,7 @@ export class NdwuModalContainerBaseDirective {
   }
 
   protected applyAutoFocus(): void {
-    const autoFocus = this.config.autoFocus ?? NDWU_MODAL_CONFIG_DEFAULTS.autoFocus;
+    const autoFocus = this.config.autoFocus ?? NDWU_MODAL_BASE_CONFIG_DEFAULTS.autoFocus;
     const element = this.modalElement().nativeElement;
 
     if (!element) {

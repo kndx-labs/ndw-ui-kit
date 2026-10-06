@@ -1,6 +1,6 @@
 import type {Type, ViewContainerRef} from '@angular/core';
 import type {NdwuButtonVariant} from '../button/button/ndwu-button.component';
-import {NdwuTheme} from '../../../shared.types';
+import {NDWU_SIZE, NdwuTheme} from '../../../shared.types';
 import type {NdwuModalRef} from './ndwu-modal-ref';
 
 export type NdwuModalAutoFocus =
@@ -24,7 +24,13 @@ export interface NdwuModalButton {
   onClick?: (ref: NdwuModalRef) => void;
 }
 
-export interface NdwuModalConfig<ModalData = unknown> {
+/**
+ * Drawer panel width preset. Affects only the panel width,
+ * not the size of controls rendered inside the drawer.
+ */
+export type NdwuDrawerSize = typeof NDWU_SIZE.XL | typeof NDWU_SIZE.XXL;
+
+export interface NdwuModalBaseConfig<ModalData = unknown> {
   data?: ModalData;
   title?: string;
   description?: string;
@@ -37,18 +43,26 @@ export interface NdwuModalConfig<ModalData = unknown> {
   hasCloseButton?: boolean;
   id?: string;
   theme?: NdwuTheme;
-  width?: string;
-  minWidth?: string;
-  maxWidth?: string;
-  height?: string;
-  minHeight?: string;
-  maxHeight?: string;
   isLoading?: boolean;
   trapFocus?: boolean;
   autoFocus?: NdwuModalAutoFocus;
   restoreFocus?: boolean;
   closeButtonAriaLabel?: string;
   stackingOnMobile?: 'stack' | 'replace' | 'none';
+}
+
+export interface NdwuDialogConfig<ModalData = unknown> extends NdwuModalBaseConfig<ModalData> {
+  width?: string;
+  minWidth?: string;
+  maxWidth?: string;
+  height?: string;
+  minHeight?: string;
+  maxHeight?: string;
+}
+
+export interface NdwuDrawerConfig<ModalData = unknown> extends NdwuModalBaseConfig<ModalData> {
+  /** Panel width preset: `XL` (default) or `XXL`. */
+  size?: NdwuDrawerSize;
 }
 
 export interface NdwuAlertModalConfig {
@@ -75,21 +89,35 @@ export interface NdwuModalTemplateContext<ModalData = unknown, ReturnT = unknown
   modalRef?: NdwuModalRef<ReturnT>;
 }
 
-export interface NdwuModalOpenTemplateOptions<
+interface NdwuModalOpenTemplateBaseOptions<TemplateContext extends object> {
+  viewContainerRef: ViewContainerRef;
+  context?: TemplateContext;
+}
+
+export interface NdwuDialogOpenTemplateOptions<ModalData, TemplateContext extends object>
+  extends NdwuModalOpenTemplateBaseOptions<TemplateContext> {
+  type: 'dialog';
+  config?: NdwuDialogConfig<ModalData>;
+}
+
+export interface NdwuDrawerOpenTemplateOptions<ModalData, TemplateContext extends object>
+  extends NdwuModalOpenTemplateBaseOptions<TemplateContext> {
+  type: 'drawer';
+  config?: NdwuDrawerConfig<ModalData>;
+}
+
+export type NdwuModalOpenTemplateOptions<
   ModalData = unknown,
   ReturnT = unknown,
   TemplateContext extends object = NdwuModalTemplateContext<ModalData, ReturnT>,
-> {
-  type: NdwuModalType;
-  viewContainerRef: ViewContainerRef;
-  config?: NdwuModalConfig<ModalData>;
-  context?: TemplateContext;
-}
+> =
+  | NdwuDialogOpenTemplateOptions<ModalData, TemplateContext>
+  | NdwuDrawerOpenTemplateOptions<ModalData, TemplateContext>;
 
 export type NdwuModalType = 'dialog' | 'drawer';
 
 export type NdwuResolvedModalConfig<D = unknown> =
-  & Omit<NdwuModalConfig<D>, 'restoreFocus'>
+  & Omit<NdwuDialogConfig<D> & NdwuDrawerConfig<D>, 'restoreFocus'>
   & {
     type: NdwuModalType;
     restoreFocus: boolean;

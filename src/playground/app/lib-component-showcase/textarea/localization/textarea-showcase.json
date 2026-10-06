@@ -1,9 +1,10 @@
 {
-  "textarea-field-showcase": {
+  "textarea-showcase": {
     "tabs": {
       "overview": "Overview",
       "sandbox": "Sandbox"
     },
+    "compound": "Compound: ndwu-form-field + ndwu-floating-label + ndwu-textarea",
     "default": "Default (empty)",
     "filled": "Filled, required",
     "sizes": "Sizes",

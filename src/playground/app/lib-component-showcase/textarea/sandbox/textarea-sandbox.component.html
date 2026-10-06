@@ -43,19 +43,19 @@
                   ndwuIconButton
                   icon="reformat_S"
                   variant="flat"
-                  [attr.aria-label]="'textarea-field-showcase.actions.reformat' | localize"
+                  [attr.aria-label]="'textarea-showcase.actions.reformat' | localize"
                 ></button>
                 <button
                   ndwuIconButton
                   icon="copy_S"
                   variant="flat"
-                  [attr.aria-label]="'textarea-field-showcase.actions.copy' | localize"
+                  [attr.aria-label]="'textarea-showcase.actions.copy' | localize"
                 ></button>
                 <button
                   ndwuIconButton
                   icon="close_S"
                   variant="flat"
-                  [attr.aria-label]="'textarea-field-showcase.actions.clear' | localize"
+                  [attr.aria-label]="'textarea-showcase.actions.clear' | localize"
                 ></button>
               </div>
             }
@@ -80,7 +80,7 @@
           </div>
 
           <div class="sandbox__control-row">
-            <label class="sandbox__control-label" for="sandbox-hint">{{ 'textarea-field-showcase.sandbox.hint' | localize }}</label>
+            <label class="sandbox__control-label" for="sandbox-hint">{{ 'textarea-showcase.sandbox.hint' | localize }}</label>
             <input id="sandbox-hint" class="sandbox__control-input" type="text" formControlName="hint" />
           </div>
 
@@ -104,19 +104,19 @@
             </label>
             <label class="sandbox__checkbox">
               <input type="checkbox" formControlName="isReadonly" />
-              <span>{{ 'textarea-field-showcase.sandbox.readonly' | localize }}</span>
+              <span>{{ 'textarea-showcase.sandbox.readonly' | localize }}</span>
             </label>
             <label class="sandbox__checkbox">
               <input type="checkbox" formControlName="isResizable" />
-              <span>{{ 'textarea-field-showcase.sandbox.resizable' | localize }}</span>
+              <span>{{ 'textarea-showcase.sandbox.resizable' | localize }}</span>
             </label>
             <label class="sandbox__checkbox">
               <input type="checkbox" formControlName="showLineNumbers" />
-              <span>{{ 'textarea-field-showcase.sandbox.line-numbers' | localize }}</span>
+              <span>{{ 'textarea-showcase.sandbox.line-numbers' | localize }}</span>
             </label>
             <label class="sandbox__checkbox">
               <input type="checkbox" formControlName="showActions" />
-              <span>{{ 'textarea-field-showcase.sandbox.actions' | localize }}</span>
+              <span>{{ 'textarea-showcase.sandbox.actions' | localize }}</span>
             </label>
           </div>
 
@@ -137,8 +137,8 @@
           [tokens]="tokenList"
           [formGroup]="sandboxTokens"
           [tokenPickerValues]="tokenPickerValues()"
-          [sectionTitle]="'textarea-field-showcase.sandbox.tokens' | localize"
-          [inheritLabel]="'textarea-field-showcase.sandbox.inherit' | localize"
+          [sectionTitle]="'textarea-showcase.sandbox.tokens' | localize"
+          [inheritLabel]="'textarea-showcase.sandbox.inherit' | localize"
         />
       </div>
     </div>

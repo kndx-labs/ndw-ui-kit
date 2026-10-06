@@ -33,9 +33,9 @@ const DEFAULT_FORM_VALUES = {
 const DEFAULT_TOKEN_VALUES = Object.fromEntries(TEXTAREA_TOKENS.map((key) => [key, '']));
 
 @Component({
-  selector: 'app-textarea-field-sandbox',
-  templateUrl: './textarea-field-sandbox.component.html',
-  styleUrl: './textarea-field-sandbox.component.scss',
+  selector: 'app-textarea-sandbox',
+  templateUrl: './textarea-sandbox.component.html',
+  styleUrl: './textarea-sandbox.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
@@ -48,7 +48,7 @@ const DEFAULT_TOKEN_VALUES = Object.fromEntries(TEXTAREA_TOKENS.map((key) => [ke
     TokenListComponent,
   ],
 })
-export class TextareaFieldSandboxComponent extends SandboxBaseComponent {
+export class TextareaSandboxComponent extends SandboxBaseComponent {
   private readonly previewSurface = viewChild<ElementRef<HTMLElement>>('previewSurface');
 
   public readonly SIZE_OPTIONS = [

@@ -1,7 +1,15 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NdwuIconButtonComponent, NdwuTextareaActionsDirective} from '@ndw-ui-kit/core';
-import {NdwuTextareaFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
+import {
+  NDWU_SIZE,
+  NdwuFloatingLabelComponent,
+  NdwuFormFieldComponent,
+  NdwuHintDirective,
+  NdwuIconButtonComponent,
+  NdwuTextareaActionsDirective,
+  NdwuTextareaComponent,
+} from '@ndw-ui-kit/core';
+import {NdwuHelperMessageComponent, NdwuTextareaFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -21,21 +29,28 @@ const SAMPLE_CONFIG = [
 ].join('\n');
 
 @Component({
-  selector: 'app-textarea-field-overview',
-  templateUrl: './textarea-field-overview.component.html',
-  styleUrl: './textarea-field-overview.component.scss',
+  selector: 'app-textarea-overview',
+  templateUrl: './textarea-overview.component.html',
+  styleUrl: './textarea-overview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     LocalizePipe,
+    NdwuFloatingLabelComponent,
+    NdwuFormFieldComponent,
+    NdwuHelperMessageComponent,
+    NdwuHintDirective,
     NdwuIconButtonComponent,
     NdwuTextareaActionsDirective,
+    NdwuTextareaComponent,
     NdwuTextareaFieldComponent,
     ShowcaseLayoutComponent,
   ],
 })
-export class TextareaFieldOverviewComponent implements OnInit {
+export class TextareaOverviewComponent implements OnInit {
   public readonly SIZE = NDWU_SIZE;
+
+  public readonly compoundValue = signal<string>('');
 
   public readonly defaultForm = new FormGroup({
     text: new FormControl(''),

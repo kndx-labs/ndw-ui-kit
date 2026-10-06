@@ -116,8 +116,8 @@
       "name": "Tabs",
       "description": "Switchable content sections within a single panel."
     },
-    "ndwu-textarea-field": {
-      "name": "Textarea Field",
+    "ndwu-textarea": {
+      "name": "Textarea",
       "description": "Multi-line text input with optional line numbers."
     },
     "ndwu-timing-button": {

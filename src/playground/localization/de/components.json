@@ -116,7 +116,7 @@
       "name": "Tabs",
       "description": "Umschaltbare Inhaltsbereiche innerhalb eines Panels."
     },
-    "ndwu-textarea-field": {
+    "ndwu-textarea": {
       "name": "Textbereich",
       "description": "Mehrzeilige Texteingabe mit optionalen Zeilennummern."
     },

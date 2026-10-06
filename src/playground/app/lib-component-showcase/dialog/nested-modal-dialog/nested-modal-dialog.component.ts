@@ -2,8 +2,8 @@ import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {
   NDWU_MODAL_REF,
   NdwuButtonComponent,
+  NdwuDialogConfig,
   NdwuModalBodyDirective,
-  NdwuModalConfig,
   NdwuModalFooterDirective,
   NdwuModalRef,
   NdwuModalService,
@@ -31,7 +31,7 @@ export class NestedModalDialogComponent {
   }
 
   protected openNestedDialog(): void {
-    const config: NdwuModalConfig<{isParent: boolean}> = {
+    const config: NdwuDialogConfig<{isParent: boolean}> = {
       title: 'dialog-showcase.overview.nested-modal.nested-dialog.title',
       description: 'dialog-showcase.overview.nested-modal.nested-dialog.description',
       data: {isParent: false},

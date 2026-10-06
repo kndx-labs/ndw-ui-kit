@@ -1,16 +1,13 @@
-import {NdwuModalConfig} from './ndwu-modal.types';
+import {NdwuModalBaseConfig} from './ndwu-modal.types';
 
 export const NDWU_MODAL_CSS_CLASS = 'ndwu-modal';
 
 export const NDWU_MODAL_BACKDROP_CLASS = 'ndwu-modal-backdrop';
 
-export const NDWU_MODAL_CONFIG_DEFAULTS: NdwuModalConfig = {
+export const NDWU_MODAL_BASE_CONFIG_DEFAULTS: NdwuModalBaseConfig = {
   disableClose: false,
   hasCloseButton: true,
   backdropClass: NDWU_MODAL_BACKDROP_CLASS,
-  width: 'auto',
-  maxWidth: '90vw',
-  maxHeight: '90vh',
   trapFocus: true,
   autoFocus: 'first-heading',
   restoreFocus: true,

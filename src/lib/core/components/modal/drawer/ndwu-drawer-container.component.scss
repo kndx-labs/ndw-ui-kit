@@ -5,6 +5,8 @@
 @use 'styles/typography';
 @use '../ndwu-modal-mixins' as modal;
 
+$close-btn-offset: 2px;
+
 .ndwu-drawer {
   // Keep in sync with NDWU_DRAWER_WIDTH
   --drawer-width: 700px;
@@ -159,7 +161,7 @@
 
     &__header-content {
       gap: spacing.$spacing-12;
-      padding-right: spacing.$spacing-24 + spacing.$spacing-8;
+      padding-right: 20px + spacing.$spacing-8;
     }
 
     &__body {
@@ -180,8 +182,8 @@
     }
 
     &__close-btn {
-      top: spacing.$spacing-16 - 2px;
-      right: spacing.$spacing-16 - 2px;
+      top: spacing.$spacing-16 - $close-btn-offset;
+      right: spacing.$spacing-16 - $close-btn-offset;
     }
 
     &__title {

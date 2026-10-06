@@ -5,6 +5,8 @@
 @use 'styles/typography';
 @use '../ndwu-modal-mixins' as modal;
 
+$close-btn-offset: 2px;
+
 :host {
   @include mixins.mobile() {
     display: flex;
@@ -113,8 +115,8 @@
     }
 
     &__close-btn {
-      top: spacing.$spacing-24 + 2px;
-      right: spacing.$spacing-24 - 2px;
+      top: spacing.$spacing-24 + $close-btn-offset;
+      right: spacing.$spacing-24 - $close-btn-offset;
     }
 
     &__footer.ndwu-modal__actions {

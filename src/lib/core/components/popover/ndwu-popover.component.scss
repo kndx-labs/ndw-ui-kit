@@ -2,6 +2,8 @@
 @use 'styles/spacing';
 @use 'styles/mixins';
 
+$close-btn-offset: 2px;
+
 .ndwu-popover {
   position: relative;
   display: flex;
@@ -66,11 +68,11 @@
 
   /* stylelint-disable-next-line order/order */
   @include mixins.mobile() {
-    margin-right: -2px;
+    margin-right: -$close-btn-offset;
 
     &--floating {
-      top: spacing.$spacing-16 - 2px;
-      right: spacing.$spacing-16 - 2px;
+      top: spacing.$spacing-16 - $close-btn-offset;
+      right: spacing.$spacing-16 - $close-btn-offset;
       margin-right: 0;
     }
   }

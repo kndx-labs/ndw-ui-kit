@@ -48,12 +48,12 @@
             [icon]="ICON_NAME.MENU_DRAG_S"
             label="Tag name"
           ></button>
-          <span
+          <button
             ndwu-tag
             [size]="size"
             [icon]="ICON_NAME.ROUTER_S"
             label="25"
-          ></span>
+          ></button>
         }
       </div>
     </div>
@@ -62,11 +62,11 @@
       <h4>Label only</h4>
       <div class="tag-row">
         @for (size of sizes; track size) {
-          <span
+          <button
             ndwu-tag
             [size]="size"
             label="Tag name"
-          ></span>
+          ></button>
         }
       </div>
     </div>
@@ -111,12 +111,12 @@
     <div class="section">
       <h4>Projected content and maxWidth</h4>
       <div class="tag-row">
-        <span ndwu-tag size="XL">Projected label</span>
-        <span
+        <button ndwu-tag size="XL">Projected label</button>
+        <button
           ndwu-tag
           size="XL"
           maxWidth="120px"
-        >Projected label cut by maxWidth</span>
+        >Projected label cut by maxWidth</button>
       </div>
     </div>
 

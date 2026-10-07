@@ -2,18 +2,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  DestroyRef,
   OnInit,
   booleanAttribute,
   computed,
   inject,
   input,
-  signal,
   viewChild,
 } from '@angular/core';
-import {NgControl} from '@angular/forms';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {merge} from 'rxjs';
 import {
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
@@ -24,10 +19,8 @@ import {
 } from '@ndw-ui-kit/core';
 import type {NdwuLocalizableHtml} from '@ndw-ui-kit/core/l10n';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
-import {NDWU_VALIDATION_PROCESSOR, type NdwuValidationData} from '../../validation';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
-import {setValueAccessor} from '../../form-field.utils';
 
 @Component({
   selector: 'ndwu-textarea-field',
@@ -46,11 +39,8 @@ import {setValueAccessor} from '../../form-field.utils';
   }],
 })
 export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements OnInit {
-  protected readonly ngControl = inject(NgControl);
-  protected readonly destroyRef = inject(DestroyRef);
   protected readonly cdr = inject(ChangeDetectorRef);
   protected readonly sizeSvc = inject(NdwuSizeDirective);
-  protected readonly validationExtractor = inject(NDWU_VALIDATION_PROCESSOR);
 
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
@@ -62,19 +52,6 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
   public readonly showLineNumbers = input(false, {transform: booleanAttribute});
 
   protected readonly hintId = `${uniqueId('ndwu-textarea-field-')}-hint`;
-
-  protected readonly isInvalid = signal<boolean>(false);
-  protected readonly extractedValidation = signal<NdwuValidationData | null>(null);
-
-  protected readonly errorMessage = computed(() => {
-    return this.isInvalid()
-      ? this.extractedValidation()?.errorMessage ?? ''
-      : '';
-  });
-
-  protected readonly validationData = computed(() => {
-    return this.extractedValidation()?.validationData ?? {};
-  });
 
   protected readonly hasHelperMessage = computed(() => {
     return !!this.errorMessage() || !!this.hint();
@@ -88,28 +65,10 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
 
   constructor() {
     super('');
-    setValueAccessor(this.ngControl, this);
   }
 
   public ngOnInit(): void {
-    const control = this.ngControl?.control;
-
-    if (!control) {
-      return;
-    }
-
-    const updateValidationState = (): void => {
-      this.isInvalid.set(control.invalid && (control.touched || control.dirty));
-      this.extractedValidation.set(this.validationExtractor(control));
-    };
-
-    updateValidationState();
-
-    merge(control.statusChanges, control.valueChanges, control.events)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe(updateValidationState);
+    this.initValidationState();
   }
 
   public override writeValue(value: string | null): void {

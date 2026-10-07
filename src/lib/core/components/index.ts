@@ -45,3 +45,4 @@ export * from './progress-bar/ndwu-progress-bar.component';
 export * from './tooltip/';
 export * from './tabs/';
 export * from './tag/ndwu-tag.component';
+export * from './textarea/';

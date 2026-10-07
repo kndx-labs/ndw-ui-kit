@@ -19,6 +19,7 @@ export type ComponentName =
   | 'ndwu-radio'
   | 'ndwu-select-field'
   | 'ndwu-multi-select-field'
+  | 'ndwu-textarea'
   | 'ndwu-context-menu'
   | 'ndwu-tooltip'
   | 'ndwu-popover'

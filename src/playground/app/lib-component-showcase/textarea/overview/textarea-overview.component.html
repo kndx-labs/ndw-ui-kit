@@ -1,0 +1,186 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.compound' | localize }}</h4>
+      <ndwu-form-field>
+        <ndwu-floating-label label="textarea-showcase.label" />
+        <ndwu-textarea
+          placeholder="textarea-showcase.placeholder"
+          [(value)]="compoundValue"
+        />
+        <ndwu-helper-message
+          ndwuHint
+          helperMessage="textarea-showcase.hint"
+        />
+      </ndwu-form-field>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.default' | localize }}</h4>
+      <form [formGroup]="defaultForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-showcase.label"
+          placeholder="textarea-showcase.placeholder"
+          hint="textarea-showcase.hint"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.filled' | localize }}</h4>
+      <form [formGroup]="filledForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-showcase.label"
+          hint="textarea-showcase.hint"
+          ndwuRequired
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.sizes' | localize }}</h4>
+      <form [formGroup]="sizesForm" class="state-section__stack">
+        <ndwu-textarea-field
+          formControlName="xxl"
+          label="XXL"
+          hint="textarea-showcase.hint"
+          [size]="SIZE.XXL"
+        />
+        <ndwu-textarea-field
+          formControlName="xl"
+          label="XL"
+          hint="textarea-showcase.hint"
+          [size]="SIZE.XL"
+        />
+        <ndwu-textarea-field
+          formControlName="l"
+          label="L"
+          hint="textarea-showcase.hint"
+          [size]="SIZE.L"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.line-numbers' | localize }}</h4>
+      <form [formGroup]="lineNumbersForm" class="state-section__stack">
+        <ndwu-textarea-field
+          formControlName="xxl"
+          label="XXL"
+          showLineNumbers
+          [size]="SIZE.XXL"
+        />
+        <ndwu-textarea-field
+          formControlName="xl"
+          label="XL"
+          showLineNumbers
+          [size]="SIZE.XL"
+        />
+        <ndwu-textarea-field
+          formControlName="l"
+          label="L"
+          showLineNumbers
+          [size]="SIZE.L"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.actions.title' | localize }}</h4>
+      <form [formGroup]="actionsForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-showcase.label"
+          placeholder="textarea-showcase.placeholder"
+          hint="textarea-showcase.hint"
+          showLineNumbers
+        >
+          <div ndwuTextareaActions>
+            <button
+              ndwuIconButton
+              icon="reformat_S"
+              variant="flat"
+              [attr.aria-label]="'textarea-showcase.actions.reformat' | localize"
+              (click)="reformat()"
+            ></button>
+            <button
+              ndwuIconButton
+              icon="copy_S"
+              variant="flat"
+              [attr.aria-label]="'textarea-showcase.actions.copy' | localize"
+              (click)="copy()"
+            ></button>
+            <button
+              ndwuIconButton
+              icon="close_S"
+              variant="flat"
+              [attr.aria-label]="'textarea-showcase.actions.clear' | localize"
+              (click)="clear()"
+            ></button>
+          </div>
+        </ndwu-textarea-field>
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.invalid' | localize }}</h4>
+      <form [formGroup]="invalidForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-showcase.label"
+          placeholder="textarea-showcase.placeholder"
+          ndwuRequired
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.disabled' | localize }}</h4>
+      <form [formGroup]="disabledForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-showcase.label"
+          hint="textarea-showcase.hint"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.readonly' | localize }}</h4>
+      <form [formGroup]="readonlyForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-showcase.label"
+          readonly
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.resizable' | localize }}</h4>
+      <form [formGroup]="resizableForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-showcase.label"
+          [resizable]="true"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'textarea-showcase.not-resizable' | localize }}</h4>
+      <form [formGroup]="fixedSizeForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-showcase.label"
+          [resizable]="false"
+        />
+      </form>
+    </div>
+  </ng-template>
+</app-showcase-layout>

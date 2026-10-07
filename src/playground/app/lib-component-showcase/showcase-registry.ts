@@ -31,6 +31,7 @@ import {PictogramShowcaseComponent} from './pictogram/pictogram-showcase.compone
 import {ScrollbarShowcaseComponent} from './scrollbar/scrollbar-showcase.component';
 import {AccordionShowcaseComponent} from './accordion/accordion-showcase.component';
 import {TableShowcaseComponent} from './table/table-showcase.component';
+import {TextareaShowcaseComponent} from './textarea/textarea-showcase.component';
 
 export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-accordion': AccordionShowcaseComponent,
@@ -48,6 +49,7 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-radio': RadioShowcaseComponent,
   'ndwu-select-field': SelectFieldShowcaseComponent,
   'ndwu-multi-select-field': MultiSelectFieldShowcaseComponent,
+  'ndwu-textarea': TextareaShowcaseComponent,
   'ndwu-context-menu': ContextMenuShowcaseComponent,
   'ndwu-tooltip': TooltipShowcaseComponent,
   'ndwu-popover': PopoverShowcaseComponent,

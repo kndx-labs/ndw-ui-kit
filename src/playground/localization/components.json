@@ -124,6 +124,10 @@
       "name": "Tag",
       "description": "Selectable label to highlight, categorize, or filter items."
     },
+    "ndwu-textarea": {
+      "name": "Textarea",
+      "description": "Multi-line text input with optional line numbers."
+    },
     "ndwu-timing-button": {
       "name": "Timing Button",
       "description": "Button with a delayed or timed action."

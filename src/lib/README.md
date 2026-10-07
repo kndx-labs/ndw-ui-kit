@@ -569,6 +569,7 @@ and have a separate entry point (`@ndw-ui-kit/core/form-field`).
 | `ndwu-radio-field`           | Radio button list      |
 | `ndwu-schedule-editor-field` | Weekly schedule editor |
 | `ndwu-select-field`          | Single-option select   |
+| `ndwu-textarea-field`        | Multi-line text input  |
 | `ndwu-toggle-field`          | Toggle switch          |
 
 #### Browser autofill

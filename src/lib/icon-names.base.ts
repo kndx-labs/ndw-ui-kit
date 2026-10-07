@@ -31,6 +31,7 @@ export const BASE_ICON_NAME = [
   'last_S',
   'loading_L',
   'menu_drag_S',
+  'notches_S',
   'pin_S',
   'reload_S',
   'sorting_default_S',

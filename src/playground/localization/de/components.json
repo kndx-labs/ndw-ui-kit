@@ -124,6 +124,10 @@
       "name": "Tag",
       "description": "Auswählbare Kennzeichnung zum Hervorheben, Kategorisieren oder Filtern."
     },
+    "ndwu-textarea": {
+      "name": "Textbereich",
+      "description": "Mehrzeilige Texteingabe mit optionalen Zeilennummern."
+    },
     "ndwu-timing-button": {
       "name": "Zeitgesteuerte Schaltfläche",
       "description": "Schaltfläche mit verzögerter oder zeitgesteuerter Aktion."

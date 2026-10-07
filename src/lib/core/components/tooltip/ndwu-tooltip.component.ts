@@ -7,7 +7,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {LocalizeHtmlPipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizeHtmlPipe} from '@ndw-ui-kit/core/l10n';
 import {NDWU_TOOLTIP_CONTENT, NDWU_TOOLTIP_ID, NDWU_TOOLTIP_MAX_WIDTH} from './ndwu-tooltip.tokens';
 
 @Component({
@@ -15,7 +15,7 @@ import {NDWU_TOOLTIP_CONTENT, NDWU_TOOLTIP_ID, NDWU_TOOLTIP_MAX_WIDTH} from './n
   templateUrl: './ndwu-tooltip.component.html',
   styleUrl: './ndwu-tooltip.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LocalizeHtmlPipe],
+  imports: [NdwuLocalizeHtmlPipe],
 })
 export class NdwuTooltipComponent {
   protected readonly tooltipId = inject(NDWU_TOOLTIP_ID);

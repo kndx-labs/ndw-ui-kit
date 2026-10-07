@@ -459,12 +459,12 @@ Choose one of the following translation providers:
 
 #### HTML in text inputs
 
-These inputs are translated with the `localizeHtml` pipe and rendered as trusted HTML,
-so inline styles such as `style="position: relative; top: 2px"` are kept:
+These inputs are translated with the `localizeHtml` pipe. A translated string is rendered
+as trusted HTML, so inline styles such as `style="position: relative; top: 2px"` are kept:
 
 - `ndwu-notification`: `message`.
 - `ndwu-empty-state`: `header`, `description`.
-- `ndwu-helper-message`: `helperMessage`, `errorMessage`.
+- `ndwu-helper-message`: `helperMessage`.
 - `*-field` components: `hint`.
 - `ndwuTooltip`.
 
@@ -472,10 +472,10 @@ so inline styles such as `style="position: relative; top: 2px"` are kept:
 <ndwu-notification message="setup.led-hint" />
 ```
 
-A `SafeHtml` value is rendered as-is and is not translated.
+A string without a translation is sanitized by Angular, so inline styles are removed from it.
+To render other HTML as-is, pass a `SafeHtml` value; it is not translated.
 
-The sanitizer does not run on these inputs. A string without a translation is rendered as-is,
-so never pass user input or server data into them. Validation params in `ndwu-helper-message` are escaped.
+`errorMessage` in `ndwu-helper-message` takes translation keys only. Validation params are escaped.
 
 ### Component size
 

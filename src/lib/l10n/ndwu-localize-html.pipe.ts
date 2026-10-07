@@ -9,7 +9,7 @@ export type NdwuLocalizableHtml = string | SafeHtml;
   name: 'localizeHtml',
   pure: false,
 })
-export class LocalizeHtmlPipe implements PipeTransform {
+export class NdwuLocalizeHtmlPipe implements PipeTransform {
   private readonly translationService = inject(UiKitTranslationService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly sanitizer = inject(DomSanitizer);
@@ -36,6 +36,10 @@ export class LocalizeHtmlPipe implements PipeTransform {
     }
 
     const html = this.translationService.instant(key, args);
+
+    if (html === key) {
+      return key;
+    }
 
     if (this.cache?.html !== html) {
       this.cache = {html, trusted: this.sanitizer.bypassSecurityTrustHtml(html)};

@@ -19,7 +19,8 @@
     "@angular/common": "20.x",
     "@angular/core": "20.x",
     "@angular/forms": "20.x",
-    "@ngx-translate/core": "18.x"
+    "@ngx-translate/core": "18.x",
+    "rxjs": "^7.4.0"
   },
   "peerDependenciesMeta": {
     "@ngx-translate/core": {
@@ -39,7 +40,7 @@
     "./assets/*": "./assets/*"
   },
   "dependencies": {
-    "tslib": "2.8.1",
-    "svg-sprite": "2.0.4"
+    "tslib": "^2.8.1",
+    "svg-sprite": "^2.0.4"
   }
 }

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {
   NDWU_MODAL_REF,
   NdwuButtonComponent,
@@ -21,10 +21,7 @@ import {
   ],
 })
 export class CustomSlotDialogComponent {
-  constructor(
-    @Inject(NDWU_MODAL_REF) protected readonly modalRef: NdwuModalRef<boolean>,
-  ) {
-  }
+  protected readonly modalRef = inject<NdwuModalRef<boolean>>(NDWU_MODAL_REF);
 
   protected confirm(): void {
     this.modalRef.close(true);

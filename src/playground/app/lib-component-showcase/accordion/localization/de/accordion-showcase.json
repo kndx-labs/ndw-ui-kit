@@ -1,0 +1,20 @@
+{
+  "accordion-showcase": {
+    "tabs": {
+      "overview": "Übersicht"
+    },
+    "overview": {
+      "single": "Einzeln (Standard)",
+      "multi": "Mehrfach",
+      "chevron-end": "Chevron am Ende",
+      "disabled": "Deaktiviert",
+      "lazy": "Einzelnes Element mit Lazy-Inhalt",
+      "lazy-title": "Inhalt wird beim ersten Aufklappen gerendert",
+      "expanded": "Aufgeklappt",
+      "enabled": "Aktiviert",
+      "nested": "Verschachtelte Akkordeons und Chevron-Override pro Element",
+      "nested-outer-start": "Äußeres Element: Chevron am Anfang (geerbt)",
+      "nested-outer-end": "Äußeres Element: Chevron am Ende (Element-Override)"
+    }
+  }
+}

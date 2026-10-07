@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Injector,
   TemplateRef,
   ViewContainerRef,
   inject,
@@ -13,6 +14,7 @@ import {Observable} from 'rxjs';
 import {
   NDWU_ICON_NAME,
   NdwuButtonComponent,
+  type NdwuDialogConfig,
   NdwuDialogContainerComponent,
   NdwuModalActionsDirective,
   NdwuModalBodyDirective,
@@ -33,6 +35,8 @@ import {DelayedCloseDialogComponent} from './delayed-close-dialog/delayed-close-
 import {ConfirmCloseDialogComponent} from './confirm-close-dialog/confirm-close-dialog.component';
 import {CustomFocusDialogComponent} from './custom-focus-dialog/custom-focus-dialog';
 import {NestedModalDialogComponent} from './nested-modal-dialog/nested-modal-dialog.component';
+import {CustomInjectorDialogComponent} from './custom-injector-dialog/custom-injector-dialog.component';
+import {ShowcaseScopedService} from './custom-injector-dialog/showcase-scoped.service';
 
 interface User {
   id: number;
@@ -46,6 +50,7 @@ interface User {
   templateUrl: './dialog-showcase.component.html',
   styleUrl: './dialog-showcase.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ShowcaseScopedService],
   imports: [
     LocalizePipe,
     MarkdownDocumentPipe,
@@ -66,6 +71,7 @@ export class DialogShowcaseComponent {
   protected readonly cdr = inject(ChangeDetectorRef);
   protected readonly translation = inject(UiKitTranslationService);
   protected readonly viewContainerRef = inject(ViewContainerRef);
+  protected readonly injector = inject(Injector);
 
   protected readonly templateDialog = viewChild.required<TemplateRef<NdwuModalTemplateContext>>('templateDialog');
   // @dprint-ignore
@@ -474,6 +480,19 @@ export class DialogShowcaseComponent {
         theme,
       },
     );
+  }
+
+  protected openCustomInjectorDialog(theme: NdwuTheme, useCustomInjector: boolean): void {
+    const config: NdwuDialogConfig = {
+      title: 'Custom injector',
+      theme,
+    };
+
+    if (useCustomInjector) {
+      config.injector = this.injector;
+    }
+
+    this.modalService.openDialog(CustomInjectorDialogComponent, config);
   }
 
   protected openDrawerDialogBugDemo(theme: NdwuTheme): void {

@@ -1,7 +1,7 @@
 <div
   #modalElement
   class="ndwu-drawer"
-  [class.ndwu-drawer--xl]="config.width === '1200px'"
+  [class.ndwu-drawer--xxl]="isXxl"
   [cdkTrapFocus]="trapFocus()"
   [cdkTrapFocusAutoCapture]="trapFocus() && !isLoading()"
   [attr.aria-busy]="isLoading()"

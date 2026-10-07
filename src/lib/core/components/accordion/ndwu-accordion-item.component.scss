@@ -1,0 +1,152 @@
+@use 'styles/typography';
+@use 'styles/padding';
+@use 'styles/spacing';
+@use 'styles/animations';
+@use 'styles/mixins';
+
+:host {
+  display: block;
+  border-top: 1px solid var(--ndwu-accordion-divider-color);
+  background: var(--ndwu-accordion-bg);
+}
+
+:host(.ndwu-accordion-item--in-group:first-child) {
+  border-top: none;
+}
+
+:host(.ndwu-accordion-item--disabled) {
+  background: var(--ndwu-accordion-disabled-bg);
+  color: var(--ndwu-accordion-disabled-color);
+}
+
+.ndwu-accordion-item__header {
+  position: relative;
+  display: flex;
+  gap: spacing.$spacing-8;
+  align-items: center;
+  padding-block: padding.$padding-16;
+  transition: background-color animations.$duration-default ease;
+
+  :host(:not(.ndwu-accordion-item--disabled)) > &:hover {
+    background: var(--ndwu-accordion-header-hover-bg);
+  }
+}
+
+// `>` keeps state classes from leaking into nested accordion items
+.ndwu-accordion-item__chevron {
+  flex-shrink: 0;
+  color: var(--ndwu-accordion-chevron-color);
+
+  // rotated chevron gets its own layer and may cover the stretched trigger
+  pointer-events: none;
+  transition: transform animations.$duration-long animations.$easing-default;
+
+  :host(.ndwu-accordion-item--chevron-end) > .ndwu-accordion-item__header > & {
+    order: 1;
+  }
+
+  :host(.ndwu-accordion-item--expanded) > .ndwu-accordion-item__header > & {
+    transform: rotate(180deg);
+  }
+
+  :host(.ndwu-accordion-item--disabled) > .ndwu-accordion-item__header > & {
+    color: var(--ndwu-accordion-disabled-color);
+  }
+}
+
+.ndwu-accordion-item__trigger {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ndwu-accordion-title-color);
+  font-weight: typography.$fontWeight-XL;
+  font-size: typography.$fontSize-H6;
+  font-family: inherit;
+  line-height: 20px;
+  letter-spacing: typography.$letterSpacing-L;
+  text-align: start;
+  cursor: pointer;
+
+  // stretch the click/focus area over the whole header row
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    &::after {
+      @include mixins.focus-ring();
+    }
+  }
+
+  &:disabled {
+    color: var(--ndwu-accordion-disabled-color);
+    cursor: not-allowed;
+  }
+}
+
+// actions stay above the stretched trigger area
+.ndwu-accordion-item__actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-shrink: 0;
+  gap: spacing.$spacing-8;
+  align-items: center;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.ndwu-accordion-item__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+
+  // older browsers toggle the panel without animation
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  transition:
+    grid-template-rows animations.$duration-long animations.$easing-default,
+    visibility animations.$duration-long;
+
+  :host(.ndwu-accordion-item--expanded) > & {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+}
+
+.ndwu-accordion-item__panel-inner {
+  overflow: clip;
+  overflow-clip-margin: spacing.$spacing-4;
+  min-height: 0;
+}
+
+.ndwu-accordion-item__content {
+  padding: padding.$padding-8 0 padding.$padding-24 padding.$padding-28;
+  color: var(--ndwu-accordion-content-color);
+  font-size: typography.$fontSize-small;
+  line-height: 20px;
+  letter-spacing: typography.$letterSpacing-L;
+
+  :host(.ndwu-accordion-item--chevron-end) > .ndwu-accordion-item__panel > .ndwu-accordion-item__panel-inner > & {
+    padding-inline-start: 0;
+  }
+
+  :host(.ndwu-accordion-item--disabled) > .ndwu-accordion-item__panel > .ndwu-accordion-item__panel-inner > & {
+    color: var(--ndwu-accordion-disabled-color);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ndwu-accordion-item__header,
+  .ndwu-accordion-item__chevron,
+  .ndwu-accordion-item__panel {
+    transition: none;
+  }
+}

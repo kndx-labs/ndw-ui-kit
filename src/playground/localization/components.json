@@ -1,5 +1,9 @@
 {
   "components": {
+    "ndwu-accordion": {
+      "name": "Accordion",
+      "description": "Stack of collapsible sections with custom header and content."
+    },
     "ndwu-badge": {
       "name": "Badge",
       "description": "Small status indicator for labels, counts, or states."

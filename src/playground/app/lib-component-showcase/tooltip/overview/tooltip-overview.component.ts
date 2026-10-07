@@ -32,8 +32,7 @@ const ALIGNS: readonly NdwuPopoverAlign[] = ['center', 'start', 'end'];
 export class TooltipOverviewComponent {
   protected readonly ICON_NAME = NDWU_ICON_NAME;
 
-  protected readonly styledHtmlText = 'Status: <span style="display: inline-block; width: 10px; height: 10px; '
-    + 'border-radius: 50%; background: #4caf50; position: relative; top: 1px;"></span> <b>online</b>';
+  protected readonly styledHtmlText = 'tooltip-showcase.overview.styled-html-text';
 
   protected readonly multilineText =
     'Copy hexadecimal value to clipboard Copy hexadecimal value to clipboard value to clipboard '

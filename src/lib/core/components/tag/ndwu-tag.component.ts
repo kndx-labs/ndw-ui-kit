@@ -32,7 +32,7 @@ export type NdwuTagStatus = NdwuValues<typeof NDWU_TAG_STATUS>;
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'button[ndwu-tag],button[ndwuTag],span[ndwu-tag],span[ndwuTag]',
+  selector: 'button[ndwu-tag],button[ndwuTag]',
   templateUrl: './ndwu-tag.component.html',
   styleUrl: './ndwu-tag.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,12 +41,12 @@ export type NdwuTagStatus = NdwuValues<typeof NDWU_TAG_STATUS>;
     NdwuIconComponent,
   ],
   host: {
-    '[attr.type]': 'isButton ? "button" : null',
+    'type': 'button',
     '[class]': 'hostClasses()',
-    '[attr.disabled]': 'isButton && disabled() ? "" : null',
-    '[attr.aria-pressed]': 'canSelect() ? selected() : null',
+    '[disabled]': 'disabled()',
+    '[attr.aria-pressed]': 'selectable() ? selected() : null',
     '[attr.aria-label]': 'ariaLabel()',
-    '[attr.aria-keyshortcuts]': 'canRemove() ? "Delete Backspace" : null',
+    '[attr.aria-keyshortcuts]': 'removable() ? "Delete Backspace" : null',
     '[style.max-width]': 'maxWidth()',
     '[style.--ndwu-tag-label-max-width]': 'maxWidth() ? "none" : null',
     '(click)': 'toggle()',
@@ -88,12 +88,6 @@ export class NdwuTagComponent {
 
   private focusAfterRemoval: HTMLElement | null = null;
 
-  protected readonly isButton = this.elementRef.nativeElement.localName === 'button';
-
-  protected readonly canSelect = computed(() => this.isButton && this.selectable());
-
-  protected readonly canRemove = computed(() => this.isButton && this.removable());
-
   protected readonly effectiveSize = computed(() => ndwuToChipSize(this.sizeSvc.effectiveSize()));
 
   protected readonly hostClasses = computed(() => {
@@ -103,11 +97,7 @@ export class NdwuTagComponent {
       `ndwu-tag--size-${this.effectiveSize()}`,
     ];
 
-    if (!this.isButton) {
-      classes.push('ndwu-tag--static');
-    }
-
-    if (this.canSelect() && this.selected()) {
+    if (this.selectable() && this.selected()) {
       classes.push('ndwu-tag--selected');
     }
 
@@ -123,7 +113,7 @@ export class NdwuTagComponent {
   }
 
   protected toggle(): void {
-    if (this.canSelect()) {
+    if (this.selectable()) {
       this.selected.update((selected) => !selected);
     }
   }
@@ -134,7 +124,7 @@ export class NdwuTagComponent {
   }
 
   protected onRemoveKey(event: Event): void {
-    if (this.canRemove()) {
+    if (this.removable()) {
       event.preventDefault();
       this.remove();
     }

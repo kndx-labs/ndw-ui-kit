@@ -123,10 +123,12 @@
           <div class="sandbox__control-row">
             <label class="sandbox__control-label" for="sandbox-value">{{ 'common.value' | localize }}</label>
             <textarea
+              #valueInput
               id="sandbox-value"
               class="sandbox__control-input"
               rows="4"
-              formControlName="value"
+              [value]="sandboxForm.controls.value.value"
+              (input)="sandboxForm.controls.value.setValue(valueInput.value)"
             ></textarea>
           </div>
         </form>

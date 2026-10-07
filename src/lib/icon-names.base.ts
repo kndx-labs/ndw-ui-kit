@@ -18,6 +18,7 @@ export const BASE_ICON_NAME = [
   'chevron_up_S',
   'close_L',
   'close_S',
+  'close_XS',
   'error_L',
   'error_S',
   'error_XS',

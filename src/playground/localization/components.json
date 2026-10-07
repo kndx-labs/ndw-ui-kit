@@ -120,6 +120,10 @@
       "name": "Tabs",
       "description": "Switchable content sections within a single panel."
     },
+    "ndwu-tag": {
+      "name": "Tag",
+      "description": "Selectable label to highlight, categorize, or filter items."
+    },
     "ndwu-textarea": {
       "name": "Textarea",
       "description": "Multi-line text input with optional line numbers."

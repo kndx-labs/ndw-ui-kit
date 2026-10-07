@@ -1,0 +1,146 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    @for (size of sizes; track size) {
+      <div class="section">
+        <h4>Statuses — size {{ size }}</h4>
+        <div class="tag-row">
+          @for (status of statuses; track status) {
+            <button
+              ndwu-tag
+              removable
+              [size]="size"
+              [status]="status"
+              [label]="status"
+            ></button>
+          }
+        </div>
+      </div>
+
+      <div class="section">
+        <h4>Selected — size {{ size }}</h4>
+        <div class="tag-row">
+          @for (status of statuses; track status) {
+            <button
+              ndwu-tag
+              removable
+              selectable
+              [selected]="true"
+              [size]="size"
+              [status]="status"
+              [label]="status"
+            ></button>
+          }
+        </div>
+      </div>
+    }
+
+    <div class="section">
+      <h4>Leading icon</h4>
+      <div class="tag-row">
+        @for (size of sizes; track size) {
+          <button
+            ndwu-tag
+            removable
+            [size]="size"
+            [icon]="ICON_NAME.MENU_DRAG_S"
+            label="Tag name"
+          ></button>
+          <button
+            ndwu-tag
+            [size]="size"
+            [icon]="ICON_NAME.ROUTER_S"
+            label="25"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Label only</h4>
+      <div class="tag-row">
+        @for (size of sizes; track size) {
+          <button
+            ndwu-tag
+            [size]="size"
+            label="Tag name"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Disabled</h4>
+      <div class="tag-row">
+        @for (size of sizes; track size) {
+          <button
+            ndwu-tag
+            disabled
+            removable
+            [size]="size"
+            label="Tag name"
+          ></button>
+          <button
+            ndwu-tag
+            disabled
+            removable
+            [size]="size"
+            [icon]="ICON_NAME.MENU_DRAG_S"
+            label="Tag name"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Long label (more than 18 characters)</h4>
+      <div class="tag-row">
+        @for (size of sizes; track size) {
+          <button
+            ndwu-tag
+            removable
+            [size]="size"
+            label="Very long tag name that gets cut"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Projected content and maxWidth</h4>
+      <div class="tag-row">
+        <button ndwu-tag size="XL">Projected label</button>
+        <button
+          ndwu-tag
+          size="XL"
+          maxWidth="120px"
+        >Projected label cut by maxWidth</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Filter</h4>
+      <div class="tag-row">
+        @for (tag of filterTags(); track tag) {
+          <button
+            ndwu-tag
+            removable
+            size="XL"
+            status="info"
+            [label]="tag"
+            (removed)="removeFilterTag(tag)"
+          ></button>
+        }
+        <button
+          ndwu-button
+          variant="ghost"
+          size="L"
+          label="Reset"
+          (click)="resetFilterTags()"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

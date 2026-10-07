@@ -26,6 +26,7 @@ import {ToggleShowcaseComponent} from './toggle/toggle-showcase.component';
 import {TooltipShowcaseComponent} from './tooltip/tooltip-showcase.component';
 import {PopoverShowcaseComponent} from './popover/popover-showcase.component';
 import {TabsShowcaseComponent} from './tabs/tabs-showcase.component';
+import {TagShowcaseComponent} from './tag/tag-showcase.component';
 import {PictogramShowcaseComponent} from './pictogram/pictogram-showcase.component';
 import {ScrollbarShowcaseComponent} from './scrollbar/scrollbar-showcase.component';
 import {AccordionShowcaseComponent} from './accordion/accordion-showcase.component';
@@ -61,6 +62,7 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-card': CardShowcaseComponent,
   'ndwu-chip': ChipShowcaseComponent,
   'ndwu-tabs': TabsShowcaseComponent,
+  'ndwu-tag': TagShowcaseComponent,
   'ndwu-pictogram': PictogramShowcaseComponent,
   'ndwu-scrollbar': ScrollbarShowcaseComponent,
   'ndwu-table': TableShowcaseComponent,

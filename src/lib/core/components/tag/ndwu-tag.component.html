@@ -1,0 +1,25 @@
+@if (icon(); as icon) {
+  <ndwu-icon
+    class="ndwu-tag__icon"
+    [name]="icon"
+    aria-hidden="true"
+  />
+}
+
+<span class="ndwu-tag__label">
+  @if (label()) {
+    {{ label() | localize }}
+  } @else {
+    <ng-content />
+  }
+</span>
+
+@if (removable()) {
+  <ndwu-icon
+    class="ndwu-tag__close"
+    [name]="CLOSE_ICON"
+    aria-hidden="true"
+    (click)="onRemoveClick($event)"
+  />
+  <span class="ndwu-tag__remove-label">{{ removeLabel() | localize }}</span>
+}

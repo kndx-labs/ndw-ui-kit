@@ -29,6 +29,7 @@ export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-card',
   'ndwu-chip',
   'ndwu-tabs',
+  'ndwu-tag',
   'ndwu-pictogram',
   'ndwu-scrollbar',
   'ndwu-table',
@@ -64,6 +65,7 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-card': ['overview', 'sandbox'],
   'ndwu-chip': ['overview', 'sandbox'],
   'ndwu-tabs': ['overview', 'sandbox'],
+  'ndwu-tag': ['overview', 'sandbox'],
   'ndwu-pictogram': ['overview', 'sandbox'],
   'ndwu-scrollbar': ['overview'],
   'ndwu-table': ['overview'],
@@ -100,6 +102,7 @@ export const READY_FOR_REVIEW_COMPONENTS: (ComponentName | WidgetName)[] = [
   'ndwu-toggle',
   'ndwu-card',
   'ndwu-chip',
+  'ndwu-tag',
 ];
 
 export const SHOWCASE_NAMES: Record<string, string> = {
@@ -134,6 +137,7 @@ export const SHOWCASE_NAMES: Record<string, string> = {
   'ndwu-card': 'Card',
   'ndwu-chip': 'Chip',
   'ndwu-tabs': 'Tabs',
+  'ndwu-tag': 'Tag',
   'ndwu-pictogram': 'Pictogram',
   'ndwu-empty-state': 'Empty State',
   'ndwu-scrollbar': 'Scrollbar',
@@ -197,6 +201,7 @@ export const MENU_ITEMS: MenuItem[] = [
   {type: 'item', name: 'ndwu-tooltip'},
   {type: 'item', name: 'ndwu-popover'},
   {type: 'item', name: 'ndwu-tabs'},
+  {type: 'item', name: 'ndwu-tag'},
   {type: 'item', name: 'ndwu-textarea'},
   {type: 'item', name: 'ndwu-pictogram'},
   {type: 'item', name: 'ndwu-scrollbar'},

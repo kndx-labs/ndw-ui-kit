@@ -120,6 +120,10 @@
       "name": "Tabs",
       "description": "Umschaltbare Inhaltsbereiche innerhalb eines Panels."
     },
+    "ndwu-tag": {
+      "name": "Tag",
+      "description": "Auswählbare Kennzeichnung zum Hervorheben, Kategorisieren oder Filtern."
+    },
     "ndwu-textarea": {
       "name": "Textbereich",
       "description": "Mehrzeilige Texteingabe mit optionalen Zeilennummern."

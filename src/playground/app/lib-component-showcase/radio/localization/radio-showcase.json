@@ -20,6 +20,12 @@
     "option-2-selected": "Option 2 (Selected)",
     "disabled-option-1": "Disabled option 1",
     "disabled-option-2": "Disabled option 2",
-    "disabled-checked-option-2": "Disabled checked option 2"
+    "disabled-checked-option-2": "Disabled checked option 2",
+    "native-form": "Native form submit",
+    "native-form-description": "required on the group is set on every radio button. The browser blocks submit until an option is selected.",
+    "plan-basic": "Basic",
+    "plan-pro": "Pro",
+    "plan-basic-hint": "Basic plan is linked via aria-describedby",
+    "required-reactive": "Required (ndwu-radio-field)"
   }
 }

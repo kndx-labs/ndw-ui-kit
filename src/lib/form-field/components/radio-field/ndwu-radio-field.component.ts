@@ -1,4 +1,4 @@
-import {Component, computed, inject, input} from '@angular/core';
+import {Component, booleanAttribute, computed, inject, input} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {
   NDWU_OPTION_CONFIG,
@@ -30,6 +30,7 @@ export class NdwuRadioFieldComponent<T = NdwuOption> extends FormFieldBase<strin
   protected readonly diOptionConfig = inject(NDWU_OPTION_CONFIG, {optional: true}) ?? null;
 
   public readonly options = input<readonly T[]>([]);
+  public readonly ndwuRequired = input(false, {transform: booleanAttribute});
   public readonly optionAdapter = input<NdwuOptionAdapter<T> | undefined>(undefined);
 
   protected readonly normalizedOptions = computed<NdwuOption[]>(() => {

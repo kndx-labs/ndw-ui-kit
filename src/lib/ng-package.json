@@ -10,7 +10,8 @@
     "widgets/**/*.scss",
     "assets/**/*",
     "LICENSE.txt",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "lib": {
     "entryFile": "public-api.ts",

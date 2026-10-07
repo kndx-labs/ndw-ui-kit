@@ -1,6 +1,7 @@
 import type {ComponentName, ExampleName, MenuItem, WidgetName} from './app.types';
 
 export const COMPONENTS_LIST: ComponentName[] = [
+  'ndwu-accordion',
   'ndwu-button',
   'ndwu-timing-button',
   'ndwu-checkbox',
@@ -35,6 +36,7 @@ export const COMPONENTS_LIST: ComponentName[] = [
 
 /** Tab ids per component; used to build routes and tab config. */
 export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
+  'ndwu-accordion': ['overview'],
   'ndwu-button': ['overview', 'sandbox'],
   'ndwu-timing-button': ['overview', 'sandbox'],
   'ndwu-checkbox': ['overview', 'ng-model', 'cva'],
@@ -101,6 +103,7 @@ export const READY_FOR_REVIEW_COMPONENTS: (ComponentName | WidgetName)[] = [
 ];
 
 export const SHOWCASE_NAMES: Record<string, string> = {
+  'ndwu-accordion': 'Accordion',
   'ndwu-button': 'Button',
   'ndwu-timing-button': 'Timing Button',
   'ndwu-checkbox': 'Checkbox',
@@ -149,6 +152,7 @@ export const TABLE_MENU_ITEMS: ComponentName[] = [
 ];
 
 export const MENU_ITEMS: MenuItem[] = [
+  {type: 'item', name: 'ndwu-accordion'},
   {type: 'item', name: 'ndwu-badge'},
   {
     type: 'group',

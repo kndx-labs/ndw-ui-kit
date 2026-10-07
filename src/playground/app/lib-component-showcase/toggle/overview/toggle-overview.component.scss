@@ -16,3 +16,16 @@
     margin: 0;
   }
 }
+
+.native-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.native-form__row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}

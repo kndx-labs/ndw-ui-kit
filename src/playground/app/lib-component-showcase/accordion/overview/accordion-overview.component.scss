@@ -1,0 +1,24 @@
+.state-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 600px;
+
+  & + .state-section {
+    margin-top: 24px;
+  }
+}
+
+.item-description {
+  margin: 0 0 16px;
+}
+
+.item-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.state-hint {
+  margin: 0;
+}

@@ -695,6 +695,12 @@ Use the `ndwuRequired` input to show the required mark. Don't put Angular's
 `required`, `email`, `minlength`, `maxlength` or `pattern` attributes on ndwu
 fields: their validator directives replace the `NdwuValidators` errors.
 
+`ndwuRequired` on `ndwu-checkbox-field` and `ndwu-radio-field` also sets
+`required` on the native inputs. It only marks the field as required and
+doesn't validate anything: add a validator to the control. If your prefer
+builtin Angular validators, for a checkbox use `Validators.requiredTrue`,
+because `Validators.required` treats `false` as a valid value.
+
 ##### How it works
 
 A validator returns `ValidatorResult` (either `null` for success or `ErrorResult`):

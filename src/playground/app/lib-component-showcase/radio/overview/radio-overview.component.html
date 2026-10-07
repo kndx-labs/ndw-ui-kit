@@ -140,5 +140,52 @@
       </ndwu-radio-group>
     </form>
   </div>
+
+  <div class="state-section">
+    <h4>{{ 'radio-showcase.native-form' | localize }}</h4>
+    <p>{{ 'radio-showcase.native-form-description' | localize }}</p>
+    <form
+      class="native-form"
+      (submit)="toast.showFormData($event)"
+    >
+      <ndwu-radio-group
+        name="plan"
+        required
+        [value]="nativePlan()"
+        (valueChange)="nativePlan.set($event)"
+      >
+        <ndwu-radio-button
+          [id]="idPrefix + 'radio-showcase-plan-basic'"
+          value="basic"
+          label="radio-showcase.plan-basic"
+          [aria-describedby]="idPrefix + 'radio-showcase-plan-basic-hint'"
+        />
+        <ndwu-radio-button
+          value="pro"
+          label="radio-showcase.plan-pro"
+        />
+      </ndwu-radio-group>
+      <span [id]="idPrefix + 'radio-showcase-plan-basic-hint'">{{ 'radio-showcase.plan-basic-hint' | localize }}</span>
+      <button
+        ndwu-button
+        type="submit"
+        label="common.submit"
+      ></button>
+    </form>
+  </div>
+
+  <div class="state-section">
+    <h4>{{ 'radio-showcase.required-reactive' | localize }}</h4>
+    <form [formGroup]="radioRequired">
+      <ndwu-radio-field
+        formControlName="option"
+        ndwuRequired
+        [options]="radioRequiredOptions"
+      />
+    </form>
+    <p>{{ 'common.form-valid' | localize }}: {{ radioRequired.valid }}</p>
+  </div>
   </ng-template>
 </app-showcase-layout>
+
+<app-toast #toast />

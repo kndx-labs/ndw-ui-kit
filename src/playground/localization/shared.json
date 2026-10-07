@@ -50,7 +50,10 @@
       "l": "Size L",
       "xl": "Size XL",
       "xxl": "Size XXL"
-    }
+    },
+    "submit": "Submit",
+    "form-valid": "Form is valid",
+    "form-data-empty": "No fields submitted"
   },
   "file-upload": {
     "dropzone": {

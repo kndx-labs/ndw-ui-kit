@@ -36,6 +36,11 @@
     "dark-mode-secondary": "Switch between light and dark themes",
     "auto-save-secondary": "Automatically save your work every 5 minutes",
     "disabled-secondary": "This toggle is disabled",
-    "disabled-checked-secondary": "This toggle is checked and disabled"
+    "disabled-checked-secondary": "This toggle is checked and disabled",
+    "native-form": "Native form submit",
+    "native-form-description": "name and value are passed to the native input. Submit shows FormData.",
+    "no-value-secondary": "name=\"auto-save\" without value: sends \"on\"",
+    "external-label": "External label",
+    "external-label-description": "<label for> points to id (ndwu-toggle) or inputId (ndwu-toggle-field)."
   }
 }

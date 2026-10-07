@@ -6,6 +6,7 @@ export type WidgetName =
   | 'ndwu-schedule-editor';
 
 export type ComponentName =
+  | 'ndwu-accordion'
   | 'ndwu-button'
   | 'ndwu-timing-button'
   | 'ndwu-checkbox'

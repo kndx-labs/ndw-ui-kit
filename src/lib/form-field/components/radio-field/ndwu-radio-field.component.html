@@ -1,6 +1,7 @@
 <ndwu-radio-group
   [value]="inputValue"
   [disabled]="isDisabled"
+  [required]="ndwuRequired()"
   [size]="sizeSvc.size()"
   (valueChange)="onValueChange($event)"
   (blurred)="onBlur()"

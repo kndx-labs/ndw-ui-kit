@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component, computed, signal} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NdwuCheckboxComponent} from '@ndw-ui-kit/core';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {NDWU_SIZE, NdwuButtonComponent, NdwuCheckboxComponent} from '@ndw-ui-kit/core';
 import {NdwuCheckboxFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {ShowcaseLayoutComponent} from '@app/components';
+import {ShowcaseLayoutComponent, ToastComponent} from '@app/components';
 
 @Component({
   selector: 'app-checkbox-overview',
@@ -14,8 +14,10 @@ import {ShowcaseLayoutComponent} from '@app/components';
     ReactiveFormsModule,
     NdwuCheckboxComponent,
     NdwuCheckboxFieldComponent,
+    NdwuButtonComponent,
     LocalizePipe,
     ShowcaseLayoutComponent,
+    ToastComponent,
   ],
 })
 export class CheckboxOverviewComponent {
@@ -76,5 +78,9 @@ export class CheckboxOverviewComponent {
 
   public checkboxChecked = new FormGroup({
     checkbox: new FormControl(true),
+  });
+
+  public checkboxRequired = new FormGroup({
+    checkbox: new FormControl(false, {nonNullable: true, validators: Validators.requiredTrue}),
   });
 }

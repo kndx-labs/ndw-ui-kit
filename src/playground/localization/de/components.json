@@ -1,5 +1,9 @@
 {
   "components": {
+    "ndwu-accordion": {
+      "name": "Accordion",
+      "description": "Gruppe aufklappbarer Abschnitte mit eigenem Kopf- und Inhaltsbereich."
+    },
     "ndwu-badge": {
       "name": "Abzeichen",
       "description": "Kleiner Statusindikator für Beschriftungen, Zähler oder Zustände."

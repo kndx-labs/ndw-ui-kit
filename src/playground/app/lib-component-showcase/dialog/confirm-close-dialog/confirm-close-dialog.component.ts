@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, inject} from '@angular/core';
 import {Observable} from 'rxjs';
 import {
   NDWU_MODAL_REF,
@@ -23,11 +23,8 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
   ],
 })
 export class ConfirmCloseDialogComponent implements OnInit {
-  constructor(
-    @Inject(NDWU_MODAL_REF) protected readonly modalRef: NdwuModalRef,
-    protected modalService: NdwuModalService,
-  ) {
-  }
+  protected readonly modalRef = inject<NdwuModalRef>(NDWU_MODAL_REF);
+  protected modalService = inject(NdwuModalService);
 
   public ngOnInit(): void {
     this.modalRef.setCloseHandler(

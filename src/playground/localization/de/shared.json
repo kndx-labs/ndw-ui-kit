@@ -49,7 +49,10 @@
       "l": "Größe L",
       "xl": "Größe XL",
       "xxl": "Größe XXL"
-    }
+    },
+    "submit": "Absenden",
+    "form-valid": "Formular ist gültig",
+    "form-data-empty": "Keine Felder gesendet"
   },
   "file-upload": {
     "dropzone": {

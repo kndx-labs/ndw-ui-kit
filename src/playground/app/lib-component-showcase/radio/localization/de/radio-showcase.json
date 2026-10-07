@@ -20,6 +20,12 @@
     "option-2-selected": "Option 2 (Ausgewählt)",
     "disabled-option-1": "Deaktivierte Option 1",
     "disabled-option-2": "Deaktivierte Option 2",
-    "disabled-checked-option-2": "Deaktivierte ausgewählte Option 2"
+    "disabled-checked-option-2": "Deaktivierte ausgewählte Option 2",
+    "native-form": "Natives Formular",
+    "native-form-description": "required an der Gruppe wird an jeden Radio-Button gesetzt. Der Browser blockiert das Absenden, bis eine Option ausgewählt ist.",
+    "plan-basic": "Basis",
+    "plan-pro": "Pro",
+    "plan-basic-hint": "Basis-Tarif ist über aria-describedby verknüpft",
+    "required-reactive": "Pflichtfeld (ndwu-radio-field)"
   }
 }

@@ -27,6 +27,14 @@
     "terms-secondary": "Durch Ankreuzen dieses Feldes stimmen Sie unseren Nutzungsbedingungen zu",
     "newsletter-secondary": "Erhalten Sie Updates und Sonderangebote",
     "disabled-secondary": "Diese Checkbox ist deaktiviert",
-    "disabled-checked-secondary": "Diese Checkbox ist ausgewählt und deaktiviert"
+    "disabled-checked-secondary": "Diese Checkbox ist ausgewählt und deaktiviert",
+    "native-form": "Natives Formular",
+    "native-form-description": "name, value und required werden an das native Input übergeben. Absenden zeigt FormData; der Browser blockiert das Absenden, bis die Pflicht-Checkbox ausgewählt ist.",
+    "required-native-secondary": "name=\"terms\", value=\"accepted\", required",
+    "no-value-secondary": "name=\"newsletter\" ohne value: sendet \"on\"",
+    "remember-me": "Angemeldet bleiben",
+    "aria-label-hint": "Keine sichtbare Bezeichnung: der zugängliche Name kommt aus aria-label",
+    "required-reactive": "Pflichtfeld (Reactive Forms)",
+    "required-reactive-description": "ndwuRequired markiert das Feld nur. Die Validierung erfolgt über Validators.requiredTrue am Control."
   }
 }

@@ -36,6 +36,11 @@
     "dark-mode-secondary": "Wechseln Sie zwischen hellen und dunklen Themes",
     "auto-save-secondary": "Speichern Sie Ihre Arbeit automatisch alle 5 Minuten",
     "disabled-secondary": "Dieser Toggle ist deaktiviert",
-    "disabled-checked-secondary": "Dieser Toggle ist ausgewählt und deaktiviert"
+    "disabled-checked-secondary": "Dieser Toggle ist ausgewählt und deaktiviert",
+    "native-form": "Natives Formular",
+    "native-form-description": "name und value werden an das native Input übergeben. Absenden zeigt FormData.",
+    "no-value-secondary": "name=\"auto-save\" ohne value: sendet \"on\"",
+    "external-label": "Externe Bezeichnung",
+    "external-label-description": "<label for> verweist auf id (ndwu-toggle) oder inputId (ndwu-toggle-field)."
   }
 }

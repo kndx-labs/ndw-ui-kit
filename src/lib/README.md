@@ -457,30 +457,25 @@ Choose one of the following translation providers:
   > `@ndw-ui-kit/core/l10n/ngx-translate` (previously exported from `@ndw-ui-kit/core/l10n`),
   > so the package no longer requires `@ngx-translate/core` unless you import it.
 
-#### Trusted HTML in text inputs
+#### HTML in text inputs
 
-These inputs render HTML and also accept `SafeHtml`:
+These inputs are translated with the `localizeHtml` pipe and rendered as trusted HTML,
+so inline styles such as `style="position: relative; top: 2px"` are kept:
 
 - `ndwu-notification`: `message`.
 - `ndwu-empty-state`: `header`, `description`.
-- `ndwu-helper-message`: `helperMessage`.
+- `ndwu-helper-message`: `helperMessage`, `errorMessage`.
 - `*-field` components: `hint`.
 - `ndwuTooltip`.
 
-A string is treated as a translation key and its HTML is sanitized, so attributes like `style` are removed.
-A `SafeHtml` value is rendered as-is: it is not translated, and the sanitizer does not touch it.
-
-```typescript
-protected readonly ledHint = inject(DomSanitizer).bypassSecurityTrustHtml(
-  this.translate.instant('setup.led-hint'),
-);
-```
-
 ```html
-<ndwu-notification [message]="ledHint" />
+<ndwu-notification message="setup.led-hint" />
 ```
 
-Only mark HTML as trusted if your app controls it. Never do this for user input.
+A `SafeHtml` value is rendered as-is and is not translated.
+
+The sanitizer does not run on these inputs. A string without a translation is rendered as-is,
+so never pass user input or server data into them. Validation params in `ndwu-helper-message` are escaped.
 
 ### Component size
 

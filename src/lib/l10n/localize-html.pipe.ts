@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Pipe, PipeTransform, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import type {SafeHtml} from '@angular/platform-browser';
+import {DomSanitizer, type SafeHtml} from '@angular/platform-browser';
 import {UiKitTranslationService} from './services/translation.service';
 
 export type NdwuLocalizableHtml = string | SafeHtml;
@@ -12,6 +12,9 @@ export type NdwuLocalizableHtml = string | SafeHtml;
 export class LocalizeHtmlPipe implements PipeTransform {
   private readonly translationService = inject(UiKitTranslationService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly sanitizer = inject(DomSanitizer);
+
+  private cache: {html: string; trusted: SafeHtml} | null = null;
 
   constructor() {
     this.translationService.onLangChange$
@@ -32,6 +35,12 @@ export class LocalizeHtmlPipe implements PipeTransform {
       return key;
     }
 
-    return this.translationService.instant(key, args);
+    const html = this.translationService.instant(key, args);
+
+    if (this.cache?.html !== html) {
+      this.cache = {html, trusted: this.sanitizer.bypassSecurityTrustHtml(html)};
+    }
+
+    return this.cache.trusted;
   }
 }

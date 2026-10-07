@@ -1,6 +1,5 @@
 import {
   Component,
-  DestroyRef,
   ElementRef,
   OnInit,
   booleanAttribute,
@@ -11,10 +10,6 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {NgControl} from '@angular/forms';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {merge} from 'rxjs';
-import {NDWU_VALIDATION_PROCESSOR, NdwuValidationData} from '../../validation';
 import {
   NDWU_ICON_NAME,
   NdwuFloatingLabelComponent,
@@ -29,7 +24,6 @@ import {
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
-import {setValueAccessor} from '../../form-field.utils';
 
 @Component({
   selector: 'ndwu-input-field',
@@ -51,7 +45,6 @@ import {setValueAccessor} from '../../form-field.utils';
 })
 export class NdwuInputFieldComponent extends FormFieldBase<string> implements OnInit {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
-  protected readonly validationExtractor = inject(NDWU_VALIDATION_PROCESSOR);
 
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
@@ -66,7 +59,6 @@ export class NdwuInputFieldComponent extends FormFieldBase<string> implements On
   public readonly showPasswordIconLabel = input<string>('');
   public readonly hidePasswordIconLabel = input<string>('');
 
-  protected readonly invalid = signal<boolean>(false);
   protected readonly isPasswordVisible = signal<boolean>(false);
   protected readonly isPasswordInput = computed(() => {
     return this.type() === 'password';
@@ -96,53 +88,14 @@ export class NdwuInputFieldComponent extends FormFieldBase<string> implements On
     return this.isPasswordInput() || this.showRightIcon();
   });
 
-  protected readonly extractedValidation = signal<NdwuValidationData | null>(null);
-
-  protected readonly errorMessage = computed(() => {
-    return this.invalid()
-      ? this.extractedValidation()?.errorMessage ?? ''
-      : '';
-  });
-
-  protected readonly validationData = computed(() => {
-    return this.extractedValidation()?.validationData ?? {};
-  });
-
   protected readonly input = viewChild<ElementRef<HTMLInputElement>>('input');
 
-  constructor(
-    protected ngControl: NgControl,
-    protected readonly destroyRef$: DestroyRef,
-  ) {
+  constructor() {
     super('');
-    setValueAccessor(this.ngControl, this);
   }
 
   public ngOnInit(): void {
-    const control = this.ngControl?.control;
-
-    if (!control) {
-      return;
-    }
-
-    const updateValidationState = () => {
-      const controlInvalid = control.invalid ?? false;
-      const controlInteracted = (control.touched ?? false) || (control.dirty ?? false);
-
-      this.invalid.set(controlInvalid && controlInteracted);
-      this.extractedValidation.set(this.validationExtractor(control));
-    };
-
-    // Initialize state once (no initial emission from observables)
-    updateValidationState();
-
-    merge(control.statusChanges, control.valueChanges)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef$),
-      )
-      .subscribe(() => {
-        updateValidationState();
-      });
+    this.initValidationState();
   }
 
   public onBlur(): void {

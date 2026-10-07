@@ -1,4 +1,4 @@
-import {Component, DestroyRef, OnInit, input, signal} from '@angular/core';
+import {Component, DestroyRef, OnInit, input} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {
   NDWU_DEFAULT_WEEK_DAYS,
@@ -31,10 +31,8 @@ export class NdwuScheduleEditorFieldComponent extends FormFieldBase<NdwuSchedule
     {transform: (value: NdwuWeekDay[] | null | undefined) => value ?? NDWU_DEFAULT_WEEK_DAYS},
   );
 
-  protected readonly isInvalid = signal<boolean>(false);
-
   constructor(
-    protected ngControl: NgControl,
+    protected override ngControl: NgControl,
     protected readonly destroyRef$: DestroyRef,
   ) {
     super({});

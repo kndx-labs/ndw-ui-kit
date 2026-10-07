@@ -1,6 +1,5 @@
 import {Component, booleanAttribute, computed, contentChild, inject, input, signal, viewChild} from '@angular/core';
 import {NgTemplateOutlet} from '@angular/common';
-import {NgControl} from '@angular/forms';
 import {
   NDWU_ICON_NAME,
   NDWU_OPTION_CONFIG,
@@ -179,10 +178,8 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends SelectFieldBa
     };
   }
 
-  constructor(
-    protected override ngControl: NgControl,
-  ) {
-    super([], ngControl, 'ndwu-multi-select-trigger-');
+  constructor() {
+    super([], 'ndwu-multi-select-trigger-');
   }
 
   protected override onPanelOpened(): void {

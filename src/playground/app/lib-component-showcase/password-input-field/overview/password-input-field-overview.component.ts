@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, computed} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {NdwuPasswordInputFieldComponent} from '@ndw-ui-kit/core/form-field';
+import {NdwuPasswordInputFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {type NdwuPasswordStrength} from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
@@ -33,6 +33,10 @@ export class PasswordInputFieldOverviewComponent {
 
   public readonly strongForm = new FormGroup({
     password: new FormControl('abcdefghij'),
+  });
+
+  public readonly requiredForm = new FormGroup({
+    password: new FormControl('', [NdwuValidators.required()]),
   });
 
   private readonly defaultPasswordValue = toSignal(

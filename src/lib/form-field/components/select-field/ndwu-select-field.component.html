@@ -24,10 +24,11 @@
     [attr.id]="id"
     [attr.aria-labelledby]="label() ? formField()?.labelId() : null"
     [attr.aria-required]="ndwuRequired() ? 'true' : null"
-    [attr.aria-invalid]="invalid() ? 'true' : null"
+    [attr.aria-invalid]="isInvalid() ? 'true' : null"
+    [class.ndwu-form-field__input--invalid]="isInvalid()"
     class="ndwu-select-field__trigger ndwu-form-field__input"
     (focus)="focused.set(true)"
-    (blur)="focused.set(false)"
+    (blur)="onTriggerBlur()"
   >
     <span
       class="ndwu-select-field__trigger-text"
@@ -92,10 +93,13 @@
     </ndwu-dropdown-panel>
   </ng-template>
 
-  @if (hint()) {
+  @if (errorMessage() || hint()) {
     <ndwu-helper-message
       ndwuHint
+      [status]="errorMessage() ? 'error' : 'default'"
+      [errorMessage]="errorMessage()"
       [helperMessage]="hint()"
+      [validationData]="validationData()"
     />
   }
 </ndwu-form-field>

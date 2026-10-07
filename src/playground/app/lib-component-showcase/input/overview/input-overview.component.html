@@ -225,6 +225,26 @@
         />
       </form>
     </div>
+
+    <div class="state-section">
+      <h4>ngModel</h4>
+      <ndwu-input-field
+        label="input-showcase.email-address"
+        placeholder="input-showcase.enter-email-placeholder"
+        [ngModel]="ngModelValue()"
+        (ngModelChange)="ngModelValue.set($event)"
+      />
+      <output class="ng-model-value">Value: "{{ ngModelValue() }}"</output>
+    </div>
+
+    <div class="state-section">
+      <h4>No form control (no NgControl)</h4>
+      <ndwu-input-field
+        label="input-showcase.email-address"
+        placeholder="input-showcase.enter-email-placeholder"
+        hint="input-showcase.email-hint"
+      />
+    </div>
   </ng-template>
 </app-showcase-layout>
 

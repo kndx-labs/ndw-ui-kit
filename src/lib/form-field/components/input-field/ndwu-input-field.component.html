@@ -12,7 +12,7 @@
     [value]="inputValue"
     [attr.value]="inputValue"
     [placeholder]="placeholder() ? (placeholder() | localize) : ''"
-    [class.ndwu-form-field__input--invalid]="invalid()"
+    [class.ndwu-form-field__input--invalid]="isInvalid()"
     [class.ndwu-form-field__input--password]="isPasswordInput()"
     [class.ndwu-form-field__input--has-right-icon]="hasRightIcon()"
     [disabled]="isDisabled"

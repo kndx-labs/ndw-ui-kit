@@ -1,5 +1,4 @@
 import {
-  DestroyRef,
   Directive,
   Injector,
   OnInit,
@@ -12,7 +11,6 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {NgControl} from '@angular/forms';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {
   NDWU_ICON_NAME,
@@ -26,7 +24,6 @@ import {
 import {NdwuComboboxDirective} from '@ndw-ui-kit/core/aria';
 import {createDropdownController} from '@ndw-ui-kit/core/popover';
 import {HANDSET_BREAKPOINT, uniqueId} from '@ndw-ui-kit/core/utils';
-import {setValueAccessor, syncIsInvalid} from '../form-field.utils';
 import {FormFieldBase} from './form-field-base';
 import type {NdwuSelectRenderRow} from './select-render';
 
@@ -39,7 +36,7 @@ const SELECT_FOCUS_TYPE: NdwuInteractionFocusType = 'select';
  * This class provides:
  * - NdwuControl contract properties.
  * - Mobile-viewport detection, panel class, panel expansion tracking.
- * - Reactive `invalid` state tracking, and `setDisabledState` override.
+ * - Reactive `isInvalid` state tracking, and `setDisabledState` override.
  *
  * Subclasses must declare their own @input() bindings and HTML template.
  * Subclasses must contain `<ndwu-form-field>`.
@@ -52,7 +49,6 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   protected readonly injector = inject(Injector);
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   protected readonly breakpoint = inject(BreakpointObserver);
-  protected readonly destroyRef = inject(DestroyRef);
   protected readonly dropdownControllerFactory = createDropdownController;
   protected readonly registry = inject(NdwuInteractionRegistry);
 
@@ -63,7 +59,6 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   protected readonly idValue: string;
 
   public readonly focused = signal<boolean>(false);
-  public readonly invalid = signal<boolean>(false);
 
   // Subclasses provide their own "is field empty" logic
   // (it will be different for, e.g., select vs. multiselect).
@@ -114,14 +109,12 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   // == Constructor, lifecycle hooks ==========================================
   constructor(
     defaultValue: T,
-    protected ngControl: NgControl,
     idPrefix: string,
   ) {
     super(defaultValue);
 
     this.idValue = uniqueId(idPrefix);
 
-    setValueAccessor(ngControl, this);
     this.initFocusTracking();
     this.initExpansionTracking();
 
@@ -132,13 +125,7 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   }
 
   public ngOnInit(): void {
-    const control = this.ngControl?.control;
-
-    if (!control) {
-      return;
-    }
-
-    syncIsInvalid(control, this.invalid, this.destroyRef);
+    this.initValidationState();
   }
 
   // == FormBase overrides ====================================================
@@ -147,6 +134,18 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   }
 
   // == Shared methods ========================================================
+  /**
+   * Trigger blur handler. Blur with closed panel marks the control as touched;
+   * with open panel, `onPanelClosed()` does that.
+   */
+  protected onTriggerBlur(): void {
+    this.focused.set(false);
+
+    if (!this.isDisabled && !(this.combobox()?.expanded() ?? false)) {
+      this.onTouched();
+    }
+  }
+
   protected closePanel(): void {
     this.combobox()?.close();
   }

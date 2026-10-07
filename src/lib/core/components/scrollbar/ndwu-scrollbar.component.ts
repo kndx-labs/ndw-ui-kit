@@ -180,6 +180,10 @@ export class NdwuScrollbarComponent {
     this.contentEl().nativeElement.scrollTo(options);
   }
 
+  public refresh(): void {
+    this.scheduleRecalculate();
+  }
+
   private registerStaticListeners(content: HTMLElement): void {
     content.addEventListener('scroll', this.onScroll);
     this.hostEl.addEventListener('focus', this.onHostFocus);

@@ -1,0 +1,36 @@
+{
+  "textarea-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "compound": "Zusammengesetzt: ndwu-form-field + ndwu-floating-label + ndwu-textarea",
+    "default": "Standard (leer)",
+    "filled": "Ausgefüllt, erforderlich",
+    "sizes": "Größen",
+    "line-numbers": "Zeilennummern",
+    "actions": {
+      "title": "Mit Aktionen",
+      "reformat": "Neu formatieren",
+      "copy": "Kopieren",
+      "clear": "Leeren"
+    },
+    "invalid": "Ungültig",
+    "disabled": "Deaktiviert",
+    "readonly": "Schreibgeschützt",
+    "resizable": "Größenveränderbar",
+    "not-resizable": "Nicht größenveränderbar",
+    "label": "Kommentar",
+    "placeholder": "Text eingeben",
+    "hint": "Dies ist ein Hilfetext",
+    "sandbox": {
+      "hint": "Hinweis",
+      "readonly": "Schreibgeschützt",
+      "resizable": "Größenveränderbar",
+      "line-numbers": "Zeilennummern",
+      "actions": "Aktionen",
+      "tokens": "Textarea-Tokens",
+      "inherit": "Vererben"
+    }
+  }
+}

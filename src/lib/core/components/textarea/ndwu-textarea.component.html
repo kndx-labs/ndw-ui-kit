@@ -40,7 +40,9 @@
         <span
           class="ndwu-textarea__replica"
           aria-hidden="true"
-        >{{ currentValue() }}</span>
+        >
+          {{ currentValue() }}
+        </span>
 
         <textarea
           #textarea
@@ -59,7 +61,8 @@
           (input)="onInput($event)"
           (focus)="focused.set(true)"
           (blur)="onBlur()"
-        ></textarea>
+        >
+        </textarea>
       </div>
     </div>
   </div>

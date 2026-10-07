@@ -162,6 +162,17 @@
     </div>
 
     <div class="state-section">
+      <h4>{{ 'textarea-showcase.resizable' | localize }}</h4>
+      <form [formGroup]="resizableForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-showcase.label"
+          [resizable]="true"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
       <h4>{{ 'textarea-showcase.not-resizable' | localize }}</h4>
       <form [formGroup]="fixedSizeForm">
         <ndwu-textarea-field

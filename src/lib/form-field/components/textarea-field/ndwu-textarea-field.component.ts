@@ -83,7 +83,7 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
     return this.errorMessage() ? 'error' : 'default';
   });
 
-  protected readonly textarea = viewChild.required(NdwuTextareaComponent);
+  protected readonly textarea = viewChild(NdwuTextareaComponent);
 
   constructor() {
     super('');
@@ -112,7 +112,10 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
   }
 
   public override writeValue(value: string | null): void {
-    super.writeValue(value ?? '');
+    const normalized = value ?? '';
+
+    super.writeValue(normalized);
+    this.textarea()?.setValue(normalized);
     this.cdr.markForCheck();
   }
 
@@ -130,6 +133,6 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
   }
 
   public setFocus(): void {
-    this.textarea().focus();
+    this.textarea()?.focus();
   }
 }

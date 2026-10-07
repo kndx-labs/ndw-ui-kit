@@ -140,6 +140,16 @@ export class NdwuTextareaComponent implements NdwuControl {
     this.textarea().nativeElement.focus();
   }
 
+  public setValue(value: string): void {
+    this.currentValue.set(value);
+
+    const element = this.textarea().nativeElement;
+
+    if (element.value !== value) {
+      element.value = value;
+    }
+  }
+
   protected onInput(event: Event): void {
     const {value} = event.target as HTMLTextAreaElement;
 

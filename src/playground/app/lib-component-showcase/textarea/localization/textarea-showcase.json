@@ -18,6 +18,7 @@
     "invalid": "Invalid",
     "disabled": "Disabled",
     "readonly": "Readonly",
+    "resizable": "Resizable",
     "not-resizable": "Not resizable",
     "label": "Comment",
     "placeholder": "Enter text",

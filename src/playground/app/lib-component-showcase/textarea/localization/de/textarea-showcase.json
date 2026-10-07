@@ -18,6 +18,7 @@
     "invalid": "Ungültig",
     "disabled": "Deaktiviert",
     "readonly": "Schreibgeschützt",
+    "resizable": "Größenveränderbar",
     "not-resizable": "Nicht größenveränderbar",
     "label": "Kommentar",
     "placeholder": "Text eingeben",

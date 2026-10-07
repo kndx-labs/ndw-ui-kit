@@ -30,7 +30,7 @@ import {
   NdwuComboboxInputDirective,
   NdwuComboboxPopoverBridgeDirective,
 } from '@ndw-ui-kit/core/aria';
-import {LocalizeIfPipe, LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {LocalizeIfPipe, LocalizePipe, type NdwuLocalizableHtml} from '@ndw-ui-kit/core/l10n';
 import {NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 import {
@@ -84,7 +84,7 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends SelectFieldBa
 
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
-  public readonly hint = input<string>('');
+  public readonly hint = input<NdwuLocalizableHtml>('');
   public readonly ndwuRequired = input(false, {transform: booleanAttribute});
   public readonly options = input<readonly T[]>([]);
   public readonly optionAdapter = input<NdwuOptionAdapter<T> | undefined>(undefined);

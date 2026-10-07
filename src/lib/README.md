@@ -457,6 +457,31 @@ Choose one of the following translation providers:
   > `@ndw-ui-kit/core/l10n/ngx-translate` (previously exported from `@ndw-ui-kit/core/l10n`),
   > so the package no longer requires `@ngx-translate/core` unless you import it.
 
+#### Trusted HTML in text inputs
+
+These inputs render HTML and also accept `SafeHtml`:
+
+- `ndwu-notification`: `message`.
+- `ndwu-empty-state`: `header`, `description`.
+- `ndwu-helper-message`: `helperMessage`.
+- `*-field` components: `hint`.
+- `ndwuTooltip`.
+
+A string is treated as a translation key and its HTML is sanitized, so attributes like `style` are removed.
+A `SafeHtml` value is rendered as-is: it is not translated, and the sanitizer does not touch it.
+
+```typescript
+protected readonly ledHint = inject(DomSanitizer).bypassSecurityTrustHtml(
+  this.translate.instant('setup.led-hint'),
+);
+```
+
+```html
+<ndwu-notification [message]="ledHint" />
+```
+
+Only mark HTML as trusted if your app controls it. Never do this for user input.
+
 ### Component size
 
 Components support size variants: `S`, `L`, `XL`, `XXL` (not all components

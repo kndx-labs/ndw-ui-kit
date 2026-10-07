@@ -25,6 +25,6 @@
         />
       </span>
     }
-    <span [innerHTML]="(errorMessage() || helperMessage()) | localize:sanitizedValidationData()"></span>
+    <span [innerHTML]="(errorMessage() || helperMessage()) | localizeHtml:sanitizedValidationData()"></span>
   </span>
 }

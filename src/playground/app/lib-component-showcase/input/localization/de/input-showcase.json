@@ -62,6 +62,9 @@
     "readonly": "Schreibgeschützt",
     "readonly-with-icon": "Schreibgeschützt mit Icon",
     "readonly-label": "Schreibgeschütztes Feld",
-    "readonly-hint": "Dieses Feld ist schreibgeschützt"
+    "readonly-hint": "Dieses Feld ist schreibgeschützt",
+    "styled-html-title": "Hinweis mit Inline-Stilen",
+    "styled-html-label": "Gerätename",
+    "styled-html-hint": "Die <span style=\"display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;\"></span> LED leuchtet, wenn das Gerät online ist."
   }
 }

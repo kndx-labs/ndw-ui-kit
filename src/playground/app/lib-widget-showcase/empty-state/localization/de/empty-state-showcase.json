@@ -20,7 +20,9 @@
       "system-automatically-updates": "Das System aktualisiert sich automatisch im Rolling-Verfahren",
       "cancel": "Abbruch",
       "retry": "Wiederholen",
-      "accept": "Akzeptieren"
+      "accept": "Akzeptieren",
+      "l-styled-html": "L - HTML mit Inline-Stilen",
+      "styled-html-description": "Warten Sie, bis die <span style=\"display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;\"></span> LED leuchtet und nicht blinkt."
     }
   }
 }

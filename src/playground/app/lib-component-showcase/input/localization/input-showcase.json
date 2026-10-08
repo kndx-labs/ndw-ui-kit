@@ -62,9 +62,6 @@
     "readonly": "Readonly",
     "readonly-with-icon": "Readonly with Icon",
     "readonly-label": "Readonly Field",
-    "readonly-hint": "This field is read-only",
-    "styled-html-title": "Hint with inline styles",
-    "styled-html-label": "Device name",
-    "styled-html-hint": "The <span style=\"display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;\"></span> LED turns on when the device is online."
+    "readonly-hint": "This field is read-only"
   }
 }

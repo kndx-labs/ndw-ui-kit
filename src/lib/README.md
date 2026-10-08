@@ -464,8 +464,6 @@ as trusted HTML, so inline styles such as `style="position: relative; top: 2px"`
 
 - `ndwu-notification`: `message`.
 - `ndwu-empty-state`: `header`, `description`.
-- `ndwu-helper-message`: `helperMessage`.
-- `*-field` components: `hint`.
 - `ndwuTooltip`.
 
 ```html
@@ -474,8 +472,6 @@ as trusted HTML, so inline styles such as `style="position: relative; top: 2px"`
 
 A string without a translation is sanitized by Angular, so inline styles are removed from it.
 To render other HTML as-is, pass a `SafeHtml` value; it is not translated.
-
-`errorMessage` in `ndwu-helper-message` takes translation keys only. Validation params are escaped.
 
 ### Component size
 

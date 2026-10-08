@@ -22,7 +22,7 @@ import {
   ndwuNormalizeOptions,
   ndwuResolveOptionsAdapter,
 } from '@ndw-ui-kit/core';
-import {LocalizeIfPipe, LocalizePipe, type NdwuLocalizableHtml} from '@ndw-ui-kit/core/l10n';
+import {LocalizeIfPipe, LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   NdwuComboboxDirective,
   NdwuComboboxInputDirective,
@@ -72,7 +72,7 @@ export class NdwuSelectFieldComponent<T = NdwuOption> extends SelectFieldBase<st
 
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
-  public readonly hint = input<NdwuLocalizableHtml>('');
+  public readonly hint = input<string>('');
   public readonly ndwuRequired = input(false, {transform: booleanAttribute});
   public readonly options = input<readonly T[]>([]);
   public readonly optionAdapter = input<NdwuOptionAdapter<T> | undefined>(undefined);

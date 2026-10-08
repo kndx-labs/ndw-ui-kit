@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core
 import {ValidationErrors} from '@angular/forms';
 import {NDWU_ICON_NAME, type NdwuHelperMessageStatus, NdwuIconComponent} from '@ndw-ui-kit/core';
 import {escapeHtml} from '@ndw-ui-kit/core/utils';
-import {NdwuLocalizeHtmlPipe, type NdwuLocalizableHtml} from '@ndw-ui-kit/core/l10n';
+import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 @Component({
   selector: 'ndwu-helper-message',
@@ -10,7 +10,7 @@ import {NdwuLocalizeHtmlPipe, type NdwuLocalizableHtml} from '@ndw-ui-kit/core/l
   styleUrls: ['./ndwu-helper-message.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NdwuLocalizeHtmlPipe,
+    LocalizePipe,
     NdwuIconComponent,
   ],
 })
@@ -18,7 +18,7 @@ export class NdwuHelperMessageComponent {
   protected readonly ICON_NAME = NDWU_ICON_NAME;
 
   public readonly errorMessage = input<string>('');
-  public readonly helperMessage = input<NdwuLocalizableHtml>('');
+  public readonly helperMessage = input<string>('');
   public readonly validationData = input<ValidationErrors>();
   public readonly status = input<NdwuHelperMessageStatus>('default');
 

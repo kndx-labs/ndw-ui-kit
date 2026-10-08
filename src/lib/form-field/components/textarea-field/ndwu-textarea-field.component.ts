@@ -17,7 +17,6 @@ import {
   NdwuSizeDirective,
   NdwuTextareaComponent,
 } from '@ndw-ui-kit/core';
-import type {NdwuLocalizableHtml} from '@ndw-ui-kit/core/l10n';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
@@ -44,7 +43,7 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
 
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
-  public readonly hint = input<NdwuLocalizableHtml>('');
+  public readonly hint = input<string>('');
   public readonly ariaLabel = input<string>('');
   public readonly ndwuRequired = input(false, {transform: booleanAttribute});
   public readonly readonly = input(false, {transform: booleanAttribute});

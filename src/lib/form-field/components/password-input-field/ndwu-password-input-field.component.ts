@@ -13,7 +13,7 @@ import {
   NdwuSizeDirective,
   NdwuSuffixDirective,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe, type NdwuLocalizableHtml} from '@ndw-ui-kit/core/l10n';
+import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 
@@ -47,7 +47,7 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
 
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
-  public readonly hint = input<NdwuLocalizableHtml>('');
+  public readonly hint = input<string>('');
   public readonly ndwuRequired = input(false, {transform: booleanAttribute});
 
   public readonly strength = input<NdwuPasswordStrength | null>(null);

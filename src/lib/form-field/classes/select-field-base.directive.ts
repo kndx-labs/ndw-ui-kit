@@ -11,7 +11,9 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {BreakpointObserver} from '@angular/cdk/layout';
+import {map} from 'rxjs';
 import {
   NDWU_ICON_NAME,
   type NdwuControl,
@@ -51,6 +53,11 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   protected readonly breakpoint = inject(BreakpointObserver);
   protected readonly dropdownControllerFactory = createDropdownController;
   protected readonly registry = inject(NdwuInteractionRegistry);
+
+  protected readonly isMobileViewport = toSignal(
+    this.breakpoint.observe(HANDSET_BREAKPOINT).pipe(map((r) => r.matches)),
+    {initialValue: this.breakpoint.isMatched(HANDSET_BREAKPOINT)},
+  );
 
   protected readonly combobox = viewChild(NdwuComboboxDirective);
   protected readonly formField = viewChild(NdwuFormFieldComponent);
@@ -128,11 +135,6 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
     this.initValidationState();
   }
 
-  // == FormBase overrides ====================================================
-  public override setDisabledState(isDisabled: boolean): void {
-    super.setDisabledState(isDisabled);
-  }
-
   // == Shared methods ========================================================
   /**
    * Trigger blur handler. Blur with closed panel marks the control as touched;
@@ -148,10 +150,6 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
 
   protected closePanel(): void {
     this.combobox()?.close();
-  }
-
-  protected isMobileViewport(): boolean {
-    return this.breakpoint.isMatched(HANDSET_BREAKPOINT);
   }
 
   protected renderRowKey(row: NdwuSelectRenderRow): string {

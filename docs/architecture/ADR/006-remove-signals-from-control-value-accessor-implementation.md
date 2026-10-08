@@ -67,3 +67,35 @@ Specifically:
 - Accessors are not automatically memoized (unlike `computed`) &mdash; repeated evaluations
   may occur during frequent re-renders. In practice this is not an issue:
   the component tree is shallow and the computations inside accessors are cheap.
+
+## Addendum: OnPush wrappers and `NdwuFormFieldComponent` (NDWU-140)
+
+- Date: 2026-10-07
+
+NDWU-140 moves the `*-field` wrappers to `ChangeDetectionStrategy.OnPush`. Option 3 relies on
+"change detection is triggered by the Angular Forms API itself after `writeValue`", which no longer
+holds for an OnPush wrapper. `FormFieldBase` therefore calls `ChangeDetectorRef.markForCheck()` in
+`writeValue`, `setDisabledState` and `handleChange`. `markForCheck()` mutates no signals, so the
+decision above still holds.
+
+`NdwuFormFieldComponent` stays on `ChangeDetectionStrategy.Default`:
+
+- Its accessors (`inputId`, `isFieldDisabled`, `isLabelFloating`, `rootClass`, `labelClass`) read
+  plain `NdwuControl` fields. The projected control changes those fields without notifying
+  the form field.
+- `markForCheck()` marks the calling view and its ancestors only. `ndwu-form-field` is a child
+  view of the wrapper, so the wrapper's `markForCheck()` never reaches it, and none of its inputs
+  change.
+- Checked at runtime: with `ndwu-form-field` on OnPush, `control.disable()` on `ndwu-select-field`
+  updates the trigger's `aria-disabled`, but the wrapper and label `--disabled` classes never
+  appear, even after the consumer view is checked again.
+
+Moving `NdwuFormFieldComponent` to OnPush requires it to learn about `NdwuControl` changes,
+for example through:
+
+1. A `stateChanges: Observable<void>` on `NdwuControl` that the form field subscribes to and
+   answers with `markForCheck()`. This is the Angular Material `MatFormFieldControl` pattern,
+   and it keeps CVA methods free of signal mutations.
+2. Signal-backed `NdwuControl` properties. This reverses the decision of this ADR.
+
+That change is left to a follow-up task.

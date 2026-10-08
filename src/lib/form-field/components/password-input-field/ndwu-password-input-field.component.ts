@@ -1,4 +1,14 @@
-import {Component, OnInit, ViewEncapsulation, booleanAttribute, computed, inject, input, signal} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  booleanAttribute,
+  computed,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import {
   NDWU_ICON_NAME,
   NdwuFloatingLabelComponent,
@@ -23,6 +33,7 @@ import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.
   templateUrl: './ndwu-password-input-field.component.html',
   styleUrl: './ndwu-password-input-field.component.scss',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LocalizePipe,
     NdwuFloatingLabelComponent,

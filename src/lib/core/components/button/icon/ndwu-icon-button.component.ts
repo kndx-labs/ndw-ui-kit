@@ -1,4 +1,4 @@
-import {Component, booleanAttribute, computed, inject, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input} from '@angular/core';
 import {NdwuValues} from '../../../../shared.types';
 import {NdwuSizeDirective} from '../../../directives';
 import {NdwuIconName} from '../../../../icon-names';
@@ -17,6 +17,7 @@ export type NdwuIconButtonVariant = NdwuValues<typeof NDWU_ICON_BUTTON_VARIANT>;
   selector: 'button[ndwu-icon-button],button[ndwuIconButton]',
   templateUrl: './ndwu-icon-button.component.html',
   styleUrl: './ndwu-icon-button.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'type': 'button',
     '[class]': 'hostClasses()',

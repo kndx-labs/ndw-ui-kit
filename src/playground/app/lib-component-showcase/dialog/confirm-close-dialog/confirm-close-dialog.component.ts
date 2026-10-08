@@ -40,8 +40,12 @@ export class ConfirmCloseDialogComponent implements OnInit {
               subscriber.complete();
             });
 
+          // Teardown runs on completion and on cancellation (parent closed
+          // with `close()`). After a normal answer the confirm is already
+          // closed and this `close()` is a no-op.
           return () => {
             subscription.unsubscribe();
+            confirmModalRef.close();
           };
         }),
     );

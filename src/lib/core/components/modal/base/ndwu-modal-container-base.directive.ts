@@ -1,5 +1,14 @@
-/* eslint no-case-declarations: 0 */
-import {DOCUMENT, DestroyRef, Directive, ElementRef, afterNextRender, computed, inject, viewChild} from '@angular/core';
+import {
+  AfterRenderRef,
+  DOCUMENT,
+  DestroyRef,
+  Directive,
+  ElementRef,
+  afterRenderEffect,
+  computed,
+  inject,
+  viewChild,
+} from '@angular/core';
 import {CdkPortalOutlet, ComponentPortal, TemplatePortal} from '@angular/cdk/portal';
 import {InteractivityChecker} from '@angular/cdk/a11y';
 import {NDWU_ICON_NAME} from '../../../../icon-names';
@@ -99,23 +108,33 @@ export class NdwuModalContainerBaseDirective {
   protected readonly portalOutlet = viewChild.required(CdkPortalOutlet);
 
   protected previouslyFocusedElement: HTMLElement | null = null;
+  protected readonly hostElement: HTMLElement = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+
+  private initialFocusEffect: AfterRenderRef | null = null;
 
   constructor() {
-    afterNextRender(() => {
-      this.previouslyFocusedElement = this.document.activeElement as HTMLElement | null;
+    // The container is created inside `overlayRef.attach()`, before any
+    // focus moves, so the active element is still the modal's trigger.
+    this.previouslyFocusedElement = this.getActiveElement();
 
-      if (this.isAutoFocusEnabled()) {
-        this.applyAutoFocus();
+    // Runs after render and again when `isLoading` (or a view query) changes,
+    // until the initial focus is applied once; then the effect destroys
+    // itself, so later loading toggles never move focus. It never runs
+    // synchronously, so `initialFocusEffect` is assigned by the first run.
+    this.initialFocusEffect = afterRenderEffect(() => {
+      if (this.isLoading()) {
+        this.focusModalElementIfFocusOutside();
+
+        return;
       }
+
+      this.applyInitialFocus();
+      this.initialFocusEffect?.destroy();
+      this.initialFocusEffect = null;
     });
 
     this.destroyRef.onDestroy(() => {
-      if (
-        this.config.restoreFocus
-        && this.previouslyFocusedElement?.isConnected
-      ) {
-        this.previouslyFocusedElement.focus();
-      }
+      this.restoreFocus();
     });
   }
 
@@ -144,6 +163,92 @@ export class NdwuModalContainerBaseDirective {
     return this.bodyElement()?.nativeElement ?? null;
   }
 
+  protected applyInitialFocus(): void {
+    // The user may have moved focus into the content while it was loading.
+    if (this.hasFocusInsideContent()) {
+      return;
+    }
+
+    if (this.isAutoFocusEnabled()) {
+      this.applyAutoFocus();
+    }
+
+    // `autoFocus: false`, or nothing matched (e.g. no focusable heading in
+    // a custom header): keep focus inside the modal anyway.
+    this.focusModalElementIfFocusOutside();
+  }
+
+  protected restoreFocus(): void {
+    const target = this.previouslyFocusedElement;
+
+    if (!this.config.restoreFocus || !target?.isConnected) {
+      return;
+    }
+
+    // Do not steal focus if the user already moved it elsewhere.
+    const active = this.getActiveElement();
+    const isFocusLeftBehind = active === null
+      || active === this.document.body
+      || this.hostElement.contains(active);
+
+    if (isFocusLeftBehind) {
+      target.focus();
+    }
+  }
+
+  protected focusModalElementIfFocusOutside(): void {
+    const active = this.getActiveElement();
+
+    if (active !== null && this.hostElement.contains(active)) {
+      return;
+    }
+
+    this.modalElement().nativeElement.focus();
+  }
+
+  protected hasFocusInsideContent(): boolean {
+    const modalElement = this.modalElement().nativeElement;
+    const active = this.getActiveElement();
+
+    return active !== null
+      && active !== modalElement
+      && modalElement.contains(active);
+  }
+
+  protected getActiveElement(): HTMLElement | null {
+    const active = this.document.activeElement;
+
+    return active instanceof HTMLElement ? active : null;
+  }
+
+  protected focusFirstTabbable(element: HTMLElement): void {
+    // Skip links even if one is the first tabbable element
+    const skipElements = Array.from(element.querySelectorAll<HTMLElement>('a'));
+
+    const findFirstTabbable = (
+      root: ParentNode,
+      skipList?: HTMLElement[],
+    ): HTMLElement | undefined => {
+      const childNodes = Array.from(root.querySelectorAll<HTMLElement>('*'));
+
+      return childNodes.find((el) => {
+        if (skipList?.some((skip) => skip.contains(el))) {
+          return false;
+        }
+
+        return this.interactivityChecker.isFocusable(el)
+          && this.interactivityChecker.isTabbable(el);
+      });
+    };
+
+    const body = this.getBodyElement();
+    const firstInBody = body ? findFirstTabbable(body, skipElements) : undefined;
+    const firstInDialog = findFirstTabbable(element, skipElements);
+    const target = firstInBody ?? firstInDialog ?? element;
+
+    target.focus();
+  }
+
   protected applyAutoFocus(): void {
     const autoFocus = this.config.autoFocus ?? NDWU_MODAL_BASE_CONFIG_DEFAULTS.autoFocus;
     const element = this.modalElement().nativeElement;
@@ -167,46 +272,22 @@ export class NdwuModalContainerBaseDirective {
         break;
       }
 
-      case 'first-tabbable': {
-        // Even with this option we will skip link if it is the first tabbable element inside a dialog.
-        //
-        // @see internal design spec: focus order
-        const skipElements = Array.from(element.querySelectorAll<HTMLElement>('a'));
-
-        const findFirstTabbable = (
-          root: ParentNode,
-          skipList?: HTMLElement[],
-        ): HTMLElement | undefined => {
-          const childNodes = Array.from(root.querySelectorAll<HTMLElement>('*'));
-
-          return childNodes.find((el) => {
-            if (skipList?.some((skip) => skip.contains(el))) {
-              return false;
-            }
-
-            return this.interactivityChecker.isFocusable(el)
-              && this.interactivityChecker.isTabbable(el);
-          });
-        };
-
-        const body = this.getBodyElement();
-        const firstInBody = body ? findFirstTabbable(body, skipElements) : undefined;
-        const firstInDialog = findFirstTabbable(element, skipElements);
-        const target = firstInBody ?? firstInDialog ?? element;
-
-        target.focus();
+      case 'first-tabbable':
+        this.focusFirstTabbable(element);
 
         break;
-      }
 
-      case true:
+      case true: {
         const customInitialFocus = element.querySelector('[cdkFocusInitial]');
 
         if (customInitialFocus instanceof HTMLElement) {
           customInitialFocus.focus();
+        } else {
+          this.focusFirstTabbable(element);
         }
 
         break;
+      }
     }
   }
 }

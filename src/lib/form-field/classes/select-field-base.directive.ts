@@ -54,10 +54,7 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   protected readonly dropdownControllerFactory = createDropdownController;
   protected readonly registry = inject(NdwuInteractionRegistry);
 
-  protected readonly isMobileViewport = toSignal(
-    this.breakpoint.observe(HANDSET_BREAKPOINT).pipe(map((r) => r.matches)),
-    {initialValue: this.breakpoint.isMatched(HANDSET_BREAKPOINT)},
-  );
+  protected readonly isMobileViewport: Signal<boolean>;
 
   protected readonly combobox = viewChild(NdwuComboboxDirective);
   protected readonly formField = viewChild(NdwuFormFieldComponent);
@@ -121,6 +118,13 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
     super(defaultValue);
 
     this.idValue = uniqueId(idPrefix);
+
+    this.isMobileViewport = toSignal(
+      this.breakpoint
+        .observe(HANDSET_BREAKPOINT)
+        .pipe(map((r) => r.matches)),
+      {initialValue: this.breakpoint.isMatched(HANDSET_BREAKPOINT)},
+    );
 
     this.initFocusTracking();
     this.initExpansionTracking();

@@ -19,6 +19,8 @@
     "long-text": "Long text, short width",
     "long-text-message": "This is a very long notification message that contains important information and should wrap to multiple lines when placed in a narrow container with a fixed width of 200 pixels. It demonstrates how the text wraps correctly within the component boundaries.",
     "html-title": "HTML message",
-    "html-message": "This notification contains <b>bold text</b> and <em>inline HTML</em>."
+    "html-message": "This notification contains <b>bold text</b> and <em>inline HTML</em>.",
+    "styled-html-title": "HTML with inline styles",
+    "styled-html-message": "Wait until the <span style=\"display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;\"></span> LED is lit and not blinking, then continue the setup."
   }
 }

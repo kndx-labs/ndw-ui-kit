@@ -4,6 +4,9 @@
       "overview": "Übersicht",
       "sandbox": "Sandbox"
     },
+    "overview": {
+      "styled-html-text": "Status: <span style=\"display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;\"></span> <b>online</b>"
+    },
     "sandbox": {
       "text": "Text",
       "max-width": "Max. Breite",

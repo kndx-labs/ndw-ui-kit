@@ -1,4 +1,5 @@
 import {Directive, type Provider, inject, input} from '@angular/core';
+import type {NdwuLocalizableHtml} from '@ndw-ui-kit/core/l10n';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {
   NDWU_POPOVER_CONTROLLER_FACTORY,
@@ -70,7 +71,7 @@ function defaultTooltipTriggers(): NdwuPopoverTriggerType[] {
 export class NdwuTooltipDirective {
   private readonly trigger = inject(NdwuPopoverTriggerDirective);
 
-  public readonly ndwuTooltip = input.required<string>();
+  public readonly ndwuTooltip = input.required<NdwuLocalizableHtml>();
 
   public readonly showDelay = input<number>(DEFAULT_SHOW_DELAY);
   public readonly hideDelay = input<number>(DEFAULT_HIDE_DELAY);

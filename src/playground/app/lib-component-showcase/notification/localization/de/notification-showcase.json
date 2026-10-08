@@ -19,6 +19,8 @@
     "long-text": "Langer Text, kurze Breite",
     "long-text-message": "Dies ist eine sehr lange Benachrichtigungsnachricht mit wichtigen Informationen, die in einem schmalen Container mit einer festen Breite von 200 Pixeln auf mehrere Zeilen umgebrochen werden sollte.",
     "html-title": "HTML-Nachricht",
-    "html-message": "Diese Benachrichtigung enthält <strong>fetten Text</strong> und <em>Inline-HTML</em>."
+    "html-message": "Diese Benachrichtigung enthält <strong>fetten Text</strong> und <em>Inline-HTML</em>.",
+    "styled-html-title": "HTML mit Inline-Stilen",
+    "styled-html-message": "Warten Sie, bis die <span style=\"display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;\"></span> LED leuchtet und nicht blinkt, und setzen Sie dann die Einrichtung fort."
   }
 }

@@ -20,7 +20,9 @@
       "system-automatically-updates": "The system automatically updates on a rolling basis",
       "cancel": "Cancel",
       "retry": "Retry",
-      "accept": "Accept"
+      "accept": "Accept",
+      "l-styled-html": "L - HTML with inline styles",
+      "styled-html-description": "Wait until the <span style=\"display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;\"></span> LED is lit and not blinking."
     }
   }
 }

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
-import {NdwuLocalizeHtmlPipe, type NdwuLocalizableHtml} from '@ndw-ui-kit/core/l10n';
+import {LocalizeHtmlPipe, type NdwuLocalizableHtml} from '@ndw-ui-kit/core/l10n';
 import {NDWU_ICON_NAME, NdwuIconName} from '../../../icon-names';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NdwuValues} from '../../../shared.types';
@@ -18,7 +18,7 @@ export type NdwuNotificationVariant = NdwuValues<typeof NDWU_NOTIFICATION_VARIAN
   templateUrl: './ndwu-notification.component.html',
   styleUrl: './ndwu-notification.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NdwuIconComponent, NdwuLocalizeHtmlPipe],
+  imports: [NdwuIconComponent, LocalizeHtmlPipe],
 })
 export class NdwuNotificationComponent {
   public readonly variant = input<NdwuNotificationVariant>(NDWU_NOTIFICATION_VARIANT.INFO);

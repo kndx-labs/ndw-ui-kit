@@ -9,7 +9,7 @@ export type NdwuLocalizableHtml = string | SafeHtml;
   name: 'localizeHtml',
   pure: false,
 })
-export class NdwuLocalizeHtmlPipe implements PipeTransform {
+export class LocalizeHtmlPipe implements PipeTransform {
   private readonly translationService = inject(UiKitTranslationService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly sanitizer = inject(DomSanitizer);

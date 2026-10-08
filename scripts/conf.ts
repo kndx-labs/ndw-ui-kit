@@ -26,6 +26,7 @@ export const SCRIPTS_DATA_DIR: string = path.resolve(SCRIPTS_DIR, 'data');
 
 export const ROOT_DIR: string = path.resolve(SCRIPTS_DIR, '..');
 export const SRC_DIR: string = path.resolve(ROOT_DIR, 'src');
+export const DIST_DIR: string = path.resolve(ROOT_DIR, 'dist/ndw-ui-kit');
 
 export const SPRITE_FILENAME = 'ndw-ui-kit.sprite.svg';
 export const EXTRA_SPRITE_FILENAME = 'ndw-ui-kit.extra.sprite.svg';

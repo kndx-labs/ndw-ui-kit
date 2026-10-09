@@ -1,0 +1,16 @@
+button[ndwu-tag]:not(.ndwu-tag--disabled, .ndwu-tag--selected, :hover, :active, :focus-visible) {
+  border-color: var(--ndwu-tag-override-border, var(--ndwu-tag-border)) !important;
+  background-color: var(--ndwu-tag-override-bg, var(--ndwu-tag-bg)) !important;
+  color: var(--ndwu-tag-override-fg, var(--ndwu-tag-fg)) !important;
+}
+
+button[ndwu-tag].ndwu-tag--selected:not(.ndwu-tag--disabled, :focus-visible) {
+  border-color: var(--ndwu-tag-override-border, var(--ndwu-tag-selected-border)) !important;
+  background-color: var(--ndwu-tag-override-bg, var(--ndwu-tag-selected-bg)) !important;
+  color: var(--ndwu-tag-override-fg, var(--ndwu-tag-selected-fg)) !important;
+}
+
+.sandbox__events {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+}

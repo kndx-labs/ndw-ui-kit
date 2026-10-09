@@ -9,7 +9,7 @@
     @if (header()) {
       <span
         class="ndwu-empty-state__title"
-        [innerHTML]="header() | localize"
+        [innerHTML]="header() | localizeHtml"
       >
       </span>
     }
@@ -17,7 +17,7 @@
     @if (description()) {
       <span
         class="ndwu-empty-state__description"
-        [innerHTML]="description() | localize"
+        [innerHTML]="description() | localizeHtml"
       >
       </span>
     }

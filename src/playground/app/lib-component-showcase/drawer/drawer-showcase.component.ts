@@ -11,6 +11,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {
   NDWU_ICON_NAME,
+  NDWU_SIZE,
   NdwuButtonComponent,
   NdwuDialogContainerComponent,
   NdwuModalActionsDirective,
@@ -77,13 +78,13 @@ export class DrawerShowcaseComponent {
     );
   }
 
-  protected openXL(theme: NdwuTheme): void {
+  protected openXXL(theme: NdwuTheme): void {
     this.modalService.openDrawer(
       NdwuDialogContainerComponent,
       {
         title: 'drawer-showcase.overview.xl.title',
         description: 'drawer-showcase.overview.xl.description',
-        width: '1200px',
+        size: NDWU_SIZE.XXL,
         theme,
         buttons: [
           {label: 'drawer-showcase.overview.common.button-cancel'},

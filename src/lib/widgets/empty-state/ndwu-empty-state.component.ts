@@ -9,7 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {LocalizeHtmlPipe, type NdwuLocalizableHtml} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {
   NDWU_SIZE,
@@ -23,7 +23,7 @@ import {
 
 @Component({
   selector: 'ndwu-empty-state',
-  imports: [NdwuAdaptivePictogramComponent, LocalizePipe],
+  imports: [NdwuAdaptivePictogramComponent, LocalizeHtmlPipe],
   templateUrl: './ndwu-empty-state.component.html',
   styleUrl: './ndwu-empty-state.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,8 +58,8 @@ export class NdwuEmptyStateComponent {
 
   public readonly pictogram = input.required<NdwuPictogramBaseName>();
   public readonly pictogramVariant = input<NdwuPictogramVariant>('DEFAULT');
-  public readonly header = input<string>();
-  public readonly description = input<string>();
+  public readonly header = input<NdwuLocalizableHtml>();
+  public readonly description = input<NdwuLocalizableHtml>();
 
   protected readonly pictogramFlags: NdwuSizeFlags = {
     XL: computed(() => this.resolvedSize() === NDWU_SIZE.XL),

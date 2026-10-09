@@ -44,7 +44,7 @@ export class NdwuFileUploadFieldComponent extends FormFieldBase<NdwuFileInputVal
   protected readonly initialFiles = computed(() => this.inputValue ?? []);
 
   constructor(
-    protected readonly ngControl: NgControl,
+    protected override readonly ngControl: NgControl,
   ) {
     super([]);
     setValueAccessor(this.ngControl, this);

@@ -30,6 +30,9 @@
 @use 'core/components/card/ndwu-card.tokens' as ndwu-card-tokens;
 @use 'core/components/chip/ndwu-chip.tokens' as ndwu-chip-tokens;
 @use 'core/components/tabs/ndwu-tabs.tokens' as ndwu-tabs-tokens;
+@use 'core/components/tag/ndwu-tag.tokens' as ndwu-tag-tokens;
+@use 'core/components/textarea/ndwu-textarea.tokens' as ndwu-textarea-tokens;
+@use 'core/components/accordion/ndwu-accordion.tokens' as ndwu-accordion-tokens;
 @use 'widgets/empty-state/ndwu-empty-state.tokens' as ndwu-empty-state-tokens;
 @use 'core/components/password-strength-indicator/ndwu-password-strength-indicator.tokens' as ndwu-password-strength-indicator-tokens;
 @use 'core/components/scrollbar/ndwu-scrollbar.tokens' as ndwu-scrollbar-tokens;
@@ -55,6 +58,7 @@ $component-tokens: (
   'ndwu-timing-button': ndwu-timing-button-tokens.$ndwu-timing-button-tokens,
   'ndwu-link': ndwu-link-tokens.$ndwu-link-tokens,
   'ndwu-helper-message': ndwu-helper-message-tokens.$ndwu-helper-message-tokens,
+  'ndwu-textarea': ndwu-textarea-tokens.$ndwu-textarea-tokens,
   'ndwu-toggle': ndwu-toggle-tokens.$ndwu-toggle-tokens,
   'ndwu-radio-group': ndwu-radio-group-tokens.$ndwu-radio-group-tokens,
   'ndwu-label-group': ndwu-label-group-tokens.$ndwu-label-group-tokens,
@@ -76,6 +80,8 @@ $component-tokens: (
   'ndwu-card': ndwu-card-tokens.$ndwu-card-tokens,
   'ndwu-chip': ndwu-chip-tokens.$ndwu-chip-tokens,
   'ndwu-tabs': ndwu-tabs-tokens.$ndwu-tabs-tokens,
+  'ndwu-tag': ndwu-tag-tokens.$ndwu-tag-tokens,
+  'ndwu-accordion': ndwu-accordion-tokens.$ndwu-accordion-tokens,
   'ndwu-empty-state': ndwu-empty-state-tokens.$ndwu-empty-state-tokens,
   'ndwu-password-strength-indicator': ndwu-password-strength-indicator-tokens.$ndwu-password-strength-indicator-tokens,
   'ndwu-table': ndwu-table-tokens.$ndwu-table-tokens,

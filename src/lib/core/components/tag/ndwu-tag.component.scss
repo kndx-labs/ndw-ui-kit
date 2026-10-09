@@ -1,0 +1,120 @@
+@use 'styles/mixins';
+@use 'styles/padding';
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
+@use 'styles/touch-target';
+
+$statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan';
+
+:host {
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding-inline: padding.$padding-8;
+  border: 1px solid var(--ndwu-tag-border);
+  background-color: var(--ndwu-tag-bg);
+  color: var(--ndwu-tag-fg);
+  font-weight: typography.$fontWeight-L;
+  font-family: inherit;
+  letter-spacing: typography.$letterSpacing-L;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color 0.2s ease-in-out,
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+
+  // stylelint-disable-next-line order/order
+  @include touch-target.touchable();
+
+  @each $status in $statuses {
+    &.ndwu-tag--status-#{$status} {
+      --ndwu-tag-bg: var(--ndwu-tag-#{$status}-bg);
+      --ndwu-tag-border: var(--ndwu-tag-#{$status}-border);
+      --ndwu-tag-hover-bg: var(--ndwu-tag-#{$status}-hover-bg);
+      --ndwu-tag-hover-border: var(--ndwu-tag-#{$status}-hover-border);
+      --ndwu-tag-active-bg: var(--ndwu-tag-#{$status}-active-bg);
+      --ndwu-tag-active-border: var(--ndwu-tag-#{$status}-active-border);
+      --ndwu-tag-selected-bg: var(--ndwu-tag-#{$status}-selected-bg);
+      --ndwu-tag-selected-border: var(--ndwu-tag-#{$status}-selected-border);
+    }
+  }
+
+  &.ndwu-tag--size-L {
+    gap: spacing.$spacing-4;
+    height: 24px;
+    border-radius: radius.$radius-XL;
+    font-size: typography.$fontSize-xxsmall;
+    line-height: 17px;
+  }
+
+  &.ndwu-tag--size-XL {
+    gap: 6px;
+    height: 28px;
+    border-radius: radius.$radius-XXL;
+    font-size: typography.$fontSize-small;
+    line-height: 23px;
+  }
+
+  &:hover:not(.ndwu-tag--disabled, .ndwu-tag--selected) {
+    border-color: var(--ndwu-tag-hover-border);
+    background-color: var(--ndwu-tag-hover-bg);
+  }
+
+  &:active:not(.ndwu-tag--disabled, .ndwu-tag--selected) {
+    border-color: var(--ndwu-tag-active-border);
+    background-color: var(--ndwu-tag-active-bg);
+  }
+
+  &.ndwu-tag--selected {
+    border-color: var(--ndwu-tag-selected-border);
+    background-color: var(--ndwu-tag-selected-bg);
+    color: var(--ndwu-tag-selected-fg);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible:not(.ndwu-tag--disabled) {
+    @include mixins.focus-ring(var(--ndwu-tag-focus-ring));
+
+    & {
+      border-color: transparent;
+    }
+
+    &.ndwu-tag--status-info.ndwu-tag--selected {
+      @include mixins.focus-ring(var(--ndwu-tag-info-selected-focus-ring));
+    }
+  }
+
+  &.ndwu-tag--disabled {
+    border-color: var(--ndwu-tag-disabled-border);
+    background-color: var(--ndwu-tag-disabled-bg);
+    color: var(--ndwu-tag-disabled-fg);
+    cursor: not-allowed;
+  }
+}
+
+.ndwu-tag__icon,
+.ndwu-tag__close {
+  flex-shrink: 0;
+}
+
+.ndwu-tag__remove-label {
+  @include mixins.visually-hidden();
+}
+
+.ndwu-tag__label {
+  overflow: hidden;
+  max-width: var(--ndwu-tag-label-max-width, 18ch);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

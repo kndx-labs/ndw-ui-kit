@@ -1,0 +1,11 @@
+{
+  "tag-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "sandbox": {
+      "colors": "Colors"
+    }
+  }
+}

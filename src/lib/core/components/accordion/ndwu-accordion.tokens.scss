@@ -1,0 +1,12 @@
+@use 'styles/colors';
+
+$ndwu-accordion-tokens: (
+  accordion-bg: colors.$gray-0,
+  accordion-divider-color: colors.$gray-20,
+  accordion-header-hover-bg: colors.$brand-5,
+  accordion-title-color: colors.$gray-80,
+  accordion-chevron-color: colors.$gray-80,
+  accordion-content-color: colors.$gray-50,
+  accordion-disabled-bg: colors.$gray-10,
+  accordion-disabled-color: colors.$gray-40,
+);

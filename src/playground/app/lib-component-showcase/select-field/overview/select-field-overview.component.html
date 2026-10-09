@@ -108,5 +108,15 @@
         />
       </form>
     </div>
+
+    <div class="state-section">
+      <h4>No form control (no NgControl)</h4>
+      <ndwu-select-field
+        label="Country"
+        placeholder="Choose country"
+        hint="Not bound to a form"
+        [options]="countryOptions"
+      />
+    </div>
   </ng-template>
 </app-showcase-layout>

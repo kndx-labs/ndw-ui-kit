@@ -26,11 +26,15 @@ import {ToggleShowcaseComponent} from './toggle/toggle-showcase.component';
 import {TooltipShowcaseComponent} from './tooltip/tooltip-showcase.component';
 import {PopoverShowcaseComponent} from './popover/popover-showcase.component';
 import {TabsShowcaseComponent} from './tabs/tabs-showcase.component';
+import {TagShowcaseComponent} from './tag/tag-showcase.component';
 import {PictogramShowcaseComponent} from './pictogram/pictogram-showcase.component';
 import {ScrollbarShowcaseComponent} from './scrollbar/scrollbar-showcase.component';
+import {AccordionShowcaseComponent} from './accordion/accordion-showcase.component';
 import {TableShowcaseComponent} from './table/table-showcase.component';
+import {TextareaShowcaseComponent} from './textarea/textarea-showcase.component';
 
 export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
+  'ndwu-accordion': AccordionShowcaseComponent,
   'ndwu-badge': BadgeShowcaseComponent,
   'ndwu-button': ButtonShowcaseComponent,
   'ndwu-timing-button': TimingButtonShowcaseComponent,
@@ -45,6 +49,7 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-radio': RadioShowcaseComponent,
   'ndwu-select-field': SelectFieldShowcaseComponent,
   'ndwu-multi-select-field': MultiSelectFieldShowcaseComponent,
+  'ndwu-textarea': TextareaShowcaseComponent,
   'ndwu-context-menu': ContextMenuShowcaseComponent,
   'ndwu-tooltip': TooltipShowcaseComponent,
   'ndwu-popover': PopoverShowcaseComponent,
@@ -57,6 +62,7 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-card': CardShowcaseComponent,
   'ndwu-chip': ChipShowcaseComponent,
   'ndwu-tabs': TabsShowcaseComponent,
+  'ndwu-tag': TagShowcaseComponent,
   'ndwu-pictogram': PictogramShowcaseComponent,
   'ndwu-scrollbar': ScrollbarShowcaseComponent,
   'ndwu-table': TableShowcaseComponent,

@@ -10,23 +10,41 @@ export function setValueAccessor(
   ngControl.valueAccessor = accessor;
 }
 
+/** Whether the control should be displayed as invalid. */
+export function isControlInvalid(control: AbstractControl): boolean {
+  return control.invalid && (control.touched || control.dirty);
+}
+
 /**
- * Reactively syncs `control.invalid && (control.touched || control.dirty)`
- * into a WritableSignal. Subscribes to status/value/events so the signal
- * updates for validity changes and touch/dirty interaction changes.
+ * Calls `update` immediately and on every control state change.
+ * Subscribes to status/value/events: `events` covers touched/pristine
+ * changes that don't emit `statusChanges`.
+ */
+export function onControlStateChange(
+  control: AbstractControl,
+  destroyRef: DestroyRef,
+  update: () => void,
+): void {
+  update();
+
+  merge(control.statusChanges, control.valueChanges, control.events)
+    .pipe(takeUntilDestroyed(destroyRef))
+    .subscribe(update);
+}
+
+/**
+ * Reactively syncs `isControlInvalid(control)` into a WritableSignal.
  */
 export function syncIsInvalid(
   control: AbstractControl,
   isInvalid: WritableSignal<boolean>,
   destroyRef: DestroyRef,
 ): void {
-  const update = (): void => {
-    isInvalid.set(control.invalid && (control.touched || control.dirty));
-  };
-
-  update();
-
-  merge(control.statusChanges, control.valueChanges, control.events)
-    .pipe(takeUntilDestroyed(destroyRef))
-    .subscribe(update);
+  onControlStateChange(
+    control,
+    destroyRef,
+    () => {
+      isInvalid.set(isControlInvalid(control));
+    },
+  );
 }

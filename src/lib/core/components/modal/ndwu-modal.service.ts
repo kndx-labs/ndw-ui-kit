@@ -8,17 +8,21 @@ import {HANDSET_BREAKPOINT, applyThemeClass, normalizeClass} from '@ndw-ui-kit/c
 import {MobileScrollLockStrategy} from '@ndw-ui-kit/core/popover';
 import {
   NDWU_DRAWER_BACKDROP_CLASS,
-  NDWU_DRAWER_OVERLAY_DEFAULTS,
+  NDWU_DRAWER_CONFIG_DEFAULTS,
+  NDWU_DRAWER_HEIGHT,
   NDWU_DRAWER_PANEL_CLASS,
+  NDWU_DRAWER_WIDTH,
   NdwuDrawerCloseStrategy,
   NdwuDrawerContainerComponent,
 } from './drawer';
 import {ImmediateCloseStrategy} from './close-strategy';
-import {NDWU_DIALOG_PANEL_CLASS, NdwuDialogContainerComponent} from './dialog';
+import {NDWU_DIALOG_CONFIG_DEFAULTS, NDWU_DIALOG_PANEL_CLASS, NdwuDialogContainerComponent} from './dialog';
 import {
   NdwuAlertModalConfig,
   NdwuConfirmModalConfig,
-  NdwuModalConfig,
+  NdwuDialogConfig,
+  NdwuDrawerConfig,
+  NdwuModalBaseConfig,
   NdwuModalContentComponent,
   NdwuModalOpenTemplateOptions,
   NdwuModalSizeProp,
@@ -28,13 +32,10 @@ import {
 } from './ndwu-modal.types';
 import {NdwuModalRef} from './ndwu-modal-ref';
 import {NDWU_MODAL_CONFIG, NDWU_MODAL_DATA, NDWU_MODAL_REF} from './ndwu-modal.tokens';
-import {
-  NDWU_MODAL_BACKDROP_CLASS,
-  NDWU_MODAL_CONFIG_DEFAULTS,
-  NDWU_MODAL_HANDSET_OVERLAY_SIZE,
-} from './ndwu-modal.constants';
+import {NDWU_MODAL_BACKDROP_CLASS, NDWU_MODAL_HANDSET_OVERLAY_SIZE} from './ndwu-modal.constants';
 import {NDWU_MODAL_SLOT_REGISTRY, NdwuModalSlotRegistry} from './ndwu-modal-slot-registry';
 import {TransitionManager} from './transition-manager';
+import {NDWU_SIZE} from '../../../shared.types';
 import {resolveOverlayThemeClass} from './overlay-theme';
 
 interface OverlayCreationParams {
@@ -64,9 +65,19 @@ export class NdwuModalService {
   private readonly transitionManager = new TransitionManager(this.openModals);
 
   public open<D = unknown, R = unknown>(
+    type: 'dialog',
+    content: NdwuModalContentComponent,
+    config?: NdwuDialogConfig<D>,
+  ): NdwuModalRef<R>;
+  public open<D = unknown, R = unknown>(
+    type: 'drawer',
+    content: NdwuModalContentComponent,
+    config?: NdwuDrawerConfig<D>,
+  ): NdwuModalRef<R>;
+  public open<D = unknown, R = unknown>(
     type: NdwuModalType,
     content: NdwuModalContentComponent,
-    config?: NdwuModalConfig<D>,
+    config?: NdwuDialogConfig<D> | NdwuDrawerConfig<D>,
   ): NdwuModalRef<R> {
     return this.openComponentContent(
       content,
@@ -76,14 +87,14 @@ export class NdwuModalService {
 
   public openDialog<D = unknown, R = unknown>(
     content: NdwuModalContentComponent,
-    config?: NdwuModalConfig<D>,
+    config?: NdwuDialogConfig<D>,
   ): NdwuModalRef<R> {
     return this.open('dialog', content, config);
   }
 
   public openDrawer<D = unknown, R = unknown>(
     content: NdwuModalContentComponent,
-    config?: NdwuModalConfig<D>,
+    config?: NdwuDrawerConfig<D>,
   ): NdwuModalRef<R> {
     return this.open('drawer', content, config);
   }
@@ -113,7 +124,7 @@ export class NdwuModalService {
   }
 
   public alert(config: NdwuAlertModalConfig): NdwuModalRef<void> {
-    const modalConfig: NdwuModalConfig<NdwuAlertModalConfig> = {
+    const modalConfig: NdwuDialogConfig<NdwuAlertModalConfig> = {
       data: config,
       title: config.header,
       stackingOnMobile: 'none',
@@ -137,7 +148,7 @@ export class NdwuModalService {
   }
 
   public confirm(config: NdwuConfirmModalConfig): NdwuModalRef<boolean> {
-    const modalConfig: NdwuModalConfig<NdwuConfirmModalConfig> = {
+    const modalConfig: NdwuDialogConfig<NdwuConfirmModalConfig> = {
       data: config,
       title: config.header,
       stackingOnMobile: 'none',
@@ -175,14 +186,11 @@ export class NdwuModalService {
 
   private createResolvedConfig<D>(
     type: NdwuModalType,
-    config?: NdwuModalConfig<D>,
+    config?: NdwuDialogConfig<D> | NdwuDrawerConfig<D>,
   ): NdwuResolvedModalConfig<D> {
-    const defaults: NdwuModalConfig<D> = type === 'drawer'
-      ? {
-        ...(NDWU_MODAL_CONFIG_DEFAULTS as NdwuModalConfig<D>),
-        ...(NDWU_DRAWER_OVERLAY_DEFAULTS as Partial<NdwuModalConfig<D>>),
-      }
-      : (NDWU_MODAL_CONFIG_DEFAULTS as NdwuModalConfig<D>);
+    const defaults: NdwuDialogConfig<D> | NdwuDrawerConfig<D> = type === 'drawer'
+      ? (NDWU_DRAWER_CONFIG_DEFAULTS as NdwuDrawerConfig<D>)
+      : (NDWU_DIALOG_CONFIG_DEFAULTS as NdwuDialogConfig<D>);
 
     return {
       ...defaults,
@@ -315,9 +323,9 @@ export class NdwuModalService {
       backdropClass: NDWU_DRAWER_BACKDROP_CLASS,
       panelClass: NDWU_DRAWER_PANEL_CLASS,
       desktopSize: {
-        width: config.width ?? NDWU_DRAWER_OVERLAY_DEFAULTS.width ?? '',
-        height: config.height ?? NDWU_DRAWER_OVERLAY_DEFAULTS.height ?? '',
-        maxHeight: NDWU_DRAWER_OVERLAY_DEFAULTS.maxHeight ?? '',
+        width: NDWU_DRAWER_WIDTH[config.size ?? NDWU_SIZE.XL],
+        height: NDWU_DRAWER_HEIGHT,
+        maxHeight: NDWU_DRAWER_HEIGHT,
       },
       config,
       isHandset,
@@ -348,7 +356,7 @@ export class NdwuModalService {
     ];
 
     return Injector.create({
-      parent: this.injector,
+      parent: config.injector ?? this.injector,
       providers,
     });
   }
@@ -447,7 +455,7 @@ export class NdwuModalService {
   private registerModalEvents<T>(
     overlayRef: OverlayRef,
     modalRef: NdwuModalRef<T>,
-    config: NdwuModalConfig,
+    config: NdwuModalBaseConfig,
   ): void {
     const subscriptions: Subscription[] = [];
 

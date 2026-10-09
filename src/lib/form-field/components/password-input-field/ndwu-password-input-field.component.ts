@@ -1,17 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  OnInit,
-  ViewEncapsulation,
-  booleanAttribute,
-  computed,
-  inject,
-  input,
-  signal,
-} from '@angular/core';
-import {NgControl} from '@angular/forms';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {merge} from 'rxjs';
+import {Component, OnInit, ViewEncapsulation, booleanAttribute, computed, inject, input, signal} from '@angular/core';
 import {
   NDWU_ICON_NAME,
   NdwuFloatingLabelComponent,
@@ -27,10 +14,8 @@ import {
   NdwuSuffixDirective,
 } from '@ndw-ui-kit/core';
 import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {NDWU_VALIDATION_PROCESSOR, NdwuValidationData} from '../../validation';
 import {FormFieldBase} from '../../classes/form-field-base';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
-import {setValueAccessor} from '../../form-field.utils';
 
 @Component({
   selector: 'ndwu-password-input-field',
@@ -59,8 +44,6 @@ import {setValueAccessor} from '../../form-field.utils';
 })
 export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> implements OnInit {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
-  protected readonly validationExtractor = inject(NDWU_VALIDATION_PROCESSOR);
-  protected readonly destroyRef = inject(DestroyRef);
 
   public readonly label = input<string>('');
   public readonly placeholder = input<string>('');
@@ -73,20 +56,9 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
   public readonly showPasswordIconLabel = input<string>('');
   public readonly hidePasswordIconLabel = input<string>('');
 
-  protected readonly invalid = signal<boolean>(false);
   protected readonly isPasswordVisible = signal<boolean>(false);
-  protected readonly extractedValidation = signal<NdwuValidationData | null>(null);
-
-  protected readonly errorMessage = computed(() => {
-    return this.invalid() ? this.extractedValidation()?.errorMessage ?? '' : '';
-  });
-
-  protected readonly validationData = computed(() => {
-    return this.extractedValidation()?.validationData ?? {};
-  });
-
   protected readonly inputStatus = computed(() => {
-    if (this.invalid() || this.strength() === 'weak') {
+    if (this.isInvalid() || this.strength() === 'weak') {
       return 'error';
     }
 
@@ -102,7 +74,7 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
   });
 
   protected readonly hintStatus = computed((): NdwuHelperMessageStatus => {
-    if (this.invalid() || this.strength() === 'weak') {
+    if (this.isInvalid() || this.strength() === 'weak') {
       return 'error';
     }
 
@@ -111,7 +83,7 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
 
   protected readonly internalHint = computed(() => {
     const strength = this.strength();
-    const isInvalid = this.invalid();
+    const isInvalid = this.isInvalid();
     const hintTexts = this.strengthHintTexts();
 
     if (isInvalid) {
@@ -149,37 +121,12 @@ export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> imple
     return this.isPasswordVisible() ? this.hidePasswordIconLabel() : this.showPasswordIconLabel();
   });
 
-  constructor(
-    protected ngControl: NgControl,
-  ) {
+  constructor() {
     super('');
-    setValueAccessor(this.ngControl, this);
   }
 
   public ngOnInit(): void {
-    const control = this.ngControl?.control;
-
-    if (!control) {
-      return;
-    }
-
-    const updateValidationState = () => {
-      const controlInvalid = control.invalid ?? false;
-      const controlInteracted = (control.touched ?? false) || (control.dirty ?? false);
-
-      this.invalid.set(controlInvalid && controlInteracted);
-      this.extractedValidation.set(this.validationExtractor(control));
-    };
-
-    updateValidationState();
-
-    merge(control.statusChanges, control.valueChanges)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe(() => {
-        updateValidationState();
-      });
+    this.initValidationState();
   }
 
   public onBlur(): void {

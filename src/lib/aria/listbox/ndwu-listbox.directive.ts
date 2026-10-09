@@ -1,4 +1,5 @@
 import {
+  DestroyRef,
   Directive,
   Injector,
   Signal,
@@ -10,11 +11,19 @@ import {
   input,
   model,
   signal,
+  untracked,
 } from '@angular/core';
 import {ActiveDescendantKeyManager, Highlightable} from '@angular/cdk/a11y';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuComboboxDirective} from '../combobox/ndwu-combobox.directive';
 import {NdwuOptionDirective} from './ndwu-option.directive';
+
+/** Input values the key manager was configured with. */
+interface KeyManagerConfig {
+  orientation: 'vertical' | 'horizontal';
+  wrap: boolean;
+  typeaheadDelay: number;
+}
 
 /**
  * ARIA listbox — manages selection, keyboard navigation, and active-descendant tracking.
@@ -41,6 +50,7 @@ import {NdwuOptionDirective} from './ndwu-option.directive';
 export class NdwuListboxDirective<V = unknown> {
   private readonly injector = inject(Injector);
   private readonly injectedCombobox = inject(NdwuComboboxDirective, {optional: true});
+  private readonly destroyRef = inject(DestroyRef);
 
   /** Explicit combobox reference for cross-portal usage where DI cannot reach. */
   public readonly comboboxRef = input<NdwuComboboxDirective | undefined>(undefined);
@@ -70,8 +80,11 @@ export class NdwuListboxDirective<V = unknown> {
   public readonly id = signal<string>(uniqueId('ndwu-listbox-'));
 
   private keyManager: ActiveDescendantKeyManager<Highlightable> | null = null;
+  private keyManagerConfig: KeyManagerConfig | null = null;
 
   constructor() {
+    this.setupKeyManagerLifecycle();
+
     // Register/unregister with combobox reactively (handles both DI and input).
     effect((onCleanup) => {
       const comboboxInstance = this.combobox();
@@ -142,6 +155,21 @@ export class NdwuListboxDirective<V = unknown> {
     );
   }
 
+  private setupKeyManagerLifecycle(): void {
+    this.destroyRef.onDestroy(() => {
+      this.destroyKeyManager();
+    });
+
+    // Options list changed (e.g. filtering) -> drop active item if it was removed.
+    effect(() => {
+      this.options();
+
+      untracked(() => {
+        this.resetStaleActiveItem();
+      });
+    });
+  }
+
   public scrollActiveItemIntoView(scrollOptions?: ScrollIntoViewOptions): void {
     const active = this.getActiveOption();
 
@@ -160,15 +188,17 @@ export class NdwuListboxDirective<V = unknown> {
   private gotoFocusedOption(cause?: string, typeaheadEvent?: KeyboardEvent | null): void {
     this.ensureKeyManager();
 
-    if (this.keyManager?.activeItem) {
-      return;
-    }
-
-    if (typeaheadEvent) {
-      this.keyManager?.onKeydown(typeaheadEvent);
+    if (cause === 'home') {
+      this.keyManager?.setFirstItemActive();
     } else if (cause === 'end') {
       this.keyManager?.setLastItemActive();
+    } else if (typeaheadEvent) {
+      this.keyManager?.onKeydown(typeaheadEvent);
     } else {
+      if (this.keyManager?.activeItem) {
+        return;
+      }
+
       const opts = this.options();
       const currentValues = this.values();
       const firstSelectedIndex = opts.findIndex((opt) => {
@@ -242,19 +272,73 @@ export class NdwuListboxDirective<V = unknown> {
   }
 
   /**
-   * Lazily initializes the CDK key manager on first user interaction.
+   * Lazily initializes the CDK key manager on first user interaction,
+   * and re-creates it when orientation/wrap/typeaheadDelay inputs changed.
    * Cannot be created inside an effect() because ActiveDescendantKeyManager's
    * constructor internally calls effect(), which is forbidden in a reactive context.
    */
   private ensureKeyManager(): void {
-    if (this.keyManager || this.options().length === 0) {
+    if (this.options().length === 0) {
+      return;
+    }
+
+    if (this.keyManager && !this.isKeyManagerConfigStale()) {
       return;
     }
 
     this.initKeyManager();
   }
 
+  private getKeyManagerConfig(): KeyManagerConfig {
+    return {
+      orientation: this.orientation(),
+      wrap: this.wrap(),
+      typeaheadDelay: this.typeaheadDelay(),
+    };
+  }
+
+  private isKeyManagerConfigStale(): boolean {
+    const prev = this.keyManagerConfig;
+    const current = this.getKeyManagerConfig();
+
+    if (!prev) {
+      return true;
+    }
+
+    return prev.orientation !== current.orientation
+      || prev.wrap !== current.wrap
+      || prev.typeaheadDelay !== current.typeaheadDelay;
+  }
+
+  private isCurrentOption(item: unknown): boolean {
+    return (this.options() as readonly unknown[]).includes(item);
+  }
+
+  private destroyKeyManager(): void {
+    this.keyManager?.destroy();
+
+    this.keyManager = null;
+    this.keyManagerConfig = null;
+  }
+
+  /** Clears the active item when it is no longer among the current options. */
+  private resetStaleActiveItem(): void {
+    const active = this.getActiveOption();
+
+    if (!this.keyManager || !active || this.isCurrentOption(active)) {
+      return;
+    }
+
+    this.keyManager.updateActiveItem(-1);
+    this.syncActiveState();
+  }
+
   private initKeyManager(): void {
+    const prevActive = this.getActiveOption();
+    const config = this.getKeyManagerConfig();
+
+    this.destroyKeyManager();
+
     // CDK's Highlightable expects `disabled?: boolean`,
     // but Angular signal inputs produce `InputSignal<boolean>`.
     //
@@ -264,26 +348,30 @@ export class NdwuListboxDirective<V = unknown> {
       this.injector,
     ).skipPredicate((item) => (item as unknown as NdwuOptionDirective).disabled());
 
-    if (this.orientation() === 'horizontal') {
-      manager.withHorizontalOrientation('ltr');
+    if (config.orientation === 'horizontal') {
+      manager.withHorizontalOrientation('ltr').withVerticalOrientation(false);
     } else {
-      manager.withVerticalOrientation();
+      manager.withVerticalOrientation(true).withHorizontalOrientation(null);
     }
 
-    if (this.wrap()) {
-      manager.withWrap();
+    manager.withWrap(config.wrap).withHomeAndEnd();
+
+    if (config.typeaheadDelay > 0) {
+      manager.withTypeAhead(config.typeaheadDelay);
     }
 
-    if (this.typeaheadDelay() > 0) {
-      manager.withTypeAhead(this.typeaheadDelay());
+    manager.change.subscribe(() => {
+      this.syncActiveState();
+      this.scrollActiveItemIntoView();
+    });
 
-      manager.change.subscribe(() => {
-        this.syncActiveState();
-        this.scrollActiveItemIntoView();
-      });
+    // Preserve active item across re-creation.
+    if (prevActive && this.isCurrentOption(prevActive)) {
+      manager.updateActiveItem(prevActive as unknown as Highlightable);
     }
 
     this.keyManager = manager;
+    this.keyManagerConfig = config;
   }
 
   /** Prevent focus transfer to the listbox when managed by a combobox. */
@@ -367,6 +455,7 @@ export class NdwuListboxDirective<V = unknown> {
     for (const opt of opts) {
       if (opt.elementRef.nativeElement.contains(target) && !opt.disabled()) {
         this.selectValue(opt.value() as V);
+        this.keyManager?.setActiveItem(opt as unknown as Highlightable);
         break;
       }
     }
@@ -393,7 +482,7 @@ export class NdwuListboxDirective<V = unknown> {
 
     const active = this.getActiveOption();
 
-    if (!active || active.disabled()) {
+    if (!active || active.disabled() || !this.isCurrentOption(active)) {
       return;
     }
 

@@ -1,5 +1,9 @@
 {
   "components": {
+    "ndwu-accordion": {
+      "name": "Accordion",
+      "description": "Gruppe aufklappbarer Abschnitte mit eigenem Kopf- und Inhaltsbereich."
+    },
     "ndwu-badge": {
       "name": "Abzeichen",
       "description": "Kleiner Statusindikator für Beschriftungen, Zähler oder Zustände."
@@ -115,6 +119,14 @@
     "ndwu-tabs": {
       "name": "Tabs",
       "description": "Umschaltbare Inhaltsbereiche innerhalb eines Panels."
+    },
+    "ndwu-tag": {
+      "name": "Tag",
+      "description": "Auswählbare Kennzeichnung zum Hervorheben, Kategorisieren oder Filtern."
+    },
+    "ndwu-textarea": {
+      "name": "Textbereich",
+      "description": "Mehrzeilige Texteingabe mit optionalen Zeilennummern."
     },
     "ndwu-timing-button": {
       "name": "Zeitgesteuerte Schaltfläche",

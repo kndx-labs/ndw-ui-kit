@@ -1,3 +1,4 @@
+export * from './accordion/';
 export * from './badge/ndwu-badge.component';
 export * from './button/base/ndwu-button-base.directive';
 export * from './button/button/ndwu-button.component';
@@ -43,3 +44,5 @@ export * from './popover/';
 export * from './progress-bar/ndwu-progress-bar.component';
 export * from './tooltip/';
 export * from './tabs/';
+export * from './tag/ndwu-tag.component';
+export * from './textarea/';

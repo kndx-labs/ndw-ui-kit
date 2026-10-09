@@ -91,10 +91,17 @@
       </div>
 
       <div class="state-section">
+        <h4>HTML with inline styles</h4>
+        <p>
+          <button ndwu-button variant="secondary" [ndwuTooltip]="styledHtmlText">Device status</button>
+        </p>
+      </div>
+
+      <div class="state-section">
         <h4>Shared tooltip with external origin and template content</h4>
         <p class="state-description">{{ 'tooltip-showcase.overview.shared-click-description' | localize }}</p>
         <p>
-          <app-tooltip-strip-demo mode="click" />
+          <app-tooltip-strip-demo mode="click"/>
         </p>
       </div>
 
@@ -102,7 +109,7 @@
         <h4>Shared tooltip following the mouse pointer</h4>
         <p class="state-description">{{ 'tooltip-showcase.overview.shared-pointer-description' | localize }}</p>
         <p>
-          <app-tooltip-strip-demo mode="pointer" />
+          <app-tooltip-strip-demo mode="pointer"/>
         </p>
       </div>
     </div>

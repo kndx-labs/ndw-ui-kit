@@ -421,6 +421,20 @@ on pictograms (e.g., `NdwuEmptyStateComponent` from `@ndw-ui-kit/core/widgets`).
 - The accessible name defaults to `Loading` and goes through the `localize` pipe. Use `ariaLabel` to change it.
 - With `prefers-reduced-motion: reduce`, the animation is turned off.
 
+### Tag
+
+`<button ndwu-tag>` is an interactive tag. For a static label, use `<ndwu-badge>`.
+
+```html
+<button ndwu-tag selectable [(selected)]="isActive" label="Online"></button>
+<button ndwu-tag removable label="Wi-Fi" (removed)="removeFilter('wifi')"></button>
+```
+
+- A removable tag announces `Remove` after its label. The text goes through the `localize` pipe; use `removeLabel` to change it.
+  `ariaLabel` replaces the whole accessible name, so include the remove action in it yourself.
+- `Delete` and `Backspace` on a focused removable tag emit `removed` and call `preventDefault()`.
+  The event still bubbles, so document-level keyboard shortcuts must skip events with `defaultPrevented`.
+
 ### Localization
 
 Choose one of the following translation providers:
@@ -442,6 +456,22 @@ Choose one of the following translation providers:
   > Since this version the ngx-translate integration lives in a separate entry point
   > `@ndw-ui-kit/core/l10n/ngx-translate` (previously exported from `@ndw-ui-kit/core/l10n`),
   > so the package no longer requires `@ngx-translate/core` unless you import it.
+
+#### HTML in text inputs
+
+These inputs are translated with the `localizeHtml` pipe. A translated string is rendered
+as trusted HTML, so inline styles such as `style="position: relative; top: 2px"` are kept:
+
+- `ndwu-notification`: `message`.
+- `ndwu-empty-state`: `header`, `description`.
+- `ndwuTooltip`.
+
+```html
+<ndwu-notification message="setup.led-hint" />
+```
+
+A string without a translation is sanitized by Angular, so inline styles are removed from it.
+To render other HTML as-is, pass a `SafeHtml` value; it is not translated.
 
 ### Component size
 
@@ -555,6 +585,7 @@ and have a separate entry point (`@ndw-ui-kit/core/form-field`).
 | `ndwu-radio-field`           | Radio button list      |
 | `ndwu-schedule-editor-field` | Weekly schedule editor |
 | `ndwu-select-field`          | Single-option select   |
+| `ndwu-textarea-field`        | Multi-line text input  |
 | `ndwu-toggle-field`          | Toggle switch          |
 
 #### Browser autofill

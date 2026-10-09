@@ -6,6 +6,7 @@ export type WidgetName =
   | 'ndwu-schedule-editor';
 
 export type ComponentName =
+  | 'ndwu-accordion'
   | 'ndwu-button'
   | 'ndwu-timing-button'
   | 'ndwu-checkbox'
@@ -18,6 +19,7 @@ export type ComponentName =
   | 'ndwu-radio'
   | 'ndwu-select-field'
   | 'ndwu-multi-select-field'
+  | 'ndwu-textarea'
   | 'ndwu-context-menu'
   | 'ndwu-tooltip'
   | 'ndwu-popover'
@@ -32,6 +34,7 @@ export type ComponentName =
   | 'ndwu-card'
   | 'ndwu-chip'
   | 'ndwu-tabs'
+  | 'ndwu-tag'
   | 'ndwu-pictogram'
   | 'ndwu-scrollbar'
   | 'ndwu-table';

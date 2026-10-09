@@ -1,5 +1,4 @@
 import {Component, booleanAttribute, computed, inject, input, viewChild} from '@angular/core';
-import {NgControl} from '@angular/forms';
 import {
   NDWU_ICON_NAME,
   NDWU_OPTION_CONFIG,
@@ -111,10 +110,8 @@ export class NdwuSelectFieldComponent<T = NdwuOption> extends SelectFieldBase<st
     return option?.label ?? String(value);
   }
 
-  constructor(
-    protected override ngControl: NgControl,
-  ) {
-    super('', ngControl, 'ndwu-select-trigger-');
+  constructor() {
+    super('', 'ndwu-select-trigger-');
   }
 
   protected onSelectionChange(values: unknown[]): void {

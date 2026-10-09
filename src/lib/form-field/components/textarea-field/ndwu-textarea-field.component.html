@@ -1,0 +1,43 @@
+<ndwu-form-field
+  [size]="sizeSvc.size()"
+  [readonly]="readonly()"
+>
+  @if (label()) {
+    <ndwu-floating-label
+      [label]="label()"
+      [required]="ndwuRequired()"
+    />
+  }
+
+  <ndwu-textarea
+    [size]="sizeSvc.size()"
+    [value]="inputValue"
+    [placeholder]="placeholder()"
+    [ariaLabel]="ariaLabel()"
+    [ariaDescribedby]="hasHelperMessage() ? hintId : null"
+    [required]="ndwuRequired()"
+    [disabled]="isDisabled"
+    [readonly]="readonly()"
+    [invalid]="isInvalid()"
+    [resizable]="resizable()"
+    [showLineNumbers]="showLineNumbers()"
+    (valueChange)="onValueChange($event)"
+    (blurred)="onBlur()"
+  >
+    <ng-content
+      select="[ndwuTextareaActions]"
+      ngProjectAs="[ndwuTextareaActions]"
+    />
+  </ndwu-textarea>
+
+  @if (hasHelperMessage()) {
+    <ndwu-helper-message
+      ndwuHint
+      [id]="hintId"
+      [status]="hintStatus()"
+      [errorMessage]="errorMessage()"
+      [helperMessage]="hint()"
+      [validationData]="validationData()"
+    />
+  }
+</ndwu-form-field>

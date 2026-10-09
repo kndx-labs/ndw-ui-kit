@@ -1,0 +1,16 @@
+.strip {
+  display: flex;
+  gap: 2px;
+}
+
+.strip-cell {
+  width: 8px;
+  height: 24px;
+  border-radius: 2px;
+  background: var(--ndwu-color-primary, #0a62c9);
+
+  &:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 1px;
+  }
+}

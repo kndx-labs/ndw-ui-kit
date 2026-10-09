@@ -1,3 +1,5 @@
+@use 'styles/typography' as typography;
+
 .tooltip-overview {
   .state-section {
     margin-bottom: 24px;
@@ -14,6 +16,13 @@
     gap: 12px;
     align-items: center;
     margin: 0;
+  }
+
+  .state-description {
+    display: block;
+    max-width: 640px;
+    margin-bottom: 12px;
+    font-size: typography.$fontSize-xsmall;
   }
 
   .tooltip-demo-inline {

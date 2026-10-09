@@ -1,7 +1,6 @@
-import type {OverlayRef} from '@angular/cdk/overlay';
 import {SwitchModalOpenStrategy} from './open-strategy';
 import {SwitchModalCloseStrategy} from './close-strategy';
-import type {NdwuModalRef} from './ndwu-modal-ref';
+import type {NdwuModalController} from './ndwu-modal-controller';
 
 // On mobile screens we avoid stacking modals on top of each other.
 // Instead, we collapse the parent modal when a child modal is opened,
@@ -10,15 +9,14 @@ import type {NdwuModalRef} from './ndwu-modal-ref';
 // This class manages that transition.
 export class TransitionManager {
   constructor(
-    private readonly openModals: () => readonly NdwuModalRef[],
+    private readonly openModals: () => readonly NdwuModalController[],
   ) {}
 
   public onOpen<R>(
-    modalRef: NdwuModalRef<R>,
-    overlayRef: OverlayRef,
+    controller: NdwuModalController<R>,
     isHandset: boolean,
   ): void {
-    if (modalRef.type !== 'dialog') {
+    if (controller.config.type !== 'dialog') {
       return;
     }
 
@@ -26,61 +24,55 @@ export class TransitionManager {
       return;
     }
 
-    if (modalRef.config.stackingOnMobile === 'none') {
+    if (controller.config.stackingOnMobile === 'none') {
       return;
     }
 
-    if (!modalRef.isVisible()) {
+    if (controller.state() !== 'open') {
       return;
     }
 
     const openModals = this.openModals();
     const isNested = openModals.length > 1;
-    const shouldStack = modalRef.config.stackingOnMobile === 'stack';
+    const shouldStack = controller.config.stackingOnMobile === 'stack';
 
     const openStrategy = new SwitchModalOpenStrategy();
 
-    modalRef.setOpenStrategy(openStrategy);
-    openStrategy.onOpen(overlayRef.overlayElement);
+    controller.openStrategy = openStrategy;
+    openStrategy.onOpen(controller.overlayRef.overlayElement);
 
     let collapsedParent = false;
 
     if (isNested && !shouldStack) {
-      const parentModal = openModals.at(-2);
+      const parent = openModals.at(-2);
 
-      if (parentModal?.type === 'dialog') {
-        let parentOpenStrategy = parentModal.getOpenStrategy();
-
-        if (!parentOpenStrategy) {
-          parentOpenStrategy = new SwitchModalOpenStrategy();
-          parentModal.setOpenStrategy(parentOpenStrategy);
+      if (parent?.config.type === 'dialog') {
+        if (parent.openStrategy === null) {
+          parent.openStrategy = new SwitchModalOpenStrategy();
         }
 
-        parentOpenStrategy.onBeforeChildOpen(parentModal.getOverlayRef().overlayElement);
+        parent.openStrategy.onBeforeChildOpen(parent.overlayRef.overlayElement);
         collapsedParent = true;
       }
     }
 
-    modalRef.setCloseStrategy(
-      new SwitchModalCloseStrategy(
-        collapsedParent
-          ? () => this.onClose(modalRef)
-          : undefined,
-      ),
+    controller.closeStrategy = new SwitchModalCloseStrategy(
+      collapsedParent
+        ? () => this.onClose(controller)
+        : undefined,
     );
   }
 
   // Called after the child's fade-out, before its overlay is disposed.
-  private onClose<R>(closingModal: NdwuModalRef<R>): void {
-    const parentModal = this.openModals()
-      .filter((ref) => ref.id !== closingModal.id)
+  private onClose<R>(closing: NdwuModalController<R>): void {
+    const parent = this.openModals()
+      .filter((item) => item !== closing)
       .at(-1);
 
-    if (parentModal?.type !== 'dialog') {
+    if (parent?.config.type !== 'dialog') {
       return;
     }
 
-    parentModal.getOpenStrategy()
-      ?.onAfterChildClose(parentModal.getOverlayRef().overlayElement);
+    parent.openStrategy?.onAfterChildClose(parent.overlayRef.overlayElement);
   }
 }

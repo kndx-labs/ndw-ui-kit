@@ -389,15 +389,15 @@ export class DialogShowcaseComponent {
             label: 'dialog-showcase.overview.loading.dialog.button-reload',
             variant: 'primary',
             onClick: (dialogRef: NdwuModalRef) => {
-              dialogRef.isLoading.set(true);
-              setTimeout(() => dialogRef.isLoading.set(false), 2000);
+              dialogRef.setLoading(true);
+              setTimeout(() => dialogRef.setLoading(false), 2000);
             },
           },
         ],
       },
     );
 
-    setTimeout(() => ref.isLoading.set(false), 2000);
+    setTimeout(() => ref.setLoading(false), 2000);
   }
 
   protected openAsyncTitleDescriptionDialog(theme: NdwuTheme): void {
@@ -414,8 +414,8 @@ export class DialogShowcaseComponent {
 
     const updateTimerId = setTimeout(
       () => {
-        ref.title.set('dialog-showcase.overview.async-title-description.dialog.loaded-title');
-        ref.description.set('dialog-showcase.overview.async-title-description.dialog.loaded-description');
+        ref.setTitle('dialog-showcase.overview.async-title-description.dialog.loaded-title');
+        ref.setDescription('dialog-showcase.overview.async-title-description.dialog.loaded-description');
       },
       2000,
     );

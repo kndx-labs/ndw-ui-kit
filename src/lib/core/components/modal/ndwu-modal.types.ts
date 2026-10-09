@@ -36,7 +36,7 @@ export interface NdwuModalBaseConfig<ModalData = unknown> {
   description?: string;
   ariaLabel?: string;
   ariaLabelledby?: string;
-  buttons?: NdwuModalButton[];
+  buttons?: readonly NdwuModalButton[];
   panelClass?: string | string[];
   backdropClass?: string;
   disableClose?: boolean;
@@ -123,9 +123,13 @@ export type NdwuModalOpenTemplateOptions<
 
 export type NdwuModalType = 'dialog' | 'drawer';
 
-export type NdwuResolvedModalConfig<D = unknown> =
-  & Omit<NdwuDialogConfig<D> & NdwuDrawerConfig<D>, 'restoreFocus'>
+export type NdwuResolvedModalConfig<D = unknown> = Readonly<
+  & Omit<NdwuDialogConfig<D> & NdwuDrawerConfig<D>, 'restoreFocus' | 'buttons'>
   & {
     type: NdwuModalType;
     restoreFocus: boolean;
-  };
+    // Templates read button fields on every change detection, so the items
+    // are read-only too, not just the array.
+    buttons?: readonly Readonly<NdwuModalButton>[];
+  }
+>;

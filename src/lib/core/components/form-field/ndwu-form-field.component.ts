@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ViewEncapsulation,
   booleanAttribute,
@@ -19,6 +20,8 @@ import {NdwuFloatingLabelComponent, NdwuHintDirective, NdwuRightIconDirective, N
   templateUrl: './ndwu-form-field.component.html',
   styleUrl: './ndwu-form-field.component.scss',
   encapsulation: ViewEncapsulation.None,
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection -- reads plain NdwuControl fields; see ADR 006
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [],
   hostDirectives: [{
     directive: NdwuSizeDirective,

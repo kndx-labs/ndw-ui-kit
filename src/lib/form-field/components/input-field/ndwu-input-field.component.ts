@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   OnInit,
@@ -28,6 +29,7 @@ import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.
 @Component({
   selector: 'ndwu-input-field',
   templateUrl: './ndwu-input-field.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LocalizePipe,
     NdwuFormFieldComponent,

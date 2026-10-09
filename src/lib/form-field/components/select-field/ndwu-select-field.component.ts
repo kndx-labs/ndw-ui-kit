@@ -1,4 +1,4 @@
-import {Component, booleanAttribute, computed, inject, input, viewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input, viewChild} from '@angular/core';
 import {
   NDWU_ICON_NAME,
   NDWU_OPTION_CONFIG,
@@ -37,6 +37,7 @@ import {type NdwuSelectRenderRow, buildSelectRenderRows} from '../../classes/sel
   selector: 'ndwu-select-field',
   templateUrl: './ndwu-select-field.component.html',
   styleUrl: './ndwu-select-field.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LocalizeIfPipe,
     LocalizePipe,

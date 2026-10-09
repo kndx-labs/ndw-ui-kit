@@ -15,6 +15,7 @@ import {_DisposeViewRepeaterStrategy, _VIEW_REPEATER_STRATEGY} from '@angular/cd
   templateUrl: './ndwu-table.component.html',
   styleUrl: './ndwu-table.component.scss',
   encapsulation: ViewEncapsulation.None,
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection -- CDK renders rows imperatively; OnPush blocks their cells
   changeDetection: ChangeDetectionStrategy.Default,
   providers: [
     {provide: CDK_TABLE, useExisting: NdwuTableComponent},

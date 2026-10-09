@@ -1,4 +1,4 @@
-import {Component, DestroyRef, OnInit, booleanAttribute, inject, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DestroyRef, OnInit, booleanAttribute, inject, input} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {NdwuCheckboxComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
 import {FormFieldBase} from '../../classes/form-field-base';
@@ -7,6 +7,7 @@ import {setValueAccessor, syncIsInvalid} from '../../form-field.utils';
 @Component({
   selector: 'ndwu-checkbox-field',
   templateUrl: './ndwu-checkbox-field.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NdwuCheckboxComponent],
   hostDirectives: [{
     directive: NdwuSizeDirective,

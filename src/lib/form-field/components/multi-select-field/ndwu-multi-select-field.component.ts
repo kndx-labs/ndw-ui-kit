@@ -1,4 +1,14 @@
-import {Component, booleanAttribute, computed, contentChild, inject, input, signal, viewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  booleanAttribute,
+  computed,
+  contentChild,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import {NgTemplateOutlet} from '@angular/common';
 import {
   NDWU_ICON_NAME,
@@ -44,6 +54,7 @@ import {type NdwuSelectRenderRow, buildSelectRenderRows} from '../../classes/sel
   selector: 'ndwu-multi-select-field',
   templateUrl: './ndwu-multi-select-field.component.html',
   styleUrl: './ndwu-multi-select-field.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LocalizeIfPipe,
     LocalizePipe,

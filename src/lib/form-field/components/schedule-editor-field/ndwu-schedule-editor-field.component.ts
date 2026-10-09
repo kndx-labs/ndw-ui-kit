@@ -1,4 +1,4 @@
-import {Component, DestroyRef, OnInit, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DestroyRef, OnInit, input} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {
   NDWU_DEFAULT_WEEK_DAYS,
@@ -17,6 +17,7 @@ import {setValueAccessor, syncIsInvalid} from '../../form-field.utils';
 @Component({
   selector: 'ndwu-schedule-editor-field',
   templateUrl: './ndwu-schedule-editor-field.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[style.min-height]': '"0"',
   },

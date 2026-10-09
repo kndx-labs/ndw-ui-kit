@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   NDWU_PICTOGRAM_NAME,
@@ -14,6 +14,7 @@ import {ThemeSwitcherComponent} from '@app/components';
   selector: 'app-empty-state-sandbox',
   templateUrl: './empty-state-sandbox.component.html',
   styleUrl: './empty-state-sandbox.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, NdwuEmptyStateComponent, NdwuButtonComponent, ThemeSwitcherComponent],
 })
 export class EmptyStateSandboxComponent {

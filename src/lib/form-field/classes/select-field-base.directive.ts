@@ -11,7 +11,9 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {BreakpointObserver} from '@angular/cdk/layout';
+import {map} from 'rxjs';
 import {
   NDWU_ICON_NAME,
   type NdwuControl,
@@ -36,7 +38,7 @@ const SELECT_FOCUS_TYPE: NdwuInteractionFocusType = 'select';
  * This class provides:
  * - NdwuControl contract properties.
  * - Mobile-viewport detection, panel class, panel expansion tracking.
- * - Reactive `isInvalid` state tracking, and `setDisabledState` override.
+ * - Reactive `isInvalid` state tracking.
  *
  * Subclasses must declare their own @input() bindings and HTML template.
  * Subclasses must contain `<ndwu-form-field>`.
@@ -51,6 +53,8 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
   protected readonly breakpoint = inject(BreakpointObserver);
   protected readonly dropdownControllerFactory = createDropdownController;
   protected readonly registry = inject(NdwuInteractionRegistry);
+
+  protected readonly isMobileViewport: Signal<boolean>;
 
   protected readonly combobox = viewChild(NdwuComboboxDirective);
   protected readonly formField = viewChild(NdwuFormFieldComponent);
@@ -115,6 +119,13 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
 
     this.idValue = uniqueId(idPrefix);
 
+    this.isMobileViewport = toSignal(
+      this.breakpoint
+        .observe(HANDSET_BREAKPOINT)
+        .pipe(map((r) => r.matches)),
+      {initialValue: this.breakpoint.isMatched(HANDSET_BREAKPOINT)},
+    );
+
     this.initFocusTracking();
     this.initExpansionTracking();
 
@@ -126,11 +137,6 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
 
   public ngOnInit(): void {
     this.initValidationState();
-  }
-
-  // == FormBase overrides ====================================================
-  public override setDisabledState(isDisabled: boolean): void {
-    super.setDisabledState(isDisabled);
   }
 
   // == Shared methods ========================================================
@@ -148,10 +154,6 @@ export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements Ndw
 
   protected closePanel(): void {
     this.combobox()?.close();
-  }
-
-  protected isMobileViewport(): boolean {
-    return this.breakpoint.isMatched(HANDSET_BREAKPOINT);
   }
 
   protected renderRowKey(row: NdwuSelectRenderRow): string {

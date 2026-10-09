@@ -1,5 +1,7 @@
 @use 'styles/mixins';
 
+$close-btn-offset: 2px;
+
 .ndwu-select-field__trigger {
   display: flex;
   gap: 8px;
@@ -53,11 +55,6 @@
 }
 
 .ndwu-select-field__panel-close {
-  display: flex;
   flex-shrink: 0;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
+  margin-right: -$close-btn-offset;
 }

@@ -5,6 +5,8 @@
 @use 'styles/typography';
 @use '../ndwu-modal-mixins' as modal;
 
+$close-btn-offset: 2px;
+
 :host {
   @include mixins.mobile() {
     display: flex;
@@ -107,8 +109,14 @@
     }
     /* stylelint-enable plugin/no-unsupported-browser-features */
 
+    &__title {
+      line-height: 28px;
+      letter-spacing: typography.$letterSpacing-S;
+    }
+
     &__close-btn {
-      top: spacing.$spacing-24;
+      top: spacing.$spacing-24 + $close-btn-offset;
+      right: spacing.$spacing-24 - $close-btn-offset;
     }
 
     &__footer.ndwu-modal__actions {

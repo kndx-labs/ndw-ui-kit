@@ -72,7 +72,7 @@ Specifically:
 
 - Date: 2026-10-07
 
-NDWU-140 moves the `*-field` wrappers to `ChangeDetectionStrategy.OnPush`. Option 3 relies on
+[PR #40](https://github.com/kndx-labs/ndw-ui-kit/pull/40) moves the `*-field` wrappers to `ChangeDetectionStrategy.OnPush`. Selected option (#3) relies on
 "change detection is triggered by the Angular Forms API itself after `writeValue`", which no longer
 holds for an OnPush wrapper. `FormFieldBase` therefore calls `ChangeDetectorRef.markForCheck()` in
 `writeValue`, `setDisabledState` and `handleChange`. `markForCheck()` mutates no signals, so the

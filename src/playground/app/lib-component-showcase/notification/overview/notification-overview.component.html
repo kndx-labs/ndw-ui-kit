@@ -37,5 +37,13 @@
         [message]="'notification-showcase.html-message' | localize"
       />
     </div>
+
+    <div class="notification-section">
+      <h4>{{ 'notification-showcase.styled-html-title' | localize }}</h4>
+      <ndwu-notification
+        [variant]="NOTIFICATION_VARIANT.INFO"
+        message="notification-showcase.styled-html-message"
+      />
+    </div>
   </ng-template>
 </app-showcase-layout>

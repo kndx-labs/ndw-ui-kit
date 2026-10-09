@@ -1,5 +1,6 @@
 /* eslint id-denylist: 0 */
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ElementRef,
@@ -34,6 +35,7 @@ const SUPPORTED_POINTER_TYPE = 'mouse';
   exportAs: 'ndwuScrollbar',
   templateUrl: './ndwu-scrollbar.component.html',
   styleUrl: './ndwu-scrollbar.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ndwu-scrollbar--size-l]': 'normalizedSize() === "L"',
     '[class.ndwu-scrollbar--size-xl]': 'normalizedSize() === "XL"',

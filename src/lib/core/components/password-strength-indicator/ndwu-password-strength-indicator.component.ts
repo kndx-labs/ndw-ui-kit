@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 
 export type NdwuPasswordStrength = 'weak' | 'average' | 'strong';
 
@@ -6,6 +6,7 @@ export type NdwuPasswordStrength = 'weak' | 'average' | 'strong';
   selector: 'ndwu-password-strength-indicator',
   templateUrl: './ndwu-password-strength-indicator.component.html',
   styleUrl: './ndwu-password-strength-indicator.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NdwuPasswordStrengthIndicatorComponent {
   public readonly strength = input<NdwuPasswordStrength | null>(null);

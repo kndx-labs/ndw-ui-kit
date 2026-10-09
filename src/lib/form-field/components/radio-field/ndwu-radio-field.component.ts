@@ -1,4 +1,4 @@
-import {Component, booleanAttribute, computed, inject, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {
   NDWU_OPTION_CONFIG,
@@ -16,6 +16,7 @@ import {setValueAccessor} from '../../form-field.utils';
 @Component({
   selector: 'ndwu-radio-field',
   templateUrl: './ndwu-radio-field.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NdwuRadioGroupComponent,
     NdwuRadioButtonComponent,

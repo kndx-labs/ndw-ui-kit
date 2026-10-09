@@ -12,7 +12,7 @@ export class NgxTranslationService extends UiKitTranslationService {
   }
 
   public get onLangChange$(): Observable<unknown> {
-    return this.translate.onLangChange;
+    return this.translate.onTranslationRefresh;
   }
 
   public instant(key: string, params?: InterpolationParameters): string {

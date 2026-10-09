@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {ShowcaseTabsShellComponent} from '@app/components';
 import {EMPTY_STATE_TABS, EMPTY_STATE_TAB_CONTENT} from './empty-state-tab-content';
 
 @Component({
   selector: 'app-empty-state-showcase',
   templateUrl: './empty-state-showcase.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ShowcaseTabsShellComponent],
 })
 export class EmptyStateShowcaseComponent {

@@ -1,6 +1,6 @@
 import {ElementRef, InjectionToken, Injector, type Provider, TemplateRef, signal} from '@angular/core';
 import {OverlayRef} from '@angular/cdk/overlay';
-import type {NdwuPopoverConfig} from './ndwu-popover.types';
+import type {NdwuPopoverConfig, NdwuPopoverOrigin} from './ndwu-popover.types';
 import {NDWU_POPOVER_CONTENT, NDWU_POPOVER_CONTEXT, NDWU_POPOVER_TRAP_FOCUS} from './ndwu-popover.tokens';
 import {ComponentPortal, TemplatePortal} from '@angular/cdk/portal';
 import {NdwuPopoverHostComponent} from './ndwu-popover-host.component';
@@ -20,6 +20,12 @@ export abstract class NdwuPopoverController {
    * Used by the trigger for hover bridging.
    */
   public abstract getOverlayElement(): HTMLElement | null;
+
+  /**
+   * Re-anchors the open overlay to another origin and recomputes its position without closing it.
+   * No-op by default; controllers that support re-anchoring (tooltip) override it.
+   */
+  public setOrigin(_origin: NdwuPopoverOrigin): void {}
 
   protected attachPortal(
     config: NdwuPopoverConfig,

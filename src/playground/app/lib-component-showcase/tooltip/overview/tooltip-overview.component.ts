@@ -7,7 +7,9 @@ import {
   NdwuPopoverAlign,
   NdwuTooltipDirective,
 } from '@ndw-ui-kit/core';
+import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuTooltipPosition} from '@ndw-ui-kit/core/popover';
+import {TooltipStripDemoComponent} from './strip-demo/tooltip-strip-demo.component';
 
 interface PositionState {
   position: NdwuTooltipPosition;
@@ -24,13 +26,17 @@ const ALIGNS: readonly NdwuPopoverAlign[] = ['center', 'start', 'end'];
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NdwuButtonComponent,
+    LocalizePipe,
     NdwuIconComponent,
     NdwuTooltipDirective,
     ShowcaseLayoutComponent,
+    TooltipStripDemoComponent,
   ],
 })
 export class TooltipOverviewComponent {
   protected readonly ICON_NAME = NDWU_ICON_NAME;
+
+  protected readonly styledHtmlText = 'tooltip-showcase.overview.styled-html-text';
 
   protected readonly multilineText =
     'Copy hexadecimal value to clipboard Copy hexadecimal value to clipboard value to clipboard '

@@ -1,0 +1,36 @@
+<span
+  #stripTooltip="ndwuTooltip"
+  class="strip"
+  role="group"
+  aria-label="Load by half-hour"
+  [ndwuTooltip]="tooltipTpl"
+  [tooltipContext]="tooltipCell()"
+  [tooltipOrigin]="tooltipOrigin()"
+  [tooltipDescribeHost]="false"
+  [tooltipRestoreFocus]="false"
+  tooltipPosition="above"
+  triggerOn="manual"
+  (mouseenter)="onStripMouseEnter($event)"
+  (mousemove)="onStripMouseMove($event)"
+  (mouseleave)="onStripMouseLeave()"
+  (focusout)="onStripFocusOut($event)"
+  (keydown)="onStripKeydown($event)"
+>
+  @for (cell of cells; track cell.index) {
+    <span
+      class="strip-cell"
+      [style.opacity]="0.15 + cell.value / 120"
+      [attr.tabindex]="cell.index === focusedIndex() ? 0 : -1"
+      [attr.aria-label]="cell.time"
+      [attr.aria-describedby]="cell.index === focusedIndex() ? stripTooltip.tooltipId : null"
+      (focusin)="onCellFocusIn(cell, $event)"
+    ></span>
+  }
+</span>
+
+<ng-template #tooltipTpl let-cell>
+  @if (cell) {
+    <strong>{{ cell.time }}</strong><br />
+    Load: {{ cell.value }}%
+  }
+</ng-template>

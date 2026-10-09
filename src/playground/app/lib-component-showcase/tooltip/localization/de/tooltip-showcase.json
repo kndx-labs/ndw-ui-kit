@@ -15,6 +15,11 @@
       "tokens": "Tokens",
       "inherit": "Vererben",
       "preview-text": "Zeigen Sie mit der Maus"
+    },
+    "overview": {
+      "shared-click-description": "Klicken Sie auf eine Zelle, um den Tooltip zu öffnen. Ein Tooltip wird von allen Zellen geteilt: Ein Klick auf eine andere Zelle (oder die Pfeiltasten) verschiebt ihn dorthin, ohne ihn zu schließen. Schließt mit Escape oder wenn der Fokus den Streifen verlässt.",
+      "shared-pointer-description": "Der Tooltip erscheint, sobald der Mauszeiger den Streifen betritt, folgt der Maus und zeigt die Daten der Zelle darunter. Bei Tastaturfokus wird er stattdessen an der fokussierten Zelle verankert.",
+      "styled-html-text": "Status: <span style=\"display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;\"></span> <b>online</b>"
     }
   }
 }

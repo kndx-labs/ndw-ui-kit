@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, input} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {NDWU_TOGGLE_COLOR, NdwuSizeDirective, type NdwuToggleColor, NdwuToggleComponent} from '@ndw-ui-kit/core';
 import {FormFieldBase} from '../../classes/form-field-base';
@@ -7,6 +7,7 @@ import {setValueAccessor} from '../../form-field.utils';
 @Component({
   selector: 'ndwu-toggle-field',
   templateUrl: './ndwu-toggle-field.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NdwuToggleComponent,
   ],

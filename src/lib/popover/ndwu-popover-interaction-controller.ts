@@ -38,6 +38,12 @@ export class NdwuPopoverInteractionController {
 
   public scheduleShow(): void {
     this.clearHideTimer();
+    // Repeated calls (e.g. moving across targets) must not leave an earlier timer behind.
+    this.clearShowTimer();
+
+    if (this.ctx.isOpen()) {
+      return;
+    }
 
     const delay = this.ctx.getShowDelay();
 
@@ -170,6 +176,11 @@ export class NdwuPopoverInteractionController {
 
       this.outsideClickUnregister = null;
     };
+  }
+
+  /** Cancels a pending hide, e.g. when the overlay is explicitly shown again while still open. */
+  public cancelScheduledHide(): void {
+    this.clearHideTimer();
   }
 
   /**

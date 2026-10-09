@@ -98,8 +98,7 @@ export class NdwuPopoverPanelController extends NdwuPopoverController {
       positionStrategy,
       scrollStrategy,
       panelClass,
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: false,
     });
   }
 

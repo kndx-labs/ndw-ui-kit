@@ -260,6 +260,7 @@ const NG_RULE_OVERRIDES = {
   '@angular-eslint/directive-class-suffix': ERROR,
   '@angular-eslint/no-conflicting-lifecycle': ERROR,
   '@angular-eslint/use-lifecycle-interface': ERROR,
+  '@angular-eslint/prefer-on-push-component-change-detection': ERROR,
 };
 
 module.exports = tseslint.config(

@@ -457,6 +457,22 @@ Choose one of the following translation providers:
   > `@ndw-ui-kit/core/l10n/ngx-translate` (previously exported from `@ndw-ui-kit/core/l10n`),
   > so the package no longer requires `@ngx-translate/core` unless you import it.
 
+#### HTML in text inputs
+
+These inputs are translated with the `localizeHtml` pipe. A translated string is rendered
+as trusted HTML, so inline styles such as `style="position: relative; top: 2px"` are kept:
+
+- `ndwu-notification`: `message`.
+- `ndwu-empty-state`: `header`, `description`.
+- `ndwuTooltip`.
+
+```html
+<ndwu-notification message="setup.led-hint" />
+```
+
+A string without a translation is sanitized by Angular, so inline styles are removed from it.
+To render other HTML as-is, pass a `SafeHtml` value; it is not translated.
+
 ### Component size
 
 Components support size variants: `S`, `L`, `XL`, `XXL` (not all components

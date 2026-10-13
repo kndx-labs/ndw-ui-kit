@@ -1,11 +1,11 @@
 import {Provider} from '@angular/core';
-import {NoopTranslationService, UiKitTranslationService} from '../services';
+import {NdwuNoopTranslationService, NdwuTranslationService} from '../services';
 
-export function provideNdwUiKitNoopTranslation(): Provider[] {
+export function provideNdwuNoopTranslation(): Provider[] {
   return [
     {
-      provide: UiKitTranslationService,
-      useClass: NoopTranslationService,
+      provide: NdwuTranslationService,
+      useClass: NdwuNoopTranslationService,
     },
   ];
 }

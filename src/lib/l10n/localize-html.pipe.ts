@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Pipe, PipeTransform, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {DomSanitizer, type SafeHtml} from '@angular/platform-browser';
-import {UiKitTranslationService} from './services/translation.service';
+import {NdwuTranslationService} from './services/translation.service';
 
 export type NdwuLocalizableHtml = string | SafeHtml;
 
@@ -9,8 +9,8 @@ export type NdwuLocalizableHtml = string | SafeHtml;
   name: 'localizeHtml',
   pure: false,
 })
-export class LocalizeHtmlPipe implements PipeTransform {
-  private readonly translationService = inject(UiKitTranslationService);
+export class NdwuLocalizeHtmlPipe implements PipeTransform {
+  private readonly translationService = inject(NdwuTranslationService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly sanitizer = inject(DomSanitizer);
 

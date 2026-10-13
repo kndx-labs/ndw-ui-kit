@@ -195,7 +195,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
   }
 }
 
-export function createTooltipController(
+export function ndwuCreateTooltipController(
   elementRef: ElementRef<HTMLElement>,
   injector: Injector,
   onDetached: () => void,

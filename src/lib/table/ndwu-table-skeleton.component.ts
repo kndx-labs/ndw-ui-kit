@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, input, numberAttribute} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
 const DEFAULT_SKELETON_TEXTS = {
@@ -12,7 +12,7 @@ const BAR_WIDTHS = [60, 80, 45, 70, 55];
   selector: 'ndwu-table-skeleton',
   exportAs: 'ndwuTableSkeleton',
   templateUrl: './ndwu-table-skeleton.component.html',
-  imports: [LocalizePipe],
+  imports: [NdwuLocalizePipe],
   styleUrl: './ndwu-table-skeleton.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

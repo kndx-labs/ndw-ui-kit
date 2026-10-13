@@ -23,8 +23,8 @@ import {
   NdwuSizeDirective,
   NdwuSuffixDirective,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {FormFieldBase} from '../../classes/form-field-base';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuFormFieldBase} from '../../classes/form-field-base';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 
 @Component({
@@ -35,7 +35,7 @@ import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuFloatingLabelComponent,
     NdwuFormFieldComponent,
     NdwuHelperMessageComponent,
@@ -53,7 +53,7 @@ import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.
     '[class.ndwu-password-input-field--error]': 'inputStatus() === "error"',
   },
 })
-export class NdwuPasswordInputFieldComponent extends FormFieldBase<string> implements OnInit {
+export class NdwuPasswordInputFieldComponent extends NdwuFormFieldBase<string> implements OnInit {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   public readonly label = input<string>('');

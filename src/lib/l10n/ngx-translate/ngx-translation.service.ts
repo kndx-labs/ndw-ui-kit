@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {InterpolationParameters, TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
-import {UiKitTranslationService} from '@ndw-ui-kit/core/l10n';
+import {NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
 
 @Injectable()
-export class NgxTranslationService extends UiKitTranslationService {
+export class NdwuNgxTranslationService extends NdwuTranslationService {
   constructor(
     private translate: TranslateService,
   ) {

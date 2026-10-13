@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal} from '@angular/core';
 import {NDWU_PROGRESS_BAR_COLOR, NDWU_SIZE, NdwuProgressBarComponent} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 @Component({
@@ -10,7 +10,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NdwuProgressBarComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
   ],
 })

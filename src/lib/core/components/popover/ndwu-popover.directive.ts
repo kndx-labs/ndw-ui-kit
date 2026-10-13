@@ -5,7 +5,7 @@ import {
   NDWU_POPOVER_DEFAULT_CONTENT,
   NDWU_POPOVER_TRIGGER_DEFAULTS,
   NdwuPopoverTriggerDirective,
-  createPopoverController,
+  ndwuCreatePopoverController,
 } from '@ndw-ui-kit/core/popover';
 import {NdwuPopoverComponent} from './ndwu-popover.component';
 import type {NdwuPopoverAlign, NdwuPopoverButton, NdwuPopoverSide} from './ndwu-popover.types';
@@ -47,7 +47,7 @@ const DEFAULT_POPOVER_ALIGN = 'center' as const;
   providers: [
     {
       provide: NDWU_POPOVER_CONTROLLER_FACTORY,
-      useValue: createPopoverController,
+      useValue: ndwuCreatePopoverController,
     },
     {
       provide: NDWU_POPOVER_TRIGGER_DEFAULTS,

@@ -6,3 +6,4 @@ export * from './options';
 export * from './pictogram-names';
 export * from './shared.types';
 export * from './pictogram-presets';
+export * from './deprecated';

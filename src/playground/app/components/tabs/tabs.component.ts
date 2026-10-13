@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 export interface Tab {
   id: string;
@@ -12,7 +12,7 @@ export interface Tab {
   styleUrl: './tabs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
   ],
 })
 export class TabsComponent {

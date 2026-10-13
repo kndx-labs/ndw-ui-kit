@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {NDWU_SIZE, NdwuCardComponent, type NdwuSize} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 @Component({
@@ -10,7 +10,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NdwuCardComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
   ],
 })

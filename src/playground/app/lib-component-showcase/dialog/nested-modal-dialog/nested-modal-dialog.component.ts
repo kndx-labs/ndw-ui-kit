@@ -8,7 +8,7 @@ import {
   NdwuModalRef,
   NdwuModalService,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 @Component({
   selector: 'app-nested-modal-dialog',
@@ -19,7 +19,7 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
     NdwuButtonComponent,
     NdwuModalBodyDirective,
     NdwuModalFooterDirective,
-    LocalizePipe,
+    NdwuLocalizePipe,
   ],
 })
 export class NestedModalDialogComponent {

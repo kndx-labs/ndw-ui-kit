@@ -9,7 +9,7 @@ import {
   NdwuInputDirective,
 } from '@ndw-ui-kit/core';
 import {NdwuInputFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 @Component({
@@ -20,7 +20,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   encapsulation: ViewEncapsulation.None,
   imports: [
     ReactiveFormsModule,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
     NdwuButtonComponent,
     NdwuFloatingLabelComponent,

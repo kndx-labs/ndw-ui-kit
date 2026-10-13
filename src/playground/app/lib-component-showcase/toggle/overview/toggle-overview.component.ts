@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_SIZE, NDWU_TOGGLE_COLOR, NdwuButtonComponent, NdwuToggleComponent} from '@ndw-ui-kit/core';
 import {NdwuToggleFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent, ToastComponent} from '@app/components';
 
 @Component({
@@ -15,7 +15,7 @@ import {ShowcaseLayoutComponent, ToastComponent} from '@app/components';
     NdwuToggleFieldComponent,
     NdwuToggleComponent,
     NdwuButtonComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
     ToastComponent,
   ],

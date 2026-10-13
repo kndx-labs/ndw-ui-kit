@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, ElementRef, computed, signal, viewCh
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_SIZE, type NdwuSize, NdwuTimingButtonComponent} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent} from '@app/components';
 import {CssUtils} from '@app/utils';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -30,7 +30,7 @@ function tokenKeyToCssVar(key: string): string {
     CommonModule,
     ReactiveFormsModule,
     NdwuTimingButtonComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
     TokenListComponent,
   ],

@@ -8,7 +8,7 @@ import {
   NdwuPopoverDirective,
   type NdwuPopoverSide,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
 
@@ -40,7 +40,7 @@ type ButtonFormGroup = FormGroup<{
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuButtonComponent,
     NdwuPopoverDirective,
     ReactiveFormsModule,

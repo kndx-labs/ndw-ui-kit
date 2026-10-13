@@ -1,1 +1,1 @@
-export {createPopoverController, NdwuPopoverPanelController} from './popover-panel.controller';
+export {ndwuCreatePopoverController, NdwuPopoverPanelController} from './popover-panel.controller';

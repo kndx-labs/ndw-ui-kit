@@ -24,9 +24,9 @@ import {
   NdwuSizeDirective,
 } from '@ndw-ui-kit/core';
 import {NdwuComboboxDirective} from '@ndw-ui-kit/core/aria';
-import {createDropdownController} from '@ndw-ui-kit/core/popover';
+import {ndwuCreateDropdownController} from '@ndw-ui-kit/core/popover';
 import {HANDSET_BREAKPOINT, uniqueId} from '@ndw-ui-kit/core/utils';
-import {FormFieldBase} from './form-field-base';
+import {NdwuFormFieldBase} from './form-field-base';
 import type {NdwuSelectRenderRow} from './select-render';
 
 const SELECT_FOCUS_TYPE: NdwuInteractionFocusType = 'select';
@@ -47,11 +47,11 @@ const SELECT_FOCUS_TYPE: NdwuInteractionFocusType = 'select';
  * their view children for width tracking.
  */
 @Directive() // to be able to use the Angular DI mechanism
-export abstract class SelectFieldBase<T> extends FormFieldBase<T> implements NdwuControl, OnInit {
+export abstract class NdwuSelectFieldBase<T> extends NdwuFormFieldBase<T> implements NdwuControl, OnInit {
   protected readonly injector = inject(Injector);
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   protected readonly breakpoint = inject(BreakpointObserver);
-  protected readonly dropdownControllerFactory = createDropdownController;
+  protected readonly dropdownControllerFactory = ndwuCreateDropdownController;
   protected readonly registry = inject(NdwuInteractionRegistry);
 
   protected readonly isMobileViewport: Signal<boolean>;

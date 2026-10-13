@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 export type SandboxTheme = 'light' | 'dark';
 
@@ -11,7 +11,7 @@ const DEFAULT_THEMES: readonly string[] = ['light', 'dark'];
   styleUrl: './theme-switcher.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
   ],
 })
 export class ThemeSwitcherComponent {

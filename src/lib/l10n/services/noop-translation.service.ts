@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {NEVER} from 'rxjs';
-import {UiKitTranslationService} from './translation.service';
+import {NdwuTranslationService} from './translation.service';
 
 @Injectable()
-export class NoopTranslationService implements UiKitTranslationService {
+export class NdwuNoopTranslationService implements NdwuTranslationService {
   public readonly onLangChange$ = NEVER;
 
   public instant(key: string, _?: any): string {

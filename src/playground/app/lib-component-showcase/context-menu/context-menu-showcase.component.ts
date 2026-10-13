@@ -3,7 +3,7 @@ import {
   NDWU_POPOVER_CONTROLLER_FACTORY,
   NdwuPopoverControllerFactory,
   NdwuPopoverTriggerDirective,
-  createDropdownController,
+  ndwuCreateDropdownController,
 } from '@ndw-ui-kit/core/popover';
 
 type ContextAction = 'cut' | 'copy' | 'paste' | 'selectAll' | 'delete';
@@ -31,12 +31,12 @@ interface ContextMenuContext {
   imports: [NdwuPopoverTriggerDirective],
   providers: [
     // DI token approach: the trigger directive injected below picks this up automatically.
-    {provide: NDWU_POPOVER_CONTROLLER_FACTORY, useValue: createDropdownController},
+    {provide: NDWU_POPOVER_CONTROLLER_FACTORY, useValue: ndwuCreateDropdownController},
   ],
 })
 export class ContextMenuShowcaseComponent {
   // [popoverControllerFactory] input approach: the reference passed directly in the template.
-  protected readonly createDropdownController: NdwuPopoverControllerFactory = createDropdownController;
+  protected readonly ndwuCreateDropdownController: NdwuPopoverControllerFactory = ndwuCreateDropdownController;
 
   protected readonly inputBasedTriggerRef = viewChild('inputBasedTrigger', {read: NdwuPopoverTriggerDirective});
   protected readonly diBasedTriggerRef = viewChild('diBasedTrigger', {read: NdwuPopoverTriggerDirective});

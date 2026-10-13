@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit, inject} from '@angular/core'
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_SIZE, NdwuFormContainerComponent} from '@ndw-ui-kit/core';
 import {NdwuCheckboxFieldComponent, NdwuInputFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {EMAIL_VALIDATOR} from '@app/validation';
 import {NDWU_SIZE_TOKEN} from 'src/lib/core/tokens';
@@ -21,7 +21,7 @@ import {NDWU_SIZE_TOKEN} from 'src/lib/core/tokens';
     NdwuCheckboxFieldComponent,
     NdwuFormContainerComponent,
     NdwuInputFieldComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
   ],
 })

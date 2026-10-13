@@ -1,14 +1,14 @@
 import {ChangeDetectorRef, Pipe, PipeTransform} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {UiKitTranslationService} from './services/translation.service';
+import {NdwuTranslationService} from './services/translation.service';
 
 @Pipe({
   name: 'localize',
   pure: false,
 })
-export class LocalizePipe implements PipeTransform {
+export class NdwuLocalizePipe implements PipeTransform {
   constructor(
-    private translationService: UiKitTranslationService,
+    private translationService: NdwuTranslationService,
     private cdr: ChangeDetectorRef,
   ) {
     this.translationService.onLangChange$

@@ -394,7 +394,7 @@ export class NdwuDropdownController extends NdwuPopoverController {
   }
 }
 
-export function createDropdownController(
+export function ndwuCreateDropdownController(
   elementRef: ElementRef<HTMLElement>,
   injector: Injector,
   onDetached: () => void,

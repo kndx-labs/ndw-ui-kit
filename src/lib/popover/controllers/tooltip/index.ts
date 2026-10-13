@@ -1,1 +1,1 @@
-export {createTooltipController, NdwuTooltipController} from './tooltip.controller';
+export {ndwuCreateTooltipController, NdwuTooltipController} from './tooltip.controller';

@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, Signal, computed, signal} from '@ang
 import {NdwuButtonComponent, NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuEmptyStateComponent} from '@ndw-ui-kit/core/widgets';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 @Component({
@@ -10,7 +10,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   templateUrl: './empty-state-overview.component.html',
   styleUrl: './empty-state-overview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NdwuEmptyStateComponent, NdwuButtonComponent, ShowcaseLayoutComponent, LocalizePipe],
+  imports: [NdwuEmptyStateComponent, NdwuButtonComponent, ShowcaseLayoutComponent, NdwuLocalizePipe],
 })
 export class EmptyStateOverviewComponent {
   protected readonly emptyStateIsDesktop = signal(true);

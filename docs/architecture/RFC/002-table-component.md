@@ -43,7 +43,7 @@ the host connects them in its template.
 | Class                        | Type             | Role                                                                                                 |
 |------------------------------|------------------|------------------------------------------------------------------------------------------------------|
 | `NdwuTableDataSource<T>`     | `DataSource<T>`  | Signals `data`, `filter`, `sort`, `pageSize`, `pageIndex`; computes `filtered → sorted → page`, `length`, `isSorted` |
-| `NdwuTableDataSourceOptions` | Interface        | `sortAccessor`, `filterPredicate`, `injector` (when built outside an injection context)            |
+| `NdwuTableDataSourceOptions` | Interface        | `sortAccessor`, `sortComparator`, `filterPredicate`, `injector` (when built outside an injection context) |
 
 A plain array is also a valid `[dataSource]`. Use it when the host does its own
 sorting or paging, e.g. on the server.
@@ -212,6 +212,9 @@ NdwuSortDirective.sort(id)
   │
   V
 NdwuTableDataSource: sorted → page recompute
+  │  sortAccessor reads each value; null, undefined, NaN and invalid dates go last
+  │  sortComparator (default: Date by time, numbers, then numeric string collation)
+  │  returns ascending order; the direction is applied once, and the sort is stable
   │  connect() observable emits the new page
   V
 CdkTable renders the rows; sort header reads the directive → icon + aria-sort

@@ -6,6 +6,7 @@ import type {NdwuSortState} from './ndwu-sort.directive';
 
 export interface NdwuTableDataSourceOptions<T> {
   sortAccessor?: (row: T, column: string) => unknown;
+  sortComparator?: (a: unknown, b: unknown, active: string) => number;
   filterPredicate?: (row: T, filter: string) => boolean;
   /** Needed only when the source is built outside an injection context. */
   injector?: Injector;
@@ -24,12 +25,25 @@ function defaultFilterPredicate<T>(row: T, filter: string): boolean {
     });
 }
 
-function compare(a: unknown, b: unknown): number {
-  if (typeof a === 'number' && typeof b === 'number') {
-    return a - b;
+const collator = new Intl.Collator(undefined, {numeric: true});
+
+function toSortValue(value: unknown): unknown {
+  return value instanceof Date ? value.getTime() : value;
+}
+
+function isEmptySortValue(value: unknown): boolean {
+  return value === null || value === undefined || Number.isNaN(toSortValue(value));
+}
+
+function defaultSortComparator(a: unknown, b: unknown): number {
+  const left = toSortValue(a);
+  const right = toSortValue(b);
+
+  if (typeof left === 'number' && typeof right === 'number') {
+    return Number(left > right) - Number(left < right);
   }
 
-  return String(a).localeCompare(String(b));
+  return collator.compare(String(left), String(right));
 }
 
 export class NdwuTableDataSource<T> extends DataSource<T> {
@@ -73,9 +87,21 @@ export class NdwuTableDataSource<T> extends DataSource<T> {
       }
 
       const accessor = this.options.sortAccessor ?? defaultSortAccessor;
+      const comparator = this.options.sortComparator ?? defaultSortComparator;
       const factor = direction === 'asc' ? 1 : -1;
 
-      return [...rows].sort((a, b) => factor * compare(accessor(a, active), accessor(b, active)));
+      return [...rows].sort((rowA, rowB) => {
+        const a = accessor(rowA, active);
+        const b = accessor(rowB, active);
+        const aEmpty = isEmptySortValue(a);
+        const bEmpty = isEmptySortValue(b);
+
+        if (aEmpty || bEmpty) {
+          return Number(aEmpty) - Number(bEmpty);
+        }
+
+        return factor * comparator(a, b, active);
+      });
     });
 
     this.length = computed(() => this.filtered().length);

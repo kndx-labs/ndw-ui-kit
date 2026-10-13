@@ -1,7 +1,7 @@
 # Contributing to NDW UI Kit
 
 This guide is for anyone who wants to change `@ndw-ui-kit/core`: fix a bug, add a component, or improve the tooling.
-It covers the workflow from a Jira ticket to a merged pull request.
+It covers the workflow from a ticket to a merged pull request.
 
 - [README.md](README.md): the maintainer reference (scripts, internal agreements, component tokens).
 - [src/lib/README.md](src/lib/README.md): the consumer docs that ship with the package.
@@ -21,7 +21,7 @@ It covers the workflow from a Jira ticket to a merged pull request.
 
 ## Before you start
 
-- Every change needs a ticket in the **NDWU** Jira project. The key (for example `NDWU-102`) goes into the branch
+- Every change needs an **NDWU** ticket. Its key (for example `NDWU-102`) goes into the branch
   name, the commit messages and the PR title.
 - Changes to the public API, or work that will span several PRs, start with a design doc:
   - an RFC (request for comments): see [docs/architecture/RFC/README.md](docs/architecture/RFC/README.md) and
@@ -268,7 +268,7 @@ This is a team agreement; GitHub doesn't enforce it.
 
 Reviewers usually look at:
 
-- the change matches the Jira issue, and nothing unrelated;
+- the change matches the ticket, and nothing unrelated;
 - public API naming and entry-point exports;
 - keyboard support, ARIA attributes and focus handling;
 - theming through component tokens, in the light and dark themes;

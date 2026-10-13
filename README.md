@@ -34,6 +34,7 @@ docs/
 - Codestyle: `docs/codestyle/` ([CODESTYLE.md](docs/codestyle/CODESTYLE.md),
   [NAMING.md](docs/codestyle/NAMING.md), [CSS.md](docs/codestyle/CSS.md))
 - Repository workflow (this file): `README.md`
+- Contributor guide: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Local development
 
@@ -41,13 +42,6 @@ docs/
 
 ```shell
 yarn install
-```
-
-+
-
-```shell
-# setup Husky hooks
-yarn prepare
 ```
 
 ### Build library artifacts
@@ -96,7 +90,7 @@ Relevant scripts:
 - `yarn run lint:styles` &mdash; lints `src/**/*.scss` with Stylelint
 - `yarn run lint-lib` &mdash; library-focused check (`lint:ts-src` + `lint:styles`)
 - `yarn run lint-all` &mdash; full repository lint for TypeScript + SCSS
-- `yarn run lint-all-fix` &mdash; runs `fmt`, then ESLint `--fix`, then Stylelint `--fix`
+- `yarn run lint-all-fix` &mdash; runs Stylelint `--fix`, then `fmt`, then ESLint `--fix`
 
 Notes:
 

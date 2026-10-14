@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {NgTemplateOutlet} from '@angular/common';
 import {CdkPortalOutlet} from '@angular/cdk/portal';
 import {A11yModule} from '@angular/cdk/a11y';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuIconButtonComponent} from '../../button/icon/ndwu-icon-button.component';
 import {NdwuButtonComponent} from '../../button/button/ndwu-button.component';
 import {NdwuScrollbarComponent} from '../../scrollbar/ndwu-scrollbar.component';
@@ -20,7 +20,7 @@ import {NdwuModalActionsDirective} from '../directives/ndwu-modal-actions.direct
   imports: [
     A11yModule,
     CdkPortalOutlet,
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuButtonComponent,
     NdwuIconButtonComponent,
     NdwuModalActionsDirective,

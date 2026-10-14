@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Signal, computed, signal} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {
   NDWU_PICTOGRAM_NAME,
@@ -17,7 +17,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   templateUrl: './pictogram-overview.component.html',
   styleUrl: './pictogram-overview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NdwuPictogramComponent, NdwuAdaptivePictogramComponent, LocalizePipe, ShowcaseLayoutComponent],
+  imports: [NdwuPictogramComponent, NdwuAdaptivePictogramComponent, NdwuLocalizePipe, ShowcaseLayoutComponent],
 })
 export class PictogramOverviewComponent {
   protected readonly pictogramIsDesktop = signal(true);

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, DestroyRef, OnInit, booleanAttribute, inject, input} from '@angular/core';
 import {NgControl} from '@angular/forms';
 import {NdwuCheckboxComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
-import {FormFieldBase} from '../../classes/form-field-base';
+import {NdwuFormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor, syncIsInvalid} from '../../form-field.utils';
 
 @Component({
@@ -14,7 +14,7 @@ import {setValueAccessor, syncIsInvalid} from '../../form-field.utils';
     inputs: ['ndwuSize: size'],
   }],
 })
-export class NdwuCheckboxFieldComponent extends FormFieldBase<boolean> implements OnInit {
+export class NdwuCheckboxFieldComponent extends NdwuFormFieldBase<boolean> implements OnInit {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   public readonly label = input<string>('');

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   ROUTER_LOADER_DURATION_FALLBACK,
   ROUTER_LOADER_GEOMETRY,
@@ -12,7 +12,7 @@ import {NdwuRouterLoaderSize} from './ndwu-router-loader.types';
   templateUrl: './ndwu-router-loader.component.html',
   styleUrl: './ndwu-router-loader.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LocalizePipe],
+  imports: [NdwuLocalizePipe],
 })
 export class NdwuRouterLoaderComponent {
   public readonly size = input<NdwuRouterLoaderSize>('XL');

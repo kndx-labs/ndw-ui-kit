@@ -10,7 +10,7 @@ import {
 } from '@ndw-ui-kit/core/form-field';
 import {ThemeSwitcherComponent} from '@app/components';
 import {parseTextareaOptions} from '@app/utils';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {SandboxTheme} from '@app/lib-component-showcase/component-showcase.types';
 
 const DEFAULT_OPTIONS_TEXT = 'Germany\nSwitzerland\nAustria\nFrance\nItaly';
@@ -28,7 +28,7 @@ type DisplayMode = 'default' | 'count' | 'chips';
     JsonPipe,
     NdwuIconComponent,
     NdwuMultiSelectFieldComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
     NdwuMultiSelectDisplayDirective,
   ],

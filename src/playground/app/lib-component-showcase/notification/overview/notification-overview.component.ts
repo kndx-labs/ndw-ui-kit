@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
 import {NDWU_NOTIFICATION_VARIANT, NdwuNotificationComponent} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 interface NotificationVariantData {
@@ -23,7 +23,7 @@ const NOTIFICATION_VARIANTS: readonly NotificationVariantData[] = [
   encapsulation: ViewEncapsulation.None,
   imports: [
     NdwuNotificationComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
   ],
 })

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {NdwuLinkComponent} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 interface LinkState {
@@ -29,7 +29,7 @@ const LINK_STATES: readonly LinkState[] = [
   imports: [
     NdwuLinkComponent,
     RouterLink,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
   ],
 })

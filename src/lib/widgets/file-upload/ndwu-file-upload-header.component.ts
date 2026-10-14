@@ -8,7 +8,7 @@ import {
   model,
   output,
 } from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   NDWU_ICON_NAME,
   NDWU_PROGRESS_BAR_COLOR,
@@ -25,7 +25,7 @@ import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.
   styleUrl: './ndwu-file-upload-header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuButtonComponent,
     NdwuProgressBarComponent,
   ],

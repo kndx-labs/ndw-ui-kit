@@ -33,7 +33,7 @@ export const NDWU_ICON_SPRITE_CONFIG = new InjectionToken<NdwuIconSpriteConfig>(
   },
 );
 
-export const provideAllNdwUiKitIcons = (): Provider => {
+export const provideNdwuAllIcons = (): Provider => {
   return {
     provide: NDWU_ICON_SPRITE_CONFIG,
     useValue: {
@@ -51,12 +51,12 @@ export const provideAllNdwUiKitIcons = (): Provider => {
  *
  * @example
  * ```ts
- * import {provideNdwUiKitCustomIcons} from '@ndw-ui-kit/core';
+ * import {provideNdwuCustomIcons} from '@ndw-ui-kit/core';
  * import {icons} from './my-icons.config';
  *
  * bootstrapApplication(AppComponent, {
  *   providers: [
- *     provideNdwUiKitCustomIcons({
+ *     provideNdwuCustomIcons({
  *       path: 'assets/my-custom.sprite.svg',
  *       iconNames: icons,
  *     }),
@@ -69,7 +69,7 @@ export const provideAllNdwUiKitIcons = (): Provider => {
  *                            Accepts `readonly NdwuIconName[]` so you can pass the typed array
  *                            exported by your config file directly.
  */
-export const provideNdwUiKitCustomIcons = (config: {
+export const provideNdwuCustomIcons = (config: {
   path: string;
   iconNames: readonly NdwuIconName[];
 }): Provider => {

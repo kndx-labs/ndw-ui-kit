@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   NDWU_SIZE,
   type NdwuSize,
@@ -19,7 +19,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   imports: [
     NdwuTabsComponent,
     ShowcaseLayoutComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
   ],
 })
 export class TabsOverviewComponent {

@@ -11,7 +11,7 @@ import {
 } from '@ndw-ui-kit/core';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
 import {
   BUTTON_TOKEN_KEYS,
@@ -33,7 +33,7 @@ function tokenKeyToCssVar(key: string): string {
     CommonModule,
     ReactiveFormsModule,
     NdwuButtonComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
     TokenListComponent,
   ],

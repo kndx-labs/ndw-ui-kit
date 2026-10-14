@@ -10,7 +10,7 @@ import {
   model,
   output,
 } from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NDWU_ICON_NAME, NdwuIconName} from '../../../icon-names';
 import {type NdwuValues} from '../../../shared.types';
 import {NdwuSizeDirective} from '../../directives';
@@ -37,7 +37,7 @@ export type NdwuTagStatus = NdwuValues<typeof NDWU_TAG_STATUS>;
   styleUrl: './ndwu-tag.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuIconComponent,
   ],
   host: {

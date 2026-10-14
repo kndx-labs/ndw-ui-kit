@@ -20,7 +20,7 @@ import {
   NdwuPopoverTriggerDirective,
   type NdwuPopoverTriggerType,
   type NdwuTooltipPosition,
-  createTooltipController,
+  ndwuCreateTooltipController,
 } from '@ndw-ui-kit/core/popover';
 import {NdwuTooltipComponent} from './ndwu-tooltip.component';
 import {
@@ -77,7 +77,7 @@ function defaultTooltipTriggers(): NdwuPopoverTriggerType[] {
   providers: [
     {
       provide: NDWU_POPOVER_CONTROLLER_FACTORY,
-      useValue: createTooltipController,
+      useValue: ndwuCreateTooltipController,
     },
     {
       provide: NDWU_POPOVER_TRIGGER_DEFAULTS,

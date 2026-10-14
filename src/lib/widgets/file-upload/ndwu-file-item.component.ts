@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input, output} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {formatSize, shortenFileName} from '@ndw-ui-kit/core/utils';
 import {
   NDWU_ICON_NAME,
@@ -23,7 +23,7 @@ const COMPACT_WIDTH_THRESHOLD = 360;
   styleUrl: './ndwu-file-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuButtonComponent,
     NdwuIconComponent,
     NdwuProgressBarComponent,

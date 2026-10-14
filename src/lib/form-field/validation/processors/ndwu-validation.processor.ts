@@ -1,4 +1,4 @@
-import {isValidationError} from '../validation.utils';
+import {ndwuIsValidationError} from '../validation.utils';
 import {NdwuValidationErrorProcessor} from '../validation.types';
 
 /*
@@ -13,7 +13,7 @@ export const ndwuValidationProcessor: NdwuValidationErrorProcessor = (control) =
 
   const errorValue = Object.values(errors)?.[0];
 
-  if (!isValidationError(errorValue)) {
+  if (!ndwuIsValidationError(errorValue)) {
     return null;
   }
 

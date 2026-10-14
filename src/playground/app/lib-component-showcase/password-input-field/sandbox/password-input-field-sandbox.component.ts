@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_ICON_NAME, NDWU_SIZE, type NdwuPasswordStrength, type NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuPasswordInputFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -59,7 +59,7 @@ type SandboxStrength = 'none' | 'weak' | 'average' | 'strong';
     CommonModule,
     ReactiveFormsModule,
     NdwuPasswordInputFieldComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
     TokenListComponent,
   ],

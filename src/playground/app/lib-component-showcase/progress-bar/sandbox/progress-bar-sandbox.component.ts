@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, ElementRef, ViewEncapsulation, signa
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_PROGRESS_BAR_COLOR, NDWU_SIZE, NdwuProgressBarComponent, type NdwuSize} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, type TokenListItem} from '@app/components';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
 
@@ -37,7 +37,7 @@ const DEFAULT_FORM_VALUES = {
     CommonModule,
     ReactiveFormsModule,
     NdwuProgressBarComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
   ],
 })

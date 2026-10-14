@@ -17,7 +17,7 @@
       #inputBasedTrigger
       ndwuPopoverTrigger
       triggerOn="manual"
-      [popoverControllerFactory]="createDropdownController"
+      [popoverControllerFactory]="ndwuCreateDropdownController"
       (contextmenu)="onInputBasedContextMenu($event)"
     >
       <p class="context-menu-target__text">Right-click here (input-based factory)</p>

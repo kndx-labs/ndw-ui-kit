@@ -1,14 +1,14 @@
 import {AbstractControl} from '@angular/forms';
 
-export interface ValidatorError {
+export interface NdwuValidatorError {
   value?: any;
   errorLabel?: string;
   [propName: string]: any;
 }
 
-export type ErrorResult = Record<string, ValidatorError>;
+export type NdwuErrorResult = Record<string, NdwuValidatorError>;
 
-export type ValidatorResult = ErrorResult | null;
+export type NdwuValidatorResult = NdwuErrorResult | null;
 
 /**
  * UI-friendly validation payload extracted from an Angular `AbstractControl`.

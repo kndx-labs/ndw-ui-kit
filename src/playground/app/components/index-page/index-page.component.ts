@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import libPackage from '../../../../lib/package.json';
 import {COMPONENTS_LIST, READY_FOR_REVIEW_COMPONENTS, WIDGETS_LIST} from '../../app.constants';
 import type {ComponentName, WidgetName} from '../../app.types';
@@ -20,7 +20,7 @@ const INDEX_COMPONENTS: ComponentName[] = COMPONENTS_LIST
   templateUrl: './index-page.component.html',
   styleUrl: './index-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, LocalizePipe, LogoComponent, RouterModule],
+  imports: [CommonModule, NdwuLocalizePipe, LogoComponent, RouterModule],
 })
 export class IndexPageComponent {
   public readonly LIB_INFO = LIB_INFO;

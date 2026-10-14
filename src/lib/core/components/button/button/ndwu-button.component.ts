@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NDWU_SIZE, NdwuValues} from '../../../../shared.types';
 import {NdwuIconName} from '../../../../icon-names';
 import {NdwuSizeDirective} from '../../../directives';
@@ -23,7 +23,7 @@ export type NdwuButtonVariant = NdwuValues<typeof NDWU_BUTTON_VARIANT>;
   styleUrl: './ndwu-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuIconComponent,
     NdwuSpokesLoaderComponent,
   ],

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Signal, computed, signal} from '@angular/core';
 import {NDWU_ICON_NAME, NdwuAdaptiveIconComponent, NdwuIconComponent, NdwuIconName} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -12,7 +12,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   imports: [
     NdwuIconComponent,
     NdwuAdaptiveIconComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
   ],
 })

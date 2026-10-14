@@ -158,7 +158,7 @@ export class NdwuPopoverPanelController extends NdwuPopoverController {
   }
 }
 
-export function createPopoverController(
+export function ndwuCreatePopoverController(
   elementRef: ElementRef<HTMLElement>,
   injector: Injector,
   onDetached: () => void,

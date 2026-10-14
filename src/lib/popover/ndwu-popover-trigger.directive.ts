@@ -99,7 +99,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
   /**
    * Optional controller factory for the overlay. Takes precedence over the
    * `NDWU_POPOVER_CONTROLLER_FACTORY` DI token. Use this input for direct
-   * usage (e.g. `[popoverControllerFactory]="createDropdownController"`). The DI
+   * usage (e.g. `[popoverControllerFactory]="ndwuCreateDropdownController"`). The DI
    * token path is used by wrapper directives like `ndwuTooltip`.
    */
   public readonly popoverControllerFactory = input<NdwuPopoverControllerFactory | undefined>(undefined);

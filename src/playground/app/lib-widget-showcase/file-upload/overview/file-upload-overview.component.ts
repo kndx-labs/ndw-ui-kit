@@ -8,7 +8,7 @@ import {
   type NdwuTranslationTexts,
 } from '@ndw-ui-kit/core/widgets';
 import {NdwuFileUploadFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {ShowcaseLayoutComponent} from '@app/components';
 
@@ -22,7 +22,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
     NdwuFileItemComponent,
     NdwuFileUploadComponent,
     NdwuFileUploadFieldComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
   ],
 })

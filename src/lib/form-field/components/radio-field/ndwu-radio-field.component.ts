@@ -10,7 +10,7 @@ import {
   ndwuNormalizeOptions,
   ndwuResolveOptionsAdapter,
 } from '@ndw-ui-kit/core';
-import {FormFieldBase} from '../../classes/form-field-base';
+import {NdwuFormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor} from '../../form-field.utils';
 
 @Component({
@@ -26,7 +26,7 @@ import {setValueAccessor} from '../../form-field.utils';
     inputs: ['ndwuSize: size'],
   }],
 })
-export class NdwuRadioFieldComponent<T = NdwuOption> extends FormFieldBase<string | number> {
+export class NdwuRadioFieldComponent<T = NdwuOption> extends NdwuFormFieldBase<string | number> {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   protected readonly diOptionConfig = inject(NDWU_OPTION_CONFIG, {optional: true}) ?? null;
 

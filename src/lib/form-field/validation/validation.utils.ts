@@ -1,8 +1,8 @@
-import {ValidatorError, ValidatorResult} from './validation.types';
+import {NdwuValidatorError, NdwuValidatorResult} from './validation.types';
 
-export const isSuccess = (result: ValidatorResult): boolean => result === null;
+export const ndwuIsSuccess = (result: NdwuValidatorResult): boolean => result === null;
 
-export const isValidationError = (obj: unknown): obj is ValidatorError => {
+export const ndwuIsValidationError = (obj: unknown): obj is NdwuValidatorError => {
   if (!obj || typeof obj !== 'object') {
     return false;
   }

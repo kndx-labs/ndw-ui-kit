@@ -178,6 +178,21 @@ export class NdwuListboxDirective<V = unknown> {
     }
   }
 
+  public activateNext(): void {
+    this.ensureKeyManager();
+    this.keyManager?.setNextItemActive();
+  }
+
+  public activatePrevious(): void {
+    this.ensureKeyManager();
+    this.keyManager?.setPreviousItemActive();
+  }
+
+  public clearActiveItem(): void {
+    this.keyManager?.updateActiveItem(-1);
+    this.syncActiveState();
+  }
+
   public gotoFirst(): void {
     this.ensureKeyManager();
     this.keyManager?.setFirstItemActive();
@@ -329,8 +344,7 @@ export class NdwuListboxDirective<V = unknown> {
       return;
     }
 
-    this.keyManager.updateActiveItem(-1);
-    this.syncActiveState();
+    this.clearActiveItem();
   }
 
   private initKeyManager(): void {

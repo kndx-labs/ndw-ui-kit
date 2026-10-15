@@ -18,6 +18,8 @@ import type {NdwuListboxDirective} from '../listbox/ndwu-listbox.directive';
 export class NdwuComboboxDirective {
   public readonly readonly = input<boolean>(false);
   public readonly disabled = input<boolean>(false);
+  public readonly canOpen = input<boolean>(true);
+  public readonly tabNavigation = input<boolean>(false);
   public readonly expanded = signal<boolean>(false);
 
   /**
@@ -52,7 +54,7 @@ export class NdwuComboboxDirective {
   }
 
   public open(cause?: string, event?: KeyboardEvent): void {
-    if (this.disabled() || this.expanded()) {
+    if (this.disabled() || this.expanded() || !this.canOpen()) {
       return;
     }
 

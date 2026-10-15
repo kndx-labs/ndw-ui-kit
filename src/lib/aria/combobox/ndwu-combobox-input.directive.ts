@@ -1,4 +1,4 @@
-import {Directive, inject, model} from '@angular/core';
+import {Directive, inject} from '@angular/core';
 import {NdwuComboboxDirective} from './ndwu-combobox.directive';
 
 /**
@@ -27,8 +27,6 @@ import {NdwuComboboxDirective} from './ndwu-combobox.directive';
 export class NdwuComboboxInputDirective {
   public readonly combobox = inject(NdwuComboboxDirective);
 
-  public readonly value = model<string>('');
-
   protected onKeydown(event: KeyboardEvent): void {
     // `Escape` closes the popup
     if (event.key === 'Escape' && this.combobox.expanded()) {
@@ -36,6 +34,10 @@ export class NdwuComboboxInputDirective {
       event.stopImmediatePropagation();
       this.combobox.close();
 
+      return;
+    }
+
+    if (event.key === 'Tab' && this.handleTabNavigation(event)) {
       return;
     }
 
@@ -87,7 +89,7 @@ export class NdwuComboboxInputDirective {
 
     const forwardedKeys = this.combobox.readonly()
       ? ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'Enter', ' ']
-      : ['ArrowDown', 'ArrowUp', 'Enter'];
+      : ['ArrowDown', 'ArrowUp', ...(listbox.activeDescendantId() ? ['Enter'] : [])];
 
     // "Type a letter to jump to a matching option" — like a native <select>.
     // We only do this when the field is readonly (you pick from the list, you can't type
@@ -109,6 +111,28 @@ export class NdwuComboboxInputDirective {
     }
 
     return false;
+  }
+
+  private handleTabNavigation(event: KeyboardEvent): boolean {
+    const listbox = this.combobox.listbox();
+
+    if (!this.combobox.tabNavigation() || !this.combobox.expanded() || !listbox) {
+      return false;
+    }
+
+    if (!listbox.options().some((option) => !option.disabled())) {
+      return false;
+    }
+
+    event.preventDefault();
+
+    if (event.shiftKey) {
+      listbox.activatePrevious();
+    } else {
+      listbox.activateNext();
+    }
+
+    return true;
   }
 
   /** Handles keys that open the popup when it is currently closed. */

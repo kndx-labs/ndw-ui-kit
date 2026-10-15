@@ -27,6 +27,7 @@ export interface NdwuControl {
    * Use for controls that need custom behavior (e.g. select: float while dropdown is open).
    */
   readonly shouldLabelFloat?: boolean;
+  readonly hasRightIcon?: boolean;
 }
 
 export const NDWU_CONTROL = new InjectionToken<NdwuControl>('NDWU_CONTROL');

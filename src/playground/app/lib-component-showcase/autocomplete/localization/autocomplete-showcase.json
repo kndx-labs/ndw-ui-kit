@@ -1,0 +1,39 @@
+{
+  "autocomplete-showcase": {
+    "tabs": {
+      "overview": "Overview",
+      "sandbox": "Sandbox"
+    },
+    "compound": "Compound: ndwu-form-field + ndwu-floating-label + ndwu-autocomplete",
+    "groups-footer": "Groups, bullets and a footer link",
+    "sizes": "Sizes",
+    "invalid": "Required, invalid",
+    "disabled": "Disabled",
+    "readonly": "Readonly",
+    "server": "Server-side filtering (filter = null)",
+    "server-hint": "Options are loaded 300 ms after typing stops",
+    "open-up": "Opens upward",
+    "open-up-note": "Scroll so this field is at the bottom of the window: the panel opens upward and the footer moves to the top.",
+    "city-label": "City",
+    "city-placeholder": "Start typing a city",
+    "hint": "This is helper text",
+    "search-label": "Search",
+    "search-placeholder": "Search settings and articles",
+    "search-hint": "Try \"wi-fi\"",
+    "search-in-kb": "Search in the Knowledge base",
+    "last-selected": "Last selected option",
+    "data": {
+      "groups": {
+        "articles": "Articles",
+        "settings": "Settings"
+      }
+    },
+    "sandbox": {
+      "hint": "Hint",
+      "bullets": "Bullets",
+      "footer": "Footer link",
+      "options-textarea": "Options (one per line)",
+      "state-title": "State"
+    }
+  }
+}

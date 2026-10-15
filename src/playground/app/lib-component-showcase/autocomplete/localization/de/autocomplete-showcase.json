@@ -1,0 +1,39 @@
+{
+  "autocomplete-showcase": {
+    "tabs": {
+      "overview": "Übersicht",
+      "sandbox": "Sandbox"
+    },
+    "compound": "Zusammengesetzt: ndwu-form-field + ndwu-floating-label + ndwu-autocomplete",
+    "groups-footer": "Gruppen, Aufzählungszeichen und Fußzeilen-Link",
+    "sizes": "Größen",
+    "invalid": "Erforderlich, ungültig",
+    "disabled": "Deaktiviert",
+    "readonly": "Schreibgeschützt",
+    "server": "Serverseitige Filterung (filter = null)",
+    "server-hint": "Optionen werden 300 ms nach der letzten Eingabe geladen",
+    "open-up": "Öffnet nach oben",
+    "open-up-note": "Scrollen Sie, bis dieses Feld am unteren Fensterrand ist: Das Panel öffnet sich nach oben und die Fußzeile wandert nach oben.",
+    "city-label": "Stadt",
+    "city-placeholder": "Stadt eingeben",
+    "hint": "Dies ist ein Hilfetext",
+    "search-label": "Suche",
+    "search-placeholder": "Einstellungen und Artikel durchsuchen",
+    "search-hint": "Versuchen Sie „wi-fi“",
+    "search-in-kb": "In der Wissensdatenbank suchen",
+    "last-selected": "Zuletzt gewählte Option",
+    "data": {
+      "groups": {
+        "articles": "Artikel",
+        "settings": "Einstellungen"
+      }
+    },
+    "sandbox": {
+      "hint": "Hinweis",
+      "bullets": "Aufzählungszeichen",
+      "footer": "Fußzeilen-Link",
+      "options-textarea": "Optionen (eine pro Zeile)",
+      "state-title": "Zustand"
+    }
+  }
+}

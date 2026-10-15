@@ -17,7 +17,6 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map} from 'rxjs/operators';
 import {NdwuResizeObserverDirective} from '@ndw-ui-kit/core';
-import {blocksToActions} from './utils/schedule-timecoder.utils';
 import {blocksToValue, minutesToTime, simplifyBlocks, valueToBlocks} from './layout/schedule-blocks.utils';
 import {scheduleLayoutDesktopUtils} from './layout/desktop.schedule-layout';
 import {scheduleLayoutMobileUtils} from './layout/mobile.schedule-layout';
@@ -27,7 +26,6 @@ import {
   NDWU_SCHEDULE_EDITOR_MODE,
   NDWU_SCHEDULE_EDITOR_SIZING,
   type NdwuDayName,
-  type NdwuScheduleAction,
   NdwuScheduleBlock,
   type NdwuScheduleEditorLayout,
   type NdwuScheduleEditorMode,
@@ -85,7 +83,6 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
   );
 
   public readonly valueChange = output<NdwuScheduleValue>();
-  public readonly actionsChange = output<NdwuScheduleAction[]>();
 
   private readonly weekDayLabels: Signal<Partial<Record<NdwuDayName, string>>> = computed(() => {
     return Object.fromEntries(this.weekDays().map((wd) => [wd.day, wd.label]));
@@ -485,7 +482,6 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
     });
 
     this.valueChange.emit(blocksToValue(updated, this.weekDays()));
-    this.actionsChange.emit(blocksToActions(updated));
   }
 
   private isTimeOccupied(

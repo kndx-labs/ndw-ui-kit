@@ -579,6 +579,7 @@ and have a separate entry point (`@ndw-ui-kit/core/form-field`).
 
 | Component                    | Description            |
 |------------------------------|------------------------|
+| `ndwu-autocomplete-field`    | Text input with hints  |
 | `ndwu-checkbox-field`        | Checkbox (two-state)   |
 | `ndwu-input-field`           | Text/password input    |
 | `ndwu-multi-select-field`    | Multi-option select    |

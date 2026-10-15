@@ -81,6 +81,11 @@
     cursor: not-allowed;
   }
 
+  .ndwu-styled-option__bullet {
+    flex-shrink: 0;
+    margin-inline-start: var(--ndwu-styled-option-gap, #{spacing.$spacing-8});
+  }
+
   .ndwu-styled-option__content {
     flex:1;
     overflow: hidden;

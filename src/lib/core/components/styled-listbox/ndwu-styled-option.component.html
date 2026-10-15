@@ -1,5 +1,12 @@
 <ng-content select="[ndwuOptionPrefix]"/>
 
+@if (bullet()) {
+  <span
+    class="ndwu-styled-option__bullet"
+    aria-hidden="true"
+  >•</span>
+}
+
 <span class="ndwu-styled-option__content">
   <ng-content/>
 </span>

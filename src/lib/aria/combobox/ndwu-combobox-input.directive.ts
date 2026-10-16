@@ -37,7 +37,7 @@ export class NdwuComboboxInputDirective {
       return;
     }
 
-    // `Tab` closes the popup (w/o focusing on the combobox input)
+    // `Tab` moves between options (`tabNavigation`) or closes the popup (w/o focusing on the combobox input)
     if (event.key === 'Tab' && this.combobox.expanded()) {
       if (!this.handleTabNavigation(event)) {
         this.combobox.close({focusOrigin: false});

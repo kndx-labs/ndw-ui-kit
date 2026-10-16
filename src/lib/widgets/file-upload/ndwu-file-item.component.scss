@@ -1,3 +1,4 @@
+@use 'styles/fonts';
 @use 'styles/padding';
 @use 'styles/radius';
 @use 'styles/spacing';
@@ -16,6 +17,7 @@
 
 :host {
   display: block;
+  font-family: fonts.$font-family;
 }
 
 .ndwu-file-item {

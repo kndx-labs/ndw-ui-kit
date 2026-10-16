@@ -1,5 +1,8 @@
+@use 'styles/fonts';
+
 :host {
   display: block;
+  font-family: fonts.$font-family;
 
   &.ndwu-popover-host--mobile {
     width: 100%;

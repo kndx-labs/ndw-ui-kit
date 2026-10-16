@@ -44,7 +44,7 @@ export function buildOptionRows<O extends OptionRowSource>(
     }
   }
 
-  // ungrouped options —> last section, no subheader.
+  // ungrouped options —> last section, no group header.
   for (const option of visible) {
     if (!option.groupId || !groupIds.has(option.groupId)) {
       // **N.B.** A set `groupId` that matches no group is a likely typo: warn in dev.
@@ -72,7 +72,7 @@ export function optionGroupHeaderId(ownerId: string, groupId: string): string {
   // Sanitize: a raw groupId may contain spaces/punctuation, which would
   // produce an invalid id and split the aria-describedby IDREF into
   // broken tokens. The same sanitized value is used on both the
-  // subheader id and the option's aria-describedby, so they still match.
+  // group header id and the option's aria-describedby, so they still match.
   const sanitizedId = groupId.replace(/[^A-Za-z0-9_-]/g, '-');
 
   return `${ownerId}-grp-${sanitizedId}`;

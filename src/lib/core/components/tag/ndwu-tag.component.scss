@@ -1,3 +1,4 @@
+@use 'styles/fonts';
 @use 'styles/mixins';
 @use 'styles/padding';
 @use 'styles/radius';
@@ -20,7 +21,7 @@ $statuses: 'default', 'negative', 'positive', 'warning', 'info', 'violet', 'cyan
   background-color: var(--ndwu-tag-bg);
   color: var(--ndwu-tag-fg);
   font-weight: typography.$fontWeight-L;
-  font-family: inherit;
+  font-family: fonts.$font-family;
   letter-spacing: typography.$letterSpacing-L;
   white-space: nowrap;
   cursor: pointer;

@@ -1,3 +1,4 @@
+@use 'styles/fonts';
 @use 'styles/mixins';
 @use 'styles/padding';
 @use 'styles/radius';
@@ -22,7 +23,7 @@ $icon-inset-L: 10px;
   background-color: var(--ndwu-chip-bg);
   color: var(--ndwu-chip-fg);
   font-weight: typography.$fontWeight-L;
-  font-family: inherit;
+  font-family: fonts.$font-family;
   white-space: nowrap;
   cursor: pointer;
   user-select: none;

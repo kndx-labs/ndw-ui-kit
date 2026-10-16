@@ -48,7 +48,7 @@ know nothing about each other. A bridge directive connects them at the template 
 
 | Directive                            | Selector                      | Role                                                                                                       |
 |--------------------------------------|-------------------------------|------------------------------------------------------------------------------------------------------------|
-| `NdwuComboboxDirective`              | `[ndwuCombobox]`              | State container: holds `expanded` signal, tracks registered listbox                                        |
+| `NdwuComboboxDirective`              | `[ndwuCombobox]`              | State container: holds `expanded` signal, tracks registered listbox; `canOpen` guard, `tabNavigation` flag |
 | `NdwuComboboxInputDirective`         | `[ndwuComboboxInput]`         | ARIA combobox input: sets `role="combobox"`, handles keyboard/click, forwards keys to listbox              |
 | `NdwuComboboxPopoverBridgeDirective` | `[ndwuComboboxPopoverBridge]` | Two-way bridge: syncs `combobox.expanded` <-> `popoverTrigger.isOpen`                                      |
 | `NdwuListboxDirective`               | `[ndwuListbox]`               | ARIA listbox: manages selection, keyboard navigation (CDK `ActiveDescendantKeyManager`), active descendant |
@@ -70,7 +70,7 @@ know nothing about each other. A bridge directive connects them at the template 
 
 | Class                          | Selector / Type                  | Role                                                                                  |
 |--------------------------------|----------------------------------|---------------------------------------------------------------------------------------|
-| `NdwuControl`                  | Interface + `NDWU_CONTROL` token | Contract: `id`, `focused`, `empty`, `disabled`, `shouldLabelFloat` signals            |
+| `NdwuControl`                  | Interface + `NDWU_CONTROL` token | Contract: `id`, `focused`, `empty`, `disabled`, `shouldLabelFloat`, `hasRightIcon`    |
 | `NdwuControlProviderDirective` | `[ndwuControlProvider]`          | Proxies a `NdwuControl` instance into the `NDWU_CONTROL` DI token                     |
 | `NdwuFormFieldComponent`       | `<ndwu-form-field>`              | Discovers control via `contentChild(NDWU_CONTROL)`, manages label floating and layout |
 | `NdwuFloatingLabelComponent`   | `<ndwu-floating-label>`          | Renders label text with optional required asterisk                                    |
@@ -92,10 +92,11 @@ know nothing about each other. A bridge directive connects them at the template 
 | `FormFieldBase<T>`                 | Abstract class              | Implements `ControlValueAccessor` | `<T>`               |
 | `NdwuSelectFieldComponent`         | `<ndwu-select-field>`       | `FormFieldBase<string>`           | Single string ID    |
 | `NdwuMultiSelectFieldComponent`    | `<ndwu-multi-select-field>` | `FormFieldBase<string[]>`         | Array of string IDs |
-| `NdwuAutocompleteFieldComponent`** | `<ndwu-autocomplete-field>` | `FormFieldBase<string>`           | Single string ID    |
+| `NdwuAutocompleteFieldComponent`   | `<ndwu-autocomplete-field>` | `FormFieldBase<string>`           | Typed text          |
 
-> ** The autocomplete component is not implemented yet,
-> but will follow the same pattern as the select components, reusing the ARIA layer and popover system.
+> The autocomplete field is a thin wrapper around the core `<ndwu-autocomplete>` component,
+> like `ndwu-textarea-field` around `ndwu-textarea`. The core component owns the input, the combobox
+> and the panel. The value is the typed text; picking an option writes its label.
 
 ## How the Pieces Connect
 
@@ -260,6 +261,9 @@ There are multiple close paths:
 | **Backdrop click**                       | `NdwuDropdownController` backdrop handler -> `onOverlayDetached()` -> `popoverTrigger.isOpen.set(false)` -> bridge -> `combobox.expanded.set(false)` |
 | **Option click (select/autocomplete)**   | Selection handler -> `combobox.close()` -> bridge -> popover                                                                                         |
 | **Confirm button (multi-select mobile)** | `onConfirm()` -> `combobox.close()` -> bridge -> popover                                                                                             |
+
+With `tabNavigation` on (autocomplete), Tab and Shift+Tab move the active option while the panel
+is open and has an enabled option. Otherwise Tab closes the panel as above.
 
 ---
 

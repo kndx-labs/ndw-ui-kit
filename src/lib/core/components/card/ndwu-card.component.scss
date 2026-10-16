@@ -1,3 +1,4 @@
+@use 'styles/fonts';
 @use 'styles/typography';
 @use 'styles/padding';
 @use 'styles/radius';
@@ -7,6 +8,7 @@
   border: 1px solid var(--ndwu-card-border-color);
   background-color: var(--ndwu-card-bg);
   color: var(--ndwu-card-color);
+  font-family: fonts.$font-family;
 
   &.ndwu-card--XXL {
     padding: padding.$padding-32;

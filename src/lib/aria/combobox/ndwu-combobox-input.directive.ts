@@ -37,13 +37,11 @@ export class NdwuComboboxInputDirective {
       return;
     }
 
-    if (event.key === 'Tab' && this.handleTabNavigation(event)) {
-      return;
-    }
-
     // `Tab` closes the popup (w/o focusing on the combobox input)
     if (event.key === 'Tab' && this.combobox.expanded()) {
-      this.combobox.close({focusOrigin: false});
+      if (!this.handleTabNavigation(event)) {
+        this.combobox.close({focusOrigin: false});
+      }
 
       return;
     }
@@ -116,7 +114,7 @@ export class NdwuComboboxInputDirective {
   private handleTabNavigation(event: KeyboardEvent): boolean {
     const listbox = this.combobox.listbox();
 
-    if (!this.combobox.tabNavigation() || !this.combobox.expanded() || !listbox) {
+    if (!this.combobox.tabNavigation() || !listbox) {
       return false;
     }
 

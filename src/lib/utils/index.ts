@@ -4,6 +4,7 @@ export * from './deep-merge';
 export * from './dom';
 export * from './escape';
 export * from './file.utils';
+export * from './option-rows';
 export * from './popover';
 export * from './size-flags';
 export * from './unique-id';

@@ -30,18 +30,17 @@
     [attr.aria-required]="required() ? 'true' : null"
     [attr.aria-invalid]="invalid() ? 'true' : null"
     (input)="onInput(input.value)"
-    (focus)="onFocus()"
+    (focus)="focused.set(true)"
     (blur)="onBlur()"
   />
 
-  <ng-container *ngTemplateOutlet="rightIcon; context: {$implicit: showClear(), target: input}"/>
+  <ng-container *ngTemplateOutlet="rightIcon; context: {target: input}"/>
 
   <ng-template
     #rightIcon
-    let-show
     let-target="target"
   >
-    @if (show) {
+    @if (showClear()) {
       <button
         type="button"
         class="ndwu-form-field__right-icon"
@@ -63,6 +62,7 @@
 
   <ng-template #panelTemplate>
     <ndwu-dropdown-panel
+      class="ndwu-autocomplete__panel"
       [class.ndwu-autocomplete__panel--sheet]="isMobileViewport()"
       [sheet]="isMobileViewport()"
       [triggerWidth]="triggerWidth()"
@@ -86,10 +86,8 @@
       }
 
       @if (isMobileViewport()) {
-        <div
-          class="ndwu-autocomplete__sheet-search ndwu-form-field ndwu-form-field--XL"
-        >
-          <div class="ndwu-form-field__wrapper">
+        <div class="ndwu-autocomplete__sheet-search">
+          <ndwu-form-field [size]="SIZE.XL">
             <input
               #sheetInput
               type="text"
@@ -103,8 +101,8 @@
               (input)="onInput(sheetInput.value)"
             />
 
-            <ng-container *ngTemplateOutlet="rightIcon; context: {$implicit: !!currentValue(), target: sheetInput}"/>
-          </div>
+            <ng-container *ngTemplateOutlet="rightIcon; context: {target: sheetInput}"/>
+          </ndwu-form-field>
         </div>
       }
 

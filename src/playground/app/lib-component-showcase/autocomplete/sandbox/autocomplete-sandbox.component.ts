@@ -11,14 +11,12 @@ import {
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {NDWU_SIZE, type NdwuAutocompleteOption, NdwuLinkComponent, type NdwuSize} from '@ndw-ui-kit/core';
 import {
-  NDWU_SIZE,
+  NdwuAutocompleteFieldComponent,
   NdwuAutocompleteFooterDirective,
-  type NdwuAutocompleteOption,
-  NdwuLinkComponent,
-  type NdwuSize,
-} from '@ndw-ui-kit/core';
-import {NdwuAutocompleteFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
+  NdwuValidators,
+} from '@ndw-ui-kit/core/form-field';
 import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {parseTextareaOptions} from '@app/utils';
 import {STRETCH_WIDTH_VALUE, SandboxToolbarComponent} from '@app/components';
@@ -110,10 +108,6 @@ export class AutocompleteSandboxComponent implements OnInit, AfterViewInit {
 
   protected onWidthChange(width: string): void {
     this.previewWidth.set(width);
-  }
-
-  protected onSelected(option: NdwuAutocompleteOption): void {
-    this.lastSelected.set(option);
   }
 
   protected setSandboxTheme(theme: SandboxTheme): void {

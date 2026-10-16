@@ -29,7 +29,7 @@
           hint="autocomplete-showcase.search-hint"
           [options]="options"
           [groups]="groups"
-          (optionSelected)="onSelected($event)"
+          (optionSelected)="lastSelected.set($event)"
         >
           <ng-template ndwuAutocompleteFooter>
             <a
@@ -127,7 +127,7 @@
       </form>
     </div>
 
-    <div class="state-section state-section--bottom">
+    <div class="state-section">
       <h4>{{ 'autocomplete-showcase.open-up' | localize }}</h4>
       <p class="state-section__note">{{ 'autocomplete-showcase.open-up-note' | localize }}</p>
       <form [formGroup]="bottomForm">

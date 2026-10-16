@@ -42,6 +42,7 @@ import {NDWU_ICON_NAME} from '../../../icon-names';
 import {NDWU_SIZE, type NdwuOptionGroup} from '../../../shared.types';
 import {NdwuIconButtonComponent} from '../button/icon/ndwu-icon-button.component';
 import {NDWU_CONTROL, type NdwuControl} from '../form-field/control/ndwu-control';
+import {NdwuFormFieldComponent} from '../form-field/ndwu-form-field.component';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
 import {NdwuDropdownPanelComponent, NdwuPanelFooterDirective, NdwuPanelHeaderDirective} from '../styled-dropdown';
@@ -62,6 +63,7 @@ import {ndwuAutocompleteContainsFilter} from './ndwu-autocomplete.utils';
     NdwuComboboxInputDirective,
     NdwuComboboxPopoverBridgeDirective,
     NdwuDropdownPanelComponent,
+    NdwuFormFieldComponent,
     NdwuIconButtonComponent,
     NdwuIconComponent,
     NdwuPanelFooterDirective,
@@ -86,6 +88,7 @@ import {ndwuAutocompleteContainsFilter} from './ndwu-autocomplete.utils';
 })
 export class NdwuAutocompleteComponent implements NdwuControl {
   protected readonly ICON_NAME = NDWU_ICON_NAME;
+  protected readonly SIZE = NDWU_SIZE;
 
   protected readonly sizeSvc = inject(NdwuSizeDirective);
   protected readonly registry = inject(NdwuInteractionRegistry);
@@ -122,6 +125,7 @@ export class NdwuAutocompleteComponent implements NdwuControl {
 
   public readonly focused = signal<boolean>(false);
   public readonly currentValue = linkedSignal(() => this.value());
+  public readonly hasRightIcon = true;
 
   protected readonly openRequested = signal<boolean>(false);
 
@@ -208,8 +212,6 @@ export class NdwuAutocompleteComponent implements NdwuControl {
     return !!this.placeholder();
   }
 
-  public readonly hasRightIcon = true;
-
   constructor() {
     effect(() => {
       this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.INPUT, this.id, this.focused());
@@ -274,10 +276,6 @@ export class NdwuAutocompleteComponent implements NdwuControl {
       .listbox()
       ?.clearActiveItem();
     this.openRequested.set(true);
-  }
-
-  protected onFocus(): void {
-    this.focused.set(true);
   }
 
   protected onBlur(): void {

@@ -1,4 +1,5 @@
 export * from './autocomplete-field/ndwu-autocomplete-field.component';
+export * from './autocomplete-field/ndwu-autocomplete-footer.directive';
 export * from './checkbox-field/ndwu-checkbox-field.component';
 export * from './input-field/ndwu-input-field.component';
 export * from './file-upload/';

@@ -5,14 +5,18 @@ import {debounceTime} from 'rxjs';
 import {
   NDWU_SIZE,
   NdwuAutocompleteComponent,
-  NdwuAutocompleteFooterDirective,
   type NdwuAutocompleteOption,
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
   NdwuHintDirective,
   NdwuLinkComponent,
 } from '@ndw-ui-kit/core';
-import {NdwuAutocompleteFieldComponent, NdwuHelperMessageComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
+import {
+  NdwuAutocompleteFieldComponent,
+  NdwuAutocompleteFooterDirective,
+  NdwuHelperMessageComponent,
+  NdwuValidators,
+} from '@ndw-ui-kit/core/form-field';
 import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {
@@ -90,10 +94,6 @@ export class AutocompleteOverviewComponent implements OnInit {
     this.serverForm.controls.city.valueChanges
       .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe((query) => this.serverOptions.set(this.searchCities(query)));
-  }
-
-  public onSelected(option: NdwuAutocompleteOption): void {
-    this.lastSelected.set(option);
   }
 
   private searchCities(query: string): readonly NdwuAutocompleteOption[] {

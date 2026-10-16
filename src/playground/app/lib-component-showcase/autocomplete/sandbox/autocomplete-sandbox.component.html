@@ -25,7 +25,7 @@
               [size]="sandboxForm.controls.size.value"
               [ndwuRequired]="sandboxForm.controls.required.value"
               [readonly]="sandboxForm.controls.readonly.value"
-              (optionSelected)="onSelected($event)"
+              (optionSelected)="lastSelected.set($event)"
             >
               @if (sandboxForm.controls.footer.value) {
                 <ng-template ndwuAutocompleteFooter>

@@ -58,7 +58,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
     this.renderer.listen(handle, 'pointerdown', (event: PointerEvent) => this.onPointerDown(handle, event));
     this.renderer.listen(handle, 'keydown', (event: KeyboardEvent) => this.onKeydown(handle, event));
-    this.renderer.listen(handle, 'focus', () => this.reportWidth(handle, this.el.nativeElement.offsetWidth));
+    this.renderer.listen(handle, 'focus', () => this.reportWidth(handle, this.currentWidth()));
   }
 
   private onPointerDown(handle: HTMLElement, event: PointerEvent): void {
@@ -125,7 +125,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
     stopEvent(event);
 
-    if (width === this.el.nativeElement.offsetWidth) {
+    if (width === this.currentWidth()) {
       return;
     }
 
@@ -135,7 +135,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
   private keyboardWidth(event: KeyboardEvent): number | null {
     const step = event.shiftKey ? KEYBOARD_LARGE_STEP : KEYBOARD_STEP;
-    const width = this.el.nativeElement.offsetWidth;
+    const width = this.currentWidth();
 
     switch (event.key) {
       case 'ArrowLeft':
@@ -149,6 +149,10 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
       default:
         return null;
     }
+  }
+
+  private currentWidth(): number {
+    return parseFloat(this.el.nativeElement.style.width) || this.el.nativeElement.offsetWidth;
   }
 
   private applyWidth(handle: HTMLElement, width: number): void {

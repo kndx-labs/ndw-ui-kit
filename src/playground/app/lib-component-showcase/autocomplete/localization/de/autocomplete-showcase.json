@@ -22,12 +22,6 @@
     "search-hint": "Versuchen Sie „wi-fi“",
     "search-in-kb": "In der Wissensdatenbank suchen",
     "last-selected": "Zuletzt gewählte Option",
-    "data": {
-      "groups": {
-        "articles": "Artikel",
-        "settings": "Einstellungen"
-      }
-    },
     "sandbox": {
       "hint": "Hinweis",
       "bullets": "Aufzählungszeichen",

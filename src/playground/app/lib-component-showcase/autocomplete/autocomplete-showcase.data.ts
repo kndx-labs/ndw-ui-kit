@@ -1,8 +1,8 @@
 import type {NdwuAutocompleteOption, NdwuOptionGroup} from '@ndw-ui-kit/core';
 
 export const AUTOCOMPLETE_GROUPS: readonly NdwuOptionGroup[] = [
-  {id: 'articles', label: 'autocomplete-showcase.data.groups.articles'},
-  {id: 'settings', label: 'autocomplete-showcase.data.groups.settings'},
+  {id: 'articles', label: 'Articles'},
+  {id: 'settings', label: 'Settings'},
 ];
 
 export const AUTOCOMPLETE_OPTIONS: readonly NdwuAutocompleteOption[] = [

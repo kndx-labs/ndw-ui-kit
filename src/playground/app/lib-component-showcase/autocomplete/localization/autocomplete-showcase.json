@@ -22,12 +22,6 @@
     "search-hint": "Try \"wi-fi\"",
     "search-in-kb": "Search in the Knowledge base",
     "last-selected": "Last selected option",
-    "data": {
-      "groups": {
-        "articles": "Articles",
-        "settings": "Settings"
-      }
-    },
     "sandbox": {
       "hint": "Hint",
       "bullets": "Bullets",

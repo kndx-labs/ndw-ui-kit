@@ -190,8 +190,10 @@ export class NdwuRowDragHandleComponent {
       container: list,
       previousContainer: list,
       isPointerOverContainer: true,
+      /* eslint-disable id-denylist -- CDK CdkDragDrop point API uses x/y */
       distance: {x: 0, y: 0},
       dropPoint: {x: 0, y: 0},
+      /* eslint-enable id-denylist */
       event: event as unknown as MouseEvent,
     });
 

@@ -75,11 +75,11 @@ sorting or paging, e.g. on the server.
 | `NdwuSortDirective`           | `[ndwuSort]` on the table   | Sort state: one `ndwuSort` model of `NdwuSortState`; cycles `asc → desc → ''`; emits `ndwuSortChange` |
 | `NdwuSortHeaderComponent`     | `th[ndwuSortHeader="id"]`   | Button inside the header cell that calls `sort(id)`; sets `aria-sort`; projects `[ndwuColumnPin]`, `[ndwuSortHeaderAction]` |
 | `NdwuColumnPinComponent`      | `button[ndwuColumnPin]`     | Toggle with `pinned` input and `pinnedChange` output; `aria-pressed`; stops the click from sorting     |
-| `NdwuColumnResizeDirective`   | `th[ndwuColumnResize]`      | Creates the grip in the cell; pointer drag or arrow keys set the cell width (40–1000px); emits `ndwuColumnResized` |
+| `NdwuColumnResizeDirective`   | `th[ndwuColumnResize]`      | Creates the grip in the cell; pointer drag or arrow keys set the cell width (min 40px); emits `ndwuColumnResized` |
 | `NdwuColumnResizeHandleComponent` | `<ndwu-column-resize-handle>` | The grip, created by the directive. Focusable `role="separator"` with `aria-valuenow/min/max`  |
 | `NdwuRowDragDirective`        | `[ndwuRowDrag]` on the table| Hosts `CdkDropList`, emits `ndwuRowDrop`; disabled when the table also has `ndwuSort`                  |
 | `NdwuRowDraggableDirective`   | `[ndwuRowDraggable]="row"`  | Hosts `CdkDrag` on a row; the bound value is the drag data                                             |
-| `NdwuRowDragHandleComponent`  | `button[ndwuRowDragHandle]` | Hosts `CdkDragHandle`; dragging starts only here. Keyboard: Space/Enter grabs, arrows move, Escape cancels |
+| `NdwuRowDragHandleComponent`  | `button[ndwuRowDragHandle]` | Hosts `CdkDragHandle`; dragging starts only here. Keyboard: Space/Enter grabs, arrows/Home/End move, Escape cancels |
 
 ### Chrome
 
@@ -265,8 +265,10 @@ pointerup / pointercancel → emits ndwuColumnResized(width)
 ```
 
 The grip is in the Tab order. With it focused, Left/Right change the width by
-8px (40px with Shift), Home and End jump to the minimum and maximum. Each key
-press emits `ndwuColumnResized`.
+8px (40px with Shift), Home and End jump to the minimum and maximum. The
+keyboard maximum is 1000px, or the current width if the column is already
+wider; a pointer drag has no maximum. Each key press that changes the width
+emits `ndwuColumnResized`.
 
 The width lives on the `<th>` only. A host that wants to keep it across renders
 stores the emitted value and binds it back.
@@ -297,6 +299,10 @@ ArrowUp / ArrowDown / Home / End → ndwuRowDrop(CdkDragDrop) with a KeyboardEve
   V
 Space / Enter / Tab away → dropped; Escape → moved back to where it was grabbed
 ```
+
+Each arrow, Home or End press emits its own `ndwuRowDrop`, and Escape emits one
+more to move the row back. A host that saves the order on every drop sends one
+request per step.
 
 Every step is announced through the CDK `LiveAnnouncer` with the row's position.
 Rows must keep their identity across the reorder (`trackBy` or the same

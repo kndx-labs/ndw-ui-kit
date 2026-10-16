@@ -21,14 +21,12 @@ const DEFAULT_COLUMN_RESIZE_TEXTS = {
     // A separator takes no name from its content.
     '[attr.aria-labelledby]': 'labelId',
     '[attr.aria-valuemin]': 'minWidth()',
-    '[attr.aria-valuemax]': 'maxWidth()',
   },
 })
 export class NdwuColumnResizeHandleComponent {
   protected readonly labelId = uniqueId('ndwu-column-resize-handle-');
 
   public readonly minWidth = input(0);
-  public readonly maxWidth = input(0);
   public readonly resizeTexts = input<NdwuTableTranslationTexts['columnResize']>();
 
   protected readonly effectiveTexts = computed(() => {

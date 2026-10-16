@@ -195,24 +195,21 @@ export class NdwuRowDragHandleComponent {
       event: event as unknown as MouseEvent,
     });
 
-    afterNextRender({
-      write: () => {
-        this.moving = false;
-
-        if (this.el.nativeElement.ownerDocument.activeElement !== this.el.nativeElement) {
-          this.el.nativeElement.focus();
-        }
-
-        this.announce(drag, announcement);
-      },
+    afterNextRender(() => {
+      this.moving = false;
+      this.el.nativeElement.focus();
+      this.announce(drag, announcement);
     }, {injector: this.injector});
   }
 
   private announce(drag: CdkDrag, announcement: NdwuRowDragAnnouncement): void {
-    const message = this.translation.instant(this.effectiveTexts()[announcement], {
+    const params: Record<string, number> = {
       position: this.indexOf(drag) + 1,
       count: drag.dropContainer.getSortedItems().length,
-    });
+    };
+    const message = this.translation
+      .instant(this.effectiveTexts()[announcement], params)
+      .replace(/{{\s*(\w+)\s*}}/g, (placeholder, name: string) => `${params[name] ?? placeholder}`);
 
     void this.announcer.announce(message);
   }

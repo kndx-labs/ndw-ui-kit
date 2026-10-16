@@ -20,7 +20,7 @@ const MAX_COLUMN_WIDTH = 1000;
 const KEYBOARD_STEP = 8;
 const KEYBOARD_LARGE_STEP = 40;
 
-const clampWidth = (width: number): number => Math.min(MAX_COLUMN_WIDTH, Math.max(MIN_COLUMN_WIDTH, width));
+const maxWidthFor = (width: number): number => Math.max(MAX_COLUMN_WIDTH, Math.round(width));
 
 @Directive({
   selector: '[ndwuColumnResize]',
@@ -46,7 +46,6 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
       {
         bindings: [
           inputBinding('minWidth', () => MIN_COLUMN_WIDTH),
-          inputBinding('maxWidth', () => MAX_COLUMN_WIDTH),
           inputBinding('resizeTexts', this.resizeTexts),
         ],
       },
@@ -59,6 +58,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
     this.renderer.listen(handle, 'pointerdown', (event: PointerEvent) => this.onPointerDown(handle, event));
     this.renderer.listen(handle, 'keydown', (event: KeyboardEvent) => this.onKeydown(handle, event));
+    this.renderer.listen(handle, 'focus', () => this.reportWidth(handle, this.el.nativeElement.offsetWidth));
   }
 
   private onPointerDown(handle: HTMLElement, event: PointerEvent): void {
@@ -67,7 +67,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
     const startX = event.clientX;
     const startWidth = this.el.nativeElement.offsetWidth;
-    const widthAt = (clientX: number): number => clampWidth(startWidth + (clientX - startX));
+    const widthAt = (clientX: number): number => Math.max(MIN_COLUMN_WIDTH, startWidth + (clientX - startX));
 
     let currentWidth = startWidth;
 
@@ -139,13 +139,13 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
     switch (event.key) {
       case 'ArrowLeft':
-        return clampWidth(width - step);
+        return Math.max(MIN_COLUMN_WIDTH, width - step);
       case 'ArrowRight':
-        return clampWidth(width + step);
+        return Math.min(maxWidthFor(width), width + step);
       case 'Home':
         return MIN_COLUMN_WIDTH;
       case 'End':
-        return MAX_COLUMN_WIDTH;
+        return maxWidthFor(width);
       default:
         return null;
     }
@@ -159,5 +159,6 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
   // Set directly: drags update it outside change detection.
   private reportWidth(handle: HTMLElement, width: number): void {
     this.renderer.setAttribute(handle, 'aria-valuenow', `${Math.round(width)}`);
+    this.renderer.setAttribute(handle, 'aria-valuemax', `${maxWidthFor(width)}`);
   }
 }

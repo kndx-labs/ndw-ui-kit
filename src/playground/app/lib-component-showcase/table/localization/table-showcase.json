@@ -20,7 +20,12 @@
       "unpin": "Unpin column"
     },
     "rowDragHandle": {
-      "reorder": "Reorder row"
+      "reorder": "Reorder row",
+      "instructions": "Press Space or Enter to grab the row, arrow keys to move it, Space or Enter to drop it, Escape to cancel.",
+      "grabbed": "Row grabbed, position {{position}} of {{count}}.",
+      "moved": "Row moved to position {{position}} of {{count}}.",
+      "dropped": "Row dropped at position {{position}} of {{count}}.",
+      "cancelled": "Reorder cancelled, row returned to position {{position}} of {{count}}."
     }
   },
   "table-showcase": {

@@ -602,7 +602,9 @@ This can't be fixed on the library side.
 #### Custom option lists
 
 Select, multi-select, and radio components accept either `NdwuOption[]` directly
-or domain arrays together with an `optionAdapter`:
+or domain arrays together with an `optionAdapter`.
+Autocomplete has no adapter: it accepts only `NdwuAutocompleteOption[]`,
+and the project-wide default adapter doesn't apply to it.
 
 ```typescript
 import {NdwuOptionAdapter} from '@ndw-ui-kit/core';

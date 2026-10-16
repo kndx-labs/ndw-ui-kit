@@ -75,11 +75,11 @@ sorting or paging, e.g. on the server.
 | `NdwuSortDirective`           | `[ndwuSort]` on the table   | Sort state: one `ndwuSort` model of `NdwuSortState`; cycles `asc → desc → ''`; emits `ndwuSortChange` |
 | `NdwuSortHeaderComponent`     | `th[ndwuSortHeader="id"]`   | Button inside the header cell that calls `sort(id)`; sets `aria-sort`; projects `[ndwuColumnPin]`, `[ndwuSortHeaderAction]` |
 | `NdwuColumnPinComponent`      | `button[ndwuColumnPin]`     | Toggle with `pinned` input and `pinnedChange` output; `aria-pressed`; stops the click from sorting     |
-| `NdwuColumnResizeDirective`   | `th[ndwuColumnResize]`      | Creates the grip in the cell; pointer drag sets the cell width (min 40px); emits `ndwuColumnResized`  |
-| `NdwuColumnResizeHandleComponent` | `<ndwu-column-resize-handle>` | The grip, created by the directive. `role="separator"`, out of the Tab order                    |
+| `NdwuColumnResizeDirective`   | `th[ndwuColumnResize]`      | Creates the grip in the cell; pointer drag or arrow keys set the cell width (40–1000px); emits `ndwuColumnResized` |
+| `NdwuColumnResizeHandleComponent` | `<ndwu-column-resize-handle>` | The grip, created by the directive. Focusable `role="separator"` with `aria-valuenow/min/max`  |
 | `NdwuRowDragDirective`        | `[ndwuRowDrag]` on the table| Hosts `CdkDropList`, emits `ndwuRowDrop`; disabled when the table also has `ndwuSort`                  |
 | `NdwuRowDraggableDirective`   | `[ndwuRowDraggable]="row"`  | Hosts `CdkDrag` on a row; the bound value is the drag data                                             |
-| `NdwuRowDragHandleComponent`  | `button[ndwuRowDragHandle]` | Hosts `CdkDragHandle`; dragging starts only here                                                       |
+| `NdwuRowDragHandleComponent`  | `button[ndwuRowDragHandle]` | Hosts `CdkDragHandle`; dragging starts only here. Keyboard: Space/Enter grabs, arrows move, Escape cancels |
 
 ### Chrome
 
@@ -264,6 +264,10 @@ pointermove: native listener, outside change detection → sets <th> width
 pointerup / pointercancel → emits ndwuColumnResized(width)
 ```
 
+The grip is in the Tab order. With it focused, Left/Right change the width by
+8px (40px with Shift), Home and End jump to the minimum and maximum. Each key
+press emits `ndwuColumnResized`.
+
 The width lives on the `<th>` only. A host that wants to keep it across renders
 stores the emitted value and binds it back.
 
@@ -281,6 +285,22 @@ The data source emits the new order; CdkTable moves the rows
 
 The kit never reorders data. Indices are page-relative, which is what
 `dataSource.moveRow()` expects.
+
+The keyboard path ends in the same `ndwuRowDrop`, so the host needs no extra code:
+
+```
+User focuses the handle and presses Space or Enter → row grabbed (aria-pressed, row highlighted)
+  │
+  V
+ArrowUp / ArrowDown / Home / End → ndwuRowDrop(CdkDragDrop) with a KeyboardEvent as `event`
+  │  host reorders its data; after the render the handle gets focus back
+  V
+Space / Enter / Tab away → dropped; Escape → moved back to where it was grabbed
+```
+
+Every step is announced through the CDK `LiveAnnouncer` with the row's position.
+Rows must keep their identity across the reorder (`trackBy` or the same
+objects), so the focused handle survives the move.
 
 ## Drawbacks
 
@@ -319,7 +339,6 @@ and cells come from the consumer's template.
 ### Feature Limits
 
 - Sort and row drag are exclusive. `ndwuRowDrag` disables itself and warns in dev mode.
-- The resize grip is out of the Tab order, so columns can be resized only with a pointer.
 - Detail rows have no dedicated API; they use `multiTemplateDataRows` and a `when` row def.
 
 ## Rationale and Alternatives
@@ -337,8 +356,6 @@ paging and sticky logic, and its own accessibility gaps.
 
 # Unresolved questions
 
-- Keyboard resize: the grip is unfocusable, so its arrow-key handler is unreachable.
-  Remove the handler, or make columns resizable from the keyboard another way?
 - Should the kit export one array of all table imports to cut the boilerplate?
 - Should the kit add default row defs from a `columns` input, or a detail-row slot,
   if screens keep repeating the same markup? (Declined for now in PR #8.)

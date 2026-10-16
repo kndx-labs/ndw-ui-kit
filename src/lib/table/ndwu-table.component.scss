@@ -137,6 +137,10 @@
   position: relative;
 }
 
+.ndwu-row.ndwu-row--grabbed {
+  background-color: var(--ndwu-table-row-selected-bg);
+}
+
 .ndwu-row.cdk-drag-placeholder {
   opacity: 0.3;
 }

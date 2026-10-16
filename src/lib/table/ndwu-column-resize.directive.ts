@@ -15,9 +15,12 @@ import {NdwuColumnResizeHandleComponent} from './ndwu-column-resize-handle.compo
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
 const MIN_COLUMN_WIDTH = 40;
+const MAX_COLUMN_WIDTH = 1000;
 
 const KEYBOARD_STEP = 8;
 const KEYBOARD_LARGE_STEP = 40;
+
+const clampWidth = (width: number): number => Math.min(MAX_COLUMN_WIDTH, Math.max(MIN_COLUMN_WIDTH, width));
 
 @Directive({
   selector: '[ndwuColumnResize]',
@@ -43,6 +46,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
       {
         bindings: [
           inputBinding('minWidth', () => MIN_COLUMN_WIDTH),
+          inputBinding('maxWidth', () => MAX_COLUMN_WIDTH),
           inputBinding('resizeTexts', this.resizeTexts),
         ],
       },
@@ -63,7 +67,7 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
     const startX = event.clientX;
     const startWidth = this.el.nativeElement.offsetWidth;
-    const widthAt = (clientX: number): number => Math.max(MIN_COLUMN_WIDTH, startWidth + (clientX - startX));
+    const widthAt = (clientX: number): number => clampWidth(startWidth + (clientX - startX));
 
     let currentWidth = startWidth;
 
@@ -113,28 +117,38 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
   }
 
   private onKeydown(handle: HTMLElement, event: KeyboardEvent): void {
-    const step = event.shiftKey ? KEYBOARD_LARGE_STEP : KEYBOARD_STEP;
+    const width = this.keyboardWidth(event);
 
-    let delta = 0;
-
-    if (event.key === 'ArrowLeft') {
-      delta = -step;
-    }
-
-    if (event.key === 'ArrowRight') {
-      delta = step;
-    }
-
-    if (delta === 0) {
+    if (width === null) {
       return;
     }
 
     stopEvent(event);
 
-    const width = Math.max(MIN_COLUMN_WIDTH, this.el.nativeElement.offsetWidth + delta);
+    if (width === this.el.nativeElement.offsetWidth) {
+      return;
+    }
 
     this.applyWidth(handle, width);
     this.ndwuColumnResized.emit(width);
+  }
+
+  private keyboardWidth(event: KeyboardEvent): number | null {
+    const step = event.shiftKey ? KEYBOARD_LARGE_STEP : KEYBOARD_STEP;
+    const width = this.el.nativeElement.offsetWidth;
+
+    switch (event.key) {
+      case 'ArrowLeft':
+        return clampWidth(width - step);
+      case 'ArrowRight':
+        return clampWidth(width + step);
+      case 'Home':
+        return MIN_COLUMN_WIDTH;
+      case 'End':
+        return MAX_COLUMN_WIDTH;
+      default:
+        return null;
+    }
   }
 
   private applyWidth(handle: HTMLElement, width: number): void {

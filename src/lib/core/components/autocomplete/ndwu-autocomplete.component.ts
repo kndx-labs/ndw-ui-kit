@@ -8,7 +8,6 @@ import {
   afterNextRender,
   booleanAttribute,
   computed,
-  contentChild,
   effect,
   forwardRef,
   inject,
@@ -28,9 +27,16 @@ import {
   NdwuComboboxInputDirective,
   NdwuComboboxPopoverBridgeDirective,
 } from '@ndw-ui-kit/core/aria';
-import {NdwuLocalizePipe, NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizeIfPipe, NdwuLocalizePipe, NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
 import {NdwuPopoverTriggerDirective, ndwuCreateDropdownController} from '@ndw-ui-kit/core/popover';
-import {HANDSET_BREAKPOINT, uniqueId} from '@ndw-ui-kit/core/utils';
+import {
+  HANDSET_BREAKPOINT,
+  type OptionRow,
+  buildOptionRows,
+  optionGroupHeaderId,
+  optionRowKey,
+  uniqueId,
+} from '@ndw-ui-kit/core/utils';
 import {NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
 import {NDWU_ICON_NAME} from '../../../icon-names';
 import {NDWU_SIZE, type NdwuOptionGroup} from '../../../shared.types';
@@ -40,9 +46,8 @@ import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
 import {NdwuDropdownPanelComponent, NdwuPanelFooterDirective, NdwuPanelHeaderDirective} from '../styled-dropdown';
 import {NdwuStyledGroupHeaderComponent, NdwuStyledListboxComponent, NdwuStyledOptionComponent} from '../styled-listbox';
-import {NdwuAutocompleteFooterDirective} from './ndwu-autocomplete-footer.directive';
-import type {NdwuAutocompleteFilter, NdwuAutocompleteOption, NdwuAutocompleteRow} from './ndwu-autocomplete.types';
-import {buildAutocompleteRows, ndwuAutocompleteContainsFilter} from './ndwu-autocomplete.utils';
+import type {NdwuAutocompleteFilter, NdwuAutocompleteOption} from './ndwu-autocomplete.types';
+import {ndwuAutocompleteContainsFilter} from './ndwu-autocomplete.utils';
 
 @Component({
   selector: 'ndwu-autocomplete',
@@ -51,6 +56,7 @@ import {buildAutocompleteRows, ndwuAutocompleteContainsFilter} from './ndwu-auto
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
+    NdwuLocalizeIfPipe,
     NdwuLocalizePipe,
     NdwuComboboxDirective,
     NdwuComboboxInputDirective,
@@ -124,7 +130,6 @@ export class NdwuAutocompleteComponent implements NdwuControl {
   protected readonly combobox = viewChild.required(NdwuComboboxDirective);
   protected readonly inputRef = viewChild.required<ElementRef<HTMLInputElement>>('input');
   protected readonly triggerResize = viewChild.required(NdwuResizeObserverDirective);
-  protected readonly footerDirective = contentChild(NdwuAutocompleteFooterDirective);
 
   protected readonly isMobileViewport = toSignal(
     this.breakpoint
@@ -146,28 +151,10 @@ export class NdwuAutocompleteComponent implements NdwuControl {
   protected readonly displayOptions = computed<readonly NdwuAutocompleteOption[]>(() => {
     this.langChange();
 
-    const options = this.options();
-
-    if (!this.localizeLabels()) {
-      return options;
-    }
-
-    return options.map((option) => ({...option, label: this.translate(option.label)}));
+    return this.options().map((option) => ({...option, label: this.displayLabel(option.label)}));
   });
 
-  protected readonly displayGroups = computed<readonly NdwuOptionGroup[]>(() => {
-    this.langChange();
-
-    const groups = this.groups();
-
-    if (!this.localizeLabels()) {
-      return groups;
-    }
-
-    return groups.map((group) => ({...group, label: this.translate(group.label)}));
-  });
-
-  protected readonly rows = computed<NdwuAutocompleteRow[]>(() => {
+  protected readonly rows = computed<OptionRow<NdwuAutocompleteOption>[]>(() => {
     const query = this.query();
 
     if (!query) {
@@ -178,11 +165,7 @@ export class NdwuAutocompleteComponent implements NdwuControl {
     const options = this.displayOptions();
     const filtered = filter ? options.filter((option) => filter(option, query)) : options;
 
-    return buildAutocompleteRows(filtered, this.displayGroups());
-  });
-
-  protected readonly resolvedFooter = computed(() => {
-    return this.footer() ?? this.footerDirective()?.templateRef ?? null;
+    return buildOptionRows(filtered, this.groups());
   });
 
   protected readonly canShowPanel = computed(() => {
@@ -194,8 +177,10 @@ export class NdwuAutocompleteComponent implements NdwuControl {
       return true;
     }
 
-    return !!this.query() && (this.rows().length > 0 || !!this.resolvedFooter());
+    return !!this.query() && (this.rows().length > 0 || !!this.footer());
   });
+
+  protected readonly rowKey = optionRowKey;
 
   protected readonly showClear = computed(() => {
     return !!this.currentValue() && !this.disabled && !this.readonly();
@@ -247,21 +232,21 @@ export class NdwuAutocompleteComponent implements NdwuControl {
     });
 
     effect(() => {
-      if (!this.openRequested() || !this.canShowPanel()) {
+      const combobox = this.combobox();
+
+      if (!this.canShowPanel()) {
+        if (combobox.expanded()) {
+          untracked(() => combobox.close({focusOrigin: false}));
+        }
+
         return;
       }
 
-      untracked(() => {
-        this.openRequested.set(false);
-        afterNextRender(() => this.combobox().open('input'), {injector: this.injector});
-      });
-    });
-
-    effect(() => {
-      const combobox = this.combobox();
-
-      if (combobox.expanded() && !this.canShowPanel()) {
-        untracked(() => combobox.close({focusOrigin: false}));
+      if (this.openRequested()) {
+        untracked(() => {
+          this.openRequested.set(false);
+          afterNextRender(() => combobox.open('input'), {injector: this.injector});
+        });
       }
     });
 
@@ -283,17 +268,11 @@ export class NdwuAutocompleteComponent implements NdwuControl {
     this.combobox().close();
   }
 
-  public setValue(value: string): void {
-    this.currentValue.set(value);
-  }
-
-  protected onInput(event: Event): void {
-    const target = event.target as HTMLInputElement;
-
-    const listbox = this.combobox().listbox();
-
-    this.updateValue(target.value);
-    listbox?.clearActiveItem();
+  protected onInput(value: string): void {
+    this.updateValue(value);
+    this.combobox()
+      .listbox()
+      ?.clearActiveItem();
     this.openRequested.set(true);
   }
 
@@ -323,17 +302,13 @@ export class NdwuAutocompleteComponent implements NdwuControl {
       return;
     }
 
-    this.updateValue(this.localizeLabels() ? this.translate(option.label) : option.label);
+    this.updateValue(this.displayLabel(option.label));
     this.optionSelected.emit(option);
     this.combobox().close();
   }
 
-  protected rowKey(row: NdwuAutocompleteRow): string {
-    return row.kind === 'option' ? `opt:${row.option.value}` : `grp:${row.id}`;
-  }
-
   protected groupHeaderId(groupId: string): string {
-    return `${this.id}-grp-${groupId.replace(/[^A-Za-z0-9_-]/g, '-')}`;
+    return optionGroupHeaderId(this.id, groupId);
   }
 
   private updateValue(value: string): void {
@@ -341,7 +316,7 @@ export class NdwuAutocompleteComponent implements NdwuControl {
     this.valueChange.emit(value);
   }
 
-  private translate(key: string): string {
-    return key ? this.translation.instant(key) : key;
+  private displayLabel(key: string): string {
+    return this.localizeLabels() && key ? this.translation.instant(key) : key;
   }
 }

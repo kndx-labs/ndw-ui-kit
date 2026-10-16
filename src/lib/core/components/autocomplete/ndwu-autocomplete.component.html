@@ -21,15 +21,15 @@
     [popoverCloseOnOriginClick]="false"
     [id]="id"
     [value]="currentValue()"
-    [placeholder]="placeholder() ? (placeholder() | localize) : ''"
+    [placeholder]="placeholder() | localize"
     [disabled]="disabled"
     [readonly]="readonly() || isMobileViewport()"
-    [attr.aria-label]="ariaLabel() ? (ariaLabel() | localize) : null"
+    [attr.aria-label]="(ariaLabel() | localize) || null"
     [attr.aria-labelledby]="ariaLabelledby()"
     [attr.aria-describedby]="ariaDescribedby()"
     [attr.aria-required]="required() ? 'true' : null"
     [attr.aria-invalid]="invalid() ? 'true' : null"
-    (input)="onInput($event)"
+    (input)="onInput(input.value)"
     (focus)="onFocus()"
     (blur)="onBlur()"
   />
@@ -98,9 +98,9 @@
               ndwuComboboxInput
               class="ndwu-form-field__input ndwu-form-field__input--has-right-icon ndwu-autocomplete__input"
               [value]="currentValue()"
-              [placeholder]="placeholder() ? (placeholder() | localize) : ''"
-              [attr.aria-label]="sheetTitle() ? (sheetTitle() | localize) : (ariaLabel() ? (ariaLabel() | localize) : null)"
-              (input)="onInput($event)"
+              [placeholder]="placeholder() | localize"
+              [attr.aria-label]="((sheetTitle() || ariaLabel()) | localize) || null"
+              (input)="onInput(sheetInput.value)"
             />
 
             <ng-container *ngTemplateOutlet="rightIcon; context: {$implicit: !!currentValue(), target: sheetInput}"/>
@@ -122,7 +122,7 @@
                 variant="label"
                 [id]="groupHeaderId(row.id)"
               >
-                {{ row.label }}
+                {{ row.label | localizeIf: localizeLabels() }}
               </ndwu-styled-group-header>
             } @else {
               <ndwu-styled-option
@@ -139,7 +139,7 @@
         </ndwu-styled-listbox>
       }
 
-      @if (resolvedFooter(); as footerTemplate) {
+      @if (footer(); as footerTemplate) {
         <div
           ndwuPanelFooter
           class="ndwu-autocomplete__footer"

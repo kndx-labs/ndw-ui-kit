@@ -83,10 +83,7 @@ export class NdwuAutocompleteFieldComponent extends NdwuFormFieldBase<string> im
   }
 
   public override writeValue(value: string | null): void {
-    const normalized = value ?? '';
-
-    super.writeValue(normalized);
-    this.autocomplete()?.setValue(normalized);
+    super.writeValue(value ?? '');
   }
 
   public onBlur(): void {

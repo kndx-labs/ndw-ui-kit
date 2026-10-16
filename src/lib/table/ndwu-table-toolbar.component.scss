@@ -1,3 +1,4 @@
+@use 'styles/fonts' as fonts;
 @use 'styles/spacing' as spacing;
 @use './ndwu-table.tokens' as tokens;
 
@@ -10,6 +11,7 @@
   box-sizing: border-box;
   min-height: tokens.$row-height;
   padding: spacing.$spacing-12 0;
+  font-family: fonts.$font-family;
 }
 
 :host(.ndwu-table-toolbar--S) {

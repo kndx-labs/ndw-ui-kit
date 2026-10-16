@@ -332,7 +332,7 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
   private hasWarnedZeroSize = false;
   private hasErroredUnsupportedFillMode = false;
 
-  protected readonly tooltip = signal<TooltipState | null>(null);
+  private readonly tooltip = signal<TooltipState | null>(null);
 
   private readonly tooltipElement = viewChild<ElementRef<HTMLElement>>('tooltipElement');
 

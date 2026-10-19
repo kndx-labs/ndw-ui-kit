@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 
-import {existsSync, readFileSync, readdirSync, writeFileSync} from 'node:fs';
+import {existsSync, readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {EOL} from 'node:os';
 import chalk from 'chalk';
@@ -10,7 +10,7 @@ import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
 import {SPRITE_ICONS_DIR, SRC_DIR} from './conf';
 import {getCodegenComment, stripExtension, toScreamingSnakeCase} from './utils/fmt';
-import {isSvgFile} from './utils/svg';
+import {listSpriteSourceFiles} from './utils/sprite-common';
 import {ALWAYS_INCLUDE_BASE_ICON_NAMES} from '../src/lib/icon-names.base.manual';
 
 const SRC_LIB_DIR = join(SRC_DIR, 'lib');
@@ -104,19 +104,7 @@ const collectFromTsSource = (filePath: string): {members: Set<string>; inferredV
 };
 
 const buildIconCatalog = (): {memberToValue: Map<string, string>; knownValues: Set<string>} => {
-  if (!existsSync(SPRITE_ICONS_DIR)) {
-    console.error(chalk.red(`Directory not found: ${SPRITE_ICONS_DIR}`));
-    console.error(chalk.red('Please run the `process-icons` script first.'));
-    process.exit(1);
-  }
-
-  const files = readdirSync(SPRITE_ICONS_DIR).filter(isSvgFile);
-
-  if (files.length === 0) {
-    console.error(chalk.red(`No SVG files found in ${SPRITE_ICONS_DIR}`));
-    console.error(chalk.red('Please run the `process-icons` script first.'));
-    process.exit(1);
-  }
+  const files = listSpriteSourceFiles(SPRITE_ICONS_DIR, 'prepare-icons');
 
   const memberToValue = new Map<string, string>();
   const knownValues = new Set<string>();

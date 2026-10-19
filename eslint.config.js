@@ -365,6 +365,7 @@ module.exports = tseslint.config(
     files: [
       'scripts/build-custom-sprite.ts',
       'scripts/utils/sprite-builder.ts',
+      'scripts/utils/sprite-common.ts',
       'scripts/utils/sprite.types.ts',
       'scripts/utils/svg.ts',
     ],

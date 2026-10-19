@@ -5,7 +5,7 @@
     "clean": "rimraf dist",
     "prepare": "husky",
     "ng": "ng",
-    "merge-playground-i18n": "node scripts/merge-playground-i18n.mjs",
+    "merge-playground-i18n": "tsx scripts/merge-playground-i18n.ts",
     "start": "yarn run merge-playground-i18n && ng serve",
     "playground:ngx-translate": "yarn run merge-playground-i18n && ng serve playground --configuration ngx-translate",
     "playground:no-l10n": "ng serve playground --configuration no-l10n",

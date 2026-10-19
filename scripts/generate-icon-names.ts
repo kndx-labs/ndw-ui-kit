@@ -4,7 +4,7 @@ import {readdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {EOL} from 'node:os';
 import chalk from 'chalk';
-import {SCRIPTS_DATA_DIR, SRC_DIR} from './conf';
+import {SPRITE_ICONS_DIR, SRC_DIR} from './conf';
 import {BASE_ICON_NAME} from '../src/lib/icon-names.base';
 import {getCodegenComment, stripExtension, toScreamingSnakeCase} from './utils/fmt';
 import {
@@ -15,7 +15,6 @@ import {
   isSvgFile,
 } from './utils/svg';
 
-const SPRITE_ICONS_DIR = join(SCRIPTS_DATA_DIR, 'sprite-icons');
 const OUTPUT_FILE = join(SRC_DIR, 'lib', 'icon-names.ts');
 
 const main = (): void => {

@@ -13,16 +13,12 @@
  *   yarn run copy-custom-sprite-sources
  */
 
-import path from 'node:path';
-import {fileURLToPath} from 'node:url';
 import fs from 'fs-extra';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import {DIST_SPRITE_ICONS_DIR, SPRITE_ICONS_DIR} from './conf';
 
 const main = async (): Promise<void> => {
-  const rootDir = path.resolve(__dirname, '..');
-  const sourceDir = path.join(rootDir, 'scripts/data/sprite-icons');
-  const targetDir = path.join(rootDir, 'dist/ndw-ui-kit/assets/sprite-icons');
+  const sourceDir = SPRITE_ICONS_DIR;
+  const targetDir = DIST_SPRITE_ICONS_DIR;
 
   if (!(await fs.pathExists(sourceDir))) {
     console.error(`Source directory not found: ${sourceDir}`);

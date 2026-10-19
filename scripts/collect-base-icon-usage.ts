@@ -6,13 +6,14 @@ import {EOL} from 'node:os';
 import chalk from 'chalk';
 import fg from 'fast-glob';
 import ts from 'typescript';
-import {SCRIPTS_DATA_DIR, SRC_DIR} from './conf';
+import yargs from 'yargs';
+import {hideBin} from 'yargs/helpers';
+import {SPRITE_ICONS_DIR, SRC_DIR} from './conf';
 import {getCodegenComment, stripExtension, toScreamingSnakeCase} from './utils/fmt';
 import {isSvgFile} from './utils/svg';
 import {ALWAYS_INCLUDE_BASE_ICON_NAMES} from '../src/lib/icon-names.base.manual';
 
 const SRC_LIB_DIR = join(SRC_DIR, 'lib');
-const SPRITE_ICONS_DIR = join(SCRIPTS_DATA_DIR, 'sprite-icons');
 const OUTPUT_FILE = join(SRC_LIB_DIR, 'icon-names.base.ts');
 
 const ICON_MEMBER_RE = /\b(?:NDWU_)?ICON_NAME\.([A-Z0-9_]+)/g;
@@ -179,8 +180,15 @@ const printCheckDiff = (prevValues: Set<string>, nextValues: Set<string>): void 
   }
 };
 
+const parseArgs = (): {check: boolean} => {
+  return yargs(hideBin(process.argv))
+    .boolean('check')
+    .default({check: false})
+    .parseSync();
+};
+
 const main = (): void => {
-  const checkOnly = process.argv.includes('--check');
+  const {check: checkOnly} = parseArgs();
   const {memberToValue, knownValues} = buildIconCatalog();
   const usedMembers = new Set<string>();
   const inferredValues = new Set<string>();

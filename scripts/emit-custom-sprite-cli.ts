@@ -10,16 +10,13 @@
  */
 
 import path from 'node:path';
-import {fileURLToPath} from 'node:url';
 import {build} from 'esbuild';
 import fs from 'fs-extra';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import {DIST_CUSTOM_SPRITE_CLI_FILE, SCRIPTS_DIR} from './conf';
 
 const main = async (): Promise<void> => {
-  const rootDir = path.resolve(__dirname, '..');
-  const srcFile = path.join(rootDir, 'scripts/build-custom-sprite.ts');
-  const outFile = path.join(rootDir, 'dist/ndw-ui-kit/tools/build-custom-sprite.mjs');
+  const srcFile = path.join(SCRIPTS_DIR, 'build-custom-sprite.ts');
+  const outFile = DIST_CUSTOM_SPRITE_CLI_FILE;
 
   await fs.ensureDir(path.dirname(outFile));
 

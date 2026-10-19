@@ -23,10 +23,19 @@ export const requireEnv = (name: string): string => {
   return value;
 };
 export const SCRIPTS_DATA_DIR: string = path.resolve(SCRIPTS_DIR, 'data');
+// Raw SVGs synced from Figma (icons and pictograms together)
+export const ICONS_SRC_DIR: string = path.resolve(SCRIPTS_DATA_DIR, 'icons');
+// Preprocessed SVGs, ready to be packed into sprites
+export const SPRITE_ICONS_DIR: string = path.resolve(SCRIPTS_DATA_DIR, 'sprite-icons');
+export const SPRITE_PICTOGRAMS_DIR: string = path.resolve(SCRIPTS_DATA_DIR, 'sprite-pictograms');
 
 export const ROOT_DIR: string = path.resolve(SCRIPTS_DIR, '..');
 export const SRC_DIR: string = path.resolve(ROOT_DIR, 'src');
+export const SRC_LIB_ASSETS_DIR: string = path.resolve(SRC_DIR, 'lib/assets');
+
 export const DIST_DIR: string = path.resolve(ROOT_DIR, 'dist/ndw-ui-kit');
+export const DIST_SPRITE_ICONS_DIR: string = path.resolve(DIST_DIR, 'assets/sprite-icons');
+export const DIST_CUSTOM_SPRITE_CLI_FILE: string = path.resolve(DIST_DIR, 'tools/build-custom-sprite.mjs');
 
 export const SPRITE_FILENAME = 'ndw-ui-kit.sprite.svg';
 export const EXTRA_SPRITE_FILENAME = 'ndw-ui-kit.extra.sprite.svg';

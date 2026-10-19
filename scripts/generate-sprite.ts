@@ -4,13 +4,13 @@ import {existsSync, readdirSync} from 'node:fs';
 import {join} from 'node:path';
 import chalk from 'chalk';
 import {isSvgFile} from './utils/svg';
-import {EXTRA_SPRITE_FILENAME, SCRIPTS_DATA_DIR, SPRITE_FILENAME, SRC_DIR} from './conf';
+import {EXTRA_SPRITE_FILENAME, SPRITE_FILENAME, SPRITE_ICONS_DIR, SRC_LIB_ASSETS_DIR} from './conf';
 import {stripExtension} from './utils/fmt';
 import {BASE_ICON_NAME} from '../src/lib/icon-names.base';
 import {addFileToSpriter, compileSpriter, createSpriter} from './utils/sprite-builder';
 
-const SPRITES_DIR = join(SCRIPTS_DATA_DIR, 'sprite-icons');
-const SPRITE_OUTPUT_DIR = join(SRC_DIR, 'lib', 'assets');
+const SPRITES_DIR = SPRITE_ICONS_DIR;
+const SPRITE_OUTPUT_DIR = SRC_LIB_ASSETS_DIR;
 
 /**
  * Generate SVG sprites for:

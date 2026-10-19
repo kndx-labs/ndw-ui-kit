@@ -6,6 +6,9 @@
  *
  * Usage:
  *   npx ndw-ui-kit-build-sprite --config ./my-icons.json --out src/assets/my-custom.sprite.svg
+ *
+ * NB: this file is bundled into the published package (see `emit-custom-sprite-cli.ts`).
+ * It must not import `conf.ts` (directly or transitively).
  */
 
 import {existsSync, readFileSync, readdirSync} from 'node:fs';

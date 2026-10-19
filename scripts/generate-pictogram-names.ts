@@ -4,12 +4,11 @@ import {readdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {EOL} from 'node:os';
 import chalk from 'chalk';
-import {PICTOGRAM_EXPECTED_DIMENSIONS, PICTOGRAM_SUPPORTED_SUFFIXES, SCRIPTS_DATA_DIR, SRC_DIR} from './conf';
+import {PICTOGRAM_EXPECTED_DIMENSIONS, PICTOGRAM_SUPPORTED_SUFFIXES, SPRITE_PICTOGRAMS_DIR, SRC_DIR} from './conf';
 import {getCodegenComment, stripExtension, toScreamingSnakeCase} from './utils/fmt';
 import {isSvgFile} from './utils/svg';
 import {validateSvgFile} from './utils/validate-svg-file';
 
-const SPRITE_PICTOGRAMS_DIR = join(SCRIPTS_DATA_DIR, 'sprite-pictograms');
 const OUTPUT_FILE = join(SRC_DIR, 'lib', 'pictogram-names.ts');
 
 const main = (): void => {

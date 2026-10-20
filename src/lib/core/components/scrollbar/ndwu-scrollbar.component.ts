@@ -22,11 +22,24 @@ import {
   type NdwuScrollbarAxis,
   type NdwuScrollbarPadding,
 } from './ndwu-scrollbar.types';
+import {
+  DEFAULT_MIN_THUMB_SIZE,
+  calculateThumbOffset,
+  calculateThumbSize,
+  clamp,
+  convertTrackToScroll,
+  hasOverflow,
+  parseMinThumbSize,
+} from './ndwu-scrollbar.geometry';
+import {NdwuScrollbarDragController} from './ndwu-scrollbar-drag.controller';
 
-// should match --ndwu-scrollbar-min-thumb-size
-const MIN_THUMB_SIZE = 24;
+const MIN_THUMB_SIZE_PROPERTY = '--ndwu-scrollbar-min-thumb-size';
 
-const OVERFLOW_ROUNDING_TOLERANCE = 1;
+const SCROLLABLE_Y_CLASS = 'ndwu-scrollbar--scrollable-y';
+const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
+
+// Attribute changes that can resize descendants without touching the DOM tree
+const OBSERVED_ATTRIBUTES = ['class', 'hidden'];
 
 // only mouse pointers receive custom track/thumb interaction. Touch/pen fall back to native scroll.
 const SUPPORTED_POINTER_TYPE = 'mouse';
@@ -41,8 +54,6 @@ const SUPPORTED_POINTER_TYPE = 'mouse';
   host: {
     '[class.ndwu-scrollbar--size-l]': 'normalizedSize() === "L"',
     '[class.ndwu-scrollbar--size-xl]': 'normalizedSize() === "XL"',
-    '[class.ndwu-scrollbar--scrollable-y]': 'isOverflowingY()',
-    '[class.ndwu-scrollbar--scrollable-x]': 'isOverflowingX()',
     '[class.ndwu-scrollbar--dragging]': 'isDragging()',
     '[class.ndwu-scrollbar--axis-y]': 'ndwuScrollbarAxis() === "y"',
     '[class.ndwu-scrollbar--axis-x]': 'ndwuScrollbarAxis() === "x"',
@@ -142,7 +153,13 @@ export class NdwuScrollbarComponent {
     };
   });
 
-  private dragState: NdwuDragState | null = null;
+  private readonly dragController = new NdwuScrollbarDragController(this.doc, {
+    move: (state, event) => this.onDragMove(state, event),
+    activeChange: (isActive) => this.isDragging.set(isActive),
+  });
+
+  private minThumbSize = DEFAULT_MIN_THUMB_SIZE;
+  private lastContentSize = {width: 0, height: 0};
   private recalculateFrameId: ReturnType<typeof requestAnimationFrame> | null = null;
   private positionFrameId: ReturnType<typeof requestAnimationFrame> | null = null;
   private resizeObserver: ResizeObserver | null = null;
@@ -170,7 +187,7 @@ export class NdwuScrollbarComponent {
       }
 
       if (isDisabled) {
-        this.cancelDrag();
+        this.dragController.end();
         this.releaseContentBoxSize();
 
         return;
@@ -212,22 +229,32 @@ export class NdwuScrollbarComponent {
     }
 
     if (typeof MutationObserver !== 'undefined') {
-      this.mutationObserver = new MutationObserver(() => {
-        this.observeContentChildren(content);
+      this.mutationObserver = new MutationObserver((records) => {
+        const isLayoutChanged = records.some(record => record.type !== 'characterData');
+
+        if (isLayoutChanged) {
+          this.observeContentChildren(content);
+        }
+
         this.scheduleRecalculate();
       });
 
+      // The content box is pinned, so a text or class change deep inside it that changes
+      // the overflow without resizing a direct child is only visible to this observer.
       this.mutationObserver.observe(
         content,
         {
           childList: true,
           subtree: true,
+          characterData: true,
+          attributes: true,
+          attributeFilter: OBSERVED_ATTRIBUTES,
         },
       );
     }
   }
 
-  // Direct children are not pinned like the content box itself, so observing them reports
+  // Children are not pinned like the content box itself, so observing them reports
   // content growth/shrink that does not touch the DOM tree (images loading, text reflow).
   private observeContentChildren(content: HTMLElement): void {
     const resizeObserver = this.resizeObserver;
@@ -236,7 +263,7 @@ export class NdwuScrollbarComponent {
       return;
     }
 
-    const children = new Set(Array.from(content.children));
+    const children = this.collectLayoutChildren(content, new Set());
 
     for (const child of this.observedContentChildren) {
       if (!children.has(child)) {
@@ -251,6 +278,20 @@ export class NdwuScrollbarComponent {
     }
 
     this.observedContentChildren = children;
+  }
+
+  // `display: contents` elements generate no box, so ResizeObserver never reports them;
+  // their own children are the boxes that change size.
+  private collectLayoutChildren(parent: Element, result: Set<Element>): Set<Element> {
+    for (const child of Array.from(parent.children)) {
+      if (getComputedStyle(child).display === 'contents') {
+        this.collectLayoutChildren(child, result);
+      } else {
+        result.add(child);
+      }
+    }
+
+    return result;
   }
 
   // The content box is pinned to the host size to become the scroll box. A host sized by its own
@@ -301,30 +342,13 @@ export class NdwuScrollbarComponent {
     };
   }
 
-  private cancelDrag(): void {
-    if (this.dragState !== null) {
-      try {
-        this.getAxisElements(this.dragState.axis).thumb.releasePointerCapture(this.dragState.pointerId);
-      } catch {
-        /* ignore */
-      }
-
-      this.isDragging.set(false);
-
-      this.dragState = null;
-    }
-
-    this.unregisterDragListeners();
-  }
-
   private releaseContentBoxSize(): void {
     const content = this.contentEl().nativeElement;
 
     content.style.width = '';
     content.style.height = '';
 
-    this.isOverflowingY.set(false);
-    this.isOverflowingX.set(false);
+    this.setOverflowState(false, false);
   }
 
   // Re-observing a target makes ResizeObserver deliver an immediate callback with its current
@@ -383,11 +407,26 @@ export class NdwuScrollbarComponent {
     this.scheduleFrame(
       'position',
       () => {
+        if (this.isContentSizeChanged()) {
+          this.scheduleRecalculate();
+
+          return;
+        }
+
         this.updateAxis('y');
         this.updateAxis('x');
       },
       'throttle',
     );
+  }
+
+  // Safety net for content changes no observer reports: scrolling reveals them before
+  // the thumb is positioned against stale metrics.
+  private isContentSizeChanged(): boolean {
+    const content = this.contentEl().nativeElement;
+
+    return content.scrollWidth !== this.lastContentSize.width
+      || content.scrollHeight !== this.lastContentSize.height;
   }
 
   protected onThumbPointerDown(axis: NdwuScrollbarAxis, event: PointerEvent): void {
@@ -423,84 +462,24 @@ export class NdwuScrollbarComponent {
     const thumbRect = thumb.getBoundingClientRect();
     const trackRect = track.getBoundingClientRect();
 
-    this.isDragging.set(true);
-
-    this.dragState = {
+    this.dragController.start(event, thumb, {
       axis,
       pointerId: event.pointerId,
       pointerOffset: this.getPointerOffset(axis, event) - this.getRectStart(axis, thumbRect),
       trackStart: this.getRectStart(axis, trackRect),
-    };
-
-    thumb.setPointerCapture(event.pointerId);
-    this.doc.addEventListener('pointermove', this.onDrag, true);
-    this.doc.addEventListener('pointerup', this.onEndDrag, true);
-    this.doc.addEventListener('pointercancel', this.onEndDrag, true);
+    });
   }
 
-  private convertTrackToScroll(
-    metrics: NdwuAxisMetrics,
-    trackPosition: number,
-    options: {centerOnThumb?: boolean} = {},
-  ): number {
-    const thumbSize = this.calculateThumbSize(metrics);
-    const contentFree = metrics.contentSize - metrics.clientSize;
-    const trackFree = metrics.trackSize - thumbSize;
+  private onDragMove(state: NdwuDragState, event: PointerEvent): void {
+    const metrics = this.getAxisMetrics(state.axis);
+    const thumbSize = calculateThumbSize(metrics, this.minThumbSize);
+    const pointerPosition = this.getPointerOffset(state.axis, event);
+    const dragPosition = pointerPosition - state.trackStart - state.pointerOffset;
+    const targetScroll = convertTrackToScroll(metrics, thumbSize, dragPosition);
 
-    if (trackFree <= 0 || contentFree <= 0) {
-      return metrics.scrollOffset;
-    }
-
-    const targetPosition = options.centerOnThumb
-      ? trackPosition - (thumbSize / 2)
-      : trackPosition;
-
-    const ratio = this.clamp(targetPosition / trackFree, 0, 1);
-
-    return ratio * contentFree;
+    this.setScrollOffset(state.axis, this.contentEl().nativeElement, targetScroll);
+    this.updateAxis(state.axis);
   }
-
-  private readonly onDrag = (event: PointerEvent): void => {
-    const dragState = this.dragState;
-
-    if (!this.isDragging() || event.pointerId !== dragState?.pointerId) {
-      return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    const metrics = this.getAxisMetrics(dragState.axis);
-    const pointerPosition = this.getPointerOffset(dragState.axis, event);
-    const dragPosition = pointerPosition - dragState.trackStart - dragState.pointerOffset;
-    const targetScroll = this.convertTrackToScroll(metrics, dragPosition);
-
-    this.setScrollOffset(dragState.axis, this.contentEl().nativeElement, targetScroll);
-    this.updateAxis(dragState.axis);
-  };
-
-  private readonly onEndDrag = (event: PointerEvent): void => {
-    const dragState = this.dragState;
-
-    if (!this.isDragging() || event.pointerId !== dragState?.pointerId) {
-      return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    try {
-      this.getAxisElements(dragState.axis).thumb.releasePointerCapture(dragState.pointerId);
-    } catch {
-      /* ignore */
-    }
-
-    this.isDragging.set(false);
-
-    this.dragState = null;
-
-    this.unregisterDragListeners();
-  };
 
   private startTrackClick(axis: NdwuScrollbarAxis, event: PointerEvent): void {
     const content = this.contentEl().nativeElement;
@@ -510,8 +489,9 @@ export class NdwuScrollbarComponent {
     const trackRect = elements.track.getBoundingClientRect();
     const trackStart = this.getRectStart(axis, trackRect);
     const pointerPosition = this.getPointerOffset(axis, event);
-    const targetScroll = this.convertTrackToScroll(
+    const targetScroll = convertTrackToScroll(
       metrics,
+      calculateThumbSize(metrics, this.minThumbSize),
       pointerPosition - trackStart,
       {
         centerOnThumb: true,
@@ -539,7 +519,10 @@ export class NdwuScrollbarComponent {
       return;
     }
 
+    this.minThumbSize = parseMinThumbSize(getComputedStyle(this.hostEl).getPropertyValue(MIN_THUMB_SIZE_PROPERTY));
+
     this.updateOverflowState(content);
+    this.lastContentSize = {width: content.scrollWidth, height: content.scrollHeight};
     this.updateAxis('y');
     this.updateAxis('x');
   }
@@ -547,21 +530,21 @@ export class NdwuScrollbarComponent {
   private updateOverflowState(content: HTMLElement): void {
     const axis = this.ndwuScrollbarAxis();
 
-    this.isOverflowingY.set(
-      (axis === 'y' || axis === 'both')
-        && this.resolveOverflow(content.scrollHeight, content.clientHeight),
-    );
-
-    this.isOverflowingX.set(
-      (axis === 'x' || axis === 'both')
-        && this.resolveOverflow(content.scrollWidth, content.clientWidth),
+    this.setOverflowState(
+      (axis === 'y' || axis === 'both') && hasOverflow(content.scrollHeight, content.clientHeight),
+      (axis === 'x' || axis === 'both') && hasOverflow(content.scrollWidth, content.clientWidth),
     );
   }
 
-  // scrollHeight/clientHeight are rounded integers, so a fractional box size can report
-  // a 1px overflow that is not there
-  private resolveOverflow(contentSize: number, clientSize: number): boolean {
-    return contentSize - clientSize > OVERFLOW_ROUNDING_TOLERANCE;
+  // The classes show the tracks and shorten each other's track, and the thumb is measured
+  // against the track right after, so they are toggled here instead of waiting for change
+  // detection to apply them as host bindings.
+  private setOverflowState(isOverflowingY: boolean, isOverflowingX: boolean): void {
+    this.isOverflowingY.set(isOverflowingY);
+    this.isOverflowingX.set(isOverflowingX);
+
+    this.hostEl.classList.toggle(SCROLLABLE_Y_CLASS, isOverflowingY);
+    this.hostEl.classList.toggle(SCROLLABLE_X_CLASS, isOverflowingX);
   }
 
   private applyThumbSize(axis: NdwuScrollbarAxis, size: number): void {
@@ -572,31 +555,20 @@ export class NdwuScrollbarComponent {
   }
 
   private updateAxis(axis: NdwuScrollbarAxis): void {
-    const metrics = this.getAxisMetrics(axis);
     const overflowSignalKey = this.getConfig(axis).overflowSignal;
-    const isOverflowing = this[overflowSignalKey]();
-    const thumbSize = isOverflowing ? this.calculateThumbSize(metrics) : 0;
+
+    if (!this[overflowSignalKey]()) {
+      this.applyThumbSize(axis, 0);
+      this.applyThumbTransform(axis, 0);
+
+      return;
+    }
+
+    const metrics = this.getAxisMetrics(axis);
+    const thumbSize = calculateThumbSize(metrics, this.minThumbSize);
 
     this.applyThumbSize(axis, thumbSize);
-
-    if (!isOverflowing || thumbSize <= 0) {
-      this.applyThumbTransform(axis, 0);
-
-      return;
-    }
-
-    const trackFree = metrics.trackSize - thumbSize;
-    const contentFree = metrics.contentSize - metrics.clientSize;
-
-    if (trackFree <= 0 || contentFree <= 0) {
-      this.applyThumbTransform(axis, 0);
-
-      return;
-    }
-
-    const offset = Math.floor((metrics.scrollOffset / contentFree) * trackFree);
-
-    this.applyThumbTransform(axis, offset);
+    this.applyThumbTransform(axis, calculateThumbOffset(metrics, thumbSize));
   }
 
   private getAxisElements(axis: NdwuScrollbarAxis): NdwuAxisElements {
@@ -611,16 +583,6 @@ export class NdwuScrollbarComponent {
       };
   }
 
-  private calculateThumbSize(metrics: NdwuAxisMetrics): number {
-    if (metrics.contentSize <= 0 || metrics.trackSize <= 0) {
-      return 0;
-    }
-
-    const ratio = metrics.clientSize / metrics.contentSize;
-
-    return Math.min(metrics.trackSize, Math.max(Math.floor(ratio * metrics.trackSize), MIN_THUMB_SIZE));
-  }
-
   private applyThumbTransform(axis: NdwuScrollbarAxis, offset: number): void {
     this.getAxisElements(axis).thumb.style.transform = this.getConfig(axis).translateAxis(offset);
   }
@@ -633,8 +595,19 @@ export class NdwuScrollbarComponent {
       contentSize: content[config.contentSize],
       clientSize: content[config.clientSize],
       scrollOffset: content[config.scrollOffset],
-      trackSize: this.hostEl[config.trackSize],
+      trackSize: this.measureTrackSize(axis),
     };
+  }
+
+  // The track is inset from the host by its padding and, when both tracks are visible,
+  // shortened by the other one, so its own length is the one consistent with its start
+  // coordinate that pointer positions are measured from. Computed size keeps fractional
+  // pixels (clientWidth/clientHeight round them up past the track end) and ignores transforms.
+  private measureTrackSize(axis: NdwuScrollbarAxis): number {
+    const {track} = this.getAxisElements(axis);
+    const size = parseFloat(getComputedStyle(track)[this.getConfig(axis).thumbStyle]);
+
+    return Number.isNaN(size) ? 0 : size;
   }
 
   private getPointerOffset(axis: NdwuScrollbarAxis, event: MouseEvent | PointerEvent): number {
@@ -651,11 +624,7 @@ export class NdwuScrollbarComponent {
     const clientKey = config.clientSize;
     const contentFree = content[sizeKey] - content[clientKey];
 
-    content[config.scrollOffset] = this.clamp(value, 0, Math.max(0, contentFree));
-  }
-
-  private clamp(value: number, min: number, max: number): number {
-    return Math.max(min, Math.min(max, value));
+    content[config.scrollOffset] = clamp(value, 0, Math.max(0, contentFree));
   }
 
   private syncFocusableContent(content: HTMLElement): void {
@@ -666,18 +635,12 @@ export class NdwuScrollbarComponent {
     }
   }
 
-  private unregisterDragListeners(): void {
-    this.doc.removeEventListener('pointermove', this.onDrag, true);
-    this.doc.removeEventListener('pointerup', this.onEndDrag, true);
-    this.doc.removeEventListener('pointercancel', this.onEndDrag, true);
-  }
-
   private cleanup(): void {
     const content = this.contentEl()?.nativeElement;
 
     content?.removeEventListener('scroll', this.onScroll);
     this.hostEl.removeEventListener('focus', this.onHostFocus);
-    this.cancelDrag();
+    this.dragController.end();
 
     if (this.recalculateFrameId !== null) {
       cancelAnimationFrame(this.recalculateFrameId);

@@ -124,13 +124,13 @@
   cursor: pointer;
   will-change: transform;
 
+  // Thumb length, including --ndwu-scrollbar-min-thumb-size, is set inline from TS:
+  // a CSS minimum would push the thumb past a track shorter than it.
   .ndwu-scrollbar__track--vertical & {
     width: 100%;
-    min-height: var(--ndwu-scrollbar-min-thumb-size, 24px); // should match MIN_THUMB_SIZE
   }
 
   .ndwu-scrollbar__track--horizontal & {
-    min-width: var(--ndwu-scrollbar-min-thumb-size, 24px); // should match MIN_THUMB_SIZE
     height: 100%;
   }
 }

@@ -32,6 +32,7 @@ import {
   parseMinThumbSize,
 } from './ndwu-scrollbar.geometry';
 import {NdwuScrollbarDragController} from './ndwu-scrollbar-drag.controller';
+import {resolveMutationRecalc} from './ndwu-scrollbar.mutations';
 
 const MIN_THUMB_SIZE_PROPERTY = '--ndwu-scrollbar-min-thumb-size';
 
@@ -40,6 +41,11 @@ const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
 
 // Attribute changes that can resize descendants without touching the DOM tree
 const OBSERVED_ATTRIBUTES = ['class', 'hidden'];
+
+// Quiet period after text/attribute mutations before the full recalculation that catches
+// a shrink no observer reports. Longer than the gaps inside a mutation burst (frame-driven
+// updates, hover across a list), short enough for the late shrink to read as a reaction.
+const MUTATION_SETTLE_DELAY = 150;
 
 // only mouse pointers receive custom track/thumb interaction. Touch/pen fall back to native scroll.
 const SUPPORTED_POINTER_TYPE = 'mouse';
@@ -162,6 +168,7 @@ export class NdwuScrollbarComponent {
   private lastContentSize = {width: 0, height: 0};
   private recalculateFrameId: ReturnType<typeof requestAnimationFrame> | null = null;
   private positionFrameId: ReturnType<typeof requestAnimationFrame> | null = null;
+  private mutationSettleTimerId: ReturnType<typeof setTimeout> | null = null;
   private resizeObserver: ResizeObserver | null = null;
   private mutationObserver: MutationObserver | null = null;
   private observedContentChildren = new Set<Element>();
@@ -230,13 +237,18 @@ export class NdwuScrollbarComponent {
 
     if (typeof MutationObserver !== 'undefined') {
       this.mutationObserver = new MutationObserver((records) => {
-        const isLayoutChanged = records.some(record => record.type !== 'characterData');
-
-        if (isLayoutChanged) {
+        if (resolveMutationRecalc(records) === 'full') {
           this.observeContentChildren(content);
+          this.scheduleRecalculate();
+
+          return;
         }
 
-        this.scheduleRecalculate();
+        // A full recalculation re-lays out the whole content twice, too costly for a stream
+        // of text/class changes (timers, hover): check the scroll size each frame instead and
+        // recalculate fully once the stream settles.
+        this.schedulePositionUpdate();
+        this.scheduleMutationSettle(content);
       });
 
       // The content box is pinned, so a text or class change deep inside it that changes
@@ -367,6 +379,23 @@ export class NdwuScrollbarComponent {
     this.schedulePositionUpdate();
   };
 
+  private scheduleMutationSettle(content: HTMLElement): void {
+    if (this.mutationSettleTimerId !== null) {
+      clearTimeout(this.mutationSettleTimerId);
+    }
+
+    this.mutationSettleTimerId = setTimeout(
+      () => {
+        this.mutationSettleTimerId = null;
+
+        // a class change may have toggled `display: contents` on a child
+        this.observeContentChildren(content);
+        this.scheduleRecalculate();
+      },
+      MUTATION_SETTLE_DELAY,
+    );
+  }
+
   private getFrameId(key: 'recalculate' | 'position'): number | null {
     return key === 'recalculate' ? this.recalculateFrameId : this.positionFrameId;
   }
@@ -403,12 +432,24 @@ export class NdwuScrollbarComponent {
     );
   }
 
+  private cancelFrame(key: 'recalculate' | 'position'): void {
+    const currentId = this.getFrameId(key);
+
+    if (currentId !== null) {
+      cancelAnimationFrame(currentId);
+      this.setFrameId(key, null);
+    }
+  }
+
+  // Throttled rather than debounced: a debounced frame keeps getting pushed back by changes
+  // arriving every frame and never runs while they last.
   private schedulePositionUpdate(): void {
     this.scheduleFrame(
       'position',
       () => {
         if (this.isContentSizeChanged()) {
-          this.scheduleRecalculate();
+          this.cancelFrame('recalculate');
+          this.recalculate();
 
           return;
         }
@@ -420,8 +461,8 @@ export class NdwuScrollbarComponent {
     );
   }
 
-  // Safety net for content changes no observer reports: scrolling reveals them before
-  // the thumb is positioned against stale metrics.
+  // The pinned content box only reports growth past its own size here, which is what text and
+  // class changes are checked for; scrolling uses it as a safety net against stale metrics.
   private isContentSizeChanged(): boolean {
     const content = this.contentEl().nativeElement;
 
@@ -642,12 +683,11 @@ export class NdwuScrollbarComponent {
     this.hostEl.removeEventListener('focus', this.onHostFocus);
     this.dragController.end();
 
-    if (this.recalculateFrameId !== null) {
-      cancelAnimationFrame(this.recalculateFrameId);
-    }
+    this.cancelFrame('recalculate');
+    this.cancelFrame('position');
 
-    if (this.positionFrameId !== null) {
-      cancelAnimationFrame(this.positionFrameId);
+    if (this.mutationSettleTimerId !== null) {
+      clearTimeout(this.mutationSettleTimerId);
     }
 
     this.resizeObserver?.disconnect();

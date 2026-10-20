@@ -2,6 +2,7 @@ import {existsSync, mkdirSync, readdirSync, writeFileSync} from 'node:fs';
 import {dirname, join} from 'node:path';
 import chalk from 'chalk';
 import SVGSpriter from 'svg-sprite';
+import {parseStringPromise} from 'xml2js';
 import {isSvgFile, prepareSvgForSprite} from './svg';
 
 export interface BuildSpriteOptions {
@@ -52,12 +53,34 @@ const isSpriteCompileResult = (value: unknown): value is SpriteCompileResult => 
   return Object.values(value).every(isSpriteCompileMode);
 };
 
-const writeCompileResult = (result: SpriteCompileResult): void => {
-  for (const resources of Object.values(result)) {
-    for (const {path: outputPath, contents} of Object.values(resources)) {
-      mkdirSync(dirname(outputPath), {recursive: true});
-      writeFileSync(outputPath, contents);
+const getCompileResources = (result: SpriteCompileResult): SpriteCompileResource[] => {
+  return Object.values(result).flatMap((resources) => {
+    return Object.values(resources);
+  });
+};
+
+/**
+ * Fail when a compiled sprite is not well-formed, namespace-aware XML (e.g. an undeclared `xlink:` prefix).
+ * Browsers parse an external sprite strictly and stop rendering symbols at the first error.
+ */
+const assertWellFormedSprites = async (result: SpriteCompileResult): Promise<void> => {
+  for (const {path: outputPath, contents} of getCompileResources(result)) {
+    const xml = typeof contents === 'string' ? contents : new TextDecoder().decode(contents);
+
+    try {
+      await parseStringPromise(xml, {xmlns: true});
+    } catch (error) {
+      const reason = error instanceof Error ? error.message.replace(/\n/g, ', ') : String(error);
+
+      throw new Error(`Sprite ${outputPath} is not well-formed XML: ${reason}`);
     }
+  }
+};
+
+const writeCompileResult = (result: SpriteCompileResult): void => {
+  for (const {path: outputPath, contents} of getCompileResources(result)) {
+    mkdirSync(dirname(outputPath), {recursive: true});
+    writeFileSync(outputPath, contents);
   }
 };
 
@@ -127,11 +150,11 @@ const addFileToSpriter = (spriter: SVGSpriter.SVGSpriter, sourceDir: string, fil
 };
 
 /**
- * Compile a spriter and write the resulting sprite file(s) to disk.
+ * Compile a spriter into in-memory sprite file(s).
  *
  * @param spriter - The SVGSpriter instance to compile.
  */
-const compileSpriter = (spriter: SVGSpriter.SVGSpriter): Promise<void> => {
+const compileSpriter = (spriter: SVGSpriter.SVGSpriter): Promise<SpriteCompileResult> => {
   return new Promise((resolve, reject) => {
     const typedSpriter = spriter as SVGSpriter.SVGSpriter & {
       compile(callback: (error: Error | null, result?: unknown) => void): void;
@@ -150,9 +173,7 @@ const compileSpriter = (spriter: SVGSpriter.SVGSpriter): Promise<void> => {
         return;
       }
 
-      writeCompileResult(result);
-
-      resolve();
+      resolve(result);
     });
   });
 };
@@ -193,6 +214,7 @@ export const listSpriteSourceFiles = (sourceDir: string, prepareScript: string):
  * Returns number of files added to the sprite.
  *
  * @throws When any file cannot be prepared: a sprite missing a symbol would not match the generated names.
+ * @throws When the compiled sprite is not well-formed XML; nothing is written in that case.
  */
 export const buildSprite = async (options: BuildSpriteOptions): Promise<number> => {
   const {sourceDir, files, outputDir, outputFilename} = options;
@@ -203,7 +225,10 @@ export const buildSprite = async (options: BuildSpriteOptions): Promise<number> 
     throw new Error(`${failedFiles.length} file(s) could not be added to ${outputFilename}`);
   }
 
-  await compileSpriter(spriter);
+  const result = await compileSpriter(spriter);
+
+  await assertWellFormedSprites(result);
+  writeCompileResult(result);
 
   return files.length;
 };

@@ -6,32 +6,21 @@ export interface ValidationResult {
   suffix?: string;
 }
 
-type SupportedSuffixes = Set<string> | readonly string[] | Record<string, number>;
-
+/**
+ * Validate an SVG file by its size suffix and actual dimensions.
+ *
+ * @param expectedDimensions - Map of supported size suffix → expected width/height in px.
+ *                             Suffixes missing from the map are rejected.
+ */
 export function validateSvgFile(
   filename: string,
-  supportedSuffixes: SupportedSuffixes,
-  expectedDimensions: Record<string, number>,
+  expectedDimensions: Readonly<Record<string, number>>,
   filePath: string,
 ): ValidationResult {
   const stem = filename.replace(/\.svg$/, '');
   const suffix = extractIconSizeSuffix(stem);
 
-  if (!suffix) {
-    return {isValid: false, skipReason: 'unsupported size suffix'};
-  }
-
-  let hasSuffix = false;
-
-  if ('has' in supportedSuffixes) {
-    hasSuffix = (supportedSuffixes as Set<string>).has(suffix);
-  } else if (Array.isArray(supportedSuffixes)) {
-    hasSuffix = (supportedSuffixes as readonly string[]).includes(suffix);
-  } else {
-    hasSuffix = suffix in supportedSuffixes;
-  }
-
-  if (!hasSuffix) {
+  if (!suffix || !(suffix in expectedDimensions)) {
     return {isValid: false, skipReason: 'unsupported size suffix'};
   }
 

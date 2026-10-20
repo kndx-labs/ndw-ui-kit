@@ -5,12 +5,7 @@ import {join} from 'node:path';
 import chalk from 'chalk';
 import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
-import {
-  ICONS_SRC_DIR,
-  PICTOGRAM_EXPECTED_DIMENSIONS,
-  PICTOGRAM_SUPPORTED_SUFFIXES,
-  SPRITE_PICTOGRAMS_DIR,
-} from './conf';
+import {ICONS_SRC_DIR, PICTOGRAM_EXPECTED_DIMENSIONS, SPRITE_PICTOGRAMS_DIR} from './conf';
 import {extractAllSvgColors, matchPictogramPreset} from './utils/svg-colors';
 import {isSvgFile} from './utils/svg';
 import {validateSvgFile} from './utils/validate-svg-file';
@@ -60,7 +55,7 @@ const main = async (): Promise<void> => {
   for (const file of files) {
     const inputPath = join(INPUT_DIR, file);
 
-    const validation = validateSvgFile(file, PICTOGRAM_SUPPORTED_SUFFIXES, PICTOGRAM_EXPECTED_DIMENSIONS, inputPath);
+    const validation = validateSvgFile(file, PICTOGRAM_EXPECTED_DIMENSIONS, inputPath);
 
     if (!validation.isValid) {
       result.skipped.push({name: file, reason: validation.skipReason || 'validation failed'});

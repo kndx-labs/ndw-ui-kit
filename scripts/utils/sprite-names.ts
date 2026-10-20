@@ -13,7 +13,6 @@ export interface SpriteNameEntry {
 export interface CollectSpriteNamesOptions {
   sourceDir: string;
   prepareScript: string;
-  supportedSuffixes: Set<string> | Readonly<Record<string, number>>;
   expectedDimensions: Readonly<Record<string, number>>;
 }
 
@@ -22,12 +21,12 @@ export interface CollectSpriteNamesOptions {
  * Files with an unsupported size suffix or unexpected dimensions are skipped with a warning.
  */
 export const collectSpriteNameEntries = (options: CollectSpriteNamesOptions): SpriteNameEntry[] => {
-  const {sourceDir, prepareScript, supportedSuffixes, expectedDimensions} = options;
+  const {sourceDir, prepareScript, expectedDimensions} = options;
   const files = listSpriteSourceFiles(sourceDir, prepareScript).sort();
   const entries: SpriteNameEntry[] = [];
 
   for (const file of files) {
-    const validation = validateSvgFile(file, supportedSuffixes, expectedDimensions, join(sourceDir, file));
+    const validation = validateSvgFile(file, expectedDimensions, join(sourceDir, file));
 
     if (!validation.isValid) {
       console.warn(chalk.yellow(`⚠️  Skipping "${file}": ${validation.skipReason}`));

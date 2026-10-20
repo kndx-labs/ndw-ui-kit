@@ -15,7 +15,6 @@ const main = (): void => {
   const entries = collectSpriteNameEntries({
     sourceDir: SPRITE_ICONS_DIR,
     prepareScript: 'prepare-icons',
-    supportedSuffixes: STANDARD_ICON_SIZE_SUFFIX,
     expectedDimensions: STANDARD_ICON_SIZE_SUFFIX,
   });
 

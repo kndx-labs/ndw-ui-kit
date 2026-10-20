@@ -41,8 +41,8 @@ export const SPRITE_FILENAME = 'ndw-ui-kit.sprite.svg';
 export const EXTRA_SPRITE_FILENAME = 'ndw-ui-kit.extra.sprite.svg';
 export const PICTOGRAM_SPRITE_FILENAME = 'ndw-ui-kit.pictogram.sprite.svg';
 
-export const PICTOGRAM_SUPPORTED_SUFFIXES = new Set(['L', 'XL']);
-export const PICTOGRAM_EXPECTED_DIMENSIONS: Record<string, number> = {L: 64, XL: 100};
+// Size suffix → expected width/height in px; keys are the only supported pictogram suffixes
+export const PICTOGRAM_EXPECTED_DIMENSIONS: Readonly<Record<string, number>> = {L: 64, XL: 100};
 export const PICTOGRAM_COLOR_PRESETS = NDWU_PICTOGRAM_VARIANTS;
 
 // Matches Breakpoints.Handset from @angular/cdk/layout

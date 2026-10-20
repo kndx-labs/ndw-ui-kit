@@ -2,7 +2,7 @@
 
 import {writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {PICTOGRAM_EXPECTED_DIMENSIONS, PICTOGRAM_SUPPORTED_SUFFIXES, SPRITE_PICTOGRAMS_DIR, SRC_DIR} from './conf';
+import {PICTOGRAM_EXPECTED_DIMENSIONS, SPRITE_PICTOGRAMS_DIR, SRC_DIR} from './conf';
 import {getCodegenComment} from './utils/fmt';
 import {collectSpriteNameEntries, formatNameEntries} from './utils/sprite-names';
 
@@ -12,7 +12,6 @@ const main = (): void => {
   const entries = collectSpriteNameEntries({
     sourceDir: SPRITE_PICTOGRAMS_DIR,
     prepareScript: 'prepare-pictograms',
-    supportedSuffixes: PICTOGRAM_SUPPORTED_SUFFIXES,
     expectedDimensions: PICTOGRAM_EXPECTED_DIMENSIONS,
   });
 

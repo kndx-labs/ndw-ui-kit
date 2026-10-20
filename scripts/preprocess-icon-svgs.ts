@@ -66,7 +66,7 @@ const processSvgFile = async (filename: string): Promise<{success: boolean; reas
   const inputPath = join(INPUT_DIR, filename);
   const outputPath = join(OUTPUT_DIR, filename);
 
-  const validation = validateSvgFile(filename, STANDARD_ICON_SIZE_SUFFIX, STANDARD_ICON_SIZE_SUFFIX, inputPath);
+  const validation = validateSvgFile(filename, STANDARD_ICON_SIZE_SUFFIX, inputPath);
 
   if (!validation.isValid) {
     return {

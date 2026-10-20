@@ -10,7 +10,7 @@ import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
 import {SPRITE_ICONS_DIR, SRC_DIR} from './conf';
 import {getCodegenComment, stripExtension, toScreamingSnakeCase} from './utils/fmt';
-import {listSpriteSourceFiles} from './utils/sprite-common';
+import {listSpriteSourceFiles} from './utils/sprite/build';
 import {ALWAYS_INCLUDE_BASE_ICON_NAMES} from '../src/lib/icon-names.base.manual';
 
 const SRC_LIB_DIR = join(SRC_DIR, 'lib');

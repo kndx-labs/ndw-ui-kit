@@ -6,8 +6,8 @@ import chalk from 'chalk';
 import {SPRITE_ICONS_DIR, SRC_DIR} from './conf';
 import {BASE_ICON_NAME} from '../src/lib/icon-names.base';
 import {getCodegenComment} from './utils/fmt';
-import {collectSpriteNameEntries, formatNameEntries} from './utils/sprite-names';
-import {STANDARD_ICON_SIZE_SUFFIX} from './utils/svg';
+import {collectSpriteNameEntries, formatNameEntries} from './utils/sprite/names';
+import {ICON_EXPECTED_DIMENSIONS} from './utils/sprite/svg';
 
 const OUTPUT_FILE = join(SRC_DIR, 'lib', 'icon-names.ts');
 
@@ -15,7 +15,7 @@ const main = (): void => {
   const entries = collectSpriteNameEntries({
     sourceDir: SPRITE_ICONS_DIR,
     prepareScript: 'prepare-icons',
-    expectedDimensions: STANDARD_ICON_SIZE_SUFFIX,
+    expectedDimensions: ICON_EXPECTED_DIMENSIONS,
   });
 
   const knownValues = new Set(entries.map((entry) => entry.value));

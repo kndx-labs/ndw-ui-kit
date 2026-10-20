@@ -1,8 +1,13 @@
+@use 'styles/fonts';
 @use 'styles/radius';
 @use 'styles/spacing';
 @use 'styles/padding';
 @use 'styles/typography';
 @use './ndwu-file-upload.mixins' as *;
+
+:host {
+  font-family: fonts.$font-family;
+}
 
 .ndwu-file-upload-header {
   position: relative;

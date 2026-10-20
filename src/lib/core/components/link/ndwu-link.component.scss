@@ -1,3 +1,4 @@
+@use 'styles/fonts';
 @use 'styles/typography';
 @use 'styles/radius';
 
@@ -5,6 +6,7 @@
   color: var(--ndwu-link-default-color);
   font-weight: typography.$fontWeight-L;
   font-size: typography.$fontSize-small;
+  font-family: fonts.$font-family;
   cursor: pointer;
   transition:
     color 0.2s ease-in-out,

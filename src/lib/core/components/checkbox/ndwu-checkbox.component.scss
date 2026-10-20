@@ -1,5 +1,6 @@
 @use 'sass:math';
 @use 'sass:map';
+@use 'styles/fonts';
 @use 'styles/spacing';
 @use 'styles/radius';
 @use 'styles/typography';
@@ -39,6 +40,10 @@ $checkbox-indeterminate-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%
       margin-top: $checkbox-align-top; // align center with label's first line
     }
   }
+}
+
+:host {
+  font-family: fonts.$font-family;
 }
 
 .ndwu-checkbox {

@@ -21,6 +21,7 @@
 ndwu-form-field {
   display: block;
   min-width: 0;
+  font-family: fonts.$font-family;
 }
 
 .ndwu-form-field {
@@ -214,7 +215,7 @@ ndwu-form-field {
     border-radius: radius.$radius-L;
     background-color: var(--ndwu-form-field-bg);
     color: var(--ndwu-form-field-text);
-    font-family: fonts.$font-family-default;
+    font-family: fonts.$font-family;
     transition:
       border-color animations.$duration-default animations.$easing-default,
       background-color animations.$duration-default animations.$easing-default,

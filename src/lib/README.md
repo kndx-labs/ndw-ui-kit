@@ -112,6 +112,19 @@ directly to `node_modules/@ndw-ui-kit/core/styles/themes.scss`.
 When enabling library-managed fonts, make sure the Roboto `.woff2` files are also copied
 to the path referenced by `$ndwu-roboto-font-base-path`.
 
+UI kit components set their own font family and do not inherit the page font.
+To use a different font for all components, set `--ndwu-font-family` on `:root`:
+
+```css
+:root {
+  --ndwu-font-family: Inter, sans-serif;
+}
+```
+
+Set it on `:root` (or `body`), not on an inner container: dropdowns, tooltips, popovers
+and modals render in an overlay attached to `body` and would not see a container-scoped value.
+Use a real font stack — `inherit` does not restore the page font.
+
 ### Accessibility
 
 The library ships an `aria` module (`@ndw-ui-kit/core/aria`) that provides

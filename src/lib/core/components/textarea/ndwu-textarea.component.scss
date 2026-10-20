@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'styles/fonts';
 @use 'styles/mixins';
 @use 'styles/padding';
 @use 'styles/spacing';
@@ -51,6 +52,7 @@ $textarea-sizes: (
 :host {
   display: block;
   min-width: 0;
+  font-family: fonts.$font-family;
 }
 
 @each $size, $config in $textarea-sizes {

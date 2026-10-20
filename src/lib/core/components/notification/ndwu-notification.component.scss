@@ -6,6 +6,7 @@
 
 :host {
   display: block;
+  font-family: fonts.$font-family;
 }
 
 .ndwu-notification {
@@ -22,7 +23,6 @@
   &__message {
     color: var(--ndwu-notification-text);
     font-size: typography.$fontSize-small;
-    font-family: fonts.$font-family-default;
     line-height: 20px;
   }
 

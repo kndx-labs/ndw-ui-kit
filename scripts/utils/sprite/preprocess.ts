@@ -5,7 +5,7 @@ import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
 import {ICONS_SRC_DIR} from '../../conf';
 import {postToWebhook} from '../post-to-webhook';
-import {type SvgSkipKind, isSvgFile, validateSvgFile} from './svg';
+import {type SvgSkipKind, isSvgFile, replaceXlinkHref, validateSvgFile} from './svg';
 
 export type SvgTransformResult = {ok: true; content: string} | {ok: false; reason: string};
 
@@ -79,7 +79,10 @@ const processFile = async (file: string, options: SvgPreprocessOptions): Promise
       return {ok: false, kind: 'invalid', reason: transformed.reason};
     }
 
-    writeFileSync(join(options.outputDir, file), transformed.content, 'utf-8');
+    const filename = join(options.outputDir, file);
+    const content = replaceXlinkHref(transformed.content);
+
+    writeFileSync(filename, content, 'utf-8');
 
     return {ok: true};
   } catch (error) {

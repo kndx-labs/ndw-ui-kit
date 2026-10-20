@@ -121,6 +121,22 @@ export const prepareSvgForSprite = (filePath: string): PreparedSvgForSpriteResul
   };
 };
 
+const XLINK_HREF_REGEX = /(?<![\w-])xlink:href\s*=/g;
+const XLINK_NAMESPACE_REGEX = /\s+xmlns:xlink\s*=\s*(["'])[^"']*\1/g;
+
+/**
+ * Replace SVG 1.1 `xlink:href` with SVG 2 `href` and drop the `xmlns:xlink` declaration.
+ *
+ * Sprites are built in svg-sprite inline mode, which omits namespace declarations on the root `<svg>`.
+ * A leftover `xlink:` prefix makes the sprite invalid XML, and browsers stop rendering an external
+ * sprite at the first such symbol.
+ */
+export const replaceXlinkHref = (content: string): string => {
+  return content
+    .replace(XLINK_HREF_REGEX, 'href=')
+    .replace(XLINK_NAMESPACE_REGEX, '');
+};
+
 // extracts the trailing uppercase size suffix from an icon filename:
 // "check_L" → "L", "close_XS" → "XS", "user-mobile_" → undefined
 export const extractIconSizeSuffix = (iconName: string): string | undefined => {

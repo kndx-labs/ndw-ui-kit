@@ -1,49 +1,53 @@
 import {existsSync, readdirSync} from 'node:fs';
-import {join} from 'node:path';
 import chalk from 'chalk';
 import {addFileToSpriter, compileSpriter, createSpriter} from './sprite-builder';
 import {isSvgFile} from './svg';
 
-export interface SpriteOptions {
-  spritesDir: string;
-  spriteOutputDir: string;
-  spriteFilename: string;
-  spriteName: string;
+export interface BuildSpriteOptions {
+  sourceDir: string;
+  files: readonly string[];
+  outputDir: string;
+  outputFilename: string;
 }
 
-export function generateSprite(options: SpriteOptions): void {
-  const {spritesDir, spriteOutputDir, spriteFilename, spriteName} = options;
+/**
+ * List SVG files in a preprocessed sprite source directory.
+ * Exits the process when the directory is missing or contains no SVG files.
+ *
+ * @param sourceDir     - Directory with preprocessed SVG files.
+ * @param prepareScript - Package script that populates `sourceDir`, shown in the error hint.
+ */
+export const listSpriteSourceFiles = (sourceDir: string, prepareScript: string): string[] => {
+  const hint = `Please run \`yarn ${prepareScript}\` first.`;
 
-  if (!existsSync(spritesDir)) {
-    console.error(chalk.red(`Directory not found: ${spritesDir}`));
-    console.error(chalk.red(`Please run the \`process-${spriteName}\` script first.`));
+  if (!existsSync(sourceDir)) {
+    console.error(chalk.red(`Directory not found: ${sourceDir}`));
+    console.error(chalk.red(hint));
     process.exit(1);
   }
 
-  const files = readdirSync(spritesDir).filter(isSvgFile);
+  const files = readdirSync(sourceDir).filter(isSvgFile);
 
   if (files.length === 0) {
-    console.error(chalk.red(`No SVG files found in ${spritesDir}`));
+    console.error(chalk.red(`No SVG files found in ${sourceDir}`));
+    console.error(chalk.red(hint));
     process.exit(1);
   }
 
-  const spriter = createSpriter(spriteOutputDir, spriteFilename);
-  let processedCount = 0;
+  return files;
+};
 
-  files.forEach((file) => {
-    if (addFileToSpriter(spriter, spritesDir, file)) {
-      processedCount++;
-    }
-  });
+/**
+ * Pack `files` from `sourceDir` into a single symbol sprite and write it to disk.
+ *
+ * @returns Number of files added to the sprite (files that failed preparation are skipped with a warning).
+ */
+export const buildSprite = async (options: BuildSpriteOptions): Promise<number> => {
+  const {sourceDir, files, outputDir, outputFilename} = options;
+  const spriter = createSpriter(outputDir, outputFilename);
+  const addedCount = files.filter((file) => addFileToSpriter(spriter, sourceDir, file)).length;
 
-  void compileSpriter(spriter)
-    .then(() => {
-      console.log(chalk.green(`✅ Generated ${spriteName} sprite with ${processedCount} icons`));
-      console.log(chalk.cyan(`📁 Sprite file: ${join(spriteOutputDir, spriteFilename)}`));
-      console.log(chalk.green('Done!\n'));
-    })
-    .catch((error: unknown) => {
-      console.error(chalk.red(`Error generating ${spriteName} sprite:`), error);
-      process.exit(1);
-    });
-}
+  await compileSpriter(spriter);
+
+  return addedCount;
+};

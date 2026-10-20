@@ -7,8 +7,6 @@ export const STANDARD_ICON_SIZE_SUFFIX: Readonly<Record<string, number>> = {
   XL: 50,
 };
 
-export const KNOWN_SUFFIXES_STR = Object.keys(STANDARD_ICON_SIZE_SUFFIX).join(', ');
-
 export const isSvgFile = (filename: string): boolean => filename.endsWith('.svg');
 
 const SVG_TAG_REGEX = /<svg[^>]*>/i;

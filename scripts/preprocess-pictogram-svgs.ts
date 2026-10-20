@@ -5,22 +5,16 @@ import {join} from 'node:path';
 import chalk from 'chalk';
 import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
-import {PICTOGRAM_EXPECTED_DIMENSIONS, PICTOGRAM_SUPPORTED_SUFFIXES, SCRIPTS_DATA_DIR, SCRIPTS_DIR} from './conf';
+import {ICONS_SRC_DIR, PICTOGRAM_EXPECTED_DIMENSIONS, SPRITE_PICTOGRAMS_DIR} from './conf';
 import {extractAllSvgColors, matchPictogramPreset} from './utils/svg-colors';
 import {isSvgFile} from './utils/svg';
 import {validateSvgFile} from './utils/validate-svg-file';
 import {postToWebhook} from './utils/post-to-webhook';
 
-const SCRIPTS_ENV_FILE = join(SCRIPTS_DIR, '.env');
-
-if (existsSync(SCRIPTS_ENV_FILE)) {
-  process.loadEnvFile(SCRIPTS_ENV_FILE);
-}
-
 const NOTIFY_WEBHOOK_URL = process.env.NOTIFY_WEBHOOK_URL;
 
-const INPUT_DIR = join(SCRIPTS_DATA_DIR, 'icons');
-const OUTPUT_DIR = join(SCRIPTS_DATA_DIR, 'sprite-pictograms');
+const INPUT_DIR = ICONS_SRC_DIR;
+const OUTPUT_DIR = SPRITE_PICTOGRAMS_DIR;
 
 function replacePictogramColor(content: string, color: string, cssVar: string): string {
   const regex = new RegExp(`(fill|stroke)="[^"]*${color}[^"]*"`, 'g');
@@ -61,7 +55,7 @@ const main = async (): Promise<void> => {
   for (const file of files) {
     const inputPath = join(INPUT_DIR, file);
 
-    const validation = validateSvgFile(file, PICTOGRAM_SUPPORTED_SUFFIXES, PICTOGRAM_EXPECTED_DIMENSIONS, inputPath);
+    const validation = validateSvgFile(file, PICTOGRAM_EXPECTED_DIMENSIONS, inputPath);
 
     if (!validation.isValid) {
       result.skipped.push({name: file, reason: validation.skipReason || 'validation failed'});

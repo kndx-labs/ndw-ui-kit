@@ -1,71 +1,34 @@
 #!/usr/bin/env tsx
 
-import {readdirSync, writeFileSync} from 'node:fs';
+import {writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {EOL} from 'node:os';
-import chalk from 'chalk';
-import {PICTOGRAM_EXPECTED_DIMENSIONS, PICTOGRAM_SUPPORTED_SUFFIXES, SCRIPTS_DATA_DIR, SRC_DIR} from './conf';
-import {getCodegenComment, stripExtension, toScreamingSnakeCase} from './utils/fmt';
-import {isSvgFile} from './utils/svg';
-import {validateSvgFile} from './utils/validate-svg-file';
+import {PICTOGRAM_EXPECTED_DIMENSIONS, SPRITE_PICTOGRAMS_DIR, SRC_DIR} from './conf';
+import {getCodegenComment} from './utils/fmt';
+import {collectSpriteNameEntries, formatNameEntries} from './utils/sprite-names';
 
-const SPRITE_PICTOGRAMS_DIR = join(SCRIPTS_DATA_DIR, 'sprite-pictograms');
 const OUTPUT_FILE = join(SRC_DIR, 'lib', 'pictogram-names.ts');
 
 const main = (): void => {
-  try {
-    const files = readdirSync(SPRITE_PICTOGRAMS_DIR).filter(isSvgFile);
+  const entries = collectSpriteNameEntries({
+    sourceDir: SPRITE_PICTOGRAMS_DIR,
+    prepareScript: 'prepare-pictograms',
+    expectedDimensions: PICTOGRAM_EXPECTED_DIMENSIONS,
+  });
 
-    if (files.length === 0) {
-      console.error(`No SVG files found in ${SPRITE_PICTOGRAMS_DIR}`);
-      console.error('Please run "npm run process-pictogram-icons" first.');
-      process.exit(1);
-    }
-
-    files.sort();
-
-    const declarations: string[] = [];
-
-    for (const file of files) {
-      const name = stripExtension(file);
-      const filePath = join(SPRITE_PICTOGRAMS_DIR, file);
-
-      const validation = validateSvgFile(file, PICTOGRAM_SUPPORTED_SUFFIXES, PICTOGRAM_EXPECTED_DIMENSIONS, filePath);
-
-      if (!validation.isValid) {
-        console.warn(chalk.yellow(`⚠️  Skipping "${file}": ${validation.skipReason}`));
-        continue;
-      }
-
-      const normalizedName = name.replace(/ /g, '_');
-      const key = toScreamingSnakeCase(normalizedName);
-
-      declarations.push(`  ${key}: '${normalizedName}',`);
-    }
-
-    const content = `
+  const content = `
 ${getCodegenComment(__filename)}
 
 export const NDWU_PICTOGRAM_NAME = {
-${declarations.join(EOL)}
+${formatNameEntries(entries)}
 } as const;
 
 export type NdwuPictogramName = (typeof NDWU_PICTOGRAM_NAME)[keyof typeof NDWU_PICTOGRAM_NAME];
 `.trimStart();
 
-    writeFileSync(OUTPUT_FILE, content, 'utf-8');
+  writeFileSync(OUTPUT_FILE, content, 'utf-8');
 
-    console.log(`✅ Generated ${declarations.length} pictogram names`);
-    console.log(`📁 Output file: ${OUTPUT_FILE}`);
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      console.error(`Directory not found: ${SPRITE_PICTOGRAMS_DIR}`);
-      console.error('Please run "npm run process-pictogram-icons" first.');
-      process.exit(1);
-    } else {
-      throw error;
-    }
-  }
+  console.log(`✅ Generated ${entries.length} pictogram names`);
+  console.log(`📁 Output file: ${OUTPUT_FILE}`);
 };
 
 main();

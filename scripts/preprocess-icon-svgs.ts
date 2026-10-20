@@ -7,25 +7,19 @@ import {Builder, parseString} from 'xml2js';
 import {promisify} from 'node:util';
 import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
-import {SCRIPTS_DATA_DIR, SCRIPTS_DIR} from './conf';
+import {ICONS_SRC_DIR, SPRITE_ICONS_DIR} from './conf';
 import {STANDARD_ICON_SIZE_SUFFIX, isSvgFile} from './utils/svg';
 import {normalizeColor} from './utils/fmt';
 import {validateSvgFile} from './utils/validate-svg-file';
 import {postToWebhook} from './utils/post-to-webhook';
 import chalk from 'chalk';
 
-const SCRIPTS_ENV_FILE = join(SCRIPTS_DIR, '.env');
-
-if (existsSync(SCRIPTS_ENV_FILE)) {
-  process.loadEnvFile(SCRIPTS_ENV_FILE);
-}
-
 const NOTIFY_WEBHOOK_URL = process.env.NOTIFY_WEBHOOK_URL;
 
 const parseXML = promisify(parseString);
 
-const INPUT_DIR = join(SCRIPTS_DATA_DIR, 'icons');
-const OUTPUT_DIR = join(SCRIPTS_DATA_DIR, 'sprite-icons');
+const INPUT_DIR = ICONS_SRC_DIR;
+const OUTPUT_DIR = SPRITE_ICONS_DIR;
 
 const SVG_CHILD_ELEMENTS = ['path', 'circle', 'rect', 'ellipse', 'line', 'polygon', 'polyline', 'g'] as const;
 
@@ -35,63 +29,22 @@ interface ScriptResult {
 }
 
 /**
- * Return the set of all distinct normalized fill/stroke colors across the
- * element tree. Absent attributes and null-normalized values (none, transparent)
- * contribute nothing.
+ * Recursively replace every fill/stroke color in the element tree with `toColor`.
+ * Absent attributes and null-normalized values (none, transparent) are left as is.
  */
-const getUniqueColors = (element: any): Set<string> => {
-  const colors = new Set<string>();
-
-  if (element.$?.fill) {
-    const normalized = normalizeColor(element.$.fill);
-
-    if (normalized) {
-      colors.add(normalized);
-    }
-  }
-
-  if (element.$?.stroke) {
-    const normalized = normalizeColor(element.$.stroke);
-
-    if (normalized) {
-      colors.add(normalized);
-    }
-  }
-
-  for (const childType of SVG_CHILD_ELEMENTS) {
-    if (element[childType]) {
-      for (const child of (Array.isArray(element[childType]) ? element[childType] : [element[childType]])) {
-        for (const color of getUniqueColors(child)) {
-          colors.add(color);
-        }
-      }
-    }
-  }
-
-  return colors;
-};
-
-const replaceColor = (
-  element: any,
-  fromColor: string,
-  toColor: string,
-): void => {
-  const normFill = element.$?.fill ? normalizeColor(element.$.fill) : null;
-
-  if (normFill !== null) {
+const replaceAllColors = (element: any, toColor: string): void => {
+  if (normalizeColor(element.$?.fill) !== null) {
     element.$.fill = toColor;
   }
 
-  const normStroke = element.$?.stroke ? normalizeColor(element.$.stroke) : null;
-
-  if (normStroke !== null) {
+  if (normalizeColor(element.$?.stroke) !== null) {
     element.$.stroke = toColor;
   }
 
   for (const childType of SVG_CHILD_ELEMENTS) {
     if (element[childType]) {
       for (const child of (Array.isArray(element[childType]) ? element[childType] : [element[childType]])) {
-        replaceColor(child, fromColor, toColor);
+        replaceAllColors(child, toColor);
       }
     }
   }
@@ -113,7 +66,7 @@ const processSvgFile = async (filename: string): Promise<{success: boolean; reas
   const inputPath = join(INPUT_DIR, filename);
   const outputPath = join(OUTPUT_DIR, filename);
 
-  const validation = validateSvgFile(filename, STANDARD_ICON_SIZE_SUFFIX, STANDARD_ICON_SIZE_SUFFIX, inputPath);
+  const validation = validateSvgFile(filename, STANDARD_ICON_SIZE_SUFFIX, inputPath);
 
   if (!validation.isValid) {
     return {
@@ -130,14 +83,7 @@ const processSvgFile = async (filename: string): Promise<{success: boolean; reas
       return {success: false, reason: 'Invalid SVG structure'};
     }
 
-    const svgElement = parsed.svg;
-
-    const uniqueColors = getUniqueColors(svgElement);
-
-    Array.from(uniqueColors)
-      .forEach((color) => {
-        replaceColor(svgElement, color, 'currentColor');
-      });
+    replaceAllColors(parsed.svg, 'currentColor');
 
     const processedXML = buildXml(parsed);
 

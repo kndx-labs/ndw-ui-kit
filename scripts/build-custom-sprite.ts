@@ -6,6 +6,9 @@
  *
  * Usage:
  *   npx ndw-ui-kit-build-sprite --config ./my-icons.json --out src/assets/my-custom.sprite.svg
+ *
+ * NB: this file is bundled into the published package (see `emit-custom-sprite-cli.ts`).
+ * It must not import `conf.ts` (directly or transitively).
  */
 
 import {existsSync, readFileSync, readdirSync} from 'node:fs';
@@ -14,7 +17,7 @@ import {fileURLToPath} from 'node:url';
 import chalk from 'chalk';
 import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
-import {addFileToSpriter, compileSpriter, createSpriter} from './utils/sprite-builder';
+import {buildSprite} from './utils/sprite-common';
 
 // ---------------------------------------------------------------------------
 // Resolve the directory that contains the sprite icon SVG source files.
@@ -182,17 +185,15 @@ const main = async (): Promise<void> => {
   // Build sprite
   console.log(chalk.blue(`Building sprite with ${valid.length} icon(s)...`));
 
-  const spriter = createSpriter(outDir, outFile);
   let addedCount = 0;
 
-  for (const iconName of valid) {
-    if (addFileToSpriter(spriter, sourceDir, `${iconName}.svg`)) {
-      addedCount++;
-    }
-  }
-
   try {
-    await compileSpriter(spriter);
+    addedCount = await buildSprite({
+      sourceDir,
+      files: valid.map((iconName) => `${iconName}.svg`),
+      outputDir: outDir,
+      outputFilename: outFile,
+    });
   } catch (err) {
     console.error(chalk.red('Sprite compilation failed:'), err);
     process.exit(1);

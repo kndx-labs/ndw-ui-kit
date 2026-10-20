@@ -3,7 +3,7 @@
 import {join} from 'node:path';
 import chalk from 'chalk';
 import {PICTOGRAM_SPRITE_FILENAME, SPRITE_PICTOGRAMS_DIR, SRC_LIB_ASSETS_DIR} from './conf';
-import {buildSprite, listSpriteSourceFiles} from './utils/sprite-common';
+import {buildSprite, listSpriteSourceFiles} from './utils/sprite/build';
 
 const generateSprite = async (): Promise<void> => {
   const files = listSpriteSourceFiles(SPRITE_PICTOGRAMS_DIR, 'prepare-pictograms');

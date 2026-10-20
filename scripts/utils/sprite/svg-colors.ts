@@ -1,4 +1,4 @@
-import {PICTOGRAM_COLOR_PRESETS} from '../conf';
+import {NDWU_PICTOGRAM_VARIANTS} from '../../../src/lib/pictogram-presets';
 
 export interface MatchPictogramPresetResult {
   presetName: string;
@@ -50,7 +50,7 @@ export function extractAllSvgColors(svgContent: string): Set<string> {
 }
 
 /**
- * Match a set of extracted SVG colors against PICTOGRAM_COLOR_PRESETS.
+ * Match a set of extracted SVG colors against NDWU_PICTOGRAM_VARIANTS.
  * A pictogram must contain exactly 2 colors that match a preset pair
  * (order-independent).
  */
@@ -65,7 +65,7 @@ export function matchPictogramPreset(colors: Set<string>): PictogramPresetMatch 
 
   const svgColors = Array.from(colors);
 
-  for (const [presetName, preset] of Object.entries(PICTOGRAM_COLOR_PRESETS)) {
+  for (const [presetName, preset] of Object.entries(NDWU_PICTOGRAM_VARIANTS)) {
     const presetFirst = normalizeColor(preset.firstColor);
     const presetSecond = normalizeColor(preset.secondColor);
     const presetColors = new Set([presetFirst, presetSecond]);

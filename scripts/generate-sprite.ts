@@ -4,7 +4,7 @@ import {join} from 'node:path';
 import chalk from 'chalk';
 import {EXTRA_SPRITE_FILENAME, SPRITE_FILENAME, SPRITE_ICONS_DIR, SRC_LIB_ASSETS_DIR} from './conf';
 import {stripExtension} from './utils/fmt';
-import {buildSprite, listSpriteSourceFiles} from './utils/sprite-common';
+import {buildSprite, listSpriteSourceFiles} from './utils/sprite/build';
 import {BASE_ICON_NAME} from '../src/lib/icon-names.base';
 
 /**

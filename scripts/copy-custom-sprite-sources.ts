@@ -15,6 +15,7 @@
 
 import fs from 'fs-extra';
 import {DIST_SPRITE_ICONS_DIR, SPRITE_ICONS_DIR} from './conf';
+import {isSvgFile} from './utils/sprite/svg';
 
 const main = async (): Promise<void> => {
   const sourceDir = SPRITE_ICONS_DIR;
@@ -27,7 +28,18 @@ const main = async (): Promise<void> => {
   }
 
   await fs.ensureDir(targetDir);
-  await fs.copy(sourceDir, targetDir, {overwrite: true});
+
+  // Only SVGs belong in the package; skip `.gitkeep`, `.DS_Store` and the like
+  await fs.copy(
+    sourceDir,
+    targetDir,
+    {
+      overwrite: true,
+      filter: (src) => {
+        return src === sourceDir || isSvgFile(src);
+      },
+    },
+  );
 
   const files = await fs.readdir(targetDir);
 

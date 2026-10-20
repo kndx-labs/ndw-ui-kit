@@ -17,7 +17,7 @@ import {fileURLToPath} from 'node:url';
 import chalk from 'chalk';
 import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
-import {buildSprite} from './utils/sprite-common';
+import {buildSprite} from './utils/sprite/build';
 
 // ---------------------------------------------------------------------------
 // Resolve the directory that contains the sprite icon SVG source files.

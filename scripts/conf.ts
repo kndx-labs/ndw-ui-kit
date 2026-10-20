@@ -1,6 +1,5 @@
 import * as path from 'node:path';
 import {existsSync} from 'node:fs';
-import {NDWU_PICTOGRAM_VARIANTS} from '../src/lib/pictogram-presets';
 
 // We assume that this file will always be in the './scripts' directory.
 export const SCRIPTS_DIR: string = path.resolve(__dirname);
@@ -40,10 +39,6 @@ export const DIST_CUSTOM_SPRITE_CLI_FILE: string = path.resolve(DIST_DIR, 'tools
 export const SPRITE_FILENAME = 'ndw-ui-kit.sprite.svg';
 export const EXTRA_SPRITE_FILENAME = 'ndw-ui-kit.extra.sprite.svg';
 export const PICTOGRAM_SPRITE_FILENAME = 'ndw-ui-kit.pictogram.sprite.svg';
-
-// Size suffix → expected width/height in px; keys are the only supported pictogram suffixes
-export const PICTOGRAM_EXPECTED_DIMENSIONS: Readonly<Record<string, number>> = {L: 64, XL: 100};
-export const PICTOGRAM_COLOR_PRESETS = NDWU_PICTOGRAM_VARIANTS;
 
 // Matches Breakpoints.Handset from @angular/cdk/layout
 // @see https://github.com/angular/components/blob/main/src/cdk/layout/breakpoints.ts

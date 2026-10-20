@@ -2,9 +2,10 @@
 
 import {writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {PICTOGRAM_EXPECTED_DIMENSIONS, SPRITE_PICTOGRAMS_DIR, SRC_DIR} from './conf';
+import {SPRITE_PICTOGRAMS_DIR, SRC_DIR} from './conf';
 import {getCodegenComment} from './utils/fmt';
-import {collectSpriteNameEntries, formatNameEntries} from './utils/sprite-names';
+import {collectSpriteNameEntries, formatNameEntries} from './utils/sprite/names';
+import {PICTOGRAM_EXPECTED_DIMENSIONS} from './utils/sprite/svg';
 
 const OUTPUT_FILE = join(SRC_DIR, 'lib', 'pictogram-names.ts');
 

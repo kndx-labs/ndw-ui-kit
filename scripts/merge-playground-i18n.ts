@@ -4,7 +4,7 @@
  * Merges per-showcase localization files into the monolithic JSON files
  * that ngx-translate loads at runtime.
  *
- * Follows ndw3 two-tier pattern:
+ * Follows two-tier pattern:
  *   localization/*.json           — dev-English (source strings, fallback)
  *   localization/<lang>/*.json    — translated strings (override dev)
  *
@@ -17,7 +17,7 @@
  * Output:
  *   src/playground/assets/i18n/{lang}.json
  *
- * For the dev language (en): merge all dev files.
+ * For the dev-English: merge all dev files.
  * For translated languages: deep-merge dev files + translated files
  * (translated keys win). This ensures every locale file is complete.
  */

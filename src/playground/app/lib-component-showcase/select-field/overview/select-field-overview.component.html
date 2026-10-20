@@ -16,6 +16,46 @@
     </div>
 
     <div class="state-section">
+      <h4>Dynamic options</h4>
+      <p class="state-section__hint">
+        Panel height follows the option count. Clicking outside closes the panel,
+        so use auto mode and keep the panel open to watch it grow and shrink.
+        Options: {{ dynamicOptionsCount() }}
+      </p>
+      <div class="state-section__actions">
+        <button
+          ndwuButton
+          variant="secondary"
+          [label]="'Add ' + DYNAMIC_OPTIONS_STEP + ' options'"
+          (click)="addDynamicOptions()"
+        >
+        </button>
+        <button
+          ndwuButton
+          variant="secondary"
+          [label]="'Remove ' + DYNAMIC_OPTIONS_STEP + ' options'"
+          (click)="removeDynamicOptions()"
+        >
+        </button>
+        <button
+          ndwuButton
+          variant="tertiary"
+          [label]="isDynamicOptionsAutoOn() ? 'Stop auto change' : 'Start auto change'"
+          (click)="toggleDynamicOptionsAuto()"
+        >
+        </button>
+      </div>
+      <form [formGroup]="formDynamicOptions">
+        <ndwu-select-field
+          label="Option"
+          placeholder="Choose option"
+          [options]="dynamicOptions()"
+          formControlName="option"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
       <h4>Disabled</h4>
       <form [formGroup]="formDisabled">
         <ndwu-select-field

@@ -1,5 +1,5 @@
-// `full`: release the pinned content box and measure everything again.
-// `check`: compare the content scroll size with the last measured one, recalculate on a change.
+// `full`: recalculate everything.
+// `check`: recalculate only if the content scroll size changed since the last measurement.
 export type NdwuMutationRecalc = 'full' | 'check';
 
 // Adding or removing a node can change the content size unnoticed by any observer

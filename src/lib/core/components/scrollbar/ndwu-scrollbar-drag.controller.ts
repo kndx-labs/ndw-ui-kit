@@ -6,8 +6,8 @@ export interface NdwuScrollbarDragHandlers {
 }
 
 /**
- * Owns a single thumb drag: pointer capture on the thumb, capture-phase document listeners,
- * and one teardown path shared by pointerup/pointercancel and external cancellation.
+ * Handles one thumb drag: captures the pointer on the thumb, listens to pointer events on the
+ * document, and ends the drag in one place for pointerup, pointercancel and end().
  */
 export class NdwuScrollbarDragController {
   private state: NdwuDragState | null = null;
@@ -42,7 +42,7 @@ export class NdwuScrollbarDragController {
     try {
       thumb?.releasePointerCapture(state.pointerId);
     } catch {
-      /* ignore */
+      /* the capture is already gone */
     }
 
     this.doc.removeEventListener('pointermove', this.onPointerMove, true);

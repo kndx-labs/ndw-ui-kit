@@ -1,10 +1,10 @@
 import type {NdwuAxisMetrics} from './ndwu-scrollbar.types';
 
-// Fallback for an unset or unparsable --ndwu-scrollbar-min-thumb-size
+// Used when --ndwu-scrollbar-min-thumb-size is not set or is not a px value
 export const DEFAULT_MIN_THUMB_SIZE = 24;
 
-// scrollHeight/clientHeight are rounded integers, so a fractional box size can report
-// a 1px overflow that is not there
+// scrollHeight/clientHeight are rounded to integers, so with fractional sizes they can show
+// a 1px overflow that doesn't exist
 const OVERFLOW_ROUNDING_TOLERANCE = 1;
 
 const PX_VALUE_PATTERN = /^(\d+(?:\.\d+)?)px$/;
@@ -17,8 +17,8 @@ export function hasOverflow(contentSize: number, clientSize: number): boolean {
   return contentSize - clientSize > OVERFLOW_ROUNDING_TOLERANCE;
 }
 
-// Only px values (and unitless zero) are accepted: relative units would need the element's
-// font context to resolve, which a raw custom property value does not carry.
+// Accepts only px values and unitless 0: other units (rem, em) can't be converted to px from
+// the raw variable value.
 export function parseMinThumbSize(value: string): number {
   const trimmed = value.trim();
 
@@ -31,7 +31,7 @@ export function parseMinThumbSize(value: string): number {
   return match?.[1] === undefined ? DEFAULT_MIN_THUMB_SIZE : Number(match[1]);
 }
 
-// The thumb never outgrows the track, even when the track is shorter than the minimum size.
+// The thumb is never longer than the track, even if the track is shorter than the minimum.
 export function calculateThumbSize(metrics: NdwuAxisMetrics, minThumbSize: number): number {
   if (metrics.contentSize <= 0 || metrics.trackSize <= 0) {
     return 0;
@@ -56,8 +56,8 @@ export function calculateThumbOffset(metrics: NdwuAxisMetrics, thumbSize: number
   return clamp(offset, 0, trackFree);
 }
 
-// Maps a position on the track (relative to the track start) to the scroll offset that puts
-// the thumb start there, or the thumb center with `centerOnThumb`.
+// Converts a position on the track (counted from the track start) to the scroll offset at
+// which the thumb starts there, or is centered there with `centerOnThumb`.
 export function convertTrackToScroll(
   metrics: NdwuAxisMetrics,
   thumbSize: number,

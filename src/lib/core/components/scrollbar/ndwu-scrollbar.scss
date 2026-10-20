@@ -1,11 +1,12 @@
 /*
- * Neutralizes the custom scroll box: content grows on both axes, tracks disappear, and the
- * gutter padding is released. This is always both axes at once:
- * CSS computes `overflow-y: visible` next to `overflow-x: auto` back to `auto` on both,
- * so a single-axis grow mode is not expressible on one element.
+ * Turns the custom scrolling off: content grows freely, tracks are hidden, and the space
+ * reserved for them is removed.
  *
- * The triple class names raise specificity to match the axis selectors; the blocks that
- * include this mixin must also come last in source order to win the resulting tie.
+ * Always both axes: CSS can't keep one axis `visible` while the other scrolls
+ * (`overflow-y: visible` next to `overflow-x: auto` becomes `auto` on both).
+ *
+ * The repeated class names make these selectors as specific as the axis selectors below;
+ * to win, the blocks that include this mixin must also come after them in the file.
  */
 @mixin passthrough-overflow {
   overflow: visible;
@@ -40,10 +41,10 @@
   --ndwu-scrollbar-size-local: var(--ndwu-scrollbar-size-xl);
 }
 
-// We keep this node as actual scroll box for TS metrics/focus/listeners, but inherit host layout
-// props so projected children preserve flex-based patterns like wrapping cards, column layouts,
-// and sticky footer/margin-top:auto alignment when `ndwuScrollbar` sits on flex containers.
-// Reserve space for visible custom tracks via padding so content does not render underneath them.
+// This element is what actually scrolls (TS measures it, focuses it and listens to it). It
+// inherits the host's flex settings, so content projected into a flex host keeps its layout
+// (wrapping cards, columns, a footer pushed down with margin-top: auto).
+// Visible tracks get space via padding so content isn't drawn under them.
 .ndwu-scrollbar__content {
   /* stylelint-disable order/properties-order */
   display: inherit;
@@ -74,9 +75,9 @@
   /* stylelint-enable order/properties-order */
 }
 
-// Axis-based overflow on host. CSS cannot combine visible with non-visible per axis
-// (e.g. overflow-y: hidden + overflow-x: visible computes to auto on both),
-// so we keep overflow: hidden for all axes.
+// The host itself never scrolls. CSS can't mix `visible` with another value per axis
+// (`overflow-y: hidden` next to `overflow-x: visible` becomes `auto` on both), so the host
+// keeps `overflow: hidden` on both axes.
 :host(.ndwu-scrollbar--axis-y) {
   overflow-y: hidden;
 }
@@ -93,8 +94,7 @@
   overflow-x: auto;
 }
 
-// Scrollbar track positioned with per-side padding inset.
-// Custom properties control gap between track and container edges.
+// Tracks are inset from the host edges by --ndwu-scrollbar-padding-* (set from the inputs).
 .ndwu-scrollbar__track {
   position: absolute;
   z-index: 1;
@@ -124,8 +124,8 @@
   cursor: pointer;
   will-change: transform;
 
-  // Thumb length, including --ndwu-scrollbar-min-thumb-size, is set inline from TS:
-  // a CSS minimum would push the thumb past a track shorter than it.
+  // The thumb length, including the --ndwu-scrollbar-min-thumb-size minimum, is set from TS.
+  // No CSS min-height/min-width: on a track shorter than the minimum the thumb would stick out.
   .ndwu-scrollbar__track--vertical & {
     width: 100%;
   }
@@ -159,8 +159,8 @@
   );
 }
 
-// When both scrollbars are visible, offset each track to avoid the other.
-// Include padding so tracks stay inset from the intersection corner.
+// When both tracks are visible, shorten each so they don't overlap in the corner,
+// keeping the same padding as at the other ends.
 :host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--vertical,
 :host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-y .ndwu-scrollbar__track--vertical {
   bottom: calc(var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-bottom, 0));
@@ -188,9 +188,9 @@
   @media print {
     @include passthrough-overflow();
 
-    // The ResizeObserver pins width/height inline on the content box, and only `!important`
-    // outranks an inline style -> the mixin's plain `width: auto` never applies here. Print
-    // has no equivalent of the effect that clears those styles in the disabled state.
+    // TS sets width/height as inline styles on the content box, and only `!important` beats
+    // inline styles. In the disabled state TS removes them; in print nothing does, so
+    // override them here.
     .ndwu-scrollbar__content.ndwu-scrollbar__content.ndwu-scrollbar__content {
       width: auto !important;
       height: auto !important;

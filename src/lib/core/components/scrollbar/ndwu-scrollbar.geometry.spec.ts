@@ -68,7 +68,7 @@ describe('calculateThumbOffset', () => {
   });
 
   it('places the thumb end at the end of a track shortened by the other axis at maximum scroll', () => {
-    // vertical track loses the horizontal track size and its padding at the bottom
+    // the vertical track is shorter by the horizontal track and its padding
     const shortened = metrics({scrollOffset: 200, trackSize: 190});
     const thumbSize = calculateThumbSize(shortened, MIN_THUMB);
 

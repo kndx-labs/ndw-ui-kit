@@ -39,15 +39,15 @@ const MIN_THUMB_SIZE_PROPERTY = '--ndwu-scrollbar-min-thumb-size';
 const SCROLLABLE_Y_CLASS = 'ndwu-scrollbar--scrollable-y';
 const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
 
-// Attribute changes that can resize descendants without touching the DOM tree
+// Attributes whose change can resize an element without adding or removing nodes
 const OBSERVED_ATTRIBUTES = ['class', 'hidden'];
 
-// Quiet period after text/attribute mutations before the full recalculation that catches
-// a shrink no observer reports. Longer than the gaps inside a mutation burst (frame-driven
-// updates, hover across a list), short enough for the late shrink to read as a reaction.
+// How long text/class changes must stop before the full recalculation that catches a missed
+// shrink. Longer than the gap between changes in a burst (animation, hover over a list),
+// short enough that the late shrink still feels like a reaction.
 const MUTATION_SETTLE_DELAY = 150;
 
-// only mouse pointers receive custom track/thumb interaction. Touch/pen fall back to native scroll.
+// Only the mouse drags the custom thumb and clicks the track; touch and pen use native scrolling.
 const SUPPORTED_POINTER_TYPE = 'mouse';
 
 @Component({
@@ -146,8 +146,8 @@ export class NdwuScrollbarComponent {
     };
   });
 
-  // Inner breathing room applied to the scroll box itself, distinct from the track gutter above.
-  // Defaults to 0 per side and composes with the track-reservation padding in the SCSS calc().
+  // Padding inside the scrolled content, 0 by default. Unlike normalizedPadding, which places
+  // the tracks, it is added on top of the space the SCSS reserves for a visible track.
   protected readonly normalizedContentPadding = computed(() => {
     const inputPadding = this.ndwuScrollbarContentPadding();
 
@@ -244,15 +244,15 @@ export class NdwuScrollbarComponent {
           return;
         }
 
-        // A full recalculation re-lays out the whole content twice, too costly for a stream
-        // of text/class changes (timers, hover): check the scroll size each frame instead and
-        // recalculate fully once the stream settles.
+        // A full recalculation lays out all the content twice, too slow for frequent text/class
+        // changes (timers, hover). Instead, check the content size every frame and do a full
+        // recalculation once the changes stop.
         this.schedulePositionUpdate();
         this.scheduleMutationSettle(content);
       });
 
-      // The content box is pinned, so a text or class change deep inside it that changes
-      // the overflow without resizing a direct child is only visible to this observer.
+      // The content box has a fixed size, so a text or class change deep inside it that doesn't
+      // resize a direct child is seen only by this observer.
       this.mutationObserver.observe(
         content,
         {
@@ -266,8 +266,8 @@ export class NdwuScrollbarComponent {
     }
   }
 
-  // Children are not pinned like the content box itself, so observing them reports
-  // content growth/shrink that does not touch the DOM tree (images loading, text reflow).
+  // The content box has a fixed size, but its children don't: their ResizeObserver entries
+  // report content growing or shrinking without DOM changes (an image loads, text rewraps).
   private observeContentChildren(content: HTMLElement): void {
     const resizeObserver = this.resizeObserver;
 
@@ -292,8 +292,8 @@ export class NdwuScrollbarComponent {
     this.observedContentChildren = children;
   }
 
-  // `display: contents` elements generate no box, so ResizeObserver never reports them;
-  // their own children are the boxes that change size.
+  // An element with `display: contents` has no box of its own, so ResizeObserver never
+  // reports it. Observe its children instead.
   private collectLayoutChildren(parent: Element, result: Set<Element>): Set<Element> {
     for (const child of Array.from(parent.children)) {
       if (getComputedStyle(child).display === 'contents') {
@@ -306,10 +306,11 @@ export class NdwuScrollbarComponent {
     return result;
   }
 
-  // The content box is pinned to the host size to become the scroll box. A host sized by its own
-  // content (e.g. a dialog body with `height: auto`) would then stay at its first size forever,
-  // so release the pin, let the host settle to its natural size within the outer limits and pin
-  // again. Hosts sized from outside measure the same and keep their size.
+  // The content box gets the host size as inline width/height, which makes it the element that
+  // scrolls. A host sized by its content (e.g. a dialog body with `height: auto`) would then
+  // keep its first size forever. So: remove the inline size, let the host take its natural
+  // size (within its max-height etc.), and set the inline size again. A host sized from
+  // outside just measures the same.
   private syncContentBoxSize(): void {
     const content = this.contentEl().nativeElement;
     const {scrollTop, scrollLeft} = content;
@@ -324,13 +325,14 @@ export class NdwuScrollbarComponent {
       content.style.height = `${hostSize.height}px`;
     }
 
-    // released content box has nothing to scroll, so the browser resets the offsets
+    // without the inline size there is nothing to scroll, so the browser has reset the scroll
+    // position; restore it
     content.scrollTop = scrollTop;
     content.scrollLeft = scrollLeft;
   }
 
-  // Computed size keeps fractional pixels (unlike clientWidth/clientHeight) and ignores
-  // transforms (unlike getBoundingClientRect), so open/close animations do not skew it.
+  // getComputedStyle keeps fractional pixels (clientWidth/clientHeight round them) and is not
+  // affected by transforms (getBoundingClientRect is), so open/close animations don't skew it.
   private measureHostContentBox(): {width: number; height: number} | null {
     const style = getComputedStyle(this.hostEl);
     const width = parseFloat(style.width);
@@ -363,9 +365,9 @@ export class NdwuScrollbarComponent {
     this.setOverflowState(false, false);
   }
 
-  // Re-observing a target makes ResizeObserver deliver an immediate callback with its current
-  // contentRect. That re-applies the inline content box size on re-enable without duplicating
-  // the measurement math, and without waiting for an unrelated host resize that may never come.
+  // ResizeObserver calls back right away for a newly observed element. Re-observing the host
+  // when the scrollbar is enabled again restores the inline content size at once, instead
+  // of waiting for a host resize that may never happen.
   private reobserveHost(): void {
     this.resizeObserver?.unobserve(this.hostEl);
     this.resizeObserver?.observe(this.hostEl);
@@ -388,7 +390,7 @@ export class NdwuScrollbarComponent {
       () => {
         this.mutationSettleTimerId = null;
 
-        // a class change may have toggled `display: contents` on a child
+        // a class change may have turned `display: contents` on or off for a child
         this.observeContentChildren(content);
         this.scheduleRecalculate();
       },
@@ -441,8 +443,8 @@ export class NdwuScrollbarComponent {
     }
   }
 
-  // Throttled rather than debounced: a debounced frame keeps getting pushed back by changes
-  // arriving every frame and never runs while they last.
+  // Throttle, not debounce: with changes arriving every frame, a debounced update would keep
+  // being postponed and would never run while the changes continue.
   private schedulePositionUpdate(): void {
     this.scheduleFrame(
       'position',
@@ -461,8 +463,9 @@ export class NdwuScrollbarComponent {
     );
   }
 
-  // The pinned content box only reports growth past its own size here, which is what text and
-  // class changes are checked for; scrolling uses it as a safety net against stale metrics.
+  // The scroll size of the fixed-size content box equals the box size while the content fits
+  // and follows the content size once it doesn't. Used to check text/class changes and, on
+  // scroll, as a safety net for changes the observers missed.
   private isContentSizeChanged(): boolean {
     const content = this.contentEl().nativeElement;
 
@@ -577,9 +580,9 @@ export class NdwuScrollbarComponent {
     );
   }
 
-  // The classes show the tracks and shorten each other's track, and the thumb is measured
-  // against the track right after, so they are toggled here instead of waiting for change
-  // detection to apply them as host bindings.
+  // These classes show the tracks (and shorten one track when both are visible). The thumb is
+  // measured against the track right after this, so the classes are set directly instead of
+  // waiting for change detection to apply host bindings.
   private setOverflowState(isOverflowingY: boolean, isOverflowingX: boolean): void {
     this.isOverflowingY.set(isOverflowingY);
     this.isOverflowingX.set(isOverflowingX);
@@ -640,10 +643,10 @@ export class NdwuScrollbarComponent {
     };
   }
 
-  // The track is inset from the host by its padding and, when both tracks are visible,
-  // shortened by the other one, so its own length is the one consistent with its start
-  // coordinate that pointer positions are measured from. Computed size keeps fractional
-  // pixels (clientWidth/clientHeight round them up past the track end) and ignores transforms.
+  // Measure the track itself, not the host: the track is shorter by its padding and, when both
+  // tracks are visible, by the other track. Pointer positions are measured from the track too.
+  // getComputedStyle keeps fractional pixels (clientWidth/clientHeight round them up, which puts
+  // the thumb end past the track end) and ignores transforms.
   private measureTrackSize(axis: NdwuScrollbarAxis): number {
     const {track} = this.getAxisElements(axis);
     const size = parseFloat(getComputedStyle(track)[this.getConfig(axis).thumbStyle]);

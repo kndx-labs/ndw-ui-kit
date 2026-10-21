@@ -22,18 +22,13 @@ import {
   type NdwuScrollbarAxis,
   type NdwuScrollbarPadding,
 } from './ndwu-scrollbar.types';
-import {
-  calculateThumbOffset,
-  calculateThumbSize,
-  clamp,
-  convertTrackToScroll,
-  hasOverflow,
-} from './ndwu-scrollbar.geometry';
+import {calculateThumbOffset, calculateThumbSize, convertTrackToScroll, hasOverflow} from './ndwu-scrollbar.geometry';
 import {NdwuScrollbarDragController} from './ndwu-scrollbar-drag.controller';
 import {NdwuScrollbarContentObserver} from './ndwu-scrollbar.content-observer';
 import {NdwuFrameScheduler} from './ndwu-scrollbar.frame-scheduler';
 import {
   DEFAULT_MIN_THUMB_SIZE,
+  type NdwuBoxSize,
   clearContentBoxSize,
   measureTrackSize,
   parseMinThumbSize,
@@ -64,14 +59,14 @@ const SUPPORTED_POINTER_TYPE = 'mouse';
     '[class.ndwu-scrollbar--axis-both]': 'ndwuScrollbarAxis() === "both"',
     '[class.ndwu-scrollbar--unprintable]': '!ndwuScrollbarPrintable()',
     '[class.ndwu-scrollbar--disabled]': 'ndwuScrollbarDisabled()',
-    '[style.--ndwu-scrollbar-padding-left]': 'normalizedPadding().left',
-    '[style.--ndwu-scrollbar-padding-right]': 'normalizedPadding().right',
-    '[style.--ndwu-scrollbar-padding-top]': 'normalizedPadding().top',
-    '[style.--ndwu-scrollbar-padding-bottom]': 'normalizedPadding().bottom',
-    '[style.--ndwu-scrollbar-content-padding-left]': 'normalizedContentPadding().left',
-    '[style.--ndwu-scrollbar-content-padding-right]': 'normalizedContentPadding().right',
-    '[style.--ndwu-scrollbar-content-padding-top]': 'normalizedContentPadding().top',
-    '[style.--ndwu-scrollbar-content-padding-bottom]': 'normalizedContentPadding().bottom',
+    '[style.--ndwu-scrollbar-padding-left]': 'ndwuScrollbarPadding().left',
+    '[style.--ndwu-scrollbar-padding-right]': 'ndwuScrollbarPadding().right',
+    '[style.--ndwu-scrollbar-padding-top]': 'ndwuScrollbarPadding().top',
+    '[style.--ndwu-scrollbar-padding-bottom]': 'ndwuScrollbarPadding().bottom',
+    '[style.--ndwu-scrollbar-content-padding-left]': 'ndwuScrollbarContentPadding().left',
+    '[style.--ndwu-scrollbar-content-padding-right]': 'ndwuScrollbarContentPadding().right',
+    '[style.--ndwu-scrollbar-content-padding-top]': 'ndwuScrollbarContentPadding().top',
+    '[style.--ndwu-scrollbar-content-padding-bottom]': 'ndwuScrollbarContentPadding().bottom',
   },
 })
 export class NdwuScrollbarComponent {
@@ -82,10 +77,8 @@ export class NdwuScrollbarComponent {
       scrollOffset: 'scrollTop',
       pointerCoord: 'clientY',
       rectStart: 'top',
-      trackSize: 'clientHeight',
       thumbStyle: 'height',
       translateAxis: (v: number) => `translate3d(0, ${v}px, 0)`,
-      overflowSignal: 'isOverflowingY',
     },
     x: {
       contentSize: 'scrollWidth',
@@ -93,10 +86,8 @@ export class NdwuScrollbarComponent {
       scrollOffset: 'scrollLeft',
       pointerCoord: 'clientX',
       rectStart: 'left',
-      trackSize: 'clientWidth',
       thumbStyle: 'width',
       translateAxis: (v: number) => `translate3d(${v}px, 0, 0)`,
-      overflowSignal: 'isOverflowingX',
     },
   };
 
@@ -121,40 +112,10 @@ export class NdwuScrollbarComponent {
   private readonly thumbYEl = viewChild.required<ElementRef<HTMLElement>>('thumbY');
   private readonly thumbXEl = viewChild.required<ElementRef<HTMLElement>>('thumbX');
 
-  protected readonly isOverflowingY = signal(false);
-  protected readonly isOverflowingX = signal(false);
   protected readonly isDragging = signal(false);
   protected readonly isViewInitialized = signal(false);
   protected readonly normalizedSize = computed(() => {
     return this.ndwuScrollbarSize() === NDWU_SIZE.XL ? NDWU_SIZE.XL : NDWU_SIZE.L;
-  });
-
-  protected readonly normalizedPadding = computed(() => {
-    const defaultPadding: Required<NdwuScrollbarPadding> = this.normalizedSize() === 'L'
-      ? {top: '0', left: '4px', right: '4px', bottom: '0'}
-      : {top: '0', left: '3px', right: '3px', bottom: '0'};
-
-    const inputPadding = this.ndwuScrollbarPadding();
-
-    return {
-      top: inputPadding?.top ?? defaultPadding.top,
-      left: inputPadding?.left ?? defaultPadding.left,
-      right: inputPadding?.right ?? defaultPadding.right,
-      bottom: inputPadding?.bottom ?? defaultPadding.bottom,
-    };
-  });
-
-  // Padding inside the scrolled content, 0 by default. Unlike normalizedPadding, which places
-  // the tracks, it is added on top of the space the SCSS reserves for a visible track.
-  protected readonly normalizedContentPadding = computed(() => {
-    const inputPadding = this.ndwuScrollbarContentPadding();
-
-    return {
-      top: inputPadding?.top ?? '0',
-      left: inputPadding?.left ?? '0',
-      right: inputPadding?.right ?? '0',
-      bottom: inputPadding?.bottom ?? '0',
-    };
   });
 
   private readonly dragController = new NdwuScrollbarDragController(
@@ -166,7 +127,8 @@ export class NdwuScrollbarComponent {
   );
 
   private minThumbSize = DEFAULT_MIN_THUMB_SIZE;
-  private lastContentSize = {width: 0, height: 0};
+  private lastContentSize: NdwuBoxSize = {width: 0, height: 0};
+  private readonly overflow: Record<NdwuScrollbarAxis, boolean> = {x: false, y: false};
   private readonly frames = new NdwuFrameScheduler<'recalculate' | 'position'>();
   private contentObserver: NdwuScrollbarContentObserver | null = null;
 
@@ -249,8 +211,6 @@ export class NdwuScrollbarComponent {
     this.schedulePositionUpdate();
   };
 
-  // Throttle, not debounce: with changes arriving every frame, a debounced update would keep
-  // being postponed and would never run while the changes continue.
   private schedulePositionUpdate(): void {
     this.frames.schedule(
       'position',
@@ -265,7 +225,6 @@ export class NdwuScrollbarComponent {
         this.updateAxis('y');
         this.updateAxis('x');
       },
-      'throttle',
     );
   }
 
@@ -280,34 +239,42 @@ export class NdwuScrollbarComponent {
   }
 
   protected onThumbPointerDown(axis: NdwuScrollbarAxis, event: PointerEvent): void {
-    if (event.pointerType !== SUPPORTED_POINTER_TYPE) {
+    if (!this.claimMousePointer(event)) {
       return;
     }
 
-    event.preventDefault();
-    event.stopPropagation();
-    this.startDrag(event, axis);
+    this.startDrag(axis, event);
   }
 
   protected onTrackPointerDown(axis: NdwuScrollbarAxis, event: PointerEvent): void {
-    if (event.pointerType !== SUPPORTED_POINTER_TYPE) {
+    if (!this.claimMousePointer(event)) {
       return;
+    }
+
+    this.startTrackClick(axis, event);
+  }
+
+  // Takes over a mouse pointerdown; touch and pen are left to native scrolling.
+  private claimMousePointer(event: PointerEvent): boolean {
+    if (event.pointerType !== SUPPORTED_POINTER_TYPE) {
+      return false;
     }
 
     event.preventDefault();
     event.stopPropagation();
-    this.startTrackClick(axis, event);
+
+    return true;
   }
 
   private readonly onHostFocus = (): void => {
-    if (this.hostEl.ownerDocument.activeElement !== this.hostEl) {
+    if (this.doc.activeElement !== this.hostEl) {
       return;
     }
 
     this.contentEl().nativeElement.focus();
   };
 
-  private startDrag(event: PointerEvent, axis: NdwuScrollbarAxis): void {
+  private startDrag(axis: NdwuScrollbarAxis, event: PointerEvent): void {
     const {track, thumb} = this.getAxisElements(axis);
     const thumbRect = thumb.getBoundingClientRect();
     const trackRect = track.getBoundingClientRect();
@@ -321,39 +288,34 @@ export class NdwuScrollbarComponent {
   }
 
   private onDragMove(state: NdwuDragState, event: PointerEvent): void {
-    const metrics = this.getAxisMetrics(state.axis);
-    const thumbSize = calculateThumbSize(metrics, this.minThumbSize);
     const pointerPosition = this.getPointerOffset(state.axis, event);
-    const dragPosition = pointerPosition - state.trackStart - state.pointerOffset;
-    const targetScroll = convertTrackToScroll(metrics, thumbSize, dragPosition);
 
-    this.setScrollOffset(state.axis, this.contentEl().nativeElement, targetScroll);
-    this.updateAxis(state.axis);
+    this.scrollThumbTo(state.axis, pointerPosition - state.trackStart - state.pointerOffset);
   }
 
+  // Centers the thumb on the clicked point.
   private startTrackClick(axis: NdwuScrollbarAxis, event: PointerEvent): void {
-    const content = this.contentEl().nativeElement;
-    const elements = this.getAxisElements(axis);
-    const metrics = this.getAxisMetrics(axis);
-
-    const trackRect = elements.track.getBoundingClientRect();
-    const trackStart = this.getRectStart(axis, trackRect);
+    const {track} = this.getAxisElements(axis);
+    const trackStart = this.getRectStart(axis, track.getBoundingClientRect());
+    const thumbSize = calculateThumbSize(this.getAxisMetrics(axis), this.minThumbSize);
     const pointerPosition = this.getPointerOffset(axis, event);
-    const targetScroll = convertTrackToScroll(
-      metrics,
-      calculateThumbSize(metrics, this.minThumbSize),
-      pointerPosition - trackStart,
-      {
-        centerOnThumb: true,
-      },
-    );
 
-    this.setScrollOffset(axis, content, targetScroll);
+    this.scrollThumbTo(axis, pointerPosition - trackStart - (thumbSize / 2));
+  }
+
+  // Scrolls the content so that the thumb starts at `thumbStart`, counted from the track start.
+  // The browser clamps the scroll offset itself.
+  private scrollThumbTo(axis: NdwuScrollbarAxis, thumbStart: number): void {
+    const metrics = this.getAxisMetrics(axis);
+    const thumbSize = calculateThumbSize(metrics, this.minThumbSize);
+    const scrollOffsetKey = this.getConfig(axis).scrollOffset;
+
+    this.contentEl().nativeElement[scrollOffsetKey] = convertTrackToScroll(metrics, thumbSize, thumbStart);
     this.updateAxis(axis);
   }
 
   private scheduleRecalculate(): void {
-    this.frames.schedule('recalculate', () => this.recalculate(), 'debounce');
+    this.frames.schedule('recalculate', () => this.recalculate());
   }
 
   private recalculate(): void {
@@ -390,8 +352,8 @@ export class NdwuScrollbarComponent {
   // measured against the track right after this, so the classes are set directly instead of
   // waiting for change detection to apply host bindings.
   private setOverflowState(isOverflowingY: boolean, isOverflowingX: boolean): void {
-    this.isOverflowingY.set(isOverflowingY);
-    this.isOverflowingX.set(isOverflowingX);
+    this.overflow.y = isOverflowingY;
+    this.overflow.x = isOverflowingX;
 
     this.hostEl.classList.toggle(SCROLLABLE_Y_CLASS, isOverflowingY);
     this.hostEl.classList.toggle(SCROLLABLE_X_CLASS, isOverflowingX);
@@ -405,9 +367,7 @@ export class NdwuScrollbarComponent {
   }
 
   private updateAxis(axis: NdwuScrollbarAxis): void {
-    const overflowSignalKey = this.getConfig(axis).overflowSignal;
-
-    if (!this[overflowSignalKey]()) {
+    if (!this.overflow[axis]) {
       this.applyThumbSize(axis, 0);
       this.applyThumbTransform(axis, 0);
 
@@ -456,15 +416,6 @@ export class NdwuScrollbarComponent {
 
   private getRectStart(axis: NdwuScrollbarAxis, rect: DOMRect): number {
     return rect[this.getConfig(axis).rectStart];
-  }
-
-  private setScrollOffset(axis: NdwuScrollbarAxis, content: HTMLElement, value: number): void {
-    const config = this.getConfig(axis);
-    const sizeKey = config.contentSize;
-    const clientKey = config.clientSize;
-    const contentFree = content[sizeKey] - content[clientKey];
-
-    content[config.scrollOffset] = clamp(value, 0, Math.max(0, contentFree));
   }
 
   private syncFocusableContent(content: HTMLElement): void {

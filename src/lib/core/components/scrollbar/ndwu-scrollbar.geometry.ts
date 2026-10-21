@@ -5,7 +5,7 @@ import type {NdwuAxisMetrics} from './ndwu-scrollbar.types';
 // never reaches
 const ROUNDING_TOLERANCE = 1;
 
-export function clamp(value: number, min: number, max: number): number {
+function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
 
@@ -43,24 +43,15 @@ export function calculateThumbOffset(metrics: NdwuAxisMetrics, thumbSize: number
   return clamp(offset, 0, trackFree);
 }
 
-// Converts a position on the track (counted from the track start) to the scroll offset at
-// which the thumb starts there, or is centered there with `centerOnThumb`.
-export function convertTrackToScroll(
-  metrics: NdwuAxisMetrics,
-  thumbSize: number,
-  trackPosition: number,
-  options: {centerOnThumb?: boolean} = {},
-): number {
+// Converts a thumb start position on the track (counted from the track start) to the scroll
+// offset at which the thumb starts there.
+export function convertTrackToScroll(metrics: NdwuAxisMetrics, thumbSize: number, thumbStart: number): number {
   const trackFree = metrics.trackSize - thumbSize;
   const contentFree = metrics.contentSize - metrics.clientSize;
 
   if (trackFree <= 0 || contentFree <= 0) {
     return metrics.scrollOffset;
   }
-
-  const thumbStart = options.centerOnThumb
-    ? trackPosition - (thumbSize / 2)
-    : trackPosition;
 
   return clamp(thumbStart / trackFree, 0, 1) * contentFree;
 }

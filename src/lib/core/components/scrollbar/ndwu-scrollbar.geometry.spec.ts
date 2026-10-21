@@ -86,10 +86,6 @@ describe('convertTrackToScroll', () => {
     expect(convertTrackToScroll(metrics(), 100, 500)).toBe(200);
   });
 
-  it('centers the thumb on the position when asked', () => {
-    expect(convertTrackToScroll(metrics(), 100, 100, {centerOnThumb: true})).toBe(100);
-  });
-
   it('is the inverse of calculateThumbOffset', () => {
     const scrolled = metrics({scrollOffset: 120, trackSize: 190});
     const thumbSize = calculateThumbSize(scrolled, MIN_THUMB);

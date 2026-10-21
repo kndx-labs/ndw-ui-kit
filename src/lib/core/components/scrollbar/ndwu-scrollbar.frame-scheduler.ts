@@ -3,10 +3,6 @@ export interface NdwuAnimationFrames {
   readonly cancel: (id: number) => void;
 }
 
-// `debounce`: a new request replaces the pending one.
-// `throttle`: a new request is ignored while one is pending.
-export type NdwuFrameMode = 'debounce' | 'throttle';
-
 const BROWSER_FRAMES: NdwuAnimationFrames = {
   request: (callback) => {
     return requestAnimationFrame(callback);
@@ -17,7 +13,8 @@ const BROWSER_FRAMES: NdwuAnimationFrames = {
 };
 
 /**
- * Runs callbacks on the next animation frame, at most one pending callback per key.
+ * Runs callbacks on the next animation frame, at most one pending callback per key: a new
+ * request for a key is ignored while one is pending.
  */
 export class NdwuFrameScheduler<TKey extends string> {
   private readonly frameIds = new Map<TKey, number>();
@@ -26,13 +23,9 @@ export class NdwuFrameScheduler<TKey extends string> {
     private readonly frames: NdwuAnimationFrames = BROWSER_FRAMES,
   ) {}
 
-  public schedule(key: TKey, callback: () => void, mode: NdwuFrameMode): void {
+  public schedule(key: TKey, callback: () => void): void {
     if (this.frameIds.has(key)) {
-      if (mode === 'throttle') {
-        return;
-      }
-
-      this.cancel(key);
+      return;
     }
 
     const id = this.frames.request(() => {

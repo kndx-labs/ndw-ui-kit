@@ -46,7 +46,7 @@ describe('NdwuFrameScheduler: scheduling', () => {
   it('runs the callback on the next frame, not right away', () => {
     const {frames, scheduler, calls, track} = setup();
 
-    scheduler.schedule('a', track('first'), 'debounce');
+    scheduler.schedule('a', track('first'));
 
     expect(calls).toEqual([]);
 
@@ -55,22 +55,11 @@ describe('NdwuFrameScheduler: scheduling', () => {
     expect(calls).toEqual(['first']);
   });
 
-  it('replaces the pending callback in debounce mode', () => {
+  it('ignores a new request while one is pending', () => {
     const {frames, scheduler, calls, track} = setup();
 
-    scheduler.schedule('a', track('first'), 'debounce');
-    scheduler.schedule('a', track('second'), 'debounce');
-    frames.flush();
-
-    expect(calls).toEqual(['second']);
-    expect(frames.pendingCount).toBe(0);
-  });
-
-  it('keeps the pending callback in throttle mode', () => {
-    const {frames, scheduler, calls, track} = setup();
-
-    scheduler.schedule('a', track('first'), 'throttle');
-    scheduler.schedule('a', track('second'), 'throttle');
+    scheduler.schedule('a', track('first'));
+    scheduler.schedule('a', track('second'));
     frames.flush();
 
     expect(calls).toEqual(['first']);
@@ -79,7 +68,7 @@ describe('NdwuFrameScheduler: scheduling', () => {
   it('allows the callback to schedule the same key again', () => {
     const {frames, scheduler, calls, track} = setup();
 
-    scheduler.schedule('a', () => scheduler.schedule('a', track('again'), 'throttle'), 'throttle');
+    scheduler.schedule('a', () => scheduler.schedule('a', track('again')));
     frames.flush();
     frames.flush();
 
@@ -89,8 +78,8 @@ describe('NdwuFrameScheduler: scheduling', () => {
   it('keeps different keys independent', () => {
     const {frames, scheduler, calls, track} = setup();
 
-    scheduler.schedule('a', track('a'), 'throttle');
-    scheduler.schedule('b', track('b'), 'throttle');
+    scheduler.schedule('a', track('a'));
+    scheduler.schedule('b', track('b'));
     frames.flush();
 
     expect(calls).toEqual(['a', 'b']);
@@ -101,20 +90,20 @@ describe('NdwuFrameScheduler: cancelling', () => {
   it('cancels the pending callback of a key', () => {
     const {frames, scheduler, calls, track} = setup();
 
-    scheduler.schedule('a', track('a'), 'debounce');
-    scheduler.schedule('b', track('b'), 'debounce');
+    scheduler.schedule('a', track('a'));
+    scheduler.schedule('b', track('b'));
     scheduler.cancel('a');
     frames.flush();
 
     expect(calls).toEqual(['b']);
   });
 
-  it('lets a cancelled key be scheduled again in throttle mode', () => {
+  it('lets a cancelled key be scheduled again', () => {
     const {frames, scheduler, calls, track} = setup();
 
-    scheduler.schedule('a', track('first'), 'throttle');
+    scheduler.schedule('a', track('first'));
     scheduler.cancel('a');
-    scheduler.schedule('a', track('second'), 'throttle');
+    scheduler.schedule('a', track('second'));
     frames.flush();
 
     expect(calls).toEqual(['second']);
@@ -123,8 +112,8 @@ describe('NdwuFrameScheduler: cancelling', () => {
   it('cancels all pending callbacks', () => {
     const {frames, scheduler, calls, track} = setup();
 
-    scheduler.schedule('a', track('a'), 'debounce');
-    scheduler.schedule('b', track('b'), 'throttle');
+    scheduler.schedule('a', track('a'));
+    scheduler.schedule('b', track('b'));
     scheduler.cancelAll();
     frames.flush();
 

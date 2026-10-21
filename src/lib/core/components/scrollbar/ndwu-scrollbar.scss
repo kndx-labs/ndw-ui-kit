@@ -27,6 +27,16 @@
 }
 
 :host {
+  // Defaults for the padding inputs; the host binds a given input value inline over them.
+  // Declared on every host, so a nested scrollbar doesn't inherit the outer one's values.
+  // `0px`, not `0`: the values are summed in calc(), where a unitless 0 drops the declaration.
+  --ndwu-scrollbar-padding-top: 0px;
+  --ndwu-scrollbar-padding-bottom: 0px;
+  --ndwu-scrollbar-content-padding-top: 0px;
+  --ndwu-scrollbar-content-padding-right: 0px;
+  --ndwu-scrollbar-content-padding-bottom: 0px;
+  --ndwu-scrollbar-content-padding-left: 0px;
+
   position: relative;
   overflow: hidden;
   min-width: 0;
@@ -35,10 +45,14 @@
 
 :host(.ndwu-scrollbar--size-l) {
   --ndwu-scrollbar-size-local: var(--ndwu-scrollbar-size-l);
+  --ndwu-scrollbar-padding-left: 4px;
+  --ndwu-scrollbar-padding-right: 4px;
 }
 
 :host(.ndwu-scrollbar--size-xl) {
   --ndwu-scrollbar-size-local: var(--ndwu-scrollbar-size-xl);
+  --ndwu-scrollbar-padding-left: 3px;
+  --ndwu-scrollbar-padding-right: 3px;
 }
 
 // This element is what actually scrolls (TS measures it, focuses it and listens to it). It
@@ -61,8 +75,8 @@
   min-width: 0;
   min-height: 0;
   box-sizing: border-box;
-  padding-inline: var(--ndwu-scrollbar-content-padding-left, 0) var(--ndwu-scrollbar-content-padding-right, 0);
-  padding-block: var(--ndwu-scrollbar-content-padding-top, 0) var(--ndwu-scrollbar-content-padding-bottom, 0);
+  padding-inline: var(--ndwu-scrollbar-content-padding-left) var(--ndwu-scrollbar-content-padding-right);
+  padding-block: var(--ndwu-scrollbar-content-padding-top) var(--ndwu-scrollbar-content-padding-bottom);
   /* stylelint-disable plugin/no-unsupported-browser-features */
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -94,7 +108,7 @@
   overflow-x: auto;
 }
 
-// Tracks are inset from the host edges by --ndwu-scrollbar-padding-* (set from the inputs).
+// Tracks are inset from the host edges by --ndwu-scrollbar-padding-*.
 .ndwu-scrollbar__track {
   position: absolute;
   z-index: 1;
@@ -103,16 +117,16 @@
   background: var(--ndwu-scrollbar-track-color);
 
   &--vertical {
-    top: var(--ndwu-scrollbar-padding-top, 0);
-    right: var(--ndwu-scrollbar-padding-right, 4px);
-    bottom: var(--ndwu-scrollbar-padding-bottom, 0);
+    top: var(--ndwu-scrollbar-padding-top);
+    right: var(--ndwu-scrollbar-padding-right);
+    bottom: var(--ndwu-scrollbar-padding-bottom);
     width: var(--ndwu-scrollbar-size-local);
   }
 
   &--horizontal {
-    right: var(--ndwu-scrollbar-padding-right, 4px);
-    bottom: var(--ndwu-scrollbar-padding-bottom, 0);
-    left: var(--ndwu-scrollbar-padding-left, 4px);
+    right: var(--ndwu-scrollbar-padding-right);
+    bottom: var(--ndwu-scrollbar-padding-bottom);
+    left: var(--ndwu-scrollbar-padding-left);
     height: var(--ndwu-scrollbar-size-local);
   }
 }
@@ -143,7 +157,7 @@
 :host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-both .ndwu-scrollbar__content,
 :host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-y .ndwu-scrollbar__content {
   padding-inline-end: calc(
-    var(--ndwu-scrollbar-padding-left, 4px) + var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-right, 4px) + var(--ndwu-scrollbar-content-padding-right, 0)
+    var(--ndwu-scrollbar-padding-left) + var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-right) + var(--ndwu-scrollbar-content-padding-right)
   );
 }
 
@@ -155,7 +169,7 @@
 :host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-both .ndwu-scrollbar__content,
 :host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-x .ndwu-scrollbar__content {
   padding-block-end: calc(
-    var(--ndwu-scrollbar-padding-top, 0) + var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-bottom, 0) + var(--ndwu-scrollbar-content-padding-bottom, 0)
+    var(--ndwu-scrollbar-padding-top) + var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-bottom) + var(--ndwu-scrollbar-content-padding-bottom)
   );
 }
 
@@ -163,12 +177,12 @@
 // keeping the same padding as at the other ends.
 :host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--vertical,
 :host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-y .ndwu-scrollbar__track--vertical {
-  bottom: calc(var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-bottom, 0));
+  bottom: calc(var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-bottom));
 }
 
 :host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--horizontal,
 :host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-x .ndwu-scrollbar__track--horizontal {
-  right: calc(var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-right, 4px));
+  right: calc(var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-right));
 }
 
 :host(.ndwu-scrollbar--dragging) .ndwu-scrollbar__thumb {
@@ -178,7 +192,6 @@
   }
   /* stylelint-enable plugin/no-unsupported-browser-features */
 }
-
 
 :host(.ndwu-scrollbar--disabled) {
   @include passthrough-overflow();

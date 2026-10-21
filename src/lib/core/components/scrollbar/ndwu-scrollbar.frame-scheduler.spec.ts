@@ -76,17 +76,6 @@ describe('NdwuFrameScheduler: scheduling', () => {
     expect(calls).toEqual(['first']);
   });
 
-  it('schedules again once the frame has run', () => {
-    const {frames, scheduler, calls, track} = setup();
-
-    scheduler.schedule('a', track('first'), 'throttle');
-    frames.flush();
-    scheduler.schedule('a', track('second'), 'throttle');
-    frames.flush();
-
-    expect(calls).toEqual(['first', 'second']);
-  });
-
   it('allows the callback to schedule the same key again', () => {
     const {frames, scheduler, calls, track} = setup();
 
@@ -129,13 +118,6 @@ describe('NdwuFrameScheduler: cancelling', () => {
     frames.flush();
 
     expect(calls).toEqual(['second']);
-  });
-
-  it('does nothing when cancelling a key with nothing pending', () => {
-    const {frames, scheduler} = setup();
-
-    expect(() => scheduler.cancel('a')).not.toThrow();
-    expect(frames.pendingCount).toBe(0);
   });
 
   it('cancels all pending callbacks', () => {

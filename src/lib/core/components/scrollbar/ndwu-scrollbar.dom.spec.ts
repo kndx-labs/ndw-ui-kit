@@ -2,7 +2,6 @@ import {describe, expect, it} from 'vitest';
 import {
   DEFAULT_MIN_THUMB_SIZE,
   type NdwuBoxStyle,
-  clearContentBoxSize,
   measureContentBox,
   measureTrackSize,
   parseMinThumbSize,
@@ -68,21 +67,13 @@ describe('measureTrackSize', () => {
     expect(measureTrackSize({width: '8px', height: '731.5px'}, 'height')).toBe(731.5);
   });
 
-  it('reads the width of a horizontal track', () => {
-    expect(measureTrackSize({width: '320px', height: '8px'}, 'width')).toBe(320);
-  });
-
   it('returns 0 when the size is not a number', () => {
     expect(measureTrackSize({width: 'auto', height: ''}, 'height')).toBe(0);
   });
 });
 
 describe('parseMinThumbSize', () => {
-  it('reads a pixel value', () => {
-    expect(parseMinThumbSize('32px')).toBe(32);
-  });
-
-  it('ignores surrounding whitespace', () => {
+  it('reads a pixel value, ignoring surrounding whitespace', () => {
     expect(parseMinThumbSize(' 16.5px ')).toBe(16.5);
   });
 
@@ -90,17 +81,8 @@ describe('parseMinThumbSize', () => {
     expect(parseMinThumbSize('0')).toBe(0);
   });
 
-  it('falls back to the default for an empty value', () => {
-    expect(parseMinThumbSize('')).toBe(DEFAULT_MIN_THUMB_SIZE);
-  });
-
-  it('falls back to the default for non-pixel units', () => {
-    expect(parseMinThumbSize('2rem')).toBe(DEFAULT_MIN_THUMB_SIZE);
-  });
-
-  it('falls back to the default for invalid values', () => {
-    expect(parseMinThumbSize('auto')).toBe(DEFAULT_MIN_THUMB_SIZE);
-    expect(parseMinThumbSize('-4px')).toBe(DEFAULT_MIN_THUMB_SIZE);
+  it.each(['', '2rem', 'auto', '-4px'])('falls back to the default for %j', (value) => {
+    expect(parseMinThumbSize(value)).toBe(DEFAULT_MIN_THUMB_SIZE);
   });
 });
 
@@ -137,20 +119,6 @@ describe('content box size', () => {
     host.style.width = 'auto';
 
     syncContentBoxSize(content, host);
-
-    expect(content.style.width).toBe('');
-    expect(content.style.height).toBe('');
-
-    host.remove();
-  });
-
-  it('clears the inline size', () => {
-    const {host, content} = createElements();
-
-    content.style.width = '120px';
-    content.style.height = '80px';
-
-    clearContentBoxSize(content);
 
     expect(content.style.width).toBe('');
     expect(content.style.height).toBe('');

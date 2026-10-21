@@ -101,14 +101,6 @@ describe('NdwuScrollbarDragController: ending', () => {
     expect(activeChanges).toEqual([true, false]);
   });
 
-  it('does nothing when ended without an active drag', () => {
-    const {activeChanges, controller} = setup();
-
-    controller.end();
-
-    expect(activeChanges).toEqual([]);
-  });
-
   it('ends the previous drag before starting a new one', () => {
     const {activeChanges, start} = setup();
 

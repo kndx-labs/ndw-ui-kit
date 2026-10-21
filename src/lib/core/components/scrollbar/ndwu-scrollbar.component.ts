@@ -30,7 +30,7 @@ import {
   hasOverflow,
 } from './ndwu-scrollbar.geometry';
 import {NdwuScrollbarDragController} from './ndwu-scrollbar-drag.controller';
-import {resolveMutationRecalc} from './ndwu-scrollbar.mutations';
+import {NdwuScrollbarContentObserver} from './ndwu-scrollbar.content-observer';
 import {NdwuFrameScheduler} from './ndwu-scrollbar.frame-scheduler';
 import {
   DEFAULT_MIN_THUMB_SIZE,
@@ -44,14 +44,6 @@ const MIN_THUMB_SIZE_PROPERTY = '--ndwu-scrollbar-min-thumb-size';
 
 const SCROLLABLE_Y_CLASS = 'ndwu-scrollbar--scrollable-y';
 const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
-
-// Attributes whose change can resize an element without adding or removing nodes
-const OBSERVED_ATTRIBUTES = ['class', 'hidden'];
-
-// How long text/class changes must stop before the full recalculation that catches a missed
-// shrink. Longer than the gap between changes in a burst (animation, hover over a list),
-// short enough that the late shrink still feels like a reaction.
-const MUTATION_SETTLE_DELAY = 150;
 
 // Only the mouse drags the custom thumb and clicks the track; touch and pen use native scrolling.
 const SUPPORTED_POINTER_TYPE = 'mouse';
@@ -176,10 +168,7 @@ export class NdwuScrollbarComponent {
   private minThumbSize = DEFAULT_MIN_THUMB_SIZE;
   private lastContentSize = {width: 0, height: 0};
   private readonly frames = new NdwuFrameScheduler<'recalculate' | 'position'>();
-  private mutationSettleTimerId: ReturnType<typeof setTimeout> | null = null;
-  private resizeObserver: ResizeObserver | null = null;
-  private mutationObserver: MutationObserver | null = null;
-  private observedContentChildren = new Set<Element>();
+  private contentObserver: NdwuScrollbarContentObserver | null = null;
 
   constructor() {
     this.destroyRef.onDestroy(() => this.cleanup());
@@ -189,7 +178,7 @@ export class NdwuScrollbarComponent {
 
       this.syncFocusableContent(content);
       this.registerStaticListeners(content);
-      this.initObservers(content);
+      this.observeContent(content);
       this.scheduleRecalculate();
       this.isViewInitialized.set(true);
     });
@@ -208,7 +197,7 @@ export class NdwuScrollbarComponent {
         return;
       }
 
-      this.reobserveHost();
+      this.contentObserver?.reobserveHost();
       this.scheduleRecalculate();
     });
   }
@@ -226,105 +215,30 @@ export class NdwuScrollbarComponent {
     this.hostEl.addEventListener('focus', this.onHostFocus);
   }
 
-  private initObservers(content: HTMLElement): void {
-    if (typeof ResizeObserver !== 'undefined') {
-      this.resizeObserver = new ResizeObserver((entries) => {
-        const isHostResized = entries.some(entry => entry.target === this.hostEl);
-
-        if (isHostResized && !this.ndwuScrollbarDisabled()) {
-          syncContentBoxSize(content, this.hostEl);
-        }
-
-        this.scheduleRecalculate();
-      });
-
-      this.resizeObserver.observe(this.hostEl);
-      this.resizeObserver.observe(content);
-      this.observeContentChildren(content);
-    }
-
-    if (typeof MutationObserver !== 'undefined') {
-      this.mutationObserver = new MutationObserver((records) => {
-        if (resolveMutationRecalc(records) === 'full') {
-          this.observeContentChildren(content);
-          this.scheduleRecalculate();
-
-          return;
-        }
-
-        // A full recalculation lays out all the content twice, too slow for frequent text/class
-        // changes (timers, hover). Instead, check the content size every frame and do a full
-        // recalculation once the changes stop.
-        this.schedulePositionUpdate();
-        this.scheduleMutationSettle(content);
-      });
-
-      // The content box has a fixed size, so a text or class change deep inside it that doesn't
-      // resize a direct child is seen only by this observer.
-      this.mutationObserver.observe(
-        content,
-        {
-          childList: true,
-          subtree: true,
-          characterData: true,
-          attributes: true,
-          attributeFilter: OBSERVED_ATTRIBUTES,
+  private observeContent(content: HTMLElement): void {
+    this.contentObserver = new NdwuScrollbarContentObserver(
+      this.hostEl,
+      content,
+      {
+        hostResize: () => {
+          if (!this.ndwuScrollbarDisabled()) {
+            syncContentBoxSize(content, this.hostEl);
+          }
         },
-      );
-    }
-  }
-
-  // The content box has a fixed size, but its children don't: their ResizeObserver entries
-  // report content growing or shrinking without DOM changes (an image loads, text rewraps).
-  private observeContentChildren(content: HTMLElement): void {
-    const resizeObserver = this.resizeObserver;
-
-    if (resizeObserver === null) {
-      return;
-    }
-
-    const children = this.collectChildren(content, new Set());
-
-    for (const child of this.observedContentChildren) {
-      if (!children.has(child)) {
-        resizeObserver.unobserve(child);
-      }
-    }
-
-    for (const child of children) {
-      if (!this.observedContentChildren.has(child)) {
-        resizeObserver.observe(child);
-      }
-    }
-
-    this.observedContentChildren = children;
-  }
-
-  // An element with `display: contents` has no box of its own, so ResizeObserver never
-  // reports it. Observe its children instead.
-  private collectChildren(parent: Element, result: Set<Element>): Set<Element> {
-    for (const child of Array.from(parent.children)) {
-      if (getComputedStyle(child).display === 'contents') {
-        this.collectChildren(child, result);
-      } else {
-        result.add(child);
-      }
-    }
-
-    return result;
+        contentChange: (recalc) => {
+          if (recalc === 'full') {
+            this.scheduleRecalculate();
+          } else {
+            this.schedulePositionUpdate();
+          }
+        },
+      },
+    );
   }
 
   private releaseContentBoxSize(): void {
     clearContentBoxSize(this.contentEl().nativeElement);
     this.setOverflowState(false, false);
-  }
-
-  // ResizeObserver calls back right away for a newly observed element. Re-observing the host
-  // when the scrollbar is enabled again restores the inline content size at once, instead
-  // of waiting for a host resize that may never happen.
-  private reobserveHost(): void {
-    this.resizeObserver?.unobserve(this.hostEl);
-    this.resizeObserver?.observe(this.hostEl);
   }
 
   private readonly onScroll = (): void => {
@@ -334,23 +248,6 @@ export class NdwuScrollbarComponent {
 
     this.schedulePositionUpdate();
   };
-
-  private scheduleMutationSettle(content: HTMLElement): void {
-    if (this.mutationSettleTimerId !== null) {
-      clearTimeout(this.mutationSettleTimerId);
-    }
-
-    this.mutationSettleTimerId = setTimeout(
-      () => {
-        this.mutationSettleTimerId = null;
-
-        // a class change may have turned `display: contents` on or off for a child
-        this.observeContentChildren(content);
-        this.scheduleRecalculate();
-      },
-      MUTATION_SETTLE_DELAY,
-    );
-  }
 
   // Throttle, not debounce: with changes arriving every frame, a debounced update would keep
   // being postponed and would never run while the changes continue.
@@ -587,11 +484,6 @@ export class NdwuScrollbarComponent {
 
     this.frames.cancelAll();
 
-    if (this.mutationSettleTimerId !== null) {
-      clearTimeout(this.mutationSettleTimerId);
-    }
-
-    this.resizeObserver?.disconnect();
-    this.mutationObserver?.disconnect();
+    this.contentObserver?.disconnect();
   }
 }

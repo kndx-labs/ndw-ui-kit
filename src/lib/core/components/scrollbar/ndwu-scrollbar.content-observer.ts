@@ -93,6 +93,7 @@ export class NdwuScrollbarContentObserver {
   public disconnect(): void {
     if (this.settleTimerId !== null) {
       clearTimeout(this.settleTimerId);
+
       this.settleTimerId = null;
     }
 

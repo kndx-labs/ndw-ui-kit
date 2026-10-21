@@ -23,16 +23,22 @@ import {
   type NdwuScrollbarPadding,
 } from './ndwu-scrollbar.types';
 import {
-  DEFAULT_MIN_THUMB_SIZE,
   calculateThumbOffset,
   calculateThumbSize,
   clamp,
   convertTrackToScroll,
   hasOverflow,
-  parseMinThumbSize,
 } from './ndwu-scrollbar.geometry';
 import {NdwuScrollbarDragController} from './ndwu-scrollbar-drag.controller';
 import {resolveMutationRecalc} from './ndwu-scrollbar.mutations';
+import {NdwuFrameScheduler} from './ndwu-scrollbar.frame-scheduler';
+import {
+  DEFAULT_MIN_THUMB_SIZE,
+  clearContentBoxSize,
+  measureTrackSize,
+  parseMinThumbSize,
+  syncContentBoxSize,
+} from './ndwu-scrollbar.dom';
 
 const MIN_THUMB_SIZE_PROPERTY = '--ndwu-scrollbar-min-thumb-size';
 
@@ -169,8 +175,7 @@ export class NdwuScrollbarComponent {
 
   private minThumbSize = DEFAULT_MIN_THUMB_SIZE;
   private lastContentSize = {width: 0, height: 0};
-  private recalculateFrameId: ReturnType<typeof requestAnimationFrame> | null = null;
-  private positionFrameId: ReturnType<typeof requestAnimationFrame> | null = null;
+  private readonly frames = new NdwuFrameScheduler<'recalculate' | 'position'>();
   private mutationSettleTimerId: ReturnType<typeof setTimeout> | null = null;
   private resizeObserver: ResizeObserver | null = null;
   private mutationObserver: MutationObserver | null = null;
@@ -227,7 +232,7 @@ export class NdwuScrollbarComponent {
         const isHostResized = entries.some(entry => entry.target === this.hostEl);
 
         if (isHostResized && !this.ndwuScrollbarDisabled()) {
-          this.syncContentBoxSize();
+          syncContentBoxSize(content, this.hostEl);
         }
 
         this.scheduleRecalculate();
@@ -309,62 +314,8 @@ export class NdwuScrollbarComponent {
     return result;
   }
 
-  // The content box gets the host size as inline width/height, which makes it the element that
-  // scrolls. A host sized by its content (e.g. a dialog body with `height: auto`) would then
-  // keep its first size forever. So: remove the inline size, let the host take its natural
-  // size (within its max-height etc.), and set the inline size again. A host sized from
-  // outside just measures the same.
-  private syncContentBoxSize(): void {
-    const content = this.contentEl().nativeElement;
-    const {scrollTop, scrollLeft} = content;
-
-    content.style.width = '';
-    content.style.height = '';
-
-    const hostSize = this.measureHostContentBox();
-
-    if (hostSize !== null) {
-      content.style.width = `${hostSize.width}px`;
-      content.style.height = `${hostSize.height}px`;
-    }
-
-    // without the inline size there is nothing to scroll, so the browser has reset the scroll
-    // position; restore it
-    content.scrollTop = scrollTop;
-    content.scrollLeft = scrollLeft;
-  }
-
-  // getComputedStyle keeps fractional pixels (clientWidth/clientHeight round them) and is not
-  // affected by transforms (getBoundingClientRect is), so open/close animations don't skew it.
-  private measureHostContentBox(): {width: number; height: number} | null {
-    const style = getComputedStyle(this.hostEl);
-    const width = parseFloat(style.width);
-    const height = parseFloat(style.height);
-
-    if (Number.isNaN(width) || Number.isNaN(height)) {
-      return null;
-    }
-
-    if (style.boxSizing !== 'border-box') {
-      return {width, height};
-    }
-
-    const sumPx = (...values: string[]): number => {
-      return values.reduce((sum, value) => sum + (parseFloat(value) || 0), 0);
-    };
-
-    return {
-      width: width - sumPx(style.paddingLeft, style.paddingRight, style.borderLeftWidth, style.borderRightWidth),
-      height: height - sumPx(style.paddingTop, style.paddingBottom, style.borderTopWidth, style.borderBottomWidth),
-    };
-  }
-
   private releaseContentBoxSize(): void {
-    const content = this.contentEl().nativeElement;
-
-    content.style.width = '';
-    content.style.height = '';
-
+    clearContentBoxSize(this.contentEl().nativeElement);
     this.setOverflowState(false, false);
   }
 
@@ -401,59 +352,14 @@ export class NdwuScrollbarComponent {
     );
   }
 
-  private getFrameId(key: 'recalculate' | 'position'): number | null {
-    return key === 'recalculate' ? this.recalculateFrameId : this.positionFrameId;
-  }
-
-  private setFrameId(key: 'recalculate' | 'position', value: number | null): void {
-    if (key === 'recalculate') {
-      this.recalculateFrameId = value;
-    } else {
-      this.positionFrameId = value;
-    }
-  }
-
-  private scheduleFrame(
-    key: 'recalculate' | 'position',
-    callback: () => void,
-    mode: 'debounce' | 'throttle',
-  ): void {
-    const currentId = this.getFrameId(key);
-
-    if (mode === 'throttle' && currentId !== null) {
-      return;
-    }
-
-    if (mode === 'debounce' && currentId !== null) {
-      cancelAnimationFrame(currentId);
-    }
-
-    this.setFrameId(
-      key,
-      requestAnimationFrame(() => {
-        this.setFrameId(key, null);
-        callback();
-      }),
-    );
-  }
-
-  private cancelFrame(key: 'recalculate' | 'position'): void {
-    const currentId = this.getFrameId(key);
-
-    if (currentId !== null) {
-      cancelAnimationFrame(currentId);
-      this.setFrameId(key, null);
-    }
-  }
-
   // Throttle, not debounce: with changes arriving every frame, a debounced update would keep
   // being postponed and would never run while the changes continue.
   private schedulePositionUpdate(): void {
-    this.scheduleFrame(
+    this.frames.schedule(
       'position',
       () => {
         if (this.isContentSizeChanged()) {
-          this.cancelFrame('recalculate');
+          this.frames.cancel('recalculate');
           this.recalculate();
 
           return;
@@ -550,7 +456,7 @@ export class NdwuScrollbarComponent {
   }
 
   private scheduleRecalculate(): void {
-    this.scheduleFrame('recalculate', () => this.recalculate(), 'debounce');
+    this.frames.schedule('recalculate', () => this.recalculate(), 'debounce');
   }
 
   private recalculate(): void {
@@ -558,9 +464,9 @@ export class NdwuScrollbarComponent {
       return;
     }
 
-    this.syncContentBoxSize();
-
     const content = this.contentEl().nativeElement;
+
+    syncContentBoxSize(content, this.hostEl);
 
     if (content.clientHeight === 0 && content.clientWidth === 0) {
       return;
@@ -637,24 +543,14 @@ export class NdwuScrollbarComponent {
   private getAxisMetrics(axis: NdwuScrollbarAxis): NdwuAxisMetrics {
     const content = this.contentEl().nativeElement;
     const config = this.getConfig(axis);
+    const {track} = this.getAxisElements(axis);
 
     return {
       contentSize: content[config.contentSize],
       clientSize: content[config.clientSize],
       scrollOffset: content[config.scrollOffset],
-      trackSize: this.measureTrackSize(axis),
+      trackSize: measureTrackSize(getComputedStyle(track), config.thumbStyle),
     };
-  }
-
-  // Measure the track itself, not the host: the track is shorter by its padding and, when both
-  // tracks are visible, by the other track. Pointer positions are measured from the track too.
-  // getComputedStyle keeps fractional pixels (clientWidth/clientHeight round them up, which puts
-  // the thumb end past the track end) and ignores transforms.
-  private measureTrackSize(axis: NdwuScrollbarAxis): number {
-    const {track} = this.getAxisElements(axis);
-    const size = parseFloat(getComputedStyle(track)[this.getConfig(axis).thumbStyle]);
-
-    return Number.isNaN(size) ? 0 : size;
   }
 
   private getPointerOffset(axis: NdwuScrollbarAxis, event: MouseEvent | PointerEvent): number {
@@ -689,8 +585,7 @@ export class NdwuScrollbarComponent {
     this.hostEl.removeEventListener('focus', this.onHostFocus);
     this.dragController.end();
 
-    this.cancelFrame('recalculate');
-    this.cancelFrame('position');
+    this.frames.cancelAll();
 
     if (this.mutationSettleTimerId !== null) {
       clearTimeout(this.mutationSettleTimerId);

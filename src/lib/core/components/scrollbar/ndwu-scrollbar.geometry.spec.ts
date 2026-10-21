@@ -1,13 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import type {NdwuAxisMetrics} from './ndwu-scrollbar.types';
-import {
-  DEFAULT_MIN_THUMB_SIZE,
-  calculateThumbOffset,
-  calculateThumbSize,
-  convertTrackToScroll,
-  hasOverflow,
-  parseMinThumbSize,
-} from './ndwu-scrollbar.geometry';
+import {calculateThumbOffset, calculateThumbSize, convertTrackToScroll, hasOverflow} from './ndwu-scrollbar.geometry';
 
 const MIN_THUMB = 24;
 
@@ -75,6 +68,17 @@ describe('calculateThumbOffset', () => {
     expect(calculateThumbOffset(shortened, thumbSize) + thumbSize).toBe(190);
   });
 
+  it('places the thumb end at the track end when a rounded-up scroll size keeps the scroll short of the maximum', () => {
+    // real content height 363.5 is reported as 364, so the scroll stops at 209.5 instead of 210
+    const rounded = metrics({contentSize: 364, clientSize: 154, scrollOffset: 209.5, trackSize: 178});
+
+    expect(calculateThumbOffset(rounded, 75) + 75).toBe(178);
+  });
+
+  it('does not move the thumb to the track end 1px before the maximum scroll', () => {
+    expect(calculateThumbOffset(metrics({scrollOffset: 199}), 100)).toBe(99);
+  });
+
   it('places the thumb halfway at half scroll', () => {
     expect(calculateThumbOffset(metrics({scrollOffset: 100}), 100)).toBe(50);
   });
@@ -138,32 +142,5 @@ describe('hasOverflow', () => {
 
   it('reports no overflow for content that fits', () => {
     expect(hasOverflow(200, 200)).toBe(false);
-  });
-});
-
-describe('parseMinThumbSize', () => {
-  it('reads a pixel value', () => {
-    expect(parseMinThumbSize('32px')).toBe(32);
-  });
-
-  it('ignores surrounding whitespace', () => {
-    expect(parseMinThumbSize(' 16.5px ')).toBe(16.5);
-  });
-
-  it('accepts unitless zero', () => {
-    expect(parseMinThumbSize('0')).toBe(0);
-  });
-
-  it('falls back to the default for an empty value', () => {
-    expect(parseMinThumbSize('')).toBe(DEFAULT_MIN_THUMB_SIZE);
-  });
-
-  it('falls back to the default for non-pixel units', () => {
-    expect(parseMinThumbSize('2rem')).toBe(DEFAULT_MIN_THUMB_SIZE);
-  });
-
-  it('falls back to the default for invalid values', () => {
-    expect(parseMinThumbSize('auto')).toBe(DEFAULT_MIN_THUMB_SIZE);
-    expect(parseMinThumbSize('-4px')).toBe(DEFAULT_MIN_THUMB_SIZE);
   });
 });

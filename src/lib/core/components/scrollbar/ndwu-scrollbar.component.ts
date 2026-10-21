@@ -159,10 +159,13 @@ export class NdwuScrollbarComponent {
     };
   });
 
-  private readonly dragController = new NdwuScrollbarDragController(this.doc, {
-    move: (state, event) => this.onDragMove(state, event),
-    activeChange: (isActive) => this.isDragging.set(isActive),
-  });
+  private readonly dragController = new NdwuScrollbarDragController(
+    this.doc,
+    {
+      move: (state, event) => this.onDragMove(state, event),
+      activeChange: (isActive) => this.isDragging.set(isActive),
+    },
+  );
 
   private minThumbSize = DEFAULT_MIN_THUMB_SIZE;
   private lastContentSize = {width: 0, height: 0};

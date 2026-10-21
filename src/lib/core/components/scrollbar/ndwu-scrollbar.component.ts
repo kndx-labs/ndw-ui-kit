@@ -278,7 +278,7 @@ export class NdwuScrollbarComponent {
       return;
     }
 
-    const children = this.collectLayoutChildren(content, new Set());
+    const children = this.collectChildren(content, new Set());
 
     for (const child of this.observedContentChildren) {
       if (!children.has(child)) {
@@ -297,10 +297,10 @@ export class NdwuScrollbarComponent {
 
   // An element with `display: contents` has no box of its own, so ResizeObserver never
   // reports it. Observe its children instead.
-  private collectLayoutChildren(parent: Element, result: Set<Element>): Set<Element> {
+  private collectChildren(parent: Element, result: Set<Element>): Set<Element> {
     for (const child of Array.from(parent.children)) {
       if (getComputedStyle(child).display === 'contents') {
-        this.collectLayoutChildren(child, result);
+        this.collectChildren(child, result);
       } else {
         result.add(child);
       }

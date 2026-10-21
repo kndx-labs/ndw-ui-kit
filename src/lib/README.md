@@ -450,14 +450,9 @@ on pictograms (e.g., `NdwuEmptyStateComponent` from `@ndw-ui-kit/core/widgets`).
 
 ### Localization
 
-Choose one of the following translation providers:
-
-- **Noop Translation (no localization &mdash; texts are shown as-is):**
-  ```typescript
-  import {provideNdwuNoopTranslation} from '@ndw-ui-kit/core/l10n';
-
-  providers: [provideNdwuNoopTranslation()]
-  ```
+Without a translation provider, components show texts and translation keys
+as-is (`NdwuNoopTranslationService` is used by default). To localize them,
+use one of the following options:
 
 - **Ngx-Translate Integration (depends on `@ngx-translate/core`):**
   ```typescript
@@ -469,6 +464,16 @@ Choose one of the following translation providers:
   > Since this version the ngx-translate integration lives in a separate entry point
   > `@ndw-ui-kit/core/l10n/ngx-translate` (previously exported from `@ndw-ui-kit/core/l10n`),
   > so the package no longer requires `@ngx-translate/core` unless you import it.
+
+- **Custom translation service:** extend `NdwuTranslationService` and provide it:
+  ```typescript
+  import {NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
+
+  providers: [{provide: NdwuTranslationService, useClass: MyTranslationService}]
+  ```
+
+`provideNdwuNoopTranslation()` is optional. Use it to replace another
+translation service in a child injector.
 
 #### HTML in text inputs
 

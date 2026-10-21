@@ -51,7 +51,7 @@ export function buildConnectedPosition(side: NdwuPopoverSide, align: NdwuPopover
 /** Converts a popover origin (element or viewport point) into an origin CDK `flexibleConnectedTo` accepts. */
 export function toConnectedOrigin(origin: NdwuPopoverOrigin): FlexibleConnectedPositionStrategyOrigin {
   if ('clientX' in origin) {
-    /* eslint-disable-next-line id-blacklist -- CDK flexibleConnectedTo point origin API uses x/y */
+    /* eslint-disable-next-line id-denylist -- CDK flexibleConnectedTo point origin API uses x/y */
     return {x: origin.clientX, y: origin.clientY};
   }
 

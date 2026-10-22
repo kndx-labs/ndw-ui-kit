@@ -37,6 +37,7 @@ export type ComponentName =
   | 'ndwu-tag'
   | 'ndwu-pictogram'
   | 'ndwu-scrollbar'
+  | 'ndwu-heat-strip'
   | 'ndwu-table';
 
 export interface MenuFlatItem {

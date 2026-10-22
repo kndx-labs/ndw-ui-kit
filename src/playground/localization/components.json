@@ -48,6 +48,9 @@
       "name": "Form Container",
       "description": "Layout wrapper for form fields and validation."
     },
+    "ndwu-heat-strip": {
+      "name": "Heat Strip"
+    },
     "ndwu-icon": {
       "name": "Icon",
       "description": "Scalable SVG icon from the sprite set."

@@ -14,7 +14,8 @@
     "groups": {
       "Button": "Schaltfläche",
       "Modal": "Modal",
-      "Dropdown": "Dropdown"
+      "Dropdown": "Dropdown",
+      "Charts": "Diagramme"
     },
     "ready": "Bereit",
     "ready-for-review": "Bereit zur Überprüfung"

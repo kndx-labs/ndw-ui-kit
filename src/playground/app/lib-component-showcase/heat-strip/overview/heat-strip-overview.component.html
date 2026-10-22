@@ -1,0 +1,82 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <section class="heat-strip-section">
+      <h4>{{ 'heat-strip-showcase.overview.default-title' | localize }}</h4>
+      <p>{{ 'heat-strip-showcase.overview.default-description' | localize }}</p>
+      <ndwu-heat-strip [cells]="regularCells" [axisLabels]="mainAxisLabels">
+        <ng-template [ndwuHeatStripTooltip]="regularCells" let-cell let-index="index">
+          <div class="heat-strip-tooltip-content">
+            <strong>{{ cell.data?.from }}–{{ cell.data?.to }}</strong>
+            <span>{{ 'heat-strip-showcase.overview.value' | localize }}: {{ cell.data?.value }}</span>
+            <span>{{ 'heat-strip-showcase.overview.cell' | localize }} {{ index + 1 }}</span>
+          </div>
+        </ng-template>
+      </ndwu-heat-strip>
+    </section>
+
+    <section class="heat-strip-section">
+      <h4>{{ 'heat-strip-showcase.overview.narrow-title' | localize }}</h4>
+      <p>{{ 'heat-strip-showcase.overview.narrow-description' | localize }}</p>
+      <div class="heat-strip-narrow">
+        <ndwu-heat-strip [cells]="narrowCells" [axisLabels]="narrowAxisLabels" />
+      </div>
+    </section>
+
+    <section class="heat-strip-section">
+      <h4>{{ 'heat-strip-showcase.overview.null-title' | localize }}</h4>
+      <ndwu-heat-strip [cells]="allNullCells" />
+    </section>
+
+    <section class="heat-strip-section">
+      <h4>{{ 'heat-strip-showcase.overview.empty-title' | localize }}</h4>
+      <ndwu-heat-strip [cells]="emptyCells" />
+    </section>
+
+    <section class="heat-strip-section">
+      <h4>{{ 'heat-strip-showcase.overview.loading-title' | localize }}</h4>
+      <div class="heat-strip-loading-example">
+        <div>
+          <button ndwu-button type="button" (click)="toggleLoadingWithData()">
+            {{ 'heat-strip-showcase.overview.toggle-loading-data' | localize }}
+          </button>
+          <ndwu-heat-strip [cells]="regularCells" [loading]="loadingWithData()" />
+        </div>
+        <div>
+          <button ndwu-button type="button" (click)="toggleLoadingEmpty()">
+            {{ 'heat-strip-showcase.overview.toggle-loading-empty' | localize }}
+          </button>
+          <ndwu-heat-strip [cells]="emptyCells" [loading]="loadingEmpty()" />
+        </div>
+      </div>
+    </section>
+
+    <section class="heat-strip-section">
+      <h4>{{ 'heat-strip-showcase.overview.marker-title' | localize }}</h4>
+      <div class="heat-strip-marker-examples">
+        <div>
+          <p>{{ 'heat-strip-showcase.overview.marker-default' | localize }}</p>
+          <ndwu-heat-strip [cells]="markerCells" />
+        </div>
+        <div>
+          <p>{{ 'heat-strip-showcase.overview.marker-template' | localize }}</p>
+          <ndwu-heat-strip [cells]="markerCells">
+            <ng-template [ndwuHeatStripMarker]="markerCells" let-cell>
+              <span class="heat-strip-marker-glyph" [attr.aria-label]="'heat-strip-showcase.overview.marker-glyph' | localize">
+                {{ cell.marker ? '•' : '' }}
+              </span>
+            </ng-template>
+          </ndwu-heat-strip>
+        </div>
+      </div>
+    </section>
+
+    <section class="heat-strip-section">
+      <h4>{{ 'heat-strip-showcase.overview.custom-label-title' | localize }}</h4>
+      <p>{{ 'heat-strip-showcase.overview.custom-label-description' | localize }}</p>
+      <ndwu-heat-strip [cells]="regularCells" [cellLabel]="customLabel" />
+    </section>
+  </ng-template>
+</app-showcase-layout>

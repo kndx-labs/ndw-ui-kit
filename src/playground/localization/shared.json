@@ -14,7 +14,8 @@
     "groups": {
       "Button": "Button",
       "Modal": "Modal",
-      "Dropdown": "Dropdown"
+      "Dropdown": "Dropdown",
+      "Charts": "Charts"
     },
     "ready": "ready",
     "ready-for-review": "ready for review"

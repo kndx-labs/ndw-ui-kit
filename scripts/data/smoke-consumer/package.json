@@ -1,0 +1,20 @@
+{
+  "name": "ndw-ui-kit-charts-consumer-smoke",
+  "private": true,
+  "dependencies": {
+    "@angular/common": "20.3.30",
+    "@angular/core": "20.3.30",
+    "@angular/platform-browser": "20.3.30",
+    "@ndw-ui-kit/charts": "0.1.0",
+    "@ndw-ui-kit/core": "0.2.0",
+    "rxjs": "~7.8.2",
+    "tslib": "2.8.1",
+    "zone.js": "~0.15.1"
+  },
+  "devDependencies": {
+    "@angular/build": "20.3.36",
+    "@angular/cli": "20.3.36",
+    "@angular/compiler-cli": "20.3.30",
+    "typescript": "5.9.3"
+  }
+}

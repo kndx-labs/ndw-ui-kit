@@ -1,0 +1,225 @@
+@use '@ndw-ui-kit/core/styles/spacing';
+@use '@ndw-ui-kit/core/styles/radius';
+@use '@ndw-ui-kit/core/styles/typography';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.ndwu-heat-strip__strip {
+  display: flex;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--ndwu-heat-strip-height);
+  border: 1px solid var(--ndwu-heat-strip-border-color);
+  border-radius: var(--ndwu-heat-strip-radius);
+
+  &--loading {
+    pointer-events: none;
+
+    .ndwu-heat-strip__cell {
+      opacity: var(--ndwu-heat-strip-loading-opacity);
+    }
+  }
+
+  &--empty {
+    background: var(--ndwu-heat-strip-no-data-bg);
+  }
+}
+
+.ndwu-heat-strip__tooltip-host {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ndwu-heat-strip__cell {
+  flex: 1 1 0;
+  min-width: 0;
+
+  &:focus-visible {
+    box-shadow: var(--ndwu-heat-strip-cell-focus-shadow);
+    outline: none;
+  }
+
+  &--level-0 {
+    background-color: var(--ndwu-heat-strip-level-0-bg);
+  }
+
+  &--level-1 {
+    background-color: var(--ndwu-heat-strip-level-1-bg);
+  }
+
+  &--level-2 {
+    background-color: var(--ndwu-heat-strip-level-2-bg);
+  }
+
+  &--level-3 {
+    background-color: var(--ndwu-heat-strip-level-3-bg);
+  }
+
+  &--level-4 {
+    background-color: var(--ndwu-heat-strip-level-4-bg);
+  }
+
+  &--level-5 {
+    background-color: var(--ndwu-heat-strip-level-5-bg);
+  }
+
+  &--no-data {
+    background-color: var(--ndwu-heat-strip-no-data-bg);
+  }
+
+  &--marker {
+    outline: 2px solid var(--ndwu-heat-strip-marker-color);
+    outline-offset: -2px;
+  }
+
+  &--active.ndwu-heat-strip__cell--level-0 {
+    background-color: var(--ndwu-heat-strip-level-0-bg-hover);
+  }
+
+  &--active.ndwu-heat-strip__cell--level-1 {
+    background-color: var(--ndwu-heat-strip-level-1-bg-hover);
+  }
+
+  &--active.ndwu-heat-strip__cell--level-2 {
+    background-color: var(--ndwu-heat-strip-level-2-bg-hover);
+  }
+
+  &--active.ndwu-heat-strip__cell--level-3 {
+    background-color: var(--ndwu-heat-strip-level-3-bg-hover);
+  }
+
+  &--active.ndwu-heat-strip__cell--level-4 {
+    background-color: var(--ndwu-heat-strip-level-4-bg-hover);
+  }
+
+  &--active.ndwu-heat-strip__cell--level-5 {
+    background-color: var(--ndwu-heat-strip-level-5-bg-hover);
+  }
+
+  &--active.ndwu-heat-strip__cell--no-data {
+    background-color: var(--ndwu-heat-strip-no-data-bg-hover);
+  }
+}
+
+.ndwu-heat-strip__marker {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.ndwu-heat-strip__visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
+}
+
+.ndwu-heat-strip__axis {
+  margin-top: spacing.$spacing-8;
+}
+
+.ndwu-heat-strip__ticks {
+  display: flex;
+  justify-content: space-between;
+  height: 3px;
+}
+
+.ndwu-heat-strip__tick {
+  flex: 0 0 1px;
+  height: 3px;
+  background-color: var(--ndwu-heat-strip-axis-color);
+}
+
+.ndwu-heat-strip__axis-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: spacing.$spacing-4;
+  color: var(--ndwu-heat-strip-axis-color);
+  font-size: typography.$fontSize-small;
+  line-height: 23px;
+}
+
+@media (hover: hover) {
+  .ndwu-heat-strip__strip:not(.ndwu-heat-strip__strip--empty, .ndwu-heat-strip__strip--loading) {
+    .ndwu-heat-strip__cell--level-0:hover {
+      background-color: var(--ndwu-heat-strip-level-0-bg-hover);
+    }
+
+    .ndwu-heat-strip__cell--level-1:hover {
+      background-color: var(--ndwu-heat-strip-level-1-bg-hover);
+    }
+
+    .ndwu-heat-strip__cell--level-2:hover {
+      background-color: var(--ndwu-heat-strip-level-2-bg-hover);
+    }
+
+    .ndwu-heat-strip__cell--level-3:hover {
+      background-color: var(--ndwu-heat-strip-level-3-bg-hover);
+    }
+
+    .ndwu-heat-strip__cell--level-4:hover {
+      background-color: var(--ndwu-heat-strip-level-4-bg-hover);
+    }
+
+    .ndwu-heat-strip__cell--level-5:hover {
+      background-color: var(--ndwu-heat-strip-level-5-bg-hover);
+    }
+
+    .ndwu-heat-strip__cell--no-data:hover {
+      background-color: var(--ndwu-heat-strip-no-data-bg-hover);
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .ndwu-heat-strip__strip {
+    border-color: CanvasText;
+  }
+
+  .ndwu-heat-strip__cell:is(
+    .ndwu-heat-strip__cell--level-0,
+    .ndwu-heat-strip__cell--level-1,
+    .ndwu-heat-strip__cell--level-2,
+    .ndwu-heat-strip__cell--level-3,
+    .ndwu-heat-strip__cell--level-4,
+    .ndwu-heat-strip__cell--level-5,
+    .ndwu-heat-strip__cell--no-data
+  ) {
+    border-inline-start: 1px solid CanvasText;
+    background-color: Canvas;
+  }
+
+  .ndwu-heat-strip__cell--active {
+    background-color: Highlight;
+  }
+
+  .ndwu-heat-strip__cell--active:is(
+    .ndwu-heat-strip__cell--level-0,
+    .ndwu-heat-strip__cell--level-1,
+    .ndwu-heat-strip__cell--level-2,
+    .ndwu-heat-strip__cell--level-3,
+    .ndwu-heat-strip__cell--level-4,
+    .ndwu-heat-strip__cell--level-5,
+    .ndwu-heat-strip__cell--no-data
+  ) {
+    background-color: Highlight;
+  }
+
+  .ndwu-heat-strip__cell--marker {
+    outline: 2px solid CanvasText;
+    outline-offset: -2px;
+  }
+
+  .ndwu-heat-strip__cell:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}

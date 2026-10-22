@@ -40,6 +40,29 @@
         }
       }
     },
+    "ndw-ui-kit-charts": {
+      "projectType": "library",
+      "root": "",
+      "sourceRoot": "src/charts",
+      "prefix": "ndwu",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "project": "./src/charts/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "tsconfig.charts.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "tsconfig.charts.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
+    },
     "playground": {
       "projectType": "application",
       "root": "",
@@ -56,7 +79,8 @@
             "tsConfig": "tsconfig.playground.json",
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/lib"
+                "src/lib",
+                ".sass-aliases/src"
               ]
             },
             "assets": [
@@ -149,7 +173,8 @@
             "buildTarget": "playground:build:development",
             "runner": "vitest",
             "include": [
-              "../lib/**/*.spec.ts"
+              "../lib/**/*.spec.ts",
+              "../charts/**/*.spec.ts"
             ],
             "tsConfig": "tsconfig.spec.json"
           }

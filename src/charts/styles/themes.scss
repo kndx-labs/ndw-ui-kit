@@ -1,0 +1,18 @@
+@use '@ndw-ui-kit/core/styles/themes/_theme-utils' as theme-utils;
+@use '../heat-strip/ndwu-heat-strip.tokens' as ndwu-heat-strip-tokens;
+
+$component-tokens: (
+  'ndwu-heat-strip': ndwu-heat-strip-tokens.$ndwu-heat-strip-tokens,
+);
+
+:root {
+  @include theme-utils.emit-token-groups($component-tokens);
+}
+
+.ndwu-theme-light {
+  @include theme-utils.emit-token-groups($component-tokens);
+}
+
+.ndwu-theme-dark {
+  @include theme-utils.emit-token-groups($component-tokens);
+}

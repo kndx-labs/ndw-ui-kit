@@ -1,0 +1,93 @@
+<div
+  #strip
+  class="ndwu-heat-strip__strip"
+  [class.ndwu-heat-strip__strip--empty]="cells().length === 0"
+  [class.ndwu-heat-strip__strip--loading]="loading()"
+  [attr.role]="'group'"
+  [attr.aria-label]="ariaLabel() | localize"
+  [attr.aria-busy]="loading() ? 'true' : null"
+  [attr.aria-describedby]="cells().length === 0 ? emptyDescriptionId : null"
+  [attr.tabindex]="-1"
+  (pointerleave)="onStripPointerLeave()"
+  (focusout)="onStripFocusOut($event)"
+  (keydown)="onStripKeydown($event)"
+>
+  <div
+    class="ndwu-heat-strip__tooltip-host"
+    [ndwuTooltip]="tooltipContentTemplate"
+    [tooltipContext]="tooltipContext()"
+    [tooltipOrigin]="tooltipOrigin()"
+    [tooltipDescribeHost]="false"
+    [tooltipRestoreFocus]="false"
+    triggerOn="manual"
+  >
+    @for (item of cells(); track trackBy()($index, item)) {
+      @let normalizedLevel = levels()[$index] ?? null;
+      @let localizedBaseLabel = labelKey(normalizedLevel) | localize;
+      @let localizedMarkerLabel = markerLabel() | localize;
+      @let markerDefinition = markerTemplate();
+      <div
+        #cell
+        class="ndwu-heat-strip__cell"
+        [class.ndwu-heat-strip__cell--level-0]="normalizedLevel === 0"
+        [class.ndwu-heat-strip__cell--level-1]="normalizedLevel === 1"
+        [class.ndwu-heat-strip__cell--level-2]="normalizedLevel === 2"
+        [class.ndwu-heat-strip__cell--level-3]="normalizedLevel === 3"
+        [class.ndwu-heat-strip__cell--level-4]="normalizedLevel === 4"
+        [class.ndwu-heat-strip__cell--level-5]="normalizedLevel === 5"
+        [class.ndwu-heat-strip__cell--no-data]="normalizedLevel === null"
+        [class.ndwu-heat-strip__cell--marker]="item.marker === true && markerDefinition === undefined"
+        [class.ndwu-heat-strip__cell--active]="isCellActive($index)"
+        [attr.role]="'img'"
+        [attr.aria-label]="cellAriaLabel(item, $index, localizedBaseLabel, localizedMarkerLabel)"
+        [attr.aria-describedby]="isCellActive($index) ? tooltip()?.tooltipId : null"
+        [attr.tabindex]="cellTabIndex($index)"
+        (focus)="onCellFocus($index)"
+        (pointerdown)="onCellPointerDown($index)"
+        (pointerenter)="onCellPointerEnter($index)"
+        (click)="onCellClick($index)"
+        (keydown.enter)="onCellClick($index)"
+      >
+        @if (item.marker && markerDefinition !== undefined) {
+          <span class="ndwu-heat-strip__marker">
+            <ng-container
+              [ngTemplateOutlet]="markerDefinition.templateRef"
+              [ngTemplateOutletContext]="markerContextForCell($index)"
+            />
+          </span>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+@if (cells().length === 0) {
+  <span class="ndwu-heat-strip__visually-hidden" [id]="emptyDescriptionId">
+    {{ emptyLabel() | localize }}
+  </span>
+}
+
+@if (axisLabels().length > 0) {
+  <div class="ndwu-heat-strip__axis" aria-hidden="true">
+    <div class="ndwu-heat-strip__ticks">
+      @for (cell of cells(); track trackBy()($index, cell)) {
+        <span class="ndwu-heat-strip__tick"></span>
+      }
+      <span class="ndwu-heat-strip__tick"></span>
+    </div>
+    <div class="ndwu-heat-strip__axis-labels">
+      @for (label of axisLabels(); track $index) {
+        <span class="ndwu-heat-strip__axis-label">{{ label }}</span>
+      }
+    </div>
+  </div>
+}
+
+<ng-template #tooltipContentTemplate let-context>
+  @if (tooltipTemplate(); as tooltipDefinition) {
+    <ng-container
+      [ngTemplateOutlet]="tooltipDefinition.templateRef"
+      [ngTemplateOutletContext]="context"
+    />
+  }
+</ng-template>

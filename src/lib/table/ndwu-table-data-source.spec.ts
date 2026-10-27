@@ -106,7 +106,7 @@ describe('NdwuTableDataSource sortComparator', () => {
       .toEqual(['ccc', 'aa', 'b']);
   });
 
-  it('passes accessor values and the active column to the comparator', () => {
+  it('passes accessor values to the comparator', () => {
     const sortComparator = vi.fn((a: unknown, b: unknown) => Number(a) - Number(b));
     const rows: Row[] = [{id: 0, value: {size: 2}}, {id: 1, value: {size: 1}}];
     const sortAccessor = (row: Row): unknown => (row.value as {size: number}).size;
@@ -117,7 +117,7 @@ describe('NdwuTableDataSource sortComparator', () => {
     )
       .toEqual([1, 0]);
     expect(sortComparator)
-      .toHaveBeenCalledWith(expect.any(Number), expect.any(Number), 'value');
+      .toHaveBeenCalledWith(expect.any(Number), expect.any(Number));
   });
 
   it('keeps empty values last without passing them to the comparator', () => {

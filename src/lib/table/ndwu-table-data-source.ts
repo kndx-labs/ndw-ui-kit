@@ -6,7 +6,7 @@ import type {NdwuSortState} from './ndwu-sort.directive';
 
 export interface NdwuTableDataSourceOptions<T, V = unknown> {
   sortAccessor?: (row: T, column: string) => V;
-  sortComparator?: (a: NonNullable<V>, b: NonNullable<V>, column: string) => number;
+  sortComparator?: (a: NonNullable<V>, b: NonNullable<V>) => number;
   filterPredicate?: (row: T, filter: string) => boolean;
   /** Needed only when the source is built outside an injection context. */
   injector?: Injector;
@@ -100,7 +100,7 @@ export class NdwuTableDataSource<T, V = unknown> extends DataSource<T> {
           return Number(aEmpty) - Number(bEmpty);
         }
 
-        return factor * comparator(a as NonNullable<V>, b as NonNullable<V>, active);
+        return factor * comparator(a as NonNullable<V>, b as NonNullable<V>);
       });
     });
 

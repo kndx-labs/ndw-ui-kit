@@ -259,6 +259,9 @@ ngAfterViewInit: NdwuColumnResizeDirective creates the grip and appends it to th
 User drags the grip (pointerdown → pointer capture)
   │
   V
+first resize: every header cell is frozen at its rendered px width, <table> width = their sum
+  │
+  V
 pointermove: native listener, outside change detection → sets <th> width
   │
 pointerup / pointercancel → emits ndwuColumnResized(width)
@@ -270,8 +273,19 @@ keyboard maximum is 1000px, or the current width if the column is already
 wider; a pointer drag has no maximum. Each key press that changes the width
 emits `ndwuColumnResized`.
 
-The width lives on the `<th>` only. A host that wants to keep it across renders
-stores the emitted value and binds it back.
+The table is `width: 100%` with `table-layout: fixed`, so the browser spreads
+spare width over all columns. The first resize (a drag, or a key that changes
+the width; Tab does not) freezes every header cell at its rendered px width and
+gives the `<table>` that sum as its width. Later changes are exact, and a
+narrower table leaves space on the right. Each change sets the `<th>` width and
+the table width again; when the header row is re-created on a locked table, the
+new cells are frozen and the table width is synced. Only the resized cell's
+header row is locked; fixed layout reads the first row, so a table with group
+header rows is not covered.
+
+The directive sets all header widths and the table width. A host that keeps a
+width across renders stores the emitted value and binds it back; a host that
+restores one stored width should restore it before the first resize.
 
 ### Reordering Rows
 

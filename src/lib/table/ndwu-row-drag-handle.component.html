@@ -1,9 +1,3 @@
 <ndwu-icon [name]="ICON_NAME.MENU_DRAG_S" aria-hidden="true" />
 <!-- Hidden text, not `aria-label`, so a per-row label from the host still wins. -->
 <span class="ndwu-row-drag-handle__label">{{ effectiveTexts().reorder | localize }}</span>
-<span
-  hidden
-  [id]="instructionsId"
->
-  {{ effectiveTexts().instructions | localize }}
-</span>

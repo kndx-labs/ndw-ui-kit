@@ -54,6 +54,11 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
     const handle = this.handleRef.location.nativeElement as HTMLElement;
 
     this.renderer.appendChild(this.el.nativeElement, handle);
+
+    if (this.table()?.style.width) {
+      this.lockLayout();
+    }
+
     this.reportWidth(handle, this.el.nativeElement.offsetWidth);
 
     this.renderer.listen(handle, 'pointerdown', (event: PointerEvent) => this.onPointerDown(handle, event));
@@ -64,9 +69,10 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
   private onPointerDown(handle: HTMLElement, event: PointerEvent): void {
     stopEvent(event);
     handle.setPointerCapture(event.pointerId);
+    this.lockLayout();
 
     const startX = event.clientX;
-    const startWidth = this.el.nativeElement.offsetWidth;
+    const startWidth = this.currentWidth();
     const widthAt = (clientX: number): number => Math.max(MIN_COLUMN_WIDTH, startWidth + (clientX - startX));
 
     let currentWidth = startWidth;
@@ -117,15 +123,16 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
   }
 
   private onKeydown(handle: HTMLElement, event: KeyboardEvent): void {
-    const width = this.keyboardWidth(event);
-
-    if (width === null) {
+    if (this.keyboardWidth(event) === null) {
       return;
     }
 
     stopEvent(event);
+    this.lockLayout();
 
-    if (width === this.currentWidth()) {
+    const width = this.keyboardWidth(event);
+
+    if (width === null || width === this.currentWidth()) {
       return;
     }
 
@@ -157,7 +164,40 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
 
   private applyWidth(handle: HTMLElement, width: number): void {
     this.renderer.setStyle(this.el.nativeElement, 'width', `${width}px`);
+    this.syncTableWidth();
     this.reportWidth(handle, width);
+  }
+
+  private lockLayout(): void {
+    const cells = this.headerCells();
+
+    if (!this.table()?.style.width || !cells.every(cell => cell.style.width.endsWith('px'))) {
+      const measured = cells.map(cell => ({cell, width: cell.getBoundingClientRect().width}));
+
+      measured.forEach(({cell, width}) => this.renderer.setStyle(cell, 'width', `${width}px`));
+    }
+
+    this.syncTableWidth();
+  }
+
+  private syncTableWidth(): void {
+    const table = this.table();
+
+    if (!table) {
+      return;
+    }
+
+    const width = this.headerCells().reduce((sum, cell) => sum + (parseFloat(cell.style.width) || 0), 0);
+
+    this.renderer.setStyle(table, 'width', `${width}px`);
+  }
+
+  private headerCells(): HTMLElement[] {
+    return Array.from(this.el.nativeElement.parentElement?.children ?? []) as HTMLElement[];
+  }
+
+  private table(): HTMLTableElement | null {
+    return this.el.nativeElement.closest('table');
   }
 
   // Set directly: drags update it outside change detection.

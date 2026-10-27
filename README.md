@@ -44,6 +44,11 @@ docs/
 yarn install
 ```
 
+```shell
+# setup Husky hooks
+yarn prepare
+```
+
 ### Build library artifacts
 
 ```shell

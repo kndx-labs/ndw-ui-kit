@@ -1,7 +1,7 @@
 # Contributing to NDW UI Kit
 
 This guide is for anyone who wants to change `@ndw-ui-kit/core`: fix a bug, add a component, or improve the tooling.
-It covers the workflow from a ticket to a merged pull request.
+It covers the workflow from an idea to a merged pull request.
 
 - [README.md](README.md): the maintainer reference (scripts, internal agreements, component tokens).
 - [src/lib/README.md](src/lib/README.md): the consumer docs that ship with the package.
@@ -21,8 +21,9 @@ It covers the workflow from a ticket to a merged pull request.
 
 ## Before you start
 
-- Every change needs an **NDWU** ticket. Its key (for example `NDWU-102`) goes into the branch
-  name, the commit messages and the PR title.
+- Maintainers link their work to an **NDWU** ticket. Its key (for example `NDWU-102`) goes into the branch name, the
+  commit messages and the PR title. Outside contributors don't need a ticket: open a GitHub issue to discuss the
+  change first, or go straight to a PR.
 - Changes to the public API, or work that will span several PRs, start with a design doc:
   - an RFC (request for comments): see [docs/architecture/RFC/README.md](docs/architecture/RFC/README.md) and
     [GUIDE.md](docs/architecture/RFC/GUIDE.md);
@@ -32,7 +33,8 @@ It covers the workflow from a ticket to a merged pull request.
 
 ## Set up the environment
 
-You need **Node.js 22** (22.12 or later; CI uses 22) and Git. Node 24 also works.
+You need an LTS release of **Node.js 22 or later** (use the latest patch: some dev dependencies need 22.22.2+ or
+24.15+) and Git. The sync workflows use Node 22.
 Yarn **4.4.1** is pinned in `packageManager` in [package.json](package.json), and Corepack provides it:
 
 ```shell
@@ -40,11 +42,13 @@ corepack enable
 git clone git@github.com:kndx-labs/ndw-ui-kit.git
 cd ndw-ui-kit
 yarn install
+yarn prepare
 yarn prepare-icons && yarn prepare-pictograms
 ```
 
-The last line generates the git-ignored icon and pictogram sprites in `src/lib/assets/`; without them the playground
-shows no icons (`yarn build` generates them too).
+Outside contributors clone their fork instead. `yarn prepare` installs the Husky git hooks. The last line generates
+the git-ignored icon and pictogram sprites in `src/lib/assets/`; without them the playground shows no icons
+(`yarn build` generates them too).
 
 Only maintainers who sync icons from Figma need Figma credentials (API key, file key and node IDs, see
 [scripts/.env.example](scripts/.env.example)). Ask a maintainer for the file key and node IDs, and put everything in
@@ -123,18 +127,47 @@ Where things go:
 
 | Path | Contents |
 |---|---|
-| `src/lib` | The library. Secondary entry points (`aria`, `form-field`, `l10n`, `l10n/ngx-translate`, `popover`, `table`, `utils`, `widgets`) have their own `ng-package.json` and are imported as `@ndw-ui-kit/core/<entry>` |
+| `src/lib` | The library, see below |
 | `src/playground` | The playground app |
 | `scripts` | tsx scripts for codegen, sprites and publishing |
 | `docs` | Codestyle, ADRs and RFCs |
 
-Export new public symbols from their entry point: `src/lib/public-api.ts` for the root one, or the `index.ts` of a
-secondary entry point. New tokenized components follow the
+Inside `src/lib`, the root entry point (`@ndw-ui-kit/core`) is made of:
+
+| Path | Contents |
+|---|---|
+| `core/components/` | One folder per component. `core/components/popover/` is the popover component and `core/components/form-field/` is the visual field frame; don't confuse them with the `popover` and `form-field` entry points |
+| `core/directives/` | Shared directives (size, adaptive size, resize observer) |
+| `core/tokens/` | Angular DI tokens |
+| `styles/` | SCSS mixins, themes, colors, typography and spacing tokens |
+| `assets/` | Fonts and the generated, git-ignored sprites |
+| root files | `public-api.ts`, `options.ts`, `shared.types.ts`, `pictogram-presets.ts`; generated `icon-names.ts`, `icon-names.base.ts`, `pictogram-names.ts`; hand-edited `icon-names.base.manual.ts` |
+
+Secondary entry points have their own `ng-package.json` and are imported as `@ndw-ui-kit/core/<entry>`:
+
+| Entry point | Contents |
+|---|---|
+| `aria` | Headless combobox and listbox directives |
+| `form-field` | `components/` (form-control wrappers such as `input-field`, `select-field`, plus `helper-message`), `classes/` (wrapper base classes), `validation/` |
+| `l10n` | Localization pipes (`localize`, `localizeHtml`, `localizeIf`), providers and the translation service |
+| `l10n/ngx-translate` | The `@ngx-translate/core` adapter |
+| `popover` | Overlay host, trigger directive, dropdown, tooltip and popover controllers |
+| `table` | The table, its rows, cells, sorting, column resize and pinning, row drag, paginator and toolbar |
+| `utils` | Shared helpers (DOM, coercion, ids, files, breakpoints, size flags) |
+| `widgets` | Composed widgets: empty state, file upload, schedule editor |
+
+A new component goes to `core/components/<name>/` and is exported from `core/components/index.ts`, unless it belongs
+to `table` or `widgets`; its form wrapper goes to `form-field/components/<name>-field/`.
+
+Export new public symbols from their entry point: for the root one, the `index.ts` of `core/components`,
+`core/directives` or `core/tokens` (re-exported by `src/lib/public-api.ts`), or the `index.ts` of a secondary entry
+point. New tokenized components follow the
 [component tokens checklist](README.md#when-adding-a-new-tokenized-component).
 
 ### Checks before a PR
 
-No CI job runs lint, tests or the build, and there are no git hooks. You run them yourself:
+No CI job runs lint, tests or the build. Run `yarn prepare` once to install the Husky git hooks; they don't run these
+checks, so run them yourself:
 
 ```shell
 yarn lint-all
@@ -194,8 +227,9 @@ Background: [README internal agreements](README.md#internal-agreements),
 
 ### Branches
 
-Branch off `master` and push to this repository (no forks). Name the branch `NDWU-<n>-<slug>`, for example
-`NDWU-143-fix-listbox-keyboard-handlers`:
+Branch off `master`. Maintainers push branches to this repository; outside contributors fork it and open the PR from
+their fork. Name the branch `NDWU-<n>-<slug>` when there is a ticket, for example
+`NDWU-143-fix-listbox-keyboard-handlers`, otherwise a short kebab-case slug such as `fix-listbox-keyboard-handlers`:
 
 ```shell
 git fetch origin
@@ -204,13 +238,13 @@ git switch -c NDWU-<n>-<slug> origin/master
 
 ### Commits
 
-Commits on your branch use `(type) scope: summary (NDWU-<n>)`. The scope is the path you changed, for example
-`lib/core/tag` or `playground/tag`. List several siblings in braces: `lib/core/{checkbox, radio, toggle}`.
-Write the summary in the imperative mood and in lowercase.
+Commits on your branch use `(type) scope: summary`, with `(NDWU-<n>)` at the end when there is a ticket. The scope
+is the path you changed, for example `lib/core/tag` or `playground/tag`. List several siblings in braces:
+`lib/core/{checkbox, radio, toggle}`. Write the summary in the imperative mood and in lowercase.
 
 | Type | Use for |
 |---|---|
-| `task` | Feature work for the ticket |
+| `task` | Feature work |
 | `fix` | A bug fix |
 | `ref` | A refactoring without behavior change |
 | `chore` | Tooling, config, dependencies, cleanup, playground and small tweaks |
@@ -230,13 +264,15 @@ Bots use `chore(sync): …`, and RFC PRs use the `rfc:` prefix.
 ### Pull requests
 
 PRs target `master` and are **squash-merged**. The PR title becomes the commit on `master`, so write it as
-`scope: summary (NDWU-<n>)` without the type. GitHub appends the PR number:
+`scope: summary` without the type, with `(NDWU-<n>)` at the end when there is a ticket. GitHub appends the PR number:
 
 ```text
 lib/core: add tag component (NDWU-102) (#31)
 lib/aria/listbox: fix keyboard navigation and active item (NDWU-143) (#34)
 scripts/publish: add safety checks (NDWU-150) (#37)
 ```
+
+Without a ticket, the title is just `scope: summary`, for example `lib/aria/listbox: fix keyboard navigation`.
 
 For a single-commit PR, GitHub pre-fills the squash title from the commit message instead. Before merging, check
 that the title matches the PR title and has no `(type)`.
@@ -258,17 +294,17 @@ breaking change in yours.
 
 This is a team agreement; GitHub doesn't enforce it.
 
-1. Get one approval from another maintainer.
+1. Get one approval from a maintainer (another one if you are a maintainer).
 2. Reply to every review comment: fix it in a new `(review)` commit, or explain why not. You don't need to
    force-push: the PR is squashed on merge.
 3. Merging `master` into your branch to resolve conflicts is fine.
 4. Resolve the threads you addressed and re-request review.
-5. After approval, squash-merge it yourself (check the title, see [Pull requests](#pull-requests)). GitHub deletes
-   the branch.
+5. After approval, maintainers squash-merge their own PRs; a maintainer merges PRs from forks. Check the title before
+   merging (see [Pull requests](#pull-requests)). GitHub deletes the branch.
 
 Reviewers usually look at:
 
-- the change matches the ticket, and nothing unrelated;
+- the change matches the ticket, issue or PR description, and nothing unrelated;
 - public API naming and entry-point exports;
 - keyboard support, ARIA attributes and focus handling;
 - theming through component tokens, in the light and dark themes;

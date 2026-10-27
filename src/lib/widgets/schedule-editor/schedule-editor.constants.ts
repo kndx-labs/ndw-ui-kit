@@ -31,5 +31,3 @@ export const NDWU_NDM_DAY_TO_DAY: Record<number, NdwuDayName> = {
   5: 'fri',
   6: 'sat',
 };
-
-export const NDWU_ANY_DAY = '*';

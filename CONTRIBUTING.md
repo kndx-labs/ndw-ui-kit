@@ -1,6 +1,6 @@
 # Contributing to NDW UI Kit
 
-This guide is for anyone who wants to change `@ndw-ui-kit/core`: fix a bug, add a component, or improve the tooling.
+This guide is for anyone who wants to change `@ndw-ui-kit/core`: fix a bug, add a component or improve the tooling.
 It covers the workflow from an idea to a merged pull request.
 
 - [README.md](README.md): the maintainer reference (scripts, internal agreements, component tokens).
@@ -50,7 +50,7 @@ Outside contributors clone their fork instead. `yarn prepare` installs the Husky
 the git-ignored icon and pictogram sprites in `src/lib/assets/`; without them the playground shows no icons
 (`yarn build` generates them too).
 
-Only maintainers who sync icons from Figma need Figma credentials (API key, file key and node IDs, see
+Only maintainers who sync icons from Figma need Figma credentials (API key, file key and node IDs; see
 [scripts/.env.example](scripts/.env.example)). Ask a maintainer for the file key and node IDs, and put everything in
 `scripts/.env`, which is git-ignored:
 
@@ -153,7 +153,7 @@ Secondary entry points have their own `ng-package.json` and are imported as `@nd
 | `l10n/ngx-translate` | The `@ngx-translate/core` adapter |
 | `popover` | Overlay host, trigger directive, dropdown, tooltip and popover controllers |
 | `table` | The table, its rows, cells, sorting, column resize and pinning, row drag, paginator and toolbar |
-| `utils` | Shared helpers (DOM, coercion, ids, files, breakpoints, size flags) |
+| `utils` | Shared helpers (DOM, coercion, IDs, files, breakpoints, size flags) |
 | `widgets` | Composed widgets: empty state, file upload, schedule editor |
 
 A new component goes to `core/components/<name>/` and is exported from `core/components/index.ts`, unless it belongs
@@ -211,7 +211,7 @@ You don't need to sync for regular work. Two workflows run daily and commit to `
 | [Sync design tokens](.github/workflows/sync-design-tokens.yml) | 06:00 | design tokens and the SVG sources in `scripts/data/icons/`, from the design source repository | `chore(sync): update design tokens` |
 | [Sync icons & pictograms](.github/workflows/sync-icons.yml) | 08:00 | icons and pictograms from Figma | `chore(sync): update icon and pictogram assets` |
 
-To sync by hand (maintainers, needs the Figma credentials in `scripts/.env`):
+To sync by hand (maintainers only; requires the Figma credentials in `scripts/.env`):
 
 ```shell
 yarn sync-figma-icons
@@ -229,7 +229,8 @@ Background: [README internal agreements](README.md#internal-agreements),
 
 Branch off `master`. Maintainers push branches to this repository; outside contributors fork it and open the PR from
 their fork. Name the branch `NDWU-<n>-<slug>` when there is a ticket, for example
-`NDWU-143-fix-listbox-keyboard-handlers`, otherwise a short kebab-case slug such as `fix-listbox-keyboard-handlers`:
+`NDWU-143-fix-listbox-keyboard-handlers`; otherwise, use a short kebab-case slug such as
+`fix-listbox-keyboard-handlers`:
 
 ```shell
 git fetch origin

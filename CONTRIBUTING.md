@@ -69,11 +69,11 @@ yarn start
 It serves at <http://localhost:4200>. Each component has a page at `/component/<name>/<tab>`,
 for example `/component/ndwu-tag/sandbox`. Widgets have pages at `/widget/<name>/<tab>`.
 
-| Command | Localization setup |
-|---|---|
-| `yarn start` | `@ngx-translate/core` (default configuration) |
-| `yarn playground:ngx-translate` | the same, as an explicit `ngx-translate` build configuration |
-| `yarn playground:no-l10n` | no-op translation provider, to check the library without real localization |
+| Command                         | Localization setup                                                         |
+|---------------------------------|----------------------------------------------------------------------------|
+| `yarn start`                    | `@ngx-translate/core` (default configuration)                              |
+| `yarn playground:ngx-translate` | the same, as an explicit `ngx-translate` build configuration               |
+| `yarn playground:no-l10n`       | no-op translation provider, to check the library without real localization |
 
 ### Showcases
 
@@ -107,11 +107,11 @@ Add or update specs for new logic and bug fixes.
 
 ## Code requirements
 
-| Tool | Checks | Command | Config |
-|---|---|---|---|
-| dprint | formatting of `src/**/*.ts`, `scripts/**/*.ts` | `yarn fmt` | [dprint.json](dprint.json) |
-| ESLint | TypeScript and `*.component.html` templates | `yarn lint:ts` | [eslint.config.js](eslint.config.js) |
-| Stylelint | `src/**/*.scss` (relaxed for the playground) | `yarn lint:styles` | [.stylelintrc.js](.stylelintrc.js) |
+| Tool      | Checks                                         | Command            | Config                               |
+|-----------|------------------------------------------------|--------------------|--------------------------------------|
+| dprint    | formatting of `src/**/*.ts`, `scripts/**/*.ts` | `yarn fmt`         | [dprint.json](dprint.json)           |
+| ESLint    | TypeScript and `*.component.html` templates    | `yarn lint:ts`     | [eslint.config.js](eslint.config.js) |
+| Stylelint | `src/**/*.scss` (relaxed for the playground)   | `yarn lint:styles` | [.stylelintrc.js](.stylelintrc.js)   |
 
 ```shell
 yarn lint-all      # ESLint + Stylelint, reports only
@@ -125,36 +125,36 @@ Follow the conventions in [CODESTYLE.md](docs/codestyle/CODESTYLE.md), [NAMING.m
 
 Where things go:
 
-| Path | Contents |
-|---|---|
-| `src/lib` | The library, see below |
-| `src/playground` | The playground app |
-| `scripts` | tsx scripts for codegen, sprites and publishing |
-| `docs` | Codestyle, ADRs and RFCs |
+| Path             | Contents                                        |
+|------------------|-------------------------------------------------|
+| `src/lib`        | The library, see below                          |
+| `src/playground` | The playground app                              |
+| `scripts`        | tsx scripts for codegen, sprites and publishing |
+| `docs`           | Codestyle, ADRs and RFCs                        |
 
 Inside `src/lib`, the root entry point (`@ndw-ui-kit/core`) is made of:
 
-| Path | Contents |
-|---|---|
+| Path               | Contents                                                                                                                                                                                                       |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `core/components/` | One folder per component. `core/components/popover/` is the popover component and `core/components/form-field/` is the visual field frame; don't confuse them with the `popover` and `form-field` entry points |
-| `core/directives/` | Shared directives (size, adaptive size, resize observer) |
-| `core/tokens/` | Angular DI tokens |
-| `styles/` | SCSS mixins, themes, colors, typography and spacing tokens |
-| `assets/` | Fonts and the generated, git-ignored sprites |
-| root files | `public-api.ts`, `options.ts`, `shared.types.ts`, `pictogram-presets.ts`; generated `icon-names.ts`, `icon-names.base.ts`, `pictogram-names.ts`; hand-edited `icon-names.base.manual.ts` |
+| `core/directives/` | Shared directives (size, adaptive size, resize observer)                                                                                                                                                       |
+| `core/tokens/`     | Angular DI tokens                                                                                                                                                                                              |
+| `styles/`          | SCSS mixins, themes, colors, typography and spacing tokens                                                                                                                                                     |
+| `assets/`          | Fonts and the generated, git-ignored sprites                                                                                                                                                                   |
+| root files         | `public-api.ts`, `options.ts`, `shared.types.ts`, `pictogram-presets.ts`; generated `icon-names.ts`, `icon-names.base.ts`, `pictogram-names.ts`; hand-edited `icon-names.base.manual.ts`                       |
 
 Secondary entry points have their own `ng-package.json` and are imported as `@ndw-ui-kit/core/<entry>`:
 
-| Entry point | Contents |
-|---|---|
-| `aria` | Headless combobox and listbox directives |
-| `form-field` | `components/` (form-control wrappers such as `input-field`, `select-field`, plus `helper-message`), `classes/` (wrapper base classes), `validation/` |
-| `l10n` | Localization pipes (`localize`, `localizeHtml`, `localizeIf`), providers and the translation service |
-| `l10n/ngx-translate` | The `@ngx-translate/core` adapter |
-| `popover` | Overlay host, trigger directive, dropdown, tooltip and popover controllers |
-| `table` | The table, its rows, cells, sorting, column resize and pinning, row drag, paginator and toolbar |
-| `utils` | Shared helpers (DOM, coercion, IDs, files, breakpoints, size flags) |
-| `widgets` | Composed widgets: empty state, file upload, schedule editor |
+| Entry point          | Contents                                                                                                                                             |
+|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `aria`               | Headless combobox and listbox directives                                                                                                             |
+| `form-field`         | `components/` (form-control wrappers such as `input-field`, `select-field`, plus `helper-message`), `classes/` (wrapper base classes), `validation/` |
+| `l10n`               | Localization pipes (`localize`, `localizeHtml`, `localizeIf`), providers and the translation service                                                 |
+| `l10n/ngx-translate` | The `@ngx-translate/core` adapter                                                                                                                    |
+| `popover`            | Overlay host, trigger directive, dropdown, tooltip and popover controllers                                                                           |
+| `table`              | The table, its rows, cells, sorting, column resize and pinning, row drag, paginator and toolbar                                                      |
+| `utils`              | Shared helpers (DOM, coercion, IDs, files, breakpoints, size flags)                                                                                  |
+| `widgets`            | Composed widgets: empty state, file upload, schedule editor                                                                                          |
 
 A new component goes to `core/components/<name>/` and is exported from `core/components/index.ts`, unless it belongs
 to `table` or `widgets`; its form wrapper goes to `form-field/components/<name>-field/`.
@@ -206,10 +206,10 @@ Icons needed at runtime that the scan can't detect, such as a fallback icon, go 
 
 You don't need to sync for regular work. Two workflows run daily and commit to `master`:
 
-| Workflow | Time (UTC) | Updates | Commit |
-|---|---|---|---|
-| [Sync design tokens](.github/workflows/sync-design-tokens.yml) | 06:00 | design tokens and the SVG sources in `scripts/data/icons/`, from the design source repository | `chore(sync): update design tokens` |
-| [Sync icons & pictograms](.github/workflows/sync-icons.yml) | 08:00 | icons and pictograms from Figma | `chore(sync): update icon and pictogram assets` |
+| Workflow                                                       | Time (UTC) | Updates                                                                                       | Commit                                          |
+|----------------------------------------------------------------|------------|-----------------------------------------------------------------------------------------------|-------------------------------------------------|
+| [Sync design tokens](.github/workflows/sync-design-tokens.yml) | 06:00      | design tokens and the SVG sources in `scripts/data/icons/`, from the design source repository | `chore(sync): update design tokens`             |
+| [Sync icons & pictograms](.github/workflows/sync-icons.yml)    | 08:00      | icons and pictograms from Figma                                                               | `chore(sync): update icon and pictogram assets` |
 
 To sync by hand (maintainers only; requires the Figma credentials in `scripts/.env`):
 
@@ -243,14 +243,14 @@ Commits on your branch use `(type) scope: summary`, with `(NDWU-<n>)` at the end
 is the path you changed, for example `lib/core/tag` or `playground/tag`. List several siblings in braces:
 `lib/core/{checkbox, radio, toggle}`. Write the summary in the imperative mood and in lowercase.
 
-| Type | Use for |
-|---|---|
-| `task` | Feature work |
-| `fix` | A bug fix |
-| `ref` | A refactoring without behavior change |
-| `chore` | Tooling, config, dependencies, cleanup, playground and small tweaks |
-| `docs` | Documentation |
-| `review` | Changes that answer PR feedback |
+| Type     | Use for                                                             |
+|----------|---------------------------------------------------------------------|
+| `task`   | Feature work                                                        |
+| `fix`    | A bug fix                                                           |
+| `ref`    | A refactoring without behavior change                               |
+| `chore`  | Tooling, config, dependencies, cleanup, playground and small tweaks |
+| `docs`   | Documentation                                                       |
+| `review` | Changes that answer PR feedback                                     |
 
 Real examples from PR #31:
 
@@ -280,13 +280,13 @@ that the title matches the PR title and has no `(type)`.
 
 Keep one concern per PR. A suggested structure for the description (skip empty sections):
 
-| Section | Content |
-|---|---|
-| `## Summary` | What problem this solves and how |
-| `## Changes` | What changed, grouped by area |
-| `## Breaking changes` | What breaks for consumers and how to migrate |
-| `## Verification` | Commands you ran, the playground page to check (for example `/component/ndwu-tag/sandbox`), screenshots for visual changes |
-| `## Notes` | Limitations, follow-ups |
+| Section               | Content                                                                                                                    |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `## Summary`          | What problem this solves and how                                                                                           |
+| `## Changes`          | What changed, grouped by area                                                                                              |
+| `## Breaking changes` | What breaks for consumers and how to migrate                                                                               |
+| `## Verification`     | Commands you ran, the playground page to check (for example `/component/ndwu-tag/sandbox`), screenshots for visual changes |
+| `## Notes`            | Limitations, follow-ups                                                                                                    |
 
 Don't edit `src/lib/CHANGELOG.md`. Maintainers write it at release time from PR descriptions, so list every
 breaking change in yours.

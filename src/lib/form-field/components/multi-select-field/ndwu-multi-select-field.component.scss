@@ -1,6 +1,8 @@
 @use 'styles/mixins';
 @use 'styles/padding';
 
+$close-btn-offset: 2px;
+
 .ndwu-multi-select-field__trigger {
   display: flex;
   gap: 8px;
@@ -64,13 +66,8 @@
 }
 
 .ndwu-multi-select-field__panel-close {
-  display: flex;
   flex-shrink: 0;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
+  margin-right: -$close-btn-offset;
 }
 
 .ndwu-multi-select-field__footer {

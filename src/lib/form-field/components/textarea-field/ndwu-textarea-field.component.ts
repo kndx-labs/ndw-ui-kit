@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnInit,
   booleanAttribute,
@@ -18,7 +17,7 @@ import {
   NdwuTextareaComponent,
 } from '@ndw-ui-kit/core';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
-import {FormFieldBase} from '../../classes/form-field-base';
+import {NdwuFormFieldBase} from '../../classes/form-field-base';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 
 @Component({
@@ -37,8 +36,7 @@ import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.
     inputs: ['ndwuSize: size'],
   }],
 })
-export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements OnInit {
-  protected readonly cdr = inject(ChangeDetectorRef);
+export class NdwuTextareaFieldComponent extends NdwuFormFieldBase<string> implements OnInit {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   public readonly label = input<string>('');
@@ -75,12 +73,6 @@ export class NdwuTextareaFieldComponent extends FormFieldBase<string> implements
 
     super.writeValue(normalized);
     this.textarea()?.setValue(normalized);
-    this.cdr.markForCheck();
-  }
-
-  public override setDisabledState(isDisabled: boolean): void {
-    super.setDisabledState(isDisabled);
-    this.cdr.markForCheck();
   }
 
   public onBlur(): void {

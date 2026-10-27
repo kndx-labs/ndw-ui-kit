@@ -14,7 +14,7 @@ import {
 import {NdwuHelperMessageComponent, NdwuInputFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {EMAIL_VALIDATOR, ERROR_KEY, VALIDATION_REGEXES} from '@app/validation';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 @Component({
   selector: 'app-input-overview',
@@ -33,7 +33,7 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
     NdwuSuffixDirective,
     NdwuHelperMessageComponent,
     NdwuIconComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
   ],
 })

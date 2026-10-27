@@ -4,9 +4,6 @@
       "overview": "Overview",
       "sandbox": "Sandbox"
     },
-    "overview": {
-      "styled-html-text": "Status: <span style=\"display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;\"></span> <b>online</b>"
-    },
     "sandbox": {
       "text": "Text",
       "max-width": "Max Width",
@@ -18,6 +15,11 @@
       "tokens": "Tokens",
       "inherit": "Inherit",
       "preview-text": "Hover over me"
+    },
+    "overview": {
+      "shared-click-description": "Click a cell to open the tooltip. One tooltip is shared by all cells: clicking another cell (or moving with arrow keys) moves it there without closing. Closes on Escape or when focus leaves.",
+      "shared-pointer-description": "The tooltip appears as soon as the pointer enters the strip, follows the mouse and shows the data of the cell under it. Keyboard focus anchors it to the focused cell instead.",
+      "styled-html-text": "Status: <span style=\"display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;\"></span> <b>online</b>"
     }
   }
 }

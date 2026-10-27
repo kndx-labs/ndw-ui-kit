@@ -12,7 +12,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NDWU_SIZE, type NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {parseTextareaOptions} from '@app/utils';
 import {STRETCH_WIDTH_VALUE, SandboxToolbarComponent} from '@app/components';
 import type {SandboxTheme} from '@app/lib-component-showcase/component-showcase.types';
@@ -27,7 +27,7 @@ const DEFAULT_OPTIONS_TEXT = 'Germany\nSwitzerland\nAustria\nFrance\nItaly';
   imports: [
     ReactiveFormsModule,
     NdwuSelectFieldComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     SandboxToolbarComponent,
   ],
 })

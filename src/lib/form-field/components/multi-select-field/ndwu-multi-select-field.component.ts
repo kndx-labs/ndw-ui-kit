@@ -1,4 +1,14 @@
-import {Component, booleanAttribute, computed, contentChild, inject, input, signal, viewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  booleanAttribute,
+  computed,
+  contentChild,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import {NgTemplateOutlet} from '@angular/common';
 import {
   NDWU_ICON_NAME,
@@ -12,6 +22,7 @@ import {
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
   NdwuHintDirective,
+  NdwuIconButtonComponent,
   NdwuIconComponent,
   type NdwuOption,
   type NdwuOptionAdapter,
@@ -30,23 +41,24 @@ import {
   NdwuComboboxInputDirective,
   NdwuComboboxPopoverBridgeDirective,
 } from '@ndw-ui-kit/core/aria';
-import {LocalizeIfPipe, LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizeIfPipe, NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 import {
   type NdwuMultiSelectDisplayContext,
   NdwuMultiSelectDisplayDirective,
 } from './ndwu-multi-select-display.directive';
-import {SelectFieldBase} from '../../classes/select-field-base.directive';
+import {NdwuSelectFieldBase} from '../../classes/select-field-base.directive';
 import {type NdwuSelectRenderRow, buildSelectRenderRows} from '../../classes/select-render';
 
 @Component({
   selector: 'ndwu-multi-select-field',
   templateUrl: './ndwu-multi-select-field.component.html',
   styleUrl: './ndwu-multi-select-field.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizeIfPipe,
-    LocalizePipe,
+    NdwuLocalizeIfPipe,
+    NdwuLocalizePipe,
     NdwuButtonBaseDirective,
     NdwuCheckboxComponent,
     NdwuComboboxDirective,
@@ -58,6 +70,7 @@ import {type NdwuSelectRenderRow, buildSelectRenderRows} from '../../classes/sel
     NdwuFormFieldComponent,
     NdwuHelperMessageComponent,
     NdwuHintDirective,
+    NdwuIconButtonComponent,
     NdwuIconComponent,
     NdwuPanelFooterDirective,
     NdwuPanelHeaderDirective,
@@ -73,7 +86,7 @@ import {type NdwuSelectRenderRow, buildSelectRenderRows} from '../../classes/sel
     inputs: ['ndwuSize: size'],
   }],
 })
-export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends SelectFieldBase<(string | number)[]>
+export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends NdwuSelectFieldBase<(string | number)[]>
   implements NdwuControl {
   protected readonly ICON_NAME = NDWU_ICON_NAME;
   protected readonly displayTemplate = contentChild(NdwuMultiSelectDisplayDirective);

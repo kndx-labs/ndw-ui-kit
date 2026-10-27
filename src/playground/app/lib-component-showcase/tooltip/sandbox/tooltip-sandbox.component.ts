@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, ElementRef, inject, signal, viewChil
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {OverlayContainer} from '@angular/cdk/overlay';
 import {NdwuButtonComponent, NdwuPopoverAlign, NdwuTooltipDirective} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuTooltipPosition} from '@ndw-ui-kit/core/popover';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';
@@ -23,7 +23,7 @@ const DEFAULT_TEXT = 'Hover over me to see tooltip';
   styleUrl: './tooltip-sandbox.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuButtonComponent,
     NdwuTooltipDirective,
     ReactiveFormsModule,

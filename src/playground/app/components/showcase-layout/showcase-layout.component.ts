@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, TemplateRef, contentChild, input, signal} from '@angular/core';
 import {NdwuTheme} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 // noinspection ES6PreferShortImport
 import {ThemeSwitcherComponent} from '../theme-switcher/theme-switcher.component';
 
@@ -17,7 +17,7 @@ export interface ShowcaseLayoutContext {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
   ],
 })

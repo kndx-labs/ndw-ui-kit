@@ -60,12 +60,13 @@
         <div ndwuPanelHeader class="ndwu-multi-select-field__panel-header">
           <span class="ndwu-multi-select-field__panel-label">{{ label() | localize }}</span>
           <button
-            type="button"
+            ndwuIconButton
+            variant="flat"
+            [icon]="ICON_NAME.CLOSE_S"
             [attr.aria-label]="closeButtonAriaLabel() | localize"
             class="ndwu-multi-select-field__panel-close"
             (click)="closePanel()"
           >
-            <ndwu-icon [name]="ICON_NAME.CLOSE_S"/>
           </button>
         </div>
       }

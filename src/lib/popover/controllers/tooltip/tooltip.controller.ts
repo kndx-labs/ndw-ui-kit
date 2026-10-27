@@ -1,10 +1,27 @@
 import {ElementRef, Injector} from '@angular/core';
-import {type ConnectedPosition, Overlay, type OverlayRef} from '@angular/cdk/overlay';
+import {
+  type ConnectedPosition,
+  type FlexibleConnectedPositionStrategy,
+  Overlay,
+  type OverlayRef,
+} from '@angular/cdk/overlay';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {NdwuPopoverController} from '../../ndwu-popover-controller';
 import {HANDSET_BREAKPOINT, applyThemeClass, detectThemeClass, normalizeClass} from '@ndw-ui-kit/core/utils';
-import type {NdwuPopoverAlign, NdwuPopoverConfig, NdwuPopoverSide, NdwuTooltipPosition} from '../../ndwu-popover.types';
-import {VIEWPORT_MARGIN, buildConnectedPosition, registerOverlayScroll} from '../../overlay-utils';
+import type {
+  NdwuPopoverAlign,
+  NdwuPopoverConfig,
+  NdwuPopoverOrigin,
+  NdwuPopoverSide,
+  NdwuTooltipPosition,
+} from '../../ndwu-popover.types';
+import {
+  VIEWPORT_MARGIN,
+  buildConnectedPosition,
+  registerOverlayScroll,
+  resolveConnectedOrigin,
+  toConnectedOrigin,
+} from '../../overlay-utils';
 
 const MOBILE_VIEWPORT_MARGIN = 16;
 
@@ -30,11 +47,17 @@ function buildPositions(preferred: NdwuTooltipPosition, align: NdwuPopoverAlign)
 /**
  * Lightweight overlay controller for tooltips. Uses flexibleConnectedTo with preferred positions.
  * No backdrop, no mobile bottom-sheet — tooltips always float near the trigger.
+ *
+ * The overlay can be anchored to an external origin (`originElement`/`originPoint` in the config)
+ * and re-anchored while open via `setOrigin()`, so one trigger can serve many targets.
+ * `controllerConfig.restoreFocus: false` stops `close()` and Escape from focusing the trigger.
  */
 export class NdwuTooltipController extends NdwuPopoverController {
   protected readonly breakpointObserver: BreakpointObserver;
 
   private resizeObserver: ResizeObserver | null = null;
+  private positionStrategy: FlexibleConnectedPositionStrategy | null = null;
+  private restoreFocus = true;
 
   constructor(
     protected readonly overlay: Overlay,
@@ -49,6 +72,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
   }
 
   public override open(config: NdwuPopoverConfig): void {
+    this.restoreFocus = config.controllerConfig?.['restoreFocus'] !== false;
     this.overlayRef = this.createOverlay(config);
 
     this.attachPortal(config, this.injector);
@@ -80,7 +104,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
 
     this.dispose();
 
-    if (options?.focusOrigin !== false) {
+    if (options?.focusOrigin !== false && this.restoreFocus) {
       this.elementRef.nativeElement.focus();
     }
   }
@@ -90,6 +114,16 @@ export class NdwuTooltipController extends NdwuPopoverController {
     this.disconnectResizeObserver();
     this.overlayRef?.dispose();
     this.overlayRef = null;
+    this.positionStrategy = null;
+  }
+
+  public override setOrigin(origin: NdwuPopoverOrigin): void {
+    if (this.overlayRef === null || this.positionStrategy === null) {
+      return;
+    }
+
+    this.positionStrategy.setOrigin(toConnectedOrigin(origin));
+    this.overlayRef.updatePosition();
   }
 
   public override getOverlayElement(): HTMLElement | null {
@@ -105,11 +139,13 @@ export class NdwuTooltipController extends NdwuPopoverController {
 
     const positionStrategy = this.overlay
       .position()
-      .flexibleConnectedTo(this.elementRef)
+      .flexibleConnectedTo(resolveConnectedOrigin(config, this.elementRef))
       .withPositions(buildPositions(tooltipPosition ?? 'auto', tooltipAlign ?? 'center'))
       .withViewportMargin(viewportMargin)
       .withFlexibleDimensions(false)
       .withPush(true);
+
+    this.positionStrategy = positionStrategy;
 
     const scrollStrategy = this.overlay.scrollStrategies.reposition();
     const panelClass = normalizeClass(config.panelClass, 'ndwu-tooltip');
@@ -132,6 +168,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
     this.scrollUnregister?.();
     this.disconnectResizeObserver();
     this.overlayRef = null;
+    this.positionStrategy = null;
     this.onOverlayDetached();
   }
 
@@ -158,7 +195,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
   }
 }
 
-export function createTooltipController(
+export function ndwuCreateTooltipController(
   elementRef: ElementRef<HTMLElement>,
   injector: Injector,
   onDetached: () => void,

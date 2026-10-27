@@ -1,1 +1,1 @@
-export {createDropdownController, NdwuDropdownController} from './dropdown.controller';
+export {ndwuCreateDropdownController, NdwuDropdownController} from './dropdown.controller';

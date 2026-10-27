@@ -210,6 +210,8 @@ export class MyComponent {
 ### Component Configuration
 
 - **Change detection:** always use `ChangeDetectionStrategy.OnPush`.
+  An exception uses `ChangeDetectionStrategy.Default` with
+  `// eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection -- <reason>`.
 - **Standalone:** components are standalone (no NgModules);
   dependencies go in the `imports` array.
 - **Selector prefix:** `ndwu` for library components,

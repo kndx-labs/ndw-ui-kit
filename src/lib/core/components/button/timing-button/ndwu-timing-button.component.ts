@@ -14,7 +14,7 @@ import {
   untracked,
 } from '@angular/core';
 
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuIconName} from '../../../../icon-names';
 import {NDWU_SIZE} from '../../../../shared.types';
 import {NdwuSizeDirective} from '../../../directives';
@@ -37,7 +37,7 @@ export type NdwuTimerEndReason = 'user' | 'timeout';
   styleUrl: './ndwu-timing-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuIconComponent,
     NdwuSpokesLoaderComponent,
   ],

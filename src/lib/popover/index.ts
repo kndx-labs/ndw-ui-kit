@@ -6,3 +6,4 @@ export * from './ndwu-popover-trigger.directive';
 export * from './ndwu-popover.tokens';
 export * from './ndwu-popover.types';
 export * from './overlay-utils';
+export * from './deprecated';

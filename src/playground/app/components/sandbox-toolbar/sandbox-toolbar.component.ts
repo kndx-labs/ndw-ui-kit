@@ -12,7 +12,7 @@ import {
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {map} from 'rxjs';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 // noinspection ES6PreferShortImport
 import {ThemeSwitcherComponent} from '../theme-switcher/theme-switcher.component';
 
@@ -31,7 +31,7 @@ export const STRETCH_WIDTH_VALUE = '100%';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ThemeSwitcherComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
   ],
 })
 export class SandboxToolbarComponent {

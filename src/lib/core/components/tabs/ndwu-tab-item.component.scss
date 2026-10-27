@@ -1,4 +1,5 @@
 @use 'sass:list';
+@use 'styles/fonts' as fonts;
 @use 'styles/typography' as typography;
 @use 'styles/spacing' as spacing;
 @use 'styles/animations' as animations;
@@ -30,7 +31,7 @@ $sizes: (
   align-items: center;
   box-sizing: border-box;
   font-weight: typography.$fontWeight-L;
-  font-family: inherit;
+  font-family: fonts.$font-family;
   white-space: nowrap;
   cursor: pointer;
   user-select: none;

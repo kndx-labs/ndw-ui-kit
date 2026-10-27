@@ -4,7 +4,7 @@ import {CDK_ROW_TEMPLATE, CdkCellOutlet, CdkFooterRow} from '@angular/cdk/table'
 @Component({
   selector: 'ndwu-footer-row, tr[ndwu-footer-row]',
   template: CDK_ROW_TEMPLATE,
-  // Not OnPush: the CDK renders rows imperatively, and OnPush blocks their cells.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection -- CDK renders rows imperatively; OnPush blocks their cells
   changeDetection: ChangeDetectionStrategy.Default,
   providers: [{
     provide: CdkFooterRow,

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input, output} from '@angular/core';
 import {NDWU_ICON_NAME, NdwuIconComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
 const DEFAULT_COLUMN_PIN_TEXTS = {
@@ -15,7 +15,7 @@ const DEFAULT_COLUMN_PIN_TEXTS = {
   templateUrl: './ndwu-column-pin.component.html',
   styleUrl: './ndwu-column-pin.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NdwuIconComponent, LocalizePipe],
+  imports: [NdwuIconComponent, NdwuLocalizePipe],
   hostDirectives: [{
     directive: NdwuSizeDirective,
     inputs: ['ndwuSize: size'],

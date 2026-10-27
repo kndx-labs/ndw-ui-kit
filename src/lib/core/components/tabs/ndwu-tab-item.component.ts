@@ -3,7 +3,7 @@ import {type NdwuIconName} from '../../../icon-names';
 import {NDWU_SIZE, type NdwuSize} from '../../../shared.types';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NdwuBadgeComponent, type NdwuBadgeTone} from '../badge/ndwu-badge.component';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {type NdwuTabWidthMode} from './ndwu-tabs.types';
 
 @Component({
@@ -12,7 +12,7 @@ import {type NdwuTabWidthMode} from './ndwu-tabs.types';
   templateUrl: './ndwu-tab-item.component.html',
   styleUrl: './ndwu-tab-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NdwuIconComponent, NdwuBadgeComponent, LocalizePipe],
+  imports: [NdwuIconComponent, NdwuBadgeComponent, NdwuLocalizePipe],
   host: {
     '[class]': 'hostClass()',
     '[attr.aria-selected]': 'selected()',

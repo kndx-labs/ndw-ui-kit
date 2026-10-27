@@ -8,7 +8,7 @@ import {
   NdwuCheckboxComponent,
   NdwuToggleComponent,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 interface AccordionExampleItem {
@@ -30,7 +30,7 @@ interface AccordionExampleItem {
     NdwuBadgeComponent,
     NdwuCheckboxComponent,
     NdwuToggleComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
   ],
 })

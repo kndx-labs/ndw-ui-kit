@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_ICON_NAME, NDWU_SIZE, type NdwuIconName, type NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuInputFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {STRETCH_WIDTH_VALUE, SandboxToolbarComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {SIZE_OPTIONS} from '../input-showcase.constants';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -32,7 +32,7 @@ interface TokenPickerValues extends Record<string, string> {
     CommonModule,
     ReactiveFormsModule,
     NdwuInputFieldComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     SandboxToolbarComponent,
     TokenListComponent,
   ],

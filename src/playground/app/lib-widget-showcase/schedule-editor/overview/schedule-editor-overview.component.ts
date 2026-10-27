@@ -11,7 +11,7 @@ import {
   ndwuScheduleValueToActions,
 } from '@ndw-ui-kit/core/widgets';
 import {NdwuScheduleEditorFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe, UiKitTranslationService} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe, NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 const SAMPLE_VALUE: NdwuScheduleValue = {
@@ -55,11 +55,11 @@ const WEEKDAY_KEYS: Record<NdwuDayName, string> = {
     FormsModule,
     NdwuScheduleEditorFieldComponent,
     ShowcaseLayoutComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
   ],
 })
 export class ScheduleEditorOverviewComponent {
-  private readonly translationService = inject(UiKitTranslationService);
+  private readonly translationService = inject(NdwuTranslationService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   public scheduleValue: NdwuScheduleValue = {...SAMPLE_VALUE};

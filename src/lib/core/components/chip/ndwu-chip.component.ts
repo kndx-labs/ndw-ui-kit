@@ -11,7 +11,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NDWU_SIZE, type NdwuValues} from '../../../shared.types';
 import {NdwuIconName} from '../../../icon-names';
 import {NdwuSizeDirective} from '../../directives';
@@ -40,7 +40,7 @@ const LOADER_PARAMS = {
   styleUrl: './ndwu-chip.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuIconComponent,
     NdwuSpokesLoaderComponent,
   ],

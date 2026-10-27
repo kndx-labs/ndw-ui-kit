@@ -9,7 +9,7 @@ import {
   NdwuTabsComponent,
   type NdwuTabsScrollMode,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent} from '@app/components';
 
 @Component({
@@ -20,7 +20,7 @@ import {ThemeSwitcherComponent} from '@app/components';
   imports: [
     ReactiveFormsModule,
     NdwuTabsComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
   ],
 })

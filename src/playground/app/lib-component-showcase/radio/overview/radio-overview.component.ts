@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NDWU_SIZE, NdwuButtonComponent, NdwuRadioButtonComponent, NdwuRadioGroupComponent} from '@ndw-ui-kit/core';
 import {NdwuRadioFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent, ToastComponent} from '@app/components';
 
 @Component({
@@ -16,7 +16,7 @@ import {ShowcaseLayoutComponent, ToastComponent} from '@app/components';
     NdwuRadioButtonComponent,
     NdwuRadioFieldComponent,
     NdwuButtonComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
     ToastComponent,
   ],

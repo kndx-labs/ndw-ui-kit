@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastModified": "2026-09-25T15:00:41.702Z",
+  "lastModified": "2026-10-09T15:01:00.308Z",
   "collections": [
     {
       "id": "VariableCollectionId:2385:3263",
@@ -5487,10 +5487,23 @@
         "VariableID:13150:13493",
         "VariableID:13150:13491",
         "VariableID:13150:13492",
+        "VariableID:18171:1515",
         "VariableID:13150:13498",
         "VariableID:14888:14756",
         "VariableID:17741:6139",
-        "VariableID:17741:6140"
+        "VariableID:17741:6140",
+        "VariableID:18163:1503",
+        "VariableID:18163:1504",
+        "VariableID:18163:1505",
+        "VariableID:18163:1506",
+        "VariableID:18163:1507",
+        "VariableID:18163:1508",
+        "VariableID:18163:1509",
+        "VariableID:18166:1510",
+        "VariableID:18166:1511",
+        "VariableID:18166:1512",
+        "VariableID:18166:1513",
+        "VariableID:18166:1514"
       ],
       "variables": [
         {
@@ -5959,6 +5972,23 @@
           "variableCollectionId": "VariableCollectionId:9412:5199"
         },
         {
+          "id": "VariableID:18171:1515",
+          "name": "global/paragraphSpacing/global-paragraphSpacing-code",
+          "description": "",
+          "key": "67ebdf7ffdb3af8840051330a05c69a9b97a6e18",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 12,
+            "9414:1": 12
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
           "id": "VariableID:13150:13498",
           "name": "global/paragraphSpacing/global-paragraphSpacing-xxsmall",
           "description": "",
@@ -6036,6 +6066,210 @@
               "type": "VARIABLE_ALIAS",
               "id": "VariableID:9414:5213"
             }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18163:1503",
+          "name": "global/lineHeight/global-lineHeight-H1",
+          "description": "",
+          "key": "d9783d1995d468c1867a612fb28e67d456e134a2",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 47,
+            "9414:1": 40
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18163:1504",
+          "name": "global/lineHeight/global-lineHeight-H2",
+          "description": "",
+          "key": "87aa07b1bf6a7b0d8f24a0027ca8a720b0d9957a",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 38,
+            "9414:1": 33
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18163:1505",
+          "name": "global/lineHeight/global-lineHeight-H3",
+          "description": "",
+          "key": "9a88a549d6ef54bb6e9fda987aed3e3c6ba28101",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 34,
+            "9414:1": 28
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18163:1506",
+          "name": "global/lineHeight/global-lineHeight-H4",
+          "description": "",
+          "key": "62a942850dfdc9ae62e79208af66b8a55dd3afec",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 27,
+            "9414:1": 25
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18163:1507",
+          "name": "global/lineHeight/global-lineHeight-H5",
+          "description": "",
+          "key": "119759fa5d17b3179e933490a6d4529f88960a40",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 23,
+            "9414:1": 23
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18163:1508",
+          "name": "global/lineHeight/global-lineHeight-H6",
+          "description": "",
+          "key": "fc053458b7a4acb9a1a25fc02423c90f2ae09258",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 20,
+            "9414:1": 18
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18163:1509",
+          "name": "global/lineHeight/global-lineHeight-H7",
+          "description": "",
+          "key": "41ccc658c4491a21372d637d0d9d413055b3bb54",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 17,
+            "9414:1": 17
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18166:1510",
+          "name": "global/lineHeight/global-lineHeight-medium",
+          "description": "",
+          "key": "c00cd2e2e19cd49b5c635d0d6f9f9b2ee53aadfd",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 24,
+            "9414:1": 24
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18166:1511",
+          "name": "global/lineHeight/global-lineHeight-small",
+          "description": "",
+          "key": "7605d21245f698e2c75593a10b293669c75e2620",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 23,
+            "9414:1": 21
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18166:1512",
+          "name": "global/lineHeight/global-lineHeight-xsmall",
+          "description": "",
+          "key": "49c826214df6221ae4e8fc820b83020c98adfe13",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 17,
+            "9414:1": 17
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18166:1513",
+          "name": "global/lineHeight/global-lineHeight-code",
+          "description": "",
+          "key": "c6d67bd5ad2be45fe6ad89dc6975bd3ba83e0de6",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 17,
+            "9414:1": 17
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:9412:5199"
+        },
+        {
+          "id": "VariableID:18166:1514",
+          "name": "global/lineHeight/global-lineHeight-xxsmall",
+          "description": "",
+          "key": "398aa0e05a62b910664e16dd549794060f2226ea",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "9412:0": 17,
+            "9414:1": 17
           },
           "scopes": [
             "ALL_SCOPES"

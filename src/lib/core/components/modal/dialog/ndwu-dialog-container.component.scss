@@ -1,11 +1,17 @@
 @use 'styles/colors';
+@use 'styles/fonts';
 @use 'styles/mixins';
 @use 'styles/spacing';
 @use 'styles/radius';
 @use 'styles/typography';
 @use '../ndwu-modal-mixins' as modal;
 
+$close-btn-offset: 2px;
+
 :host {
+  font-family: fonts.$font-family;
+
+  /* stylelint-disable-next-line order/order */
   @include mixins.mobile() {
     display: flex;
     flex-direction: column;
@@ -107,8 +113,14 @@
     }
     /* stylelint-enable plugin/no-unsupported-browser-features */
 
+    &__title {
+      line-height: 28px;
+      letter-spacing: typography.$letterSpacing-S;
+    }
+
     &__close-btn {
-      top: spacing.$spacing-24;
+      top: spacing.$spacing-24 + $close-btn-offset;
+      right: spacing.$spacing-24 - $close-btn-offset;
     }
 
     &__footer.ndwu-modal__actions {

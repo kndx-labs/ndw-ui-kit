@@ -3,7 +3,6 @@
   class="ndwu-drawer"
   [class.ndwu-drawer--xxl]="isXxl"
   [cdkTrapFocus]="trapFocus()"
-  [cdkTrapFocusAutoCapture]="trapFocus() && !isLoading()"
   [attr.aria-busy]="isLoading()"
   role="dialog"
   aria-modal="true"
@@ -99,7 +98,7 @@
       ndwuIconButton
       class="ndwu-drawer__close-btn"
       variant="flat"
-      [icon]="ICON_NAME.CLOSE_L"
+      [icon]="closeIcon()"
       [disabled]="isCloseButtonDisabled()"
       [attr.aria-label]="closeButtonAriaLabel()"
       (click)="handleClose()"

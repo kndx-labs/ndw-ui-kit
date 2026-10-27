@@ -5,7 +5,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {filter} from 'rxjs';
 import {NDWU_ICON_NAME, NdwuIconComponent, NdwuModalService, NdwuScrollbarComponent} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {IndexPageComponent, InteractionDebugPanelComponent} from '@app/components';
 import {DebugSettingsDialogComponent} from '@app/components/debug-settings-dialog/debug-settings-dialog.component';
 import {NdwuSearchComponent, SearchItem} from '@app/components/search/ndwu-search.component';
@@ -38,7 +38,7 @@ import {
     ExampleShowcaseComponent,
     IndexPageComponent,
     InteractionDebugPanelComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuIconComponent,
     NdwuScrollbarComponent,
     RouterModule,

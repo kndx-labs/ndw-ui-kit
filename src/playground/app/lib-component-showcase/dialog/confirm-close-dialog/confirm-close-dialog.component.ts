@@ -8,7 +8,7 @@ import {
   NdwuModalRef,
   NdwuModalService,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 @Component({
   selector: 'app-confirm-close-dialog',
@@ -19,7 +19,7 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
     NdwuButtonComponent,
     NdwuModalActionsDirective,
     NdwuModalFooterDirective,
-    LocalizePipe,
+    NdwuLocalizePipe,
   ],
 })
 export class ConfirmCloseDialogComponent implements OnInit {
@@ -40,8 +40,12 @@ export class ConfirmCloseDialogComponent implements OnInit {
               subscriber.complete();
             });
 
+          // Teardown runs on completion and on cancellation (parent closed
+          // with `close()`). After a normal answer the confirm is already
+          // closed and this `close()` is a no-op.
           return () => {
             subscription.unsubscribe();
+            confirmModalRef.close();
           };
         }),
     );

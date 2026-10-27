@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input} from '@angular/core';
 import {NdwuSize} from '../../../shared.types';
 import {NdwuSizeDirective} from '../../directives';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 @Component({
   selector: 'ndwu-label-group',
@@ -9,7 +9,7 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
   styleUrl: './ndwu-label-group.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
   ],
   hostDirectives: [{
     directive: NdwuSizeDirective,

@@ -1,4 +1,9 @@
+@use 'styles/fonts';
 @use 'styles/spacing';
+
+:host {
+  font-family: fonts.$font-family;
+}
 
 .ndwu-form-container {
   display: flex;

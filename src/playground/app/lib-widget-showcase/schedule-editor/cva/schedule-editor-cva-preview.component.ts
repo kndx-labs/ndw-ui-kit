@@ -14,7 +14,7 @@ import {
   type NdwuWeekDay,
 } from '@ndw-ui-kit/core/widgets';
 import {NdwuScheduleEditorFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 type CvaPreviewTheme = 'light' | 'dark';
 type WeekStart = 'monday' | 'sunday';
@@ -50,7 +50,7 @@ const SAMPLE_VALUE: NdwuScheduleValue = {
     FormsModule,
     ReactiveFormsModule,
     NdwuScheduleEditorFieldComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
   ],
 })

@@ -1,101 +1,78 @@
-import {Observable, Subject, defer, of} from 'rxjs';
-import {finalize, take} from 'rxjs/operators';
-import {signal} from '@angular/core';
-import {OverlayRef} from '@angular/cdk/overlay';
-import {uniqueId} from '@ndw-ui-kit/core/utils';
-import type {NdwuModalCloseStrategy} from './close-strategy';
-import type {NdwuModalOpenStrategy} from './open-strategy/ndwu-modal-open-strategy';
+import {Signal, computed} from '@angular/core';
+import type {Observable} from 'rxjs';
+import type {NdwuModalController} from './ndwu-modal-controller';
 import type {NdwuModalType, NdwuResolvedModalConfig} from './ndwu-modal.types';
 
+// Created by `NdwuModalService`; do not instantiate directly
 export class NdwuModalRef<ReturnT = unknown> {
-  protected readonly afterClosedSub$ = new Subject<ReturnT | undefined>();
-  protected closeHandler: () => Observable<boolean> = () => of(true);
-
   public readonly id: string;
   public readonly type: NdwuModalType;
-  public readonly afterClosed$: Observable<ReturnT | undefined> = this.afterClosedSub$.asObservable();
-  public readonly isLoading = signal(false);
-  public readonly isVisible = signal(true);
-  public readonly title = signal<string | null>(null);
-  public readonly description = signal<string | null>(null);
+  public readonly config: NdwuResolvedModalConfig;
+  public readonly afterClosed$: Observable<ReturnT | undefined>;
 
-  private _openStrategy?: NdwuModalOpenStrategy;
+  /** `false` once closing has started. Read-only: call `close()` instead. */
+  public readonly isVisible: Signal<boolean>;
+  public readonly title: Signal<string | null>;
+  public readonly description: Signal<string | null>;
+  public readonly isLoading: Signal<boolean>;
 
   constructor(
-    public config: NdwuResolvedModalConfig,
-    public customId: string | undefined,
-    private readonly overlayRef: OverlayRef,
-    protected closeStrategy: NdwuModalCloseStrategy,
+    private readonly controller: NdwuModalController<ReturnT>,
   ) {
-    this.type = config.type;
-    this.id = customId ?? uniqueId('ndwu-modal-');
+    this.id = controller.id;
+    this.type = controller.config.type;
+    this.config = controller.config;
+    this.afterClosed$ = controller.afterClosed$;
 
-    this.title.set(config.title ?? null);
-    this.description.set(config.description ?? null);
-    this.isLoading.set(config.isLoading ?? false);
+    this.isVisible = computed(() => {
+      return controller.state() === 'open';
+    });
+
+    this.title = controller.title.asReadonly();
+    this.description = controller.description.asReadonly();
+    this.isLoading = controller.isLoading.asReadonly();
+  }
+
+  public setTitle(title: string | null): void {
+    this.controller.title.set(title);
+  }
+
+  public setDescription(description: string | null): void {
+    this.controller.description.set(description);
+  }
+
+  public setLoading(isLoading: boolean): void {
+    this.controller.isLoading.set(isLoading);
   }
 
   public close(result?: ReturnT): void {
-    if (!this.isVisible()) {
-      return;
-    }
-
-    this.isVisible.set(false);
-
-    this.closeStrategy.close(this.overlayRef)
-      .pipe(
-        take(1),
-        finalize(() => this.finalizeClose(result)),
-      )
-      .subscribe();
-  }
-
-  protected finalizeClose(result?: ReturnT): void {
-    this.afterClosedSub$.next(result);
-    this.afterClosedSub$.complete();
-  }
-
-  public updatePosition(): void {
-    this.overlayRef.updatePosition();
-  }
-
-  /** @internal */
-  public getOverlayRef(): OverlayRef {
-    return this.overlayRef;
+    this.controller.close(result);
   }
 
   public canClose(): Observable<boolean> {
-    return defer(() => this.closeHandler())
-      .pipe(
-        take(1),
-      );
+    return this.controller.canClose();
   }
 
   public closeIfAllowed(result?: ReturnT): void {
-    this.canClose()
-      .subscribe((shouldClose) => {
-        if (shouldClose) {
-          this.close(result);
-        }
-      });
+    this.controller.closeIfAllowed(result);
   }
 
+  /**
+   * Sets the guard used by `closeIfAllowed()`, Escape and backdrop click.
+   *
+   * - Only one check runs at a time; calls made while it is pending are
+   *   ignored.
+   * - If the handler throws or errors, the modal stays open and the error
+   *   goes to Angular `ErrorHandler`.
+   * - If the modal is closed with `close()` while a check is pending, the
+   *   check is unsubscribed. The handler's teardown must remove any UI it
+   *   opened (e.g. close its confirm dialog).
+   */
   public setCloseHandler(closeHandler: () => Observable<boolean>): void {
-    this.closeHandler = closeHandler;
+    this.controller.setCloseHandler(closeHandler);
   }
 
-  /** @internal */
-  public setCloseStrategy(strategy: NdwuModalCloseStrategy): void {
-    this.closeStrategy = strategy;
-  }
-
-  /** @internal */
-  public setOpenStrategy(strategy: NdwuModalOpenStrategy): void {
-    this._openStrategy = strategy;
-  }
-
-  /** @internal */
-  public getOpenStrategy(): NdwuModalOpenStrategy | undefined {
-    return this._openStrategy;
+  public updatePosition(): void {
+    this.controller.overlayRef.updatePosition();
   }
 }

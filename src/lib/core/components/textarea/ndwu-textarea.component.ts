@@ -15,7 +15,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
 import {NDWU_ICON_NAME} from '../../../icon-names';
@@ -32,7 +32,7 @@ import {type NdwuTextareaResizeStart} from './ndwu-textarea.types';
   styleUrl: './ndwu-textarea.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuIconComponent,
     NdwuResizeObserverDirective,
     NdwuScrollbarComponent,

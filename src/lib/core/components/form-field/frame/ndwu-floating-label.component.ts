@@ -1,5 +1,5 @@
-import {Component, booleanAttribute, input} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {ChangeDetectionStrategy, Component, booleanAttribute, input} from '@angular/core';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 @Component({
   selector: 'ndwu-floating-label',
@@ -11,8 +11,9 @@ import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
     }
   `,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NdwuFloatingLabelComponent {
   public readonly label = input<string>('');

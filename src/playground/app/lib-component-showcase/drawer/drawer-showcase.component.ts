@@ -22,7 +22,7 @@ import {
   type NdwuModalTemplateContext,
   NdwuTheme,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {MarkdownDocumentPipe} from '@app/pipes/markdown-document.pipe';
 import {FormDialogComponent} from '../dialog/form-dialog/form-dialog.component';
@@ -35,7 +35,7 @@ import {ScrollableDialogComponent} from '../dialog/scrollable-dialog/scrollable-
   styleUrl: './drawer-showcase.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     MarkdownDocumentPipe,
     NdwuButtonComponent,
     NdwuModalBodyDirective,

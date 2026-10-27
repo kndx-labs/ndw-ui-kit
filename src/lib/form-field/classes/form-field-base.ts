@@ -1,13 +1,14 @@
-import {DestroyRef, Directive, computed, inject, signal} from '@angular/core';
+import {ChangeDetectorRef, DestroyRef, Directive, computed, inject, signal} from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
 import {NDWU_VALIDATION_PROCESSOR} from '../validation/validation-processor.token';
 import type {NdwuValidationData} from '../validation';
 import {isControlInvalid, onControlStateChange, setValueAccessor} from '../form-field.utils';
 
 @Directive() // to be able to use the Angular DI mechanism
-export abstract class FormFieldBase<T> implements ControlValueAccessor {
+export abstract class NdwuFormFieldBase<T> implements ControlValueAccessor {
   protected readonly ngControl = inject(NgControl, {self: true, optional: true});
   protected readonly destroyRef = inject(DestroyRef);
+  protected readonly cdr = inject(ChangeDetectorRef);
   protected readonly validationExtractor = inject(NDWU_VALIDATION_PROCESSOR);
 
   protected inputValue: T;
@@ -41,6 +42,7 @@ export abstract class FormFieldBase<T> implements ControlValueAccessor {
   /** Writes a new value to the element. */
   public writeValue(value: T): void {
     this.inputValue = value;
+    this.cdr.markForCheck();
   }
 
   /**
@@ -70,6 +72,7 @@ export abstract class FormFieldBase<T> implements ControlValueAccessor {
    */
   public setDisabledState(isDisabled: boolean): void {
     this.isDisabled = isDisabled;
+    this.cdr.markForCheck();
   }
 
   /**
@@ -84,6 +87,7 @@ export abstract class FormFieldBase<T> implements ControlValueAccessor {
 
     this.onChange(value);
     this.onTouched();
+    this.cdr.markForCheck();
   }
 
   /**

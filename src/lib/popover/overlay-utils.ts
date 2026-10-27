@@ -1,5 +1,6 @@
-import type {ConnectedPosition, OverlayRef} from '@angular/cdk/overlay';
-import type {NdwuPopoverAlign, NdwuPopoverSide} from './ndwu-popover.types';
+import type {ConnectedPosition, FlexibleConnectedPositionStrategyOrigin, OverlayRef} from '@angular/cdk/overlay';
+import type {ElementRef} from '@angular/core';
+import type {NdwuPopoverAlign, NdwuPopoverConfig, NdwuPopoverOrigin, NdwuPopoverSide} from './ndwu-popover.types';
 
 export const POSITION_OFFSET = 4;
 export const VIEWPORT_MARGIN = 8;
@@ -45,6 +46,27 @@ export function buildConnectedPosition(side: NdwuPopoverSide, align: NdwuPopover
         offsetX: POSITION_OFFSET,
       };
   }
+}
+
+/** Converts a popover origin (element or viewport point) into an origin CDK `flexibleConnectedTo` accepts. */
+export function toConnectedOrigin(origin: NdwuPopoverOrigin): FlexibleConnectedPositionStrategyOrigin {
+  if ('clientX' in origin) {
+    /* eslint-disable-next-line id-denylist -- CDK flexibleConnectedTo point origin API uses x/y */
+    return {x: origin.clientX, y: origin.clientY};
+  }
+
+  return origin;
+}
+
+/**
+ * Picks the overlay origin from the config: `originPoint`, then `originElement`, then the fallback
+ * (normally the trigger element).
+ */
+export function resolveConnectedOrigin(
+  config: Pick<NdwuPopoverConfig, 'originPoint' | 'originElement'>,
+  fallback: ElementRef<HTMLElement>,
+): FlexibleConnectedPositionStrategyOrigin {
+  return toConnectedOrigin(config.originPoint ?? config.originElement ?? fallback);
 }
 
 export const POSITION_BELOW_CENTER: ConnectedPosition = buildConnectedPosition('bottom', 'center');

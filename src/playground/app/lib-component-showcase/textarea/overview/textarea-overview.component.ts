@@ -10,7 +10,7 @@ import {
   NdwuTextareaComponent,
 } from '@ndw-ui-kit/core';
 import {NdwuHelperMessageComponent, NdwuTextareaFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 const SAMPLE_TEXT = 'This is a textarea';
@@ -35,7 +35,7 @@ const SAMPLE_CONFIG = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuFloatingLabelComponent,
     NdwuFormFieldComponent,
     NdwuHelperMessageComponent,

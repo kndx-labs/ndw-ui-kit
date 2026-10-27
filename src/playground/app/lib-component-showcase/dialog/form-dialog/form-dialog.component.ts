@@ -11,7 +11,7 @@ import {
   NdwuModalRef,
   NdwuPopoverDirective,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuInputFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {EMAIL_VALIDATOR} from '@app/validation';
 
@@ -21,7 +21,7 @@ import {EMAIL_VALIDATOR} from '@app/validation';
   styleUrl: './form-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuButtonComponent,
     NdwuFormContainerComponent,
     NdwuIconButtonComponent,

@@ -260,6 +260,7 @@ const NG_RULE_OVERRIDES = {
   '@angular-eslint/directive-class-suffix': ERROR,
   '@angular-eslint/no-conflicting-lifecycle': ERROR,
   '@angular-eslint/use-lifecycle-interface': ERROR,
+  '@angular-eslint/prefer-on-push-component-change-detection': ERROR,
 };
 
 module.exports = tseslint.config(
@@ -356,6 +357,24 @@ module.exports = tseslint.config(
       ...JS_RULE_OVERRIDES,
       ...TS_RULE_OVERRIDES,
       'no-console': OFF,
+    },
+  },
+  {
+    // These files are bundled into the published custom-sprite CLI (see scripts/emit-custom-sprite-cli.ts).
+    // `conf.ts` loads `.env` and holds repo-only paths; `svg-colors.ts` pulls in `src/lib`.
+    // `fmt.ts` imports `conf.ts`. Keep all of them out of the bundle.
+    files: [
+      'scripts/build-custom-sprite.ts',
+      'scripts/utils/sprite/build.ts',
+      'scripts/utils/sprite/svg.ts',
+    ],
+    rules: {
+      'no-restricted-imports': [ERROR, {
+        patterns: [{
+          group: ['**/conf', '**/utils/fmt', './fmt', '../fmt', '**/svg-colors', './svg-colors'],
+          message: 'Bundled into the published CLI: must not depend on scripts/conf.ts (directly or transitively).',
+        }],
+      }],
     },
   },
   {

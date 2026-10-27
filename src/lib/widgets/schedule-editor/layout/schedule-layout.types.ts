@@ -5,6 +5,11 @@ export interface Offset {
   y: number;
 }
 
+export interface Size {
+  width: number;
+  height: number;
+}
+
 export interface ScheduleEditorOffset {
   top: number;
   left: number;
@@ -87,8 +92,11 @@ export interface DragPreview {
 
 export interface TooltipState {
   text: string;
-  x: number;
-  y: number;
+  anchor: Offset;
+}
+
+export interface TooltipView extends Offset {
+  text: string;
 }
 
 export interface GetBlockRectsParams {

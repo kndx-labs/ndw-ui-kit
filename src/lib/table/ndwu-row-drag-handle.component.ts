@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
 import {CdkDragHandle} from '@angular/cdk/drag-drop';
 import {NDWU_ICON_NAME, NdwuIconComponent, NdwuSizeDirective} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
 const DEFAULT_ROW_DRAG_HANDLE_TEXTS = {
@@ -18,7 +18,7 @@ const DEFAULT_ROW_DRAG_HANDLE_TEXTS = {
     directive: NdwuSizeDirective,
     inputs: ['ndwuSize: size'],
   }],
-  imports: [NdwuIconComponent, LocalizePipe],
+  imports: [NdwuIconComponent, NdwuLocalizePipe],
   host: {
     'type': 'button',
     '[class]': 'rootClass()',

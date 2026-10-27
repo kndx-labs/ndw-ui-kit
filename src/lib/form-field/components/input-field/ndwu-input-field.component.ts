@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   OnInit,
@@ -21,15 +22,16 @@ import {
   NdwuRightIconDirective,
   NdwuSizeDirective,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {FormFieldBase} from '../../classes/form-field-base';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuFormFieldBase} from '../../classes/form-field-base';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 
 @Component({
   selector: 'ndwu-input-field',
   templateUrl: './ndwu-input-field.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuFormFieldComponent,
     NdwuHelperMessageComponent,
     NdwuHintDirective,
@@ -43,7 +45,7 @@ import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.
     inputs: ['ndwuSize: size'],
   }],
 })
-export class NdwuInputFieldComponent extends FormFieldBase<string> implements OnInit {
+export class NdwuInputFieldComponent extends NdwuFormFieldBase<string> implements OnInit {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   public readonly label = input<string>('');

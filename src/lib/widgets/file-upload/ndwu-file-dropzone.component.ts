@@ -11,7 +11,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   NDWU_ICON_NAME,
   NDWU_PICTOGRAM_NAME,
@@ -29,7 +29,7 @@ import type {NdwuTranslationTexts} from './ndwu-file-upload.types';
   styleUrl: './ndwu-file-dropzone.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuButtonComponent,
     NdwuPictogramComponent,
   ],

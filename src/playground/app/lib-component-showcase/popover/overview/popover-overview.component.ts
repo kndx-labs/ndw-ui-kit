@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, TemplateRef, viewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {NdwuButtonComponent, type NdwuPopoverAlign, NdwuPopoverDirective, type NdwuPopoverSide} from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 
 @Component({
@@ -11,7 +11,7 @@ import {ShowcaseLayoutComponent} from '@app/components';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuButtonComponent,
     NdwuPopoverDirective,
     ShowcaseLayoutComponent,

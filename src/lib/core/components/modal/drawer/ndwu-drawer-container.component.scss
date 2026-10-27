@@ -1,19 +1,26 @@
 @use 'styles/colors';
+@use 'styles/fonts';
 @use 'styles/mixins';
 @use 'styles/spacing';
 @use 'styles/radius';
 @use 'styles/typography';
 @use '../ndwu-modal-mixins' as modal;
 
-.ndwu-drawer {
-  // Keep in sync with NDWU_DRAWER_WIDTH
-  --drawer-width: 700px;
+$close-btn-offset: 2px;
+$drawer-width-xl: 700px;
+$drawer-width-xxl: 1200px;
 
+:host {
+  font-family: fonts.$font-family;
+}
+
+.ndwu-drawer {
   position: relative;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  width: var(--drawer-width);
+  width: $drawer-width-xl;
+  max-width: 100vw;
   height: 100vh;
   max-height: 100vh;
   padding: 0;
@@ -32,6 +39,11 @@
       }
       /* stylelint-enable plugin/no-unsupported-browser-features */
     }
+
+    // Full viewport width: drop the radius
+    @media (max-width: $drawer-width-xl) {
+      border-radius: 0;
+    }
   }
 
   &--closing {
@@ -39,7 +51,11 @@
   }
 
   &--xxl {
-    --drawer-width: 1200px;
+    width: $drawer-width-xxl;
+
+    @media (max-width: $drawer-width-xxl) {
+      border-radius: 0;
+    }
   }
 
   &:focus {
@@ -159,7 +175,7 @@
 
     &__header-content {
       gap: spacing.$spacing-12;
-      padding-right: spacing.$spacing-24 + spacing.$spacing-8;
+      padding-right: 20px + spacing.$spacing-8;
     }
 
     &__body {
@@ -180,17 +196,13 @@
     }
 
     &__close-btn {
-      top: spacing.$spacing-16;
-      right: spacing.$spacing-16;
-
-      &::after {
-        display: none;
-      }
+      top: spacing.$spacing-16 - $close-btn-offset;
+      right: spacing.$spacing-16 - $close-btn-offset;
     }
 
     &__title {
-      font-size: 18px;
-      line-height: 25px;
+      line-height: 28px;
+      letter-spacing: typography.$letterSpacing-S;
     }
 
     &__description {

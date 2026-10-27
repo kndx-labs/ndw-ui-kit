@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
@@ -12,7 +12,7 @@ const DEFAULT_COLUMN_RESIZE_TEXTS = {
   templateUrl: './ndwu-column-resize-handle.component.html',
   styleUrl: './ndwu-column-resize-handle.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LocalizePipe],
+  imports: [NdwuLocalizePipe],
   host: {
     'class': 'ndwu-column-resize-handle',
     'role': 'separator',

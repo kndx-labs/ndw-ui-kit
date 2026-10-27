@@ -1,15 +1,12 @@
 import type {Type} from '@angular/core';
 import type {GlobalPositionStrategy, Overlay, OverlaySizeConfig} from '@angular/cdk/overlay';
-import {NDWU_SIZE} from '../../../shared.types';
 import type {NdwuModalContainerBaseDirective} from './base';
 import {ImmediateCloseStrategy, type NdwuModalCloseStrategy} from './close-strategy';
 import {NDWU_DIALOG_CONFIG_DEFAULTS, NDWU_DIALOG_PANEL_CLASS, NdwuDialogContainerComponent} from './dialog';
 import {
   NDWU_DRAWER_BACKDROP_CLASS,
   NDWU_DRAWER_CONFIG_DEFAULTS,
-  NDWU_DRAWER_HEIGHT,
   NDWU_DRAWER_PANEL_CLASS,
-  NDWU_DRAWER_WIDTH,
   NdwuDrawerCloseStrategy,
   NdwuDrawerContainerComponent,
 } from './drawer';
@@ -89,12 +86,9 @@ export const NDWU_MODAL_TYPE_DESCRIPTORS: Readonly<Record<NdwuModalType, NdwuMod
         .right('0')
         .top('0');
     },
-    getDesktopSize: (config) => {
-      return {
-        width: NDWU_DRAWER_WIDTH[config.size ?? NDWU_SIZE.XL],
-        height: NDWU_DRAWER_HEIGHT,
-        maxHeight: NDWU_DRAWER_HEIGHT,
-      };
+    // Drawer size is defined in ndwu-drawer-container.component.scss
+    getDesktopSize: () => {
+      return {};
     },
   },
 };

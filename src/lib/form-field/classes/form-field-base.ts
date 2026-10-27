@@ -5,7 +5,7 @@ import type {NdwuValidationData} from '../validation';
 import {isControlInvalid, onControlStateChange, setValueAccessor} from '../form-field.utils';
 
 @Directive() // to be able to use the Angular DI mechanism
-export abstract class FormFieldBase<T> implements ControlValueAccessor {
+export abstract class NdwuFormFieldBase<T> implements ControlValueAccessor {
   protected readonly ngControl = inject(NgControl, {self: true, optional: true});
   protected readonly destroyRef = inject(DestroyRef);
   protected readonly cdr = inject(ChangeDetectorRef);

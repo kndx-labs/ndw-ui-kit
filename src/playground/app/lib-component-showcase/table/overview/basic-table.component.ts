@@ -17,7 +17,7 @@ import {
   NdwuTableTranslationTexts,
 } from '@ndw-ui-kit/core/table';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuBadgeComponent, NdwuButtonComponent} from '@ndw-ui-kit/core';
 import type {Device} from './device-table.component';
 
@@ -29,7 +29,7 @@ const BANDS = ['2.4 GHz', '5 GHz'] as const;
   styleUrl: './basic-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuBadgeComponent,
     NdwuButtonComponent,
     NdwuTableComponent,

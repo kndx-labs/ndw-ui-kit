@@ -1,13 +1,13 @@
 import {Provider} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {UiKitTranslationService} from '@ndw-ui-kit/core/l10n';
-import {NgxTranslationService} from './ngx-translation.service';
+import {NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
+import {NdwuNgxTranslationService} from './ngx-translation.service';
 
-export function provideNdwUiKitNgxTranslate(): Provider[] {
+export function provideNdwuNgxTranslate(): Provider[] {
   return [
     {
-      provide: UiKitTranslationService,
-      useClass: NgxTranslationService,
+      provide: NdwuTranslationService,
+      useClass: NdwuNgxTranslationService,
       deps: [TranslateService],
     },
   ];

@@ -1,5 +1,6 @@
 @use 'sass:map';
 @use 'sass:math';
+@use 'styles/fonts';
 @use 'styles/spacing';
 @use 'styles/radius';
 @use 'styles/typography';
@@ -28,6 +29,10 @@
   .ndwu-toggle__input:checked + .ndwu-toggle__track .ndwu-toggle__knob {
     transform: translateY(-50%) translateX($knob-displacement);
   }
+}
+
+:host {
+  font-family: fonts.$font-family;
 }
 
 .ndwu-toggle {

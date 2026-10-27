@@ -1,6 +1,11 @@
+@use 'styles/fonts';
 @use 'styles/radius';
 @use 'styles/spacing';
 @use 'styles/typography';
+
+:host {
+  font-family: fonts.$font-family;
+}
 
 .ndwu-empty-state {
   display: flex;

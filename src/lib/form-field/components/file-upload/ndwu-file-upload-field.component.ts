@@ -11,7 +11,7 @@ import {
 import {NgControl} from '@angular/forms';
 import {NdwuSizeDirective} from '@ndw-ui-kit/core';
 import {type NdwuFileInputValue, NdwuFileUploadComponent, type NdwuTranslationTexts} from '@ndw-ui-kit/core/widgets';
-import {FormFieldBase} from '../../classes/form-field-base';
+import {NdwuFormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor} from '../../form-field.utils';
 
 @Component({
@@ -26,7 +26,7 @@ import {setValueAccessor} from '../../form-field.utils';
     inputs: ['ndwuSize: size'],
   }],
 })
-export class NdwuFileUploadFieldComponent extends FormFieldBase<NdwuFileInputValue[]> {
+export class NdwuFileUploadFieldComponent extends NdwuFormFieldBase<NdwuFileInputValue[]> {
   protected readonly sizeSvc = inject(NdwuSizeDirective);
 
   public readonly multiple = input(true, {transform: booleanAttribute});

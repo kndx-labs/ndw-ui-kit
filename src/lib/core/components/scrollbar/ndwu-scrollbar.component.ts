@@ -26,6 +26,8 @@ import {
 // should match --ndwu-scrollbar-min-thumb-size
 const MIN_THUMB_SIZE = 24;
 
+const OVERFLOW_ROUNDING_TOLERANCE = 1;
+
 // only mouse pointers receive custom track/thumb interaction. Touch/pen fall back to native scroll.
 const SUPPORTED_POINTER_TYPE = 'mouse';
 
@@ -145,6 +147,7 @@ export class NdwuScrollbarComponent {
   private positionFrameId: ReturnType<typeof requestAnimationFrame> | null = null;
   private resizeObserver: ResizeObserver | null = null;
   private mutationObserver: MutationObserver | null = null;
+  private observedContentChildren = new Set<Element>();
 
   constructor() {
     this.destroyRef.onDestroy(() => this.cleanup());
@@ -194,11 +197,10 @@ export class NdwuScrollbarComponent {
   private initObservers(content: HTMLElement): void {
     if (typeof ResizeObserver !== 'undefined') {
       this.resizeObserver = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          if (entry.target === this.hostEl && !this.ndwuScrollbarDisabled()) {
-            content.style.width = `${entry.contentRect.width}px`;
-            content.style.height = `${entry.contentRect.height}px`;
-          }
+        const isHostResized = entries.some(entry => entry.target === this.hostEl);
+
+        if (isHostResized && !this.ndwuScrollbarDisabled()) {
+          this.syncContentBoxSize();
         }
 
         this.scheduleRecalculate();
@@ -206,10 +208,12 @@ export class NdwuScrollbarComponent {
 
       this.resizeObserver.observe(this.hostEl);
       this.resizeObserver.observe(content);
+      this.observeContentChildren(content);
     }
 
     if (typeof MutationObserver !== 'undefined') {
       this.mutationObserver = new MutationObserver(() => {
+        this.observeContentChildren(content);
         this.scheduleRecalculate();
       });
 
@@ -221,6 +225,80 @@ export class NdwuScrollbarComponent {
         },
       );
     }
+  }
+
+  // Direct children are not pinned like the content box itself, so observing them reports
+  // content growth/shrink that does not touch the DOM tree (images loading, text reflow).
+  private observeContentChildren(content: HTMLElement): void {
+    const resizeObserver = this.resizeObserver;
+
+    if (resizeObserver === null) {
+      return;
+    }
+
+    const children = new Set(Array.from(content.children));
+
+    for (const child of this.observedContentChildren) {
+      if (!children.has(child)) {
+        resizeObserver.unobserve(child);
+      }
+    }
+
+    for (const child of children) {
+      if (!this.observedContentChildren.has(child)) {
+        resizeObserver.observe(child);
+      }
+    }
+
+    this.observedContentChildren = children;
+  }
+
+  // The content box is pinned to the host size to become the scroll box. A host sized by its own
+  // content (e.g. a dialog body with `height: auto`) would then stay at its first size forever,
+  // so release the pin, let the host settle to its natural size within the outer limits and pin
+  // again. Hosts sized from outside measure the same and keep their size.
+  private syncContentBoxSize(): void {
+    const content = this.contentEl().nativeElement;
+    const {scrollTop, scrollLeft} = content;
+
+    content.style.width = '';
+    content.style.height = '';
+
+    const hostSize = this.measureHostContentBox();
+
+    if (hostSize !== null) {
+      content.style.width = `${hostSize.width}px`;
+      content.style.height = `${hostSize.height}px`;
+    }
+
+    // released content box has nothing to scroll, so the browser resets the offsets
+    content.scrollTop = scrollTop;
+    content.scrollLeft = scrollLeft;
+  }
+
+  // Computed size keeps fractional pixels (unlike clientWidth/clientHeight) and ignores
+  // transforms (unlike getBoundingClientRect), so open/close animations do not skew it.
+  private measureHostContentBox(): {width: number; height: number} | null {
+    const style = getComputedStyle(this.hostEl);
+    const width = parseFloat(style.width);
+    const height = parseFloat(style.height);
+
+    if (Number.isNaN(width) || Number.isNaN(height)) {
+      return null;
+    }
+
+    if (style.boxSizing !== 'border-box') {
+      return {width, height};
+    }
+
+    const sumPx = (...values: string[]): number => {
+      return values.reduce((sum, value) => sum + (parseFloat(value) || 0), 0);
+    };
+
+    return {
+      width: width - sumPx(style.paddingLeft, style.paddingRight, style.borderLeftWidth, style.borderRightWidth),
+      height: height - sumPx(style.paddingTop, style.paddingBottom, style.borderTopWidth, style.borderBottomWidth),
+    };
   }
 
   private cancelDrag(): void {
@@ -453,6 +531,8 @@ export class NdwuScrollbarComponent {
       return;
     }
 
+    this.syncContentBoxSize();
+
     const content = this.contentEl().nativeElement;
 
     if (content.clientHeight === 0 && content.clientWidth === 0) {
@@ -478,8 +558,10 @@ export class NdwuScrollbarComponent {
     );
   }
 
+  // scrollHeight/clientHeight are rounded integers, so a fractional box size can report
+  // a 1px overflow that is not there
   private resolveOverflow(contentSize: number, clientSize: number): boolean {
-    return contentSize > clientSize;
+    return contentSize - clientSize > OVERFLOW_ROUNDING_TOLERANCE;
   }
 
   private applyThumbSize(axis: NdwuScrollbarAxis, size: number): void {

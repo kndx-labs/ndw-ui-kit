@@ -360,6 +360,24 @@ module.exports = tseslint.config(
     },
   },
   {
+    // These files are bundled into the published custom-sprite CLI (see scripts/emit-custom-sprite-cli.ts).
+    // `conf.ts` loads `.env` and holds repo-only paths; `svg-colors.ts` pulls in `src/lib`.
+    // `fmt.ts` imports `conf.ts`. Keep all of them out of the bundle.
+    files: [
+      'scripts/build-custom-sprite.ts',
+      'scripts/utils/sprite/build.ts',
+      'scripts/utils/sprite/svg.ts',
+    ],
+    rules: {
+      'no-restricted-imports': [ERROR, {
+        patterns: [{
+          group: ['**/conf', '**/utils/fmt', './fmt', '../fmt', '**/svg-colors', './svg-colors'],
+          message: 'Bundled into the published CLI: must not depend on scripts/conf.ts (directly or transitively).',
+        }],
+      }],
+    },
+  },
+  {
     files: ['scripts/figma/**/*.ts'],
     rules: {
       // Figma API response types use x/y for offsets and sync scripts are procedural.

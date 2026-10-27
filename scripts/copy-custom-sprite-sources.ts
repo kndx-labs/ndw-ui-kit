@@ -13,16 +13,13 @@
  *   yarn run copy-custom-sprite-sources
  */
 
-import path from 'node:path';
-import {fileURLToPath} from 'node:url';
 import fs from 'fs-extra';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import {DIST_SPRITE_ICONS_DIR, SPRITE_ICONS_DIR} from './conf';
+import {isSvgFile} from './utils/sprite/svg';
 
 const main = async (): Promise<void> => {
-  const rootDir = path.resolve(__dirname, '..');
-  const sourceDir = path.join(rootDir, 'scripts/data/sprite-icons');
-  const targetDir = path.join(rootDir, 'dist/ndw-ui-kit/assets/sprite-icons');
+  const sourceDir = SPRITE_ICONS_DIR;
+  const targetDir = DIST_SPRITE_ICONS_DIR;
 
   if (!(await fs.pathExists(sourceDir))) {
     console.error(`Source directory not found: ${sourceDir}`);
@@ -31,7 +28,18 @@ const main = async (): Promise<void> => {
   }
 
   await fs.ensureDir(targetDir);
-  await fs.copy(sourceDir, targetDir, {overwrite: true});
+
+  // Only SVGs belong in the package; skip `.gitkeep`, `.DS_Store` and the like
+  await fs.copy(
+    sourceDir,
+    targetDir,
+    {
+      overwrite: true,
+      filter: (src) => {
+        return src === sourceDir || isSvgFile(src);
+      },
+    },
+  );
 
   const files = await fs.readdir(targetDir);
 

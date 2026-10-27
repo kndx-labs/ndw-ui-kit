@@ -13,7 +13,7 @@ import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@a
 import {CssUtils} from '@app/utils';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
 import {ICON_BUTTON_TOKENS, ICON_BUTTON_VARIANT_OPTIONS, ICON_NAMES} from './icon-button-sandbox.constants';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 
 function tokenKeyToCssVar(key: string): string {
   return CssUtils.tokenKeyToCssVar(key);
@@ -27,7 +27,7 @@ function tokenKeyToCssVar(key: string): string {
   imports: [
     ReactiveFormsModule,
     NdwuIconButtonComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
     TokenListComponent,
   ],

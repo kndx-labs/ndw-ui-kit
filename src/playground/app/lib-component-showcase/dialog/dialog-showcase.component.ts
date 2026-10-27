@@ -25,10 +25,11 @@ import {
   type NdwuModalTemplateContext,
   NdwuTheme,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe, UiKitTranslationService} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe, NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {MarkdownDocumentPipe} from '@app/pipes/markdown-document.pipe';
 import {ScrollableDialogComponent} from './scrollable-dialog/scrollable-dialog.component';
+import {GrowingDialogComponent} from './growing-dialog/growing-dialog.component';
 import {FormDialogComponent} from './form-dialog/form-dialog.component';
 import {CustomSlotDialogComponent} from './custom-slot-dialog/custom-slot-dialog.component';
 import {DelayedCloseDialogComponent} from './delayed-close-dialog/delayed-close-dialog.component';
@@ -52,7 +53,7 @@ interface User {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ShowcaseScopedService],
   imports: [
-    LocalizePipe,
+    NdwuLocalizePipe,
     MarkdownDocumentPipe,
     NdwuButtonComponent,
     NdwuModalBodyDirective,
@@ -69,7 +70,7 @@ export class DialogShowcaseComponent {
   protected readonly httpClient = inject(HttpClient);
   protected readonly modalService = inject(NdwuModalService);
   protected readonly cdr = inject(ChangeDetectorRef);
-  protected readonly translation = inject(UiKitTranslationService);
+  protected readonly translation = inject(NdwuTranslationService);
   protected readonly viewContainerRef = inject(ViewContainerRef);
   protected readonly injector = inject(Injector);
 
@@ -250,6 +251,20 @@ export class DialogShowcaseComponent {
           },
         );
       });
+  }
+
+  protected openGrowingDialog(theme: NdwuTheme): void {
+    this.modalService.openDialog(
+      GrowingDialogComponent,
+      {
+        title: 'Auto height dialog',
+        maxWidth: '520px',
+        theme,
+        buttons: [
+          {label: 'dialog-showcase.overview.common.button-close', variant: 'primary'},
+        ],
+      },
+    );
   }
 
   protected openSmallDialog(theme: NdwuTheme): void {

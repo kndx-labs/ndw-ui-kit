@@ -1,3 +1,3 @@
 import {NdwuValidationErrorProcessor} from '../validation.types';
 
-export const noopValidationProcessor: NdwuValidationErrorProcessor = () => null;
+export const ndwuNoopValidationProcessor: NdwuValidationErrorProcessor = () => null;

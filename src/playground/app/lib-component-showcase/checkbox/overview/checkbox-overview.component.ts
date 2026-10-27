@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, computed, signal} from '@angular/cor
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NDWU_SIZE, NdwuButtonComponent, NdwuCheckboxComponent} from '@ndw-ui-kit/core';
 import {NdwuCheckboxFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent, ToastComponent} from '@app/components';
 
 @Component({
@@ -15,7 +15,7 @@ import {ShowcaseLayoutComponent, ToastComponent} from '@app/components';
     NdwuCheckboxComponent,
     NdwuCheckboxFieldComponent,
     NdwuButtonComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
     ToastComponent,
   ],

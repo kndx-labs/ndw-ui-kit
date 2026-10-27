@@ -21,7 +21,7 @@ import {
   NdwuTableToolbarComponent,
   NdwuTableTranslationTexts,
 } from '@ndw-ui-kit/core/table';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {
   NDWU_ICON_NAME,
   NdwuBadgeComponent,
@@ -81,7 +81,7 @@ const STATUSES = ['online', 'offline'] as const satisfies readonly Device['statu
     NdwuIconButtonComponent,
     NdwuIconComponent,
     NdwuToggleComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
   ],
 })
 export class DeviceTableComponent {

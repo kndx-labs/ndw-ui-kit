@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {Device, DeviceTableComponent} from './device-table.component';
 import {BasicTableComponent} from './basic-table.component';
 
@@ -23,7 +23,7 @@ const DEVICES: Device[] = [
   templateUrl: './table-overview.component.html',
   styleUrl: './table-overview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [BasicTableComponent, DeviceTableComponent, LocalizePipe],
+  imports: [BasicTableComponent, DeviceTableComponent, NdwuLocalizePipe],
 })
 export class TableOverviewComponent {
   protected readonly devices = DEVICES;

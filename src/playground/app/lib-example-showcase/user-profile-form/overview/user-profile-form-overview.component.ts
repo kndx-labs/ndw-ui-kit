@@ -12,7 +12,7 @@ import {
   NdwuToggleFieldComponent,
   NdwuValidators,
 } from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {EMAIL_VALIDATOR} from '@app/validation';
 
@@ -87,7 +87,7 @@ const DEFAULT_SCHEDULE: NdwuScheduleValue = {
   encapsulation: ViewEncapsulation.None,
   imports: [
     ReactiveFormsModule,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ShowcaseLayoutComponent,
     NdwuFormContainerComponent,
     NdwuInputFieldComponent,

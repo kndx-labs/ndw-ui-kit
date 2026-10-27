@@ -10,6 +10,17 @@
   }
 }
 
+.state-section__hint {
+  margin: 0 0 12px;
+}
+
+.state-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
 .component-sizes {
   display: flex;
   flex-direction: column;

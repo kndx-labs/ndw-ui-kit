@@ -1,5 +1,5 @@
 // Font asset path is resolved relative to the stylesheet that includes this mixin.
-// Component styles should only consume `$font-family-default`; emit font faces from
+// Component styles should only consume `$font-family`; emit font faces from
 // a top-level stylesheet such as `styles/themes.scss`.
 $roboto-font-base-path: "../assets/fonts/roboto" !default;
 
@@ -21,3 +21,4 @@ $roboto-font-base-path: "../assets/fonts/roboto" !default;
 
 // Default font family for all UI components
 $font-family-default: roboto, "Helvetica Neue", sans-serif;
+$font-family: var(--ndwu-font-family, $font-family-default);

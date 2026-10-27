@@ -112,6 +112,19 @@ directly to `node_modules/@ndw-ui-kit/core/styles/themes.scss`.
 When enabling library-managed fonts, make sure the Roboto `.woff2` files are also copied
 to the path referenced by `$ndwu-roboto-font-base-path`.
 
+UI kit components set their own font family and do not inherit the page font.
+To use a different font for all components, set `--ndwu-font-family` on `:root`:
+
+```css
+:root {
+  --ndwu-font-family: Inter, sans-serif;
+}
+```
+
+Set it on `:root` (or `body`), not on an inner container: dropdowns, tooltips, popovers
+and modals render in an overlay attached to `body` and would not see a container-scoped value.
+Use a real font stack — `inherit` does not restore the page font.
+
 ### Accessibility
 
 The library ships an `aria` module (`@ndw-ui-kit/core/aria`) that provides
@@ -326,11 +339,11 @@ sprite asset in `angular.json` (using `ndw-ui-kit.extra.sprite.svg`) and registe
 the provider:
 
 ```typescript
-import {provideAllNdwUiKitIcons} from '@ndw-ui-kit/core';
+import {provideNdwuAllIcons} from '@ndw-ui-kit/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAllNdwUiKitIcons(),
+    provideNdwuAllIcons(),
   ],
 };
 ```
@@ -379,11 +392,11 @@ npx ndw-ui-kit-build-sprite --config src/my-icons.json --out src/assets/my-custo
 ##### 4. Register the custom sprite in your app
 
 ```typescript
-import {provideNdwUiKitCustomIcons} from '@ndw-ui-kit/core';
+import {provideNdwuCustomIcons} from '@ndw-ui-kit/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideNdwUiKitCustomIcons({
+    provideNdwuCustomIcons({
       path: 'assets/my-custom.sprite.svg',
       // you can also load the list of icons directly from the JSON config file here
       // if you add `resolveJsonModule: true` to your app's tsconfig
@@ -393,7 +406,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-`provideNdwUiKitCustomIcons` always includes the core sprite automatically, so there is no
+`provideNdwuCustomIcons` always includes the core sprite automatically, so there is no
 need to configure it separately. The `<ndwu-icon>` component will warn at runtime if an icon
 name is used that was not included in the configured set.
 
@@ -437,25 +450,30 @@ on pictograms (e.g., `NdwuEmptyStateComponent` from `@ndw-ui-kit/core/widgets`).
 
 ### Localization
 
-Choose one of the following translation providers:
-
-- **Noop Translation (no localization &mdash; texts are shown as-is):**
-  ```typescript
-  import {provideNdwUiKitNoopTranslation} from '@ndw-ui-kit/core/l10n';
-
-  providers: [provideNdwUiKitNoopTranslation()]
-  ```
+Without a translation provider, components show texts and translation keys
+as-is (`NdwuNoopTranslationService` is used by default). To localize them,
+use one of the following options:
 
 - **Ngx-Translate Integration (depends on `@ngx-translate/core`):**
   ```typescript
-  import {provideNdwUiKitNgxTranslate} from '@ndw-ui-kit/core/l10n/ngx-translate';
+  import {provideNdwuNgxTranslate} from '@ndw-ui-kit/core/l10n/ngx-translate';
 
-  providers: [provideNdwUiKitNgxTranslate()]
+  providers: [provideNdwuNgxTranslate()]
   ```
 
   > Since this version the ngx-translate integration lives in a separate entry point
   > `@ndw-ui-kit/core/l10n/ngx-translate` (previously exported from `@ndw-ui-kit/core/l10n`),
   > so the package no longer requires `@ngx-translate/core` unless you import it.
+
+- **Custom translation service:** extend `NdwuTranslationService` and provide it:
+  ```typescript
+  import {NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
+
+  providers: [{provide: NdwuTranslationService, useClass: MyTranslationService}]
+  ```
+
+`provideNdwuNoopTranslation()` is optional. Use it to replace another
+translation service in a child injector.
 
 #### HTML in text inputs
 
@@ -733,14 +751,14 @@ because `Validators.required` treats `false` as a valid value.
 
 ##### How it works
 
-A validator returns `ValidatorResult` (either `null` for success or `ErrorResult`):
+A validator returns `NdwuValidatorResult` (either `null` for success or `NdwuErrorResult`):
 
 ```typescript
 import {AbstractControl} from '@angular/forms';
-import {ErrorResult, ValidatorResult} from '@ndw-ui-kit/core/form-field';
+import {NdwuErrorResult, NdwuValidatorResult} from '@ndw-ui-kit/core/form-field';
 
 // Helper functions (define these in your app):
-function ERROR(props: {key: string; value?: any}): ErrorResult {
+function ERROR(props: {key: string; value?: any}): NdwuErrorResult {
   return {[props.key]: {errorLabel: props.key, ...props}};
 }
 
@@ -748,14 +766,14 @@ function SUCCESS(): null {
   return null;
 }
 
-const requiredValidator = (control: AbstractControl): ValidatorResult => {
+const requiredValidator = (control: AbstractControl): NdwuValidatorResult => {
   const value = control.value;
   const isInvalid = value === undefined || value === '' || value === null;
   return isInvalid ? ERROR({key: 'This field is required', value}) : SUCCESS();
 };
 ```
 
-The built-in processor converts `ValidatorError` (an object with `errorLabel`) into
+The built-in processor converts `NdwuValidatorError` (an object with `errorLabel`) into
 `NdwuValidationData`:
 
 ```typescript

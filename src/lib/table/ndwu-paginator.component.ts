@@ -8,7 +8,7 @@ import {
   NdwuSizeDirective,
 } from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
 export interface NdwuPageEvent {
@@ -31,7 +31,7 @@ const DEFAULT_PAGINATOR_TEXTS = {
   selector: 'ndwu-paginator',
   exportAs: 'ndwuPaginator',
   templateUrl: './ndwu-paginator.component.html',
-  imports: [FormsModule, LocalizePipe, NdwuIconButtonComponent, NdwuSelectFieldComponent],
+  imports: [FormsModule, NdwuLocalizePipe, NdwuIconButtonComponent, NdwuSelectFieldComponent],
   styleUrl: './ndwu-paginator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{

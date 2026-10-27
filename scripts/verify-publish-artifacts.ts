@@ -2,15 +2,14 @@
 
 import {existsSync, readdirSync} from 'node:fs';
 import {createRequire} from 'node:module';
-import {join, resolve} from 'node:path';
+import {join} from 'node:path';
 import type * as Sass from 'sass';
-import {ROOT_DIR} from './conf';
+import {DIST_CUSTOM_SPRITE_CLI_FILE, DIST_DIR, DIST_SPRITE_ICONS_DIR} from './conf';
 
 const {compile} = createRequire(require.resolve('@angular/build'))('sass') as typeof Sass;
 
-const DIST_DIR = resolve(ROOT_DIR, 'dist/ndw-ui-kit');
-const CLI_FILE = join(DIST_DIR, 'tools/build-custom-sprite.mjs');
-const SPRITE_SOURCE_DIR = join(DIST_DIR, 'assets/sprite-icons');
+const CLI_FILE = DIST_CUSTOM_SPRITE_CLI_FILE;
+const SPRITE_SOURCE_DIR = DIST_SPRITE_ICONS_DIR;
 const THEMES_FILE = join(DIST_DIR, 'styles/themes.scss');
 
 const fail = (message: string): never => {

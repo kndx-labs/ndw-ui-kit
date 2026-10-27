@@ -11,7 +11,7 @@ import {
   type NdwuScheduleValue,
   type NdwuWeekDay,
 } from '@ndw-ui-kit/core/widgets';
-import {FormFieldBase} from '../../classes/form-field-base';
+import {NdwuFormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor, syncIsInvalid} from '../../form-field.utils';
 
 @Component({
@@ -23,7 +23,7 @@ import {setValueAccessor, syncIsInvalid} from '../../form-field.utils';
   },
   imports: [NdwuScheduleEditorComponent],
 })
-export class NdwuScheduleEditorFieldComponent extends FormFieldBase<NdwuScheduleValue> implements OnInit {
+export class NdwuScheduleEditorFieldComponent extends NdwuFormFieldBase<NdwuScheduleValue> implements OnInit {
   public readonly forceLayout = input<NdwuScheduleEditorLayout | null>(null);
   public readonly mode = input<NdwuScheduleEditorMode>(NDWU_SCHEDULE_EDITOR_MODE.FULL);
   public readonly sizing = input<NdwuScheduleEditorSizing>(NDWU_SCHEDULE_EDITOR_SIZING.SCALE);

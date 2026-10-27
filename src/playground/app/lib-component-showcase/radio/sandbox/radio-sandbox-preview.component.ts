@@ -4,7 +4,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {NDWU_SIZE, type NdwuOption, type NdwuSize} from '@ndw-ui-kit/core';
 import {NdwuRadioFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
 
 interface TokenPickerValues extends Record<string, string> {
@@ -30,7 +30,7 @@ interface TokenPickerValues extends Record<string, string> {
     CommonModule,
     ReactiveFormsModule,
     NdwuRadioFieldComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
     TokenListComponent,
   ],

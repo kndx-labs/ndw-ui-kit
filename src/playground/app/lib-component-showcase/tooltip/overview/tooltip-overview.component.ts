@@ -7,7 +7,7 @@ import {
   NdwuPopoverAlign,
   NdwuTooltipDirective,
 } from '@ndw-ui-kit/core';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuTooltipPosition} from '@ndw-ui-kit/core/popover';
 import {TooltipStripDemoComponent} from './strip-demo/tooltip-strip-demo.component';
 
@@ -26,7 +26,7 @@ const ALIGNS: readonly NdwuPopoverAlign[] = ['center', 'start', 'end'];
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NdwuButtonComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     NdwuIconComponent,
     NdwuTooltipDirective,
     ShowcaseLayoutComponent,

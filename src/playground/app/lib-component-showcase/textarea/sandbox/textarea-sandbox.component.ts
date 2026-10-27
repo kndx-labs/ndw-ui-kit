@@ -4,7 +4,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_SIZE, NdwuIconButtonComponent, type NdwuSize, NdwuTextareaActionsDirective} from '@ndw-ui-kit/core';
 import {NdwuTextareaFieldComponent} from '@ndw-ui-kit/core/form-field';
-import {LocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
 import {CssUtils} from '@app/utils';
 import {SandboxBaseComponent, type TokenMapping} from '@app/lib-component-showcase/sandbox-base.component';
@@ -43,7 +43,7 @@ const DEFAULT_TOKEN_VALUES = Object.fromEntries(TEXTAREA_TOKENS.map((key) => [ke
     NdwuIconButtonComponent,
     NdwuTextareaActionsDirective,
     NdwuTextareaFieldComponent,
-    LocalizePipe,
+    NdwuLocalizePipe,
     ThemeSwitcherComponent,
     TokenListComponent,
   ],

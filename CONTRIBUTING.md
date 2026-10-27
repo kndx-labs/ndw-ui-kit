@@ -13,6 +13,7 @@ It covers the workflow from an idea to a merged pull request.
 - [Set up the environment](#set-up-the-environment)
 - [Run the playground](#run-the-playground)
 - [Run the tests](#run-the-tests)
+- [Try the build in your app](#try-the-build-in-your-app)
 - [Code requirements](#code-requirements)
 - [Icons and pictograms](#icons-and-pictograms)
 - [Branches, commits and pull requests](#branches-commits-and-pull-requests)
@@ -92,8 +93,44 @@ pattern: `widget-registry.ts` / `example-registry.ts`, the `WIDGET*` / `EXAMPLE*
 yarn test
 ```
 
-This runs `ng test playground` with the Vitest runner. Specs are `*.spec.ts` files next to the source in `src/lib`.
-Add or update specs for new logic and bug fixes.
+This runs `ng test playground` with the Vitest runner. Specs are `*.spec.ts`
+files next to the source in `src/lib`. Add or update specs for
+new logic and bug fixes.
+
+To run only some specs, pass `--include`. Its paths are relative
+to `src/playground`, not to the repository root, and
+can be globs. Add `--watch` to rerun the specs on every change:
+
+```shell
+yarn test --include "../lib/widgets/schedule-editor/layout/schedule-blocks.utils.spec.ts"
+yarn test --include "../lib/widgets/schedule-editor/**/*.spec.ts" --watch
+```
+
+## Try the build in your app
+
+The playground doesn't catch packaging problems, such as a missing export
+or asset. To check the library in a real Angular app, use one of these:
+
+- **Fast iteration.** Generate the sprites once, then rebuild on every
+  change into `dist/ndw-ui-kit`:
+
+  ```shell
+  yarn prepare-icons && yarn prepare-pictograms
+  yarn watch
+  ```
+
+  In your app, link the package (`yarn link` or a `file:` dependency
+  on `dist/ndw-ui-kit`) and set `"preserveSymlinks": true` in the build options
+  in its `angular.json`. Without it, the app loads a second copy of
+  `@angular/core` from the linked package. `yarn watch` doesn't
+  generate the sprites, hence the first command.
+
+- **As released.** Build the package and install the tarball in your app:
+
+  ```shell
+  yarn build
+  npm pack ./dist/ndw-ui-kit
+  ```
 
 ## Code requirements
 
@@ -172,6 +209,15 @@ If you changed anything in `scripts/`, also run `yarn build:to-publish`.
 `src/lib/icon-names.ts`, `src/lib/icon-names.base.ts` and `src/lib/pictogram-names.ts`. Commit them only when your
 change needs them (see [Using icons in the library](#using-icons-in-the-library)), and discard other regenerated
 changes.
+
+Before you open the PR, make sure that:
+
+- [ ] `yarn lint-all`, `yarn test`, `yarn build` and `yarn check-base-icons` pass;
+- [ ] `yarn build:to-publish` passes, if you changed `scripts/`;
+- [ ] regenerated icon and pictogram files your change doesn't need are discarded;
+- [ ] [src/lib/README.md](src/lib/README.md) is updated, if public behavior changed;
+- [ ] a new component has a showcase with English and German strings;
+- [ ] breaking changes are listed in the PR description.
 
 ## Icons and pictograms
 

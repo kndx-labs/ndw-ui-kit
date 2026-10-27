@@ -17,13 +17,10 @@ It covers the workflow from an idea to a merged pull request.
 - [Icons and pictograms](#icons-and-pictograms)
 - [Branches, commits and pull requests](#branches-commits-and-pull-requests)
 - [Review process](#review-process)
-- [Publishing](#publishing)
 
 ## Before you start
 
-- Maintainers link their work to an **NDWU** ticket. Its key (for example `NDWU-102`) goes into the branch name, the
-  commit messages and the PR title. Outside contributors don't need a ticket: open a GitHub issue to discuss the
-  change first, or go straight to a PR.
+- Open a GitHub issue to discuss the change first, or go straight to a PR.
 - Changes to the public API, or work that will span several PRs, start with a design doc:
   - an RFC (request for comments): see [docs/architecture/RFC/README.md](docs/architecture/RFC/README.md) and
     [GUIDE.md](docs/architecture/RFC/GUIDE.md);
@@ -46,17 +43,10 @@ yarn prepare
 yarn prepare-icons && yarn prepare-pictograms
 ```
 
-Outside contributors clone their fork instead. `yarn prepare` installs the Husky git hooks. The last line generates
-the git-ignored icon and pictogram sprites in `src/lib/assets/`; without them the playground shows no icons
-(`yarn build` generates them too).
-
-Only maintainers who sync icons from Figma need Figma credentials (API key, file key and node IDs; see
-[scripts/.env.example](scripts/.env.example)). Ask a maintainer for the file key and node IDs, and put everything in
-`scripts/.env`, which is git-ignored:
-
-```shell
-cp scripts/.env.example scripts/.env
-```
+If you don't have write access to this repository, clone your fork instead.
+`yarn prepare` installs the Husky git hooks. The last line generates
+the git-ignored icon and pictogram sprites in `src/lib/assets/`;
+without them the playground shows no icons (`yarn build` generates them too).
 
 ## Run the playground
 
@@ -202,22 +192,8 @@ If a library component starts using a new icon:
 Icons needed at runtime that the scan can't detect, such as a fallback icon, go to
 `src/lib/icon-names.base.manual.ts`. Keep that list tiny.
 
-### Syncing from Figma
-
-You don't need to sync for regular work. Two workflows run daily and commit to `master`:
-
-| Workflow                                                       | Time (UTC) | Updates                                                                                       | Commit                                          |
-|----------------------------------------------------------------|------------|-----------------------------------------------------------------------------------------------|-------------------------------------------------|
-| [Sync design tokens](.github/workflows/sync-design-tokens.yml) | 06:00      | design tokens and the SVG sources in `scripts/data/icons/`, from the design source repository | `chore(sync): update design tokens`             |
-| [Sync icons & pictograms](.github/workflows/sync-icons.yml)    | 08:00      | icons and pictograms from Figma                                                               | `chore(sync): update icon and pictogram assets` |
-
-To sync by hand (maintainers only; requires the Figma credentials in `scripts/.env`):
-
-```shell
-yarn sync-figma-icons
-yarn prepare-icons
-yarn prepare-pictograms
-```
+Design tokens, icons and pictograms are synced from Figma automatically.
+Don't sync them in your PR.
 
 Background: [README internal agreements](README.md#internal-agreements),
 [ADR 002](docs/architecture/ADR/002-split-icon-sprite.md),
@@ -227,20 +203,18 @@ Background: [README internal agreements](README.md#internal-agreements),
 
 ### Branches
 
-Branch off `master`. Maintainers push branches to this repository; outside contributors fork it and open the PR from
-their fork. Name the branch `NDWU-<n>-<slug>` when there is a ticket, for example
-`NDWU-143-fix-listbox-keyboard-handlers`; otherwise, use a short kebab-case slug such as
-`fix-listbox-keyboard-handlers`:
+Branch off `master`. If you don't have write access to this repository,
+push the branch to your fork and open the PR from there. Name the branch
+with a short kebab-case slug, for example `fix-listbox-keyboard-handlers`:
 
 ```shell
 git fetch origin
-git switch -c NDWU-<n>-<slug> origin/master
+git switch -c <slug> origin/master
 ```
 
 ### Commits
 
-Commits on your branch use `(type) scope: summary`, with `(NDWU-<n>)` at the end when there is a ticket. The scope
-is the path you changed, for example `lib/core/tag` or `playground/tag`. List several siblings in braces:
+Commits on your branch use `(type) scope: summary`. The scope is the path you changed, for example `lib/core/tag` or `playground/tag`. List several siblings in braces:
 `lib/core/{checkbox, radio, toggle}`. Write the summary in the imperative mood and in lowercase.
 
 | Type     | Use for                                                             |
@@ -252,33 +226,30 @@ is the path you changed, for example `lib/core/tag` or `playground/tag`. List se
 | `docs`   | Documentation                                                       |
 | `review` | Changes that answer PR feedback                                     |
 
-Real examples from PR #31:
+Examples:
 
 ```text
-(task) lib/core/tag: implement tag component (NDWU-102)
-(docs) lib: document tag usage and keyboard removal (NDWU-102)
-(review) lib/core/tag: keep touch target unclipped (NDWU-102)
+(task) lib/core/tag: implement tag component
+(docs) lib: document tag usage and keyboard removal
+(review) lib/core/tag: keep touch target unclipped
 ```
 
 Bots use `chore(sync): …`, and RFC PRs use the `rfc:` prefix.
 
 ### Pull requests
 
-PRs target `master` and are **squash-merged**. The PR title becomes the commit on `master`, so write it as
-`scope: summary` without the type, with `(NDWU-<n>)` at the end when there is a ticket. GitHub appends the PR number:
+PRs target `master` and are **squash-merged**. The PR title becomes the commit
+on `master`, so write it as `scope: summary` without the type. GitHub appends
+the PR number:
 
 ```text
-lib/core: add tag component (NDWU-102) (#31)
-lib/aria/listbox: fix keyboard navigation and active item (NDWU-143) (#34)
-scripts/publish: add safety checks (NDWU-150) (#37)
+lib/core: add tag component (#31)
+lib/aria/listbox: fix keyboard navigation and active item (#34)
+scripts/publish: add safety checks (#37)
 ```
 
-Without a ticket, the title is just `scope: summary`, for example `lib/aria/listbox: fix keyboard navigation`.
-
-For a single-commit PR, GitHub pre-fills the squash title from the commit message instead. Before merging, check
-that the title matches the PR title and has no `(type)`.
-
-Keep one concern per PR. A suggested structure for the description (skip empty sections):
+Keep one concern per PR. A suggested structure for the description
+(skip empty sections):
 
 | Section               | Content                                                                                                                    |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------|
@@ -288,29 +259,24 @@ Keep one concern per PR. A suggested structure for the description (skip empty s
 | `## Verification`     | Commands you ran, the playground page to check (for example `/component/ndwu-tag/sandbox`), screenshots for visual changes |
 | `## Notes`            | Limitations, follow-ups                                                                                                    |
 
-Don't edit `src/lib/CHANGELOG.md`. Maintainers write it at release time from PR descriptions, so list every
-breaking change in yours.
+Don't edit `src/lib/CHANGELOG.md`: it's written at release time
+from PR descriptions, so list every breaking change in yours.
 
 ## Review process
 
 This is a team agreement; GitHub doesn't enforce it.
 
-1. Get one approval from a maintainer (another one if you are a maintainer).
-2. Reply to every review comment: fix it in a new `(review)` commit, or explain why not. You don't need to
-   force-push: the PR is squashed on merge.
+1. Get one approval from a maintainer.
+2. Reply to every review comment: fix it in a new `(review)` commit, or explain
+   why not. You don't need to force-push: the PR is squashed on merge.
 3. Merging `master` into your branch to resolve conflicts is fine.
 4. Resolve the threads you addressed and re-request review.
-5. After approval, maintainers squash-merge their own PRs; a maintainer merges PRs from forks. Check the title before
-   merging (see [Pull requests](#pull-requests)). GitHub deletes the branch.
 
 Reviewers usually look at:
 
-- the change matches the ticket, issue or PR description, and nothing unrelated;
+- the change matches the issue or PR description, and nothing unrelated;
 - public API naming and entry-point exports;
 - keyboard support, ARIA attributes and focus handling;
 - theming through component tokens, in the light and dark themes;
-- user-facing strings go through `localize` / `localizeHtml`, with English and German playground strings.
-
-## Publishing
-
-Only maintainers publish. See [Publishing requires artifact verification](README.md#3-publishing-requires-artifact-verification).
+- user-facing strings go through `localize` / `localizeHtml`,
+  with English and German playground strings.

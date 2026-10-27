@@ -583,12 +583,6 @@ const actions = ndwuScheduleValueToActions(value, weekDays);
 const restored = ndwuActionsToScheduleValue(actions, weekDays);
 ```
 
-Migration: `ndwuScheduleValueToActions`, `ndwuActionsToScheduleValue`, `NdwuScheduleAction`,
-`NDWU_SCHEDULE_ACTION` and `NDWU_ANY_DAY` moved from `@ndw-ui-kit/core/widgets` to
-`@ndw-ui-kit/core/schedule-actions` (same names, change the import path).
-The `(actionsChange)` output of `ndwu-schedule-editor` was removed: listen to `(valueChange)`
-and call `ndwuScheduleValueToActions(value, weekDays)`.
-
 ### Form field components (CVA)
 
 The `ndw-ui-kit` provides a number o CVA components for common form controls (checkbox, input, select, etc.).

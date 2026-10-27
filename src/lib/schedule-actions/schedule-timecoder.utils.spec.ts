@@ -7,12 +7,12 @@ const WEEK_DAYS: NdwuWeekDay[] = (['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'su
   .map((day) => ({day, label: day}));
 
 const sortActions = (actions: NdwuScheduleAction[]): NdwuScheduleAction[] => {
-  return [...actions].sort((a, b) =>
-    a.action.localeCompare(b.action)
-    || Number(a.hour) - Number(b.hour)
-    || Number(a.min) - Number(b.min)
-    || a.dow.localeCompare(b.dow)
-  );
+  return [...actions].sort((a, b) => {
+    return a.action.localeCompare(b.action)
+      || Number(a.hour) - Number(b.hour)
+      || Number(a.min) - Number(b.min)
+      || a.dow.localeCompare(b.dow);
+  });
 };
 
 const emptyValue = (): NdwuScheduleValue => {
@@ -116,6 +116,20 @@ describe('actionsToValue', () => {
         ...emptyValue(),
         mon: [[1380, 1440]],
         tue: [[0, 60]],
+      });
+  });
+
+  it('keeps both parts of an interval that wraps past the end of the week', () => {
+    const actions: NdwuScheduleAction[] = [
+      {action: NDWU_SCHEDULE_ACTION.START, hour: '23', min: '0', dow: '6'},
+      {action: NDWU_SCHEDULE_ACTION.STOP, hour: '1', min: '0', dow: '0'},
+    ];
+
+    expect(actionsToValue(actions, WEEK_DAYS))
+      .toEqual({
+        ...emptyValue(),
+        sat: [[1380, 1440]],
+        sun: [[0, 60]],
       });
   });
 });

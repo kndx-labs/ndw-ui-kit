@@ -42,7 +42,7 @@ the host connects them in its template.
 
 | Class                        | Type             | Role                                                                                                 |
 |------------------------------|------------------|------------------------------------------------------------------------------------------------------|
-| `NdwuTableDataSource<T>`     | `DataSource<T>`  | Signals `data`, `filter`, `sort`, `pageSize`, `pageIndex`; computes `filtered → sorted → page`, `length`, `isSorted` |
+| `NdwuTableDataSource<T, V>`  | `DataSource<T>`  | Signals `data`, `filter`, `sort`, `pageSize`, `pageIndex`; computes `filtered → sorted → page`, `length`, `isSorted` |
 | `NdwuTableDataSourceOptions` | Interface        | `sortAccessor`, `sortComparator`, `filterPredicate`, `injector` (when built outside an injection context) |
 
 A plain array is also a valid `[dataSource]`. Use it when the host does its own

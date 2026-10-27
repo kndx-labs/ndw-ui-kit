@@ -4,9 +4,9 @@ import {DataSource} from '@angular/cdk/collections';
 import type {Observable} from 'rxjs';
 import type {NdwuSortState} from './ndwu-sort.directive';
 
-export interface NdwuTableDataSourceOptions<T> {
-  sortAccessor?: (row: T, column: string) => unknown;
-  sortComparator?: (a: unknown, b: unknown, active: string) => number;
+export interface NdwuTableDataSourceOptions<T, V = unknown> {
+  sortAccessor?: (row: T, column: string) => V;
+  sortComparator?: (a: NonNullable<V>, b: NonNullable<V>, column: string) => number;
   filterPredicate?: (row: T, filter: string) => boolean;
   /** Needed only when the source is built outside an injection context. */
   injector?: Injector;
@@ -40,13 +40,13 @@ function defaultSortComparator(a: unknown, b: unknown): number {
   const right = toSortValue(b);
 
   if (typeof left === 'number' && typeof right === 'number') {
-    return Number(left > right) - Number(left < right);
+    return left - right;
   }
 
   return collator.compare(String(left), String(right));
 }
 
-export class NdwuTableDataSource<T> extends DataSource<T> {
+export class NdwuTableDataSource<T, V = unknown> extends DataSource<T> {
   public readonly data: WritableSignal<readonly T[]> = signal<readonly T[]>([]);
   public readonly filter = signal('');
   public readonly sort = signal<NdwuSortState>({active: '', direction: ''});
@@ -62,7 +62,7 @@ export class NdwuTableDataSource<T> extends DataSource<T> {
 
   private readonly injector: Injector;
 
-  constructor(private readonly options: NdwuTableDataSourceOptions<T> = {}) {
+  constructor(private readonly options: NdwuTableDataSourceOptions<T, V> = {}) {
     super();
 
     this.injector = options.injector ?? inject(Injector);
@@ -100,7 +100,7 @@ export class NdwuTableDataSource<T> extends DataSource<T> {
           return Number(aEmpty) - Number(bEmpty);
         }
 
-        return factor * comparator(a, b, active);
+        return factor * comparator(a as NonNullable<V>, b as NonNullable<V>, active);
       });
     });
 

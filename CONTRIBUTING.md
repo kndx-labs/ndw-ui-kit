@@ -30,9 +30,9 @@ It covers the workflow from an idea to a merged pull request.
 
 ## Set up the environment
 
-You need an LTS release of **Node.js 22 or later** (use the latest patch: some dev dependencies need 22.22.2+ or
-24.15+) and Git. The sync workflows use Node 22.
-Yarn **4.4.1** is pinned in `packageManager` in [package.json](package.json), and Corepack provides it:
+You need an LTS release of **Node.js 22 or later** and Git.
+Yarn **4.4.1** is pinned in `packageManager` in [package.json](package.json),
+and Corepack provides it:
 
 ```shell
 corepack enable

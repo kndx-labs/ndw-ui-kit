@@ -1,5 +1,5 @@
 import {NDWU_SCHEDULE_EDITOR_MODE, NdwuScheduleEditorMode} from './schedule-editor.types';
-import {ScheduleEditorCanvasSize, ScheduleEditorOffset} from './layout/schedule-layout.types';
+import {Offset, ScheduleEditorCanvasSize, ScheduleEditorOffset} from './layout/schedule-layout.types';
 
 /* --------- Constants used only in this component, not exported from the library ------------- */
 
@@ -59,6 +59,9 @@ export const MIN_GRID_EXTENT_PX = 1;
  */
 export const FILL_DESKTOP_MIN_RATIO = 1.6;
 export const FILL_DESKTOP_MIN_WIDTH_PX = 560;
+
+export const TOOLTIP_CURSOR_OFFSET: Offset = {x: 10, y: 20};
+export const TOOLTIP_FLIPPED_GAP_PX = 10;
 
 const TEXT_CLASS = 'ndwu-schedule-editor__text';
 const SLOT_CLASS = 'ndwu-schedule-editor__grid-slot';

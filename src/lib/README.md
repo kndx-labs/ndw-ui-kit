@@ -588,6 +588,19 @@ import {NdwuEmptyStateComponent} from '@ndw-ui-kit/core/widgets';
 Their form control wrappers (`ndwu-file-upload-field`, `ndwu-schedule-editor-field`)
 stay in `@ndw-ui-kit/core/form-field`.
 
+### Schedule actions
+
+Conversion between the `ndwu-schedule-editor` value (`NdwuScheduleValue`) and a list
+of start/stop actions (`{action, hour, min, dow}`) has a separate entry point
+(`@ndw-ui-kit/core/schedule-actions`), so apps that don't need it don't pull it in.
+
+```typescript
+import {ndwuActionsToScheduleValue, ndwuScheduleValueToActions} from '@ndw-ui-kit/core/schedule-actions';
+
+const actions = ndwuScheduleValueToActions(value, weekDays);
+const restored = ndwuActionsToScheduleValue(actions, weekDays);
+```
+
 ### Form field components (CVA)
 
 The `ndw-ui-kit` provides a number o CVA components for common form controls (checkbox, input, select, etc.).

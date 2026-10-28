@@ -5,6 +5,7 @@ import {
   type OnDestroy,
   type Signal,
   ViewEncapsulation,
+  afterRenderEffect,
   computed,
   effect,
   input,
@@ -17,17 +18,16 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map} from 'rxjs/operators';
 import {NdwuResizeObserverDirective} from '@ndw-ui-kit/core';
-import {blocksToActions} from './utils/schedule-timecoder.utils';
 import {blocksToValue, minutesToTime, simplifyBlocks, valueToBlocks} from './layout/schedule-blocks.utils';
 import {scheduleLayoutDesktopUtils} from './layout/desktop.schedule-layout';
 import {scheduleLayoutMobileUtils} from './layout/mobile.schedule-layout';
 import {ScheduleLayout} from './layout/schedule.layout';
+import {placeTooltip} from './layout/schedule-tooltip.utils';
 import {
   NDWU_SCHEDULE_EDITOR_LAYOUT,
   NDWU_SCHEDULE_EDITOR_MODE,
   NDWU_SCHEDULE_EDITOR_SIZING,
   type NdwuDayName,
-  type NdwuScheduleAction,
   NdwuScheduleBlock,
   type NdwuScheduleEditorLayout,
   type NdwuScheduleEditorMode,
@@ -43,9 +43,12 @@ import {
   DragPreview,
   DragState,
   GridLine,
+  Offset,
   ScheduleEditorOffset,
+  Size,
   SlotRect,
   TooltipState,
+  TooltipView,
 } from './layout/schedule-layout.types';
 import {
   BLOCK_DRAG_ADD_CLASS,
@@ -85,7 +88,6 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
   );
 
   public readonly valueChange = output<NdwuScheduleValue>();
-  public readonly actionsChange = output<NdwuScheduleAction[]>();
 
   private readonly weekDayLabels: Signal<Partial<Record<NdwuDayName, string>>> = computed(() => {
     return Object.fromEntries(this.weekDays().map((wd) => [wd.day, wd.label]));
@@ -132,6 +134,7 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
   });
 
   private readonly wrapperResize = viewChild(NdwuResizeObserverDirective);
+  private readonly wrapperElement = viewChild.required<ElementRef<HTMLElement>>('wrapperElement');
 
   private readonly baseCanvasSize = computed(() => {
     const sizes = this.isDesktopLayout() ? CANVAS_SIZES_DESKTOP : CANVAS_SIZES_MOBILE;
@@ -326,7 +329,56 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
   private hasWarnedZeroSize = false;
   private hasErroredUnsupportedFillMode = false;
 
-  protected readonly tooltip = signal<TooltipState | null>(null);
+  private readonly tooltip = signal<TooltipState | null>(null);
+
+  private readonly tooltipElement = viewChild<ElementRef<HTMLElement>>('tooltipElement');
+
+  private readonly tooltipText = computed(() => this.tooltip()?.text ?? null);
+
+  private readonly tooltipSize = signal<Size>({width: 0, height: 0}, {
+    equal: (a, b) => a.width === b.width && a.height === b.height,
+  });
+
+  private readonly tooltipBounds: Signal<Size> = computed(() => {
+    const wrapper = this.wrapperResize();
+
+    if (!wrapper?.measured()) {
+      return {width: Infinity, height: Infinity};
+    }
+
+    if (this.isFillMode() || this.isScaleMode()) {
+      return {width: wrapper.width(), height: wrapper.height()};
+    }
+
+    const canvas = this.renderCanvasSize();
+
+    return {width: Math.max(wrapper.width(), canvas.width), height: wrapper.height()};
+  });
+
+  protected readonly tooltipView: Signal<TooltipView | null> = computed(() => {
+    const tooltip = this.tooltip();
+
+    if (!tooltip) {
+      return null;
+    }
+
+    return {
+      text: tooltip.text,
+      ...placeTooltip(tooltip.anchor, this.tooltipSize(), this.tooltipBounds()),
+    };
+  });
+
+  protected readonly measureTooltip = afterRenderEffect({
+    read: () => {
+      this.tooltipText();
+
+      const rect = this.tooltipElement()?.nativeElement.getBoundingClientRect();
+
+      if (rect) {
+        this.tooltipSize.set({width: Math.ceil(rect.width), height: Math.ceil(rect.height)});
+      }
+    },
+  });
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -452,7 +504,7 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
       return;
     }
 
-    this.updateTooltipPosition(event);
+    this.updateTooltipAnchor(event);
   }
 
   protected onSlotMouseLeave(): void {
@@ -485,7 +537,6 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
     });
 
     this.valueChange.emit(blocksToValue(updated, this.weekDays()));
-    this.actionsChange.emit(blocksToActions(updated));
   }
 
   private isTimeOccupied(
@@ -509,30 +560,33 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
   private showSlotTooltip(event: MouseEvent, slot: SlotRect): void {
     const startMin = slot.slotIndex * MINUTES_IN_SLOT;
     const endMin = startMin + MINUTES_IN_SLOT;
-    const position = this.getTooltipPosition(event);
+    const anchor = this.getTooltipAnchor(event);
 
-    this.tooltip.set({
-      text: `${minutesToTime(startMin)} – ${minutesToTime(endMin)}`,
-      x: position?.x ?? 0,
-      y: position?.y ?? 0,
-    });
-  }
-
-  private updateTooltipPosition(event: MouseEvent): void {
-    const tooltip = this.tooltip();
-    const position = this.getTooltipPosition(event);
-
-    if (!tooltip || !position) {
+    if (!anchor) {
       return;
     }
 
-    this.tooltip.set({...tooltip, ...position});
+    this.tooltip.set({
+      text: `${minutesToTime(startMin)} – ${minutesToTime(endMin)}`,
+      anchor,
+    });
+  }
+
+  private updateTooltipAnchor(event: MouseEvent): void {
+    const tooltip = this.tooltip();
+    const anchor = this.getTooltipAnchor(event);
+
+    if (!tooltip || !anchor) {
+      return;
+    }
+
+    this.tooltip.set({...tooltip, anchor});
   }
 
   private showDragTooltip(event: MouseEvent | TouchEvent, drag: DragState): void {
-    const position = this.getTooltipPosition(event);
+    const anchor = this.getTooltipAnchor(event);
 
-    if (!position) {
+    if (!anchor) {
       return;
     }
 
@@ -540,24 +594,22 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
 
     this.tooltip.set({
       text: `${minutesToTime(startTime)} – ${minutesToTime(endTime)}`,
-      x: position.x,
-      y: position.y,
+      anchor,
     });
   }
 
-  private getTooltipPosition(event: MouseEvent | TouchEvent): {x: number; y: number} | null {
-    const svg = (event.target as Element)?.closest('svg');
+  private getTooltipAnchor(event: MouseEvent | TouchEvent): Offset | null {
     const clientPoint = this.getEventClientPoint(event);
 
-    if (!svg || !clientPoint) {
+    if (!clientPoint) {
       return null;
     }
 
-    const rect = svg.getBoundingClientRect();
+    const rect = this.wrapperElement().nativeElement.getBoundingClientRect();
 
     return {
-      x: clientPoint.clientX - rect.left + 10,
-      y: clientPoint.clientY - rect.top + 20,
+      x: clientPoint.clientX - rect.left,
+      y: clientPoint.clientY - rect.top,
     };
   }
 

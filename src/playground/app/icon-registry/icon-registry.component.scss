@@ -1,0 +1,100 @@
+@use 'styles/colors';
+@use 'styles/mixins';
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
+
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: spacing.$spacing-16;
+}
+
+.icon-registry {
+  &__title {
+    margin: 0;
+    font-weight: typography.$fontWeight-XL;
+    font-size: typography.$fontSize-H4;
+  }
+
+  &__filter {
+    flex: 1 1 240px;
+    max-width: 360px;
+
+    @include mixins.mobile() {
+      flex: none;
+      max-width: none;
+    }
+  }
+
+  &__sizes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing.$spacing-16;
+  }
+
+  &__counter {
+    margin: 0;
+    color: colors.$gray-50;
+    font-size: typography.$fontSize-small;
+  }
+
+  &__surface {
+    padding: 20px;
+    border: 1px solid colors.$gray-20;
+    border-radius: radius.$radius-L;
+    background-color: colors.$gray-0;
+    color: colors.$gray-100;
+
+    @include mixins.mobile() {
+      padding: spacing.$spacing-16;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: spacing.$spacing-12;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__cell {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-8;
+    align-items: center;
+    padding: spacing.$spacing-12;
+    border-radius: radius.$radius-S;
+    background-color: color-mix(in srgb, #{colors.$gray-100} 2%, transparent);
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: color-mix(in srgb, #{colors.$gray-100} 5%, transparent);
+    }
+  }
+
+  &__preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+  }
+
+  &__name {
+    font-size: typography.$fontSize-xsmall;
+    text-align: center;
+    word-break: break-all;
+  }
+
+  &__empty {
+    margin: 0;
+    color: colors.$gray-50;
+    text-align: center;
+  }
+}

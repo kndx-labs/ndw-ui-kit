@@ -32,6 +32,9 @@
       "@ndw-ui-kit/core/table": [
         "src/lib/table/index.ts"
       ],
+      "@ndw-ui-kit/core/schedule-actions": [
+        "src/lib/schedule-actions/index.ts"
+      ],
       "@ndw-ui-kit/core/widgets": [
         "src/lib/widgets/index.ts"
       ],

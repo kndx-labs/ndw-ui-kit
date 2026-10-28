@@ -1,11 +1,13 @@
+import type {NdwuScheduleInterval, NdwuScheduleValue, NdwuWeekDay} from '@ndw-ui-kit/core/widgets';
+import {NDWU_ANY_DAY} from './schedule-actions.constants';
 import {
-  NDWU_SCHEDULE_ACTION,
-  type NdwuScheduleAction,
-  NdwuScheduleBlock,
-  type NdwuScheduleInterval,
-} from '../schedule-editor.types';
-import {MINUTES_IN_DAY, MINUTES_IN_HOUR, MINUTES_IN_WEEK} from '../ndwu-schedule-editor.constants';
-import {NDWU_ANY_DAY} from '../schedule-editor.constants';
+  DAY_NAME_TO_DOW,
+  DOW_TO_DAY_NAME,
+  MINUTES_IN_DAY,
+  MINUTES_IN_HOUR,
+  MINUTES_IN_WEEK,
+} from './schedule-actions.internal';
+import {NDWU_SCHEDULE_ACTION, type NdwuScheduleAction} from './schedule-actions.types';
 
 type ScheduleActionList = Array<[number, number[]]>;
 
@@ -33,16 +35,27 @@ function findNearestStopFlag(stopFlags: number[], startFlag: number): number {
   return result;
 }
 
-function convertBlocksToIntervals(blocks: NdwuScheduleBlock[]): NdwuScheduleInterval[] {
-  return blocks.map((block) => {
-    const shift = MINUTES_IN_DAY * block.day;
-    const start = shift + block.start;
-    const end = shift + block.stop;
+function convertValueToIntervals(value: NdwuScheduleValue, weekDays: NdwuWeekDay[]): NdwuScheduleInterval[] {
+  const intervals: NdwuScheduleInterval[] = [];
 
-    const endTime = end > start ? end : end + MINUTES_IN_DAY;
+  weekDays.forEach((weekDay) => {
+    const dayIntervals = value[weekDay.day];
 
-    return [start, endTime];
+    if (!dayIntervals) {
+      return;
+    }
+
+    const shift = MINUTES_IN_DAY * DAY_NAME_TO_DOW[weekDay.day];
+
+    dayIntervals.forEach(([dayStart, dayStop]) => {
+      const start = shift + dayStart;
+      const end = shift + dayStop;
+
+      intervals.push([start, end > start ? end : end + MINUTES_IN_DAY]);
+    });
   });
+
+  return intervals;
 }
 
 function mergeIntervals(intervals: NdwuScheduleInterval[]): NdwuScheduleInterval[] {
@@ -113,9 +126,9 @@ function convertIntervalsToActionLists(
   intervals: NdwuScheduleInterval[],
 ): {startActions: ScheduleActionList; stopActions: ScheduleActionList} {
   return intervals.reduce(
-    (acc, block) => {
+    (acc, interval) => {
       const {startActions, stopActions} = acc;
-      const [startTime, stopTime] = block;
+      const [startTime, stopTime] = interval;
 
       return {
         startActions: appendNewAction(startTime, startActions),
@@ -140,9 +153,15 @@ function getNdmDayOfTheWeek(days: number[]): string {
     .join(',');
 }
 
-export function actionsToBlocks(actions: NdwuScheduleAction[]): NdwuScheduleBlock[] {
+export function actionsToValue(actions: NdwuScheduleAction[], weekDays: NdwuWeekDay[]): NdwuScheduleValue {
+  const value: NdwuScheduleValue = {};
+
+  weekDays.forEach((weekDay) => {
+    value[weekDay.day] = [];
+  });
+
   if (!actions?.length) {
-    return [];
+    return value;
   }
 
   const startFlagsArray: number[] = [];
@@ -152,11 +171,11 @@ export function actionsToBlocks(actions: NdwuScheduleAction[]): NdwuScheduleBloc
     const isStart = item.action === NDWU_SCHEDULE_ACTION.START;
     const dayOffsetMinutes = Number(item.hour) * MINUTES_IN_HOUR + Number(item.min);
 
-    const weekDays = item.dow === NDWU_ANY_DAY
+    const dows = item.dow === NDWU_ANY_DAY
       ? [0, 1, 2, 3, 4, 5, 6]
       : item.dow.split(',').map(Number);
 
-    const minutes = weekDays.map((day) => (day * MINUTES_IN_DAY + dayOffsetMinutes) % MINUTES_IN_WEEK);
+    const minutes = dows.map((day) => (day * MINUTES_IN_DAY + dayOffsetMinutes) % MINUTES_IN_WEEK);
 
     if (isStart) {
       startFlagsArray.push(...minutes);
@@ -176,8 +195,6 @@ export function actionsToBlocks(actions: NdwuScheduleAction[]): NdwuScheduleBloc
     ]);
   });
 
-  const blocks: NdwuScheduleBlock[] = [];
-
   linesArray.forEach((l) => {
     const startDay = Math.floor(l[0] / MINUTES_IN_DAY);
     const stopDay = Math.floor((l[1] - 1) / MINUTES_IN_DAY);
@@ -191,15 +208,25 @@ export function actionsToBlocks(actions: NdwuScheduleAction[]): NdwuScheduleBloc
         ? MINUTES_IN_DAY
         : l[1] % MINUTES_IN_DAY || MINUTES_IN_DAY;
 
-      blocks.push({start, stop, day});
+      const dayName = DOW_TO_DAY_NAME[day % 7];
+
+      if (!dayName || !weekDays.some((weekDay) => weekDay.day === dayName)) {
+        continue;
+      }
+
+      value[dayName]?.push([start, stop]);
     }
   });
 
-  return blocks;
+  return value;
 }
 
-export function blocksToActions(blocks: NdwuScheduleBlock[]): NdwuScheduleAction[] {
-  const intervals = convertBlocksToIntervals(blocks);
+export function valueToActions(value: NdwuScheduleValue, weekDays: NdwuWeekDay[]): NdwuScheduleAction[] {
+  if (!value) {
+    return [];
+  }
+
+  const intervals = convertValueToIntervals(value, weekDays);
   const nonIntersectingIntervals = mergeIntervals(intervals);
   const {startActions, stopActions} = convertIntervalsToActionLists(nonIntersectingIntervals);
 

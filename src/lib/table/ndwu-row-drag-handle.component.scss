@@ -23,6 +23,10 @@
     color: var(--ndwu-table-cell-color);
   }
 
+  &.ndwu-row-drag-handle--grabbed {
+    color: var(--ndwu-table-cell-color);
+  }
+
   &:focus-visible {
     @include mixins.focus-ring();
 

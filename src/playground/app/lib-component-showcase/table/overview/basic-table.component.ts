@@ -55,6 +55,11 @@ export class BasicTableComponent {
 
   protected readonly dragTexts: NdwuTableTranslationTexts['rowDragHandle'] = {
     reorder: 'table.rowDragHandle.reorder',
+    instructions: 'table.rowDragHandle.instructions',
+    grabbed: 'table.rowDragHandle.grabbed',
+    moved: 'table.rowDragHandle.moved',
+    dropped: 'table.rowDragHandle.dropped',
+    cancelled: 'table.rowDragHandle.cancelled',
   };
 
   protected readonly rows = signal<readonly Device[]>([]);

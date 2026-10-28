@@ -19,6 +19,11 @@ export interface NdwuTableTranslationTexts {
   };
   rowDragHandle?: {
     reorder?: string;
+    instructions?: string;
+    grabbed?: string;
+    moved?: string;
+    dropped?: string;
+    cancelled?: string;
   };
   columnResize?: {
     resize?: string;

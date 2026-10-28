@@ -1,10 +1,12 @@
+@use '@ndw-ui-kit/core/styles/fonts';
+@use '@ndw-ui-kit/core/styles/mixins';
 @use '@ndw-ui-kit/core/styles/spacing';
-@use '@ndw-ui-kit/core/styles/radius';
 @use '@ndw-ui-kit/core/styles/typography';
 
 :host {
   display: block;
   width: 100%;
+  font-family: fonts.$font-family;
 }
 
 .ndwu-heat-strip__strip {
@@ -15,6 +17,10 @@
   height: var(--ndwu-heat-strip-height);
   border: 1px solid var(--ndwu-heat-strip-border-color);
   border-radius: var(--ndwu-heat-strip-radius);
+
+  @media (forced-colors: active) {
+    border-color: CanvasText;
+  }
 
   &--loading {
     pointer-events: none;
@@ -38,88 +44,66 @@
 .ndwu-heat-strip__cell {
   flex: 1 1 0;
   min-width: 0;
+  background-color: var(--ndwu-heat-strip-cell-bg);
 
-  &:focus-visible {
-    box-shadow: var(--ndwu-heat-strip-cell-focus-shadow);
-    outline: none;
+  @media (forced-colors: active) {
+    border-inline-start: 1px solid CanvasText;
+    background-color: Canvas;
   }
 
-  &--level-0 {
-    background-color: var(--ndwu-heat-strip-level-0-bg);
+  @media (hover: hover) {
+    .ndwu-heat-strip__strip:not(
+      .ndwu-heat-strip__strip--empty,
+      .ndwu-heat-strip__strip--loading
+    ) & {
+      &:hover {
+        background-color: var(--ndwu-heat-strip-cell-bg-hover);
+      }
+    }
   }
 
-  &--level-1 {
-    background-color: var(--ndwu-heat-strip-level-1-bg);
-  }
-
-  &--level-2 {
-    background-color: var(--ndwu-heat-strip-level-2-bg);
-  }
-
-  &--level-3 {
-    background-color: var(--ndwu-heat-strip-level-3-bg);
-  }
-
-  &--level-4 {
-    background-color: var(--ndwu-heat-strip-level-4-bg);
-  }
-
-  &--level-5 {
-    background-color: var(--ndwu-heat-strip-level-5-bg);
+  // stylelint-disable-next-line order/order
+  @each $level in (0, 1, 2, 3, 4, 5) {
+    &--level-#{$level} {
+      --ndwu-heat-strip-cell-bg: var(--ndwu-heat-strip-level-#{$level}-bg);
+      --ndwu-heat-strip-cell-bg-hover: var(--ndwu-heat-strip-level-#{$level}-bg-hover);
+    }
   }
 
   &--no-data {
-    background-color: var(--ndwu-heat-strip-no-data-bg);
+    --ndwu-heat-strip-cell-bg: var(--ndwu-heat-strip-no-data-bg);
+    --ndwu-heat-strip-cell-bg-hover: var(--ndwu-heat-strip-no-data-bg-hover);
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring(var(--ndwu-heat-strip-cell-focus-ring));
+
+    @media (forced-colors: active) {
+      outline-offset: -2px;
+    }
+  }
+
+  &--active {
+    background-color: var(--ndwu-heat-strip-cell-bg-hover);
+
+    @media (forced-colors: active) {
+      background-color: Highlight;
+    }
   }
 
   &--marker {
     outline: 2px solid var(--ndwu-heat-strip-marker-color);
     outline-offset: -2px;
-  }
 
-  &--active.ndwu-heat-strip__cell--level-0 {
-    background-color: var(--ndwu-heat-strip-level-0-bg-hover);
+    @media (forced-colors: active) {
+      outline: 2px solid CanvasText;
+      outline-offset: -2px;
+    }
   }
-
-  &--active.ndwu-heat-strip__cell--level-1 {
-    background-color: var(--ndwu-heat-strip-level-1-bg-hover);
-  }
-
-  &--active.ndwu-heat-strip__cell--level-2 {
-    background-color: var(--ndwu-heat-strip-level-2-bg-hover);
-  }
-
-  &--active.ndwu-heat-strip__cell--level-3 {
-    background-color: var(--ndwu-heat-strip-level-3-bg-hover);
-  }
-
-  &--active.ndwu-heat-strip__cell--level-4 {
-    background-color: var(--ndwu-heat-strip-level-4-bg-hover);
-  }
-
-  &--active.ndwu-heat-strip__cell--level-5 {
-    background-color: var(--ndwu-heat-strip-level-5-bg-hover);
-  }
-
-  &--active.ndwu-heat-strip__cell--no-data {
-    background-color: var(--ndwu-heat-strip-no-data-bg-hover);
-  }
-}
-
-.ndwu-heat-strip__marker {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
 }
 
 .ndwu-heat-strip__visually-hidden {
-  position: absolute;
-  overflow: hidden;
-  clip-path: inset(50%);
-  width: 1px;
-  height: 1px;
-  white-space: nowrap;
+  @include mixins.visually-hidden();
 }
 
 .ndwu-heat-strip__axis {
@@ -145,81 +129,4 @@
   color: var(--ndwu-heat-strip-axis-color);
   font-size: typography.$fontSize-small;
   line-height: 23px;
-}
-
-@media (hover: hover) {
-  .ndwu-heat-strip__strip:not(.ndwu-heat-strip__strip--empty, .ndwu-heat-strip__strip--loading) {
-    .ndwu-heat-strip__cell--level-0:hover {
-      background-color: var(--ndwu-heat-strip-level-0-bg-hover);
-    }
-
-    .ndwu-heat-strip__cell--level-1:hover {
-      background-color: var(--ndwu-heat-strip-level-1-bg-hover);
-    }
-
-    .ndwu-heat-strip__cell--level-2:hover {
-      background-color: var(--ndwu-heat-strip-level-2-bg-hover);
-    }
-
-    .ndwu-heat-strip__cell--level-3:hover {
-      background-color: var(--ndwu-heat-strip-level-3-bg-hover);
-    }
-
-    .ndwu-heat-strip__cell--level-4:hover {
-      background-color: var(--ndwu-heat-strip-level-4-bg-hover);
-    }
-
-    .ndwu-heat-strip__cell--level-5:hover {
-      background-color: var(--ndwu-heat-strip-level-5-bg-hover);
-    }
-
-    .ndwu-heat-strip__cell--no-data:hover {
-      background-color: var(--ndwu-heat-strip-no-data-bg-hover);
-    }
-  }
-}
-
-@media (forced-colors: active) {
-  .ndwu-heat-strip__strip {
-    border-color: CanvasText;
-  }
-
-  .ndwu-heat-strip__cell:is(
-    .ndwu-heat-strip__cell--level-0,
-    .ndwu-heat-strip__cell--level-1,
-    .ndwu-heat-strip__cell--level-2,
-    .ndwu-heat-strip__cell--level-3,
-    .ndwu-heat-strip__cell--level-4,
-    .ndwu-heat-strip__cell--level-5,
-    .ndwu-heat-strip__cell--no-data
-  ) {
-    border-inline-start: 1px solid CanvasText;
-    background-color: Canvas;
-  }
-
-  .ndwu-heat-strip__cell--active {
-    background-color: Highlight;
-  }
-
-  .ndwu-heat-strip__cell--active:is(
-    .ndwu-heat-strip__cell--level-0,
-    .ndwu-heat-strip__cell--level-1,
-    .ndwu-heat-strip__cell--level-2,
-    .ndwu-heat-strip__cell--level-3,
-    .ndwu-heat-strip__cell--level-4,
-    .ndwu-heat-strip__cell--level-5,
-    .ndwu-heat-strip__cell--no-data
-  ) {
-    background-color: Highlight;
-  }
-
-  .ndwu-heat-strip__cell--marker {
-    outline: 2px solid CanvasText;
-    outline-offset: -2px;
-  }
-
-  .ndwu-heat-strip__cell:focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: -2px;
-  }
 }

@@ -3,11 +3,11 @@
   class="ndwu-heat-strip__strip"
   [class.ndwu-heat-strip__strip--empty]="cells().length === 0"
   [class.ndwu-heat-strip__strip--loading]="loading()"
-  [attr.role]="'group'"
+  role="group"
   [attr.aria-label]="ariaLabel() | localize"
   [attr.aria-busy]="loading() ? 'true' : null"
   [attr.aria-describedby]="cells().length === 0 ? emptyDescriptionId : null"
-  [attr.tabindex]="-1"
+  tabindex="-1"
   (pointerleave)="onStripPointerLeave()"
   (focusout)="onStripFocusOut($event)"
   (keydown)="onStripKeydown($event)"
@@ -21,11 +21,11 @@
     [tooltipRestoreFocus]="false"
     triggerOn="manual"
   >
+    @let localizedMarkerLabel = markerLabel() | localize;
+    @let markerDefinition = markerTemplate();
     @for (item of cells(); track $index) {
       @let normalizedLevel = levels()[$index] ?? null;
       @let localizedBaseLabel = labelKey(normalizedLevel) | localize;
-      @let localizedMarkerLabel = markerLabel() | localize;
-      @let markerDefinition = markerTemplate();
       <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
       <div
         #cell
@@ -39,7 +39,7 @@
         [class.ndwu-heat-strip__cell--no-data]="normalizedLevel === null"
         [class.ndwu-heat-strip__cell--marker]="item.marker === true && markerDefinition === undefined"
         [class.ndwu-heat-strip__cell--active]="isCellActive($index)"
-        [attr.role]="'img'"
+        role="img"
         [attr.aria-label]="cellAriaLabel(item, $index, localizedBaseLabel, localizedMarkerLabel)"
         [attr.aria-describedby]="isCellActive($index) ? tooltip()?.tooltipId : null"
         [attr.tabindex]="cellTabIndex($index)"

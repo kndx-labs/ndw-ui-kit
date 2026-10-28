@@ -1,7 +1,16 @@
-import type {NdwuHeatStripCell, NdwuHeatStripLevel} from './ndwu-heat-strip.types';
+import {
+  NDWU_HEAT_STRIP_LEVEL_COUNT,
+  type NdwuHeatStripCell,
+  type NdwuHeatStripLevel,
+} from './ndwu-heat-strip.types';
 
 export function normalizeHeatStripLevel(level: unknown): NdwuHeatStripLevel | null {
-  if (typeof level === 'number' && Number.isInteger(level) && level >= 0 && level <= 5) {
+  if (
+    typeof level === 'number'
+    && Number.isInteger(level)
+    && level >= 0
+    && level < NDWU_HEAT_STRIP_LEVEL_COUNT
+  ) {
     return level as NdwuHeatStripLevel;
   }
 

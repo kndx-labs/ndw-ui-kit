@@ -266,10 +266,14 @@ export class NdwuHeatStripComponent<T = unknown> {
 
   protected onStripKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
-      this.tooltip()?.hide();
-      event.preventDefault();
-      event.stopPropagation();
+      if (event.defaultPrevented) {
+        event.stopPropagation();
+      }
 
+      return;
+    }
+
+    if (event.altKey || event.ctrlKey || event.metaKey) {
       return;
     }
 

@@ -243,6 +243,40 @@ describe('NdwuHeatStripComponent', () => {
     expect(tabIndexes(fixture)).toEqual([0, -1, -1, -1, -1]);
   });
 
+  it('ignores navigation keys with modifier keys', () => {
+    const fixture = createStrip([{level: 0}, {level: 1}, {level: 2}, {level: 3}]);
+    const focusedCell = cellElements(fixture)[1];
+
+    focusedCell?.focus();
+    fixture.detectChanges();
+
+    const altArrowRight = new KeyboardEvent('keydown', {
+      key: 'ArrowRight',
+      altKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+
+    focusedCell?.dispatchEvent(altArrowRight);
+    fixture.detectChanges();
+
+    expect(document.activeElement).toBe(focusedCell);
+    expect(altArrowRight.defaultPrevented).toBe(false);
+
+    const ctrlEnd = new KeyboardEvent('keydown', {
+      key: 'End',
+      ctrlKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+
+    focusedCell?.dispatchEvent(ctrlEnd);
+    fixture.detectChanges();
+
+    expect(document.activeElement).toBe(focusedCell);
+    expect(ctrlEnd.defaultPrevented).toBe(false);
+  });
+
   it('swaps arrows in RTL', () => {
     const fixture = createStrip([{level: 0}, {level: 1}, {level: 2}, {level: 3}, {level: 4}]);
 
@@ -417,11 +451,39 @@ describe('NdwuHeatStripComponent', () => {
 
     cells[1]?.focus();
     fixture.detectChanges();
-    cells[1]?.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
+    cells[1]?.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true, cancelable: true}));
     fixture.detectChanges();
 
     expect(tooltipElement()).toBeNull();
     expect(document.activeElement).toBe(cells[1]);
+  });
+
+  it('lets Escape propagate when no tooltip is open', () => {
+    const fixture = createStrip([{level: 0}]);
+    const listener = vi.fn();
+    const event = new KeyboardEvent('keydown', {key: 'Escape', bubbles: true});
+
+    document.addEventListener('keydown', listener);
+    stripElement(fixture).dispatchEvent(event);
+    document.removeEventListener('keydown', listener);
+
+    expect(listener).toHaveBeenCalledTimes(1);
+  });
+
+  it('stops Escape that closed the tooltip', () => {
+    const fixture = createTooltipHost();
+    const cells = rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell');
+    const listener = vi.fn();
+
+    cells[1]?.focus();
+    fixture.detectChanges();
+    document.addEventListener('keydown', listener);
+    cells[1]?.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true, cancelable: true}));
+    fixture.detectChanges();
+    document.removeEventListener('keydown', listener);
+
+    expect(tooltipElement()).toBeNull();
+    expect(listener).not.toHaveBeenCalled();
   });
 
   it('closes tooltip when focus leaves the strip', () => {

@@ -34,22 +34,12 @@ function createMatchMedia(matches: boolean): (query: string) => MediaQueryList {
   };
 }
 
-function trackByDataId(_index: number, cell: NdwuHeatStripCell): string {
-  const data = cell.data;
-
-  if (typeof data !== 'object' || data === null || !('id' in data) || typeof data.id !== 'string') {
-    throw new Error('Expected heat strip cell data with a string id.');
-  }
-
-  return data.id;
-}
-
 @Component({
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NdwuHeatStripComponent, NdwuHeatStripTooltipDirective, NdwuHeatStripMarkerDirective],
   template: `
-    <ndwu-heat-strip [cells]="cells()" [trackBy]="trackBy" [loading]="loading()">
+    <ndwu-heat-strip [cells]="cells()" [loading]="loading()">
       <ng-template [ndwuHeatStripTooltip]="cells()" let-cell let-index="index">
         {{ index }}:{{ cell.data?.name }}
       </ng-template>
@@ -67,14 +57,6 @@ class HeatStripTooltipTestHostComponent {
     {level: 3, data: {id: 'd', name: 'd'}},
   ]);
   public readonly loading = signal(false);
-
-  public readonly trackBy = (_index: number, cell: NdwuHeatStripCell<TooltipTestData>): string => {
-    if (cell.data === undefined) {
-      throw new Error('Expected heat strip cell data.');
-    }
-
-    return cell.data.id;
-  };
 }
 
 function createStrip(cells: readonly NdwuHeatStripCell[]): ComponentFixture<NdwuHeatStripComponent> {
@@ -273,28 +255,7 @@ describe('NdwuHeatStripComponent', () => {
     expect(document.activeElement).toBe(cellElements(fixture)[3]);
   });
 
-  it('keeps focus on the same key after cells update', () => {
-    const fixture = createStrip([
-      {level: 0, data: {id: 'a'}},
-      {level: 1, data: {id: 'b'}},
-      {level: 2, data: {id: 'c'}},
-    ]);
-
-    fixture.componentRef.setInput('trackBy', trackByDataId);
-    fixture.detectChanges();
-    cellElements(fixture)[1]?.focus();
-    fixture.detectChanges();
-    fixture.componentRef.setInput('cells', [
-      {level: 2, data: {id: 'c'}},
-      {level: 0, data: {id: 'a'}},
-      {level: 1, data: {id: 'b'}},
-    ]);
-    fixture.detectChanges();
-
-    expect(document.activeElement).toBe(cellElements(fixture)[2]);
-  });
-
-  it('moves focus to clamped index when active cell disappears', () => {
+  it('clamps the tab stop when cells shrink', () => {
     const fixture = createStrip([{level: 0}, {level: 1}, {level: 2}, {level: 3}, {level: 4}]);
 
     cellElements(fixture)[4]?.focus();
@@ -302,15 +263,30 @@ describe('NdwuHeatStripComponent', () => {
     fixture.componentRef.setInput('cells', [{level: 0}, {level: 1}]);
     fixture.detectChanges();
 
-    expect(document.activeElement).toBe(cellElements(fixture)[1]);
+    expect(tabIndexes(fixture)).toEqual([-1, 0]);
 
     fixture.componentRef.setInput('cells', []);
     fixture.detectChanges();
+    fixture.componentRef.setInput('cells', [{level: 0}, {level: 1}, {level: 2}]);
+    fixture.detectChanges();
 
-    expect(document.activeElement).toBe(stripElement(fixture));
+    expect(tabIndexes(fixture)).toEqual([-1, -1, 0]);
   });
 
-  it('loading moves focus to container and restores tab stop', () => {
+  it('keeps focus on the same position when cells update', () => {
+    const fixture = createStrip([{level: 0}, {level: 1}, {level: 2}, {level: 3}]);
+    const focusedCell = cellElements(fixture)[1];
+
+    focusedCell?.focus();
+    fixture.detectChanges();
+    fixture.componentRef.setInput('cells', [{level: 5}, {level: 4}, {level: 3}, {level: 2}]);
+    fixture.detectChanges();
+
+    expect(document.activeElement).toBe(focusedCell);
+    expect(tabIndexes(fixture)[1]).toBe(0);
+  });
+
+  it('loading moves focus to the strip and keeps the tab stop position', () => {
     const fixture = createStrip([{level: 0}, {level: 1}, {level: 2}, {level: 3}]);
 
     cellElements(fixture)[2]?.focus();
@@ -322,10 +298,92 @@ describe('NdwuHeatStripComponent', () => {
     expect(document.activeElement).toBe(stripElement(fixture));
     expect(tabIndexes(fixture).every((tabIndex) => tabIndex === -1)).toBe(true);
 
+    fixture.componentRef.setInput('cells', [{level: 4}, {level: 5}, {level: 0}, {level: 1}]);
+    fixture.detectChanges();
     fixture.componentRef.setInput('loading', false);
     fixture.detectChanges();
 
     expect(tabIndexes(fixture)[2]).toBe(0);
+  });
+
+  it('restores the tab stop position when loading ends with new cells', () => {
+    const fixture = createStrip([{level: 0}, {level: 1}, {level: 2}, {level: 3}]);
+
+    cellElements(fixture)[2]?.focus();
+    fixture.detectChanges();
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+    fixture.componentRef.setInput('cells', [{level: 4}, {level: 5}, {level: 0}, {level: 1}]);
+    fixture.componentRef.setInput('loading', false);
+    fixture.detectChanges();
+
+    expect(tabIndexes(fixture)[2]).toBe(0);
+  });
+
+  it('keeps the pre-loading tab stop when cells are cleared while loading', () => {
+    const fixture = createStrip([{level: 0}, {level: 1}, {level: 2}, {level: 3}]);
+
+    cellElements(fixture)[3]?.focus();
+    fixture.detectChanges();
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+    fixture.componentRef.setInput('cells', []);
+    fixture.detectChanges();
+    fixture.componentRef.setInput('cells', [{level: 0}, {level: 1}]);
+    fixture.detectChanges();
+    fixture.componentRef.setInput('cells', [{level: 0}, {level: 1}, {level: 2}, {level: 3}]);
+    fixture.componentRef.setInput('loading', false);
+    fixture.detectChanges();
+
+    expect(tabIndexes(fixture)).toEqual([-1, -1, -1, 0]);
+
+    const shortFixture = createStrip([{level: 0}, {level: 1}, {level: 2}, {level: 3}]);
+
+    cellElements(shortFixture)[3]?.focus();
+    shortFixture.detectChanges();
+    shortFixture.componentRef.setInput('loading', true);
+    shortFixture.detectChanges();
+    shortFixture.componentRef.setInput('cells', []);
+    shortFixture.detectChanges();
+    shortFixture.componentRef.setInput('cells', [{level: 0}, {level: 1}]);
+    shortFixture.componentRef.setInput('loading', false);
+    shortFixture.detectChanges();
+
+    expect(tabIndexes(shortFixture)).toEqual([-1, 0]);
+  });
+
+  it('ignores cell focus while loading', () => {
+    const fixture = createTooltipHost();
+    const cells = rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell');
+
+    cells[2]?.focus();
+    fixture.detectChanges();
+    fixture.componentInstance.loading.set(true);
+    fixture.detectChanges();
+    cells[1]?.focus();
+    fixture.detectChanges();
+
+    expect(tooltipElement()).toBeNull();
+
+    fixture.componentInstance.loading.set(false);
+    fixture.detectChanges();
+
+    const updatedCells = rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell');
+
+    expect(Array.from(updatedCells).map((cell) => Number(cell.getAttribute('tabindex')))).toEqual([-1, -1, 0, -1]);
+  });
+
+  it('ignores navigation keys while loading', () => {
+    const fixture = createStrip([{level: 0}, {level: 1}, {level: 2}, {level: 3}]);
+
+    cellElements(fixture)[1]?.focus();
+    fixture.detectChanges();
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+    press(fixture, 'ArrowRight');
+    press(fixture, 'End');
+
+    expect(document.activeElement).toBe(stripElement(fixture));
   });
 
   it('opens tooltip on focus with cell context and describes the active cell', () => {
@@ -410,24 +468,24 @@ describe('NdwuHeatStripComponent', () => {
     expect(tooltipElement()).toBeNull();
   });
 
-  it('keeps tooltip open and updates context when cells update with same keys', () => {
+  it('keeps tooltip open at the same position with new cell data', () => {
     const fixture = createTooltipHost();
     const host = fixture.componentInstance;
     const cells = rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell');
+    const focusedCell = cells[1];
 
-    cells[1]?.focus();
+    focusedCell?.focus();
     fixture.detectChanges();
     host.cells.set([
-      {level: 2, data: {id: 'c', name: 'c'}},
-      {level: 0, data: {id: 'a', name: 'a'}},
-      {level: 1, data: {id: 'b', name: 'b-updated'}},
+      {level: 5, data: {id: 'a1', name: 'a1'}},
+      {level: 4, data: {id: 'b1', name: 'x'}},
+      {level: 3, data: {id: 'c1', name: 'c1'}},
+      {level: 2, data: {id: 'd1', name: 'd1'}},
     ]);
     fixture.detectChanges();
 
-    expect(tooltipElement()?.textContent).toContain('2:b-updated');
-    expect(document.activeElement).toBe(
-      rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell')[2],
-    );
+    expect(tooltipElement()?.textContent).toContain('1:x');
+    expect(document.activeElement).toBe(focusedCell);
   });
 
   it('tracks the tooltip target separately from the focused tab stop', () => {
@@ -455,9 +513,9 @@ describe('NdwuHeatStripComponent', () => {
     fixture.detectChanges();
     cells = rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell');
 
-    expect(tooltipElement()?.textContent).toContain('1:d');
-    expect(document.activeElement).toBe(cells[3]);
-    expect(Array.from(cells).map((cell) => Number(cell.getAttribute('tabindex')))).toEqual([-1, -1, -1, 0]);
+    expect(tooltipElement()?.textContent).toContain('3:b');
+    expect(document.activeElement).toBe(cells[1]);
+    expect(Array.from(cells).map((cell) => Number(cell.getAttribute('tabindex')))).toEqual([-1, 0, -1, -1]);
   });
 
   it('closes an open tooltip when its target is removed or loading starts', () => {
@@ -465,7 +523,7 @@ describe('NdwuHeatStripComponent', () => {
     const host = fixture.componentInstance;
     let cells = rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell');
 
-    cells[1]?.focus();
+    cells[3]?.focus();
     fixture.detectChanges();
 
     host.cells.set([
@@ -511,6 +569,37 @@ describe('NdwuHeatStripComponent', () => {
     expect(cells[0]?.hasAttribute('aria-describedby')).toBe(false);
     expect(cells[1]?.classList.contains('ndwu-heat-strip__cell--active')).toBe(true);
     expect(cells[1]?.getAttribute('aria-describedby')).toBe(tooltipElement()?.id);
+  });
+
+  it('touch: tap on the same position after a data update closes the tooltip', () => {
+    vi.stubGlobal('matchMedia', createMatchMedia(true));
+
+    const fixture = createTooltipHost();
+    const tap = (cell: HTMLElement | undefined): void => {
+      cell?.dispatchEvent(new Event('pointerdown', {bubbles: true}));
+      cell?.focus();
+      cell?.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      fixture.detectChanges();
+    };
+    let cells = rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell');
+
+    tap(cells[0]);
+    expect(tooltipElement()?.textContent).toContain('0:a');
+
+    fixture.componentInstance.cells.set([
+      {level: 5, data: {id: 'z', name: 'z'}},
+      {level: 4, data: {id: 'y', name: 'y'}},
+      {level: 3, data: {id: 'x', name: 'x'}},
+      {level: 2, data: {id: 'w', name: 'w'}},
+    ]);
+    fixture.detectChanges();
+    cells = rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell');
+
+    expect(tooltipElement()?.textContent).toContain('0:z');
+
+    tap(cells[0]);
+
+    expect(tooltipElement()).toBeNull();
   });
 
   it('touch: outside pointerdown closes tooltip and detaches its listener', () => {

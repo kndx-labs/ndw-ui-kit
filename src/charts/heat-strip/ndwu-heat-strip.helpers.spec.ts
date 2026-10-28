@@ -1,10 +1,11 @@
 import type {NdwuHeatStripCell} from './ndwu-heat-strip.types';
 import {
+  clampHeatStripIndex,
   findInvalidHeatStripLevels,
   heatStripLabelWithMarker,
   heatStripRovingTarget,
   normalizeHeatStripLevel,
-  resolveHeatStripKeyIndex,
+  resolveHeatStripTooltipTarget,
 } from './ndwu-heat-strip.helpers';
 
 describe('normalizeHeatStripLevel', () => {
@@ -53,18 +54,25 @@ describe('heatStripRovingTarget', () => {
   });
 });
 
-describe('resolveHeatStripKeyIndex', () => {
-  it('finds the key at its new position', () => {
-    expect(resolveHeatStripKeyIndex('b', ['x', 'a', 'b'], 1)).toEqual({index: 2, found: true});
+describe('clampHeatStripIndex', () => {
+  it('clamps the remembered index to the current length', () => {
+    expect(clampHeatStripIndex(1, 5)).toBe(1);
+    expect(clampHeatStripIndex(4, 2)).toBe(1);
+    expect(clampHeatStripIndex(3, 0)).toBe(0);
+    expect(clampHeatStripIndex(-1, 5)).toBe(0);
+  });
+});
+
+describe('resolveHeatStripTooltipTarget', () => {
+  it('keeps a target inside the array', () => {
+    expect(resolveHeatStripTooltipTarget(2, 5, false)).toBe(2);
   });
 
-  it('clamps the previous index when the key is gone', () => {
-    expect(resolveHeatStripKeyIndex('z', ['a', 'b'], 5)).toEqual({index: 1, found: false});
-    expect(resolveHeatStripKeyIndex('z', [], 0)).toEqual({index: -1, found: false});
-  });
-
-  it('takes the first match for duplicate keys', () => {
-    expect(resolveHeatStripKeyIndex('a', ['x', 'a', 'a'], 2)).toEqual({index: 1, found: true});
+  it('drops the target past the end, while loading, or when absent', () => {
+    expect(resolveHeatStripTooltipTarget(5, 5, false)).toBeNull();
+    expect(resolveHeatStripTooltipTarget(-1, 5, false)).toBeNull();
+    expect(resolveHeatStripTooltipTarget(2, 5, true)).toBeNull();
+    expect(resolveHeatStripTooltipTarget(null, 5, false)).toBeNull();
   });
 });
 

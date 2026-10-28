@@ -21,11 +21,12 @@
     [tooltipRestoreFocus]="false"
     triggerOn="manual"
   >
-    @for (item of cells(); track trackBy()($index, item)) {
+    @for (item of cells(); track $index) {
       @let normalizedLevel = levels()[$index] ?? null;
       @let localizedBaseLabel = labelKey(normalizedLevel) | localize;
       @let localizedMarkerLabel = markerLabel() | localize;
       @let markerDefinition = markerTemplate();
+      <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
       <div
         #cell
         class="ndwu-heat-strip__cell"
@@ -43,20 +44,19 @@
         [attr.aria-describedby]="isCellActive($index) ? tooltip()?.tooltipId : null"
         [attr.tabindex]="cellTabIndex($index)"
         (focus)="onCellFocus($index)"
-        (pointerdown)="onCellPointerDown($index)"
         (pointerenter)="onCellPointerEnter($index)"
         (click)="onCellClick($index)"
-        (keydown.enter)="onCellClick($index)"
       >
         @if (item.marker && markerDefinition !== undefined) {
           <span class="ndwu-heat-strip__marker">
             <ng-container
               [ngTemplateOutlet]="markerDefinition.templateRef"
-              [ngTemplateOutletContext]="markerContextForCell($index)"
+              [ngTemplateOutletContext]="{$implicit: item, index: $index}"
             />
           </span>
         }
       </div>
+      <!-- eslint-enable @angular-eslint/template/click-events-have-key-events -->
     }
   </div>
 </div>
@@ -70,7 +70,7 @@
 @if (axisLabels().length > 0) {
   <div class="ndwu-heat-strip__axis" aria-hidden="true">
     <div class="ndwu-heat-strip__ticks">
-      @for (cell of cells(); track trackBy()($index, cell)) {
+      @for (cell of cells(); track $index) {
         <span class="ndwu-heat-strip__tick"></span>
       }
       <span class="ndwu-heat-strip__tick"></span>

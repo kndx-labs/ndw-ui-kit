@@ -63,10 +63,8 @@ as `index`. A marker template can be projected with
 `ng-template[ndwuHeatStripMarker]`; marked cells use a built-in inset border
 when no marker template is present.
 
-`cells` is required. `trackBy` defaults to the array index. Custom keys must be
-unique within each `cells` array and stable for the same logical cell across
-updates. Duplicate keys are a consumer error; Angular reports `NG0955` in dev
-mode, and the component does not deduplicate them. `axisLabels` adds an axis;
-`loading` disables interaction while loading. Accessibility can be customized
-with `ariaLabel`, `cellLabel`, `levelLabels`, `noDataLabel`, `markerLabel`, and
-`emptyLabel`.
+`cells` is required. State is positional: when `cells` updates, the tab stop
+and an open tooltip stay at the same index and show the new cell's data; a
+tooltip past the new end closes. `axisLabels` adds an axis; `loading` disables
+interaction while loading. Accessibility can be customized with `ariaLabel`,
+`cellLabel`, `levelLabels`, `noDataLabel`, `markerLabel`, and `emptyLabel`.

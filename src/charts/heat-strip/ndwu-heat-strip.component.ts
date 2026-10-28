@@ -2,15 +2,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  type OnChanges,
-  type SimpleChanges,
   afterRenderEffect,
   computed,
   contentChild,
   effect,
   input,
   isDevMode,
+  linkedSignal,
   signal,
+  untracked,
   viewChild,
   viewChildren,
 } from '@angular/core';
@@ -20,21 +20,25 @@ import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {type NdwuPopoverOrigin, NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {
+  clampHeatStripIndex,
   findInvalidHeatStripLevels,
   heatStripLabelWithMarker,
   heatStripRovingTarget,
   normalizeHeatStripLevel,
-  resolveHeatStripKeyIndex,
+  resolveHeatStripTooltipTarget,
 } from './ndwu-heat-strip.helpers';
 import type {
   NdwuHeatStripCell,
   NdwuHeatStripCellLabel,
   NdwuHeatStripLevel,
-  NdwuHeatStripMarkerContext,
   NdwuHeatStripTooltipContext,
-  NdwuHeatStripTrackBy,
 } from './ndwu-heat-strip.types';
 import {NdwuHeatStripMarkerDirective, NdwuHeatStripTooltipDirective} from './ndwu-heat-strip-templates.directive';
+
+interface HeatStripLengthAndLoading {
+  length: number;
+  loading: boolean;
+}
 
 @Component({
   selector: 'ndwu-heat-strip',
@@ -48,14 +52,8 @@ import {NdwuHeatStripMarkerDirective, NdwuHeatStripTooltipDirective} from './ndw
     NgTemplateOutlet,
   ],
 })
-export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
+export class NdwuHeatStripComponent<T = unknown> {
   public readonly cells = input.required<readonly NdwuHeatStripCell<T>[]>();
-
-  /** Keys must be unique within one cells array and stable for the same logical cell across updates. */
-  public readonly trackBy = input<NdwuHeatStripTrackBy<T>>((index) => {
-    return index;
-  });
-
   public readonly axisLabels = input<readonly string[]>([]);
   public readonly loading = input<boolean>(false);
   public readonly ariaLabel = input<string>('Heat strip');
@@ -72,8 +70,19 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
   public readonly markerLabel = input<string>('Marked');
   public readonly emptyLabel = input<string>('No data');
 
-  protected readonly tabStopIndex = signal<number>(0);
-  protected readonly tooltipTargetIndex = signal<number | null>(null);
+  private readonly lengthAndLoading = computed(() => {
+    return {length: this.cells().length, loading: this.loading()};
+  });
+  private readonly lastFocusedIndex = signal<number>(0);
+  protected readonly tabStopIndex = computed(() => {
+    return clampHeatStripIndex(this.lastFocusedIndex(), this.cells().length);
+  });
+  protected readonly tooltipTargetIndex = linkedSignal<HeatStripLengthAndLoading, number | null>({
+    source: this.lengthAndLoading,
+    computation: (source, previous) => {
+      return resolveHeatStripTooltipTarget(previous?.value ?? null, source.length, source.loading);
+    },
+  });
   protected readonly emptyDescriptionId = uniqueId('ndwu-heat-strip-empty-');
   protected readonly levels = computed(() => {
     return this.cells().map((cell) => normalizeHeatStripLevel(cell.level));
@@ -112,56 +121,28 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
   private readonly isTouchDevice = typeof window !== 'undefined'
     && typeof window.matchMedia === 'function'
     && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-  private previousCells: readonly NdwuHeatStripCell<T>[] | null = null;
-  private wasLoading = false;
-  private tabStopKeyDuringLoading: unknown;
-  private hasTabStopKeyDuringLoading = false;
-  private pointerFocusPending = false;
-  private suppressTooltipOnFocus = false;
-  private pointerDownTooltipTargetIndex: number | null = null;
-  private pendingCellsUpdate: {
-    previousCells: readonly NdwuHeatStripCell<T>[];
-    tabStopIndex: number;
-    tooltipTargetIndex: number | null;
-    focusWasOnCell: boolean;
-  } | null = null;
-  private pendingLoadingUpdate: {
-    wasLoading: boolean;
-    isLoading: boolean;
-    tabStopKey: unknown;
-    hasTabStopKey: boolean;
-    focusWasOnCell: boolean;
-  } | null = null;
-
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (this.previousCells !== null && changes['cells']) {
-      const activeElement = document.activeElement;
-
-      this.pendingCellsUpdate = {
-        previousCells: this.previousCells,
-        tabStopIndex: this.tabStopIndex(),
-        tooltipTargetIndex: this.tooltipTargetIndex(),
-        focusWasOnCell: this.cellRefs().some((cellRef) => cellRef.nativeElement === activeElement),
-      };
-    }
-
-    if (this.previousCells !== null && changes['loading'] && this.wasLoading !== this.loading()) {
-      const tabStopIndex = this.tabStopIndex();
-      const tabStopCell = this.previousCells[tabStopIndex];
-
-      this.pendingLoadingUpdate = {
-        wasLoading: this.wasLoading,
-        isLoading: this.loading(),
-        tabStopKey: tabStopCell === undefined ? undefined : this.trackBy()(tabStopIndex, tabStopCell),
-        hasTabStopKey: tabStopCell !== undefined,
-        focusWasOnCell: this.cellRefs().some((cellRef) => cellRef.nativeElement === document.activeElement),
-      };
-    }
-  }
 
   constructor() {
     effect(() => this.warnOnInvalidLevels());
-    afterRenderEffect(() => this.reconcileCellsAndLoading());
+    effect(() => {
+      if (this.tooltipTargetIndex() === null) {
+        untracked(() => this.tooltip()?.hide());
+      }
+    });
+    afterRenderEffect(() => {
+      const {loading} = this.lengthAndLoading();
+
+      if (!loading) {
+        return;
+      }
+
+      const activeElement = document.activeElement;
+      const activeCell = this.cellRefs().some((cellRef) => cellRef.nativeElement === activeElement);
+
+      if (activeCell) {
+        this.stripRef()?.nativeElement.focus();
+      }
+    });
 
     effect((onCleanup) => {
       const trigger = this.popoverTrigger();
@@ -180,8 +161,7 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
           return;
         }
 
-        this.setTooltipTarget(null);
-        this.tooltip()?.hide();
+        this.tooltipTargetIndex.set(null);
       };
 
       document.addEventListener('pointerdown', onPointerDown);
@@ -218,27 +198,20 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
   }
 
   protected onCellFocus(index: number): void {
-    this.tabStopIndex.set(index);
-
-    if (this.suppressTooltipOnFocus) {
+    if (this.loading()) {
       return;
     }
 
-    this.setTooltipTarget(index);
+    this.lastFocusedIndex.set(index);
 
-    if (this.pointerFocusPending) {
-      return;
-    }
-
-    if (this.tooltipTemplate() !== undefined && !this.loading()) {
-      this.tooltip()?.show();
-    }
-  }
-
-  protected onCellPointerDown(index: number): void {
     if (this.isTouchDevice) {
-      this.pointerFocusPending = true;
-      this.pointerDownTooltipTargetIndex = this.tooltipTargetIndex() ?? index;
+      return;
+    }
+
+    this.tooltipTargetIndex.set(index);
+
+    if (this.tooltipTemplate() !== undefined) {
+      this.tooltip()?.show();
     }
   }
 
@@ -247,7 +220,7 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
       return;
     }
 
-    this.setTooltipTarget(index);
+    this.tooltipTargetIndex.set(index);
 
     if (this.tooltipTemplate() !== undefined) {
       this.tooltip()?.scheduleShow();
@@ -255,19 +228,11 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
   }
 
   protected onCellClick(index: number): void {
-    const wasPointerFocus = this.pointerFocusPending;
-
-    this.pointerFocusPending = false;
-
-    const targetBeforeClick = wasPointerFocus ? this.pointerDownTooltipTargetIndex : this.tooltipTargetIndex();
-
-    this.pointerDownTooltipTargetIndex = null;
-
     if (!this.isTouchDevice || this.loading()) {
       return;
     }
 
-    const isSameOpenTarget = this.tooltipIsOpen() && targetBeforeClick === index;
+    const isSameOpenTarget = this.tooltipIsOpen() && this.tooltipTargetIndex() === index;
 
     if (isSameOpenTarget) {
       this.tooltip()?.hide();
@@ -275,14 +240,10 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
       return;
     }
 
-    this.setTooltipTarget(index);
+    this.tooltipTargetIndex.set(index);
 
     if (this.tooltipTemplate() !== undefined) {
       this.tooltip()?.show();
-    }
-
-    if (!wasPointerFocus && this.tooltipTemplate() === undefined) {
-      this.tabStopIndex.set(index);
     }
   }
 
@@ -300,8 +261,7 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
       return;
     }
 
-    this.setTooltipTarget(null);
-    this.tooltip()?.hide();
+    this.tooltipTargetIndex.set(null);
   }
 
   protected onStripKeydown(event: KeyboardEvent): void {
@@ -310,6 +270,10 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
       event.preventDefault();
       event.stopPropagation();
 
+      return;
+    }
+
+    if (this.loading()) {
       return;
     }
 
@@ -331,26 +295,8 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
     this.cellRefs()[targetIndex]?.nativeElement.focus();
   }
 
-  protected onTooltipTargetLost(): void {
-    this.tooltip()?.hide();
-  }
-
   protected isCellActive(index: number): boolean {
     return this.activeTooltipIndex() === index;
-  }
-
-  protected markerContextForCell(index: number): NdwuHeatStripMarkerContext<T> | null {
-    const cell = this.cells()[index];
-
-    if (cell === undefined) {
-      return null;
-    }
-
-    return {$implicit: cell, index};
-  }
-
-  protected setTooltipTarget(index: number | null): void {
-    this.tooltipTargetIndex.set(index);
   }
 
   private warnOnInvalidLevels(): void {
@@ -358,121 +304,6 @@ export class NdwuHeatStripComponent<T = unknown> implements OnChanges {
 
     if (isDevMode() && invalidIndexes.length > 0) {
       console.warn(`Invalid heat strip levels at indexes [${invalidIndexes.join(', ')}]`);
-    }
-  }
-
-  private reconcileCellsAndLoading(): void {
-    const cells = this.cells();
-    const trackBy = this.trackBy();
-    const loading = this.loading();
-    const previousCells = this.previousCells;
-
-    this.previousCells = cells;
-
-    if (previousCells === null) {
-      this.wasLoading = loading;
-
-      return;
-    }
-
-    const pendingCellsUpdate = this.pendingCellsUpdate;
-    const pendingLoadingUpdate = this.pendingLoadingUpdate;
-
-    this.pendingCellsUpdate = null;
-    this.pendingLoadingUpdate = null;
-    this.wasLoading = loading;
-
-    if (pendingLoadingUpdate?.wasLoading && !pendingLoadingUpdate.isLoading) {
-      this.restoreTabStop(cells, trackBy);
-    }
-
-    if (previousCells !== cells && pendingCellsUpdate !== null) {
-      const oldKeys = pendingCellsUpdate.previousCells.map((cell, index) => {
-        return trackBy(index, cell);
-      });
-      const newKeys = cells.map((cell, index) => {
-        return trackBy(index, cell);
-      });
-      const tabStopKey = oldKeys[pendingCellsUpdate.tabStopIndex];
-      const nextTabStop = resolveHeatStripKeyIndex(tabStopKey, newKeys, pendingCellsUpdate.tabStopIndex);
-      let nextTabStopIndex = nextTabStop.index;
-
-      if (nextTabStopIndex === -1 && cells.length > 0) {
-        nextTabStopIndex = 0;
-      }
-
-      this.tabStopIndex.set(Math.max(0, nextTabStopIndex));
-
-      if (pendingCellsUpdate.tooltipTargetIndex !== null) {
-        const targetKey = oldKeys[pendingCellsUpdate.tooltipTargetIndex];
-        const nextTarget = resolveHeatStripKeyIndex(
-          targetKey,
-          newKeys,
-          pendingCellsUpdate.tooltipTargetIndex,
-        );
-
-        if (nextTarget.found) {
-          this.setTooltipTarget(nextTarget.index);
-        } else {
-          this.setTooltipTarget(null);
-          this.onTooltipTargetLost();
-        }
-      }
-
-      if (pendingCellsUpdate.focusWasOnCell) {
-        this.focusCellOrStrip(nextTabStopIndex);
-      }
-    }
-
-    if (pendingLoadingUpdate !== null && !pendingLoadingUpdate.wasLoading && pendingLoadingUpdate.isLoading) {
-      this.tabStopKeyDuringLoading = pendingLoadingUpdate.tabStopKey;
-      this.hasTabStopKeyDuringLoading = pendingLoadingUpdate.hasTabStopKey;
-      this.setTooltipTarget(null);
-      this.onTooltipTargetLost();
-
-      if (pendingLoadingUpdate.focusWasOnCell) {
-        this.stripRef()?.nativeElement.focus();
-      }
-    }
-  }
-
-  private restoreTabStop(cells: readonly NdwuHeatStripCell<T>[], trackBy: NdwuHeatStripTrackBy<T>): void {
-    if (!this.hasTabStopKeyDuringLoading) {
-      this.tabStopIndex.set(0);
-
-      return;
-    }
-
-    const keys = cells.map((cell, index) => {
-      return trackBy(index, cell);
-    });
-    const restored = resolveHeatStripKeyIndex(this.tabStopKeyDuringLoading, keys, 0);
-    const index = restored.found ? restored.index : 0;
-
-    this.tabStopIndex.set(Math.max(0, index));
-    this.hasTabStopKeyDuringLoading = false;
-    this.tabStopKeyDuringLoading = undefined;
-  }
-
-  private focusCellOrStrip(index: number): void {
-    if (this.cells().length === 0 || index < 0) {
-      this.stripRef()?.nativeElement.focus();
-
-      return;
-    }
-
-    const cell = this.cellRefs()[index]?.nativeElement;
-
-    if (cell === undefined) {
-      return;
-    }
-
-    this.suppressTooltipOnFocus = true;
-
-    try {
-      cell.focus();
-    } finally {
-      this.suppressTooltipOnFocus = false;
     }
   }
 }

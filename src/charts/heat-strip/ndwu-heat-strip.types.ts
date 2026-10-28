@@ -8,11 +8,6 @@ export interface NdwuHeatStripCell<T = unknown> {
   data?: T;
 }
 
-export type NdwuHeatStripTrackBy<T = unknown> = (
-  index: number,
-  cell: NdwuHeatStripCell<T>,
-) => unknown;
-
 export type NdwuHeatStripCellLabel<T = unknown> = (
   cell: NdwuHeatStripCell<T>,
   index: number,

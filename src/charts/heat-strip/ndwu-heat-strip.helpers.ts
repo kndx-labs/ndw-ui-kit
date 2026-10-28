@@ -50,20 +50,20 @@ export function heatStripRovingTarget(
   }
 }
 
-export function resolveHeatStripKeyIndex(
-  key: unknown,
-  keys: readonly unknown[],
-  previousIndex: number,
-): {index: number; found: boolean} {
-  const foundIndex = keys.indexOf(key);
+export function clampHeatStripIndex(index: number, length: number): number {
+  return Math.min(Math.max(index, 0), Math.max(length - 1, 0));
+}
 
-  if (foundIndex !== -1) {
-    return {index: foundIndex, found: true};
+export function resolveHeatStripTooltipTarget(
+  index: number | null,
+  length: number,
+  loading: boolean,
+): number | null {
+  if (loading || index === null || index < 0 || index >= length) {
+    return null;
   }
 
-  const index = keys.length === 0 ? -1 : Math.min(previousIndex, keys.length - 1);
-
-  return {index, found: false};
+  return index;
 }
 
 export function heatStripLabelWithMarker(base: string, marker: boolean, markerText: string): string {

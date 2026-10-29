@@ -6,6 +6,8 @@
   /* stylelint-disable order/order */
   @include button-mixins.base();
 
+  position: relative;
+
   @each $variant in (primary, secondary, tertiary, ghost, secondary-negative) {
     &.ndwu-button--#{$variant} {
       @include button-mixins.variant($variant);
@@ -15,6 +17,19 @@
   .ndwu-button__label {
     display: inline-flex;
     gap: spacing.$spacing-8;
+    align-items: center;
+
+    // keeps the content box, so the button width does not change in loading state
+    &--hidden {
+      visibility: hidden;
+    }
+  }
+
+  .ndwu-button__loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
     align-items: center;
   }
 
@@ -52,7 +67,7 @@
   }
 
   &.ndwu-button--loading {
-    pointer-events: none;
+    cursor: not-allowed;
   }
 
   @include touch-target.touchable();

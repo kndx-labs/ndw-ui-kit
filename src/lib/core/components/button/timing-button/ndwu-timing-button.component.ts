@@ -20,6 +20,7 @@ import {NDWU_SIZE} from '../../../../shared.types';
 import {NdwuSizeDirective} from '../../../directives';
 import {NdwuIconComponent} from '../../icon/ndwu-icon.component';
 import {NdwuSpokesLoaderComponent} from '../../spokes-loader/ndwu-spokes-loader.component';
+import {blockClickWhileLoading} from '../ndwu-button.utils';
 
 type TimerState = 'preloading' | 'active' | 'counting';
 
@@ -45,6 +46,8 @@ export type NdwuTimerEndReason = 'user' | 'timeout';
     'type': 'button',
     '[class]': 'hostClasses()',
     '[disabled]': 'disabled()',
+    '[attr.aria-disabled]': 'effectiveLoading() || null',
+    '[attr.aria-busy]': 'effectiveLoading() || null',
     '[style.--ndwu-timing-button-fill]': 'fillWidth()',
     '[style.--ndwu-timing-button-width]': 'width()',
     '(click)': 'onButtonClick()',
@@ -69,6 +72,11 @@ export class NdwuTimingButtonComponent implements OnInit {
   public readonly duration = input<number>(15);
   public readonly width = input<string | null>(null);
 
+  // `disabled` takes precedence over `loading`
+  protected readonly effectiveLoading = computed(() => {
+    return this.loading() && !this.disabled();
+  });
+
   public readonly timerEnd = output<NdwuTimerEndReason>();
 
   protected readonly remainingSeconds = signal<number>(0);
@@ -82,6 +90,8 @@ export class NdwuTimingButtonComponent implements OnInit {
   private startMs = 0;
 
   constructor() {
+    blockClickWhileLoading(this.el.nativeElement, this.effectiveLoading, this.destroyRef);
+
     effect(() => {
       const isDisabled = this.disabled();
 
@@ -89,14 +99,14 @@ export class NdwuTimingButtonComponent implements OnInit {
         if (isDisabled) {
           this.cancelAnimation();
           this.setFillWidth(0);
-        } else if (this.state() === 'counting' && this.rafId === null && !this.loading()) {
+        } else if (this.state() === 'counting' && this.rafId === null && !this.effectiveLoading()) {
           this.runAnimation();
         }
       });
     });
 
     effect(() => {
-      if (this.loading()) {
+      if (this.effectiveLoading()) {
         untracked(() => this.stopCountdown());
       }
     });
@@ -117,7 +127,7 @@ export class NdwuTimingButtonComponent implements OnInit {
       `ndwu-timing-button--${this.state()}`,
     ];
 
-    if (this.loading()) {
+    if (this.effectiveLoading()) {
       classes.push('ndwu-timing-button--loading');
     }
 
@@ -145,7 +155,7 @@ export class NdwuTimingButtonComponent implements OnInit {
   }
 
   protected onKey(event: KeyboardEvent): void {
-    if (this.loading() && event.key !== 'Tab') {
+    if (this.effectiveLoading() && event.key !== 'Tab') {
       event.preventDefault();
     }
   }
@@ -164,7 +174,7 @@ export class NdwuTimingButtonComponent implements OnInit {
     this.state.set('counting');
     this.remainingSeconds.set(total);
 
-    if (!this.disabled() && !this.loading()) {
+    if (!this.disabled() && !this.effectiveLoading()) {
       this.runAnimation();
     }
   }

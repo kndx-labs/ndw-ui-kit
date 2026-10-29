@@ -20,7 +20,12 @@
       "unpin": "Spalte lösen"
     },
     "rowDragHandle": {
-      "reorder": "Zeile verschieben"
+      "reorder": "Zeile verschieben",
+      "instructions": "Leertaste oder Eingabe greift die Zeile, Pfeiltasten verschieben sie, Leertaste oder Eingabe legt sie ab, Escape bricht ab.",
+      "grabbed": "Zeile gegriffen, Position {{position}} von {{count}}.",
+      "moved": "Zeile auf Position {{position}} von {{count}} verschoben.",
+      "dropped": "Zeile auf Position {{position}} von {{count}} abgelegt.",
+      "cancelled": "Verschieben abgebrochen, Zeile wieder auf Position {{position}} von {{count}}."
     }
   },
   "table-showcase": {

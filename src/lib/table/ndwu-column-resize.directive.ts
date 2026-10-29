@@ -15,9 +15,12 @@ import {NdwuColumnResizeHandleComponent} from './ndwu-column-resize-handle.compo
 import type {NdwuTableTranslationTexts} from './ndwu-table.types';
 
 const MIN_COLUMN_WIDTH = 40;
+const MAX_COLUMN_WIDTH = 1000;
 
 const KEYBOARD_STEP = 8;
 const KEYBOARD_LARGE_STEP = 40;
+
+const maxWidthFor = (width: number): number => Math.max(MAX_COLUMN_WIDTH, Math.round(width));
 
 @Directive({
   selector: '[ndwuColumnResize]',
@@ -51,18 +54,25 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
     const handle = this.handleRef.location.nativeElement as HTMLElement;
 
     this.renderer.appendChild(this.el.nativeElement, handle);
+
+    if (this.table()?.style.width) {
+      this.lockLayout();
+    }
+
     this.reportWidth(handle, this.el.nativeElement.offsetWidth);
 
     this.renderer.listen(handle, 'pointerdown', (event: PointerEvent) => this.onPointerDown(handle, event));
     this.renderer.listen(handle, 'keydown', (event: KeyboardEvent) => this.onKeydown(handle, event));
+    this.renderer.listen(handle, 'focus', () => this.reportWidth(handle, this.currentWidth()));
   }
 
   private onPointerDown(handle: HTMLElement, event: PointerEvent): void {
     stopEvent(event);
     handle.setPointerCapture(event.pointerId);
+    this.lockLayout();
 
     const startX = event.clientX;
-    const startWidth = this.el.nativeElement.offsetWidth;
+    const startWidth = this.currentWidth();
     const widthAt = (clientX: number): number => Math.max(MIN_COLUMN_WIDTH, startWidth + (clientX - startX));
 
     let currentWidth = startWidth;
@@ -113,37 +123,86 @@ export class NdwuColumnResizeDirective implements AfterViewInit {
   }
 
   private onKeydown(handle: HTMLElement, event: KeyboardEvent): void {
-    const step = event.shiftKey ? KEYBOARD_LARGE_STEP : KEYBOARD_STEP;
-
-    let delta = 0;
-
-    if (event.key === 'ArrowLeft') {
-      delta = -step;
-    }
-
-    if (event.key === 'ArrowRight') {
-      delta = step;
-    }
-
-    if (delta === 0) {
+    if (this.keyboardWidth(event) === null) {
       return;
     }
 
     stopEvent(event);
+    this.lockLayout();
 
-    const width = Math.max(MIN_COLUMN_WIDTH, this.el.nativeElement.offsetWidth + delta);
+    const width = this.keyboardWidth(event);
+
+    if (width === null || width === this.currentWidth()) {
+      return;
+    }
 
     this.applyWidth(handle, width);
     this.ndwuColumnResized.emit(width);
   }
 
+  private keyboardWidth(event: KeyboardEvent): number | null {
+    const step = event.shiftKey ? KEYBOARD_LARGE_STEP : KEYBOARD_STEP;
+    const width = this.currentWidth();
+
+    switch (event.key) {
+      case 'ArrowLeft':
+        return Math.max(MIN_COLUMN_WIDTH, width - step);
+      case 'ArrowRight':
+        return Math.min(maxWidthFor(width), width + step);
+      case 'Home':
+        return MIN_COLUMN_WIDTH;
+      case 'End':
+        return maxWidthFor(width);
+      default:
+        return null;
+    }
+  }
+
+  private currentWidth(): number {
+    return parseFloat(this.el.nativeElement.style.width) || this.el.nativeElement.offsetWidth;
+  }
+
   private applyWidth(handle: HTMLElement, width: number): void {
     this.renderer.setStyle(this.el.nativeElement, 'width', `${width}px`);
+    this.syncTableWidth();
     this.reportWidth(handle, width);
+  }
+
+  private lockLayout(): void {
+    const cells = this.headerCells();
+
+    if (!this.table()?.style.width || !cells.every(cell => cell.style.width.endsWith('px'))) {
+      const measured = cells.map(cell => ({cell, width: cell.getBoundingClientRect().width}));
+
+      measured.forEach(({cell, width}) => this.renderer.setStyle(cell, 'width', `${width}px`));
+    }
+
+    this.syncTableWidth();
+  }
+
+  private syncTableWidth(): void {
+    const table = this.table();
+
+    if (!table) {
+      return;
+    }
+
+    const width = this.headerCells().reduce((sum, cell) => sum + (parseFloat(cell.style.width) || 0), 0);
+
+    this.renderer.setStyle(table, 'width', `${width}px`);
+  }
+
+  private headerCells(): HTMLElement[] {
+    return Array.from(this.el.nativeElement.parentElement?.children ?? []) as HTMLElement[];
+  }
+
+  private table(): HTMLTableElement | null {
+    return this.el.nativeElement.closest('table');
   }
 
   // Set directly: drags update it outside change detection.
   private reportWidth(handle: HTMLElement, width: number): void {
     this.renderer.setAttribute(handle, 'aria-valuenow', `${Math.round(width)}`);
+    this.renderer.setAttribute(handle, 'aria-valuemax', `${maxWidthFor(width)}`);
   }
 }

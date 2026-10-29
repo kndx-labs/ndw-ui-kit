@@ -17,7 +17,7 @@ const DEFAULT_COLUMN_RESIZE_TEXTS = {
     'class': 'ndwu-column-resize-handle',
     'role': 'separator',
     'aria-orientation': 'vertical',
-    'tabindex': '-1',
+    'tabindex': '0',
     // A separator takes no name from its content.
     '[attr.aria-labelledby]': 'labelId',
     '[attr.aria-valuemin]': 'minWidth()',

@@ -45,6 +45,8 @@ export class NdwuTextareaFieldComponent extends NdwuFormFieldBase<string> implem
   public readonly ariaLabel = input<string>('');
   public readonly ndwuRequired = input(false, {transform: booleanAttribute});
   public readonly readonly = input(false, {transform: booleanAttribute});
+  public readonly loading = input(false, {transform: booleanAttribute});
+  public readonly loadingLabel = input<string>('');
   public readonly resizable = input(true, {transform: booleanAttribute});
   public readonly showLineNumbers = input(false, {transform: booleanAttribute});
 

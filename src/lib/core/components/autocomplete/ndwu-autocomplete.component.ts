@@ -129,6 +129,7 @@ export class NdwuAutocompleteComponent implements NdwuControl {
   public readonly hasRightIcon = true;
 
   protected readonly openRequested = signal<boolean>(false);
+  protected readonly activateFirstRequested = signal<boolean>(false);
 
   protected readonly generatedId = uniqueId('ndwu-autocomplete-');
 
@@ -229,6 +230,10 @@ export class NdwuAutocompleteComponent implements NdwuControl {
 
       untracked(() => {
         this.registry.setOverlayOpen(this.id, expanded);
+
+        if (!expanded) {
+          this.activateFirstRequested.set(false);
+        }
       });
     });
 
@@ -249,6 +254,29 @@ export class NdwuAutocompleteComponent implements NdwuControl {
           afterNextRender(() => combobox.open('input'), {injector: this.injector});
         });
       }
+    });
+
+    effect(() => {
+      this.rows();
+      this.currentValue();
+
+      const combobox = this.combobox();
+      const listbox = combobox.listbox();
+
+      if (!this.query() || !this.activateFirstRequested() || !combobox.expanded() || !listbox) {
+        return;
+      }
+
+      untracked(() => {
+        afterNextRender(
+          () => {
+            if (this.activateFirstRequested() && combobox.listbox() === listbox) {
+              listbox.gotoFirst();
+            }
+          },
+          {injector: this.injector},
+        );
+      });
     });
 
     this.destroyRef.onDestroy(() => {
@@ -275,6 +303,7 @@ export class NdwuAutocompleteComponent implements NdwuControl {
     this.updateValue(value);
     combobox.openCause.set('input');
     combobox.listbox()?.clearActiveItem();
+    this.activateFirstRequested.set(!!this.query());
     this.openRequested.set(true);
   }
 
@@ -311,7 +340,12 @@ export class NdwuAutocompleteComponent implements NdwuControl {
   }
 
   protected clear(target: HTMLInputElement): void {
+    const combobox = this.combobox();
+
     this.updateValue('');
+    this.activateFirstRequested.set(false);
+    combobox.openCause.set('input');
+    combobox.listbox()?.clearActiveItem();
 
     if (!this.isMobileViewport()) {
       this.openRequested.set(true);

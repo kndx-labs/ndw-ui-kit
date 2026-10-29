@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, booleanAttribute, inject, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {NdwuOptionDirective} from '@ndw-ui-kit/core/aria';
 
 @Component({
@@ -20,6 +20,4 @@ import {NdwuOptionDirective} from '@ndw-ui-kit/core/aria';
 })
 export class NdwuStyledOptionComponent<V = unknown> {
   public readonly option = inject(NdwuOptionDirective<V>);
-
-  public readonly bullet = input(false, {transform: booleanAttribute});
 }

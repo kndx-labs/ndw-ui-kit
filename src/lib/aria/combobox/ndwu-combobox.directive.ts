@@ -19,7 +19,6 @@ export class NdwuComboboxDirective {
   public readonly readonly = input<boolean>(false);
   public readonly disabled = input<boolean>(false);
   public readonly canOpen = input<boolean>(true);
-  public readonly tabNavigation = input<boolean>(false);
   public readonly expanded = signal<boolean>(false);
 
   /**

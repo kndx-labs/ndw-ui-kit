@@ -5,7 +5,7 @@
       "sandbox": "Sandbox"
     },
     "compound": "Compound: ndwu-form-field + ndwu-floating-label + ndwu-autocomplete",
-    "groups-footer": "Groups, bullets and a footer link",
+    "groups-footer": "Groups and a footer link",
     "sizes": "Sizes",
     "invalid": "Required, invalid",
     "disabled": "Disabled",
@@ -24,7 +24,6 @@
     "last-selected": "Last selected option",
     "sandbox": {
       "hint": "Hint",
-      "bullets": "Bullets",
       "footer": "Footer link",
       "options-textarea": "Options (one per line)",
       "state-title": "State"

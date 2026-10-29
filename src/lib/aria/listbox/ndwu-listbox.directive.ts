@@ -178,16 +178,6 @@ export class NdwuListboxDirective<V = unknown> {
     }
   }
 
-  public activateNext(): void {
-    this.ensureKeyManager();
-    this.keyManager?.setNextItemActive();
-  }
-
-  public activatePrevious(): void {
-    this.ensureKeyManager();
-    this.keyManager?.setPreviousItemActive();
-  }
-
   public clearActiveItem(): void {
     this.keyManager?.updateActiveItem(-1);
     this.syncActiveState();

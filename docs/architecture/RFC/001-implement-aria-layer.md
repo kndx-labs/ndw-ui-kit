@@ -48,11 +48,25 @@ know nothing about each other. A bridge directive connects them at the template 
 
 | Directive                            | Selector                      | Role                                                                                                       |
 |--------------------------------------|-------------------------------|------------------------------------------------------------------------------------------------------------|
-| `NdwuComboboxDirective`              | `[ndwuCombobox]`              | State container: holds `expanded` signal, tracks registered listbox; `canOpen` guard, `tabNavigation` flag |
+| `NdwuComboboxDirective`              | `[ndwuCombobox]`              | State container: holds `expanded` signal, tracks registered listbox; `canOpen` guard                       |
 | `NdwuComboboxInputDirective`         | `[ndwuComboboxInput]`         | ARIA combobox input: sets `role="combobox"`, handles keyboard/click, forwards keys to listbox              |
 | `NdwuComboboxPopoverBridgeDirective` | `[ndwuComboboxPopoverBridge]` | Two-way bridge: syncs `combobox.expanded` <-> `popoverTrigger.isOpen`                                      |
 | `NdwuListboxDirective`               | `[ndwuListbox]`               | ARIA listbox: manages selection, keyboard navigation (CDK `ActiveDescendantKeyManager`), active descendant |
 | `NdwuOptionDirective`                | `[ndwuOption]`                | ARIA option: holds value/label, selected/active state, implements CDK `Highlightable`                      |
+
+#### Deviations from Angular ARIA
+
+- `NdwuComboboxDirective.canOpen`: ndwu-only guard that blocks opening (the autocomplete keeps its panel
+  closed while there is nothing to show). The closest upstream equivalent is Material autocomplete's `showPanel`.
+- `NdwuComboboxInputDirective` has no `value` model. A `value` input on `[ndwuComboboxInput]` captures the
+  `[value]` binding of the same `<input>` (Angular routes it to the directive input, not to the DOM property),
+  and a directive that owns the element value does not fit select and multi-select, which put
+  `ndwuComboboxInput` on a `<div>`. Bind the value on the element.
+- In an editable combobox, Enter goes to the listbox only when an option is active, as in Material autocomplete;
+  otherwise the input handles it (e.g. form submit). Angular ARIA always handles Enter. A readonly combobox
+  always forwards Enter.
+- `NdwuListboxDirective.clearActiveItem()`: ndwu-only, next to `gotoFirst()`. Clears the active option, e.g.
+  when the query changes and the highlighted option still matches it.
 
 
 ### Popover/Overlay System
@@ -261,9 +275,6 @@ There are multiple close paths:
 | **Backdrop click**                       | `NdwuDropdownController` backdrop handler -> `onOverlayDetached()` -> `popoverTrigger.isOpen.set(false)` -> bridge -> `combobox.expanded.set(false)` |
 | **Option click (select/autocomplete)**   | Selection handler -> `combobox.close()` -> bridge -> popover                                                                                         |
 | **Confirm button (multi-select mobile)** | `onConfirm()` -> `combobox.close()` -> bridge -> popover                                                                                             |
-
-With `tabNavigation` on (autocomplete), Tab and Shift+Tab move the active option while the panel
-is open and has an enabled option. Otherwise Tab closes the panel as above.
 
 ---
 

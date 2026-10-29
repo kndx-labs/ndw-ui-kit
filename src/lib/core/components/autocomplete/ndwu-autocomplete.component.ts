@@ -83,7 +83,8 @@ import {ndwuAutocompleteContainsFilter} from './ndwu-autocomplete.utils';
     inputs: ['ndwuSize: size'],
   }],
   host: {
-    class: 'ndwu-autocomplete',
+    'class': 'ndwu-autocomplete',
+    '(window:blur)': 'onWindowBlur()',
   },
 })
 export class NdwuAutocompleteComponent implements NdwuControl {
@@ -134,6 +135,12 @@ export class NdwuAutocompleteComponent implements NdwuControl {
   protected readonly combobox = viewChild.required(NdwuComboboxDirective);
   protected readonly inputRef = viewChild.required<ElementRef<HTMLInputElement>>('input');
   protected readonly triggerResize = viewChild.required(NdwuResizeObserverDirective);
+  protected readonly panelRef = viewChild<NdwuDropdownPanelComponent, ElementRef<HTMLElement>>(
+    NdwuDropdownPanelComponent,
+    {read: ElementRef},
+  );
+
+  private skipNextFocusOpen = false;
 
   protected readonly isMobileViewport = toSignal(
     this.breakpoint
@@ -160,13 +167,13 @@ export class NdwuAutocompleteComponent implements NdwuControl {
 
   protected readonly rows = computed<OptionRow<NdwuAutocompleteOption>[]>(() => {
     const query = this.query();
+    const options = this.displayOptions();
 
     if (!query) {
-      return [];
+      return buildOptionRows(options, this.groups());
     }
 
     const filter = this.filter();
-    const options = this.displayOptions();
     const filtered = filter ? options.filter((option) => filter(option, query)) : options;
 
     return buildOptionRows(filtered, this.groups());
@@ -181,7 +188,7 @@ export class NdwuAutocompleteComponent implements NdwuControl {
       return true;
     }
 
-    return !!this.query() && (this.rows().length > 0 || !!this.footer());
+    return this.rows().length > 0 || !!this.footer();
   });
 
   protected readonly rowKey = optionRowKey;
@@ -217,20 +224,12 @@ export class NdwuAutocompleteComponent implements NdwuControl {
       this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.INPUT, this.id, this.focused());
     });
 
-    let wasExpanded = false;
-
     effect(() => {
       const expanded = this.combobox().expanded();
 
       untracked(() => {
         this.registry.setOverlayOpen(this.id, expanded);
-
-        if (wasExpanded && !expanded) {
-          this.blurred.emit();
-        }
       });
-
-      wasExpanded = expanded;
     });
 
     effect(() => {
@@ -271,24 +270,53 @@ export class NdwuAutocompleteComponent implements NdwuControl {
   }
 
   protected onInput(value: string): void {
+    const combobox = this.combobox();
+
     this.updateValue(value);
-    this.combobox()
-      .listbox()
-      ?.clearActiveItem();
+    combobox.openCause.set('input');
+    combobox.listbox()?.clearActiveItem();
     this.openRequested.set(true);
   }
 
-  protected onBlur(): void {
+  protected onFocus(): void {
+    const skipOpen = this.skipNextFocusOpen;
+
+    this.skipNextFocusOpen = false;
+    this.focused.set(true);
+
+    if (!skipOpen && !this.isMobileViewport() && this.canShowPanel()) {
+      this.openRequested.set(true);
+    }
+  }
+
+  protected onBlur(event: FocusEvent): void {
     this.focused.set(false);
     this.openRequested.set(false);
 
-    if (!this.combobox().expanded()) {
-      this.blurred.emit();
+    if (this.isInPanel(event.relatedTarget)) {
+      this.skipNextFocusOpen = true;
+
+      return;
+    }
+
+    this.blurred.emit();
+  }
+
+  protected onWindowBlur(): void {
+    const inputElement = this.inputRef().nativeElement;
+
+    if (inputElement.ownerDocument.activeElement === inputElement) {
+      this.skipNextFocusOpen = true;
     }
   }
 
   protected clear(target: HTMLInputElement): void {
     this.updateValue('');
+
+    if (!this.isMobileViewport()) {
+      this.openRequested.set(true);
+    }
+
     target.focus();
   }
 
@@ -312,6 +340,12 @@ export class NdwuAutocompleteComponent implements NdwuControl {
   private updateValue(value: string): void {
     this.currentValue.set(value);
     this.valueChange.emit(value);
+  }
+
+  private isInPanel(target: EventTarget | null): boolean {
+    const panel = this.panelRef()?.nativeElement;
+
+    return !!panel && target instanceof Node && panel.contains(target);
   }
 
   private displayLabel(key: string): string {

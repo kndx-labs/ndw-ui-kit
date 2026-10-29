@@ -2,7 +2,6 @@
   ndwuCombobox
   [disabled]="disabled"
   [canOpen]="canShowPanel()"
-  [tabNavigation]="true"
   [ndwuResizeObserver]="true"
 >
   <input
@@ -30,8 +29,8 @@
     [attr.aria-required]="required() ? 'true' : null"
     [attr.aria-invalid]="invalid() ? 'true' : null"
     (input)="onInput(input.value)"
-    (focus)="focused.set(true)"
-    (blur)="onBlur()"
+    (focus)="onFocus()"
+    (blur)="onBlur($event)"
   />
 
   <ng-container *ngTemplateOutlet="rightIcon; context: {target: input}"/>
@@ -98,6 +97,9 @@
               [value]="currentValue()"
               [placeholder]="placeholder() | localize"
               [attr.aria-label]="((sheetTitle() || ariaLabel()) | localize) || null"
+              [attr.aria-describedby]="ariaDescribedby()"
+              [attr.aria-required]="required() ? 'true' : null"
+              [attr.aria-invalid]="invalid() ? 'true' : null"
               (input)="onInput(sheetInput.value)"
             />
 
@@ -127,7 +129,6 @@
                 [value]="row.option.value"
                 [label]="row.option.label"
                 [disabled]="!!row.option.disabled"
-                [bullet]="!!row.option.bullet"
                 [attr.aria-describedby]="row.option.groupId ? groupHeaderId(row.option.groupId) : null"
               >
                 {{ row.option.label }}

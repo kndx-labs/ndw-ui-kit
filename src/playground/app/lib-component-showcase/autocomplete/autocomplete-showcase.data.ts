@@ -6,12 +6,11 @@ export const AUTOCOMPLETE_GROUPS: readonly NdwuOptionGroup[] = [
 ];
 
 export const AUTOCOMPLETE_OPTIONS: readonly NdwuAutocompleteOption[] = [
-  {value: 'wifi-setup', label: 'Wi-Fi network setup', groupId: 'articles', bullet: true},
-  {value: 'wifi-guest', label: 'Guest Wi-Fi network', groupId: 'articles', bullet: true},
-  {value: 'wifi-schedule', label: 'Wi-Fi schedule and power saving for wireless access points', groupId: 'articles',
-    bullet: true},
-  {value: 'mesh', label: 'Mesh Wi-Fi system', groupId: 'articles', bullet: true},
-  {value: 'firmware', label: 'Firmware update', groupId: 'articles', bullet: true},
+  {value: 'wifi-setup', label: 'Wi-Fi network setup', groupId: 'articles'},
+  {value: 'wifi-guest', label: 'Guest Wi-Fi network', groupId: 'articles'},
+  {value: 'wifi-schedule', label: 'Wi-Fi schedule and power saving for wireless access points', groupId: 'articles'},
+  {value: 'mesh', label: 'Mesh Wi-Fi system', groupId: 'articles'},
+  {value: 'firmware', label: 'Firmware update', groupId: 'articles'},
   {value: 'wifi-band', label: 'Wi-Fi band steering', groupId: 'settings'},
   {value: 'wifi-channel', label: 'Wi-Fi channel', groupId: 'settings'},
   {value: 'wifi-password', label: 'Wi-Fi password', groupId: 'settings'},

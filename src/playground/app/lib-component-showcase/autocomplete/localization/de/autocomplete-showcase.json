@@ -5,7 +5,7 @@
       "sandbox": "Sandbox"
     },
     "compound": "Zusammengesetzt: ndwu-form-field + ndwu-floating-label + ndwu-autocomplete",
-    "groups-footer": "Gruppen, Aufzählungszeichen und Fußzeilen-Link",
+    "groups-footer": "Gruppen und Fußzeilen-Link",
     "sizes": "Größen",
     "invalid": "Erforderlich, ungültig",
     "disabled": "Deaktiviert",
@@ -24,7 +24,6 @@
     "last-selected": "Zuletzt gewählte Option",
     "sandbox": {
       "hint": "Hinweis",
-      "bullets": "Aufzählungszeichen",
       "footer": "Fußzeilen-Link",
       "options-textarea": "Optionen (eine pro Zeile)",
       "state-title": "Zustand"

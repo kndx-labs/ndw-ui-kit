@@ -37,11 +37,9 @@ export class NdwuComboboxInputDirective {
       return;
     }
 
-    // `Tab` moves between options (`tabNavigation`) or closes the popup (w/o focusing on the combobox input)
+    // `Tab` closes the popup (w/o focusing on the combobox input)
     if (event.key === 'Tab' && this.combobox.expanded()) {
-      if (!this.handleTabNavigation(event)) {
-        this.combobox.close({focusOrigin: false});
-      }
+      this.combobox.close({focusOrigin: false});
 
       return;
     }
@@ -109,28 +107,6 @@ export class NdwuComboboxInputDirective {
     }
 
     return false;
-  }
-
-  private handleTabNavigation(event: KeyboardEvent): boolean {
-    const listbox = this.combobox.listbox();
-
-    if (!this.combobox.tabNavigation() || !listbox) {
-      return false;
-    }
-
-    if (!listbox.options().some((option) => !option.disabled())) {
-      return false;
-    }
-
-    event.preventDefault();
-
-    if (event.shiftKey) {
-      listbox.activatePrevious();
-    } else {
-      listbox.activateNext();
-    }
-
-    return true;
   }
 
   /** Handles keys that open the popup when it is currently closed. */

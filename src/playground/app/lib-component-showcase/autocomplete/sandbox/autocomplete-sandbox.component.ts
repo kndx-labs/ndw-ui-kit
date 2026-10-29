@@ -33,7 +33,6 @@ const DEFAULT_FORM_VALUES = {
   disabled: false,
   readonly: false,
   required: false,
-  bullets: false,
   footer: false,
   optionsRaw: DEFAULT_OPTIONS_TEXT,
   value: '',
@@ -62,14 +61,9 @@ export class AutocompleteSandboxComponent implements OnInit, AfterViewInit {
   protected readonly sandboxToolbar = viewChild(SandboxToolbarComponent);
   protected readonly previewWidth = signal<string>(STRETCH_WIDTH_VALUE);
   protected readonly optionsRaw = signal<string>(DEFAULT_OPTIONS_TEXT);
-  protected readonly bullets = signal<boolean>(DEFAULT_FORM_VALUES.bullets);
   protected readonly lastSelected = signal<NdwuAutocompleteOption | null>(null);
 
-  protected readonly options = computed<NdwuAutocompleteOption[]>(() => {
-    const bullet = this.bullets();
-
-    return parseTextareaOptions(this.optionsRaw()).map((option) => ({...option, bullet}));
-  });
+  protected readonly options = computed<NdwuAutocompleteOption[]>(() => parseTextareaOptions(this.optionsRaw()));
 
   protected readonly sandboxForm = new FormGroup({
     label: new FormControl(DEFAULT_FORM_VALUES.label, {nonNullable: true}),
@@ -79,7 +73,6 @@ export class AutocompleteSandboxComponent implements OnInit, AfterViewInit {
     disabled: new FormControl(DEFAULT_FORM_VALUES.disabled, {nonNullable: true}),
     readonly: new FormControl(DEFAULT_FORM_VALUES.readonly, {nonNullable: true}),
     required: new FormControl(DEFAULT_FORM_VALUES.required, {nonNullable: true}),
-    bullets: new FormControl(DEFAULT_FORM_VALUES.bullets, {nonNullable: true}),
     footer: new FormControl(DEFAULT_FORM_VALUES.footer, {nonNullable: true}),
     optionsRaw: new FormControl(DEFAULT_FORM_VALUES.optionsRaw, {nonNullable: true}),
     value: new FormControl(DEFAULT_FORM_VALUES.value, {nonNullable: true}),
@@ -89,9 +82,6 @@ export class AutocompleteSandboxComponent implements OnInit, AfterViewInit {
     this.sandboxForm.controls.optionsRaw.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((text) => this.optionsRaw.set(text));
-    this.sandboxForm.controls.bullets.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((bullets) => this.bullets.set(bullets));
 
     this.syncPreviewState();
     this.sandboxForm.controls.disabled.valueChanges

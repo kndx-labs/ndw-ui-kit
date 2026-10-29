@@ -37,6 +37,7 @@
             [loading]="sandboxForm.controls.isLoading.value"
             [loadingLabel]="sandboxForm.controls.loadingLabel.value"
             [resizable]="sandboxForm.controls.isResizable.value"
+            [resizeDirection]="sandboxForm.controls.resizeDirection.value"
             [showLineNumbers]="sandboxForm.controls.showLineNumbers.value"
           >
             @if (sandboxForm.controls.showActions.value) {
@@ -96,6 +97,17 @@
             <select id="sandbox-size" class="sandbox__control-input" formControlName="size">
               @for (option of SIZE_OPTIONS; track option.id) {
                 <option [value]="option.id">{{ option.label }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-resize-direction">
+              {{ 'textarea-showcase.sandbox.resize-direction' | localize }}
+            </label>
+            <select id="sandbox-resize-direction" class="sandbox__control-input" formControlName="resizeDirection">
+              @for (option of RESIZE_DIRECTION_OPTIONS; track option.id) {
+                <option [value]="option.id">{{ option.label | localize }}</option>
               }
             </select>
           </div>

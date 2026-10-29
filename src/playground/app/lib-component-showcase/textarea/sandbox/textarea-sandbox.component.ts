@@ -2,7 +2,13 @@ import {ChangeDetectionStrategy, Component, ElementRef, signal, viewChild} from 
 import {CommonModule} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NdwuIconButtonComponent, type NdwuSize, NdwuTextareaActionsDirective} from '@ndw-ui-kit/core';
+import {
+  NDWU_SIZE,
+  NdwuIconButtonComponent,
+  type NdwuSize,
+  NdwuTextareaActionsDirective,
+  type NdwuTextareaResizeDirection,
+} from '@ndw-ui-kit/core';
 import {NdwuTextareaFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent, TokenListComponent, type TokenListItem} from '@app/components';
@@ -30,6 +36,7 @@ const DEFAULT_FORM_VALUES = {
   isReadonly: false,
   isLoading: false,
   isResizable: true,
+  resizeDirection: 'both' as NdwuTextareaResizeDirection,
   showLineNumbers: false,
   showActions: false,
 };
@@ -61,6 +68,12 @@ export class TextareaSandboxComponent extends SandboxBaseComponent {
     {id: NDWU_SIZE.XXL, label: 'XXL'},
   ];
 
+  public readonly RESIZE_DIRECTION_OPTIONS = [
+    {id: 'vertical', label: 'textarea-showcase.sandbox.resize-vertical'},
+    {id: 'horizontal', label: 'textarea-showcase.sandbox.resize-horizontal'},
+    {id: 'both', label: 'textarea-showcase.sandbox.resize-both'},
+  ] as const;
+
   public readonly tokenList: readonly TokenListItem[] = TEXTAREA_TOKENS.map((key) => ({
     cssVar: CssUtils.tokenKeyToCssVar(key),
     key,
@@ -78,6 +91,12 @@ export class TextareaSandboxComponent extends SandboxBaseComponent {
     isReadonly: new FormControl<boolean>(DEFAULT_FORM_VALUES.isReadonly, {nonNullable: true}),
     isLoading: new FormControl<boolean>(DEFAULT_FORM_VALUES.isLoading, {nonNullable: true}),
     isResizable: new FormControl<boolean>(DEFAULT_FORM_VALUES.isResizable, {nonNullable: true}),
+    resizeDirection: new FormControl<NdwuTextareaResizeDirection>(
+      DEFAULT_FORM_VALUES.resizeDirection,
+      {
+        nonNullable: true,
+      },
+    ),
     showLineNumbers: new FormControl<boolean>(DEFAULT_FORM_VALUES.showLineNumbers, {nonNullable: true}),
     showActions: new FormControl<boolean>(DEFAULT_FORM_VALUES.showActions, {nonNullable: true}),
   });

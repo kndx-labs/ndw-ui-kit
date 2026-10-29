@@ -15,6 +15,7 @@ import {
   NdwuHintDirective,
   NdwuSizeDirective,
   NdwuTextareaComponent,
+  type NdwuTextareaResizeDirection,
 } from '@ndw-ui-kit/core';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuFormFieldBase} from '../../classes/form-field-base';
@@ -48,6 +49,7 @@ export class NdwuTextareaFieldComponent extends NdwuFormFieldBase<string> implem
   public readonly loading = input(false, {transform: booleanAttribute});
   public readonly loadingLabel = input<string>('');
   public readonly resizable = input(true, {transform: booleanAttribute});
+  public readonly resizeDirection = input<NdwuTextareaResizeDirection>('both');
   public readonly showLineNumbers = input(false, {transform: booleanAttribute});
 
   protected readonly hintId = `${uniqueId('ndwu-textarea-field-')}-hint`;

@@ -27,6 +27,8 @@ ndwu-form-field {
 .ndwu-form-field {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  max-width: 100%;
 
   &__wrapper {
     position: relative;
@@ -523,5 +525,10 @@ ndwu-form-field {
 
   &__hint {
     text-align: left;
+
+    .ndwu-helper-message {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
   }
 }

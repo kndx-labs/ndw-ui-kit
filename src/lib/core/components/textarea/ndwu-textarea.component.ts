@@ -24,6 +24,7 @@ import {NDWU_CONTROL, type NdwuControl} from '../form-field/control/ndwu-control
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
 import {NdwuScrollbarComponent} from '../scrollbar/ndwu-scrollbar.component';
+import {NdwuSpokesLoaderComponent} from '../spokes-loader/ndwu-spokes-loader.component';
 import {type NdwuTextareaResizeStart} from './ndwu-textarea.types';
 
 @Component({
@@ -36,6 +37,7 @@ import {type NdwuTextareaResizeStart} from './ndwu-textarea.types';
     NdwuIconComponent,
     NdwuResizeObserverDirective,
     NdwuScrollbarComponent,
+    NdwuSpokesLoaderComponent,
   ],
   providers: [{
     provide: NDWU_CONTROL,
@@ -66,6 +68,8 @@ export class NdwuTextareaComponent implements NdwuControl {
   public readonly disabledInput = input(false, {alias: 'disabled', transform: booleanAttribute});
   public readonly readonly = input(false, {transform: booleanAttribute});
   public readonly invalid = input(false, {transform: booleanAttribute});
+  public readonly loading = input(false, {transform: booleanAttribute});
+  public readonly loadingLabel = input<string>('');
   public readonly resizable = input(true, {transform: booleanAttribute});
   public readonly showLineNumbers = input(false, {transform: booleanAttribute});
 

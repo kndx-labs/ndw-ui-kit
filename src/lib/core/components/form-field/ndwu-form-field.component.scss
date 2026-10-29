@@ -278,10 +278,6 @@ ndwu-form-field {
       &:hover:not(:disabled, [readonly]) {
         border-color: var(--ndwu-form-field-invalid-hover-border-color, var(--ndwu-form-field-invalid-border-color));
       }
-
-      &:focus:not([readonly]) {
-        border-color: var(--ndwu-form-field-invalid-border-color);
-      }
     }
 
     &:disabled {
@@ -409,6 +405,7 @@ ndwu-form-field {
     }
 
     .ndwu-form-field__hint {
+      margin-top: spacing.$spacing-2;
       margin-left: spacing.$spacing-8;
 
       .ndwu-helper-message {
@@ -461,6 +458,7 @@ ndwu-form-field {
     }
 
     .ndwu-form-field__hint {
+      margin-top: spacing.$spacing-4;
       margin-left: spacing.$spacing-12;
 
       .ndwu-helper-message {
@@ -513,16 +511,17 @@ ndwu-form-field {
     }
 
     .ndwu-form-field__hint {
+      margin-top: spacing.$spacing-8;
       margin-left: spacing.$spacing-16;
 
       .ndwu-helper-message {
+        font-size: typography.$fontSize-small;
         line-height: 20px;
       }
     }
   }
 
   &__hint {
-    margin-top: spacing.$spacing-4;
     text-align: left;
   }
 }

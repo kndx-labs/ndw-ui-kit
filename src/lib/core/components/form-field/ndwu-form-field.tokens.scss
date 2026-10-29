@@ -13,7 +13,7 @@ $ndwu-form-field-tokens: (
   form-field-focus-border-color: colors.$brand-50,
   form-field-focus-bg: colors.$gray-0,
   form-field-focus-ring: var(--ndwu-fx-focused-default),
-  form-field-invalid-focus-ring: var(--ndwu-fx-focused-negative),
+  form-field-invalid-focus-ring: var(--ndwu-fx-focused-default),
   form-field-disabled-bg: colors.$gray-10,
   form-field-disabled-text: colors.$gray-30,
   form-field-disabled-border-color: colors.$gray-20,

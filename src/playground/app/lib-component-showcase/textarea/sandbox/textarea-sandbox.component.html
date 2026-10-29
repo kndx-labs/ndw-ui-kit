@@ -34,6 +34,8 @@
             [size]="sandboxForm.controls.size.value"
             [ndwuRequired]="sandboxForm.controls.isRequired.value"
             [readonly]="sandboxForm.controls.isReadonly.value"
+            [loading]="sandboxForm.controls.isLoading.value"
+            [loadingLabel]="sandboxForm.controls.loadingLabel.value"
             [resizable]="sandboxForm.controls.isResizable.value"
             [showLineNumbers]="sandboxForm.controls.showLineNumbers.value"
           >
@@ -85,6 +87,11 @@
           </div>
 
           <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="sandbox-loading-label">{{ 'textarea-showcase.sandbox.loading-label' | localize }}</label>
+            <input id="sandbox-loading-label" class="sandbox__control-input" type="text" formControlName="loadingLabel" />
+          </div>
+
+          <div class="sandbox__control-row">
             <label class="sandbox__control-label" for="sandbox-size">{{ 'common.size' | localize }}</label>
             <select id="sandbox-size" class="sandbox__control-input" formControlName="size">
               @for (option of SIZE_OPTIONS; track option.id) {
@@ -105,6 +112,10 @@
             <label class="sandbox__checkbox">
               <input type="checkbox" formControlName="isReadonly" />
               <span>{{ 'textarea-showcase.sandbox.readonly' | localize }}</span>
+            </label>
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="isLoading" />
+              <span>{{ 'textarea-showcase.sandbox.loading' | localize }}</span>
             </label>
             <label class="sandbox__checkbox">
               <input type="checkbox" formControlName="isResizable" />

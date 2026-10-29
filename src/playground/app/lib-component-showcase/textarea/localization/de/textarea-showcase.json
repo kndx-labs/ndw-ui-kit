@@ -18,6 +18,7 @@
     "invalid": "Ungültig",
     "disabled": "Deaktiviert",
     "readonly": "Schreibgeschützt",
+    "loading": "Wird geladen",
     "resizable": "Größenveränderbar",
     "not-resizable": "Nicht größenveränderbar",
     "label": "Kommentar",
@@ -26,6 +27,8 @@
     "sandbox": {
       "hint": "Hinweis",
       "readonly": "Schreibgeschützt",
+      "loading": "Wird geladen",
+      "loading-label": "Ladetext",
       "resizable": "Größenveränderbar",
       "line-numbers": "Zeilennummern",
       "actions": "Aktionen",

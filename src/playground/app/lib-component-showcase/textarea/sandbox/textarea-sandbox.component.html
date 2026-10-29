@@ -15,7 +15,7 @@
   </div>
 
   <div class="sandbox__content">
-    <div class="sandbox__preview">
+    <div class="sandbox__preview sandbox__preview--textarea">
       <h4 class="sandbox__section-title">{{ 'common.preview' | localize }}</h4>
 
       <div
@@ -25,7 +25,7 @@
         [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
         [ngStyle]="sandboxTokenStyles()"
       >
-        <form [formGroup]="sandboxForm" class="sandbox__preview-form">
+        <form [formGroup]="sandboxForm" class="sandbox__preview-form sandbox__preview-form--textarea">
           <ndwu-textarea-field
             formControlName="value"
             [label]="sandboxForm.controls.label.value"

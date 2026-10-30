@@ -10,6 +10,7 @@ import {IndexPageComponent, InteractionDebugPanelComponent} from '@app/component
 import {DebugSettingsDialogComponent} from '@app/components/debug-settings-dialog/debug-settings-dialog.component';
 import {NdwuSearchComponent, SearchItem} from '@app/components/search/ndwu-search.component';
 import {PlaygroundDebugService} from '@app/services/playground-debug.service';
+import {IconRegistryComponent} from './icon-registry/icon-registry.component';
 import {ComponentShowcaseComponent} from './lib-component-showcase/component-showcase.component';
 import {ExampleShowcaseComponent} from './lib-example-showcase/example-showcase.component';
 import {WidgetShowcaseComponent} from './lib-widget-showcase/widget-showcase.component';
@@ -19,6 +20,7 @@ import {
   COMPONENT_TABS,
   EXAMPLES_LIST,
   EXAMPLE_NAMES,
+  ICON_REGISTRY_PATH,
   MENU_ITEMS,
   READY_FOR_REVIEW_COMPONENTS,
   SHOWCASE_NAMES,
@@ -36,6 +38,7 @@ import {
     CommonModule,
     ComponentShowcaseComponent,
     ExampleShowcaseComponent,
+    IconRegistryComponent,
     IndexPageComponent,
     InteractionDebugPanelComponent,
     NdwuLocalizePipe,
@@ -70,6 +73,7 @@ export class AppComponent implements OnInit {
   public readonly selectedComponent = signal<ComponentName | null>(null);
   public readonly selectedWidget = signal<WidgetName | null>(null);
   public readonly selectedExample = signal<ExampleName | null>(null);
+  public readonly isIconRegistryOpen = signal<boolean>(false);
   public readonly expandedGroups = signal<Set<string>>(new Set());
 
   protected readonly isDebugDialogOpen = signal<boolean>(false);
@@ -170,9 +174,12 @@ export class AppComponent implements OnInit {
 
   private syncSelectedFromUrl(): void {
     const url = this.router.url;
+    const isIconRegistry = url.startsWith(`/${ICON_REGISTRY_PATH}`);
 
-    // Root/index page - nothing selected
-    if (url === '/' || url === '') {
+    this.isIconRegistryOpen.set(isIconRegistry);
+
+    // Root/index page and standalone pages - nothing selected
+    if (url === '/' || url === '' || isIconRegistry) {
       this.selectedExample.set(null);
       this.selectedWidget.set(null);
       this.selectedComponent.set(null);
@@ -239,12 +246,23 @@ export class AppComponent implements OnInit {
 
   public selectExample(example: ExampleName): void {
     this.selectedExample.set(example);
+    this.isIconRegistryOpen.set(false);
     this.isMobileMenuOpen.set(false);
     void this.router.navigate(['/example', example]);
   }
 
+  public openIconRegistry(): void {
+    this.selectedExample.set(null);
+    this.selectedWidget.set(null);
+    this.selectedComponent.set(null);
+    this.isIconRegistryOpen.set(true);
+    this.isMobileMenuOpen.set(false);
+    void this.router.navigate(['/', ICON_REGISTRY_PATH]);
+  }
+
   public selectWidget(widget: WidgetName): void {
     this.selectedWidget.set(widget);
+    this.isIconRegistryOpen.set(false);
     this.isMobileMenuOpen.set(false);
     void this.router.navigate(['/widget', widget, WIDGET_TABS[widget][0]]);
   }
@@ -253,6 +271,7 @@ export class AppComponent implements OnInit {
     // Update signal immediately for instant feedback
     this.selectedComponent.set(component);
     this.selectedWidget.set(null);
+    this.isIconRegistryOpen.set(false);
 
     // Close mobile menu when component is selected
     this.isMobileMenuOpen.set(false);
@@ -313,6 +332,7 @@ export class AppComponent implements OnInit {
           {type: 'component', label: 'Components'},
           {type: 'widget', label: 'Widgets'},
           {type: 'example', label: 'Examples'},
+          {type: 'page', label: 'Pages'},
         ],
         placeholder: 'Search components...',
       },
@@ -353,7 +373,17 @@ export class AppComponent implements OnInit {
       route: ['/example', name],
     }));
 
-    return [...componentItems, ...widgetItems, ...exampleItems];
+    const pageItems = [
+      {
+        id: ICON_REGISTRY_PATH,
+        type: 'page' as const,
+        label: 'Icon Registry',
+        description: `Page: ${ICON_REGISTRY_PATH}`,
+        route: ['/', ICON_REGISTRY_PATH],
+      },
+    ];
+
+    return [...componentItems, ...widgetItems, ...exampleItems, ...pageItems];
   }
 
   public openDebugSettingsDialog(): void {

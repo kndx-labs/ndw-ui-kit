@@ -108,6 +108,20 @@
       }
     </ul>
 
+    <h2>{{ 'app.resources' | localize }}</h2>
+    <ul>
+      <li class="nav-item">
+        <button
+          class="nav-button"
+          [class.active]="isIconRegistryOpen()"
+          (click)="openIconRegistry()"
+          type="button"
+        >
+          <span class="nav-button__label">{{ 'app.icon-registry' | localize }}</span>
+        </button>
+      </li>
+    </ul>
+
 
   </ng-template>
 
@@ -232,6 +246,8 @@
         <app-widget-showcase [widget]="widget" />
       } @else if (selectedComponent(); as component) {
         <app-component-showcase [component]="component" />
+      } @else if (isIconRegistryOpen()) {
+        <app-icon-registry />
       } @else {
         <app-index-page
           (componentSelected)="selectComponent($event)"

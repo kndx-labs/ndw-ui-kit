@@ -485,7 +485,7 @@ const processTypography = (data: FigmaVariablesJson): void => {
 
   const effectiveDesktopId = desktopModeId ?? collection.defaultModeId;
   const effectiveMobileId = mobileModeId ?? collection.defaultModeId;
-  const subgroupOrder = ['fontSize', 'letterSpacing', 'fontWeight'];
+  const subgroupOrder = ['fontSize', 'lineHeight', 'letterSpacing', 'fontWeight'];
   const byMode = collectTypographyTokensByMode(
     collection,
     [effectiveDesktopId, effectiveMobileId],

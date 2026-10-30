@@ -1,9 +1,9 @@
 import {AbstractControl} from '@angular/forms';
 
 export interface NdwuValidatorError {
-  value?: any;
+  value?: unknown;
   errorLabel?: string;
-  [propName: string]: any;
+  [propName: string]: unknown;
 }
 
 export type NdwuErrorResult = Record<string, NdwuValidatorError>;
@@ -18,7 +18,7 @@ export type NdwuValidatorResult = NdwuErrorResult | null;
  */
 export interface NdwuValidationData {
   errorMessage: string;
-  validationData?: Record<string, any>;
+  validationData?: Record<string, unknown>;
 }
 
 export type NdwuValidationErrorProcessor = (control: AbstractControl) => NdwuValidationData | null;

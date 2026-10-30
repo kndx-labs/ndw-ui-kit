@@ -19,7 +19,7 @@ Overlap 1 is also visible to consumers: `NdwuFormFieldComponent` comes from `@nd
 `@ndw-ui-kit/core/form-field` exports no form-field component, only `*-field` wrappers, `ndwu-helper-message` and
 validation.
 
-This ADR records the options considered for the names, the chosen option (D), the layers and the rules for
+This ADR records the options considered for the names, the chosen option (B), the layers and the rules for
 placing new code.
 
 ## Considered Options
@@ -38,11 +38,12 @@ beyond the four overlaps and in whether a public import path changes.
 
 | | A | B | C | D |
 |---|---|---|---|---|
-| Moved files | 22 | 39 | 52, plus 3 new files in `forms/` | 65, plus 3 new files in `forms/` |
+| Moved files | 22 | 39 | 54, plus 3 new files in `forms/` | 67, plus 3 new files in `forms/` |
+| Edited files that don't move | 8 | 20 | 44, 30 of them in the playground | 53, 30 of them in the playground |
+| Files touched, docs included | 33 | 62 | 104 | 126 |
 | Public import paths | Unchanged | Unchanged | `@ndw-ui-kit/core/forms` added; `@ndw-ui-kit/core/form-field` deprecated until 0.4.0; `NdwuHelperMessageComponent` from `@ndw-ui-kit/core` | `@ndw-ui-kit/core/forms` added; `@ndw-ui-kit/core/form-field` deprecated until 0.4.0; `NdwuHelperMessageComponent` from `@ndw-ui-kit/core` |
 | Consumer edits | None | None | Import path (one `sed`) | Import path (one `sed`) |
 | Folders that don't follow the naming principle | `field-frame/`, `styled-dropdown/`, `button/icon/`, `core/components/interaction/` | `field-frame/` | `styled-dropdown/`, `button/icon/`, `core/components/interaction/` | None |
-| `NDWU-20-autocomplete` branch | New files there import moved paths; fixed by hand after the rebase | Same as A, with more import lines | Conflicts with the entry rename; ship in two steps (see Delivery) | Conflicts with the entry rename; ship in two steps (see Delivery) |
 
 ### Naming principle
 
@@ -103,10 +104,11 @@ The frame parts go to `directives/`, not `slots/`. The repo uses "slot" for the 
 parts in `form-field/directives/`, including a component (`notched-outline`). All options then use the same
 subfolder name.
 
-- Pros: 22 moved files and path edits in 9 files (`core/components/index.ts`, `field-frame/index.ts`,
-  `ndwu-form-field.component.ts`, `textarea/ndwu-textarea.component.ts`, `styles/themes.scss`,
-  `popover/controllers/index.ts`, `popover/deprecated.ts`, `form-field/components/index.ts`, `utils/index.ts`),
-  none in the playground; no consumer changes; the ticket's preferred direction.
+- Pros: 22 moved files and path edits in 10 files (`core/components/index.ts`, `field-frame/index.ts`,
+  `ndwu-form-field.component.ts`, `textarea/ndwu-textarea.component.ts`,
+  `autocomplete/ndwu-autocomplete.component.ts`, `styles/themes.scss`, `popover/controllers/index.ts`,
+  `popover/deprecated.ts`, `form-field/components/index.ts`, `utils/index.ts`), none in the playground; no
+  consumer changes; the ticket's preferred direction.
 - Cons: `field-frame/` holds `ndwu-form-field`, so its folder isn't named after its component; together with
   `styled-dropdown/`, `button/icon/` and `core/components/interaction/`, four folders break the naming principle.
   Consumers still see `@ndw-ui-kit/core/form-field` without a form-field component. The entry point keeps a name
@@ -130,8 +132,8 @@ end overlap 1. The principle gives four moves on top of A:
 
 - Pros: everything in A; one folder breaks the principle instead of four; a reviewer checks a new folder against
   the principle instead of a list.
-- Cons: A's cons except the folder exceptions; 39 moved files; about 20 more path edits (6 relative imports and a
-  barrel line for `services/`, 5 paths for `icon-button/`, 2 for `dropdown-panel/`, 5 imports and 2 paths for
+- Cons: A's cons except the folder exceptions; 39 moved files; about 25 more path edits (7 relative imports and a
+  barrel line for `services/`, 6 paths for `icon-button/`, 3 for `dropdown-panel/`, 6 imports and 2 paths for
   `parts/`); none of the four moves is one of the ticket's overlaps.
 
 ### Option C: rename the `form-field` entry point to `forms`
@@ -159,11 +161,11 @@ then holds only `<name>-field` wrappers. The alias keeps exporting it from the o
   the reference libraries. 0.3.0 isn't released yet, and 0.2.0 already moved public paths without an alias, so a
   rename now costs less than later.
 - Cons: a public path changes and needs a deprecation cycle that consumers mostly see in the docs, not the
-  editor. 52 moved files, 3 new files in `forms/` (`index.ts`, `ng-package.json`, `package.json`), the 4 alias
-  files in `form-field/` rewritten, 27 importer files to update (26 in the playground,
+  editor. 54 moved files, 3 new files in `forms/` (`index.ts`, `ng-package.json`, `package.json`), the 4 alias
+  files in `form-field/` rewritten, 31 importer files to update (30 in the playground,
   `table/ndwu-paginator.component.ts`), the paths in `tsconfig.json` and `tsconfig.playground.json`, the
   `ng-package.json` assets glob, `themes.scss:40`, the `name` in `forms/package.json`, the `./frame` import in
-  `ndwu-form-field.component.ts`, `core/components/index.ts`, 5 `helper-message` imports in the wrappers, 5 lines
+  `ndwu-form-field.component.ts`, `core/components/index.ts`, 6 `helper-message` imports in the wrappers, 5 lines
   in `src/lib/README.md` plus a migration note, and 3 lines in `CONTRIBUTING.md`. Until the alias is removed, a
   top-level `form-field/` folder still exists. `styled-dropdown/`, `button/icon/` and
   `core/components/interaction/` still break the naming principle.
@@ -176,7 +178,7 @@ C, plus `core/services/`, `dropdown-panel/` and `button/icon-button/` from B. `h
 - Pros: everything in C and B; every folder follows the naming principle; `core/` has one folder per kind
   (`components/`, `directives/`, `services/`, `tokens/`); `core/components/` holds only component folders and
   `forms/components/` only wrappers.
-- Cons: everything in C; 65 moved files; B's path edits on top of C's.
+- Cons: everything in C; 67 moved files; B's path edits on top of C's.
 
 ### Deprecating `@ndw-ui-kit/core/form-field` (options C and D)
 
@@ -199,7 +201,8 @@ C, plus `core/services/`, `dropdown-panel/` and `button/icon-button/` from B. `h
 
 ### Delivery (options C and D)
 
-Two steps, and every file moves once:
+One pull request in two steps, so the review diff separates internal moves from the public change. Every file
+moves once:
 
 1. Internal moves that keep `form-field/` in place: `frame/` → `directives/`, `popover-panel/`, `utils`, and
    `helper-message` → `core/components/` (the old path re-exports it). D adds `core/services/`, `dropdown-panel/`
@@ -207,9 +210,9 @@ Two steps, and every file moves once:
 2. The entry rename: `form-field/` → `forms/` with the alias, `file-upload-field/`, `field-base.ts`,
    `forms.utils.ts`, then the importer files and the docs.
 
-`NDWU-20-autocomplete` is the only open branch on these paths. It rebases cleanly onto step 1 apart from new files
-that import moved paths, and conflicts with step 2 (`classes/select-render.ts` is deleted there, the new
-`autocomplete-field/` folder, `components/index.ts`). Merge order: step 1 → NDWU-20 → step 2.
+The autocomplete (`core/components/autocomplete/`, `form-field/components/autocomplete-field/`) is already on
+master and moves with the rest: its component imports `interaction`, `styled-dropdown` and `button/icon`, and its
+wrapper moves to `forms/components/autocomplete-field/`.
 
 ### Rejected in every option
 
@@ -226,29 +229,29 @@ that import moved paths, and conflicts with step 2 (`classes/select-render.ts` i
 
 ## Decision Outcome
 
-Option D. It is the only option where every folder follows the naming principle, and the only one besides C that
-ends the consumer-facing confusion of overlap 1. The cost is a deprecation cycle for one public path, which is
-cheapest now: 0.3.0 isn't released yet, and 0.2.0 already moved public paths without an alias.
+Option B. It ends all four overlaps and applies the naming principle everywhere except `field-frame/`, without
+changing a public import path, so consumers change nothing and no deprecation cycle is needed. Renaming the
+`form-field` entry point (C, D) stays possible later, in a release that breaks public paths anyway.
 
 | Path on master | After |
 |---|---|
-| `core/components/form-field/frame/` | `core/components/form-field/directives/` |
+| `core/components/form-field/` | `core/components/field-frame/` |
+| `core/components/form-field/frame/` | `core/components/field-frame/directives/` |
 | `core/components/interaction/` | `core/services/` |
 | `core/components/styled-dropdown/` | `core/components/dropdown-panel/` |
 | `core/components/button/icon/` | `core/components/button/icon-button/` |
 | `popover/controllers/popover/` | `popover/controllers/popover-panel/` |
-| `utils/popover.ts` | `utils/theme-class.ts`; `normalizeClass` to `utils/coerce.ts` |
-| `form-field/` (entry `@ndw-ui-kit/core/form-field`) | `forms/` (entry `@ndw-ui-kit/core/forms`); `form-field/` is a deprecated alias until 0.4.0 |
-| `form-field/deprecated.ts` | Kept, in the alias only |
-| `form-field/components/file-upload/` | `forms/components/file-upload-field/` |
-| `form-field/components/helper-message/` | `core/components/helper-message/` (`NdwuHelperMessageComponent` from `@ndw-ui-kit/core`) |
-| `form-field/classes/form-field-base.ts` (`NdwuFormFieldBase`) | `forms/classes/field-base.ts` (`NdwuFieldBase`) |
-| `form-field/form-field.utils.ts` | `forms/forms.utils.ts` |
+| `utils/popover.ts` | `utils/theme-class.ts`; `normalizeClass` to a new `utils/class-list.ts` |
+| `form-field/components/file-upload/` | `form-field/components/file-upload-field/` |
+| `form-field/components/helper-message/` | `form-field/parts/helper-message/` |
 
-Kept: the `popover` entry point, `core/components/form-field/`, `core/components/popover/`,
-`core/components/tooltip/`, `widgets/file-upload/`, and every exported name, selector, CSS class and CSS variable.
+Kept: the `popover` and `form-field` entry points, `core/components/popover/`, `core/components/tooltip/`,
+`widgets/file-upload/`, `NdwuFormFieldBase`, `form-field.utils.ts`, and every public import path, exported name,
+selector, CSS class and CSS variable.
 
-The change ships in the two steps described under Delivery: step 1 → `NDWU-20-autocomplete` → step 2.
+The change ships in one step. The autocomplete on master moves with the rest: its component's imports of the
+frame, `interaction`, `styled-dropdown` and `button/icon` and its wrapper's `helper-message` import get the new
+paths.
 
 ## Layers
 
@@ -261,23 +264,25 @@ inside one entry point.
 | 1 | Foundation | `utils`, `l10n`, `l10n/ngx-translate` | Helpers and localization, no components |
 | 2 | Overlay engine | `popover` | Host, trigger directive, dropdown, tooltip and popover panel controllers, scroll lock. No component tokens or themed visuals |
 | 3 | Headless | `aria` | Keyboard and ARIA patterns (listbox, combobox). May use the overlay engine |
-| 4 | Components | `@ndw-ui-kit/core` (`core/components`, `core/directives`, `core/services`, `core/tokens`) | Visual components, including the field frame and `ndwu-helper-message` |
+| 4 | Components | `@ndw-ui-kit/core` (`core/components`, `core/directives`, `core/services`, `core/tokens`) | Visual components, including the field frame |
 | 5 | Widgets | `widgets` | Composite components kept out of the root entry, so apps that don't use them don't load them: empty state, file upload, schedule editor |
-| 6 | Forms | `forms` (`form-field` stays as a code-free alias until 0.4.0) | `ControlValueAccessor` wrappers of components and widgets, wrapper base classes, validation |
-| 7 | Feature modules | `table`, `schedule-actions` | Self-contained features on any layer below; `table` uses `forms` for the paginator |
+| 6 | Fields | `form-field` | `ControlValueAccessor` wrappers of components and widgets, wrapper base classes, `ndwu-helper-message`, validation |
+| 7 | Feature modules | `table`, `schedule-actions` | Self-contained features on any layer below; `table` uses `form-field` for the paginator |
 
 ## Where new code goes
 
 0. Put code in the lowest layer that has everything it imports, then pick the folder by the naming principle.
 1. A visual component goes to `core/components/<name>/`, named after its component (`ndwu-<name>`). Related
    components may share a group folder (`button/`, `radio/`, `modal/`).
-2. The Angular forms wrapper of a component or widget goes to `forms/components/<name>-field/`, where `<name>` is
-   the wrapped component or widget (`file-upload-field/` wraps the `file-upload` widget). A part used by one
-   wrapper only stays in that wrapper's folder (`multi-select-field/ndwu-multi-select-display.directive.ts`).
-   Wrapper base classes go to `forms/classes/`, validators and processors to `forms/validation/`.
+2. The Angular forms wrapper of a component or widget goes to `form-field/components/<name>-field/`, where
+   `<name>` is the wrapped component or widget (`file-upload-field/` wraps the `file-upload` widget). A part used
+   by one wrapper only stays in that wrapper's folder (`multi-select-field/ndwu-multi-select-display.directive.ts`).
+   A component of the `form-field` entry point that isn't a wrapper goes to `form-field/parts/<name>/`
+   (`helper-message/`). Wrapper base classes go to `form-field/classes/`, validators and processors to
+   `form-field/validation/`.
 3. A part that `ndwu-form-field` projects or queries (label, hint, suffix, right icon) goes to
-   `core/components/form-field/directives/`. The `NdwuControl` contract and the directives that implement it on a
-   native element (`ndwuInput`) go to `core/components/form-field/control/`; a component that implements it
+   `core/components/field-frame/directives/`. The `NdwuControl` contract and the directives that implement it on a
+   native element (`ndwuInput`) go to `core/components/field-frame/control/`; a component that implements it
    (`ndwu-textarea`) keeps its own folder by rule 1.
 4. A directive shared by several components goes to `core/directives/`, a DI token to `core/tokens/`, a root
    service to `core/services/`.
@@ -288,33 +293,34 @@ inside one entry point.
 7. A composite component that most apps don't need goes to `widgets/<name>/`.
 8. Code used by only one feature module stays in that module (`table/`, `schedule-actions/`).
 9. A helper without DI that several entry points use goes to `utils/<topic>.ts`, named by what it does, not by
-   its first user. `utils` is public, so a helper used inside one entry point stays there (`forms/forms.utils.ts`,
-   `*.helpers.ts` next to its component).
+   its first user. `utils` is public, so a helper used inside one entry point stays there
+   (`form-field/form-field.utils.ts`, `*.helpers.ts` next to its component).
 10. Only `styles/*` SCSS is public. Component `*.tokens.scss` paths are internal and may move.
 
 ## Consequences
 
 ### Pros:
 
-- Each overlap ends: `popover` and `form-field` stop naming two different things, and `utils` files are named by
-  topic.
-- Every folder follows the naming principle; `core/` has one folder per kind, `core/components/` holds only
-  component folders and `forms/components/` only wrappers.
-- Consumers get an entry name that says what it holds; `NdwuFormFieldComponent` and `ndwu-helper-message` both
-  come from `@ndw-ui-kit/core`, next to each other.
+- Each overlap ends: `popover` and `form-field` stop naming two different things inside `src/lib`, and `utils`
+  files are named by topic.
+- No public import path changes: consumers change nothing, and no alias or deprecation cycle is needed.
+- Every folder except `field-frame/` follows the naming principle; `core/` has one folder per kind,
+  `core/components/` holds only component folders and `form-field/components/` only wrappers.
 - New code has a written place, and imports have a written direction.
 - `git mv` keeps `git log --follow` and `git blame` per file.
 
 ### Cons:
 
-- Consumers change one import path before 0.4.0. Editors don't mark the old path as deprecated; the CHANGELOG,
-  README and an optional ESLint rule do.
-- Until 0.4.0, a top-level `form-field/` alias folder exists next to `forms/`.
-- 65 moved files; the review diff is mostly renames.
+- `field-frame/` holds `ndwu-form-field`, so its folder isn't named after its component.
+- Consumers still see `@ndw-ui-kit/core/form-field` without a form-field component, while
+  `NdwuFormFieldComponent` comes from `@ndw-ui-kit/core`. The entry point keeps the name that the reference
+  libraries give to the frame.
+- 39 moved files and 20 edited ones, none in the playground; the review diff is mostly renames and import paths.
+- None of the four extra moves (`core/services/`, `dropdown-panel/`, `button/icon-button/`, `parts/`) is one of
+  the ticket's overlaps.
 - SCSS files inside the published package move. Only someone who `@use`s them by a raw `node_modules` path is
   affected; that path was never public.
-- `NDWU-20-autocomplete` must be merged between the two steps, and its new files that import moved paths need
-  their imports fixed by hand.
+- Open branches that touch the moved folders need their paths updated on rebase.
 
 ## Reference libraries
 

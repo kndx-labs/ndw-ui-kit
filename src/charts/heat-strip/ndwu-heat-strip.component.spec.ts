@@ -109,6 +109,65 @@ function tooltipElement(): HTMLElement | null {
   return document.querySelector<HTMLElement>('[role="tooltip"]');
 }
 
+function heatStripStyles(): string {
+  const styleElement = Array.from(document.querySelectorAll('style')).find((style) => {
+    return style.textContent?.includes('ndwu-heat-strip__cell') ?? false;
+  });
+
+  if (styleElement?.sheet === null || styleElement?.sheet === undefined) {
+    throw new Error('Heat strip styles were not loaded.');
+  }
+
+  return styleElement.textContent ?? '';
+}
+
+function styleValue(
+  styles: string,
+  selectorPart: string,
+  property: string,
+  forcedColors = false,
+  selectorSuffix = '',
+): string {
+  let searchStart = 0;
+
+  while (true) {
+    const selectorStart = styles.indexOf(selectorPart, searchStart);
+
+    if (selectorStart === -1) {
+      return '';
+    }
+
+    searchStart = selectorStart + selectorPart.length;
+
+    const nextCharacter = styles[searchStart];
+
+    if (nextCharacter !== undefined && /[\w-]/u.test(nextCharacter)) {
+      continue;
+    }
+
+    const ruleStart = styles.indexOf('{', searchStart);
+    const ruleEnd = styles.indexOf('}', ruleStart);
+
+    if (ruleStart === -1 || ruleEnd === -1) {
+      return '';
+    }
+
+    const selector = styles.slice(selectorStart, ruleStart);
+    const lastForcedColorsMedia = styles.lastIndexOf('@media (forced-colors: active)', selectorStart);
+    const lastClosedBlock = styles.lastIndexOf('}', selectorStart);
+    const isForcedColorsRule = lastForcedColorsMedia > lastClosedBlock;
+
+    if (isForcedColorsRule === forcedColors && selector.includes(selectorSuffix)) {
+      const declarations = styles.slice(ruleStart + 1, ruleEnd);
+      const declaration = declarations.match(new RegExp(`(?:^|\\n)\\s*${property}:\\s*([^;]+);`, 'u'));
+
+      if (declaration?.[1] !== undefined) {
+        return declaration[1].trim().toLowerCase();
+      }
+    }
+  }
+}
+
 describe('NdwuHeatStripComponent', () => {
   beforeEach(() => {
     vi.stubGlobal('ResizeObserver', TestResizeObserver);
@@ -706,5 +765,73 @@ describe('NdwuHeatStripComponent', () => {
 
     expect(cells[0]?.querySelector('.ndwu-heat-strip__marker')?.textContent?.trim()).toBe('marked');
     expect(cells[1]?.querySelector('.ndwu-heat-strip__marker')).toBeNull();
+  });
+});
+
+describe('NdwuHeatStripComponent forced-colors styles', () => {
+  beforeEach(() => {
+    vi.stubGlobal('ResizeObserver', TestResizeObserver);
+    vi.stubGlobal('matchMedia', createMatchMedia(false));
+
+    TestBed.configureTestingModule({
+      imports: [NdwuHeatStripComponent],
+      providers: [provideZonelessChangeDetection()],
+    });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it('keeps level colors and cell separators in forced-colors mode', () => {
+    createStrip([{level: 0}]);
+
+    const styles = heatStripStyles();
+
+    expect(styleValue(styles, '.ndwu-heat-strip__cell', 'forced-color-adjust')).toBe('none');
+    expect(styleValue(styles, '.ndwu-heat-strip__cell', 'border-inline-start', true))
+      .toBe('1px solid canvastext');
+    expect(styleValue(styles, '.ndwu-heat-strip__cell', 'background-color', true)).toBe('');
+  });
+
+  it('uses Highlight outlines for active and focused cells in forced-colors mode', () => {
+    createStrip([{level: 0}]);
+
+    const styles = heatStripStyles();
+
+    expect(styleValue(styles, '.ndwu-heat-strip__cell--active', 'background-color', true)).toBe('');
+    expect(styleValue(styles, '.ndwu-heat-strip__cell--active', 'outline', true))
+      .toBe('2px solid highlight');
+    expect(styleValue(styles, '.ndwu-heat-strip__cell--active', 'outline-offset', true)).toBe('-2px');
+    expect(styleValue(styles, '.ndwu-heat-strip__cell', 'outline', true, ':focus-visible'))
+      .toBe('2px solid highlight');
+    expect(styleValue(styles, '.ndwu-heat-strip__cell', 'outline-offset', true, ':focus-visible'))
+      .toBe('-2px');
+    expect(styleValue(styles, '.ndwu-heat-strip__cell', 'box-shadow', true, ':focus-visible'))
+      .toBe('none');
+  });
+
+  it('lets active Highlight outline override marker outline in forced-colors mode', () => {
+    createStrip([{level: 0, marker: true}]);
+
+    const styles = heatStripStyles();
+
+    expect(styleValue(styles, '.ndwu-heat-strip__strip', 'border-color', true)).toBe('canvastext');
+    expect(styleValue(styles, '.ndwu-heat-strip__cell--marker', 'outline', true))
+      .toBe('2px solid canvastext');
+    expect(styleValue(
+      styles,
+      '.ndwu-heat-strip__cell--active.ndwu-heat-strip__cell--marker',
+      'outline',
+      true,
+    )).toBe('2px solid highlight');
+    expect(styleValue(
+      styles,
+      '.ndwu-heat-strip__cell--active.ndwu-heat-strip__cell--marker',
+      'outline-offset',
+      true,
+    )).toBe('-2px');
   });
 });

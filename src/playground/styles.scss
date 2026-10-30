@@ -202,6 +202,7 @@ body {
     &__preview-form--textarea {
       width: 100%;
       max-width: none;
+
       --sandbox-preview-textarea-width: 400px;
 
       ndwu-textarea-field > ndwu-form-field > .ndwu-form-field {

@@ -1,0 +1,10 @@
+{
+  "icon-registry": {
+    "title": "Icon-Verzeichnis",
+    "filter-label": "Nach Namen filtern",
+    "sizes": "Größen",
+    "shown": "Angezeigt: {{shown}} von {{total}}",
+    "no-sizes": "Mindestens eine Größe auswählen",
+    "no-match": "Keine Icons für „{{query}}“ gefunden"
+  }
+}

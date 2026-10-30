@@ -154,6 +154,8 @@ export const EXAMPLE_NAMES: Record<ExampleName, string> = {
   'validators': 'Validators',
 };
 
+export const ICON_REGISTRY_PATH = 'icon-registry';
+
 export const TABLE_MENU_ITEMS: ComponentName[] = [
   'ndwu-table',
 ];

@@ -17,6 +17,19 @@
   --ndwu-fontSize-xsmall: 12px;
   --ndwu-fontSize-xxsmall: 11px;
 
+  --ndwu-lineHeight-code: 17px;
+  --ndwu-lineHeight-H1: 47px;
+  --ndwu-lineHeight-H2: 38px;
+  --ndwu-lineHeight-H3: 34px;
+  --ndwu-lineHeight-H4: 27px;
+  --ndwu-lineHeight-H5: 23px;
+  --ndwu-lineHeight-H6: 20px;
+  --ndwu-lineHeight-H7: 17px;
+  --ndwu-lineHeight-medium: 24px;
+  --ndwu-lineHeight-small: 23px;
+  --ndwu-lineHeight-xsmall: 17px;
+  --ndwu-lineHeight-xxsmall: 17px;
+
   --ndwu-letterSpacing-L: 0px;
   --ndwu-letterSpacing-S: -0.1px;
   --ndwu-letterSpacing-XS: -0.2px;
@@ -32,6 +45,13 @@
     --ndwu-fontSize-H2: 28px;
     --ndwu-fontSize-H3: 20px;
     --ndwu-fontSize-H4: 18px;
+
+    --ndwu-lineHeight-H1: 40px;
+    --ndwu-lineHeight-H2: 33px;
+    --ndwu-lineHeight-H3: 28px;
+    --ndwu-lineHeight-H4: 25px;
+    --ndwu-lineHeight-H6: 18px;
+    --ndwu-lineHeight-small: 21px;
   }
 }
 
@@ -46,6 +66,19 @@ $fontSize-medium: var(--ndwu-fontSize-medium);
 $fontSize-small: var(--ndwu-fontSize-small);
 $fontSize-xsmall: var(--ndwu-fontSize-xsmall);
 $fontSize-xxsmall: var(--ndwu-fontSize-xxsmall);
+
+$lineHeight-code: var(--ndwu-lineHeight-code);
+$lineHeight-H1: var(--ndwu-lineHeight-H1);
+$lineHeight-H2: var(--ndwu-lineHeight-H2);
+$lineHeight-H3: var(--ndwu-lineHeight-H3);
+$lineHeight-H4: var(--ndwu-lineHeight-H4);
+$lineHeight-H5: var(--ndwu-lineHeight-H5);
+$lineHeight-H6: var(--ndwu-lineHeight-H6);
+$lineHeight-H7: var(--ndwu-lineHeight-H7);
+$lineHeight-medium: var(--ndwu-lineHeight-medium);
+$lineHeight-small: var(--ndwu-lineHeight-small);
+$lineHeight-xsmall: var(--ndwu-lineHeight-xsmall);
+$lineHeight-xxsmall: var(--ndwu-lineHeight-xxsmall);
 
 $letterSpacing-L: var(--ndwu-letterSpacing-L);
 $letterSpacing-S: var(--ndwu-letterSpacing-S);

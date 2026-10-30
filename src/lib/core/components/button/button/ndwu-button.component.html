@@ -1,15 +1,19 @@
-@if (loading()) {
-  <ndwu-spokes-loader
-    class="ndwu-button__loader"
-    [size]="loaderParams().size"
-    [spokeWidth]="loaderParams().spokeWidth"
-    [spokeHeight]="loaderParams().spokeHeight"
-    [spokeOffset]="loaderParams().spokeOffset"
-  />
+@if (effectiveLoading()) {
+  <span class="ndwu-button__loader">
+    <ndwu-spokes-loader
+      [size]="loaderParams().size"
+      [spokeWidth]="loaderParams().spokeWidth"
+      [spokeHeight]="loaderParams().spokeHeight"
+      [spokeOffset]="loaderParams().spokeOffset"
+    />
+  </span>
 }
 
-<span class="ndwu-button__label">
-  @if (icon() && !loading()) {
+<span
+  class="ndwu-button__label"
+  [class.ndwu-button__label--hidden]="effectiveLoading()"
+>
+  @if (icon()) {
     <ndwu-icon
       class="ndwu-button__icon"
       name="{{ icon() }}"

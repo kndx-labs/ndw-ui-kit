@@ -23,7 +23,7 @@
     box-shadow 0.2s ease-in-out,
     filter 0.2s ease-in-out;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, [aria-disabled='true']) {
     filter: drop-shadow(1px 1px 2px -1px #00000024);
   }
 }
@@ -45,12 +45,12 @@
     }
   }
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, [aria-disabled='true']) {
     border-color: var(--ndwu-button-#{$name}-hover-border);
     background-color: var(--ndwu-button-#{$name}-hover-bg);
   }
 
-  &:focus:not(:disabled) {
+  &:focus:not(:disabled, [aria-disabled='true']) {
     border-color: var(--ndwu-button-#{$name}-focus-border);
     background-color: var(--ndwu-button-#{$name}-focus-bg);
     outline: none;
@@ -60,7 +60,7 @@
     @include mixins.focus-ring(var(--ndwu-button-#{$name}-focus-ring));
   }
 
-  &:active:not(:disabled) {
+  &:active:not(:disabled, [aria-disabled='true']) {
     border-color: var(--ndwu-button-#{$name}-active-border);
     background-color: var(--ndwu-button-#{$name}-active-bg);
     color: var(--ndwu-button-#{$name}-active-text);

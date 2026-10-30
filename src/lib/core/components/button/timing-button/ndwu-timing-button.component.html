@@ -1,14 +1,18 @@
-@if (loading()) {
-  <ndwu-spokes-loader
-    class="ndwu-timing-button__loader"
-    [size]="loaderParams().size"
-    [spokeWidth]="loaderParams().spokeWidth"
-    [spokeHeight]="loaderParams().spokeHeight"
-    [spokeOffset]="loaderParams().spokeOffset"
-  />
+@if (effectiveLoading()) {
+  <span class="ndwu-timing-button__loader">
+    <ndwu-spokes-loader
+      [size]="loaderParams().size"
+      [spokeWidth]="loaderParams().spokeWidth"
+      [spokeHeight]="loaderParams().spokeHeight"
+      [spokeOffset]="loaderParams().spokeOffset"
+    />
+  </span>
 }
 
-<span class="ndwu-timing-button__label" [class.ndwu-timing-button__label--hidden]="loading()">
+<span
+  class="ndwu-timing-button__label"
+  [class.ndwu-timing-button__label--hidden]="effectiveLoading()"
+>
   @if (icon()) {
     <ndwu-icon
       class="ndwu-timing-button__icon"

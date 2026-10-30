@@ -45,7 +45,7 @@ import {NDWU_CONTROL, type NdwuControl} from '../field-frame/control/ndwu-contro
 import {NdwuFormFieldComponent} from '../field-frame/ndwu-form-field.component';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../../services';
-import {NdwuDropdownPanelComponent, NdwuPanelFooterDirective, NdwuPanelHeaderDirective} from '../styled-dropdown';
+import {NdwuDropdownPanelComponent, NdwuPanelFooterDirective, NdwuPanelHeaderDirective} from '../dropdown-panel';
 import {NdwuStyledGroupHeaderComponent, NdwuStyledListboxComponent, NdwuStyledOptionComponent} from '../styled-listbox';
 import type {NdwuAutocompleteFilter, NdwuAutocompleteOption} from './ndwu-autocomplete.types';
 import {ndwuAutocompleteContainsFilter} from './ndwu-autocomplete.utils';

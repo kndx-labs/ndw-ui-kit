@@ -36,7 +36,7 @@ export * from './router-loader/ndwu-router-loader.types';
 export * from './scrollbar/ndwu-scrollbar.component';
 export * from './scrollbar/ndwu-scrollbar.types';
 export * from './spokes-loader/ndwu-spokes-loader.component';
-export * from './styled-dropdown/';
+export * from './dropdown-panel/';
 export * from './styled-listbox/';
 export * from './toggle/ndwu-toggle.component';
 export * from './toggle/ndwu-toggle.types';

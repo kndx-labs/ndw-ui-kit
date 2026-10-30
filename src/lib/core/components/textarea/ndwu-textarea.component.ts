@@ -21,7 +21,7 @@ import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
 import {NDWU_ICON_NAME} from '../../../icon-names';
 import {NDWU_SIZE, type NdwuSize} from '../../../shared.types';
-import {NDWU_CONTROL, type NdwuControl} from '../form-field/control/ndwu-control';
+import {NDWU_CONTROL, type NdwuControl} from '../field-frame/control/ndwu-control';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
 import {NdwuScrollbarComponent} from '../scrollbar/ndwu-scrollbar.component';

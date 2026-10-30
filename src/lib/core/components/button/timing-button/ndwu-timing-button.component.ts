@@ -88,27 +88,28 @@ export class NdwuTimingButtonComponent implements OnInit {
 
   private rafId: ReturnType<typeof requestAnimationFrame> | null = null;
   private startMs = 0;
+  // time already counted in the current countdown, kept while it is paused by `loading`
+  private elapsedMs = 0;
 
   constructor() {
     blockClickWhileLoading(this.el.nativeElement, this.effectiveLoading, this.destroyRef);
 
+    // `disabled` resets the countdown, `loading` pauses it
     effect(() => {
       const isDisabled = this.disabled();
+      const isLoading = this.effectiveLoading();
 
       untracked(() => {
         if (isDisabled) {
           this.cancelAnimation();
+          this.elapsedMs = 0;
           this.setFillWidth(0);
-        } else if (this.state() === 'counting' && this.rafId === null && !this.effectiveLoading()) {
+        } else if (isLoading) {
+          this.cancelAnimation();
+        } else if (this.state() === 'counting' && this.rafId === null) {
           this.runAnimation();
         }
       });
-    });
-
-    effect(() => {
-      if (this.effectiveLoading()) {
-        untracked(() => this.stopCountdown());
-      }
     });
   }
 
@@ -173,6 +174,7 @@ export class NdwuTimingButtonComponent implements OnInit {
 
     this.state.set('counting');
     this.remainingSeconds.set(total);
+    this.elapsedMs = 0;
 
     if (!this.disabled() && !this.effectiveLoading()) {
       this.runAnimation();
@@ -182,10 +184,12 @@ export class NdwuTimingButtonComponent implements OnInit {
   private runAnimation(): void {
     const total = this.duration();
 
-    this.startMs = Date.now();
+    this.startMs = Date.now() - this.elapsedMs;
 
     const tick = (): void => {
-      const elapsed = (Date.now() - this.startMs) / 1000;
+      this.elapsedMs = Date.now() - this.startMs;
+
+      const elapsed = this.elapsedMs / 1000;
       const ratio = Math.min(elapsed / total, 1);
 
       this.setFillWidth(ratio);

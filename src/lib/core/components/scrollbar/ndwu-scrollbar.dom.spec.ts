@@ -3,7 +3,6 @@ import {
   DEFAULT_MIN_THUMB_SIZE,
   type NdwuBoxStyle,
   measureContentBox,
-  measureTrackSize,
   parseMinThumbSize,
   syncContentBoxSize,
 } from './ndwu-scrollbar.dom';
@@ -59,16 +58,6 @@ describe('measureContentBox', () => {
 
   it('returns null when the height is not a number', () => {
     expect(measureContentBox(boxStyle({height: ''}))).toBeNull();
-  });
-});
-
-describe('measureTrackSize', () => {
-  it('reads the height of a vertical track, keeping fractions', () => {
-    expect(measureTrackSize({width: '8px', height: '731.5px'}, 'height')).toBe(731.5);
-  });
-
-  it('returns 0 when the size is not a number', () => {
-    expect(measureTrackSize({width: 'auto', height: ''}, 'height')).toBe(0);
   });
 });
 

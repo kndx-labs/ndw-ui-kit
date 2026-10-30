@@ -48,18 +48,6 @@ export function measureContentBox(style: NdwuBoxStyle): NdwuBoxSize | null {
   };
 }
 
-// Measure the track itself, not the host: the track is shorter by its padding and, when both
-// tracks are visible, by the other track. A computed style keeps fractional pixels
-// (clientWidth/clientHeight round them up, which puts the thumb end past the track end).
-export function measureTrackSize(
-  style: Pick<CSSStyleDeclaration, 'width' | 'height'>,
-  property: 'width' | 'height',
-): number {
-  const size = parseFloat(style[property]);
-
-  return Number.isNaN(size) ? 0 : size;
-}
-
 // Accepts only px values and unitless 0: other units (rem, em) can't be converted to px from
 // the raw variable value.
 export function parseMinThumbSize(value: string): number {

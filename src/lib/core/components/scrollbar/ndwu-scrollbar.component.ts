@@ -30,7 +30,6 @@ import {
   DEFAULT_MIN_THUMB_SIZE,
   type NdwuBoxSize,
   clearContentBoxSize,
-  measureTrackSize,
   parseMinThumbSize,
   syncContentBoxSize,
 } from './ndwu-scrollbar.dom';
@@ -129,6 +128,7 @@ export class NdwuScrollbarComponent {
   private minThumbSize = DEFAULT_MIN_THUMB_SIZE;
   private lastContentSize: NdwuBoxSize = {width: 0, height: 0};
   private readonly overflow: Record<NdwuScrollbarAxis, boolean> = {x: false, y: false};
+  private readonly trackSizes: Record<NdwuScrollbarAxis, number> = {x: 0, y: 0};
   private readonly frames = new NdwuFrameScheduler<'recalculate' | 'position'>();
   private contentObserver: NdwuScrollbarContentObserver | null = null;
 
@@ -162,12 +162,30 @@ export class NdwuScrollbarComponent {
       this.contentObserver?.reobserveHost();
       this.scheduleRecalculate();
     });
+
+    effect(() => {
+      // Track geometry inputs can change without observer callbacks.
+      this.ndwuScrollbarAxis();
+      this.normalizedSize();
+      this.ndwuScrollbarPadding();
+
+      if (!this.isViewInitialized()) {
+        return;
+      }
+
+      this.scheduleRecalculate();
+    });
   }
 
   public scrollTo(options: ScrollToOptions): void {
     this.contentEl().nativeElement.scrollTo(options);
   }
 
+  /**
+   * Recalculates scrollbar geometry. Call after changing track size, track padding, or minimum
+   * thumb CSS variables without changing their corresponding inputs (e.g. through a theme,
+   * external class, or inline style).
+   */
   public refresh(): void {
     this.scheduleRecalculate();
   }
@@ -335,6 +353,7 @@ export class NdwuScrollbarComponent {
     this.minThumbSize = parseMinThumbSize(getComputedStyle(this.hostEl).getPropertyValue(MIN_THUMB_SIZE_PROPERTY));
 
     this.updateOverflowState(content);
+    this.measureTrackSizes();
 
     this.lastContentSize = {width: content.scrollWidth, height: content.scrollHeight};
 
@@ -349,6 +368,24 @@ export class NdwuScrollbarComponent {
       (axis === 'y' || axis === 'both') && hasOverflow(content.scrollHeight, content.clientHeight),
       (axis === 'x' || axis === 'both') && hasOverflow(content.scrollWidth, content.clientWidth),
     );
+  }
+
+  // Measure the tracks themselves, not the host: padding and the other visible track shorten them.
+  // Computed style preserves fractional pixels; clientWidth/clientHeight round them up and can
+  // place the thumb end past the track end.
+  private measureTrackSizes(): void {
+    for (const axis of ['x', 'y'] as const) {
+      if (!this.overflow[axis]) {
+        this.trackSizes[axis] = 0;
+
+        continue;
+      }
+
+      const {track} = this.getAxisElements(axis);
+      const styleKey = this.getConfig(axis).thumbStyle;
+
+      this.trackSizes[axis] = parseFloat(getComputedStyle(track)[styleKey]) || 0;
+    }
   }
 
   // These classes show the tracks (and shorten one track when both are visible). The thumb is
@@ -403,13 +440,12 @@ export class NdwuScrollbarComponent {
   private getAxisMetrics(axis: NdwuScrollbarAxis): NdwuAxisMetrics {
     const content = this.contentEl().nativeElement;
     const config = this.getConfig(axis);
-    const {track} = this.getAxisElements(axis);
 
     return {
       contentSize: content[config.contentSize],
       clientSize: content[config.clientSize],
       scrollOffset: content[config.scrollOffset],
-      trackSize: measureTrackSize(getComputedStyle(track), config.thumbStyle),
+      trackSize: this.trackSizes[axis],
     };
   }
 

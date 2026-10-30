@@ -1,6 +1,8 @@
 @use 'styles/colors';
 
 $ndwu-textarea-tokens: (
+  textarea-loading-bg: colors.$gray-5,
+  textarea-loading-text: colors.$gray-40,
   textarea-gutter-bg: colors.$gray-10,
   textarea-gutter-border-color: colors.$gray-15,
   textarea-gutter-text: colors.$gray-40,

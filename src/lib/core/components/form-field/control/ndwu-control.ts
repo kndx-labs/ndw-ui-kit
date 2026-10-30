@@ -11,6 +11,8 @@ export interface NdwuControl {
   readonly id: string;
   /** Whether the control is currently focused. */
   readonly focused: Signal<boolean>;
+  /** Desired control width in CSS pixels, when the control manages one. */
+  readonly preferredWidth?: Signal<number | null>;
   /** Whether the control is empty (used for floating-label behavior). */
   readonly empty: boolean;
   /** Whether the control is disabled. */

@@ -26,7 +26,7 @@
     }
   }
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, [aria-disabled='true']) {
     background-color: var(--ndwu-timing-button-primary-hover-bg);
 
     &::before {
@@ -34,11 +34,11 @@
     }
   }
 
-  &:active:not(:disabled) {
+  &:active:not(:disabled, [aria-disabled='true']) {
     background-color: var(--ndwu-timing-button-primary-active-bg);
   }
 
-  &:focus:not(:disabled) {
+  &:focus:not(:disabled, [aria-disabled='true']) {
     border: 1px solid var(--ndwu-timing-button-primary-focus-border);
     background-color: var(--ndwu-timing-button-primary-focus-bg);
     outline: 1px solid var(--ndwu-timing-button-primary-focus-outline);

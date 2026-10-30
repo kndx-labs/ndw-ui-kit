@@ -5,5 +5,5 @@ $ndwu-scrollbar-tokens: (
   scrollbar-thumb-color: colors.$gray-20,
   scrollbar-size-l: 4px,
   scrollbar-size-xl: 6px,
-  scrollbar-min-thumb-size: 24px, // should match MIN_THUMB_SIZE
+  scrollbar-min-thumb-size: 24px, // read by TS (px only); keep in sync with DEFAULT_MIN_THUMB_SIZE
 );

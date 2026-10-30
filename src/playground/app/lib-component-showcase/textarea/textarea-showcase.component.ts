@@ -5,6 +5,7 @@ import {TEXTAREA_TAB_CONTENT} from './textarea-tab-content';
 const TEXTAREA_TABS: readonly Tab[] = [
   {id: 'overview', label: 'textarea-showcase.tabs.overview'},
   {id: 'sandbox', label: 'textarea-showcase.tabs.sandbox'},
+  {id: 'resize-width', label: 'textarea-showcase.tabs.resize-width'},
 ];
 
 @Component({

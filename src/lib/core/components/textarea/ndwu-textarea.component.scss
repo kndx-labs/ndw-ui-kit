@@ -11,31 +11,43 @@ $textarea-sizes: (
     inset: padding.$padding-8,
     height: 100px,
     min-height: 35px,
+    min-width: 96px,
     gutter-width: 32px,
     gutter-padding-x: padding.$padding-8,
     gutter-font-size: typography.$fontSize-xxsmall,
+    loading-gap: spacing.$spacing-4,
+    loading-font-size: typography.$fontSize-xxsmall,
   ),
   'XL': (
     inset: padding.$padding-12,
     height: 130px,
     min-height: 50px,
+    min-width: 96px,
     gutter-width: 40px,
     gutter-padding-x: padding.$padding-12,
     gutter-font-size: typography.$fontSize-small,
+    loading-gap: 6px,
+    loading-font-size: typography.$fontSize-small,
   ),
   'XXL': (
     inset: padding.$padding-16,
     height: 166px,
     min-height: 58px,
+    min-width: 128px,
     gutter-width: 40px,
     gutter-padding-x: padding.$padding-12,
     gutter-font-size: typography.$fontSize-small,
+    loading-gap: 6px,
+    loading-font-size: typography.$fontSize-medium,
   ),
 );
 
 @mixin textarea($config) {
   --ndwu-textarea-inset: #{map.get($config, inset)};
   --ndwu-textarea-min-height: #{map.get($config, min-height)};
+  --ndwu-textarea-min-width: #{map.get($config, min-width)};
+  --ndwu-textarea-loading-gap: #{map.get($config, loading-gap)};
+  --ndwu-textarea-loading-font-size: #{map.get($config, loading-font-size)};
 
   .ndwu-textarea__box {
     height: map.get($config, height);
@@ -67,6 +79,8 @@ $textarea-sizes: (
     display: flex;
     overflow: hidden;
     box-sizing: border-box;
+    min-width: min(var(--ndwu-textarea-min-width), 100%);
+    max-width: 100%;
     min-height: var(--ndwu-textarea-min-height);
   }
 
@@ -77,10 +91,31 @@ $textarea-sizes: (
       border-color: transparent;
       background-color: var(--ndwu-form-field-focus-bg, var(--ndwu-form-field-bg));
     }
+  }
 
-    &.ndwu-form-field__input--invalid {
-      border-color: var(--ndwu-form-field-invalid-border-color);
-    }
+  &__box--loading.ndwu-form-field__input {
+    background-color: var(--ndwu-textarea-loading-bg);
+    pointer-events: none;
+  }
+
+  &__box--loading &__viewport,
+  &__box--loading &__actions-slot,
+  &__box--loading &__actions-mask {
+    visibility: hidden;
+  }
+
+  &__loading {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ndwu-textarea-loading-gap);
+    justify-content: center;
+    align-items: center;
+    color: var(--ndwu-textarea-loading-text);
+    font-size: var(--ndwu-textarea-loading-font-size);
+    pointer-events: none;
   }
 
   &__box--readonly.ndwu-form-field__input:hover {
@@ -203,9 +238,17 @@ $textarea-sizes: (
     z-index: 3;
     display: flex;
     color: var(--ndwu-textarea-resizer-color);
-    cursor: ns-resize;
+    cursor: nwse-resize;
     // stylelint-disable-next-line plugin/no-unsupported-browser-features
     touch-action: none;
+  }
+
+  &__resizer--vertical {
+    cursor: ns-resize;
+  }
+
+  &__resizer--horizontal {
+    cursor: ew-resize;
   }
 
   &__box--disabled &__resizer {

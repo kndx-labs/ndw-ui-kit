@@ -30,9 +30,19 @@
     gap: spacing.$spacing-8;
     align-items: center;
 
+    // keeps the content box, so the button width does not change in loading state
     &--hidden {
-      display: none;
+      visibility: hidden;
     }
+  }
+
+  .ndwu-timing-button__loader {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .ndwu-timing-button__timer {
@@ -58,6 +68,6 @@
   }
 
   &.ndwu-timing-button--loading {
-    pointer-events: none;
+    cursor: not-allowed;
   }
 }

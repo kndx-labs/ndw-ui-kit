@@ -195,6 +195,27 @@ body {
       margin: 0;
     }
 
+    &__preview--textarea {
+      min-width: 0;
+    }
+
+    &__preview-form--textarea {
+      width: 100%;
+      max-width: none;
+      --sandbox-preview-textarea-width: 400px;
+
+      ndwu-textarea-field > ndwu-form-field > .ndwu-form-field {
+        --sandbox-preview-textarea-offset: max(
+          0px,
+          calc((100% - var(--sandbox-preview-textarea-width)) / 2)
+        );
+
+        width: var(--sandbox-preview-textarea-width);
+        max-width: calc(100% - var(--sandbox-preview-textarea-offset));
+        margin-inline-start: var(--sandbox-preview-textarea-offset);
+      }
+    }
+
     &__preview-forms {
       display: flex;
       flex-direction: column;

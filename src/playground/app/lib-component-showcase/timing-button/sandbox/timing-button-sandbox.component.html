@@ -40,7 +40,7 @@
               [leftText]="sandboxForm.controls.leftText.value"
               [rightText]="sandboxForm.controls.rightText.value"
               [disabled]="sandboxForm.controls.state.value === 'disabled'"
-              [loading]="sandboxForm.controls.state.value === 'loading'"
+              [loading]="sandboxForm.controls.isLoading.value"
               [duration]="sandboxForm.controls.duration.value"
               (timerEnd)="onTimerEnd()"
             >
@@ -88,8 +88,14 @@
               <option value="focus">{{ 'timing-button-showcase.state-focus' | localize }}</option>
               <option value="pressed">{{ 'timing-button-showcase.state-pressed' | localize }}</option>
               <option value="disabled">{{ 'timing-button-showcase.state-disabled' | localize }}</option>
-              <option value="loading">{{ 'timing-button-showcase.state-loading' | localize }}</option>
             </select>
+          </div>
+
+          <div class="sandbox__control-row sandbox__control-row--checkboxes">
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="isLoading" />
+              <span>{{ 'common.loading' | localize }}</span>
+            </label>
           </div>
 
           @if (timerEndCount() > 0) {

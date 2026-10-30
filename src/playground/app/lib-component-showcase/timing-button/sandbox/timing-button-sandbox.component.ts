@@ -14,8 +14,7 @@ export type TimingButtonSandboxState =
   | 'hover'
   | 'focus'
   | 'pressed'
-  | 'disabled'
-  | 'loading';
+  | 'disabled';
 
 function tokenKeyToCssVar(key: string): string {
   return CssUtils.tokenKeyToCssVar(key);
@@ -50,6 +49,7 @@ export class TimingButtonSandboxComponent extends SandboxBaseComponent {
     size: new FormControl<NdwuSize>(NDWU_SIZE.XL, {nonNullable: true}),
     state: new FormControl<TimingButtonSandboxState>('default', {nonNullable: true}),
     duration: new FormControl<number>(15, {nonNullable: true}),
+    isLoading: new FormControl<boolean>(false, {nonNullable: true}),
   });
 
   public readonly sandboxTokens = new FormGroup(
@@ -73,9 +73,9 @@ export class TimingButtonSandboxComponent extends SandboxBaseComponent {
 
   public onTimerEnd(): void {
     this.timerEndCount.update((n) => n + 1);
-    this.sandboxForm.controls.state.setValue('loading');
+    this.sandboxForm.controls.isLoading.setValue(true);
     setTimeout(() => {
-      this.sandboxForm.controls.state.setValue('default');
+      this.sandboxForm.controls.isLoading.setValue(false);
       this.sandboxButtonVisible.set(false);
       setTimeout(() => this.sandboxButtonVisible.set(true));
     }, 2000);
@@ -92,6 +92,7 @@ export class TimingButtonSandboxComponent extends SandboxBaseComponent {
       size: NDWU_SIZE.XL,
       state: 'default',
       duration: 15,
+      isLoading: false,
     };
   }
 

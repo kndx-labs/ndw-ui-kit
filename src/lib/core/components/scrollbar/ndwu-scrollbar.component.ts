@@ -311,6 +311,7 @@ export class NdwuScrollbarComponent {
     const scrollOffsetKey = this.getConfig(axis).scrollOffset;
 
     this.contentEl().nativeElement[scrollOffsetKey] = convertTrackToScroll(metrics, thumbSize, thumbStart);
+
     this.updateAxis(axis);
   }
 
@@ -334,7 +335,9 @@ export class NdwuScrollbarComponent {
     this.minThumbSize = parseMinThumbSize(getComputedStyle(this.hostEl).getPropertyValue(MIN_THUMB_SIZE_PROPERTY));
 
     this.updateOverflowState(content);
+
     this.lastContentSize = {width: content.scrollWidth, height: content.scrollHeight};
+
     this.updateAxis('y');
     this.updateAxis('x');
   }

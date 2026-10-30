@@ -2,14 +2,15 @@
 
 This README is for maintainers of this repository.
 
-For the library usage examples, theming, icons, localization, etc.,
-see [src/lib/README.md](src/lib/README.md) (published with the package).
+For package usage examples and theming, see [src/lib/README.md](src/lib/README.md)
+and [src/charts/README.md](src/charts/README.md) (published with each package).
 
 ## What this repository contains
 
 `ndw-ui-kit` is an Angular 20 library plus internal tooling for:
 
 - Component code (`src/lib`)
+- Charts package (`src/charts`)
 - Playground app (`src/playground`)
 - Token / icon / pictogram preprocessing and codegen (`scripts`)
 - Architecture and process documentation (`docs`)
@@ -18,7 +19,8 @@ see [src/lib/README.md](src/lib/README.md) (published with the package).
 
 ```text
 src/
-  lib/            # publishable library source
+  lib/            # publishable @ndw-ui-kit/core source
+  charts/         # publishable @ndw-ui-kit/charts source
   playground/     # local playground app for manual verification
 scripts/          # build/codegen/publish tooling (tsx scripts)
 docs/
@@ -27,9 +29,13 @@ docs/
     RFC/          # proposal process
 ```
 
+`prepare-sass-aliases` regenerates git-ignored `.sass-aliases/` during
+build, start, and test to resolve `@ndw-ui-kit/core` Sass imports.
+
 ## Source of truth
 
-- Package-facing documentation: `src/lib/README.md`
+- Core package documentation: `src/lib/README.md`
+- Charts package documentation: `src/charts/README.md`
 - Architecture decisions: `docs/architecture/ADR/*.md`
 - Codestyle: `docs/codestyle/` ([CODESTYLE.md](docs/codestyle/CODESTYLE.md),
   [NAMING.md](docs/codestyle/NAMING.md), [CSS.md](docs/codestyle/CSS.md))
@@ -162,27 +168,41 @@ As defined in ADR 003:
 
 ### 3) Publishing requires artifact verification
 
-Before publishing, required dist artifacts are validated by `scripts/verify-publish-artifacts.ts`.
+Publish one or both packages with:
 
-Publishing path:
+```shell
+yarn publish:lib <core|charts>... [--dry-run] [--allow-dirty]
+```
 
-1. `yarn run build:to-publish`
-2. `yarn run publish:lib`
+Packages publish in `core`, then `charts` order; their versions are
+independent. The release requires the `master` branch and a clean working
+tree unless `--allow-dirty` is passed. Each selected version must be
+unpublished. Charts requires a published core version (or core selected in
+the same run), and its core peer range must include the current core version.
+A core-only release warns if the charts peer range is outdated.
 
-`publish:lib` executes `scripts/publish.ts`, which currently runs:
-
-- `yarn run verify:publish-artifacts`
-- `npm publish dist/ndw-ui-kit`
+The script runs `build:to-publish`, which builds both packages, verifies
+publish artifacts, and smoke-tests the consumer build against packed tarballs.
+For a charts-only release, it also smoke-tests charts against the published
+core tarball. It then runs `npm publish` (or `npm publish --dry-run`) for
+each selected package. Tag hints are `v<version>` for core and
+`charts-v<version>` for charts; the script does not create tags.
 
 > [!IMPORTANT]
-> Important: this is a real publish command (no `--dry-run` in current script).
+> Without `--dry-run`, this command publishes packages. Run a `--dry-run`
+> first.
 
-### 4) Keep root README and library README separated
+See [ADR 010](docs/architecture/ADR/010-charts-package.md) for release
+architecture details.
+
+### 4) Keep root README and package READMEs separated
 
 - `README.md` (root): internal repository workflows, agreements, release process
-- `src/lib/README.md`: package-consumer docs and examples
+- `src/lib/README.md` and `src/charts/README.md`: package-consumer docs and
+  examples
 
-When changing public behavior, update `src/lib/README.md` first, then update this file only if repo workflow changed.
+When changing public behavior, update the relevant package README first,
+then update this file only if repo workflow changed.
 
 ## Common scripts
 
@@ -226,8 +246,12 @@ A `.env` file in `scripts/` is also supported for local development.
 Publish pipeline:
 
 ```shell
-yarn run build:to-publish
-yarn run publish:lib
+# Optional standalone consumer check after a build
+yarn run smoke:consumer
+
+# publish:lib runs build:to-publish automatically
+yarn publish:lib core charts --dry-run
+yarn publish:lib core charts
 ```
 
 ## Notes for contributors
@@ -237,7 +261,6 @@ yarn run publish:lib
 
 ```shell
 yarn run build:to-publish
-yarn run verify:publish-artifacts
 ```
 
 ## Component tokens

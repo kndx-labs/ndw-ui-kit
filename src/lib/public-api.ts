@@ -1,5 +1,6 @@
 export * from './core/components/';
 export * from './core/directives/';
+export * from './core/services/';
 export * from './core/tokens/';
 export * from './icon-names';
 export * from './options';

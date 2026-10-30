@@ -3,7 +3,7 @@ export * from './autocomplete/';
 export * from './badge/ndwu-badge.component';
 export * from './button/base/ndwu-button-base.directive';
 export * from './button/button/ndwu-button.component';
-export * from './button/icon/ndwu-icon-button.component';
+export * from './button/icon-button/ndwu-icon-button.component';
 export * from './button/timing-button/ndwu-timing-button.component';
 export * from './checkbox/ndwu-checkbox.component';
 export * from './card/ndwu-card.component';

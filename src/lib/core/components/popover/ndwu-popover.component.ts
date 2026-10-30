@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, TemplateRef, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {NDWU_ICON_NAME} from '../../../icon-names';
-import {NdwuIconButtonComponent} from '../button/icon/ndwu-icon-button.component';
+import {NdwuIconButtonComponent} from '../button/icon-button/ndwu-icon-button.component';
 import {NdwuButtonComponent} from '../button/button/ndwu-button.component';
 import type {NdwuPopoverButton} from './ndwu-popover.types';
 import {

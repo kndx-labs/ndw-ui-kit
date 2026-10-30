@@ -26,10 +26,8 @@ export type NdwuAxisConfigEntry =
     readonly scrollOffset: 'scrollTop';
     readonly pointerCoord: 'clientY';
     readonly rectStart: 'top';
-    readonly trackSize: 'clientHeight';
     readonly thumbStyle: 'height';
     readonly translateAxis: (v: number) => string;
-    readonly overflowSignal: 'isOverflowingY';
   }
   | {
     readonly contentSize: 'scrollWidth';
@@ -37,12 +35,12 @@ export type NdwuAxisConfigEntry =
     readonly scrollOffset: 'scrollLeft';
     readonly pointerCoord: 'clientX';
     readonly rectStart: 'left';
-    readonly trackSize: 'clientWidth';
     readonly thumbStyle: 'width';
     readonly translateAxis: (v: number) => string;
-    readonly overflowSignal: 'isOverflowingX';
   };
 
+// CSS lengths; unset sides keep the defaults from the SCSS. Use `0px`, not `0`: the values are
+// summed in calc(), where a unitless 0 drops the declaration.
 export interface NdwuScrollbarPadding {
   left?: string;
   right?: string;

@@ -79,7 +79,7 @@
         (valuesChange)="onSelectionChange($event)"
       >
         @for (row of renderRows(); track renderRowKey(row)) {
-          @if (row.kind === 'subheader') {
+          @if (row.kind === 'group') {
             <ndwu-styled-group-header [id]="groupHeaderId(row.id)">
               {{ row.label | localizeIf: localizeLabels() }}
             </ndwu-styled-group-header>

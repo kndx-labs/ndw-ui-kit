@@ -1,4 +1,4 @@
-import {Directive, inject, model} from '@angular/core';
+import {Directive, inject} from '@angular/core';
 import {NdwuComboboxDirective} from './ndwu-combobox.directive';
 
 /**
@@ -26,8 +26,6 @@ import {NdwuComboboxDirective} from './ndwu-combobox.directive';
 })
 export class NdwuComboboxInputDirective {
   public readonly combobox = inject(NdwuComboboxDirective);
-
-  public readonly value = model<string>('');
 
   protected onKeydown(event: KeyboardEvent): void {
     // `Escape` closes the popup
@@ -87,7 +85,7 @@ export class NdwuComboboxInputDirective {
 
     const forwardedKeys = this.combobox.readonly()
       ? ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'Enter', ' ']
-      : ['ArrowDown', 'ArrowUp', 'Enter'];
+      : ['ArrowDown', 'ArrowUp', ...(listbox.activeDescendantId() ? ['Enter'] : [])];
 
     // "Type a letter to jump to a matching option" — like a native <select>.
     // We only do this when the field is readonly (you pick from the list, you can't type

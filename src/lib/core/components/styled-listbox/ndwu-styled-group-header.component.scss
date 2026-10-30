@@ -1,3 +1,7 @@
+@use 'styles/padding';
+@use 'styles/spacing';
+@use 'styles/typography';
+
 :host {
   display: flex;
   gap: var(--ndwu-styled-group-header-gap);
@@ -24,4 +28,29 @@
   letter-spacing: var(--ndwu-styled-group-header-letter-spacing);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+:host(.ndwu-styled-group-header--label) {
+  box-sizing: border-box;
+  padding: var(--ndwu-styled-option-padding);
+
+  &::before,
+  &::after {
+    content: none;
+  }
+
+  .ndwu-styled-group-header__text {
+    flex: 1;
+    color: var(--ndwu-styled-group-header-label-color);
+    font-weight: typography.$fontWeight-XL;
+    letter-spacing: normal;
+  }
+}
+
+:host(.ndwu-styled-group-header--label:not(:first-child)) {
+  border-top: 1px solid var(--ndwu-styled-group-header-divider-color);
+}
+
+:host-context(.ndwu-dropdown-panel--sheet) {
+  --ndwu-styled-option-padding: #{padding.$padding-12} #{spacing.$spacing-16};
 }

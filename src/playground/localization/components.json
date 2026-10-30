@@ -4,6 +4,10 @@
       "name": "Accordion",
       "description": "Stack of collapsible sections with custom header and content."
     },
+    "ndwu-autocomplete": {
+      "name": "Autocomplete",
+      "description": "Text input that suggests matching options while typing."
+    },
     "ndwu-badge": {
       "name": "Badge",
       "description": "Small status indicator for labels, counts, or states."

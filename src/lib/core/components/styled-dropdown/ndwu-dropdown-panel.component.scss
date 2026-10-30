@@ -22,6 +22,11 @@
     color: var(--ndwu-dropdown-panel-header-text-color);
   }
 
+  &__footer {
+    flex-shrink: 0;
+    border-top: 1px solid var(--ndwu-dropdown-panel-divider-color);
+  }
+
   &__body {
     // non-transparent scrollbar track visually overlaps with the option
     // when it is in focus, hovered over or selected
@@ -31,6 +36,12 @@
     overflow: auto;
     min-height: 0;
   }
+}
+
+:host-context(.ndwu-dropdown-panel-tpl--above) .ndwu-dropdown-panel__footer {
+  order: -1;
+  border-top: none;
+  border-bottom: 1px solid var(--ndwu-dropdown-panel-divider-color);
 }
 
 .ndwu-dropdown-panel.ndwu-dropdown-panel--sheet {

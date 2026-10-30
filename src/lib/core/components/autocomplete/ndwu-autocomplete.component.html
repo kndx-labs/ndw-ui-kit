@@ -1,0 +1,152 @@
+<div
+  ndwuCombobox
+  [disabled]="disabled"
+  [canOpen]="canShowPanel()"
+  [ndwuResizeObserver]="true"
+>
+  <input
+    #input
+    type="text"
+    autocomplete="off"
+    ndwuComboboxInput
+    ndwuComboboxPopoverBridge
+    class="ndwu-form-field__input ndwu-form-field__input--has-right-icon ndwu-autocomplete__input"
+    [class.ndwu-form-field__input--invalid]="invalid()"
+    [ndwuPopoverTrigger]="panelTemplate"
+    [popoverControllerFactory]="dropdownControllerFactory"
+    [triggerOn]="'manual'"
+    [popoverClass]="panelClass()"
+    [popoverTrapFocus]="isMobileViewport()"
+    [popoverCloseOnOriginClick]="false"
+    [id]="id"
+    [value]="currentValue()"
+    [placeholder]="placeholder() | localize"
+    [disabled]="disabled"
+    [readonly]="readonly() || isMobileViewport()"
+    [attr.aria-label]="(ariaLabel() | localize) || null"
+    [attr.aria-labelledby]="ariaLabelledby()"
+    [attr.aria-describedby]="ariaDescribedby()"
+    [attr.aria-required]="required() ? 'true' : null"
+    [attr.aria-invalid]="invalid() ? 'true' : null"
+    (input)="onInput(input.value)"
+    (focus)="onFocus()"
+    (blur)="onBlur($event)"
+  />
+
+  <ng-container *ngTemplateOutlet="rightIcon; context: {target: input}"/>
+
+  <ng-template
+    #rightIcon
+    let-target="target"
+  >
+    @if (showClear()) {
+      <button
+        type="button"
+        class="ndwu-form-field__right-icon"
+        [attr.aria-label]="clearButtonAriaLabel() | localize"
+        (mousedown)="$event.preventDefault()"
+        (click)="clear(target)"
+      >
+        <ndwu-icon [name]="ICON_NAME.REMOVE_S"/>
+      </button>
+    } @else {
+      <span
+        class="ndwu-form-field__right-icon ndwu-autocomplete__search-icon"
+        aria-hidden="true"
+      >
+        <ndwu-icon [name]="ICON_NAME.SEARCH_S"/>
+      </span>
+    }
+  </ng-template>
+
+  <ng-template #panelTemplate>
+    <ndwu-dropdown-panel
+      class="ndwu-autocomplete__panel"
+      [class.ndwu-autocomplete__panel--sheet]="isMobileViewport()"
+      [sheet]="isMobileViewport()"
+      [triggerWidth]="triggerWidth()"
+    >
+      @if (isMobileViewport()) {
+        <div
+          ndwuPanelHeader
+          class="ndwu-autocomplete__sheet-header"
+        >
+          <span class="ndwu-autocomplete__sheet-title">{{ sheetTitle() | localize }}</span>
+          <button
+            ndwuIconButton
+            variant="flat"
+            [icon]="ICON_NAME.CLOSE_S"
+            [attr.aria-label]="closeButtonAriaLabel() | localize"
+            class="ndwu-autocomplete__sheet-close"
+            (click)="close()"
+          >
+          </button>
+        </div>
+      }
+
+      @if (isMobileViewport()) {
+        <div class="ndwu-autocomplete__sheet-search">
+          <ndwu-form-field [size]="SIZE.XL">
+            <input
+              #sheetInput
+              type="text"
+              autocomplete="off"
+              cdkFocusInitial
+              ndwuComboboxInput
+              class="ndwu-form-field__input ndwu-form-field__input--has-right-icon ndwu-autocomplete__input"
+              [value]="currentValue()"
+              [placeholder]="placeholder() | localize"
+              [attr.aria-label]="((sheetTitle() || ariaLabel()) | localize) || null"
+              [attr.aria-describedby]="ariaDescribedby()"
+              [attr.aria-required]="required() ? 'true' : null"
+              [attr.aria-invalid]="invalid() ? 'true' : null"
+              (input)="onInput(sheetInput.value)"
+            />
+
+            <ng-container *ngTemplateOutlet="rightIcon; context: {target: sheetInput}"/>
+          </ndwu-form-field>
+        </div>
+      }
+
+      @if (rows().length > 0) {
+        <ndwu-styled-listbox
+          [size]="dropdownSize()"
+          [comboboxRef]="combobox()"
+          selectionMode="explicit"
+          [values]="[]"
+          (valuesChange)="onPick($event)"
+        >
+          @for (row of rows(); track rowKey(row)) {
+            @if (row.kind === 'group') {
+              <ndwu-styled-group-header
+                variant="label"
+                [id]="groupHeaderId(row.id)"
+              >
+                {{ row.label | localizeIf: localizeLabels() }}
+              </ndwu-styled-group-header>
+            } @else {
+              <ndwu-styled-option
+                [value]="row.option.value"
+                [label]="row.option.label"
+                [disabled]="!!row.option.disabled"
+                [attr.aria-describedby]="row.option.groupId ? groupHeaderId(row.option.groupId) : null"
+              >
+                {{ row.option.label }}
+              </ndwu-styled-option>
+            }
+          }
+        </ndwu-styled-listbox>
+      }
+
+      @if (footer(); as footerTemplate) {
+        <div
+          ndwuPanelFooter
+          class="ndwu-autocomplete__footer"
+          [attr.data-size]="dropdownSize()"
+        >
+          <ng-container [ngTemplateOutlet]="footerTemplate"/>
+        </div>
+      }
+    </ndwu-dropdown-panel>
+  </ng-template>
+</div>

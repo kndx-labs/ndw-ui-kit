@@ -17,6 +17,7 @@ const MIN_PANEL_HEIGHT = 120; // minimum overlay height when shrinking so the pa
 
 const BACKDROP_BASE_CLASS = 'ndwu-dropdown-backdrop';
 const DEFAULT_PANEL_CLASS = 'ndwu-dropdown-panel-tpl';
+const ABOVE_PANEL_CLASS = `${DEFAULT_PANEL_CLASS}--above`;
 
 /**
  * Overlay controller: opens a dropdown (desktop) or bottom sheet (mobile)
@@ -281,6 +282,8 @@ export class NdwuDropdownController extends NdwuPopoverController {
     const maxHeight = Math.max(MIN_PANEL_HEIGHT, availableHeight);
 
     overlayRef.updateSize({maxHeight});
+
+    overlayRef.overlayElement.classList.toggle(ABOVE_PANEL_CLASS, !isBelow);
   }
 
   protected handleOverlayDetached(): void {

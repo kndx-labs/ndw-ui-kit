@@ -43,13 +43,13 @@ import {
 } from '@ndw-ui-kit/core/aria';
 import {NdwuLocalizeIfPipe, NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
+import {type OptionRow, buildOptionRows} from '@ndw-ui-kit/core/utils';
 import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 import {
   type NdwuMultiSelectDisplayContext,
   NdwuMultiSelectDisplayDirective,
 } from './ndwu-multi-select-display.directive';
 import {NdwuSelectFieldBase} from '../../classes/select-field-base.directive';
-import {type NdwuSelectRenderRow, buildSelectRenderRows} from '../../classes/select-render';
 
 @Component({
   selector: 'ndwu-multi-select-field',
@@ -125,8 +125,8 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends NdwuSelectFie
     );
   });
 
-  protected readonly renderRows = computed<NdwuSelectRenderRow[]>(() => {
-    return buildSelectRenderRows(this.normalizedOptions(), this.groups());
+  protected readonly renderRows = computed<OptionRow<NdwuOption>[]>(() => {
+    return buildOptionRows(this.normalizedOptions(), this.groups());
   });
 
   protected readonly allSelected = computed(() => {

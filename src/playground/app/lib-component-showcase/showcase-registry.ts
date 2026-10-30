@@ -29,6 +29,7 @@ import {TabsShowcaseComponent} from './tabs/tabs-showcase.component';
 import {TagShowcaseComponent} from './tag/tag-showcase.component';
 import {PictogramShowcaseComponent} from './pictogram/pictogram-showcase.component';
 import {ScrollbarShowcaseComponent} from './scrollbar/scrollbar-showcase.component';
+import {HeatStripShowcaseComponent} from './heat-strip/heat-strip-showcase.component';
 import {AccordionShowcaseComponent} from './accordion/accordion-showcase.component';
 import {AutocompleteShowcaseComponent} from './autocomplete/autocomplete-showcase.component';
 import {TableShowcaseComponent} from './table/table-showcase.component';
@@ -67,5 +68,6 @@ export const SHOWCASE_COMPONENTS: Record<ComponentName, Type<unknown>> = {
   'ndwu-tag': TagShowcaseComponent,
   'ndwu-pictogram': PictogramShowcaseComponent,
   'ndwu-scrollbar': ScrollbarShowcaseComponent,
+  'ndwu-heat-strip': HeatStripShowcaseComponent,
   'ndwu-table': TableShowcaseComponent,
 };

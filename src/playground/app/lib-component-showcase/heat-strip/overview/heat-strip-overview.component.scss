@@ -1,0 +1,43 @@
+.heat-strip-section {
+  margin-bottom: 32px;
+
+  h4 {
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin-bottom: 12px;
+  }
+}
+
+.heat-strip-narrow {
+  width: min(100%, 320px);
+}
+
+.heat-strip-tooltip-content {
+  display: grid;
+  gap: 4px;
+}
+
+.heat-strip-loading-example,
+.heat-strip-marker-examples {
+  display: grid;
+  gap: 24px;
+}
+
+.heat-strip-loading-example {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+
+  button {
+    margin-bottom: 12px;
+  }
+}
+
+.heat-strip-marker-examples {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+}
+
+.heat-strip-marker-glyph {
+  font-size: 20px;
+  line-height: 1;
+}

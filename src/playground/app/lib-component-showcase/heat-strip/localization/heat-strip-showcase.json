@@ -1,0 +1,27 @@
+{
+  "heat-strip-showcase": {
+    "tabs": {
+      "overview": "Overview"
+    },
+    "overview": {
+      "default-title": "Default strip and tooltip",
+      "default-description": "Hover a cell or use arrow keys to inspect deterministic interval data.",
+      "value": "Value",
+      "cell": "Cell",
+      "narrow-title": "Narrow container",
+      "narrow-description": "A 320 px container with labels at both ends.",
+      "null-title": "All values unavailable",
+      "empty-title": "No cells",
+      "loading-title": "Loading states",
+      "toggle-loading-data": "Toggle loading with data",
+      "toggle-loading-empty": "Toggle loading while empty",
+      "marker-title": "Marked cells",
+      "marker-default": "Default marker",
+      "marker-template": "Projected marker template",
+      "marker-glyph": "Marked cell",
+      "custom-label-title": "Custom accessible labels",
+      "custom-label-description": "Custom labels include each cell position and level."
+    },
+    "custom-cell-label": "Interval {{index}}, level {{level}}"
+  }
+}

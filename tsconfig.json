@@ -37,6 +37,9 @@
       ],
       "@ndw-ui-kit/core/widgets": [
         "src/lib/widgets/index.ts"
+      ],
+      "@ndw-ui-kit/charts": [
+        "src/charts/public-api.ts"
       ]
     },
     "skipLibCheck": true,
@@ -62,6 +65,9 @@
     },
     {
       "path": "./tsconfig.playground.json"
+    },
+    {
+      "path": "./tsconfig.charts.json"
     }
   ]
 }

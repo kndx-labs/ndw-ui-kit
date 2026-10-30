@@ -1,0 +1,141 @@
+@use '@ndw-ui-kit/core/styles/fonts';
+@use '@ndw-ui-kit/core/styles/mixins';
+@use '@ndw-ui-kit/core/styles/spacing';
+@use '@ndw-ui-kit/core/styles/typography';
+
+:host {
+  display: block;
+  width: 100%;
+  font-family: fonts.$font-family;
+}
+
+.ndwu-heat-strip__strip {
+  display: flex;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--ndwu-heat-strip-height);
+  border: 1px solid var(--ndwu-heat-strip-border-color);
+  border-radius: var(--ndwu-heat-strip-radius);
+
+  @media (forced-colors: active) {
+    border-color: CanvasText;
+  }
+
+  &--loading {
+    pointer-events: none;
+
+    .ndwu-heat-strip__cell {
+      opacity: var(--ndwu-heat-strip-loading-opacity);
+    }
+  }
+
+  &--empty {
+    background: var(--ndwu-heat-strip-no-data-bg);
+  }
+}
+
+.ndwu-heat-strip__tooltip-host {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ndwu-heat-strip__cell {
+  flex: 1 1 0;
+  min-width: 0;
+  forced-color-adjust: none;
+  background-color: var(--ndwu-heat-strip-cell-bg);
+
+  @media (forced-colors: active) {
+    border-inline-start: 1px solid CanvasText;
+  }
+
+  @media (hover: hover) {
+    .ndwu-heat-strip__strip:not(
+      .ndwu-heat-strip__strip--empty,
+      .ndwu-heat-strip__strip--loading
+    ) & {
+      &:hover {
+        background-color: var(--ndwu-heat-strip-cell-bg-hover);
+      }
+    }
+  }
+
+  // stylelint-disable-next-line order/order
+  @each $level in (0, 1, 2, 3, 4, 5) {
+    &--level-#{$level} {
+      --ndwu-heat-strip-cell-bg: var(--ndwu-heat-strip-level-#{$level}-bg);
+      --ndwu-heat-strip-cell-bg-hover: var(--ndwu-heat-strip-level-#{$level}-bg-hover);
+    }
+  }
+
+  &--no-data {
+    --ndwu-heat-strip-cell-bg: var(--ndwu-heat-strip-no-data-bg);
+    --ndwu-heat-strip-cell-bg-hover: var(--ndwu-heat-strip-no-data-bg-hover);
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring(var(--ndwu-heat-strip-cell-focus-ring));
+
+    @media (forced-colors: active) {
+      box-shadow: none;
+      outline-offset: -2px;
+    }
+  }
+
+  &--active {
+    background-color: var(--ndwu-heat-strip-cell-bg-hover);
+
+    @media (forced-colors: active) {
+      outline: 2px solid Highlight;
+      outline-offset: -2px;
+    }
+  }
+
+  &--marker {
+    outline: 2px solid var(--ndwu-heat-strip-marker-color);
+    outline-offset: -2px;
+
+    @media (forced-colors: active) {
+      outline: 2px solid CanvasText;
+      outline-offset: -2px;
+    }
+  }
+}
+
+.ndwu-heat-strip__cell--active.ndwu-heat-strip__cell--marker {
+  @media (forced-colors: active) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+.ndwu-heat-strip__visually-hidden {
+  @include mixins.visually-hidden();
+}
+
+.ndwu-heat-strip__axis {
+  margin-top: spacing.$spacing-8;
+}
+
+.ndwu-heat-strip__ticks {
+  display: flex;
+  justify-content: space-between;
+  height: 3px;
+}
+
+.ndwu-heat-strip__tick {
+  flex: 0 0 1px;
+  height: 3px;
+  background-color: var(--ndwu-heat-strip-axis-color);
+}
+
+.ndwu-heat-strip__axis-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: spacing.$spacing-4;
+  color: var(--ndwu-heat-strip-axis-color);
+  font-size: typography.$fontSize-small;
+  line-height: 23px;
+}

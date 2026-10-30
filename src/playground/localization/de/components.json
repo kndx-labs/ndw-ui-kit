@@ -52,6 +52,9 @@
       "name": "Formular-Container",
       "description": "Layout-Wrapper für Formularfelder und Validierung."
     },
+    "ndwu-heat-strip": {
+      "name": "Heat Strip"
+    },
     "ndwu-icon": {
       "name": "Symbol",
       "description": "Skalierbares SVG-Symbol aus dem Sprite-Set."

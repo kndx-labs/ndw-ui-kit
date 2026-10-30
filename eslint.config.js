@@ -331,6 +331,7 @@ module.exports = tseslint.config(
   },
   {
     files: ['scripts/**/*.ts'],
+    ignores: ['scripts/data/smoke-consumer/**/*.ts'],
 
     languageOptions: {
       globals: {

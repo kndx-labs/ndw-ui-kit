@@ -1,0 +1,27 @@
+{
+  "heat-strip-showcase": {
+    "tabs": {
+      "overview": "Übersicht"
+    },
+    "overview": {
+      "default-title": "Standardstreifen und Tooltip",
+      "default-description": "Zelle überfahren oder Pfeiltasten verwenden, um deterministische Intervalldaten anzusehen.",
+      "value": "Wert",
+      "cell": "Zelle",
+      "narrow-title": "Schmaler Container",
+      "narrow-description": "Ein 320-px-Container mit Beschriftungen an beiden Enden.",
+      "null-title": "Alle Werte nicht verfügbar",
+      "empty-title": "Keine Zellen",
+      "loading-title": "Ladezustände",
+      "toggle-loading-data": "Laden mit Daten umschalten",
+      "toggle-loading-empty": "Laden ohne Zellen umschalten",
+      "marker-title": "Markierte Zellen",
+      "marker-default": "Standardmarkierung",
+      "marker-template": "Projizierte Markierungsvorlage",
+      "marker-glyph": "Markierte Zelle",
+      "custom-label-title": "Benutzerdefinierte barrierefreie Beschriftungen",
+      "custom-label-description": "Benutzerdefinierte Beschriftungen enthalten Position und Stufe jeder Zelle."
+    },
+    "custom-cell-label": "Intervall {{index}}, Stufe {{level}}"
+  }
+}

@@ -13,7 +13,7 @@ import {basename, dirname, join, relative, resolve, sep} from 'node:path';
 import {glob} from 'fast-glob';
 import postcss from 'postcss';
 import postcssScss from 'postcss-scss';
-import {DIST_DIR} from './conf';
+import {DIST_CHARTS_DIR, DIST_DIR, PACKAGE_SCOPE} from './conf';
 
 const URL_PATTERN = /^(['"])(.+?)\1/;
 
@@ -40,26 +40,26 @@ const resolvesFrom = (dir: string, url: string): boolean => {
   ].some(isFile);
 };
 
-const rewriteUrl = (file: string, url: string): string => {
+const rewriteUrl = (file: string, url: string, distDir: string): string => {
   const fileDir = dirname(file);
 
-  if (url.startsWith('sass:') || resolvesFrom(fileDir, url)) {
+  if (url.startsWith('sass:') || url.startsWith(`${PACKAGE_SCOPE}/`) || resolvesFrom(fileDir, url)) {
     return url;
   }
 
-  if (!resolvesFrom(DIST_DIR, url)) {
+  if (!resolvesFrom(distDir, url)) {
     throw new Error(`Cannot resolve "${url}" in ${file}`);
   }
 
-  const relativeUrl = relative(fileDir, resolve(DIST_DIR, url)).replaceAll(sep, '/');
+  const relativeUrl = relative(fileDir, resolve(distDir, url)).replaceAll(sep, '/');
 
   return relativeUrl.startsWith('.') ? relativeUrl : `./${relativeUrl}`;
 };
 
-const rewriteImportsPlugin = (file: string): postcss.Plugin => {
+const rewriteImportsPlugin = (file: string, distDir: string): postcss.Plugin => {
   const rewrite = (node: postcss.AtRule): void => {
     node.params = node.params.replace(URL_PATTERN, (_, quote: string, url: string) => {
-      return `${quote}${rewriteUrl(file, url)}${quote}`;
+      return `${quote}${rewriteUrl(file, url, distDir)}${quote}`;
     });
   };
 
@@ -73,20 +73,22 @@ const rewriteImportsPlugin = (file: string): postcss.Plugin => {
 };
 
 async function main(): Promise<void> {
-  const files = await glob('**/*.scss', {cwd: DIST_DIR, absolute: true});
+  for (const distDir of [DIST_DIR, DIST_CHARTS_DIR]) {
+    const files = await glob('**/*.scss', {cwd: distDir, absolute: true});
 
-  for (const file of files) {
-    const original = readFileSync(file, 'utf-8');
-    const result = await postcss([stripCommentsPlugin, rewriteImportsPlugin(file)]).process(original, {
-      syntax: postcssScss,
-      from: file,
-      to: file,
-    });
+    for (const file of files) {
+      const original = readFileSync(file, 'utf-8');
+      const result = await postcss([stripCommentsPlugin, rewriteImportsPlugin(file, distDir)]).process(original, {
+        syntax: postcssScss,
+        from: file,
+        to: file,
+      });
 
-    writeFileSync(file, result.css, 'utf-8');
+      writeFileSync(file, result.css, 'utf-8');
+    }
+
+    console.log(`Stripped comments from ${files.length} SCSS file(s) in ${distDir}.`);
   }
-
-  console.log(`Stripped comments from ${files.length} SCSS file(s).`);
 }
 
 main().catch((err: unknown) => {

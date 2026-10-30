@@ -8,6 +8,7 @@ import {
   afterRenderEffect,
   computed,
   effect,
+  inject,
   input,
   isDevMode,
   output,
@@ -380,10 +381,10 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
     },
   });
 
-  constructor(
-    private breakpointObserver: BreakpointObserver,
-    private elementRef: ElementRef<HTMLElement>,
-  ) {
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  constructor() {
     this.isMobileScreen = toSignal(
       this.breakpointObserver.observe(Breakpoints.Handset).pipe(map((r) => r.matches)),
       {initialValue: this.breakpointObserver.isMatched(Breakpoints.Handset)},

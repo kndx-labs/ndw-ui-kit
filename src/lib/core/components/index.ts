@@ -9,7 +9,6 @@ export * from './checkbox/ndwu-checkbox.component';
 export * from './card/ndwu-card.component';
 export * from './chip/ndwu-chip.component';
 export * from './chip/ndwu-chip.helpers';
-export * from './interaction/';
 export * from './modal/';
 export * from './form-container/ndwu-form-container.component';
 export * from './field-frame/control/input/ndwu-input.directive';

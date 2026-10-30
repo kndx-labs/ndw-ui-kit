@@ -44,7 +44,7 @@ import {NdwuIconButtonComponent} from '../button/icon/ndwu-icon-button.component
 import {NDWU_CONTROL, type NdwuControl} from '../field-frame/control/ndwu-control';
 import {NdwuFormFieldComponent} from '../field-frame/ndwu-form-field.component';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
-import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
+import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../../services';
 import {NdwuDropdownPanelComponent, NdwuPanelFooterDirective, NdwuPanelHeaderDirective} from '../styled-dropdown';
 import {NdwuStyledGroupHeaderComponent, NdwuStyledListboxComponent, NdwuStyledOptionComponent} from '../styled-listbox';
 import type {NdwuAutocompleteFilter, NdwuAutocompleteOption} from './ndwu-autocomplete.types';

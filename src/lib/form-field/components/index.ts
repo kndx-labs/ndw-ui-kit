@@ -3,7 +3,6 @@ export * from './autocomplete-field/ndwu-autocomplete-footer.directive';
 export * from './checkbox-field/ndwu-checkbox-field.component';
 export * from './input-field/ndwu-input-field.component';
 export * from './file-upload-field/';
-export * from './helper-message/ndwu-helper-message.component';
 export * from './multi-select-field/ndwu-multi-select-display.directive';
 export * from './multi-select-field/ndwu-multi-select-field.component';
 export * from './password-input-field/ndwu-password-input-field.component';

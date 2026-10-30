@@ -55,7 +55,7 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-toggle': ['overview', 'sandbox'],
   'ndwu-select-field': ['overview', 'sandbox'],
   'ndwu-multi-select-field': ['overview', 'sandbox'],
-  'ndwu-textarea': ['overview', 'sandbox'],
+  'ndwu-textarea': ['overview', 'sandbox', 'resize-width'],
   'ndwu-context-menu': ['overview'],
   'ndwu-tooltip': ['overview', 'sandbox'],
   'ndwu-popover': ['overview', 'sandbox'],

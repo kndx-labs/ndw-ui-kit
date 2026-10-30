@@ -5,11 +5,14 @@
   [class.ndwu-textarea__box--focused]="focused() && !readonly()"
   [class.ndwu-textarea__box--disabled]="disabled"
   [class.ndwu-textarea__box--readonly]="readonly()"
+  [class.ndwu-textarea__box--loading]="loading()"
   [class.ndwu-textarea__box--has-actions]="hasActions()"
   [class.ndwu-textarea__box--line-numbers]="showLineNumbers()"
   [style.--ndwu-textarea-actions-width]="actionsWidth()"
   [style.--ndwu-textarea-actions-height]="actionsHeight()"
+  [style.width.px]="preferredWidth()"
   [style.height.px]="height()"
+  [attr.aria-busy]="loading() ? 'true' : null"
 >
   @if (hasActions()) {
     <div
@@ -51,7 +54,7 @@
           [id]="id"
           [value]="currentValue()"
           [placeholder]="placeholder() ? (placeholder() | localize) : ''"
-          [disabled]="disabled"
+          [disabled]="disabledInput() || loading()"
           [readonly]="readonly()"
           [attr.wrap]="showLineNumbers() ? 'off' : null"
           [attr.aria-label]="ariaLabel() ? (ariaLabel() | localize) : null"
@@ -67,6 +70,16 @@
     </div>
   </div>
 
+  @if (loading()) {
+    <div class="ndwu-textarea__loading">
+      <ndwu-spokes-loader />
+
+      @if (loadingLabel()) {
+        <span class="ndwu-textarea__loading-label">{{ loadingLabel() | localize }}</span>
+      }
+    </div>
+  }
+
   <div
     #actionsSlot
     class="ndwu-textarea__actions-slot"
@@ -78,10 +91,14 @@
   @if (resizable()) {
     <span
       class="ndwu-textarea__resizer"
+      [class.ndwu-textarea__resizer--vertical]="resizeDirection() === 'vertical'"
+      [class.ndwu-textarea__resizer--horizontal]="resizeDirection() === 'horizontal'"
       aria-hidden="true"
       (pointerdown)="onResizeStart($event)"
       (pointermove)="onResizeMove($event)"
-      (lostpointercapture)="onResizeEnd()"
+      (pointerup)="onResizeEnd($event)"
+      (pointercancel)="onResizeEnd($event)"
+      (lostpointercapture)="onResizeEnd($event)"
     >
       <ndwu-icon [name]="ICON_NAME.NOTCHES_S" />
     </span>

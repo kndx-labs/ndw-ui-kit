@@ -162,12 +162,26 @@
     </div>
 
     <div class="state-section">
+      <h4>{{ 'textarea-showcase.loading' | localize }}</h4>
+      <form [formGroup]="loadingForm">
+        <ndwu-textarea-field
+          formControlName="text"
+          label="textarea-showcase.label"
+          hint="textarea-showcase.hint"
+          loading
+          loadingLabel="textarea-showcase.loading"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
       <h4>{{ 'textarea-showcase.resizable' | localize }}</h4>
       <form [formGroup]="resizableForm">
         <ndwu-textarea-field
           formControlName="text"
           label="textarea-showcase.label"
           [resizable]="true"
+          resizeDirection="both"
         />
       </form>
     </div>

@@ -1,4 +1,7 @@
-<div [class]="rootClass">
+<div
+  [class]="rootClass"
+  [style.width.px]="control()?.preferredWidth?.() ?? null"
+>
   <div
     class="ndwu-form-field__wrapper"
     [class.ndwu-form-field__wrapper--disabled]="isFieldDisabled"

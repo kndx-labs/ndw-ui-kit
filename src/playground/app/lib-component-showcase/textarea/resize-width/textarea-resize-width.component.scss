@@ -1,0 +1,42 @@
+.textarea-resize-width {
+  min-width: 0;
+  max-width: none;
+
+  h3 {
+    margin: 0 0 24px;
+  }
+
+  &__section {
+    min-width: 0;
+    max-width: none;
+    margin-bottom: 32px;
+
+    h4 {
+      margin: 0 0 16px;
+    }
+  }
+
+  &__samples {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  &__sample {
+    min-width: 0;
+  }
+
+  &__size {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  &__case {
+    box-sizing: border-box;
+    width: 800px;
+    min-width: 0;
+    max-width: 100%;
+  }
+}

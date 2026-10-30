@@ -2,7 +2,8 @@
   "textarea-showcase": {
     "tabs": {
       "overview": "Übersicht",
-      "sandbox": "Sandbox"
+      "sandbox": "Sandbox",
+      "resize-width": "Breite ändern"
     },
     "compound": "Zusammengesetzt: ndwu-form-field + ndwu-floating-label + ndwu-textarea",
     "default": "Standard (leer)",
@@ -18,6 +19,7 @@
     "invalid": "Ungültig",
     "disabled": "Deaktiviert",
     "readonly": "Schreibgeschützt",
+    "loading": "Wird geladen",
     "resizable": "Größenveränderbar",
     "not-resizable": "Nicht größenveränderbar",
     "label": "Kommentar",
@@ -26,11 +28,26 @@
     "sandbox": {
       "hint": "Hinweis",
       "readonly": "Schreibgeschützt",
+      "loading": "Wird geladen",
+      "loading-label": "Ladetext",
       "resizable": "Größenveränderbar",
+      "resize-direction": "Größenänderungsrichtung",
+      "resize-vertical": "Vertikal",
+      "resize-horizontal": "Horizontal",
+      "resize-both": "Beide",
       "line-numbers": "Zeilennummern",
       "actions": "Aktionen",
       "tokens": "Textarea-Tokens",
       "inherit": "Vererben"
+    },
+    "resize-width": {
+      "title": "Breite ändern",
+      "standalone": "Eigenständiges Textfeld",
+      "manual": "Manuell zusammengesetztes Formularfeld",
+      "field": "Mehrzeiliges Formularfeld",
+      "label": "Ausführliche Beschreibung der Verbindung und ihres Verwendungszwecks",
+      "hint": "Beschreiben Sie die Verbindung, ihren Zweck und alle Angaben, die andere Benutzer zum Verständnis benötigen.",
+      "error": "Die Beschreibung ist unvollständig. Ergänzen Sie vor dem Fortfahren den Verwendungszweck und die erforderlichen Angaben."
     }
   }
 }

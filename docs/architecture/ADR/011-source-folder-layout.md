@@ -39,8 +39,8 @@ beyond the four overlaps and in whether a public import path changes.
 | | A | B | C | D |
 |---|---|---|---|---|
 | Moved files | 22 | 39 | 54, plus 3 new files in `forms/` | 67, plus 3 new files in `forms/` |
-| Edited files that don't move | 8 | 20 | 44, 30 of them in the playground | 53, 30 of them in the playground |
-| Files touched, docs included | 33 | 62 | 104 | 126 |
+| Edited files that don't move | 8 | 22 | 44, 30 of them in the playground | 53, 30 of them in the playground |
+| Files touched, docs included | 33 | 64 | 104 | 126 |
 | Public import paths | Unchanged | Unchanged | `@ndw-ui-kit/core/forms` added; `@ndw-ui-kit/core/form-field` deprecated until 0.4.0; `NdwuHelperMessageComponent` from `@ndw-ui-kit/core` | `@ndw-ui-kit/core/forms` added; `@ndw-ui-kit/core/form-field` deprecated until 0.4.0; `NdwuHelperMessageComponent` from `@ndw-ui-kit/core` |
 | Consumer edits | None | None | Import path (one `sed`) | Import path (one `sed`) |
 | Folders that don't follow the naming principle | `field-frame/`, `styled-dropdown/`, `button/icon/`, `core/components/interaction/` | `field-frame/` | `styled-dropdown/`, `button/icon/`, `core/components/interaction/` | None |
@@ -132,8 +132,8 @@ end overlap 1. The principle gives four moves on top of A:
 
 - Pros: everything in A; one folder breaks the principle instead of four; a reviewer checks a new folder against
   the principle instead of a list.
-- Cons: A's cons except the folder exceptions; 39 moved files; about 25 more path edits (7 relative imports and a
-  barrel line for `services/`, 6 paths for `icon-button/`, 3 for `dropdown-panel/`, 6 imports and 2 paths for
+- Cons: A's cons except the folder exceptions; 39 moved files; about 26 more path edits (7 relative imports and 2
+  barrel lines for `services/`, 6 paths for `icon-button/`, 3 for `dropdown-panel/`, 6 imports and 3 paths for
   `parts/`); none of the four moves is one of the ticket's overlaps.
 
 ### Option C: rename the `form-field` entry point to `forms`
@@ -305,7 +305,7 @@ inside one entry point.
   files are named by topic.
 - No public import path changes: consumers change nothing, and no alias or deprecation cycle is needed.
 - Every folder except `field-frame/` follows the naming principle; `core/` has one folder per kind,
-  `core/components/` holds only component folders and `form-field/components/` only wrappers.
+  `core/components/` holds only component and group folders and `form-field/components/` only wrappers.
 - New code has a written place, and imports have a written direction.
 - `git mv` keeps `git log --follow` and `git blame` per file.
 
@@ -315,7 +315,7 @@ inside one entry point.
 - Consumers still see `@ndw-ui-kit/core/form-field` without a form-field component, while
   `NdwuFormFieldComponent` comes from `@ndw-ui-kit/core`. The entry point keeps the name that the reference
   libraries give to the frame.
-- 39 moved files and 20 edited ones, none in the playground; the review diff is mostly renames and import paths.
+- 39 moved files and 22 edited ones, none in the playground; the review diff is mostly renames and import paths.
 - None of the four extra moves (`core/services/`, `dropdown-panel/`, `button/icon-button/`, `parts/`) is one of
   the ticket's overlaps.
 - SCSS files inside the published package move. Only someone who `@use`s them by a raw `node_modules` path is

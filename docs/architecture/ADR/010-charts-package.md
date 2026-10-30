@@ -29,13 +29,15 @@ workspaces or a `projects/` directory. Keep `@ndw-ui-kit/core` as a peer
 dependency so consumers use the same core instance for styles and
 dependency-injection tokens.
 
-Give each package its own version. Charts starts at `0.1.0`; its core peer
-range is `^<core version used for its build and tests>`. Enforce
-`semver.satisfies` when charts is selected for publication. At `0.x`, a
-core minor release leaves the prior caret range, so charts needs a release
-with an updated range. Do not claim or test compatibility with core versions
-below that range. A core-only release may proceed with a warning if charts'
-range no longer includes the current core version.
+Give each package its own version. Charts starts at `0.1.0`. Its core peer
+range is a caret range whose floor is a published core version that contains
+every core API charts uses. Build and smoke tests run against that version.
+When charts starts using a new core API, release core first and raise the
+floor. Enforce `semver.satisfies` when charts is selected for publication. At
+`0.x`, a core minor release leaves the prior caret range, so charts needs a
+release with an updated range. Do not claim or test compatibility with core
+versions below that range. A core-only release may proceed with a warning if
+charts' range no longer includes the current core version.
 
 Use separate TypeScript configurations for development and packaging.
 Development resolves core from source so the IDE, ESLint, specs, and

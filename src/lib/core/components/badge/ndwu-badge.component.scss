@@ -1,4 +1,5 @@
 @use 'sass:list';
+@use 'styles/fonts';
 @use 'styles/padding';
 @use 'styles/spacing';
 @use 'styles/typography';
@@ -46,7 +47,7 @@ $tones: 'gray', 'negative', 'positive', 'warning', 'blue', 'violet', 'cyan', 'wh
   background: var(--ndwu-badge-bg);
   color: var(--ndwu-badge-fg);
   font-weight: typography.$fontWeight-L;
-  font-family: inherit;
+  font-family: fonts.$font-family;
   white-space: nowrap;
   cursor: default;
   user-select: none;

@@ -1,0 +1,29 @@
+@use 'styles/colors' as colors;
+@use 'styles/padding' as padding;
+@use 'styles/spacing' as spacing;
+
+.growing-dialog {
+  &__hint {
+    margin: 0 0 spacing.$spacing-16;
+    color: colors.$gray-80;
+    line-height: 1.6;
+  }
+
+  &__actions {
+    display: flex;
+    gap: spacing.$spacing-12;
+  }
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-8;
+    margin-top: spacing.$spacing-16;
+  }
+
+  &__field {
+    margin: 0;
+    padding: padding.$padding-12;
+    border: 1px dashed colors.$gray-30;
+  }
+}

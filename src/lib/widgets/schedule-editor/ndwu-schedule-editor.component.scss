@@ -1,4 +1,5 @@
 @use 'styles/colors';
+@use 'styles/fonts';
 
 $grid-default-color: colors.$gray-15;
 $grid-accent-color: colors.$gray-20;
@@ -19,6 +20,7 @@ ndwu-schedule-editor:not([hidden]) {
 
 .ndwu-schedule-editor {
   min-height: 0;
+  font-family: fonts.$font-family;
 
   &--thumbnail,
   &--full {
@@ -151,8 +153,8 @@ ndwu-schedule-editor:not([hidden]) {
 // Never the other way round: deriving a wrapper dimension from the measurement
 // makes the ResizeObserver re-trigger itself, which the browser reports as
 // "ResizeObserver loop completed with undelivered notifications".
-// The wrapper must not take padding — the observer reads `contentRect`, while
-// the tooltip positions against the SVG's border box.
+// The wrapper must not take padding — the observer reads `contentRect`, which
+// is also the box the tooltip is kept inside.
 ndwu-schedule-editor.ndwu-schedule-editor--fill {
   height: 100%;
 

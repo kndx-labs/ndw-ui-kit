@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {InterpolationParameters, TranslateService} from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
 
@@ -15,7 +15,7 @@ export class NdwuNgxTranslationService extends NdwuTranslationService {
     return this.translate.onTranslationRefresh;
   }
 
-  public instant(key: string, params?: InterpolationParameters): string {
+  public instant(key: string, params?: Record<string, unknown>): string {
     return String(this.translate.instant(key, params));
   }
 }

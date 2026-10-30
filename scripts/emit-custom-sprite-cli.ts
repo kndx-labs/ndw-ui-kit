@@ -10,16 +10,13 @@
  */
 
 import path from 'node:path';
-import {fileURLToPath} from 'node:url';
 import {build} from 'esbuild';
 import fs from 'fs-extra';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import {DIST_CUSTOM_SPRITE_CLI_FILE, SCRIPTS_DIR} from './conf';
 
 const main = async (): Promise<void> => {
-  const rootDir = path.resolve(__dirname, '..');
-  const srcFile = path.join(rootDir, 'scripts/build-custom-sprite.ts');
-  const outFile = path.join(rootDir, 'dist/ndw-ui-kit/tools/build-custom-sprite.mjs');
+  const srcFile = path.join(SCRIPTS_DIR, 'build-custom-sprite.ts');
+  const outFile = DIST_CUSTOM_SPRITE_CLI_FILE;
 
   await fs.ensureDir(path.dirname(outFile));
 
@@ -33,7 +30,12 @@ const main = async (): Promise<void> => {
     target: 'node18',
     outfile: outFile,
     banner: {
-      js: '#!/usr/bin/env node',
+      // `createRequire` gives bundled CommonJS deps (xml2js → sax) a real `require` for Node built-ins
+      js: [
+        '#!/usr/bin/env node',
+        'import {createRequire as __createRequire} from \'node:module\';',
+        'const require = __createRequire(import.meta.url);',
+      ].join('\n'),
     },
     // Mark packages with native bindings (or that should remain runtime deps) as external.
     // svg-sprite uses @resvg/resvg-js which ships platform-specific .node files

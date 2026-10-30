@@ -1,3 +1,4 @@
+@use 'styles/fonts' as fonts;
 @use 'styles/spacing' as spacing;
 @use 'styles/typography' as typography;
 @use 'styles/radius' as radius;
@@ -10,6 +11,7 @@
   display: block;
   overflow-x: auto;
   border-radius: radius.$radius-L;
+  font-family: fonts.$font-family;
 
   table {
     width: 100%;
@@ -137,6 +139,10 @@
   position: relative;
 }
 
+.ndwu-row.ndwu-row--grabbed {
+  background-color: var(--ndwu-table-row-selected-bg);
+}
+
 .ndwu-row.cdk-drag-placeholder {
   opacity: 0.3;
 }
@@ -148,6 +154,7 @@
   border-radius: radius.$radius-S;
   background-color: var(--ndwu-table-cell-bg);
   box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+  font-family: fonts.$font-family;
 }
 
 .ndwu-row.cdk-drag-animating,

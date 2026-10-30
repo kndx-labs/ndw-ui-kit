@@ -88,6 +88,10 @@ export class TextareaOverviewComponent implements OnInit {
     text: new FormControl(SAMPLE_TEXT),
   });
 
+  public readonly loadingForm = new FormGroup({
+    text: new FormControl(''),
+  });
+
   public readonly resizableForm = new FormGroup({
     text: new FormControl(SAMPLE_TEXT),
   });

@@ -1,0 +1,90 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="textarea-resize-width">
+      <h3>{{ 'textarea-showcase.resize-width.title' | localize }}</h3>
+
+      <section class="textarea-resize-width__section">
+        <h4>{{ 'textarea-showcase.resize-width.standalone' | localize }}</h4>
+        <div class="textarea-resize-width__samples">
+          @for (sample of sizes; track sample.size) {
+            <div class="textarea-resize-width__sample">
+              <span class="textarea-resize-width__size">{{ sample.label }}</span>
+              <div
+                class="textarea-resize-width__case"
+                data-textarea-resize-case="standalone"
+                [attr.data-textarea-resize-size]="sample.label"
+              >
+                <ndwu-textarea
+                  [size]="sample.size"
+                  [value]="SAMPLE_VALUE"
+                  [resizeDirection]="'both'"
+                />
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="textarea-resize-width__section">
+        <h4>{{ 'textarea-showcase.resize-width.manual' | localize }}</h4>
+        <div class="textarea-resize-width__samples">
+          @for (sample of sizes; track sample.size) {
+            <div class="textarea-resize-width__sample">
+              <span class="textarea-resize-width__size">{{ sample.label }}</span>
+              <div
+                class="textarea-resize-width__case"
+                data-textarea-resize-case="manual"
+                [attr.data-textarea-resize-size]="sample.label"
+              >
+                <ndwu-form-field [size]="sample.size">
+                  <ndwu-floating-label [label]="LABEL_KEY" />
+                  <ndwu-textarea
+                    [size]="sample.size"
+                    [value]="SAMPLE_VALUE"
+                    [resizeDirection]="'both'"
+                  />
+                  <ndwu-helper-message
+                    ndwuHint
+                    [helperMessage]="HINT_KEY"
+                  />
+                  <ndwu-helper-message
+                    ndwuHint
+                    status="error"
+                    [errorMessage]="ERROR_KEY"
+                  />
+                </ndwu-form-field>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="textarea-resize-width__section">
+        <h4>{{ 'textarea-showcase.resize-width.field' | localize }}</h4>
+        <form [formGroup]="fieldForm" class="textarea-resize-width__samples">
+          @for (sample of sizes; track sample.size) {
+            <div class="textarea-resize-width__sample">
+              <span class="textarea-resize-width__size">{{ sample.label }}</span>
+              <div
+                class="textarea-resize-width__case"
+                data-textarea-resize-case="field"
+                [attr.data-textarea-resize-size]="sample.label"
+              >
+                <ndwu-textarea-field
+                  [formControlName]="sample.controlName"
+                  [label]="LABEL_KEY"
+                  [hint]="HINT_KEY"
+                  [size]="sample.size"
+                  [resizeDirection]="'both'"
+                />
+              </div>
+            </div>
+          }
+        </form>
+      </section>
+    </div>
+  </ng-template>
+</app-showcase-layout>

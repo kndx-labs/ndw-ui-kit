@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  type Signal,
   afterRenderEffect,
   booleanAttribute,
   computed,
@@ -24,7 +25,33 @@ import {NDWU_CONTROL, type NdwuControl} from '../form-field/control/ndwu-control
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../interaction';
 import {NdwuScrollbarComponent} from '../scrollbar/ndwu-scrollbar.component';
-import {type NdwuTextareaResizeStart} from './ndwu-textarea.types';
+import {NdwuSpokesLoaderComponent} from '../spokes-loader/ndwu-spokes-loader.component';
+import {
+  type NdwuTextareaResizeConfiguration,
+  type NdwuTextareaResizeDirection,
+  type NdwuTextareaResizeStart,
+} from './ndwu-textarea.types';
+
+const HORIZONTAL_RESIZE_THRESHOLD_PX = 3;
+
+function parsePixelValue(value: string): number | null {
+  if (!/^\+?(?:\d+(?:\.\d*)?|\.\d+)px$/.test(value)) {
+    return null;
+  }
+
+  const parsed = Number(value.slice(0, -2));
+
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
+}
+
+function sameResizeConfiguration(
+  left: NdwuTextareaResizeConfiguration,
+  right: NdwuTextareaResizeConfiguration,
+): boolean {
+  return left.size === right.size
+    && left.resizable === right.resizable
+    && left.resizeDirection === right.resizeDirection;
+}
 
 @Component({
   selector: 'ndwu-textarea',
@@ -36,6 +63,7 @@ import {type NdwuTextareaResizeStart} from './ndwu-textarea.types';
     NdwuIconComponent,
     NdwuResizeObserverDirective,
     NdwuScrollbarComponent,
+    NdwuSpokesLoaderComponent,
   ],
   providers: [{
     provide: NDWU_CONTROL,
@@ -66,7 +94,10 @@ export class NdwuTextareaComponent implements NdwuControl {
   public readonly disabledInput = input(false, {alias: 'disabled', transform: booleanAttribute});
   public readonly readonly = input(false, {transform: booleanAttribute});
   public readonly invalid = input(false, {transform: booleanAttribute});
+  public readonly loading = input(false, {transform: booleanAttribute});
+  public readonly loadingLabel = input<string>('');
   public readonly resizable = input(true, {transform: booleanAttribute});
+  public readonly resizeDirection = input<NdwuTextareaResizeDirection>('both');
   public readonly showLineNumbers = input(false, {transform: booleanAttribute});
 
   public readonly valueChange = output<string>();
@@ -75,11 +106,24 @@ export class NdwuTextareaComponent implements NdwuControl {
   public readonly focused = signal<boolean>(false);
   public readonly currentValue = linkedSignal(() => this.value());
   public readonly shouldLabelFloat = true;
+  private readonly preferredWidthState = linkedSignal({
+    source: () => ({
+      size: this.sizeSvc.effectiveSize(),
+      resizable: this.resizable(),
+      resizeDirection: this.resizeDirection(),
+    }),
+    computation: (): number | null => null,
+  });
+  public readonly preferredWidth: Signal<number | null> = this.preferredWidthState;
 
   protected readonly generatedId = uniqueId('ndwu-textarea-');
 
   protected readonly height = linkedSignal({
-    source: () => ({size: this.sizeSvc.effectiveSize(), resizable: this.resizable()}),
+    source: () => ({
+      size: this.sizeSvc.effectiveSize(),
+      resizable: this.resizable(),
+      resizeDirection: this.resizeDirection(),
+    }),
     computation: (): number | null => null,
   });
 
@@ -117,9 +161,16 @@ export class NdwuTextareaComponent implements NdwuControl {
   });
 
   private resizeStart: NdwuTextareaResizeStart | null = null;
+  protected readonly endResizeOnConfigurationChange = effect(() => {
+    this.sizeSvc.effectiveSize();
+    this.resizable();
+    this.resizeDirection();
+    this.onResizeEnd();
+  });
 
   constructor() {
     this.destroyRef.onDestroy(() => {
+      this.onResizeEnd();
       this.registry.setFocused(NDWU_INTERACTION_FOCUS_TYPE.INPUT, this.id, false);
     });
   }
@@ -163,30 +214,90 @@ export class NdwuTextareaComponent implements NdwuControl {
   }
 
   protected onResizeStart(event: PointerEvent): void {
-    if (event.button !== 0 || this.disabled) {
+    if (event.button !== 0 || this.disabled || !this.resizable()) {
       return;
     }
 
+    this.onResizeEnd();
     event.preventDefault();
-    (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+
+    const captureTarget = event.currentTarget as HTMLElement;
+    const box = this.box().nativeElement;
+    const rect = box.getBoundingClientRect();
+    const rawMinWidth = getComputedStyle(box)
+      .getPropertyValue('--ndwu-textarea-min-width')
+      .trim();
+    const minWidth = parsePixelValue(rawMinWidth);
+    const configuration: NdwuTextareaResizeConfiguration = {
+      size: this.sizeSvc.effectiveSize(),
+      resizable: this.resizable(),
+      resizeDirection: this.resizeDirection(),
+    };
+
+    captureTarget.setPointerCapture(event.pointerId);
 
     this.resizeStart = {
+      pointerX: event.clientX,
       pointerY: event.clientY,
-      height: this.box().nativeElement.getBoundingClientRect().height,
+      width: rect.width,
+      height: rect.height,
+      minWidth,
+      horizontalActivated: false,
+      pointerId: event.pointerId,
+      captureTarget,
+      configuration,
     };
   }
 
   protected onResizeMove(event: PointerEvent): void {
-    if (!this.resizeStart) {
+    const resizeStart = this.resizeStart;
+
+    if (event.pointerId !== resizeStart?.pointerId) {
       return;
     }
 
-    const clampedHeight = Math.max(0, this.resizeStart.height + event.clientY - this.resizeStart.pointerY);
+    if (!sameResizeConfiguration(resizeStart.configuration, this.getResizeConfiguration())) {
+      this.onResizeEnd();
 
-    this.height.set(clampedHeight);
+      return;
+    }
+
+    const dx = event.clientX - resizeStart.pointerX;
+    const dy = event.clientY - resizeStart.pointerY;
+    const {resizeDirection} = resizeStart.configuration;
+
+    if (resizeDirection !== 'vertical' && resizeStart.minWidth !== null) {
+      resizeStart.horizontalActivated ||= Math.abs(dx) >= HORIZONTAL_RESIZE_THRESHOLD_PX;
+
+      if (resizeStart.horizontalActivated) {
+        this.preferredWidthState.set(Math.max(resizeStart.minWidth, resizeStart.width + dx));
+      }
+    }
+
+    if (resizeDirection !== 'horizontal') {
+      this.height.set(Math.max(0, resizeStart.height + dy));
+    }
   }
 
-  protected onResizeEnd(): void {
+  protected onResizeEnd(event?: PointerEvent): void {
+    const resizeStart = this.resizeStart;
+
+    if (!resizeStart || (event && event.pointerId !== resizeStart.pointerId)) {
+      return;
+    }
+
     this.resizeStart = null;
+
+    if (resizeStart.captureTarget.hasPointerCapture(resizeStart.pointerId)) {
+      resizeStart.captureTarget.releasePointerCapture(resizeStart.pointerId);
+    }
+  }
+
+  private getResizeConfiguration(): NdwuTextareaResizeConfiguration {
+    return {
+      size: this.sizeSvc.effectiveSize(),
+      resizable: this.resizable(),
+      resizeDirection: this.resizeDirection(),
+    };
   }
 }

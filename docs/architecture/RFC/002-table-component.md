@@ -42,8 +42,8 @@ the host connects them in its template.
 
 | Class                        | Type             | Role                                                                                                 |
 |------------------------------|------------------|------------------------------------------------------------------------------------------------------|
-| `NdwuTableDataSource<T>`     | `DataSource<T>`  | Signals `data`, `filter`, `sort`, `pageSize`, `pageIndex`; computes `filtered → sorted → page`, `length`, `isSorted` |
-| `NdwuTableDataSourceOptions` | Interface        | `sortAccessor`, `filterPredicate`, `injector` (when built outside an injection context)            |
+| `NdwuTableDataSource<T, V>`  | `DataSource<T>`  | Signals `data`, `filter`, `sort`, `pageSize`, `pageIndex`; computes `filtered → sorted → page`, `length`, `isSorted` |
+| `NdwuTableDataSourceOptions` | Interface        | `sortAccessor`, `sortComparator`, `filterPredicate`, `injector` (when built outside an injection context) |
 
 A plain array is also a valid `[dataSource]`. Use it when the host does its own
 sorting or paging, e.g. on the server.
@@ -75,11 +75,11 @@ sorting or paging, e.g. on the server.
 | `NdwuSortDirective`           | `[ndwuSort]` on the table   | Sort state: one `ndwuSort` model of `NdwuSortState`; cycles `asc → desc → ''`; emits `ndwuSortChange` |
 | `NdwuSortHeaderComponent`     | `th[ndwuSortHeader="id"]`   | Button inside the header cell that calls `sort(id)`; sets `aria-sort`; projects `[ndwuColumnPin]`, `[ndwuSortHeaderAction]` |
 | `NdwuColumnPinComponent`      | `button[ndwuColumnPin]`     | Toggle with `pinned` input and `pinnedChange` output; `aria-pressed`; stops the click from sorting     |
-| `NdwuColumnResizeDirective`   | `th[ndwuColumnResize]`      | Creates the grip in the cell; pointer drag sets the cell width (min 40px); emits `ndwuColumnResized`  |
-| `NdwuColumnResizeHandleComponent` | `<ndwu-column-resize-handle>` | The grip, created by the directive. `role="separator"`, out of the Tab order                    |
+| `NdwuColumnResizeDirective`   | `th[ndwuColumnResize]`      | Creates the grip in the cell; pointer drag or arrow keys set the cell width (min 40px); emits `ndwuColumnResized` |
+| `NdwuColumnResizeHandleComponent` | `<ndwu-column-resize-handle>` | The grip, created by the directive. Focusable `role="separator"` with `aria-valuenow/min/max`  |
 | `NdwuRowDragDirective`        | `[ndwuRowDrag]` on the table| Hosts `CdkDropList`, emits `ndwuRowDrop`; disabled when the table also has `ndwuSort`                  |
 | `NdwuRowDraggableDirective`   | `[ndwuRowDraggable]="row"`  | Hosts `CdkDrag` on a row; the bound value is the drag data                                             |
-| `NdwuRowDragHandleComponent`  | `button[ndwuRowDragHandle]` | Hosts `CdkDragHandle`; dragging starts only here                                                       |
+| `NdwuRowDragHandleComponent`  | `button[ndwuRowDragHandle]` | Hosts `CdkDragHandle`; dragging starts only here. Keyboard: Space/Enter grabs, arrows/Home/End move, Escape cancels |
 
 ### Chrome
 
@@ -212,6 +212,9 @@ NdwuSortDirective.sort(id)
   │
   V
 NdwuTableDataSource: sorted → page recompute
+  │  sortAccessor reads each value; null, undefined, NaN and invalid dates go last
+  │  sortComparator (default: Date by time, numbers, then numeric string collation)
+  │  returns ascending order; the direction is applied once, and the sort is stable
   │  connect() observable emits the new page
   V
 CdkTable renders the rows; sort header reads the directive → icon + aria-sort
@@ -259,13 +262,33 @@ ngAfterViewInit: NdwuColumnResizeDirective creates the grip and appends it to th
 User drags the grip (pointerdown → pointer capture)
   │
   V
+first resize: every header cell is frozen at its rendered px width, <table> width = their sum
+  │
+  V
 pointermove: native listener, outside change detection → sets <th> width
   │
 pointerup / pointercancel → emits ndwuColumnResized(width)
 ```
 
-The width lives on the `<th>` only. A host that wants to keep it across renders
-stores the emitted value and binds it back.
+The grip is in the Tab order. With it focused, Left/Right change the width by
+8px (40px with Shift), Home and End jump to the minimum and maximum. The
+keyboard maximum is 1000px, or the current width if the column is already
+wider; a pointer drag has no maximum. Each key press that changes the width
+emits `ndwuColumnResized`.
+
+The table is `width: 100%` with `table-layout: fixed`, so the browser spreads
+spare width over all columns. The first resize (a drag, or a key that changes
+the width; Tab does not) freezes every header cell at its rendered px width and
+gives the `<table>` that sum as its width. Later changes are exact, and a
+narrower table leaves space on the right. Each change sets the `<th>` width and
+the table width again; when the header row is re-created on a locked table, the
+new cells are frozen and the table width is synced. Only the resized cell's
+header row is locked; fixed layout reads the first row, so a table with group
+header rows is not covered.
+
+The directive sets all header widths and the table width. A host that keeps a
+width across renders stores the emitted value and binds it back; a host that
+restores one stored width should restore it before the first resize.
 
 ### Reordering Rows
 
@@ -281,6 +304,26 @@ The data source emits the new order; CdkTable moves the rows
 
 The kit never reorders data. Indices are page-relative, which is what
 `dataSource.moveRow()` expects.
+
+The keyboard path ends in the same `ndwuRowDrop`, so the host needs no extra code:
+
+```
+User focuses the handle and presses Space or Enter → row grabbed (aria-pressed, row highlighted)
+  │
+  V
+ArrowUp / ArrowDown / Home / End → ndwuRowDrop(CdkDragDrop) with a KeyboardEvent as `event`
+  │  host reorders its data; after the render the handle gets focus back
+  V
+Space / Enter / Tab away → dropped; Escape → moved back to where it was grabbed
+```
+
+Each arrow, Home or End press emits its own `ndwuRowDrop`, and Escape emits one
+more to move the row back. A host that saves the order on every drop sends one
+request per step.
+
+Every step is announced through the CDK `LiveAnnouncer` with the row's position.
+Rows must keep their identity across the reorder (`trackBy` or the same
+objects), so the focused handle survives the move.
 
 ## Drawbacks
 
@@ -319,7 +362,6 @@ and cells come from the consumer's template.
 ### Feature Limits
 
 - Sort and row drag are exclusive. `ndwuRowDrag` disables itself and warns in dev mode.
-- The resize grip is out of the Tab order, so columns can be resized only with a pointer.
 - Detail rows have no dedicated API; they use `multiTemplateDataRows` and a `when` row def.
 
 ## Rationale and Alternatives
@@ -337,8 +379,6 @@ paging and sticky logic, and its own accessibility gaps.
 
 # Unresolved questions
 
-- Keyboard resize: the grip is unfocusable, so its arrow-key handler is unreachable.
-  Remove the handler, or make columns resizable from the keyboard another way?
 - Should the kit export one array of all table imports to cut the boilerplate?
 - Should the kit add default row defs from a `columns` input, or a detail-row slot,
   if screens keep repeating the same markup? (Declined for now in PR #8.)

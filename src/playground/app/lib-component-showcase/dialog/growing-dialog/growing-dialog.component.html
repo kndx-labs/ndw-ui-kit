@@ -1,0 +1,31 @@
+<p class="growing-dialog__hint">
+  Dialog has no fixed height: it grows with the content up to max-height,
+  then the body becomes scrollable. Removing fields shrinks it back.
+</p>
+
+<div class="growing-dialog__actions">
+  <button
+    ndwuButton
+    variant="secondary"
+    label="Add fields"
+    (click)="addFields()"
+  >
+  </button>
+
+  <button
+    ndwuButton
+    variant="tertiary"
+    label="Remove fields"
+    [disabled]="fields().length === 0"
+    (click)="removeFields()"
+  >
+  </button>
+</div>
+
+@if (fields().length > 0) {
+  <div class="growing-dialog__fields">
+    @for (field of fields(); track field) {
+      <p class="growing-dialog__field">Extra field {{ field }}</p>
+    }
+  </div>
+}

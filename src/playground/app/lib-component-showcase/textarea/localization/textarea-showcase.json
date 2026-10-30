@@ -2,7 +2,8 @@
   "textarea-showcase": {
     "tabs": {
       "overview": "Overview",
-      "sandbox": "Sandbox"
+      "sandbox": "Sandbox",
+      "resize-width": "Resize width"
     },
     "compound": "Compound: ndwu-form-field + ndwu-floating-label + ndwu-textarea",
     "default": "Default (empty)",
@@ -18,6 +19,7 @@
     "invalid": "Invalid",
     "disabled": "Disabled",
     "readonly": "Readonly",
+    "loading": "Loading",
     "resizable": "Resizable",
     "not-resizable": "Not resizable",
     "label": "Comment",
@@ -26,11 +28,26 @@
     "sandbox": {
       "hint": "Hint",
       "readonly": "Readonly",
+      "loading": "Loading",
+      "loading-label": "Loading text",
       "resizable": "Resizable",
+      "resize-direction": "Resize direction",
+      "resize-vertical": "Vertical",
+      "resize-horizontal": "Horizontal",
+      "resize-both": "Both",
       "line-numbers": "Line numbers",
       "actions": "Actions",
       "tokens": "Textarea Tokens",
       "inherit": "Inherit"
+    },
+    "resize-width": {
+      "title": "Resize width",
+      "standalone": "Standalone textarea",
+      "manual": "Manual form-field composition",
+      "field": "Textarea field",
+      "label": "Detailed description of the connection and its intended use",
+      "hint": "Describe the connection, its purpose and any details that other users need to understand.",
+      "error": "The description is incomplete. Add the connection purpose and the required details before continuing."
     }
   }
 }

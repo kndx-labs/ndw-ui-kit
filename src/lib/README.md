@@ -112,6 +112,19 @@ directly to `node_modules/@ndw-ui-kit/core/styles/themes.scss`.
 When enabling library-managed fonts, make sure the Roboto `.woff2` files are also copied
 to the path referenced by `$ndwu-roboto-font-base-path`.
 
+UI kit components set their own font family and do not inherit the page font.
+To use a different font for all components, set `--ndwu-font-family` on `:root`:
+
+```css
+:root {
+  --ndwu-font-family: Inter, sans-serif;
+}
+```
+
+Set it on `:root` (or `body`), not on an inner container: dropdowns, tooltips, popovers
+and modals render in an overlay attached to `body` and would not see a container-scoped value.
+Use a real font stack — `inherit` does not restore the page font.
+
 ### Accessibility
 
 The library ships an `aria` module (`@ndw-ui-kit/core/aria`) that provides
@@ -437,14 +450,9 @@ on pictograms (e.g., `NdwuEmptyStateComponent` from `@ndw-ui-kit/core/widgets`).
 
 ### Localization
 
-Choose one of the following translation providers:
-
-- **Noop Translation (no localization &mdash; texts are shown as-is):**
-  ```typescript
-  import {provideNdwuNoopTranslation} from '@ndw-ui-kit/core/l10n';
-
-  providers: [provideNdwuNoopTranslation()]
-  ```
+Without a translation provider, components show texts and translation keys
+as-is (`NdwuNoopTranslationService` is used by default). To localize them,
+use one of the following options:
 
 - **Ngx-Translate Integration (depends on `@ngx-translate/core`):**
   ```typescript
@@ -456,6 +464,16 @@ Choose one of the following translation providers:
   > Since this version the ngx-translate integration lives in a separate entry point
   > `@ndw-ui-kit/core/l10n/ngx-translate` (previously exported from `@ndw-ui-kit/core/l10n`),
   > so the package no longer requires `@ngx-translate/core` unless you import it.
+
+- **Custom translation service:** extend `NdwuTranslationService` and provide it:
+  ```typescript
+  import {NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
+
+  providers: [{provide: NdwuTranslationService, useClass: MyTranslationService}]
+  ```
+
+`provideNdwuNoopTranslation()` is optional. Use it to replace another
+translation service in a child injector.
 
 #### HTML in text inputs
 
@@ -569,6 +587,19 @@ import {NdwuEmptyStateComponent} from '@ndw-ui-kit/core/widgets';
 
 Their form control wrappers (`ndwu-file-upload-field`, `ndwu-schedule-editor-field`)
 stay in `@ndw-ui-kit/core/form-field`.
+
+### Schedule actions
+
+Conversion between the `ndwu-schedule-editor` value (`NdwuScheduleValue`) and a list
+of start/stop actions (`{action, hour, min, dow}`) has a separate entry point
+(`@ndw-ui-kit/core/schedule-actions`), so apps that don't need it don't pull it in.
+
+```typescript
+import {ndwuActionsToScheduleValue, ndwuScheduleValueToActions} from '@ndw-ui-kit/core/schedule-actions';
+
+const actions = ndwuScheduleValueToActions(value, weekDays);
+const restored = ndwuActionsToScheduleValue(actions, weekDays);
+```
 
 ### Form field components (CVA)
 

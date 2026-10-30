@@ -5,11 +5,10 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
   NDWU_DEFAULT_WEEK_DAYS,
   type NdwuDayName,
-  type NdwuScheduleAction,
   type NdwuScheduleValue,
   type NdwuWeekDay,
-  ndwuScheduleValueToActions,
 } from '@ndw-ui-kit/core/widgets';
+import {type NdwuScheduleAction, ndwuScheduleValueToActions} from '@ndw-ui-kit/core/schedule-actions';
 import {NdwuScheduleEditorFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {NdwuLocalizePipe, NdwuTranslationService} from '@ndw-ui-kit/core/l10n';
 import {ShowcaseLayoutComponent} from '@app/components';

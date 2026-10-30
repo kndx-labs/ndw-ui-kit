@@ -1,4 +1,5 @@
 <div
+  #wrapperElement
   class="ndwu-schedule-editor__wrapper"
   [ndwuResizeObserver]="true"
 >
@@ -106,8 +107,9 @@
     }
   </svg>
 
-  @if (tooltip(); as tooltip) {
+  @if (tooltipView(); as tooltip) {
     <div
+      #tooltipElement
       class="ndwu-schedule-editor__tooltip"
       [style.left.px]="tooltip.x"
       [style.top.px]="tooltip.y"

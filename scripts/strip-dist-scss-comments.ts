@@ -13,9 +13,8 @@ import {basename, dirname, join, relative, resolve, sep} from 'node:path';
 import {glob} from 'fast-glob';
 import postcss from 'postcss';
 import postcssScss from 'postcss-scss';
-import {ROOT_DIR} from './conf';
+import {DIST_DIR} from './conf';
 
-const DIST_DIR = resolve(ROOT_DIR, 'dist/ndw-ui-kit');
 const URL_PATTERN = /^(['"])(.+?)\1/;
 
 const stripCommentsPlugin: postcss.Plugin = {

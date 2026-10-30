@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastModified": "2026-10-09T15:01:00.308Z",
+  "lastModified": "2026-10-28T10:14:14.564Z",
   "collections": [
     {
       "id": "VariableCollectionId:2385:3263",
@@ -351,8 +351,14 @@
           "key": "25e36bdf4bf086fdc00ff709aa4d73b798be41a5",
           "resolvedType": "FLOAT",
           "valuesByMode": {
-            "2385:0": 120,
-            "17738:0": 120
+            "2385:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2436:3369"
+            },
+            "17738:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2436:3369"
+            }
           },
           "scopes": [
             "ALL_SCOPES"
@@ -487,7 +493,10 @@
               "type": "VARIABLE_ALIAS",
               "id": "VariableID:17742:12816"
             },
-            "17738:0": 0
+            "17738:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:17742:12816"
+            }
           },
           "scopes": [
             "ALL_SCOPES"
@@ -521,7 +530,7 @@
         },
         {
           "id": "VariableID:17752:14062",
-          "name": "alias/form/form-XL/form-control-padding-v-xxl",
+          "name": "alias/form/form-XL/form-control-padding-v-xl",
           "description": "",
           "key": "c8f0683c41d6c085416fe8c3a22512474bd5c06c",
           "resolvedType": "FLOAT",
@@ -553,7 +562,10 @@
               "type": "VARIABLE_ALIAS",
               "id": "VariableID:2436:3361"
             },
-            "17738:0": 0
+            "17738:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2436:3361"
+            }
           },
           "scopes": [
             "ALL_SCOPES"
@@ -619,7 +631,10 @@
               "type": "VARIABLE_ALIAS",
               "id": "VariableID:2436:3368"
             },
-            "17738:0": 0
+            "17738:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2436:3368"
+            }
           },
           "scopes": [
             "ALL_SCOPES"
@@ -957,7 +972,10 @@
               "type": "VARIABLE_ALIAS",
               "id": "VariableID:2436:3360"
             },
-            "17738:0": 0
+            "17738:0": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:2436:3360"
+            }
           },
           "scopes": [
             "ALL_SCOPES"
@@ -1484,7 +1502,7 @@
           "resolvedType": "FLOAT",
           "valuesByMode": {
             "2385:0": 96,
-            "17738:0": 0
+            "17738:0": 96
           },
           "scopes": [
             "ALL_SCOPES"
@@ -6030,7 +6048,7 @@
         },
         {
           "id": "VariableID:17741:6139",
-          "name": "alias/form-XXL/form-control-fontSize-xl",
+          "name": "alias/form-XXL/form-control-fontSize-xxl",
           "description": "",
           "key": "c5a0c64aa1457a2377ca63dc7b8c8d3576d33d71",
           "resolvedType": "FLOAT",
@@ -6053,7 +6071,7 @@
         },
         {
           "id": "VariableID:17741:6140",
-          "name": "alias/form-L/form-control-fontSize-xl",
+          "name": "alias/form-L/form-control-fontSize-l",
           "description": "",
           "key": "56716c18ba2c72338c6cac5901bcfbbef61ade0d",
           "resolvedType": "FLOAT",

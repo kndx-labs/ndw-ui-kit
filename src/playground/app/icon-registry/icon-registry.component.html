@@ -1,0 +1,63 @@
+<div class="sandbox icon-registry">
+  <h2 class="icon-registry__title">{{ 'icon-registry.title' | localize }}</h2>
+
+  <div class="sandbox__toolbar">
+    <ndwu-input-field
+      class="icon-registry__filter"
+      label="icon-registry.filter-label"
+      [ngModel]="query()"
+      (ngModelChange)="query.set($event)"
+      [rightIcon]="query() ? ICON_NAME.CLOSE_S : undefined"
+      (rightIconClicked)="clearQuery()"
+    />
+
+    <div
+      class="icon-registry__sizes"
+      role="group"
+      [attr.aria-label]="'icon-registry.sizes' | localize"
+    >
+      @for (item of sizes; track item.size) {
+        <ndwu-checkbox
+          [label]="item.label"
+          [checked]="selectedSizes().has(item.size)"
+          (checkedChange)="toggleSize(item.size, $event)"
+        />
+      }
+    </div>
+
+    <app-theme-switcher
+      [theme]="theme()"
+      (themeChange)="theme.set($event)"
+    />
+  </div>
+
+  <p
+    class="icon-registry__counter"
+    aria-live="polite"
+  >
+    {{ 'icon-registry.shown' | localize: {shown: visibleIcons().length, total: entries.length} }}
+  </p>
+
+  <div
+    class="icon-registry__surface"
+    [class.ndwu-theme-light]="theme() === 'light'"
+    [class.ndwu-theme-dark]="theme() === 'dark'"
+  >
+    @if (selectedSizes().size === 0) {
+      <p class="icon-registry__empty">{{ 'icon-registry.no-sizes' | localize }}</p>
+    } @else if (visibleIcons().length === 0) {
+      <p class="icon-registry__empty">{{ 'icon-registry.no-match' | localize: {query: trimmedQuery()} }}</p>
+    } @else {
+      <ul class="icon-registry__grid">
+        @for (icon of visibleIcons(); track icon.name) {
+          <li class="icon-registry__cell">
+            <div class="icon-registry__preview">
+              <ndwu-icon [name]="icon.name" />
+            </div>
+            <span class="icon-registry__name">{{ icon.name }}</span>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

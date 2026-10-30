@@ -2,12 +2,14 @@
 @use 'styles/padding';
 @use 'styles/spacing';
 @use 'styles/animations';
+@use 'styles/fonts';
 @use 'styles/mixins';
 
 :host {
   display: block;
   border-top: 1px solid var(--ndwu-accordion-divider-color);
   background: var(--ndwu-accordion-bg);
+  font-family: fonts.$font-family;
 }
 
 :host(.ndwu-accordion-item--in-group:first-child) {

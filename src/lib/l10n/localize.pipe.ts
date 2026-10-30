@@ -20,7 +20,7 @@ export class NdwuLocalizePipe implements PipeTransform {
       });
   }
 
-  public transform(key?: string, args?: any): string {
+  public transform(key?: string, args?: Record<string, unknown>): string {
     if (!key) {
       return '';
     }

@@ -57,7 +57,7 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-toggle': ['overview', 'sandbox'],
   'ndwu-select-field': ['overview', 'sandbox'],
   'ndwu-multi-select-field': ['overview', 'sandbox'],
-  'ndwu-textarea': ['overview', 'sandbox'],
+  'ndwu-textarea': ['overview', 'sandbox', 'resize-width'],
   'ndwu-context-menu': ['overview'],
   'ndwu-tooltip': ['overview', 'sandbox'],
   'ndwu-popover': ['overview', 'sandbox'],
@@ -153,6 +153,8 @@ export const EXAMPLE_NAMES: Record<ExampleName, string> = {
   'user-profile-form': 'User Profile Form',
   'validators': 'Validators',
 };
+
+export const ICON_REGISTRY_PATH = 'icon-registry';
 
 export const TABLE_MENU_ITEMS: ComponentName[] = [
   'ndwu-table',

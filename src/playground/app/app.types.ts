@@ -7,6 +7,7 @@ export type WidgetName =
 
 export type ComponentName =
   | 'ndwu-accordion'
+  | 'ndwu-autocomplete'
   | 'ndwu-button'
   | 'ndwu-timing-button'
   | 'ndwu-checkbox'

@@ -610,6 +610,7 @@ and have a separate entry point (`@ndw-ui-kit/core/form-field`).
 
 | Component                    | Description            |
 |------------------------------|------------------------|
+| `ndwu-autocomplete-field`    | Text input with hints  |
 | `ndwu-checkbox-field`        | Checkbox (two-state)   |
 | `ndwu-input-field`           | Text/password input    |
 | `ndwu-multi-select-field`    | Multi-option select    |
@@ -632,7 +633,9 @@ This can't be fixed on the library side.
 #### Custom option lists
 
 Select, multi-select, and radio components accept either `NdwuOption[]` directly
-or domain arrays together with an `optionAdapter`:
+or domain arrays together with an `optionAdapter`.
+Autocomplete has no adapter: it accepts only `NdwuAutocompleteOption[]`,
+and the project-wide default adapter doesn't apply to it.
 
 ```typescript
 import {NdwuOptionAdapter} from '@ndw-ui-kit/core';

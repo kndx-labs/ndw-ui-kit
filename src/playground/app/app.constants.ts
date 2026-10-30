@@ -2,6 +2,7 @@ import type {ComponentName, ExampleName, MenuItem, WidgetName} from './app.types
 
 export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-accordion',
+  'ndwu-autocomplete',
   'ndwu-button',
   'ndwu-timing-button',
   'ndwu-checkbox',
@@ -39,6 +40,7 @@ export const COMPONENTS_LIST: ComponentName[] = [
 /** Tab ids per component; used to build routes and tab config. */
 export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-accordion': ['overview'],
+  'ndwu-autocomplete': ['overview', 'sandbox'],
   'ndwu-button': ['overview', 'sandbox'],
   'ndwu-timing-button': ['overview', 'sandbox'],
   'ndwu-checkbox': ['overview', 'sandbox'],
@@ -109,6 +111,7 @@ export const READY_FOR_REVIEW_COMPONENTS: (ComponentName | WidgetName)[] = [
 
 export const SHOWCASE_NAMES: Record<string, string> = {
   'ndwu-accordion': 'Accordion',
+  'ndwu-autocomplete': 'Autocomplete',
   'ndwu-button': 'Button',
   'ndwu-timing-button': 'Timing Button',
   'ndwu-checkbox': 'Checkbox',
@@ -187,6 +190,7 @@ export const MENU_ITEMS: MenuItem[] = [
     type: 'group',
     label: 'Dropdown',
     children: [
+      'ndwu-autocomplete',
       'ndwu-select-field',
       'ndwu-multi-select-field',
       // 'ndwu-context-menu',

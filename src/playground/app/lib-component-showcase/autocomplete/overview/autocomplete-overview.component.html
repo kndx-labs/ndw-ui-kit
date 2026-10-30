@@ -1,0 +1,156 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div class="state-section">
+      <h4>{{ 'autocomplete-showcase.compound' | localize }}</h4>
+      <ndwu-form-field>
+        <ndwu-floating-label label="autocomplete-showcase.city-label" />
+        <ndwu-autocomplete
+          placeholder="autocomplete-showcase.city-placeholder"
+          [options]="cities"
+          [(value)]="compoundValue"
+        />
+        <ndwu-helper-message
+          ndwuHint
+          helperMessage="autocomplete-showcase.hint"
+        />
+      </ndwu-form-field>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'autocomplete-showcase.groups-footer' | localize }}</h4>
+      <form [formGroup]="searchForm">
+        <ndwu-autocomplete-field
+          formControlName="query"
+          label="autocomplete-showcase.search-label"
+          placeholder="autocomplete-showcase.search-placeholder"
+          hint="autocomplete-showcase.search-hint"
+          [options]="options"
+          [groups]="groups"
+          (optionSelected)="lastSelected.set($event)"
+        >
+          <ng-template ndwuAutocompleteFooter>
+            <a
+              ndwuLink
+              external
+              target="_blank"
+              rel="noopener noreferrer"
+              [href]="knowledgeBaseSearchUrl(searchForm.controls.query.value)"
+            >
+              {{ 'autocomplete-showcase.search-in-kb' | localize }}
+            </a>
+          </ng-template>
+        </ndwu-autocomplete-field>
+      </form>
+      <p class="state-section__note">
+        {{ 'autocomplete-showcase.last-selected' | localize }}:
+        <code>{{ lastSelected()?.value ?? '—' }}</code>
+      </p>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'autocomplete-showcase.sizes' | localize }}</h4>
+      <form [formGroup]="sizesForm" class="state-section__stack">
+        <ndwu-autocomplete-field
+          formControlName="xxl"
+          label="XXL"
+          [options]="options"
+          [groups]="groups"
+          [size]="SIZE.XXL"
+        />
+        <ndwu-autocomplete-field
+          formControlName="xl"
+          label="XL"
+          [options]="options"
+          [groups]="groups"
+          [size]="SIZE.XL"
+        />
+        <ndwu-autocomplete-field
+          formControlName="l"
+          label="L"
+          [options]="options"
+          [groups]="groups"
+          [size]="SIZE.L"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'autocomplete-showcase.invalid' | localize }}</h4>
+      <form [formGroup]="invalidForm">
+        <ndwu-autocomplete-field
+          formControlName="city"
+          label="autocomplete-showcase.city-label"
+          placeholder="autocomplete-showcase.city-placeholder"
+          ndwuRequired
+          [options]="cities"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'autocomplete-showcase.disabled' | localize }}</h4>
+      <form [formGroup]="disabledForm">
+        <ndwu-autocomplete-field
+          formControlName="city"
+          label="autocomplete-showcase.city-label"
+          [options]="cities"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'autocomplete-showcase.readonly' | localize }}</h4>
+      <form [formGroup]="readonlyForm">
+        <ndwu-autocomplete-field
+          formControlName="city"
+          label="autocomplete-showcase.city-label"
+          readonly
+          [options]="cities"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'autocomplete-showcase.server' | localize }}</h4>
+      <form [formGroup]="serverForm">
+        <ndwu-autocomplete-field
+          formControlName="city"
+          label="autocomplete-showcase.city-label"
+          placeholder="autocomplete-showcase.city-placeholder"
+          hint="autocomplete-showcase.server-hint"
+          [options]="serverOptions()"
+          [filter]="null"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
+      <h4>{{ 'autocomplete-showcase.open-up' | localize }}</h4>
+      <p class="state-section__note">{{ 'autocomplete-showcase.open-up-note' | localize }}</p>
+      <form [formGroup]="bottomForm">
+        <ndwu-autocomplete-field
+          formControlName="query"
+          label="autocomplete-showcase.search-label"
+          placeholder="autocomplete-showcase.search-placeholder"
+          [options]="options"
+          [groups]="groups"
+        >
+          <ng-template ndwuAutocompleteFooter>
+            <a
+              ndwuLink
+              external
+              target="_blank"
+              rel="noopener noreferrer"
+              [href]="knowledgeBaseSearchUrl(bottomForm.controls.query.value)"
+            >
+              {{ 'autocomplete-showcase.search-in-kb' | localize }}
+            </a>
+          </ng-template>
+        </ndwu-autocomplete-field>
+      </form>
+    </div>
+  </ng-template>
+</app-showcase-layout>

@@ -1,0 +1,110 @@
+<div class="sandbox">
+  <app-sandbox-toolbar
+    [theme]="sandboxTheme()"
+    (themeChange)="setSandboxTheme($any($event))"
+    (widthChange)="onWidthChange($event)"
+    (resetClick)="resetSandbox()"
+  />
+
+  <div class="sandbox__content">
+    <div class="sandbox__preview">
+      <h4 class="sandbox__section-title">{{ 'common.preview' | localize }}</h4>
+      <div
+        class="sandbox__preview-surface"
+        [class.ndwu-theme-light]="sandboxTheme() === 'light'"
+        [class.ndwu-theme-dark]="sandboxTheme() === 'dark'"
+      >
+        <div class="sandbox__preview-input-wrap" [style.width]="previewWidth()">
+          <form [formGroup]="sandboxForm" class="sandbox__preview-form">
+            <ndwu-autocomplete-field
+              formControlName="value"
+              [label]="sandboxForm.controls.label.value"
+              [placeholder]="sandboxForm.controls.placeholder.value"
+              [hint]="sandboxForm.controls.hint.value"
+              [options]="options()"
+              [size]="sandboxForm.controls.size.value"
+              [ndwuRequired]="sandboxForm.controls.required.value"
+              [readonly]="sandboxForm.controls.readonly.value"
+              (optionSelected)="lastSelected.set($event)"
+            >
+              @if (sandboxForm.controls.footer.value) {
+                <ng-template ndwuAutocompleteFooter>
+                  <a
+                    ndwuLink
+                    external
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    [href]="knowledgeBaseSearchUrl(sandboxForm.controls.value.value)"
+                  >
+                    {{ 'autocomplete-showcase.search-in-kb' | localize }}
+                  </a>
+                </ng-template>
+              }
+            </ndwu-autocomplete-field>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="sandbox__bottom">
+      <div class="sandbox__controls">
+        <h4 class="sandbox__section-title">{{ 'common.controls' | localize }}</h4>
+        <form [formGroup]="sandboxForm" class="sandbox__controls-form">
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="ac-label">{{ 'common.label' | localize }}</label>
+            <input id="ac-label" class="sandbox__control-input" type="text" formControlName="label" />
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="ac-placeholder">{{ 'common.placeholder' | localize }}</label>
+            <input id="ac-placeholder" class="sandbox__control-input" type="text" formControlName="placeholder" />
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="ac-hint">{{ 'autocomplete-showcase.sandbox.hint' | localize }}</label>
+            <input id="ac-hint" class="sandbox__control-input" type="text" formControlName="hint" />
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="ac-size">{{ 'common.size' | localize }}</label>
+            <select id="ac-size" class="sandbox__control-input" formControlName="size">
+              <option [value]="SIZE.L">{{ 'common.sizes.l' | localize }}</option>
+              <option [value]="SIZE.XL">{{ 'common.sizes.xl' | localize }}</option>
+              <option [value]="SIZE.XXL">{{ 'common.sizes.xxl' | localize }}</option>
+            </select>
+          </div>
+          <div class="sandbox__control-row sandbox__control-row--checkboxes">
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="disabled" />
+              <span>{{ 'common.disabled' | localize }}</span>
+            </label>
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="readonly" />
+              <span>{{ 'common.readonly' | localize }}</span>
+            </label>
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="required" />
+              <span>{{ 'common.required' | localize }}</span>
+            </label>
+            <label class="sandbox__checkbox">
+              <input type="checkbox" formControlName="footer" />
+              <span>{{ 'autocomplete-showcase.sandbox.footer' | localize }}</span>
+            </label>
+          </div>
+          <div class="sandbox__control-row">
+            <label class="sandbox__control-label" for="ac-options">{{ 'autocomplete-showcase.sandbox.options-textarea' | localize }}</label>
+            <textarea
+              id="ac-options"
+              class="sandbox__control-input sandbox__control-textarea"
+              formControlName="optionsRaw"
+              rows="6"
+            ></textarea>
+          </div>
+        </form>
+
+        <div class="sandbox__state">
+          <h4 class="sandbox__section-title">{{ 'autocomplete-showcase.sandbox.state-title' | localize }}</h4>
+          <code class="sandbox__state-scalar">value: {{ sandboxForm.controls.value.value }}</code>
+          <code class="sandbox__state-scalar">optionSelected: {{ lastSelected()?.value ?? '—' }}</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

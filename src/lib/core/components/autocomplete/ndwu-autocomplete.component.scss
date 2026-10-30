@@ -1,0 +1,83 @@
+@use 'styles/padding';
+@use 'styles/spacing';
+@use 'styles/typography';
+
+:host {
+  display: block;
+}
+
+.ndwu-autocomplete__input {
+  width: 100%;
+}
+
+.ndwu-autocomplete__search-icon {
+  pointer-events: none;
+}
+
+.ndwu-autocomplete__footer {
+  display: flex;
+  gap: spacing.$spacing-8;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: padding.$padding-12;
+  font-size: typography.$fontSize-medium;
+  line-height: 24px;
+
+  &[data-size='L'] {
+    min-height: 32px;
+    padding: padding.$padding-6 padding.$padding-8;
+    font-size: typography.$fontSize-small;
+    line-height: 20px;
+  }
+
+  &[data-size='XXL'] {
+    min-height: 56px;
+    padding: padding.$padding-16;
+  }
+}
+
+.ndwu-autocomplete__panel--sheet {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  /* stylelint-disable plugin/no-unsupported-browser-features */
+  @supports (height: 100dvh) {
+    height: 100dvh;
+  }
+  /* stylelint-enable plugin/no-unsupported-browser-features */
+
+  .ndwu-autocomplete__footer {
+    padding: 0;
+  }
+}
+
+.ndwu-autocomplete__sheet-header {
+  display: flex;
+  gap: spacing.$spacing-8;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.ndwu-autocomplete__sheet-title {
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ndwu-autocomplete__sheet-close {
+  flex-shrink: 0;
+  margin-right: -2px;
+}
+
+.ndwu-autocomplete__sheet-search {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: padding.$padding-16;
+  background: var(--ndwu-dropdown-panel-bg);
+}

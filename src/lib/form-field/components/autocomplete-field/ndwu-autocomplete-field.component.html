@@ -1,0 +1,45 @@
+<ndwu-form-field
+  [size]="sizeSvc.size()"
+  [readonly]="readonly()"
+>
+  @if (label()) {
+    <ndwu-floating-label
+      [label]="label()"
+      [required]="ndwuRequired()"
+    />
+  }
+
+  <ndwu-autocomplete
+    [size]="sizeSvc.size()"
+    [value]="inputValue"
+    [options]="options()"
+    [groups]="groups()"
+    [filter]="filter()"
+    [placeholder]="placeholder()"
+    [ariaLabel]="ariaLabel()"
+    [ariaDescribedby]="hasHelperMessage() ? hintId : null"
+    [required]="ndwuRequired()"
+    [disabled]="isDisabled"
+    [readonly]="readonly()"
+    [invalid]="isInvalid()"
+    [localizeLabels]="localizeLabels()"
+    [sheetTitle]="label()"
+    [clearButtonAriaLabel]="clearButtonAriaLabel()"
+    [closeButtonAriaLabel]="closeButtonAriaLabel()"
+    [footer]="footerDirective()?.templateRef ?? null"
+    (valueChange)="onValueChange($event)"
+    (optionSelected)="optionSelected.emit($event)"
+    (blurred)="onBlur()"
+  />
+
+  @if (hasHelperMessage()) {
+    <ndwu-helper-message
+      ndwuHint
+      [id]="hintId"
+      [status]="hintStatus()"
+      [errorMessage]="errorMessage()"
+      [helperMessage]="hint()"
+      [validationData]="validationData()"
+    />
+  }
+</ndwu-form-field>

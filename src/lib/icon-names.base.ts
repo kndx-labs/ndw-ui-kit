@@ -34,6 +34,8 @@ export const BASE_ICON_NAME = [
   'notches_S',
   'pin_S',
   'reload_S',
+  'remove_S',
+  'search_S',
   'sorting_default_S',
   'sorting_reverse_S',
   'success_L',

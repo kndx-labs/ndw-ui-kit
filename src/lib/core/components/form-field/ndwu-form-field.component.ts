@@ -45,7 +45,9 @@ export class NdwuFormFieldComponent {
   protected readonly hasLabel = computed(() => this.labels().length > 0);
   protected readonly hasHint = computed(() => this.hints().length > 0);
   protected readonly hasSuffix = computed(() => this.suffixes().length > 0);
-  protected readonly hasRightIcon = computed(() => this.rightIcons().length > 0);
+  protected readonly hasRightIcon = computed(() => {
+    return this.rightIcons().length > 0 || (this.control()?.hasRightIcon ?? false);
+  });
 
   protected get inputId(): string | null {
     return this.control()?.id ?? null;

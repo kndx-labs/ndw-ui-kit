@@ -1,0 +1,19 @@
+.state-section {
+  margin-bottom: 32px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__note {
+    margin: 8px 0;
+    font-size: 13px;
+    opacity: 0.7;
+  }
+}

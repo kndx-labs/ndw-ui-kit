@@ -25,9 +25,8 @@ import {
 } from '@ndw-ui-kit/core';
 import {NdwuComboboxDirective} from '@ndw-ui-kit/core/aria';
 import {ndwuCreateDropdownController} from '@ndw-ui-kit/core/popover';
-import {HANDSET_BREAKPOINT, uniqueId} from '@ndw-ui-kit/core/utils';
+import {HANDSET_BREAKPOINT, optionGroupHeaderId, optionRowKey, uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuFormFieldBase} from './form-field-base';
-import type {NdwuSelectRenderRow} from './select-render';
 
 const SELECT_FOCUS_TYPE: NdwuInteractionFocusType = 'select';
 
@@ -156,18 +155,10 @@ export abstract class NdwuSelectFieldBase<T> extends NdwuFormFieldBase<T> implem
     this.combobox()?.close();
   }
 
-  protected renderRowKey(row: NdwuSelectRenderRow): string {
-    return row.kind === 'option' ? `opt:${row.option.value}` : `grp:${row.id}`;
-  }
+  protected readonly renderRowKey = optionRowKey;
 
   protected groupHeaderId(groupId: string): string {
-    // Sanitize: a raw groupId may contain spaces/punctuation, which would
-    // produce an invalid id and split the aria-describedby IDREF into
-    // broken tokens. The same sanitized value is used on both the
-    // subheader id and the option's aria-describedby, so they still match.
-    const sanitizedId = groupId.replace(/[^A-Za-z0-9_-]/g, '-');
-
-    return `${this.id}-grp-${sanitizedId}`;
+    return optionGroupHeaderId(this.id, groupId);
   }
 
   protected initFocusTracking(): void {

@@ -5,14 +5,8 @@ $component-tokens: (
   'ndwu-heat-strip': ndwu-heat-strip-tokens.$ndwu-heat-strip-tokens,
 );
 
-:root {
-  @include theme-utils.emit-token-groups($component-tokens);
-}
-
-.ndwu-theme-light {
-  @include theme-utils.emit-token-groups($component-tokens);
-}
-
+:root,
+.ndwu-theme-light,
 .ndwu-theme-dark {
   @include theme-utils.emit-token-groups($component-tokens);
 }

@@ -32,11 +32,25 @@ export const withSizeProviderImport = moduleMetadata({
   imports: [SbSizeProviderComponent],
 });
 
+const supportedSizes = (parameter: unknown): readonly NdwuSize[] => {
+  return Array.isArray(parameter) ? parameter.filter(isNdwuSize) : SIZES;
+};
+
+const withUnsupportedSizeNote = (size: NdwuSize): Decorator => {
+  return componentWrapperDecorator((story) =>
+    `<p class="sb-note">Size ${size} is not supported by this component; it uses its default size.</p>${story}`
+  );
+};
+
 export const withSize: Decorator = (storyFn, context) => {
   const size: unknown = context.globals['size'];
 
   if (!isNdwuSize(size)) {
     return storyFn();
+  }
+
+  if (!supportedSizes(context.parameters['sizes']).includes(size)) {
+    return withUnsupportedSizeNote(size)(storyFn, context);
   }
 
   return componentWrapperDecorator(SbSizeProviderComponent, {sbToolbarSize: size})(storyFn, context);

@@ -48,6 +48,7 @@ const meta: Meta<ButtonStoryArgs> = {
   component: NdwuButtonComponent,
   tags: ['autodocs'],
   parameters: {
+    sizes: SIZES,
     docs: {
       description: {
         component: 'Action button: `<button ndwu-button>` with a variant, an optional icon and a loading state.',

@@ -140,8 +140,10 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `.storybook/tsconfig.json`.
 - Type args as `Meta<Component & Extra>` / `StoryObj<Component & Extra>`. Storybook maps inputs, outputs and the
   `<name>Change` event of each `model()`. Story-only args and native events (`content`, `click`) go into `Extra`; add
-  `SizeArg` from `@sb/helpers/story-args` and `sizeArgType(<sizes the component supports>)` for components with the
-  `NdwuSizeDirective` host directive (`inputs: ['ndwuSize: size']`), not for components with their own `size` input.
+  `SizeArg` from `@sb/helpers/story-args`, `sizeArgType(<sizes the component supports>)` and the same list in
+  `parameters.sizes` for components with the `NdwuSizeDirective` host directive (`inputs: ['ndwuSize: size']`), not for
+  components with their own `size` input. A Size toolbar value outside `parameters.sizes` leaves the component at its
+  default size and shows a "not supported" note.
 - Aliased inputs (`ariaLabel` → `aria-label`, `idInput` → `id`, `disabledInput` → `disabled`): story args and
   `argsToTemplate` use the property name, the template needs the alias. Exclude them from `argsToTemplate` and bind the
   alias by hand: `argsToTemplate(args, {exclude: ['ariaLabel']})` plus `[aria-label]="ariaLabel"`.

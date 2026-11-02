@@ -59,8 +59,8 @@ export class HeatStripOverviewComponent {
   protected readonly narrowCells: readonly NdwuHeatStripCell<HeatStripDatum>[] = this.regularCells.slice(0, 12);
   protected readonly allNullCells: readonly NdwuHeatStripCell<HeatStripDatum>[] = Array.from(
     {length: 8},
-    (_, index) => {
-      return {level: null, data: {from: timeAt(index), to: timeAt(index + 1), value: 0}};
+    () => {
+      return {level: null};
     },
   );
   protected readonly emptyCells: readonly NdwuHeatStripCell<HeatStripDatum>[] = [];
@@ -72,9 +72,17 @@ export class HeatStripOverviewComponent {
     },
   );
   protected readonly customLabel = (cell: NdwuHeatStripCell<HeatStripDatum>, index: number): string => {
-    const level = cell.level === null ? 'no-data' : cell.level + 1;
+    if (cell.level === null) {
+      return this.translationService.instant('heat-strip-showcase.custom-cell-label-no-data', {index: index + 1});
+    }
 
-    return this.translationService.instant('heat-strip-showcase.custom-cell-label', {index: index + 1, level});
+    return this.translationService.instant(
+      'heat-strip-showcase.custom-cell-label',
+      {
+        index: index + 1,
+        level: cell.level + 1,
+      },
+    );
   };
 
   protected toggleLoadingWithData(): void {

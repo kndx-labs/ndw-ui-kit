@@ -22,6 +22,7 @@
       "custom-label-title": "Benutzerdefinierte barrierefreie Beschriftungen",
       "custom-label-description": "Benutzerdefinierte Beschriftungen enthalten Position und Stufe jeder Zelle."
     },
-    "custom-cell-label": "Intervall {{index}}, Stufe {{level}}"
+    "custom-cell-label": "Intervall {{index}}, Stufe {{level}}",
+    "custom-cell-label-no-data": "Intervall {{index}}, keine Daten"
   }
 }

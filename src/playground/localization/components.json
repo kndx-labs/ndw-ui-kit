@@ -53,7 +53,8 @@
       "description": "Layout wrapper for form fields and validation."
     },
     "ndwu-heat-strip": {
-      "name": "Heat Strip"
+      "name": "Heat Strip",
+      "description": "Row of cells colored by level, with tooltip and keyboard navigation."
     },
     "ndwu-icon": {
       "name": "Icon",

@@ -22,6 +22,7 @@
       "custom-label-title": "Custom accessible labels",
       "custom-label-description": "Custom labels include each cell position and level."
     },
-    "custom-cell-label": "Interval {{index}}, level {{level}}"
+    "custom-cell-label": "Interval {{index}}, level {{level}}",
+    "custom-cell-label-no-data": "Interval {{index}}, no data"
   }
 }

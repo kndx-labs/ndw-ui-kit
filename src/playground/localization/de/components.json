@@ -53,7 +53,8 @@
       "description": "Layout-Wrapper für Formularfelder und Validierung."
     },
     "ndwu-heat-strip": {
-      "name": "Heat Strip"
+      "name": "Heat Strip",
+      "description": "Zeile aus nach Stufe eingefärbten Zellen mit Tooltip und Tastaturnavigation."
     },
     "ndwu-icon": {
       "name": "Symbol",

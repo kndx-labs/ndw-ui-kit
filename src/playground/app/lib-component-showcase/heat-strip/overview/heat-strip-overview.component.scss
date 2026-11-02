@@ -22,19 +22,14 @@
 .heat-strip-loading-example,
 .heat-strip-marker-examples {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 24px;
 }
 
 .heat-strip-loading-example {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-
   button {
     margin-bottom: 12px;
   }
-}
-
-.heat-strip-marker-examples {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
 }
 
 .heat-strip-marker-glyph {

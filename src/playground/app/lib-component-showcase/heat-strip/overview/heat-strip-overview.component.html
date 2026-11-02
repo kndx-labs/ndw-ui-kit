@@ -63,9 +63,9 @@
         <div>
           <p>{{ 'heat-strip-showcase.overview.marker-template' | localize }}</p>
           <ndwu-heat-strip [cells]="markerCells">
-            <ng-template [ndwuHeatStripMarker]="markerCells" let-cell>
+            <ng-template [ndwuHeatStripMarker]="markerCells">
               <span class="heat-strip-marker-glyph" [attr.aria-label]="'heat-strip-showcase.overview.marker-glyph' | localize">
-                {{ cell.marker ? '•' : '' }}
+                •
               </span>
             </ng-template>
           </ndwu-heat-strip>

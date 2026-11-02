@@ -109,7 +109,7 @@ component's inputs, restart Storybook. After `prepare-icons`, check `git status`
 |---|---|
 | Stories of a component | `<component-file-name>.stories.ts` next to the component in `src/lib`, e.g. `ndwu-button.stories.ts` |
 | Pages that don't belong to one component (`Foundations`, `Examples`) | `src/storybook/` |
-| Storybook config, providers, decorators, shared helpers | `.storybook/` |
+| Storybook config, providers, decorators, shared helpers | `.storybook/`, described in [.storybook/README.md](.storybook/README.md) |
 
 Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` into the package.
 
@@ -174,8 +174,8 @@ The model is `src/lib/core/components/button/button/ndwu-button.stories.ts`.
 - **Theme** (light, dark) sets `ndwu-theme-*` on `body`; the canvas and docs story blocks follow it. An overlay that is
   already open keeps its theme until it opens again.
 - **Size** (component default, S, L, XL, XXL) provides `NDWU_SIZE_TOKEN` around the story, like
-  `ndwu-form-container`. Component default provides nothing; an explicit `size` arg wins. Modal dialogs and drawers get it only through
-  `config.injector` (see above).
+  `ndwu-form-container`. Component default provides nothing; an explicit `size` arg wins. Modal dialogs and drawers
+  get it only through `config.injector` (see above).
 
 ### Accessibility
 

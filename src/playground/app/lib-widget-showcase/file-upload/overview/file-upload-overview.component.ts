@@ -1,9 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, Signal, computed, signal, viewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, Signal, computed, signal, viewChildren} from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NDWU_SIZE, type NdwuSize} from '@ndw-ui-kit/core';
 import {
   type NdwuFileInputValue,
   NdwuFileItemComponent,
+  type NdwuFileProgressUpdate,
   NdwuFileUploadComponent,
   type NdwuTranslationTexts,
 } from '@ndw-ui-kit/core/widgets';
@@ -11,6 +13,8 @@ import {NdwuFileUploadFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuSizeFlags} from '@ndw-ui-kit/core/utils';
 import {ShowcaseLayoutComponent} from '@app/components';
+
+type ProgressTarget = Pick<NdwuFileUploadComponent, 'updateFileProgress'>;
 
 @Component({
   selector: 'app-file-upload-overview',
@@ -194,126 +198,88 @@ export class FileUploadOverviewComponent implements OnDestroy {
     },
   ];
 
-  protected singleUploadRef = viewChild<NdwuFileUploadComponent>('singleUploadRef');
-  protected multipleUploadRef = viewChild<NdwuFileUploadComponent>('multipleUploadRef');
-  protected cvaUploadRef = viewChild<NdwuFileUploadFieldComponent>('cvaUploadRef');
+  protected readonly singleUploadRefs = viewChildren<NdwuFileUploadComponent>('singleUploadRef');
+  protected readonly multipleUploadRefs = viewChildren<NdwuFileUploadComponent>('multipleUploadRef');
+  protected readonly cvaUploadRefs = viewChildren<NdwuFileUploadFieldComponent>('cvaUploadRef');
 
   public readonly fileUploadCvaForm = new FormGroup({
     files: new FormControl<NdwuFileInputValue[]>([], {nonNullable: true}),
   });
 
+  protected readonly cvaValue = toSignal(this.fileUploadCvaForm.controls.files.valueChanges, {initialValue: []});
+  protected readonly cvaStatuses = computed(() => {
+    const statuses = this.cvaValue().map(f => f.status);
+
+    return statuses.length > 0 ? statuses.join(', ') : '—';
+  });
+
   private readonly uploadIntervals = new Map<string, ReturnType<typeof setInterval>>();
 
   protected onUploadRequestSingle(files: NdwuFileInputValue[]): void {
-    this.startSimUploads(files, this.singleUploadRef());
+    this.startSims(files, this.singleUploadRefs());
   }
 
   protected onUploadRequestMultiple(files: NdwuFileInputValue[]): void {
-    this.startSimUploads(files, this.multipleUploadRef());
+    this.startSims(files, this.multipleUploadRefs());
   }
 
   protected onUploadRequestCva(files: NdwuFileInputValue[]): void {
-    if (!this.cvaUploadRef()) {
-      return;
-    }
-
-    files.filter(f => f.status === 'queued').forEach(f => {
-      let progress = f.progress ?? 0;
-
-      const cvaUploadRef = this.cvaUploadRef();
-
-      if (!cvaUploadRef) {
-        return;
-      }
-
-      cvaUploadRef.updateFileProgress(f.id, {status: 'uploading', progress});
-
-      const interval = setInterval(
-        () => {
-          progress += Math.random() * 20;
-
-          if (progress >= 100) {
-            progress = 100;
-            clearInterval(interval);
-            this.uploadIntervals.delete(f.id);
-            cvaUploadRef.updateFileProgress(f.id, {progress: 100, status: 'success'});
-          } else {
-            cvaUploadRef.updateFileProgress(f.id, {progress: Math.round(progress), status: 'uploading'});
-          }
-        },
-        300,
-      );
-
-      this.uploadIntervals.set(f.id, interval);
-    });
+    this.startSims(files, this.cvaUploadRefs());
   }
 
-  protected onFilesChangedCva(files: NdwuFileInputValue[]): void {
-    this.syncFilesState(files);
+  protected onCancelRequest(files: NdwuFileInputValue[]): void {
+    files.forEach(f => this.stopSim(f.id));
   }
 
-  protected onFilesChangedSingle(files: NdwuFileInputValue[]): void {
-    this.syncFilesState(files);
+  protected setCvaValue(): void {
+    this.fileUploadCvaForm.controls.files.setValue([{
+      id: 'cva-preset',
+      name: 'Preset_from_form.pdf',
+      size: 1024 * 300,
+      progress: 100,
+      status: 'success',
+    }]);
   }
 
-  protected onFilesChangedMultiple(files: NdwuFileInputValue[]): void {
-    this.syncFilesState(files);
+  protected resetCvaForm(): void {
+    this.fileUploadCvaForm.reset();
   }
 
-  private startSimUploads(files: NdwuFileInputValue[], comp?: NdwuFileUploadComponent): void {
-    if (!comp) { return; }
-
-    files.filter(f => f.status === 'queued').forEach(f => this.startSimForFile(f, comp));
+  protected markCvaPristine(): void {
+    this.fileUploadCvaForm.markAsPristine();
   }
 
-  private startSimForFile(file: NdwuFileInputValue, comp: NdwuFileUploadComponent): void {
-    let progress = file.progress ?? 0;
+  private startSims(files: NdwuFileInputValue[], targets: readonly ProgressTarget[]): void {
+    files.forEach(f => this.startSimForFile(f, targets));
+  }
 
-    // Ensure the component shows uploading state immediately
-    comp.updateFileProgress(file.id, {status: 'uploading', progress});
+  private startSimForFile(file: NdwuFileInputValue, targets: readonly ProgressTarget[]): void {
+    const update = (u: NdwuFileProgressUpdate): void => targets.forEach(t => t.updateFileProgress(file.id, u));
+    let progress = file.progress;
+
+    update({status: 'uploading', progress});
 
     const interval = setInterval(() => {
-      progress += Math.random() * 20;
+      progress = Math.min(100, progress + Math.random() * 20);
 
       if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        this.uploadIntervals.delete(file.id);
-        comp.updateFileProgress(file.id, {progress: 100, status: 'success'});
+        this.stopSim(file.id);
+        update({progress: 100, status: 'success'});
       } else {
-        comp.updateFileProgress(file.id, {progress: Math.round(progress), status: 'uploading'});
+        update({progress: Math.round(progress), status: 'uploading'});
       }
     }, 300);
 
     this.uploadIntervals.set(file.id, interval);
   }
 
-  private syncFilesState(files: NdwuFileInputValue[]): void {
-    const currentIds = new Set(files.map(f => f.id));
+  private stopSim(fileId: string): void {
+    const interval = this.uploadIntervals.get(fileId);
 
-    // Clear intervals for files that were removed or reached terminal states
-    Array.from(this.uploadIntervals.keys()).forEach(id => {
-      if (!currentIds.has(id)) {
-        const iv = this.uploadIntervals.get(id);
-
-        if (iv) {
-          clearInterval(iv);
-          this.uploadIntervals.delete(id);
-        }
-      }
-    });
-
-    // Also clear intervals for canceled/success files
-    files.forEach(f => {
-      if (f.status === 'canceled' || f.status === 'success') {
-        const iv = this.uploadIntervals.get(f.id);
-
-        if (iv) {
-          clearInterval(iv);
-          this.uploadIntervals.delete(f.id);
-        }
-      }
-    });
+    if (interval) {
+      clearInterval(interval);
+      this.uploadIntervals.delete(fileId);
+    }
   }
 
   public ngOnDestroy(): void {

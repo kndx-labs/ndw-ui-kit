@@ -1,17 +1,26 @@
-import {Injector, afterNextRender} from '@angular/core';
+import type {NdwuPopoverSession} from './ndwu-popover-session';
 import type {NdwuPopoverTriggerType} from './ndwu-popover.types';
 
 export interface NdwuPopoverInteractionCtx {
   isOpen: () => boolean;
   hasTriggerType: (type: NdwuPopoverTriggerType) => boolean;
+  getSession: () => NdwuPopoverSession | null;
   getOverlayElement: () => HTMLElement | null;
   getTriggerElement: () => HTMLElement;
+  isOriginHovered: () => boolean;
 
   getShowDelay: () => number;
-  show: () => void; // called when the scheduled show timer fires.
+  show: (bridge: boolean) => void;
 
   getHideDelay: () => number;
-  hide: () => void; // called when the scheduled hide timer fires.
+  hide: () => void;
+  dismissOutside: () => void;
+}
+
+export interface NdwuPopoverInteractionOptions {
+  hoverBridge: boolean;
+  outsideClick: boolean;
+  focusout: boolean;
 }
 
 /**
@@ -19,27 +28,17 @@ export interface NdwuPopoverInteractionCtx {
  * related to a popover. It is responsible for:
  * - Show/hide timer lifecycle.
  * - DOM event-listener registrations.
- *
- * The `injector` constructor argument must be the `NdwuPopoverTriggerDirective`'s
- * own `NodeInjector`. Do NOT pass an EnvironmentInjector — Angular ties
- * `afterNextRender` cleanup to the `DestroyRef` carried by the `NodeInjector`.
  */
 export class NdwuPopoverInteractionController {
   protected showTimerId: ReturnType<typeof setTimeout> | null = null;
-  protected hideTimerId: ReturnType<typeof setTimeout> | null = null;
+  protected cancelHideTimer: (() => void) | null = null;
   protected hoveredOverlay = false;
-  protected hoverBridgeUnregister: (() => void) | null = null;
-  protected outsideClickUnregister: (() => void) | null = null;
 
-  constructor(
-    protected readonly injector: Injector,
-    protected readonly ctx: NdwuPopoverInteractionCtx,
-  ) {}
+  constructor(protected readonly ctx: NdwuPopoverInteractionCtx) {}
 
-  public scheduleShow(): void {
-    this.clearHideTimer();
-    // Repeated calls (e.g. moving across targets) must not leave an earlier timer behind.
-    this.clearShowTimer();
+  public scheduleShow(bridge: boolean): void {
+    this.cancelScheduledHide();
+    this.cancelScheduledShow();
 
     if (this.ctx.isOpen()) {
       return;
@@ -48,7 +47,7 @@ export class NdwuPopoverInteractionController {
     const delay = this.ctx.getShowDelay();
 
     if (delay <= 0) {
-      this.ctx.show();
+      this.ctx.show(bridge);
 
       return;
     }
@@ -56,15 +55,21 @@ export class NdwuPopoverInteractionController {
     this.showTimerId = setTimeout(
       () => {
         this.showTimerId = null;
-
-        this.ctx.show();
+        this.ctx.show(bridge);
       },
       delay,
     );
   }
 
   public scheduleHide(): void {
-    this.clearShowTimer();
+    this.cancelScheduledShow();
+    this.cancelScheduledHide();
+
+    const session = this.ctx.getSession();
+
+    if (session === null) {
+      return;
+    }
 
     const delay = this.ctx.getHideDelay();
 
@@ -74,173 +79,133 @@ export class NdwuPopoverInteractionController {
       return;
     }
 
-    this.hideTimerId = setTimeout(
+    this.cancelHideTimer = session.setTimeout(
       () => {
-        this.hideTimerId = null;
-
+        this.cancelHideTimer = null;
         this.executeHide();
       },
       delay,
     );
   }
 
-  /**
-   * Registers mouseenter/mouseleave listeners on the overlay pane so that
-   * hovering into the overlay cancels the hide timer. Uses `afterNextRender`
-   * because the overlay is not yet in the DOM at the time
-   * `NdwuPopoverTriggerDirective.open()` is called.
-   *
-   * Uses a per-registration closure `active` flag (NOT a class-level boolean)
-   * so that calling `dispose()` followed by `registerHoverBridge()` again
-   * works correctly across multiple open/close cycles.
-   */
-  public registerHoverBridge(): void {
-    // Per-registration cancellation guard. Reset on each new registration so
-    // the controller is reusable across multiple open/close cycles.
-    let active = true;
-
-    // Store a cancel-only function immediately so dispose() can cancel even
-    // before the afterNextRender callback fires.
-    this.hoverBridgeUnregister = () => {
-      active = false;
-      this.hoverBridgeUnregister = null;
-    };
-
-    afterNextRender(
-      () => {
-        if (!active) {
-          return;
-        }
-
-        const overlay = this.ctx.getOverlayElement();
-
-        if (!overlay?.isConnected) {
-          this.hoverBridgeUnregister = null;
-
-          return;
-        }
-
-        const onOverlayEnter = (): void => {
-          this.hoveredOverlay = true;
-
-          this.clearHideTimer();
-        };
-
-        const onOverlayLeave = (): void => {
-          this.hoveredOverlay = false;
-
-          this.scheduleHide();
-        };
-
-        overlay.addEventListener('mouseenter', onOverlayEnter);
-        overlay.addEventListener('mouseleave', onOverlayLeave);
-
-        // Upgrade to full cleanup once listeners are attached.
-        this.hoverBridgeUnregister = () => {
-          active = false;
-
-          overlay.removeEventListener('mouseenter', onOverlayEnter);
-          overlay.removeEventListener('mouseleave', onOverlayLeave);
-
-          this.hoverBridgeUnregister = null;
-        };
-      },
-      {injector: this.injector},
-    );
+  public cancelScheduledShow(): void {
+    if (this.showTimerId !== null) {
+      clearTimeout(this.showTimerId);
+      this.showTimerId = null;
+    }
   }
 
-  public registerOutsideClickClose(): void {
-    this.outsideClickUnregister?.();
+  public cancelScheduledHide(): void {
+    this.cancelHideTimer?.();
+    this.cancelHideTimer = null;
+  }
 
-    const trigger: HTMLElement = this.ctx.getTriggerElement();
+  public attach(session: NdwuPopoverSession, options: NdwuPopoverInteractionOptions): void {
+    session.onFinish(() => {
+      this.hoveredOverlay = false;
+      this.cancelHideTimer = null;
+    });
+
+    if (options.outsideClick) {
+      this.registerOutsideClickClose(session);
+    }
+
+    if (options.hoverBridge) {
+      session.afterNextRender(() => this.registerHoverBridge(session));
+    }
+
+    if (options.focusout) {
+      session.afterNextRender(() => this.registerFocusout(session));
+    }
+  }
+
+  protected registerHoverBridge(session: NdwuPopoverSession): void {
+    const overlay = this.ctx.getOverlayElement();
+
+    if (!overlay?.isConnected) {
+      return;
+    }
+
+    const onOverlayEnter = (): void => {
+      this.hoveredOverlay = true;
+      this.cancelScheduledHide();
+    };
+
+    const onOverlayLeave = (): void => {
+      this.hoveredOverlay = false;
+      this.scheduleHide();
+    };
+
+    overlay.addEventListener('mouseenter', onOverlayEnter);
+    overlay.addEventListener('mouseleave', onOverlayLeave);
+    session.onFinish(() => {
+      overlay.removeEventListener('mouseenter', onOverlayEnter);
+      overlay.removeEventListener('mouseleave', onOverlayLeave);
+    });
+  }
+
+  protected registerFocusout(session: NdwuPopoverSession): void {
+    const overlay = this.ctx.getOverlayElement();
+
+    if (!overlay?.isConnected) {
+      return;
+    }
+
+    const onFocusOut = (event: FocusEvent): void => {
+      const next = event.relatedTarget as Node | null;
+
+      if (next === null || overlay.contains(next) || this.ctx.getTriggerElement().contains(next)) {
+        return;
+      }
+
+      this.scheduleHide();
+    };
+
+    overlay.addEventListener('focusout', onFocusOut);
+    session.onFinish(() => overlay.removeEventListener('focusout', onFocusOut));
+  }
+
+  protected registerOutsideClickClose(session: NdwuPopoverSession): void {
+    const trigger = this.ctx.getTriggerElement();
 
     const handler = (event: MouseEvent): void => {
       const target = event.target as Node;
-      const pane = this.ctx.getOverlayElement();
 
-      if (pane?.contains(target)) {
+      if (this.ctx.getOverlayElement()?.contains(target) || trigger.contains(target)) {
         return;
       }
 
-      if (trigger.contains(target)) {
-        return;
-      }
-
-      this.ctx.hide();
+      this.ctx.dismissOutside();
     };
 
     document.addEventListener('click', handler, true);
-
-    this.outsideClickUnregister = () => {
-      document.removeEventListener('click', handler, true);
-
-      this.outsideClickUnregister = null;
-    };
-  }
-
-  /** Cancels a pending hide, e.g. when the overlay is explicitly shown again while still open. */
-  public cancelScheduledHide(): void {
-    this.clearHideTimer();
-  }
-
-  /**
-   * Cancels pending timers, resets hoveredOverlay, and unregisters all DOM
-   * listeners. Idempotent — safe to call multiple times.
-   */
-  public dispose(): void {
-    this.clearShowTimer();
-    this.clearHideTimer();
-
-    this.hoveredOverlay = false;
-
-    this.hoverBridgeUnregister?.();
-
-    this.hoverBridgeUnregister = null;
-
-    this.outsideClickUnregister?.();
-
-    this.outsideClickUnregister = null;
+    session.onFinish(() => document.removeEventListener('click', handler, true));
   }
 
   protected executeHide(): void {
-    if (!this.ctx.isOpen()) {
+    if (!this.ctx.isOpen() || this.hoveredOverlay) {
       return;
     }
 
-    if (this.hoveredOverlay) {
+    if (this.ctx.hasTriggerType('hover') && this.ctx.isOriginHovered()) {
       return;
     }
 
-    if (this.ctx.hasTriggerType('focus')) {
-      const trigger: HTMLElement = this.ctx.getTriggerElement();
-      const overlay: HTMLElement | null = this.ctx.getOverlayElement();
-      const active: Element | null = document.activeElement;
-
-      if (active !== null && trigger.contains(active)) {
-        return;
-      }
-
-      if (overlay !== null && active !== null && overlay.contains(active)) {
-        return;
-      }
+    if (this.ctx.hasTriggerType('focus') && this.isFocusWithin()) {
+      return;
     }
 
     this.ctx.hide();
   }
 
-  protected clearShowTimer(): void {
-    if (this.showTimerId !== null) {
-      clearTimeout(this.showTimerId);
+  protected isFocusWithin(): boolean {
+    const focused = document.activeElement;
 
-      this.showTimerId = null;
+    if (focused === null) {
+      return false;
     }
-  }
 
-  protected clearHideTimer(): void {
-    if (this.hideTimerId !== null) {
-      clearTimeout(this.hideTimerId);
-
-      this.hideTimerId = null;
-    }
+    return this.ctx.getTriggerElement().contains(focused)
+      || (this.ctx.getOverlayElement()?.contains(focused) ?? false);
   }
 }

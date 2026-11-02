@@ -26,10 +26,12 @@ import type {
 } from './ndwu-popover.types';
 import {NdwuTapGestureDetector} from './ndwu-tap-gesture-detector';
 import {NdwuPopoverInteractionController, type NdwuPopoverInteractionCtx} from './ndwu-popover-interaction-controller';
+import {NdwuPopoverSession, type NdwuPopoverFinishState} from './ndwu-popover-session';
 
 export interface NdwuOverlayConfig {
   providers: Provider[];
   controllerConfig?: Record<string, unknown>;
+  restoreFocus?: boolean;
   /** Default overlay origin; an `originPoint`/`originElement` passed to `open()` takes precedence. */
   originPoint?: NdwuPopoverConfig['originPoint'];
   originElement?: NdwuPopoverConfig['originElement'];
@@ -131,34 +133,51 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
 
   protected controller: NdwuPopoverController | null = null;
 
+  protected session: NdwuPopoverSession | null = null;
+
+  protected sessionConfig: NdwuPopoverConfig | null = null;
+
+  protected sessionOpened = false;
+
+  protected focusSnapshot: Element | null = null;
+
   protected overlayConfigFactory: (() => NdwuOverlayConfig) | null = null;
 
-  // Set by scheduleShow(): the next open registers the hover bridge even without a hover/focus trigger.
   protected bridgeNextOpen = false;
+
+  protected originHovered = false;
+
+  protected restoringFocus = false;
 
   public registerOverlayConfig(factory: () => NdwuOverlayConfig): void {
     this.overlayConfigFactory = factory;
   }
 
   protected readonly interaction: NdwuPopoverInteractionController = new NdwuPopoverInteractionController(
-    this.injector,
     {
       isOpen: () => this.isOpen(),
       hasTriggerType: (t) => this.hasTriggerType(t),
+      getSession: () => this.session,
       getOverlayElement: () => this.controller?.getOverlayElement() ?? null,
       getTriggerElement: () => this.elementRef.nativeElement as HTMLElement,
+      isOriginHovered: () => this.originHovered,
 
       getShowDelay: () => this.effectiveShowDelay(),
-      show: () => this.tryOpenFromHoverOrFocus(),
+      show: (bridge) => this.tryOpenFromHoverOrFocus(bridge),
 
       getHideDelay: () => this.effectiveHideDelay(),
-      hide: () => this.close({focusOrigin: false}),
+      hide: () => this.session?.finish('hover'),
+      dismissOutside: () => this.session?.finish('outside'),
     } satisfies NdwuPopoverInteractionCtx,
   );
 
   @HostListener('click')
   protected onClick(): void {
     if (this.disabled() || !this.hasTriggerType('click')) {
+      return;
+    }
+
+    if (this.isOpen() && this.sessionConfig?.closeOnOriginClick === false) {
       return;
     }
 
@@ -177,7 +196,8 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
 
     if (event.key === 'Escape' && this.isOpen()) {
       event.preventDefault();
-      this.close();
+      event.stopPropagation();
+      this.session?.finish('escape');
 
       return;
     }
@@ -203,6 +223,8 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
 
   @HostListener('mouseenter')
   protected onMouseEnter(): void {
+    this.originHovered = true;
+
     if (this.disabled() || !this.hasTriggerType('hover')) {
       return;
     }
@@ -211,11 +233,13 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       return;
     }
 
-    this.interaction.scheduleShow();
+    this.interaction.scheduleShow(false);
   }
 
   @HostListener('mouseleave')
   protected onMouseLeave(): void {
+    this.originHovered = false;
+
     if (this.hasTriggerType('hover')) {
       this.interaction.scheduleHide();
     }
@@ -223,8 +247,12 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
 
   @HostListener('focus')
   protected onFocus(): void {
+    if (this.restoringFocus) {
+      return;
+    }
+
     if (!this.disabled() && this.hasTriggerType('focus')) {
-      this.interaction.scheduleShow();
+      this.interaction.scheduleShow(false);
     }
   }
 
@@ -236,9 +264,8 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.interaction.dispose();
-    this.controller?.dispose();
-    this.controller = null;
+    this.interaction.cancelScheduledShow();
+    this.session?.finish('destroy');
   }
 
   public open(config: NdwuPopoverConfig): void {
@@ -247,39 +274,46 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
     }
 
     if (this.isOpen()) {
-      // An explicit open wins over a hide scheduled earlier (e.g. pointer left, then focus came in).
       this.interaction.cancelScheduledHide();
 
       return;
     }
 
     const controller = this.ensureController();
+    const resolved = this.resolveConfig(config);
+    const session = this.startSession(controller, resolved);
 
-    this.isOpen.set(true);
+    try {
+      controller.open(resolved, session);
+    } catch (error) {
+      try {
+        session.finish('error');
+      } catch (_cleanupError) {}
 
-    controller.open(this.mergeOverlayConfig(config));
-    this.opened.emit();
-
-    if (this.bridgeNextOpen || this.hasTriggerType('hover') || this.hasTriggerType('focus')) {
-      this.interaction.registerHoverBridge();
+      throw error;
     }
 
-    this.bridgeNextOpen = false;
-
-    if (this.hasTriggerType('click')) {
-      this.interaction.registerOutsideClickClose();
-    }
-  }
-
-  public close(options?: {focusOrigin?: boolean}): void {
-    // Before the controller guard: a show scheduled before the first open must be cancelled too.
-    this.interaction.dispose();
-
-    if (!this.controller) {
+    if (!session.isActive()) {
       return;
     }
 
-    this.controller.close(options);
+    this.sessionOpened = true;
+    this.opened.emit();
+
+    if (!session.isActive()) {
+      return;
+    }
+
+    this.interaction.attach(session, {
+      hoverBridge: this.bridgeNextOpen || this.hasTriggerType('hover') || this.hasTriggerType('focus'),
+      outsideClick: this.hasTriggerType('click'),
+      focusout: this.hasTriggerType('focus'),
+    });
+  }
+
+  public close(options?: {focusOrigin?: boolean}): void {
+    this.interaction.cancelScheduledShow();
+    this.session?.finish('explicit', options?.focusOrigin);
   }
 
   /**
@@ -292,8 +326,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       return;
     }
 
-    this.bridgeNextOpen = !this.isOpen();
-    this.interaction.scheduleShow();
+    this.interaction.scheduleShow(!this.isOpen());
   }
 
   /** Closes after `hideDelay`, unless the pointer moves onto the overlay or `scheduleShow()` is called. */
@@ -332,7 +365,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
     const resolvedContent = this.resolveContent();
 
     if (resolvedContent) {
-      this.open(this.buildContentConfig(resolvedContent));
+      this.open({content: resolvedContent});
     }
   }
 
@@ -376,55 +409,133 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
         throw new Error(chunks.join(' '));
       }
 
-      this.controller = factory(
-        this.elementRef as ElementRef<HTMLElement>,
-        this.injector,
-        () => {
-          this.isOpen.set(false);
-          this.closed.emit();
-        },
-      );
+      this.controller = factory(this.elementRef as ElementRef<HTMLElement>, this.injector);
     }
 
     return this.controller;
   }
 
-  protected buildContentConfig(content: NdwuDynamicContent<unknown>): NdwuPopoverConfig {
-    return this.mergeOverlayConfig({content});
+  protected startSession(controller: NdwuPopoverController, resolved: NdwuPopoverConfig): NdwuPopoverSession {
+    this.sessionConfig = resolved;
+    this.focusSnapshot = document.activeElement;
+    this.interaction.cancelScheduledShow();
+
+    const session = new NdwuPopoverSession(
+      this.injector,
+      () => controller.getOverlayElement(),
+      (finished, state) => this.onSessionFinished(finished, state),
+    );
+
+    this.session = session;
+    this.sessionOpened = false;
+    this.isOpen.set(true);
+
+    return session;
   }
 
-  /**
-   * Merges the caller's config with overlay providers/controllerConfig registered
-   * by wrapper directives (e.g. ndwuTooltip), plus trigger-level defaults.
-   */
-  protected mergeOverlayConfig(
-    overrides: NdwuPopoverConfig & Pick<NdwuPopoverConfig, 'content'>,
-  ): NdwuPopoverConfig {
-    const overlayConfig = this.overlayConfigFactory?.();
-    const extraProviders = overlayConfig?.providers ?? [];
-    // An origin passed to open() replaces the wrapper's default origin as a whole.
-    const hasOverrideOrigin = overrides.originPoint !== undefined || overrides.originElement !== undefined;
-    const originSource = hasOverrideOrigin ? overrides : overlayConfig;
+  protected resolveConfig(config: NdwuPopoverConfig): NdwuPopoverConfig {
+    const wrapper = this.overlayConfigFactory?.();
+    const hasCallerOrigin = config.originPoint !== undefined || config.originElement !== undefined;
+    const originSource = hasCallerOrigin ? config : wrapper;
     const originPoint = originSource?.originPoint;
     const originElement = originSource?.originElement;
+    const hasControllerConfig = wrapper?.controllerConfig !== undefined || config.controllerConfig !== undefined;
 
     return {
-      content: overrides.content,
-      context: overrides.context ?? this.popoverContext(),
-      providers: [...this.popoverProviders(), ...(overrides.providers ?? []), ...extraProviders],
-      panelClass: overrides.panelClass ?? normalizeClass(this.effectivePopoverClass(), ''),
-      minWidth: overrides.minWidth ?? this.popoverMinWidth(),
-      trapFocus: overrides.trapFocus ?? this.effectivePopoverTrapFocus(),
-      closeOnOriginClick: overrides.closeOnOriginClick ?? this.popoverCloseOnOriginClick(),
+      content: config.content,
+      context: config.context ?? this.popoverContext(),
+      providers: [...this.popoverProviders(), ...(wrapper?.providers ?? []), ...(config.providers ?? [])],
+      panelClass: config.panelClass ?? normalizeClass(this.effectivePopoverClass(), ''),
+      minWidth: config.minWidth ?? this.popoverMinWidth(),
+      trapFocus: config.trapFocus ?? this.effectivePopoverTrapFocus(),
+      closeOnOriginClick: config.closeOnOriginClick ?? this.popoverCloseOnOriginClick(),
+      restoreFocus: config.restoreFocus ?? wrapper?.restoreFocus ?? true,
       ...(originPoint !== undefined ? {originPoint} : {}),
       ...(originElement !== undefined ? {originElement} : {}),
-      ...(overlayConfig?.controllerConfig !== undefined
-        ? {controllerConfig: overlayConfig.controllerConfig}
-        : {}),
+      ...(hasControllerConfig ? {controllerConfig: {...wrapper?.controllerConfig, ...config.controllerConfig}} : {}),
     };
   }
 
-  protected tryOpenFromHoverOrFocus(): void {
+  protected onSessionFinished(session: NdwuPopoverSession, state: NdwuPopoverFinishState): void {
+    if (this.session !== session) {
+      return;
+    }
+
+    const emitClosed = this.sessionOpened && state.reason !== 'destroy';
+    const restore = this.shouldRestoreFocus(state);
+    const snapshot = this.focusSnapshot;
+
+    this.session = null;
+    this.sessionConfig = null;
+    this.sessionOpened = false;
+    this.focusSnapshot = null;
+    this.interaction.cancelScheduledShow();
+    this.isOpen.set(false);
+
+    if (restore) {
+      this.restoreFocus(snapshot);
+    }
+
+    if (emitClosed) {
+      this.closed.emit();
+    }
+  }
+
+  protected shouldRestoreFocus(state: NdwuPopoverFinishState): boolean {
+    if (this.sessionConfig?.restoreFocus === false) {
+      return false;
+    }
+
+    switch (state.reason) {
+      case 'explicit':
+        return state.focusOrigin ?? true;
+      case 'escape':
+      case 'origin-click':
+        return true;
+      case 'hover':
+        return state.focusInPane;
+      case 'outside':
+      case 'detached':
+        return this.isFocusOrphaned(state);
+      case 'destroy':
+        return this.isFocusOrphaned(state) && this.elementRef.nativeElement.isConnected;
+      case 'error':
+        return false;
+    }
+  }
+
+  protected isFocusOrphaned({focusInPane, focusLost}: NdwuPopoverFinishState): boolean {
+    if (focusInPane) {
+      return true;
+    }
+
+    if (!focusLost) {
+      return false;
+    }
+
+    const snapshot = this.focusSnapshot;
+    const heldFocus = snapshot !== null && snapshot !== document.body;
+
+    return heldFocus || this.sessionConfig?.trapFocus === true;
+  }
+
+  protected restoreFocus(snapshot: Element | null): void {
+    const host = this.elementRef.nativeElement as HTMLElement;
+
+    this.restoringFocus = true;
+
+    try {
+      host.focus();
+
+      if (document.activeElement !== host && snapshot instanceof HTMLElement && snapshot.isConnected) {
+        snapshot.focus();
+      }
+    } finally {
+      this.restoringFocus = false;
+    }
+  }
+
+  protected tryOpenFromHoverOrFocus(bridge: boolean): void {
     if (this.disabled() || this.isOpen()) {
       return;
     }
@@ -435,6 +546,12 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       return;
     }
 
-    this.open(this.buildContentConfig(resolvedContent));
+    this.bridgeNextOpen = bridge;
+
+    try {
+      this.open({content: resolvedContent});
+    } finally {
+      this.bridgeNextOpen = false;
+    }
   }
 }

@@ -36,6 +36,7 @@ export interface NdwuPopoverConfig {
   trapFocus?: boolean;
   /** When true, clicking the origin element while the overlay is open closes it. Only applies to click trigger. Default true. */
   closeOnOriginClick?: boolean;
+  restoreFocus?: boolean;
   /**
    * When set, overlay is positioned at this point (e.g. mouse cursor) instead of the trigger element.
    * Useful for context menus. Coordinates are in viewport (clientX/clientY).

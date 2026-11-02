@@ -167,8 +167,8 @@ export class NdwuTooltipDirective {
       controllerConfig: {
         tooltipPosition: this.tooltipPosition(),
         tooltipAlign: this.tooltipAlign(),
-        restoreFocus: this.tooltipRestoreFocus(),
       },
+      restoreFocus: this.tooltipRestoreFocus(),
       ...originConfig,
     };
   }

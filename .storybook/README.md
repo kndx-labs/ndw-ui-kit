@@ -18,7 +18,7 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 │   ├── with-size.decorator.ts        Size toolbar: its items and the wrapper around the story
 │   └── size-provider.component.ts    Wrapper component that provides NDWU_SIZE_TOKEN from the toolbar
 └── helpers/
-    ├── story-args.ts                 StoryArgs / SizeArg: arg types of a story, derived from the component
+    ├── story-args.ts                 SizeArg: the size arg of the NdwuSizeDirective host directive
     ├── arg-types.ts                  Shared argTypes: size, icon, outputs, native events
     ├── args-to-source.ts             "Show code" transform: argsToTemplate bindings -> literal attributes
     └── story-layout.ts               Row and stack layout decorators, left out of "Show code"
@@ -56,7 +56,7 @@ Imported by stories as `@sb/helpers/<file>`.
 
 | File | What it does | Why it is built this way |
 |---|---|---|
-| `story-args.ts` | `StoryArgs<Component, Extra>`: inputs, outputs and the `<name>Change` of each `model()`; `SizeArg` for the `NdwuSizeDirective` host directive | A wrong arg name or value type in a story is a compile error. Signal types are invariant, so the helpers match with `infer`, not `unknown` |
+| `story-args.ts` | `SizeArg` for the `NdwuSizeDirective` host directive | `size` comes from a host directive, not from the component class, so Storybook's `Meta<Component>` doesn't see it. The other args are typed by `Meta<Component & Extra>`, which maps signal inputs, outputs and `model()` itself |
 | `arg-types.ts` | `sizeArgType(sizes)` (`inherit` = `undefined`, then the sizes the component supports), `iconArgType` (`none` = `null`), `outputArgType`, `eventArgType` | One definition for every component with a size, an icon or outputs. Not every component supports every size, so each story passes its own list. Compodoc's output docs are filtered out, so outputs and events are declared here |
 | `args-to-source.ts` | `argsSourceTransform`: `[variant]="variant"` → `variant="primary"`, drops event bindings, fills `{{ content }}` | "Show code" is what app developers copy, so it must be plain markup with the current values |
 | `story-layout.ts` | `withRowLayout`, `withStackLayout` | Decorators are left out of "Show code" (`excludeDecorators`), so the layout wrapper doesn't end up in the copied snippet |

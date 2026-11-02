@@ -9,13 +9,13 @@ import {
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType, sizeArgType} from '@sb/helpers/arg-types';
-import {SizeArg, StoryArgs} from '@sb/helpers/story-args';
+import {SizeArg} from '@sb/helpers/story-args';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
 
-type ButtonStoryArgs = StoryArgs<NdwuButtonComponent, SizeArg & {
+type ButtonStoryArgs = NdwuButtonComponent & SizeArg & {
   content: string;
   click: (event: MouseEvent) => void;
-}>;
+};
 
 type Story = StoryObj<ButtonStoryArgs>;
 

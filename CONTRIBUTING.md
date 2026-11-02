@@ -138,11 +138,11 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - Import the kit through entry-point aliases (`@ndw-ui-kit/core`, `@ndw-ui-kit/core/form-field`, ...), shared helpers
   through `@sb/*`. A new entry-point alias goes into `tsconfig.json`, `tsconfig.playground.json` and
   `.storybook/tsconfig.json`.
-- Type args with `StoryArgs<Component, Extra>` from `@sb/helpers/story-args`. It covers inputs, outputs and the
+- Type args as `Meta<Component & Extra>` / `StoryObj<Component & Extra>`. Storybook maps inputs, outputs and the
   `<name>Change` event of each `model()`. Story-only args and native events (`content`, `click`) go into `Extra`; add
-  `SizeArg` and `sizeArgType(<sizes the component supports>)` for components with the `NdwuSizeDirective` host
-  directive (`inputs: ['ndwuSize: size']`), not for components with their own `size` input.
-- Aliased inputs (`ariaLabel` → `aria-label`, `idInput` → `id`, `disabledInput` → `disabled`): `StoryArgs` and
+  `SizeArg` from `@sb/helpers/story-args` and `sizeArgType(<sizes the component supports>)` for components with the
+  `NdwuSizeDirective` host directive (`inputs: ['ndwuSize: size']`), not for components with their own `size` input.
+- Aliased inputs (`ariaLabel` → `aria-label`, `idInput` → `id`, `disabledInput` → `disabled`): story args and
   `argsToTemplate` use the property name, the template needs the alias. Exclude them from `argsToTemplate` and bind the
   alias by hand: `argsToTemplate(args, {exclude: ['ariaLabel']})` plus `[aria-label]="ariaLabel"`.
 - Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `outputArgType`, `eventArgType`.

@@ -498,7 +498,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       case 'detached':
         return this.isFocusOrphaned(state);
       case 'destroy':
-        return this.isFocusOrphaned(state) && this.elementRef.nativeElement.isConnected;
+        return this.isFocusOrphaned(state) && (this.elementRef.nativeElement as HTMLElement).isConnected;
       case 'error':
         return false;
     }

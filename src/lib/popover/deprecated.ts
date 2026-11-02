@@ -1,5 +1,5 @@
 import {ndwuCreateDropdownController} from './controllers/dropdown/dropdown.controller';
-import {ndwuCreatePopoverController} from './controllers/popover/popover-panel.controller';
+import {ndwuCreatePopoverController} from './controllers/popover-panel/popover-panel.controller';
 import {ndwuCreateTooltipController} from './controllers/tooltip/tooltip.controller';
 
 /** @deprecated Use `ndwuCreateDropdownController` instead. Will be removed in a future minor release. */

@@ -13,7 +13,7 @@ import {
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuSizeDirective} from '../../directives';
 import {NDWU_CONTROL} from './control';
-import {NdwuFloatingLabelComponent, NdwuHintDirective, NdwuRightIconDirective, NdwuSuffixDirective} from './frame';
+import {NdwuFloatingLabelComponent, NdwuHintDirective, NdwuRightIconDirective, NdwuSuffixDirective} from './directives';
 
 @Component({
   selector: 'ndwu-form-field',

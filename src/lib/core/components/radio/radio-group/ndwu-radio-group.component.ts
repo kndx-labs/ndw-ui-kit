@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuSizeDirective} from '../../../directives';
-import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../../interaction';
+import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../../../services';
 import {NDWU_RADIO_GROUP, NdwuRadioGroup} from '../radio.types';
 
 @Component({

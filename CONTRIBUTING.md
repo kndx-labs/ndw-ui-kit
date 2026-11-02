@@ -161,34 +161,36 @@ Where things go:
 
 Inside `src/lib`, the root entry point (`@ndw-ui-kit/core`) is made of:
 
-| Path               | Contents                                                                                                                                                                                                       |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `core/components/` | One folder per component. `core/components/popover/` is the popover component and `core/components/form-field/` is the visual field frame; don't confuse them with the `popover` and `form-field` entry points |
-| `core/directives/` | Shared directives (size, adaptive size, resize observer)                                                                                                                                                       |
-| `core/tokens/`     | Angular DI tokens                                                                                                                                                                                              |
-| `styles/`          | SCSS mixins, themes, colors, typography and spacing tokens                                                                                                                                                     |
-| `assets/`          | Fonts and the generated, git-ignored sprites                                                                                                                                                                   |
-| root files         | `public-api.ts`, `options.ts`, `shared.types.ts`, `pictogram-presets.ts`; generated `icon-names.ts`, `icon-names.base.ts`, `pictogram-names.ts`; hand-edited `icon-names.base.manual.ts`                       |
+| Path               | Contents                                                                                                                                                                                 |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `core/components/` | One folder per component, named after it; `field-frame/` is the frame of `ndwu-form-field`. Layers and placement rules: [ADR 011](docs/architecture/ADR/011-source-folder-layout.md)     |
+| `core/directives/` | Shared directives (size, adaptive size, resize observer)                                                                                                                                 |
+| `core/services/`   | Root services (interaction registry)                                                                                                                                                     |
+| `core/tokens/`     | Angular DI tokens                                                                                                                                                                        |
+| `styles/`          | SCSS mixins, themes, colors, typography and spacing tokens                                                                                                                               |
+| `assets/`          | Fonts and the generated, git-ignored sprites                                                                                                                                             |
+| root files         | `public-api.ts`, `options.ts`, `shared.types.ts`, `pictogram-presets.ts`; generated `icon-names.ts`, `icon-names.base.ts`, `pictogram-names.ts`; hand-edited `icon-names.base.manual.ts` |
 
 Secondary entry points have their own `ng-package.json` and are imported as `@ndw-ui-kit/core/<entry>`:
 
-| Entry point          | Contents                                                                                                                                             |
-|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `aria`               | Headless combobox and listbox directives                                                                                                             |
-| `form-field`         | `components/` (form-control wrappers such as `input-field`, `select-field`, plus `helper-message`), `classes/` (wrapper base classes), `validation/` |
-| `l10n`               | Localization pipes (`localize`, `localizeHtml`, `localizeIf`), providers and the translation service                                                 |
-| `l10n/ngx-translate` | The `@ngx-translate/core` adapter                                                                                                                    |
-| `popover`            | Overlay host, trigger directive, dropdown, tooltip and popover controllers                                                                           |
-| `table`              | The table, its rows, cells, sorting, column resize and pinning, row drag, paginator and toolbar                                                      |
-| `utils`              | Shared helpers (DOM, coercion, IDs, files, breakpoints, size flags)                                                                                  |
-| `widgets`            | Composed widgets: empty state, file upload, schedule editor                                                                                          |
+| Entry point          | Contents                                                                                                                                                                  |
+|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `aria`               | Headless combobox and listbox directives                                                                                                                                  |
+| `form-field`         | `components/` (`<name>-field` form-control wrappers such as `input-field`, `select-field`), `parts/` (`helper-message`), `classes/` (wrapper base classes), `validation/` |
+| `l10n`               | Localization pipes (`localize`, `localizeHtml`, `localizeIf`), providers and the translation service                                                                      |
+| `l10n/ngx-translate` | The `@ngx-translate/core` adapter                                                                                                                                         |
+| `popover`            | Overlay host, trigger directive, dropdown, tooltip and popover panel controllers                                                                                          |
+| `table`              | The table, its rows, cells, sorting, column resize and pinning, row drag, paginator and toolbar                                                                           |
+| `utils`              | Shared helpers (DOM, coercion, IDs, files, breakpoints, size flags, theme class and class list)                                                                           |
+| `widgets`            | Composed widgets: empty state, file upload, schedule editor                                                                                                               |
 
 A new component goes to `core/components/<name>/` and is exported from `core/components/index.ts`, unless it belongs
-to `table` or `widgets`; its form wrapper goes to `form-field/components/<name>-field/`.
+to `table` or `widgets`; its form wrapper goes to `form-field/components/<name>-field/`. The full rules are in
+[ADR 011](docs/architecture/ADR/011-source-folder-layout.md).
 
 Export new public symbols from their entry point: for the root one, the `index.ts` of `core/components`,
-`core/directives` or `core/tokens` (re-exported by `src/lib/public-api.ts`), or the `index.ts` of a secondary entry
-point. New tokenized components follow the
+`core/directives`, `core/services` or `core/tokens` (re-exported by `src/lib/public-api.ts`), or the `index.ts` of a
+secondary entry point. New tokenized components follow the
 [component tokens checklist](README.md#when-adding-a-new-tokenized-component).
 
 ### Checks before a PR

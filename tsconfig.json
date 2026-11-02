@@ -62,6 +62,9 @@
     },
     {
       "path": "./tsconfig.playground.json"
+    },
+    {
+      "path": "./.storybook/tsconfig.json"
     }
   ]
 }

@@ -1,0 +1,23 @@
+@use 'styles/themes' with (
+  $ndwu-emit-font-faces: true,
+  $ndwu-roboto-font-base-path: '/assets/fonts/roboto'
+);
+
+.sb-show-main,
+.docs-story {
+  transition: none !important;
+}
+
+.sb-row,
+.sb-stack > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.sb-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

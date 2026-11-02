@@ -12,6 +12,7 @@ It covers the workflow from an idea to a merged pull request.
 - [Before you start](#before-you-start)
 - [Set up the environment](#set-up-the-environment)
 - [Run the playground](#run-the-playground)
+- [Storybook](#storybook)
 - [Run the tests](#run-the-tests)
 - [Try the build in your app](#try-the-build-in-your-app)
 - [Code requirements](#code-requirements)
@@ -31,7 +32,7 @@ It covers the workflow from an idea to a merged pull request.
 
 ## Set up the environment
 
-You need an LTS release of **Node.js 22 or later** and Git.
+You need **Node.js 22.12 or later** (Storybook's ESLint plugin and Compodoc need it) and Git.
 Yarn **4.4.1** is pinned in `packageManager` in [package.json](package.json),
 and Corepack provides it:
 
@@ -80,12 +81,106 @@ Component showcases live in `src/playground/app/lib-component-showcase/<name>/`,
 `src/playground/assets/i18n/` through `scripts/merge-playground-i18n.mjs`. Edit the per-showcase files, not the
 merged output.
 
-A new component should come with a showcase. Register it in `lib-component-showcase/showcase-registry.ts`; add it to
-`COMPONENTS_LIST`, `COMPONENT_TABS`, `SHOWCASE_NAMES`, `MENU_ITEMS` (and `READY_FOR_REVIEW_COMPONENTS` when it's
-ready) in `app/app.constants.ts` and to `ComponentName` in `app/app.types.ts`; add its name and description to
+A new component gets [Storybook](#storybook) stories instead of a showcase. Existing showcases stay until the
+playground is removed (NDWU-178). An existing showcase is registered in `lib-component-showcase/showcase-registry.ts`;
+in `COMPONENTS_LIST`, `COMPONENT_TABS`, `SHOWCASE_NAMES`, `MENU_ITEMS` (and `READY_FOR_REVIEW_COMPONENTS` when it's
+ready) in `app/app.constants.ts`; in `ComponentName` in `app/app.types.ts`; and by its name and description in
 `src/playground/localization/components.json` and `de/components.json`. Widgets and examples follow the same
 pattern: `widget-registry.ts` / `example-registry.ts`, the `WIDGET*` / `EXAMPLE*` constants and the `WidgetName` /
 `ExampleName` types.
+
+## Storybook
+
+Storybook is replacing the playground, component by component.
+
+```shell
+yarn storybook
+yarn build-storybook
+```
+
+`yarn storybook` serves at <http://localhost:6006>; `yarn build-storybook` writes a static build to `dist/storybook`.
+Both generate the icon and pictogram sprites first. Compodoc reads the library once at start: after changing a
+component's inputs, restart Storybook. After `prepare-icons`, check `git status`: a change to
+`src/lib/icon-names.base.ts` means a lib file changed the core icon set (stories are not scanned).
+
+### Where things go
+
+| What | Where |
+|---|---|
+| Stories of a component | `<component-file-name>.stories.ts` next to the component in `src/lib`, e.g. `ndwu-button.stories.ts` |
+| Pages that don't belong to one component (`Foundations`, `Examples`) | `src/storybook/` |
+| Storybook config, providers, decorators, shared helpers | `.storybook/` |
+
+Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` into the package.
+
+### Titles
+
+| Entry point / folder | Title | Examples |
+|---|---|---|
+| `core` components | `Core/<Name>` | `Core/Badge`, `Core/Popover` |
+| `core` families | `Core/<Group>/<Name>` | `Core/Button/Button`, `Core/Modal/Dialog`, `Core/Dropdown/Autocomplete` |
+| `core/components/field-frame` | `Core/Form Field Frame` | |
+| `form-field` | `Form Field/<Name>` | `Form Field/Input Field` |
+| `popover` | `Popover API/<Name>` | |
+| `table` | `Table/<Name>` | `Table/Paginator` |
+| `widgets` | `Widgets/<Name>` | `Widgets/Schedule Editor` |
+| `aria`, `schedule-actions`, `l10n` | `Aria/<Name>`, `Schedule Actions/<Name>`, `L10n/<Name>` | |
+| `src/storybook/` | `Foundations/<Page>`, `Examples/<Name>` | |
+
+### Writing stories
+
+The model is `src/lib/core/components/button/button/ndwu-button.stories.ts`.
+
+- Exports are PascalCase. `Default` has all controls; the other stories show one visual dimension each (variants,
+  sizes, states, content forms) with `parameters: {controls: {disable: true}}`.
+- `component:` is the real component. Use `render` with `argsToTemplate` when the story binds the `size` host
+  directive, a native DOM event or projected content: Storybook's generated template binds only the component's own
+  inputs and outputs.
+- Import the kit through entry-point aliases (`@ndw-ui-kit/core`, `@ndw-ui-kit/core/form-field`, ...), shared helpers
+  through `@sb/*`. A new entry-point alias goes into `tsconfig.json`, `tsconfig.playground.json` and
+  `.storybook/tsconfig.json`.
+- Type args with `StoryArgs<Component, Extra>` from `@sb/helpers/story-args`. It covers inputs, outputs and the
+  `<name>Change` event of each `model()`. Story-only args and native events (`content`, `click`) go into `Extra`; add
+  `SizeArg` and `sizeArgType` for components with the `NdwuSizeDirective` host directive
+  (`inputs: ['ndwuSize: size']`), not for components with their own `size` input.
+- Aliased inputs (`ariaLabel` → `aria-label`, `idInput` → `id`, `disabledInput` → `disabled`): `StoryArgs` and
+  `argsToTemplate` use the property name, the template needs the alias. Exclude them from `argsToTemplate` and bind the
+  alias by hand: `argsToTemplate(args, {exclude: ['ariaLabel']})` plus `[aria-label]="ariaLabel"`.
+- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `outputArgType`, `eventArgType`.
+- Descriptions go into `argTypes.<name>.description` in the story file, a one-sentence component intro into
+  `parameters.docs.description.component`. Compodoc adds types and defaults of inputs.
+- Set every control's starting value in `meta.args` (e.g. `variant`, booleans `false`, `icon: null`), so the Controls
+  panel shows the current value instead of "Choose option...".
+- An arg reaches the template only if its argType has a `control` or an `action`; `control: false` removes it.
+- "Show code" is what app developers copy, so it must be plain markup:
+  - stories with controls set `parameters.docs.source.transform: argsSourceTransform` (`@sb/helpers/args-source`),
+    which turns `argsToTemplate` bindings into literal attributes;
+  - fixed stories build a literal template from typed data in TS (`VARIANTS.map(...)`), without `@for` over props,
+    props for constants or inline styles;
+  - layout goes into a story decorator, which "Show code" leaves out: `withRowLayout` for one row, `withStackLayout`
+    for rows given as `<div>` groups (`@sb/helpers/story-layout`).
+- Native DOM events: `eventArgType('<event>', '<description>')`. Outputs and `model()` change events:
+  `outputArgType('<name>', '<description>')`. Compodoc's output docs are filtered out, so outputs are listed by hand.
+- Leave `size` unset so the toolbar applies. Don't pin a theme (no `globals.theme`; `parameters.themes.themeOverride`
+  is not supported).
+- Dialogs and drawers opened through `NdwuModalService` are created from the root injector, so the Size toolbar doesn't
+  reach them. In a story, pass the story component's injector: `openDialog(Content, {injector: inject(Injector)})`.
+- Storybook-only components use the `app-` prefix.
+- Families without a pattern yet (CVA form controls, overlays, table, widgets): the first ticket of the family adds its
+  pattern to this section.
+
+### Toolbar
+
+- **Theme** (light, dark) sets `ndwu-theme-*` on `body`; the canvas and docs story blocks follow it. An overlay that is
+  already open keeps its theme until it opens again.
+- **Size** (component default, S, L, XL, XXL) provides `NDWU_SIZE_TOKEN` around the story, like
+  `ndwu-form-container`. Component default provides nothing; an explicit `size` arg wins. Modal dialogs and drawers get it only through
+  `config.injector` (see above).
+
+### Accessibility
+
+The Accessibility panel runs axe on every story. To turn off a rule for one story, set
+`parameters.a11y.config.rules: [{id: '<rule-id>', enabled: false}]` and give the reason in the PR description.
 
 ## Run the tests
 

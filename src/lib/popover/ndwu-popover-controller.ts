@@ -14,10 +14,7 @@ export abstract class NdwuPopoverController {
 
   public abstract open(config: NdwuPopoverConfig, session: NdwuPopoverSessionRef): void;
 
-  /**
-   * Returns the CDK overlay pane element, or null if not open.
-   * Used by the trigger for hover bridging.
-   */
+  /** Returns the CDK overlay pane element of the current open, or null. */
   public getOverlayElement(): HTMLElement | null {
     return this.overlayRef?.overlayElement ?? null;
   }

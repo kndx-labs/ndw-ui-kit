@@ -87,7 +87,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
   /** Whether to trap focus in overlay. Fallback: trigger defaults token, then false. */
   public readonly popoverTrapFocus = input<boolean | undefined>(undefined);
 
-  /** When true, clicking origin while open closes the popover. Only applies to 'click' trigger. Default: true. */
+  /** When true, clicking origin while open closes the popover. Only applies to 'click' trigger. Default: true. Pointer clicks only; Enter/Space on the origin still toggle. */
   public readonly popoverCloseOnOriginClick = input<boolean>(true);
 
   /** Disables the trigger. */

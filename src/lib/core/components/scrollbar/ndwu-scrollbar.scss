@@ -115,6 +115,7 @@
   display: none;
   border-radius: calc(var(--ndwu-scrollbar-size-local) / 2);
   background: var(--ndwu-scrollbar-track-color);
+  opacity: 1;
 
   &--vertical {
     top: var(--ndwu-scrollbar-padding-top);
@@ -134,9 +135,39 @@
 .ndwu-scrollbar__thumb {
   position: absolute;
   border-radius: calc(var(--ndwu-scrollbar-size-local) / 2);
-  background: var(--ndwu-scrollbar-thumb-color);
+  background: transparent;
   cursor: pointer;
+  /* stylelint-disable property-no-vendor-prefix */
+  -webkit-user-select: none;
+  /* stylelint-enable property-no-vendor-prefix */
+  user-select: none;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- touch-action prevents native pan from cancelling thumb drags. */
+  touch-action: none;
   will-change: transform;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &::before,
+  &::after {
+    position: absolute;
+    box-sizing: border-box;
+    /* stylelint-disable property-no-vendor-prefix */
+    -webkit-user-select: none;
+    /* stylelint-enable property-no-vendor-prefix */
+    user-select: none;
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- touch-action prevents native pan from cancelling thumb drags. */
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  &::after {
+    content: '';
+    inset: 0;
+    border-radius: calc(var(--ndwu-scrollbar-size-local) / 2);
+    background: var(--ndwu-scrollbar-thumb-color);
+    pointer-events: none;
+  }
 
   // The thumb length, including the --ndwu-scrollbar-min-thumb-size minimum, is set from TS.
   // No CSS min-height/min-width: on a track shorter than the minimum the thumb would stick out.
@@ -191,6 +222,72 @@
     cursor: grabbing;
   }
   /* stylelint-enable plugin/no-unsupported-browser-features */
+}
+
+:host(.ndwu-scrollbar--dragging-y) .ndwu-scrollbar__track--vertical .ndwu-scrollbar__thumb::after {
+  right: 0;
+  left: auto;
+  width: 8px;
+}
+
+:host(.ndwu-scrollbar--dragging-x) .ndwu-scrollbar__track--horizontal .ndwu-scrollbar__thumb::after {
+  top: auto;
+  bottom: 0;
+  height: 8px;
+}
+
+@media (pointer: coarse) {
+  .ndwu-scrollbar__track {
+    pointer-events: none;
+  }
+
+  .ndwu-scrollbar__thumb {
+    pointer-events: auto;
+  }
+
+  :host(.ndwu-scrollbar--active) .ndwu-scrollbar__track--vertical .ndwu-scrollbar__thumb::before,
+  :host(.ndwu-scrollbar--dragging) .ndwu-scrollbar__track--vertical .ndwu-scrollbar__thumb::before {
+    content: '';
+    top: -10px;
+    right: calc(-1 * var(--ndwu-scrollbar-hit-inset-y, 0px));
+    bottom: -10px;
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- max() keeps narrow thumbs grabbable. */
+    width: max(44px, calc(100% + var(--ndwu-scrollbar-hit-inset-y, 0px)));
+    pointer-events: auto;
+  }
+
+  :host(.ndwu-scrollbar--active) .ndwu-scrollbar__track--horizontal .ndwu-scrollbar__thumb::before,
+  :host(.ndwu-scrollbar--dragging) .ndwu-scrollbar__track--horizontal .ndwu-scrollbar__thumb::before {
+    content: '';
+    right: -10px;
+    bottom: calc(-1 * var(--ndwu-scrollbar-hit-inset-x, 0px));
+    left: -10px;
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- max() keeps narrow thumbs grabbable. */
+    height: max(44px, calc(100% + var(--ndwu-scrollbar-hit-inset-x, 0px)));
+    pointer-events: auto;
+  }
+
+  :host(.ndwu-scrollbar--auto-hide):not(.ndwu-scrollbar--active, .ndwu-scrollbar--dragging) .ndwu-scrollbar__track {
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+
+  :host(.ndwu-scrollbar--auto-hide):not(.ndwu-scrollbar--active, .ndwu-scrollbar--dragging) .ndwu-scrollbar__thumb {
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host(.ndwu-scrollbar--auto-hide) .ndwu-scrollbar__track {
+    transition: none;
+  }
+}
+
+@media print {
+  :host(.ndwu-scrollbar--auto-hide) .ndwu-scrollbar__track {
+    opacity: 1 !important;
+    transition: none;
+  }
 }
 
 :host(.ndwu-scrollbar--disabled) {

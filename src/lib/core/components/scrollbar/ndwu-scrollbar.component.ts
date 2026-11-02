@@ -24,6 +24,7 @@ import {
 } from './ndwu-scrollbar.types';
 import {calculateThumbOffset, calculateThumbSize, convertTrackToScroll, hasOverflow} from './ndwu-scrollbar.geometry';
 import {NdwuScrollbarDragController} from './ndwu-scrollbar-drag.controller';
+import {NdwuScrollbarActivity} from './ndwu-scrollbar.activity';
 import {NdwuScrollbarContentObserver} from './ndwu-scrollbar.content-observer';
 import {NdwuFrameScheduler} from './ndwu-scrollbar.frame-scheduler';
 import {
@@ -35,12 +36,11 @@ import {
 } from './ndwu-scrollbar.dom';
 
 const MIN_THUMB_SIZE_PROPERTY = '--ndwu-scrollbar-min-thumb-size';
+const HIT_INSET_Y_PROPERTY = '--ndwu-scrollbar-hit-inset-y';
+const HIT_INSET_X_PROPERTY = '--ndwu-scrollbar-hit-inset-x';
 
 const SCROLLABLE_Y_CLASS = 'ndwu-scrollbar--scrollable-y';
 const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
-
-// Only the mouse drags the custom thumb and clicks the track; touch and pen use native scrolling.
-const SUPPORTED_POINTER_TYPE = 'mouse';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -53,6 +53,10 @@ const SUPPORTED_POINTER_TYPE = 'mouse';
     '[class.ndwu-scrollbar--size-l]': 'normalizedSize() === "L"',
     '[class.ndwu-scrollbar--size-xl]': 'normalizedSize() === "XL"',
     '[class.ndwu-scrollbar--dragging]': 'isDragging()',
+    '[class.ndwu-scrollbar--dragging-y]': 'draggingAxis() === "y"',
+    '[class.ndwu-scrollbar--dragging-x]': 'draggingAxis() === "x"',
+    '[class.ndwu-scrollbar--auto-hide]': 'ndwuScrollbarAutoHide()',
+    '[class.ndwu-scrollbar--active]': 'activity.isActive()',
     '[class.ndwu-scrollbar--axis-y]': 'ndwuScrollbarAxis() === "y"',
     '[class.ndwu-scrollbar--axis-x]': 'ndwuScrollbarAxis() === "x"',
     '[class.ndwu-scrollbar--axis-both]': 'ndwuScrollbarAxis() === "both"',
@@ -98,6 +102,8 @@ export class NdwuScrollbarComponent {
   public readonly ndwuScrollbarAxis = input<'x' | 'y' | 'both'>('both');
   public readonly ndwuScrollbarPrintable = input(true, {transform: booleanAttribute});
   public readonly ndwuScrollbarDisabled = input(false, {transform: booleanAttribute});
+  /** Hides chrome only with a coarse primary pointer; actual pointer type does not change presentation. */
+  public readonly ndwuScrollbarAutoHide = input(false, {transform: booleanAttribute});
   public readonly ndwuScrollbarPadding = input<NdwuScrollbarPadding>({});
   public readonly ndwuScrollbarContentPadding = input<NdwuScrollbarPadding>({});
 
@@ -112,7 +118,9 @@ export class NdwuScrollbarComponent {
   private readonly thumbXEl = viewChild.required<ElementRef<HTMLElement>>('thumbX');
 
   protected readonly isDragging = signal(false);
+  protected readonly draggingAxis = signal<NdwuScrollbarAxis | null>(null);
   protected readonly isViewInitialized = signal(false);
+  protected readonly activity = new NdwuScrollbarActivity();
   protected readonly normalizedSize = computed(() => {
     return this.ndwuScrollbarSize() === NDWU_SIZE.XL ? NDWU_SIZE.XL : NDWU_SIZE.L;
   });
@@ -121,7 +129,19 @@ export class NdwuScrollbarComponent {
     this.doc,
     {
       move: (state, event) => this.onDragMove(state, event),
-      activeChange: (isActive) => this.isDragging.set(isActive),
+      activeChange: (isActive) => {
+        this.isDragging.set(isActive);
+
+        if (isActive) {
+          this.activity.startDrag();
+
+          return;
+        }
+
+        this.activity.endDrag();
+        this.draggingAxis.set(null);
+        this.schedulePositionUpdate();
+      },
     },
   );
 
@@ -154,6 +174,7 @@ export class NdwuScrollbarComponent {
 
       if (isDisabled) {
         this.dragController.end();
+        this.activity.reset();
         this.releaseContentBoxSize();
 
         return;
@@ -222,6 +243,12 @@ export class NdwuScrollbarComponent {
   }
 
   private readonly onScroll = (): void => {
+    if (this.ndwuScrollbarDisabled()) {
+      return;
+    }
+
+    this.activity.markScroll();
+
     if (this.isDragging()) {
       return;
     }
@@ -257,7 +284,7 @@ export class NdwuScrollbarComponent {
   }
 
   protected onThumbPointerDown(axis: NdwuScrollbarAxis, event: PointerEvent): void {
-    if (!this.claimMousePointer(event)) {
+    if (this.ndwuScrollbarDisabled() || !this.overflow[axis] || !this.claimPointer(event, true)) {
       return;
     }
 
@@ -265,16 +292,19 @@ export class NdwuScrollbarComponent {
   }
 
   protected onTrackPointerDown(axis: NdwuScrollbarAxis, event: PointerEvent): void {
-    if (!this.claimMousePointer(event)) {
+    if (this.ndwuScrollbarDisabled() || !this.overflow[axis] || !this.claimPointer(event, false)) {
       return;
     }
 
     this.startTrackClick(axis, event);
   }
 
-  // Takes over a mouse pointerdown; touch and pen are left to native scrolling.
-  private claimMousePointer(event: PointerEvent): boolean {
-    if (event.pointerType !== SUPPORTED_POINTER_TYPE) {
+  private claimPointer(event: PointerEvent, allowDirectPointer: boolean): boolean {
+    const supportedPointer = allowDirectPointer
+      ? ['mouse', 'touch', 'pen'].includes(event.pointerType)
+      : event.pointerType === 'mouse';
+
+    if (!supportedPointer || !event.isPrimary || event.button !== 0 || this.isDragging()) {
       return false;
     }
 
@@ -303,6 +333,7 @@ export class NdwuScrollbarComponent {
       pointerOffset: this.getPointerOffset(axis, event) - this.getRectStart(axis, thumbRect),
       trackStart: this.getRectStart(axis, trackRect),
     });
+    this.draggingAxis.set(axis);
   }
 
   private onDragMove(state: NdwuDragState, event: PointerEvent): void {
@@ -377,14 +408,20 @@ export class NdwuScrollbarComponent {
     for (const axis of ['x', 'y'] as const) {
       if (!this.overflow[axis]) {
         this.trackSizes[axis] = 0;
+        this.hostEl.style.setProperty(axis === 'y' ? HIT_INSET_Y_PROPERTY : HIT_INSET_X_PROPERTY, '0px');
 
         continue;
       }
 
       const {track} = this.getAxisElements(axis);
       const styleKey = this.getConfig(axis).thumbStyle;
+      const usedStyle = getComputedStyle(track);
 
-      this.trackSizes[axis] = parseFloat(getComputedStyle(track)[styleKey]) || 0;
+      this.trackSizes[axis] = parseFloat(usedStyle[styleKey]) || 0;
+      this.hostEl.style.setProperty(
+        axis === 'y' ? HIT_INSET_Y_PROPERTY : HIT_INSET_X_PROPERTY,
+        `${parseFloat(axis === 'y' ? usedStyle.right : usedStyle.bottom) || 0}px`,
+      );
     }
   }
 
@@ -397,6 +434,14 @@ export class NdwuScrollbarComponent {
 
     this.hostEl.classList.toggle(SCROLLABLE_Y_CLASS, isOverflowingY);
     this.hostEl.classList.toggle(SCROLLABLE_X_CLASS, isOverflowingX);
+
+    if (!isOverflowingY) {
+      this.hostEl.style.setProperty(HIT_INSET_Y_PROPERTY, '0px');
+    }
+
+    if (!isOverflowingX) {
+      this.hostEl.style.setProperty(HIT_INSET_X_PROPERTY, '0px');
+    }
   }
 
   private applyThumbSize(axis: NdwuScrollbarAxis, size: number): void {
@@ -471,6 +516,7 @@ export class NdwuScrollbarComponent {
     content?.removeEventListener('scroll', this.onScroll);
     this.hostEl.removeEventListener('focus', this.onHostFocus);
     this.dragController.end();
+    this.activity.dispose();
 
     this.frames.cancelAll();
 

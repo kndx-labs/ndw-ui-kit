@@ -4,7 +4,7 @@ import {CdkPortalOutlet} from '@angular/cdk/portal';
 import {A11yModule} from '@angular/cdk/a11y';
 import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NDWU_SIZE} from '../../../../shared.types';
-import {NdwuIconButtonComponent} from '../../button/icon/ndwu-icon-button.component';
+import {NdwuIconButtonComponent} from '../../button/icon-button/ndwu-icon-button.component';
 import {NdwuButtonComponent} from '../../button/button/ndwu-button.component';
 import {NdwuScrollbarComponent} from '../../scrollbar/ndwu-scrollbar.component';
 import {NdwuSpokesLoaderComponent} from '../../spokes-loader/ndwu-spokes-loader.component';

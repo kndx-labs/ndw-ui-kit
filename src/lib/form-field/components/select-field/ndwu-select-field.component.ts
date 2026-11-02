@@ -30,8 +30,8 @@ import {
 } from '@ndw-ui-kit/core/aria';
 import {NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
 import {type OptionRow, buildOptionRows} from '@ndw-ui-kit/core/utils';
-import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
 import {NdwuSelectFieldBase} from '../../classes/select-field-base.directive';
+import {NdwuHelperMessageComponent} from '../../parts/helper-message/ndwu-helper-message.component';
 
 @Component({
   selector: 'ndwu-select-field',

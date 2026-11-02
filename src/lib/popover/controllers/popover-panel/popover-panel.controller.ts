@@ -6,7 +6,7 @@ import type {NdwuPopoverSessionRef} from '../../ndwu-popover-session';
 import type {NdwuPopoverAlign, NdwuPopoverConfig, NdwuPopoverSide} from '../../ndwu-popover.types';
 import {HANDSET_BREAKPOINT, applyThemeClass, detectThemeClass, normalizeClass} from '@ndw-ui-kit/core/utils';
 import {MobileScrollLockStrategy} from '../../mobile-scroll-lock.strategy';
-import {VIEWPORT_MARGIN, registerOverlayScroll} from '../../overlay-utils';
+import {VIEWPORT_MARGIN} from '../../overlay-utils';
 import {buildPopoverPositions} from './popover-panel.helpers';
 
 const DEFAULT_PANEL_CLASS = 'ndwu-popover-panel';
@@ -15,6 +15,8 @@ const DEFAULT_POPOVER_SIDE: NdwuPopoverSide = 'bottom';
 const DEFAULT_POPOVER_ALIGN: NdwuPopoverAlign = 'center';
 
 export class NdwuPopoverPanelController extends NdwuPopoverController {
+  public override readonly dismissesOnOutsideClick = true;
+
   constructor(
     protected readonly overlay: Overlay,
     protected readonly breakpointObserver: BreakpointObserver,
@@ -31,13 +33,8 @@ export class NdwuPopoverPanelController extends NdwuPopoverController {
       ? this.createMobileOverlay(config)
       : this.createDesktopOverlay(config);
 
-    this.trackOverlay(overlayRef, session);
-    this.listenEscape(overlayRef, session);
-
-    overlayRef.backdropClick()
-      .subscribe(() => session.close('outside'));
-
-    this.attachPortal(config, this.injector);
+    this.connectSession(overlayRef, session);
+    this.attachPortal(overlayRef, config, this.injector);
 
     if (!session.isActive()) {
       return;
@@ -46,13 +43,8 @@ export class NdwuPopoverPanelController extends NdwuPopoverController {
     applyThemeClass(overlayRef.overlayElement, detectThemeClass(this.elementRef.nativeElement));
 
     if (!isMobile) {
-      this.registerOutsideClickClose(overlayRef, session);
-
-      const unregisterScroll = registerOverlayScroll(overlayRef);
-
-      if (unregisterScroll) {
-        session.onFinish(unregisterScroll);
-      }
+      this.listenOutside(overlayRef, session, this.elementRef.nativeElement);
+      this.listenScroll(overlayRef, session);
     }
   }
 
@@ -91,37 +83,6 @@ export class NdwuPopoverPanelController extends NdwuPopoverController {
       hasBackdrop: true,
       backdropClass: [MOBILE_BACKDROP_CLASS, 'cdk-overlay-backdrop-noop-animation'],
       width: '100%',
-    });
-  }
-
-  protected registerOutsideClickClose(overlayRef: OverlayRef, session: NdwuPopoverSessionRef): void {
-    const origin = this.elementRef.nativeElement;
-    const pane = overlayRef.overlayElement;
-
-    if (!pane?.isConnected) {
-      return;
-    }
-
-    const handler = (event: Event): void => {
-      const target = event.target as Node;
-
-      if (pane.contains(target) || origin.contains(target)) {
-        return;
-      }
-
-      session.close('outside');
-    };
-
-    const eventTypes = ['click', 'pointerdown'] as const;
-
-    for (const eventType of eventTypes) {
-      document.addEventListener(eventType, handler, true);
-    }
-
-    session.onFinish(() => {
-      for (const eventType of eventTypes) {
-        document.removeEventListener(eventType, handler, true);
-      }
     });
   }
 }

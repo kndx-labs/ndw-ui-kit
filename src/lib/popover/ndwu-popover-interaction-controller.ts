@@ -1,5 +1,6 @@
 import type {NdwuPopoverSession} from './ndwu-popover-session';
 import type {NdwuPopoverTriggerType} from './ndwu-popover.types';
+import {registerOutsideDismiss} from './overlay-utils';
 
 export interface NdwuPopoverInteractionCtx {
   isOpen: () => boolean;
@@ -152,9 +153,9 @@ export class NdwuPopoverInteractionController {
     }
 
     const onFocusOut = (event: FocusEvent): void => {
-      const next = event.relatedTarget as Node | null;
+      const next = event.relatedTarget;
 
-      if (next === null || overlay.contains(next) || this.ctx.getTriggerElement().contains(next)) {
+      if (!(next instanceof Node) || overlay.contains(next) || this.ctx.getTriggerElement().contains(next)) {
         return;
       }
 
@@ -168,18 +169,11 @@ export class NdwuPopoverInteractionController {
   protected registerOutsideClickClose(session: NdwuPopoverSession): void {
     const trigger = this.ctx.getTriggerElement();
 
-    const handler = (event: MouseEvent): void => {
-      const target = event.target as Node;
-
-      if (this.ctx.getOverlayElement()?.contains(target) || trigger.contains(target)) {
-        return;
-      }
-
-      this.ctx.dismissOutside();
-    };
-
-    document.addEventListener('click', handler, true);
-    session.onFinish(() => document.removeEventListener('click', handler, true));
+    registerOutsideDismiss(
+      session,
+      (target) => trigger.contains(target) || (this.ctx.getOverlayElement()?.contains(target) ?? false),
+      () => this.ctx.dismissOutside(),
+    );
   }
 
   protected executeHide(): void {

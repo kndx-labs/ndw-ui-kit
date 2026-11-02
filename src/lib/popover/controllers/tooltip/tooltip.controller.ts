@@ -16,13 +16,7 @@ import type {
   NdwuPopoverSide,
   NdwuTooltipPosition,
 } from '../../ndwu-popover.types';
-import {
-  VIEWPORT_MARGIN,
-  buildConnectedPosition,
-  registerOverlayScroll,
-  resolveConnectedOrigin,
-  toConnectedOrigin,
-} from '../../overlay-utils';
+import {VIEWPORT_MARGIN, buildConnectedPosition, resolveConnectedOrigin, toConnectedOrigin} from '../../overlay-utils';
 
 const MOBILE_VIEWPORT_MARGIN = 16;
 
@@ -71,7 +65,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
   public override open(config: NdwuPopoverConfig, session: NdwuPopoverSessionRef): void {
     const {overlayRef, positionStrategy} = this.createOverlay(config);
 
-    this.trackOverlay(overlayRef, session);
+    this.connectSession(overlayRef, session);
     this.positionStrategy = positionStrategy;
     session.onFinish(() => {
       if (this.positionStrategy === positionStrategy) {
@@ -79,21 +73,14 @@ export class NdwuTooltipController extends NdwuPopoverController {
       }
     });
 
-    this.listenEscape(overlayRef, session);
-    this.attachPortal(config, this.injector);
+    this.attachPortal(overlayRef, config, this.injector);
 
     if (!session.isActive()) {
       return;
     }
 
     applyThemeClass(overlayRef.overlayElement, detectThemeClass(this.elementRef.nativeElement));
-
-    const unregisterScroll = registerOverlayScroll(overlayRef);
-
-    if (unregisterScroll) {
-      session.onFinish(unregisterScroll);
-    }
-
+    this.listenScroll(overlayRef, session);
     this.observeOverlayResize(overlayRef, session);
   }
 

@@ -1,4 +1,5 @@
 import {Injector, afterNextRender} from '@angular/core';
+import type {NdwuPopoverConfig} from './ndwu-popover.types';
 
 export type NdwuPopoverDismissReason = 'escape' | 'origin-click' | 'outside' | 'detached';
 
@@ -19,18 +20,30 @@ export interface NdwuPopoverFinishState {
 }
 
 export class NdwuPopoverSession implements NdwuPopoverSessionRef {
+  public readonly focusSnapshot: Element | null = document.activeElement;
+
   protected active = true;
+  protected opened = false;
   protected readonly cleanups: (() => void)[] = [];
   protected readonly timers = new Set<ReturnType<typeof setTimeout>>();
 
   constructor(
+    public readonly config: NdwuPopoverConfig,
     protected readonly injector: Injector,
     protected readonly getOverlayElement: () => HTMLElement | null,
-    protected readonly onFinished: (session: NdwuPopoverSession, state: NdwuPopoverFinishState) => void,
+    protected readonly notifyFinished: (session: NdwuPopoverSession, state: NdwuPopoverFinishState) => void,
   ) {}
 
   public isActive(): boolean {
     return this.active;
+  }
+
+  public markOpened(): void {
+    this.opened = true;
+  }
+
+  public wasOpened(): boolean {
+    return this.opened;
   }
 
   public onFinish(cleanup: () => void): void {
@@ -57,6 +70,10 @@ export class NdwuPopoverSession implements NdwuPopoverSessionRef {
   }
 
   public setTimeout(fn: () => void, ms: number): () => void {
+    if (!this.active) {
+      return () => {};
+    }
+
     const id = setTimeout(
       () => {
         this.timers.delete(id);
@@ -99,7 +116,7 @@ export class NdwuPopoverSession implements NdwuPopoverSessionRef {
 
     const errors = this.runCleanups();
 
-    this.onFinished(this, {reason, focusOrigin, focusInPane, focusLost});
+    this.notifyFinished(this, {reason, focusOrigin, focusInPane, focusLost});
 
     if (errors.length > 0) {
       throw errors[0];

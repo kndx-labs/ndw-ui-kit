@@ -1,9 +1,12 @@
 import type {ConnectedPosition, FlexibleConnectedPositionStrategyOrigin, OverlayRef} from '@angular/cdk/overlay';
 import type {ElementRef} from '@angular/core';
 import type {NdwuPopoverAlign, NdwuPopoverConfig, NdwuPopoverOrigin, NdwuPopoverSide} from './ndwu-popover.types';
+import type {NdwuPopoverSessionRef} from './ndwu-popover-session';
 
 export const POSITION_OFFSET = 4;
 export const VIEWPORT_MARGIN = 8;
+
+const OUTSIDE_EVENTS = ['pointerdown', 'click', 'contextmenu'] as const;
 
 const VERTICAL_ALIGN = {
   start: 'top',
@@ -103,4 +106,28 @@ export function registerOverlayScroll(overlayRef: OverlayRef): (() => void) | nu
   return () => {
     window.removeEventListener('scroll', handler, true);
   };
+}
+
+export function registerOutsideDismiss(
+  session: Pick<NdwuPopoverSessionRef, 'onFinish'>,
+  isInside: (target: Node) => boolean,
+  dismiss: () => void,
+): void {
+  const handler = (event: Event): void => {
+    if (event.target instanceof Node && isInside(event.target)) {
+      return;
+    }
+
+    dismiss();
+  };
+
+  for (const eventType of OUTSIDE_EVENTS) {
+    document.addEventListener(eventType, handler, true);
+  }
+
+  session.onFinish(() => {
+    for (const eventType of OUTSIDE_EVENTS) {
+      document.removeEventListener(eventType, handler, true);
+    }
+  });
 }

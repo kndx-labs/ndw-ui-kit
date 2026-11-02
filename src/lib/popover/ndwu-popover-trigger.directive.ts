@@ -1,6 +1,7 @@
 import {
   Directive,
   ElementRef,
+  ErrorHandler,
   HostListener,
   Injector,
   OnDestroy,
@@ -26,7 +27,7 @@ import type {
 } from './ndwu-popover.types';
 import {NdwuTapGestureDetector} from './ndwu-tap-gesture-detector';
 import {NdwuPopoverInteractionController, type NdwuPopoverInteractionCtx} from './ndwu-popover-interaction-controller';
-import {NdwuPopoverSession, type NdwuPopoverFinishState} from './ndwu-popover-session';
+import {type NdwuPopoverFinishState, NdwuPopoverSession} from './ndwu-popover-session';
 
 export interface NdwuOverlayConfig {
   providers: Provider[];
@@ -52,8 +53,9 @@ export interface NdwuOverlayConfig {
 })
 export class NdwuPopoverTriggerDirective implements OnDestroy {
   protected readonly injectedControllerFactory = inject(NDWU_POPOVER_CONTROLLER_FACTORY, {optional: true});
-  protected readonly elementRef = inject(ElementRef<HTMLElement>);
+  protected readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   protected readonly injector = inject(Injector);
+  protected readonly errorHandler = inject(ErrorHandler);
   protected readonly defaultContentFactory = inject(NDWU_POPOVER_DEFAULT_CONTENT, {optional: true});
   protected readonly triggerDefaults = inject(NDWU_POPOVER_TRIGGER_DEFAULTS, {optional: true});
   protected readonly tapGestureDetector = inject(NdwuTapGestureDetector);
@@ -135,15 +137,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
 
   protected session: NdwuPopoverSession | null = null;
 
-  protected sessionConfig: NdwuPopoverConfig | null = null;
-
-  protected sessionOpened = false;
-
-  protected focusSnapshot: Element | null = null;
-
   protected overlayConfigFactory: (() => NdwuOverlayConfig) | null = null;
-
-  protected bridgeNextOpen = false;
 
   protected originHovered = false;
 
@@ -159,11 +153,11 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       hasTriggerType: (t) => this.hasTriggerType(t),
       getSession: () => this.session,
       getOverlayElement: () => this.controller?.getOverlayElement() ?? null,
-      getTriggerElement: () => this.elementRef.nativeElement as HTMLElement,
+      getTriggerElement: () => this.elementRef.nativeElement,
       isOriginHovered: () => this.originHovered,
 
       getShowDelay: () => this.effectiveShowDelay(),
-      show: (bridge) => this.tryOpenFromHoverOrFocus(bridge),
+      show: (bridge) => this.openScheduled(bridge),
 
       getHideDelay: () => this.effectiveHideDelay(),
       hide: () => this.session?.finish('hover'),
@@ -177,7 +171,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       return;
     }
 
-    if (this.isOpen() && this.sessionConfig?.closeOnOriginClick === false) {
+    if (this.session?.config.closeOnOriginClick === false) {
       return;
     }
 
@@ -269,46 +263,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
   }
 
   public open(config: NdwuPopoverConfig): void {
-    if (this.disabled()) {
-      return;
-    }
-
-    if (this.isOpen()) {
-      this.interaction.cancelScheduledHide();
-
-      return;
-    }
-
-    const controller = this.ensureController();
-    const resolved = this.resolveConfig(config);
-    const session = this.startSession(controller, resolved);
-
-    try {
-      controller.open(resolved, session);
-    } catch (error) {
-      try {
-        session.finish('error');
-      } catch (_cleanupError) {}
-
-      throw error;
-    }
-
-    if (!session.isActive()) {
-      return;
-    }
-
-    this.sessionOpened = true;
-    this.opened.emit();
-
-    if (!session.isActive()) {
-      return;
-    }
-
-    this.interaction.attach(session, {
-      hoverBridge: this.bridgeNextOpen || this.hasTriggerType('hover') || this.hasTriggerType('focus'),
-      outsideClick: this.hasTriggerType('click'),
-      focusout: this.hasTriggerType('focus'),
-    });
+    this.openSession(config, false);
   }
 
   public close(options?: {focusOrigin?: boolean}): void {
@@ -369,10 +324,6 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
     }
   }
 
-  protected getOverlayElement(): HTMLElement | null {
-    return this.controller?.getOverlayElement() ?? null;
-  }
-
   protected hasTriggerType(type: NdwuPopoverTriggerType): boolean {
     const on = this.effectiveTriggerOn();
     const arr = Array.isArray(on) ? on : [on];
@@ -409,28 +360,74 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
         throw new Error(chunks.join(' '));
       }
 
-      this.controller = factory(this.elementRef as ElementRef<HTMLElement>, this.injector);
+      this.controller = factory(this.elementRef, this.injector);
     }
 
     return this.controller;
   }
 
+  protected openSession(config: NdwuPopoverConfig, bridge: boolean): void {
+    if (this.disabled()) {
+      return;
+    }
+
+    if (this.isOpen()) {
+      this.interaction.cancelScheduledHide();
+
+      return;
+    }
+
+    const controller = this.ensureController();
+    const session = this.startSession(controller, this.resolveConfig(config));
+
+    try {
+      controller.open(session.config, session);
+    } catch (error) {
+      this.abortSession(session);
+
+      throw error;
+    }
+
+    if (!session.isActive()) {
+      return;
+    }
+
+    session.markOpened();
+    this.opened.emit();
+
+    if (!session.isActive()) {
+      return;
+    }
+
+    this.interaction.attach(session, {
+      hoverBridge: bridge || this.hasTriggerType('hover') || this.hasTriggerType('focus'),
+      outsideClick: this.hasTriggerType('click') && !controller.dismissesOnOutsideClick,
+      focusout: this.hasTriggerType('focus'),
+    });
+  }
+
   protected startSession(controller: NdwuPopoverController, resolved: NdwuPopoverConfig): NdwuPopoverSession {
-    this.sessionConfig = resolved;
-    this.focusSnapshot = document.activeElement;
     this.interaction.cancelScheduledShow();
 
     const session = new NdwuPopoverSession(
+      resolved,
       this.injector,
       () => controller.getOverlayElement(),
       (finished, state) => this.onSessionFinished(finished, state),
     );
 
     this.session = session;
-    this.sessionOpened = false;
     this.isOpen.set(true);
 
     return session;
+  }
+
+  protected abortSession(session: NdwuPopoverSession): void {
+    try {
+      session.finish('error');
+    } catch (cleanupError) {
+      this.errorHandler.handleError(cleanupError);
+    }
   }
 
   protected resolveConfig(config: NdwuPopoverConfig): NdwuPopoverConfig {
@@ -461,19 +458,15 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       return;
     }
 
-    const emitClosed = this.sessionOpened && state.reason !== 'destroy';
-    const restore = this.shouldRestoreFocus(state);
-    const snapshot = this.focusSnapshot;
+    const emitClosed = session.wasOpened() && state.reason !== 'destroy';
+    const restore = this.shouldRestoreFocus(session, state);
 
     this.session = null;
-    this.sessionConfig = null;
-    this.sessionOpened = false;
-    this.focusSnapshot = null;
     this.interaction.cancelScheduledShow();
     this.isOpen.set(false);
 
     if (restore) {
-      this.restoreFocus(snapshot);
+      this.restoreFocus(session.focusSnapshot);
     }
 
     if (emitClosed) {
@@ -481,8 +474,8 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
     }
   }
 
-  protected shouldRestoreFocus(state: NdwuPopoverFinishState): boolean {
-    if (this.sessionConfig?.restoreFocus === false) {
+  protected shouldRestoreFocus(session: NdwuPopoverSession, state: NdwuPopoverFinishState): boolean {
+    if (session.config.restoreFocus === false) {
       return false;
     }
 
@@ -496,15 +489,15 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
         return state.focusInPane;
       case 'outside':
       case 'detached':
-        return this.isFocusOrphaned(state);
+        return this.isFocusOrphaned(session, state);
       case 'destroy':
-        return this.isFocusOrphaned(state) && (this.elementRef.nativeElement as HTMLElement).isConnected;
+        return this.isFocusOrphaned(session, state) && this.elementRef.nativeElement.isConnected;
       case 'error':
         return false;
     }
   }
 
-  protected isFocusOrphaned({focusInPane, focusLost}: NdwuPopoverFinishState): boolean {
+  protected isFocusOrphaned(session: NdwuPopoverSession, {focusInPane, focusLost}: NdwuPopoverFinishState): boolean {
     if (focusInPane) {
       return true;
     }
@@ -513,21 +506,22 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       return false;
     }
 
-    const snapshot = this.focusSnapshot;
+    const snapshot = session.focusSnapshot;
     const heldFocus = snapshot !== null && snapshot !== document.body;
 
-    return heldFocus || this.sessionConfig?.trapFocus === true;
+    return heldFocus || session.config.trapFocus === true;
   }
 
   protected restoreFocus(snapshot: Element | null): void {
-    const host = this.elementRef.nativeElement as HTMLElement;
+    const host = this.elementRef.nativeElement;
+    const focusable = snapshot instanceof HTMLElement || snapshot instanceof SVGElement;
 
     this.restoringFocus = true;
 
     try {
       host.focus();
 
-      if (document.activeElement !== host && snapshot instanceof HTMLElement && snapshot.isConnected) {
+      if (document.activeElement !== host && focusable && snapshot.isConnected) {
         snapshot.focus();
       }
     } finally {
@@ -535,23 +529,15 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
     }
   }
 
-  protected tryOpenFromHoverOrFocus(bridge: boolean): void {
+  protected openScheduled(bridge: boolean): void {
     if (this.disabled() || this.isOpen()) {
       return;
     }
 
     const resolvedContent = this.resolveContent();
 
-    if (!resolvedContent) {
-      return;
-    }
-
-    this.bridgeNextOpen = bridge;
-
-    try {
-      this.open({content: resolvedContent});
-    } finally {
-      this.bridgeNextOpen = false;
+    if (resolvedContent) {
+      this.openSession({content: resolvedContent}, bridge);
     }
   }
 }

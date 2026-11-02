@@ -56,9 +56,9 @@ export class NdwuPopoverHostComponent {
 
   protected readonly isMobile: Signal<boolean>;
 
-  constructor(
-    protected breakpointObserver: BreakpointObserver,
-  ) {
+  protected readonly breakpointObserver = inject(BreakpointObserver);
+
+  constructor() {
     this.isMobile = toSignal(
       this.breakpointObserver.observe(HANDSET_BREAKPOINT).pipe(map((r) => r.matches)),
       {initialValue: false},

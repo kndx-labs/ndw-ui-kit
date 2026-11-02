@@ -1,6 +1,12 @@
 import {ChangeDetectionStrategy, Component, computed, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NDWU_ICON_NAME, NDWU_ICON_NAMES, NdwuCheckboxComponent, NdwuIconComponent, NdwuIconName} from '@ndw-ui-kit/core';
+import {
+  NDWU_ICON_NAME,
+  NDWU_ICON_NAMES,
+  NdwuCheckboxComponent,
+  NdwuIconComponent,
+  NdwuIconName,
+} from '@ndw-ui-kit/core';
 import {NdwuInputFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {ThemeSwitcherComponent} from '@app/components';

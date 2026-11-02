@@ -1,3 +1,15 @@
+<a name="0.3.2"></a>
+# 0.3.2 (2026-10-30)
+
+### widgets
+| Commit       | Type | Description                                      |
+| ------------ | ---- | ------------------------------------------------ |
+| [4f479dbade] | fix  | stretch file-upload dropzone to its parent width |
+
+[4f479dbade]: https://github.com/kndx-labs/ndw-ui-kit/commit/4f479dbade2c9a74b32caefa420c3259b5ce9157
+
+<!-- CHANGELOG SPLIT MARKER -->
+
 <a name="0.3.1"></a>
 # 0.3.1 (2026-10-30)
 

@@ -44,7 +44,7 @@ import {
 import {NdwuLocalizeIfPipe, NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
 import {type OptionRow, buildOptionRows} from '@ndw-ui-kit/core/utils';
-import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
+import {NdwuHelperMessageComponent} from '../../parts/helper-message/ndwu-helper-message.component';
 import {
   type NdwuMultiSelectDisplayContext,
   NdwuMultiSelectDisplayDirective,

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Pipe, PipeTransform} from '@angular/core';
+import {ChangeDetectorRef, Pipe, PipeTransform, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {NdwuTranslationService} from './services/translation.service';
 
@@ -7,10 +7,10 @@ import {NdwuTranslationService} from './services/translation.service';
   pure: false,
 })
 export class NdwuLocalizePipe implements PipeTransform {
-  constructor(
-    private translationService: NdwuTranslationService,
-    private cdr: ChangeDetectorRef,
-  ) {
+  private readonly translationService = inject(NdwuTranslationService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  constructor() {
     this.translationService.onLangChange$
       .pipe(
         takeUntilDestroyed(),

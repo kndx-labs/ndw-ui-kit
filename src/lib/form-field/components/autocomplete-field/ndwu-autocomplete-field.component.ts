@@ -24,7 +24,7 @@ import {
 } from '@ndw-ui-kit/core';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NdwuFormFieldBase} from '../../classes/form-field-base';
-import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
+import {NdwuHelperMessageComponent} from '../../parts/helper-message/ndwu-helper-message.component';
 import {NdwuAutocompleteFooterDirective} from './ndwu-autocomplete-footer.directive';
 
 @Component({

@@ -1,6 +1,13 @@
 import {Routes} from '@angular/router';
 import {AppComponent} from './app.component';
-import {COMPONENTS_LIST, COMPONENT_TABS, EXAMPLES_LIST, ICON_REGISTRY_PATH, WIDGETS_LIST, WIDGET_TABS} from './app.constants';
+import {
+  COMPONENTS_LIST,
+  COMPONENT_TABS,
+  EXAMPLES_LIST,
+  ICON_REGISTRY_PATH,
+  WIDGETS_LIST,
+  WIDGET_TABS,
+} from './app.constants';
 import type {ComponentName, WidgetName} from './app.types';
 
 const componentRoutes: Routes = COMPONENTS_LIST.map(

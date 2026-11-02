@@ -18,7 +18,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {isObservable} from 'rxjs';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {NDWU_CONTROL, type NdwuControl} from '../ndwu-control';
-import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../../../interaction';
+import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../../../../services';
 
 @Directive({
   selector: 'input[ndwu-input],input[ndwuInput]',

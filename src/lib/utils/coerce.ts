@@ -1,5 +1,5 @@
 export const getCoerceToClampedNumberTransform = (defaultValue: number, min: number, max: number) => {
-  return (value: any): number => {
+  return (value: unknown): number => {
     const numVal = Number(value);
     const valToClamp = isNaN(numVal) ? defaultValue : numVal;
 

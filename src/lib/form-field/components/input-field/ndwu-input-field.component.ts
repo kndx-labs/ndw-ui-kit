@@ -24,7 +24,7 @@ import {
 } from '@ndw-ui-kit/core';
 import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
 import {NdwuFormFieldBase} from '../../classes/form-field-base';
-import {NdwuHelperMessageComponent} from '../helper-message/ndwu-helper-message.component';
+import {NdwuHelperMessageComponent} from '../../parts/helper-message/ndwu-helper-message.component';
 
 @Component({
   selector: 'ndwu-input-field',

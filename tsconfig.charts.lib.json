@@ -1,11 +1,7 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.lib.json",
   "compilerOptions": {
     "outDir": "./out-tsc/charts",
-    "declaration": true,
-    "declarationMap": true,
-    "inlineSources": true,
-    "types": [],
     "paths": {
       "@ndw-ui-kit/core": ["./dist/ndw-ui-kit"],
       "@ndw-ui-kit/core/*": ["./dist/ndw-ui-kit/*"]

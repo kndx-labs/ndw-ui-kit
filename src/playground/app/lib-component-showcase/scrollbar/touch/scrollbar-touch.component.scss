@@ -1,0 +1,148 @@
+// Unencapsulated (see component): every selector stays under .scrollbar-touch.
+.scrollbar-touch {
+  &__section {
+    margin-bottom: 32px;
+  }
+
+  &__steps {
+    margin: 0 0 12px;
+    padding-left: 20px;
+    line-height: 1.5;
+  }
+
+  &__note {
+    margin: 0 0 12px;
+    line-height: 1.5;
+  }
+
+  &__env {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 4px 12px;
+    margin: 0 0 12px;
+
+    dd {
+      margin: 0;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    margin-bottom: 12px;
+
+    label {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      min-height: 44px;
+    }
+  }
+
+  &__status {
+    margin: 0 0 8px;
+  }
+
+  &__phone,
+  &__both {
+    box-sizing: border-box;
+    max-width: 100%;
+    height: 280px;
+    border: 1px solid var(--ndwu-color-gray-30);
+  }
+
+  &__phone {
+    width: min(100%, 360px);
+  }
+
+  &__both {
+    width: min(100%, 480px);
+    min-width: 240px;
+    resize: horizontal;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 48px;
+    padding: 4px 0 4px 12px;
+    border-bottom: 1px solid var(--ndwu-color-gray-30);
+
+    button {
+      min-height: 40px;
+    }
+
+    &--wide {
+      width: 680px;
+    }
+  }
+
+  &__inset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 16px;
+  }
+
+  &__inset {
+    box-sizing: border-box;
+    width: min(100%, 560px);
+    min-width: 220px;
+    max-width: 100%;
+    height: 160px;
+    border: 1px solid var(--ndwu-color-gray-30);
+    resize: both;
+
+    &--short {
+      height: 76px;
+    }
+  }
+
+  &__inset-content {
+    width: 760px;
+    min-height: 280px;
+    padding: 8px;
+  }
+
+  &__nested {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-sizing: border-box;
+    width: min(100%, 520px);
+    height: 300px;
+    padding: 8px;
+    border: 1px solid var(--ndwu-color-gray-30);
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__nested-inner {
+    flex: 1 1 auto;
+    min-height: 100px;
+    border: 1px solid var(--ndwu-color-gray-30);
+  }
+
+  &__nested-content {
+    width: 620px;
+
+    p {
+      min-height: 44px;
+      padding: 8px;
+      border-bottom: 1px solid var(--ndwu-color-gray-30);
+    }
+  }
+
+  // The library gives the thumb's ::before a size only while the wide touch target is live
+  // (coarse pointer, during or right after a scroll), so this tint shows exactly that area.
+  &--show-target .ndwu-scrollbar__thumb::before {
+    background: color-mix(in srgb, var(--ndwu-color-brand-50) 20%, transparent);
+    outline: 1px dashed var(--ndwu-color-brand-50);
+    outline-offset: -1px;
+  }
+}

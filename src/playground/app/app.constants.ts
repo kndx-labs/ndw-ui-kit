@@ -69,7 +69,7 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-tabs': ['overview', 'sandbox'],
   'ndwu-tag': ['overview', 'sandbox'],
   'ndwu-pictogram': ['overview', 'sandbox'],
-  'ndwu-scrollbar': ['overview'],
+  'ndwu-scrollbar': ['overview', 'touch'],
   'ndwu-table': ['overview'],
 };
 

@@ -17,6 +17,7 @@ import {
   NdwuProgressBarComponent,
   NdwuSizeDirective,
 } from '@ndw-ui-kit/core';
+import {canRetry} from './ndwu-file-upload.transitions';
 import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 @Component({
@@ -106,7 +107,7 @@ export class NdwuFileUploadHeaderComponent {
   });
 
   protected readonly hasRetryableErrors = computed(() => {
-    return this.files().some(f => f.status === 'error' && f.isRetryable === true);
+    return this.files().some(canRetry);
   });
 
   protected readonly hasWarnings = computed(() => {

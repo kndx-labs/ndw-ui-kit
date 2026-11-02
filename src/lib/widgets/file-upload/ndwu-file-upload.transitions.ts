@@ -18,7 +18,7 @@ const isInFlight = (file: NdwuFileInputValue): boolean => {
   return file.status === 'queued' || file.status === 'uploading';
 };
 
-const canRetry = (file: NdwuFileInputValue): boolean => {
+export const canRetry = (file: NdwuFileInputValue): boolean => {
   return file.status === 'error' && file.isRetryable === true;
 };
 
@@ -28,7 +28,16 @@ const requeue = (file: NdwuFileInputValue): NdwuFileInputValue => {
   return {...rest, status: 'queued', progress: 0};
 };
 
-const cancel = (file: NdwuFileInputValue): NdwuFileInputValue => ({...file, status: 'canceled'});
+const cancel = (file: NdwuFileInputValue): NdwuFileInputValue => {
+  return {...file, status: 'canceled'};
+};
+
+const byId = (
+  fileId: string,
+  rule: (file: NdwuFileInputValue) => boolean,
+): ((file: NdwuFileInputValue) => boolean) => {
+  return file => file.id === fileId && rule(file);
+};
 
 const replaceWhere = (
   files: NdwuFileInputValue[],
@@ -49,6 +58,14 @@ const replaceWhere = (
   });
 
   return {files: changed.length > 0 ? next : files, changed};
+};
+
+const retried = ({files, changed}: ReturnType<typeof replaceWhere>): NdwuFileUploadTransition => {
+  return {files, uploadRequests: changed, cancelRequests: []};
+};
+
+const canceled = ({files, changed}: ReturnType<typeof replaceWhere>): NdwuFileUploadTransition => {
+  return {files, uploadRequests: [], cancelRequests: changed};
 };
 
 export function applyFileUploadAction(
@@ -83,23 +100,13 @@ export function applyFileUploadAction(
       };
     }
     case 'retry':
-    case 'retryAll': {
-      const shouldRetry = action.type === 'retry'
-        ? (file: NdwuFileInputValue) => file.id === action.fileId && canRetry(file)
-        : canRetry;
-      const result = replaceWhere(files, shouldRetry, requeue);
-
-      return {files: result.files, uploadRequests: result.changed, cancelRequests: []};
-    }
+      return retried(replaceWhere(files, byId(action.fileId, canRetry), requeue));
+    case 'retryAll':
+      return retried(replaceWhere(files, canRetry, requeue));
     case 'cancel':
-    case 'cancelAll': {
-      const shouldCancel = action.type === 'cancel'
-        ? (file: NdwuFileInputValue) => file.id === action.fileId && isInFlight(file)
-        : isInFlight;
-      const result = replaceWhere(files, shouldCancel, cancel);
-
-      return {files: result.files, uploadRequests: [], cancelRequests: result.changed};
-    }
+      return canceled(replaceWhere(files, byId(action.fileId, isInFlight), cancel));
+    case 'cancelAll':
+      return canceled(replaceWhere(files, isInFlight, cancel));
   }
 }
 

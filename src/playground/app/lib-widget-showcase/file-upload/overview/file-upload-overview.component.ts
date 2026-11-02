@@ -232,6 +232,7 @@ export class FileUploadOverviewComponent implements OnDestroy {
   }
 
   protected setCvaValue(): void {
+    this.stopCvaSims();
     this.fileUploadCvaForm.controls.files.setValue([{
       id: 'cva-preset',
       name: 'Preset_from_form.pdf',
@@ -242,6 +243,7 @@ export class FileUploadOverviewComponent implements OnDestroy {
   }
 
   protected resetCvaForm(): void {
+    this.stopCvaSims();
     this.fileUploadCvaForm.reset();
   }
 
@@ -271,6 +273,10 @@ export class FileUploadOverviewComponent implements OnDestroy {
     }, 300);
 
     this.uploadIntervals.set(file.id, interval);
+  }
+
+  private stopCvaSims(): void {
+    this.fileUploadCvaForm.controls.files.value.forEach(f => this.stopSim(f.id));
   }
 
   private stopSim(fileId: string): void {

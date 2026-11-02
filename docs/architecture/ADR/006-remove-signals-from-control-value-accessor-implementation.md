@@ -114,7 +114,8 @@ directly nor indirectly" with one exception. A CVA method may call a child widge
 setter when:
 
 1. the setter writes only state owned by the child widget;
-2. the accessor never reads that state back into its own value;
+2. no CVA method reads that state back into the accessor's value (the widget's list reaches
+   `inputValue` only from user actions and progress updates, never from `writeValue`);
 3. the call runs inside `untracked()`, so a `setValue()` from a consumer `effect` neither tracks
    the child query nor writes inside the reactive context.
 

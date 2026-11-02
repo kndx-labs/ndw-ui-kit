@@ -165,7 +165,7 @@ export class NdwuFileUploadComponent implements OnInit {
     return this.mergedTexts().validation?.tooLarge ?? 'File exceeds size limit';
   });
 
-  public readonly files = computed(() => this.fileList());
+  public readonly files = this.fileList.asReadonly();
 
   public setFiles(files: NdwuFileInputValue[] | null | undefined): void {
     this.fileList.set([...(files ?? [])]);
@@ -215,8 +215,8 @@ export class NdwuFileUploadComponent implements OnInit {
   public ngOnInit(): void {
     const initial = this.initialFiles();
 
-    if (initial?.length > 0) {
-      this.fileList.set([...initial]);
+    if (initial.length > 0) {
+      this.setFiles(initial);
     }
   }
 

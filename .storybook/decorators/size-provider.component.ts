@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, forwardRef, input} from '@angular/co
 import {NDWU_SIZE_TOKEN, NdwuSize} from '@ndw-ui-kit/core';
 
 @Component({
-  selector: 'app-sb-size-provider',
+  selector: 'sb-size-provider',
   template: '<ng-content />',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

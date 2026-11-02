@@ -20,7 +20,7 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 └── helpers/
     ├── story-args.ts                 StoryArgs / SizeArg: arg types of a story, derived from the component
     ├── arg-types.ts                  Shared argTypes: size, icon, outputs, native events
-    ├── args-source.ts                "Show code" transform: argsToTemplate bindings -> literal attributes
+    ├── args-to-source.ts             "Show code" transform: argsToTemplate bindings -> literal attributes
     └── story-layout.ts               Row and stack layout decorators, left out of "Show code"
 ```
 
@@ -35,8 +35,8 @@ Stories live next to their components: `src/lib/**/<component-file-name>.stories
 |---|---|---|
 | `main.ts` | Story glob `src/lib/**/*.stories.ts`; addons docs, a11y, themes; serves `src/lib/assets` at `/assets`; telemetry off; `angularFilterNonInputControls` | Icons, pictograms and fonts use `assets/...` URLs, so the assets folder must be served at `/assets`. The filter keeps Compodoc's public non-input members out of the controls |
 | `preview.ts` | Registers the Compodoc JSON, `applicationConfig` with `STORYBOOK_PROVIDERS`, the decorators, the Size global, the `surface` background, `controls.expanded`, `docs.source.excludeDecorators`, a11y defaults | The only file Storybook loads for every story. It imports and registers; logic lives in `decorators/` and `helpers/` |
-| `providers.ts` | `provideHttpClient()`, `provideNdwuAllIcons()` | Separate, so NDWU-172 (localization) adds its providers here without touching `preview.ts`. Zoneless is not here: the builder flag `experimentalZoneless` adds the provider |
-| `styles.scss` | `@use 'styles/themes'` with font faces; `transition: none` on the canvas; `.sb-row`, `.sb-stack` | The theme as the playground uses it. The backgrounds addon fades the canvas in over 0.3s, and the first axe run measured colours mid-fade (false contrast violations). The layout classes keep inline styles out of "Show code" |
+| `providers.ts` | `provideHttpClient()`, `provideNdwuAllIcons()` | Separate, so later providers (e.g. localization) are added here without touching `preview.ts`. Zoneless is not here: the builder flag `experimentalZoneless` adds the provider |
+| `styles.scss` | `@use 'styles/themes'` with font faces; `transition: none` on the canvas; `.sb-row`, `.sb-stack` | The theme as the playground uses it. The backgrounds addon animates the canvas colour change over 0.3s. In the dark theme, axe could run during that animation, compare the text with the still-light background and report contrast errors that don't exist; `transition: none` removes the animation. The layout classes keep inline styles out of "Show code" |
 | `tsconfig.json` | Own TS project for `.storybook/**`, `src/lib/**/*.stories.ts`, `src/storybook/**`; kit entry-point aliases; `@sb/*` → `.storybook/*` | `tsconfig.lib.json` excludes stories, so they don't reach the package; this project lets ESLint (`projectService`) and the Storybook builder still type-check them |
 | `typings.d.ts` | Declares `*/documentation.json` | The file exists only after Compodoc ran; the declaration keeps `yarn lint:ts` green on a fresh clone |
 
@@ -47,7 +47,7 @@ The order in `preview.ts` is `applicationConfig`, `withSizeProviderImport`, `wit
 | File | What it does | Why it is built this way |
 |---|---|---|
 | `with-theme.decorator.ts` | Reads the `theme` global (addon-themes toolbar) and sets the `ndwu-theme-*` class on `body` before the story renders; unknown values fall back to light | Popovers look up the theme on ancestors of the trigger, modals read `body`. The addon's own `withThemeByClassName` sets the class after render, so a dialog opened on story load had no theme |
-| `with-size.decorator.ts` | Size toolbar (`component default`, S, L, XL, XXL); for a real size wraps the story in `app-sb-size-provider` | Components read size through `NDWU_SIZE_TOKEN` (as inside `ndwu-form-container`), not through a class. `component default` adds no wrapper, so the component falls back to its own default (XL) |
+| `with-size.decorator.ts` | Size toolbar (`component default`, S, L, XL, XXL); for a real size wraps the story in `sb-size-provider` | Components read size through `NDWU_SIZE_TOKEN` (as inside `ndwu-form-container`), not through a class. `component default` adds no wrapper, so the component falls back to its own default (XL) |
 | `size-provider.component.ts` | `display: contents` component that provides `NDWU_SIZE_TOKEN` as `() => sbToolbarSize()` | The token is a signal getter, so S → L → XXL updates the running story without re-render. Dialogs from `NdwuModalService` use the root injector and get the size only with `{injector}` (CONTRIBUTING) |
 
 ### Helpers
@@ -57,16 +57,16 @@ Imported by stories as `@sb/helpers/<file>`.
 | File | What it does | Why it is built this way |
 |---|---|---|
 | `story-args.ts` | `StoryArgs<Component, Extra>`: inputs, outputs and the `<name>Change` of each `model()`; `SizeArg` for the `NdwuSizeDirective` host directive | A wrong arg name or value type in a story is a compile error. Signal types are invariant, so the helpers match with `infer`, not `unknown` |
-| `arg-types.ts` | `sizeArgType` (`inherit` = `undefined`), `iconArgType` (`none` = `null`), `outputArgType`, `eventArgType` | One definition for every component with a size, an icon or outputs. Compodoc's output docs are filtered out, so outputs and events are declared here |
-| `args-source.ts` | `argsSourceTransform`: `[variant]="variant"` → `variant="primary"`, drops event bindings, fills `{{ content }}` | "Show code" is what app developers copy, so it must be plain markup with the current values |
+| `arg-types.ts` | `sizeArgType(sizes)` (`inherit` = `undefined`, then the sizes the component supports), `iconArgType` (`none` = `null`), `outputArgType`, `eventArgType` | One definition for every component with a size, an icon or outputs. Not every component supports every size, so each story passes its own list. Compodoc's output docs are filtered out, so outputs and events are declared here |
+| `args-to-source.ts` | `argsSourceTransform`: `[variant]="variant"` → `variant="primary"`, drops event bindings, fills `{{ content }}` | "Show code" is what app developers copy, so it must be plain markup with the current values |
 | `story-layout.ts` | `withRowLayout`, `withStackLayout` | Decorators are left out of "Show code" (`excludeDecorators`), so the layout wrapper doesn't end up in the copied snippet |
 
 ## Outside `.storybook/`
 
 | File | Storybook part |
 |---|---|
-| `angular.json` | `storybook` and `build-storybook` targets on the `ndw-ui-kit` project: port 6006, `experimentalZoneless`, `styles` + `includePaths: ["src/lib"]` for kit SCSS aliases, Compodoc on `tsconfig.lib.json` with private/protected/internal members off, output `dist/storybook`. `browserTarget: "ndw-ui-kit:build"` is required by the builder (without it, `start-storybook` fails); `lint` covers `.storybook/**/*.ts` |
-| `package.json` | Scripts `storybook`, `build-storybook` (generate sprites first); `fmt`, `lint:ts-src`, `lint:styles` include `.storybook/`. Storybook packages `~10.6.5`, Compodoc `2.0.0`, `@angular-devkit/build-angular` and its devkit peers pinned to the `@angular/build` / `@angular/cli` version, `resolutions.webpack` `5.105.0` |
+| `angular.json` | `storybook` and `build-storybook` targets on the `ndw-ui-kit` project: port 6006, no browser auto-open (`open: false`), `experimentalZoneless`, `styles` + `includePaths: ["src/lib"]` for kit SCSS aliases, Compodoc on `tsconfig.lib.json` with private/protected/internal members off, output `dist/storybook`. `browserTarget: "ndw-ui-kit:build"` is required by the builder (without it, `start-storybook` fails); `lint` covers `.storybook/**/*.ts` |
+| `package.json` | Scripts `storybook`, `build-storybook` (generate sprites first); `fmt`, `lint:ts-src`, `lint:styles` include `.storybook/`. Storybook packages, Compodoc, `@angular-devkit/build-angular` and its devkit peers pinned to the `@angular/build` / `@angular/cli` version, webpack pinned through `resolutions` |
 | `tsconfig.json` | References `.storybook/tsconfig.json` |
 | `tsconfig.lib.json` | Includes only `src/lib/**`, excludes `**/*.stories.ts` |
 | `eslint.config.js` | `eslint-plugin-storybook` flat recommended config |
@@ -81,13 +81,3 @@ Imported by stories as `@sb/helpers/<file>`.
   one webpack copy (`yarn why webpack`).
 - Compodoc reads the library once at start. After changing a component's inputs, restart Storybook.
 - Move to Vite (`@storybook/angular-vite`) with the Angular 21 upgrade; Storybook 11 drops Angular 20.
-
-## Extension points
-
-| Ticket | Where it plugs in |
-|---|---|
-| NDWU-172 localization | Providers in `providers.ts`, locale global + decorator in `decorators/` |
-| NDWU-173 tap areas, debug panel | Toolbar flag + decorator in `decorators/`, styles in `styles.scss` |
-| NDWU-174 home page, branding | MDX pages in `src/storybook/` (add the glob to `main.ts`), `manager.ts` |
-| NDWU-176 a11y in CI | Test runner over the static build; per-story `parameters.a11y` |
-| NDWU-179..181 migrations | Stories next to components; a new family adds its pattern to CONTRIBUTING and, if shared, a helper here |

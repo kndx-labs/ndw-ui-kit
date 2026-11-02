@@ -82,7 +82,7 @@ Component showcases live in `src/playground/app/lib-component-showcase/<name>/`,
 merged output.
 
 A new component gets [Storybook](#storybook) stories instead of a showcase. Existing showcases stay until the
-playground is removed (NDWU-178). An existing showcase is registered in `lib-component-showcase/showcase-registry.ts`;
+playground is removed. An existing showcase is registered in `lib-component-showcase/showcase-registry.ts`;
 in `COMPONENTS_LIST`, `COMPONENT_TABS`, `SHOWCASE_NAMES`, `MENU_ITEMS` (and `READY_FOR_REVIEW_COMPONENTS` when it's
 ready) in `app/app.constants.ts`; in `ComponentName` in `app/app.types.ts`; and by its name and description in
 `src/playground/localization/components.json` and `de/components.json`. Widgets and examples follow the same
@@ -129,10 +129,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 
 ### Writing stories
 
-The model is `src/lib/core/components/button/button/ndwu-button.stories.ts`.
-
-- Exports are PascalCase. `Default` has all controls; the other stories show one visual dimension each (variants,
-  sizes, states, content forms) with `parameters: {controls: {disable: true}}`.
+- Exports are PascalCase. `Default` has a control for every input. Each other story shows one aspect of the
+  component, such as the values of one input, its states or its content forms, with
+  `parameters: {controls: {disable: true}}`.
 - `component:` is the real component. Use `render` with `argsToTemplate` when the story binds the `size` host
   directive, a native DOM event or projected content: Storybook's generated template binds only the component's own
   inputs and outputs.
@@ -141,8 +140,8 @@ The model is `src/lib/core/components/button/button/ndwu-button.stories.ts`.
   `.storybook/tsconfig.json`.
 - Type args with `StoryArgs<Component, Extra>` from `@sb/helpers/story-args`. It covers inputs, outputs and the
   `<name>Change` event of each `model()`. Story-only args and native events (`content`, `click`) go into `Extra`; add
-  `SizeArg` and `sizeArgType` for components with the `NdwuSizeDirective` host directive
-  (`inputs: ['ndwuSize: size']`), not for components with their own `size` input.
+  `SizeArg` and `sizeArgType(<sizes the component supports>)` for components with the `NdwuSizeDirective` host
+  directive (`inputs: ['ndwuSize: size']`), not for components with their own `size` input.
 - Aliased inputs (`ariaLabel` → `aria-label`, `idInput` → `id`, `disabledInput` → `disabled`): `StoryArgs` and
   `argsToTemplate` use the property name, the template needs the alias. Exclude them from `argsToTemplate` and bind the
   alias by hand: `argsToTemplate(args, {exclude: ['ariaLabel']})` plus `[aria-label]="ariaLabel"`.
@@ -153,7 +152,7 @@ The model is `src/lib/core/components/button/button/ndwu-button.stories.ts`.
   panel shows the current value instead of "Choose option...".
 - An arg reaches the template only if its argType has a `control` or an `action`; `control: false` removes it.
 - "Show code" is what app developers copy, so it must be plain markup:
-  - stories with controls set `parameters.docs.source.transform: argsSourceTransform` (`@sb/helpers/args-source`),
+  - stories with controls set `parameters.docs.source.transform: argsSourceTransform` (`@sb/helpers/args-to-source`),
     which turns `argsToTemplate` bindings into literal attributes;
   - fixed stories build a literal template from typed data in TS (`VARIANTS.map(...)`), without `@for` over props,
     props for constants or inline styles;
@@ -165,7 +164,7 @@ The model is `src/lib/core/components/button/button/ndwu-button.stories.ts`.
   is not supported).
 - Dialogs and drawers opened through `NdwuModalService` are created from the root injector, so the Size toolbar doesn't
   reach them. In a story, pass the story component's injector: `openDialog(Content, {injector: inject(Injector)})`.
-- Storybook-only components use the `app-` prefix.
+- Storybook-only components and directives use the `sb-` prefix.
 - Families without a pattern yet (CVA form controls, overlays, table, widgets): the first ticket of the family adds its
   pattern to this section.
 

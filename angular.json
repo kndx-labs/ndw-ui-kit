@@ -46,6 +46,7 @@
             "configDir": ".storybook",
             "tsConfig": ".storybook/tsconfig.json",
             "port": 6006,
+            "open": false,
             "styles": [".storybook/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["src/lib"]

@@ -332,6 +332,13 @@ module.exports = tseslint.config(
     },
   },
   {
+    files: ['.storybook/**/*.ts', 'src/**/*.stories.ts'],
+    rules: {
+      '@angular-eslint/component-selector': [WARN, {type: 'element', prefix: ['sb'], style: 'kebab-case'}],
+      '@angular-eslint/directive-selector': [WARN, {type: ['attribute'], prefix: ['sb'], style: 'camelCase'}],
+    },
+  },
+  {
     files: ['scripts/**/*.ts'],
 
     languageOptions: {

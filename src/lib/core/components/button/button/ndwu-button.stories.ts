@@ -7,7 +7,7 @@ import {
   NdwuIconName,
 } from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
-import {argsSourceTransform} from '@sb/helpers/args-source';
+import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {SizeArg, StoryArgs} from '@sb/helpers/story-args';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
@@ -76,7 +76,7 @@ const meta: Meta<ButtonStoryArgs> = {
     label: {
       description: 'Label text, passed through the `localize` pipe. When empty, projected content is shown',
     },
-    size: sizeArgType,
+    size: sizeArgType(SIZES),
     content: {
       control: 'text',
       description: 'Projected content, shown when `label` is empty',

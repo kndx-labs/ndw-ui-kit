@@ -6,11 +6,17 @@ import {
   inject,
   input,
   output,
+  untracked,
   viewChild,
 } from '@angular/core';
 import {NgControl} from '@angular/forms';
-import {NdwuSizeDirective} from '@ndw-ui-kit/core';
-import {type NdwuFileInputValue, NdwuFileUploadComponent, type NdwuTranslationTexts} from '@ndw-ui-kit/core/widgets';
+import {NDWU_SIZE, NdwuSizeDirective} from '@ndw-ui-kit/core';
+import {
+  type NdwuFileInputValue,
+  type NdwuFileProgressUpdate,
+  NdwuFileUploadComponent,
+  type NdwuTranslationTexts,
+} from '@ndw-ui-kit/core/widgets';
 import {NdwuFormFieldBase} from '../../classes/form-field-base';
 import {setValueAccessor} from '../../form-field.utils';
 
@@ -36,18 +42,22 @@ export class NdwuFileUploadFieldComponent extends NdwuFormFieldBase<NdwuFileInpu
 
   public readonly filesChange = output<NdwuFileInputValue[]>();
   public readonly uploadRequest = output<NdwuFileInputValue[]>();
+  public readonly cancelRequest = output<NdwuFileInputValue[]>();
 
-  private readonly fileUpload = viewChild.required(NdwuFileUploadComponent);
+  private readonly fileUpload = viewChild(NdwuFileUploadComponent);
 
-  public readonly effectiveSize = computed(() => this.fileUpload().effectiveSize());
-
-  protected readonly initialFiles = computed(() => this.inputValue ?? []);
+  public readonly effectiveSize = computed(() => this.fileUpload()?.effectiveSize() ?? NDWU_SIZE.XL);
 
   constructor(
     protected override readonly ngControl: NgControl,
   ) {
     super([]);
     setValueAccessor(this.ngControl, this);
+  }
+
+  public override writeValue(value: NdwuFileInputValue[] | null): void {
+    super.writeValue(value ?? []);
+    untracked(() => this.fileUpload()?.setFiles(this.inputValue));
   }
 
   public onFilesChange(files: NdwuFileInputValue[]): void {
@@ -59,7 +69,26 @@ export class NdwuFileUploadFieldComponent extends NdwuFormFieldBase<NdwuFileInpu
     this.onTouched();
   }
 
-  public updateFileProgress(fileId: string, updates: Partial<NdwuFileInputValue>): void {
-    this.fileUpload().updateFileProgress(fileId, updates);
+  public updateFileProgress(fileId: string, update: NdwuFileProgressUpdate): void {
+    untracked(() => {
+      const fileUpload = this.fileUpload();
+
+      if (!fileUpload) {
+        return;
+      }
+
+      const before = fileUpload.files();
+
+      fileUpload.updateFileProgress(fileId, update);
+
+      const after = fileUpload.files();
+
+      if (after === before) {
+        return;
+      }
+
+      this.inputValue = after;
+      this.ngControl.control?.setValue(after, {emitModelToViewChange: false});
+    });
   }
 }

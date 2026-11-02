@@ -105,6 +105,10 @@ export class NdwuFileUploadHeaderComponent {
     return this.files().some(f => f.status === 'error');
   });
 
+  protected readonly hasRetryableErrors = computed(() => {
+    return this.files().some(f => f.status === 'error' && f.isRetryable === true);
+  });
+
   protected readonly hasWarnings = computed(() => {
     return this.files().some(f => f.status === 'warning');
   });

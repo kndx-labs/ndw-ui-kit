@@ -1,6 +1,6 @@
 # 010 Second npm package for charts
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-10-22
 - Issue(s): NDWU-123
 

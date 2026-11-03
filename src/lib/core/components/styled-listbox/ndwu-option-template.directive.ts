@@ -1,5 +1,5 @@
 import {Directive, TemplateRef, inject, input} from '@angular/core';
-import type {NdwuOption} from '@ndw-ui-kit/core';
+import type {NdwuOption} from '../../../shared.types';
 
 export interface NdwuOptionTemplateContext<T = NdwuOption> {
   $implicit: NdwuOption;
@@ -7,6 +7,8 @@ export interface NdwuOptionTemplateContext<T = NdwuOption> {
   label: string;
   selected: boolean;
   disabled: boolean;
+  /** Current input text; set only by autocomplete. */
+  query?: string;
 }
 
 @Directive({

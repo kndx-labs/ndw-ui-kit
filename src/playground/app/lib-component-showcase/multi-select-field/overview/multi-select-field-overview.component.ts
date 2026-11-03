@@ -4,7 +4,6 @@ import {NDWU_SIZE, NdwuIconComponent, NdwuOptionGroup} from '@ndw-ui-kit/core';
 import {
   NdwuMultiSelectDisplayDirective,
   NdwuMultiSelectFieldComponent,
-  NdwuOptionTemplateDirective,
   NdwuValidators,
 } from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
@@ -27,7 +26,6 @@ import {
     NdwuIconComponent,
     NdwuMultiSelectDisplayDirective,
     NdwuMultiSelectFieldComponent,
-    NdwuOptionTemplateDirective,
     ShowcaseLayoutComponent,
   ],
 })

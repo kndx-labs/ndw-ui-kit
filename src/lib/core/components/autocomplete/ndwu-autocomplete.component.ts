@@ -41,12 +41,18 @@ import {NdwuResizeObserverDirective, NdwuSizeDirective} from '../../directives';
 import {NDWU_INTERACTION_FOCUS_TYPE, NdwuInteractionRegistry} from '../../services';
 import {NDWU_ICON_NAME} from '../../../icon-names';
 import {NDWU_SIZE, type NdwuOptionGroup} from '../../../shared.types';
+import {ndwuMapRawOptionsByValue} from '../../../options';
 import {NdwuIconButtonComponent} from '../button/icon-button/ndwu-icon-button.component';
 import {NdwuDropdownPanelComponent, NdwuPanelFooterDirective, NdwuPanelHeaderDirective} from '../dropdown-panel';
 import {NDWU_CONTROL, type NdwuControl} from '../field-frame/control/ndwu-control';
 import {NdwuFormFieldComponent} from '../field-frame/ndwu-form-field.component';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
-import {NdwuStyledGroupHeaderComponent, NdwuStyledListboxComponent, NdwuStyledOptionComponent} from '../styled-listbox';
+import {
+  type NdwuOptionTemplateContext,
+  NdwuStyledGroupHeaderComponent,
+  NdwuStyledListboxComponent,
+  NdwuStyledOptionComponent,
+} from '../styled-listbox';
 import type {NdwuAutocompleteFilter, NdwuAutocompleteOption} from './ndwu-autocomplete.types';
 import {ndwuAutocompleteContainsFilter} from './ndwu-autocomplete.utils';
 
@@ -119,6 +125,8 @@ export class NdwuAutocompleteComponent implements NdwuControl {
   public readonly clearButtonAriaLabel = input<string>('Clear');
   public readonly closeButtonAriaLabel = input<string>('Close');
   public readonly footer = input<TemplateRef<unknown> | null>(null);
+  public readonly optionTemplate = input<TemplateRef<NdwuOptionTemplateContext<unknown>> | null>(null);
+  public readonly maxVisibleOptions = input<number | null>(null);
 
   public readonly valueChange = output<string>();
   public readonly optionSelected = output<NdwuAutocompleteOption>();
@@ -165,6 +173,8 @@ export class NdwuAutocompleteComponent implements NdwuControl {
 
     return this.options().map((option) => ({...option, label: this.displayLabel(option.label)}));
   });
+
+  protected readonly rawByValue = computed(() => ndwuMapRawOptionsByValue(this.options(), this.options()));
 
   protected readonly rows = computed<OptionRow<NdwuAutocompleteOption>[]>(() => {
     const query = this.query();

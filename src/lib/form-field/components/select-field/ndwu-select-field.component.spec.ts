@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, provideZonelessChangeDetection} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {type ComponentFixture, TestBed} from '@angular/core/testing';
+import {NdwuOptionTemplateDirective} from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent} from './ndwu-select-field.component';
-import {NdwuOptionTemplateDirective} from './ndwu-option-template.directive';
 
 @Component({
   standalone: true,

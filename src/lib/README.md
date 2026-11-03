@@ -637,6 +637,30 @@ or domain arrays together with an `optionAdapter`.
 Autocomplete has no adapter: it accepts only `NdwuAutocompleteOption[]`,
 and the project-wide default adapter doesn't apply to it.
 
+Autocomplete options can set `variant: 'danger'` directly. Both autocomplete components also accept
+`maxVisibleOptions`; it limits visible rows on desktop and is ignored in the mobile sheet. Use
+`ndwuOptionTemplate` to render custom content and highlight the current trimmed query:
+
+```html
+<ndwu-autocomplete-field [options]="options" [maxVisibleOptions]="4">
+  <ng-template
+    [ndwuOptionTemplate]="options"
+    let-raw="raw"
+    let-label="label"
+    let-query="query"
+  >
+    <ndwu-icon [name]="raw?.icon" aria-hidden="true" />
+    <span>{{ label }}</span>
+    <mark>{{ query }}</mark>
+  </ng-template>
+</ndwu-autocomplete-field>
+```
+
+Autocomplete template context provides the normalized option through `$implicit`, the original `raw` item matched by
+value, displayed `label`, `disabled`, and `query`. `selected` is always `false`; other option templates leave `query`
+undefined. Import `NdwuOptionTemplateDirective` from `@ndw-ui-kit/core` and bind the original options array to type
+`raw`.
+
 ```typescript
 import {NdwuOptionAdapter} from '@ndw-ui-kit/core';
 
@@ -696,7 +720,7 @@ Use `maxVisibleOptions` to change how many option rows appear before the list sc
 ##### Custom option template
 
 Use `ndwuOptionTemplate` to replace option content with an icon, status marker, or other domain-specific UI. Import
-`NdwuOptionTemplateDirective` from `@ndw-ui-kit/core/form-field`. Bind the original options array to the directive so
+`NdwuOptionTemplateDirective` from `@ndw-ui-kit/core`. Bind the original options array to the directive so
 Angular can type `raw`:
 
 ```html
@@ -708,9 +732,9 @@ Angular can type `raw`:
     let-selected="selected"
     let-disabled="disabled"
   >
-    <ndwu-icon [name]="raw.icon" aria-hidden="true" />
+    <ndwu-icon [name]="raw?.icon" aria-hidden="true" />
     <span>{{ label }}</span>
-    <span class="status-dot" [style.backgroundColor]="raw.statusColor" aria-hidden="true"></span>
+    <span class="status-dot" [style.backgroundColor]="raw?.statusColor" aria-hidden="true"></span>
   </ng-template>
 </ndwu-select-field>
 ```

@@ -54,11 +54,11 @@
             let-raw="raw"
             let-label="label"
           >
-            <ndwu-icon [name]="raw.icon" aria-hidden="true" />
+            <ndwu-icon [name]="raw?.icon" aria-hidden="true" />
             <span class="option-template__label">{{ label }}</span>
             <span
               class="option-template__indicator"
-              [style.backgroundColor]="raw.statusColor"
+              [style.backgroundColor]="raw?.statusColor"
               aria-hidden="true"
             ></span>
           </ng-template>

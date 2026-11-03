@@ -17,3 +17,16 @@
     opacity: 0.7;
   }
 }
+
+.autocomplete-overview__option-template {
+  display: flex;
+  gap: var(--ndwu-styled-option-gap);
+  align-items: center;
+  min-width: 0;
+}
+
+.autocomplete-overview__query-match {
+  border-radius: 2px;
+  color: var(--ndwu-color-brand-50);
+  font-weight: 700;
+}

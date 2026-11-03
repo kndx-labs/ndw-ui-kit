@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, provideZonelessChangeDetection} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {type ComponentFixture, TestBed} from '@angular/core/testing';
+import {NdwuOptionTemplateDirective} from '@ndw-ui-kit/core';
 import {NdwuMultiSelectFieldComponent} from './ndwu-multi-select-field.component';
-import {NdwuOptionTemplateDirective} from '../select-field/ndwu-option-template.directive';
 
 interface MultiSelectOptionTemplateItem {
   value: string;

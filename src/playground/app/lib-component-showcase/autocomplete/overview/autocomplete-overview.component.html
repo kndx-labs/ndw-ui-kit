@@ -51,6 +51,33 @@
     </div>
 
     <div class="state-section">
+      <h4>Custom option template, danger, and visible option limit</h4>
+      <ndwu-autocomplete-field
+        [options]="customOptions"
+        [maxVisibleOptions]="4"
+        [localizeLabels]="false"
+        placeholder="Search countries"
+      >
+        <ng-template
+          [ndwuOptionTemplate]="customOptions"
+          let-raw="raw"
+          let-label="label"
+          let-query="query"
+        >
+          <span class="autocomplete-overview__option-template">
+            @if (raw?.icon; as icon) {
+              <ndwu-icon [name]="icon" aria-hidden="true" />
+            }
+            @let match = splitMatch(label, query);
+            <span>
+              {{ match.before }}<span class="autocomplete-overview__query-match">{{ match.match }}</span>{{ match.after }}
+            </span>
+          </span>
+        </ng-template>
+      </ndwu-autocomplete-field>
+    </div>
+
+    <div class="state-section">
       <h4>{{ 'autocomplete-showcase.sizes' | localize }}</h4>
       <form [formGroup]="sizesForm" class="state-section__stack">
         <ndwu-autocomplete-field

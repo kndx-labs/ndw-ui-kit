@@ -26,6 +26,7 @@ import {
   NdwuIconComponent,
   type NdwuOption,
   type NdwuOptionAdapter,
+  NdwuOptionTemplateDirective,
   NdwuPanelFooterDirective,
   NdwuPanelHeaderDirective,
   NdwuResizeObserverDirective,
@@ -51,7 +52,6 @@ import {
   NdwuMultiSelectDisplayDirective,
 } from './ndwu-multi-select-display.directive';
 import {NdwuSelectFieldBase} from '../../classes/select-field-base.directive';
-import {NdwuOptionTemplateDirective} from '../select-field/ndwu-option-template.directive';
 
 @Component({
   selector: 'ndwu-multi-select-field',

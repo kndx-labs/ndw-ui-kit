@@ -19,6 +19,7 @@ import {
   type NdwuHelperMessageStatus,
   NdwuHintDirective,
   type NdwuOptionGroup,
+  NdwuOptionTemplateDirective,
   NdwuSizeDirective,
   ndwuAutocompleteContainsFilter,
 } from '@ndw-ui-kit/core';
@@ -58,12 +59,14 @@ export class NdwuAutocompleteFieldComponent extends NdwuFormFieldBase<string> im
   public readonly localizeLabels = input(true, {transform: booleanAttribute});
   public readonly clearButtonAriaLabel = input<string>('Clear');
   public readonly closeButtonAriaLabel = input<string>('Close');
+  public readonly maxVisibleOptions = input<number | null>(null);
 
   public readonly optionSelected = output<NdwuAutocompleteOption>();
 
   protected readonly hintId = `${uniqueId('ndwu-autocomplete-field-')}-hint`;
 
   protected readonly footerDirective = contentChild(NdwuAutocompleteFooterDirective);
+  protected readonly optionTemplateDirective = contentChild(NdwuOptionTemplateDirective);
   protected readonly autocomplete = viewChild(NdwuAutocompleteComponent);
 
   protected readonly hasHelperMessage = computed(() => {

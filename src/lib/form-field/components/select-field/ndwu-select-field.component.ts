@@ -23,6 +23,7 @@ import {
   NdwuIconComponent,
   type NdwuOption,
   type NdwuOptionAdapter,
+  NdwuOptionTemplateDirective,
   NdwuPanelHeaderDirective,
   NdwuResizeObserverDirective,
   NdwuSizeDirective,
@@ -43,7 +44,6 @@ import {NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
 import {type OptionRow, buildOptionRows} from '@ndw-ui-kit/core/utils';
 import {NdwuSelectFieldBase} from '../../classes/select-field-base.directive';
 import {NdwuHelperMessageComponent} from '../../parts/helper-message/ndwu-helper-message.component';
-import {NdwuOptionTemplateDirective} from './ndwu-option-template.directive';
 
 @Component({
   selector: 'ndwu-select-field',

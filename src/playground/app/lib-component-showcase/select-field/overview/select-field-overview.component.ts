@@ -1,7 +1,14 @@
 import {ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NdwuButtonComponent, NdwuIconComponent, NdwuOption, NdwuOptionGroup} from '@ndw-ui-kit/core';
-import {NdwuOptionTemplateDirective, NdwuSelectFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
+import {
+  NDWU_SIZE,
+  NdwuButtonComponent,
+  NdwuIconComponent,
+  NdwuOption,
+  NdwuOptionGroup,
+  NdwuOptionTemplateDirective,
+} from '@ndw-ui-kit/core';
+import {NdwuSelectFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {
   CONTINENT_GROUPS,

@@ -33,6 +33,7 @@ export const COMPONENTS_LIST: ComponentName[] = [
   'ndwu-tag',
   'ndwu-pictogram',
   'ndwu-scrollbar',
+  'ndwu-heat-strip',
   'ndwu-table',
 ];
 
@@ -70,6 +71,7 @@ export const COMPONENT_TABS: Record<ComponentName, readonly string[]> = {
   'ndwu-tag': ['overview', 'sandbox'],
   'ndwu-pictogram': ['overview', 'sandbox'],
   'ndwu-scrollbar': ['overview'],
+  'ndwu-heat-strip': ['overview'],
   'ndwu-table': ['overview'],
 };
 
@@ -144,6 +146,7 @@ export const SHOWCASE_NAMES: Record<string, string> = {
   'ndwu-pictogram': 'Pictogram',
   'ndwu-empty-state': 'Empty State',
   'ndwu-scrollbar': 'Scrollbar',
+  'ndwu-heat-strip': 'Heat Strip',
   'ndwu-table': 'Table',
 };
 
@@ -211,4 +214,9 @@ export const MENU_ITEMS: MenuItem[] = [
   {type: 'item', name: 'ndwu-textarea'},
   {type: 'item', name: 'ndwu-pictogram'},
   {type: 'item', name: 'ndwu-scrollbar'},
+  {
+    type: 'group',
+    label: 'Charts',
+    children: ['ndwu-heat-strip'],
+  },
 ];

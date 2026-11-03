@@ -34,9 +34,94 @@
           "options": {
             "lintFilePatterns": [
               "src/**/*.ts",
-              "src/**/*.component.html"
+              "src/**/*.component.html",
+              ".storybook/**/*.ts"
             ]
           }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "browserTarget": "ndw-ui-kit:build",
+            "configDir": ".storybook",
+            "tsConfig": ".storybook/tsconfig.json",
+            "port": 6006,
+            "open": false,
+            "styles": [".storybook/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/lib"]
+            },
+            "experimentalZoneless": true,
+            "compodoc": true,
+            "compodocArgs": [
+              "-e", "json",
+              "-d", ".storybook",
+              "-p", "tsconfig.lib.json",
+              "--disablePrivate",
+              "--disableProtected",
+              "--disableInternal",
+              "--disableLifeCycleHooks",
+              "--disableSourceCode",
+              "--disableGraph",
+              "--disableCoverage",
+              "--disableDomTree",
+              "--disableTemplateTab",
+              "--disableStyleTab"
+            ]
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "browserTarget": "ndw-ui-kit:build",
+            "configDir": ".storybook",
+            "tsConfig": ".storybook/tsconfig.json",
+            "styles": [".storybook/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/lib"]
+            },
+            "experimentalZoneless": true,
+            "compodoc": true,
+            "compodocArgs": [
+              "-e", "json",
+              "-d", ".storybook",
+              "-p", "tsconfig.lib.json",
+              "--disablePrivate",
+              "--disableProtected",
+              "--disableInternal",
+              "--disableLifeCycleHooks",
+              "--disableSourceCode",
+              "--disableGraph",
+              "--disableCoverage",
+              "--disableDomTree",
+              "--disableTemplateTab",
+              "--disableStyleTab"
+            ],
+            "outputDir": "dist/storybook"
+          }
+        }
+      }
+    },
+    "ndw-ui-kit-charts": {
+      "projectType": "library",
+      "root": "",
+      "sourceRoot": "src/charts",
+      "prefix": "ndwu",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "project": "./src/charts/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "tsconfig.charts.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "tsconfig.charts.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     },
@@ -56,7 +141,8 @@
             "tsConfig": "tsconfig.playground.json",
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/lib"
+                "src/lib",
+                ".sass-aliases/src"
               ]
             },
             "assets": [
@@ -149,7 +235,8 @@
             "buildTarget": "playground:build:development",
             "runner": "vitest",
             "include": [
-              "../lib/**/*.spec.ts"
+              "../lib/**/*.spec.ts",
+              "../charts/**/*.spec.ts"
             ],
             "tsConfig": "tsconfig.spec.json"
           }

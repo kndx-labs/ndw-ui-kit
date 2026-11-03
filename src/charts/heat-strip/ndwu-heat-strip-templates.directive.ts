@@ -5,7 +5,8 @@ import type {NdwuHeatStripCell, NdwuHeatStripMarkerContext, NdwuHeatStripTooltip
   selector: 'ng-template[ndwuHeatStripTooltip]',
 })
 export class NdwuHeatStripTooltipDirective<T = unknown> {
-  public readonly ndwuHeatStripTooltip = input.required<readonly NdwuHeatStripCell<T>[]>();
+  /** Used only to infer the template context type; the value is unused at runtime. */
+  public readonly ndwuHeatStripTooltip = input<readonly NdwuHeatStripCell<T>[] | '' | undefined>(undefined);
   public readonly templateRef = inject<TemplateRef<NdwuHeatStripTooltipContext<T>>>(TemplateRef);
 
   public static ngTemplateContextGuard<T>(
@@ -20,7 +21,8 @@ export class NdwuHeatStripTooltipDirective<T = unknown> {
   selector: 'ng-template[ndwuHeatStripMarker]',
 })
 export class NdwuHeatStripMarkerDirective<T = unknown> {
-  public readonly ndwuHeatStripMarker = input.required<readonly NdwuHeatStripCell<T>[]>();
+  /** Used only to infer the template context type; the value is unused at runtime. */
+  public readonly ndwuHeatStripMarker = input<readonly NdwuHeatStripCell<T>[] | '' | undefined>(undefined);
   public readonly templateRef = inject<TemplateRef<NdwuHeatStripMarkerContext<T>>>(TemplateRef);
 
   public static ngTemplateContextGuard<T>(

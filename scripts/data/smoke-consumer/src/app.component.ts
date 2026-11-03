@@ -1,14 +1,19 @@
 import {Component} from '@angular/core';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
-import {type NdwuHeatStripCell, NdwuHeatStripComponent, NdwuHeatStripTooltipDirective} from '@ndw-ui-kit/charts';
+import {
+  type NdwuHeatStripCell,
+  NdwuHeatStripComponent,
+  NdwuHeatStripMarkerDirective,
+  NdwuHeatStripTooltipDirective,
+} from '@ndw-ui-kit/charts';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [NdwuHeatStripComponent, NdwuHeatStripTooltipDirective],
+  imports: [NdwuHeatStripComponent, NdwuHeatStripMarkerDirective, NdwuHeatStripTooltipDirective],
   template: `
     <main [id]="id">
       <ndwu-heat-strip [cells]="cells">
+        <ng-template ndwuHeatStripMarker>•</ng-template>
         <ng-template [ndwuHeatStripTooltip]="cells" let-cell>
           {{ cell.data?.label }}
         </ng-template>

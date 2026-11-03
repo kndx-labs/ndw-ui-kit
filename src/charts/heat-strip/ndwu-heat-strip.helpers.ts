@@ -1,8 +1,4 @@
-import {
-  NDWU_HEAT_STRIP_LEVEL_COUNT,
-  type NdwuHeatStripCell,
-  type NdwuHeatStripLevel,
-} from './ndwu-heat-strip.types';
+import {NDWU_HEAT_STRIP_LEVEL_COUNT, type NdwuHeatStripCell, type NdwuHeatStripLevel} from './ndwu-heat-strip.types';
 
 export function normalizeHeatStripLevel(level: unknown): NdwuHeatStripLevel | null {
   if (

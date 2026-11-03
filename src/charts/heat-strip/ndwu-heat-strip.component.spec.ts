@@ -59,6 +59,23 @@ class HeatStripTooltipTestHostComponent {
   public readonly loading = signal(false);
 }
 
+@Component({
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NdwuHeatStripComponent, NdwuHeatStripTooltipDirective],
+  template: `
+    <ndwu-heat-strip [cells]="cells">
+      <ng-template ndwuHeatStripTooltip let-index="index">Index {{ index }}</ng-template>
+    </ndwu-heat-strip>
+  `,
+})
+class HeatStripUnboundTooltipTestHostComponent {
+  public readonly cells: readonly NdwuHeatStripCell<TooltipTestData>[] = [
+    {level: 0, data: {id: 'a', name: 'a'}},
+    {level: 1, data: {id: 'b', name: 'b'}},
+  ];
+}
+
 function createStrip(cells: readonly NdwuHeatStripCell[]): ComponentFixture<NdwuHeatStripComponent> {
   const fixture = TestBed.createComponent(NdwuHeatStripComponent);
 
@@ -99,6 +116,14 @@ function press(fixture: ComponentFixture<NdwuHeatStripComponent>, key: string): 
 
 function createTooltipHost(): ComponentFixture<HeatStripTooltipTestHostComponent> {
   const fixture = TestBed.createComponent(HeatStripTooltipTestHostComponent);
+
+  fixture.detectChanges();
+
+  return fixture;
+}
+
+function createUnboundTooltipHost(): ComponentFixture<HeatStripUnboundTooltipTestHostComponent> {
+  const fixture = TestBed.createComponent(HeatStripUnboundTooltipTestHostComponent);
 
   fixture.detectChanges();
 
@@ -174,7 +199,7 @@ describe('NdwuHeatStripComponent', () => {
     vi.stubGlobal('matchMedia', createMatchMedia(false));
 
     TestBed.configureTestingModule({
-      imports: [NdwuHeatStripComponent, HeatStripTooltipTestHostComponent],
+      imports: [NdwuHeatStripComponent, HeatStripTooltipTestHostComponent, HeatStripUnboundTooltipTestHostComponent],
       providers: [provideZonelessChangeDetection()],
     });
   });
@@ -489,6 +514,16 @@ describe('NdwuHeatStripComponent', () => {
     expect(tooltipElement()?.textContent).toContain('1:b');
     expect(cells[1]?.getAttribute('aria-describedby')).toBe(tooltipElement()?.id);
     expect(cells[1]?.classList.contains('ndwu-heat-strip__cell--active')).toBe(true);
+  });
+
+  it('opens a tooltip with its index when the directive input is omitted', () => {
+    const fixture = createUnboundTooltipHost();
+    const cells = rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell');
+
+    cells[1]?.focus();
+    fixture.detectChanges();
+
+    expect(tooltipElement()?.textContent).toBe('Index 1');
   });
 
   it('reanchors an open tooltip when focus moves between cells', () => {

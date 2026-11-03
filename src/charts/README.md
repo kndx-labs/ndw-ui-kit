@@ -37,7 +37,6 @@ import {
 } from '@ndw-ui-kit/charts';
 
 @Component({
-  standalone: true,
   imports: [NdwuHeatStripComponent, NdwuHeatStripTooltipDirective],
   template: `
     <ndwu-heat-strip [cells]="cells" [axisLabels]="axisLabels">
@@ -61,7 +60,9 @@ export class ExampleComponent {
 The tooltip template receives the cell as its implicit value and its position
 as `index`. A marker template can be projected with
 `ng-template[ndwuHeatStripMarker]`; marked cells use a built-in inset border
-when no marker template is present.
+when no marker template is present. The directive input is optional and only
+types the template context. Bind the array passed to `cells` to get a typed
+`let-cell`, or use the bare attribute when the template does not use cell data.
 
 `cells` is required. State is positional: when `cells` updates, the tab stop
 and an open tooltip stay at the same index and show the new cell's data; a

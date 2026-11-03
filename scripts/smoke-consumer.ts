@@ -219,6 +219,9 @@ const main = (): void => {
     }
 
     writeFileSync(appComponentPath, invalidAppComponent);
+    process.stdout.write(
+      'Running negative strictTemplates build (a TS2339 error for cell.data?.missing below is expected)...\n',
+    );
 
     const invalidBuild = buildConsumer(tempDir, tempSystemDir);
 

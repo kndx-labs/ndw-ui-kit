@@ -644,6 +644,7 @@ interface Country {
   code: string;
   name: string;
   isDisabled?: boolean;
+  isDanger?: boolean;
 }
 
 const countries: Country[] = [
@@ -655,6 +656,20 @@ const countryAdapter: NdwuOptionAdapter<Country> = {
   value: 'code',          // key selector: resolves Country.code
   label: 'name',          // key selector: resolves Country.name
   disabled: 'isDisabled', // optional
+};
+```
+
+##### Danger options
+
+Set `variant: 'danger'` on an `NdwuOption` to show destructive options in red. The default adapter reads
+`variant`; domain arrays can map it with a key or function selector. Danger options use the standard selected,
+active, and disabled backgrounds. An unselected, enabled danger option uses a pale red hover fill.
+
+```typescript
+const countryAdapter: NdwuOptionAdapter<Country> = {
+  value: 'code',
+  label: 'name',
+  variant: (country) => country.isDanger ? 'danger' : undefined,
 };
 ```
 

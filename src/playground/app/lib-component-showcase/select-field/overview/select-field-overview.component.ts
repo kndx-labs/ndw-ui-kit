@@ -44,6 +44,10 @@ export class SelectFieldOverviewComponent {
   protected readonly countryOptionsGrouped = COUNTRY_OPTIONS_GROUPED;
   protected readonly continentGroups: NdwuOptionGroup[] = CONTINENT_GROUPS;
   protected readonly userProvidedLabelOptions = USER_PROVIDED_LABEL_OPTIONS;
+  protected readonly dangerOptions: NdwuOption[] = [
+    {value: 'danger', label: 'Danger option', variant: 'danger'},
+    {value: 'disabled-danger', label: 'Disabled danger option', variant: 'danger', disabled: true},
+  ];
 
   protected readonly longLabelsOptionsList: NdwuOption[] = [
     {
@@ -67,6 +71,10 @@ export class SelectFieldOverviewComponent {
 
   protected readonly formMaxVisibleOptions = new FormGroup({
     country: new FormControl(''),
+  });
+
+  protected readonly formDangerOption = new FormGroup({
+    option: new FormControl(''),
   });
 
   protected readonly formHiddenOption = new FormGroup({

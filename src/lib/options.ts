@@ -10,6 +10,7 @@ export const NDWU_DEFAULT_OPTION_ADAPTER: NdwuOptionAdapter<NdwuOption> = {
   value: 'value',
   label: 'label',
   secondaryText: 'secondaryText',
+  variant: 'variant',
   disabled: 'disabled',
   hidden: 'hidden',
   groupId: 'groupId',
@@ -72,6 +73,11 @@ export function ndwuNormalizeOptions<T>(
     const secondaryText = adapter.secondaryText
       ? resolve(item, adapter.secondaryText)
       : undefined;
+
+    const variant = adapter.variant
+      ? resolve(item, adapter.variant)
+      : undefined;
+
     const groupId = adapter.groupId
       ? resolve(item, adapter.groupId)
       : undefined;
@@ -89,6 +95,10 @@ export function ndwuNormalizeOptions<T>(
 
     if (secondaryText !== undefined) {
       normalized.secondaryText = secondaryText;
+    }
+
+    if (variant !== undefined) {
+      normalized.variant = variant;
     }
 
     if (groupId !== undefined) {

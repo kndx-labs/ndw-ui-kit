@@ -174,3 +174,19 @@ domain objects, allowing consumers to choose whichever representation is more co
 - DI-provided adapters are not type-safe at compile time.
 - There is no automatic shape inference beyond treating the input as `NdwuOption[]`
   when no adapter is provided.
+
+## Addendum: _danger_ variant for options
+
+- Date: 2026-11-03
+
+`NdwuOption` now has an optional `variant` field. `NdwuOptionAdapter<T>.variant`
+accepts the same key or function selectors as the other fields and resolves to
+`NdwuOptionVariant | undefined`. The built-in adapter maps the `variant` property
+for `NdwuOption` arrays. Normalization omits `variant` when its selector resolves
+to `undefined`.
+
+The select and multi-select fields pass the normalized variant to the styled
+option. The `danger` variant applies danger text and a pale red hover fill to
+enabled, unselected options; selected, active, and disabled backgrounds retain
+their standard styles. Both fields also pass `NdwuOption.disabled` through to
+the styled option so disabled options cannot be selected.

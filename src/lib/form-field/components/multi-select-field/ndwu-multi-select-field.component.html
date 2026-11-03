@@ -88,6 +88,8 @@
             <ndwu-styled-option
               [value]="row.option.value"
               [label]="row.option.label"
+              [disabled]="!!row.option.disabled"
+              [variant]="row.option.variant ?? 'default'"
               [attr.aria-describedby]="
                 row.option.groupId
                   ? groupHeaderId(row.option.groupId)

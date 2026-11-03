@@ -73,6 +73,14 @@
     }
   }
 
+  &.ndwu-styled-option--danger {
+    color: var(--ndwu-styled-option-danger-text-color);
+  }
+
+  &.ndwu-styled-option--danger:hover:not(.ndwu-styled-option--disabled, .ndwu-styled-option--selected) {
+    background-color: var(--ndwu-styled-option-danger-hover-bg);
+  }
+
   &.ndwu-styled-option--disabled,
   &.ndwu-styled-option--disabled:hover {
     background-color: var(--ndwu-styled-option-disabled-bg);

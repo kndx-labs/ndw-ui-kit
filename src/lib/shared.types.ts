@@ -5,13 +5,20 @@ export const NDWU_SIZE = {
   XXL: 'XXL',
 } as const;
 
+export const NDWU_OPTION_VARIANT = {
+  DEFAULT: 'default',
+  DANGER: 'danger',
+} as const;
+
 export type NdwuValues<T> = T[keyof T];
 export type NdwuSize = NdwuValues<typeof NDWU_SIZE>;
+export type NdwuOptionVariant = NdwuValues<typeof NDWU_OPTION_VARIANT>;
 
 export interface NdwuOption {
   value: string | number;
   label: string;
   secondaryText?: string;
+  variant?: NdwuOptionVariant;
   disabled?: boolean;
   hidden?: boolean;
   groupId?: string;
@@ -33,6 +40,7 @@ export interface NdwuOptionAdapter<T> {
   value: NdwuOptionFieldSelector<T, string | number>;
   label: NdwuOptionFieldSelector<T, string>;
   secondaryText?: NdwuOptionFieldSelector<T, string | undefined>;
+  variant?: NdwuOptionFieldSelector<T, NdwuOptionVariant | undefined>;
   disabled?: NdwuOptionFieldSelector<T, boolean | undefined>;
   hidden?: NdwuOptionFieldSelector<T, boolean | undefined>;
   groupId?: NdwuOptionFieldSelector<T, string | undefined>;

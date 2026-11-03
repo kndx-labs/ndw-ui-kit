@@ -29,6 +29,18 @@
     </div>
 
     <div class="state-section">
+      <h4>Danger option</h4>
+      <form [formGroup]="formDangerOption">
+        <ndwu-select-field
+          label="Action"
+          placeholder="Choose action"
+          [options]="dangerOptions"
+          formControlName="option"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
       <h4>Dynamic options</h4>
       <p class="state-section__hint">
         Panel height follows the option count. Clicking outside closes the panel,

@@ -57,6 +57,9 @@ export class NdwuFileUploadFieldComponent extends NdwuFormFieldBase<NdwuFileInpu
 
   public override writeValue(value: NdwuFileInputValue[] | null): void {
     super.writeValue(value ?? []);
+    // the widget keeps the visible list in its own signal, so `setValue`/`patchValue`/`reset`
+    // must reach it here; `untracked` keeps a `setValue` from a consumer effect from tracking
+    // the child query (see ADR 006)
     untracked(() => this.fileUpload()?.setFiles(this.inputValue));
   }
 
@@ -70,6 +73,8 @@ export class NdwuFileUploadFieldComponent extends NdwuFormFieldBase<NdwuFileInpu
   }
 
   public updateFileProgress(fileId: string, update: NdwuFileProgressUpdate): void {
+    // reads and writes the widget's `files` signal: without `untracked`, a consumer effect
+    // that forwards upload progress here would track `files` and re-run on its own write
     untracked(() => {
       const fileUpload = this.fileUpload();
 

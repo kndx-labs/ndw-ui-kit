@@ -14,6 +14,11 @@ export interface NdwuFileUploadTransition {
   cancelRequests: NdwuFileInputValue[];
 }
 
+interface ReplaceResult {
+  files: NdwuFileInputValue[];
+  changed: NdwuFileInputValue[];
+}
+
 const isInFlight = (file: NdwuFileInputValue): boolean => {
   return file.status === 'queued' || file.status === 'uploading';
 };
@@ -43,7 +48,7 @@ const replaceWhere = (
   files: NdwuFileInputValue[],
   shouldChange: (file: NdwuFileInputValue) => boolean,
   change: (file: NdwuFileInputValue) => NdwuFileInputValue,
-): {files: NdwuFileInputValue[]; changed: NdwuFileInputValue[]} => {
+): ReplaceResult => {
   const changed: NdwuFileInputValue[] = [];
   const next = files.map(file => {
     if (!shouldChange(file)) {
@@ -60,11 +65,11 @@ const replaceWhere = (
   return {files: changed.length > 0 ? next : files, changed};
 };
 
-const retried = ({files, changed}: ReturnType<typeof replaceWhere>): NdwuFileUploadTransition => {
+const retried = ({files, changed}: ReplaceResult): NdwuFileUploadTransition => {
   return {files, uploadRequests: changed, cancelRequests: []};
 };
 
-const canceled = ({files, changed}: ReturnType<typeof replaceWhere>): NdwuFileUploadTransition => {
+const canceled = ({files, changed}: ReplaceResult): NdwuFileUploadTransition => {
   return {files, uploadRequests: [], cancelRequests: changed};
 };
 

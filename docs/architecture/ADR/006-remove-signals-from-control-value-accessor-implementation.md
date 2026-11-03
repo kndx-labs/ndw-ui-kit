@@ -100,7 +100,7 @@ for example through:
 
 That change is left to a follow-up task.
 
-## Addendum: widgets behind a field (NDWU-130)
+## Addendum: widgets behind a field
 
 - Date: 2026-11-02
 

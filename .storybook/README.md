@@ -70,7 +70,7 @@ Imported by stories as `@sb/helpers/<file>`.
 |---|---|---|
 | `src/storybook/introduction/introduction.mdx` | Root docs page `Introduction`, first in the sidebar, opened at `/`; embeds the `Home` story | MDX can't render Angular components; `<Story of>` renders the Angular page inside it |
 | `src/storybook/introduction/introduction.stories.ts` | `Hidden/Introduction`, tag `!dev`; renders `<sb-introduction />` through `render` + `moduleMetadata` | Hidden from the sidebar but still in the index, so the MDX can embed it. A title other than `Introduction` keeps the MDX a single sidebar leaf. No `component:`, because Compodoc doesn't read `src/storybook` and would log "Component not found" |
-| `src/storybook/introduction/sb-introduction.component.*` | Logo, name, version from `src/lib/package.json`, cards made of `ndwu-card` and `ndwu-badge` | Kit components follow the Theme toolbar; explicit `size` keeps the Size toolbar off the page |
+| `src/storybook/introduction/sb-introduction.component.*` | Logo, name, version from `src/lib/package.json`, cards made of `ndwu-card` and `ndwu-badge` | Kit components follow the Theme toolbar; explicit `size` keeps the Size toolbar off the page. Left click emits `NAVIGATE_URL` on the preview channel, like addon-docs MDX links, so toolbar globals survive; `href` + `target="_top"` keep middle-click and new tab. In Dark the logo gets `invert(1) hue-rotate(180deg)`, so its blue part stays blue |
 | `src/storybook/introduction/introduction.cards.ts` | `INTRODUCTION_CARDS`: group, name, docs id, description, ready | Hand-written: a new docs page adds its card |
 | `src/storybook/assets/logo.svg` | Logo for the home page and the manager | Lives outside `src/lib/assets`, which ships with the package |
 

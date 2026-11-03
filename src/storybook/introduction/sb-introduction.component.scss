@@ -1,11 +1,14 @@
 @use 'styles/fonts';
+@use 'styles/mixins';
 @use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
 
 :host {
   display: block;
   box-sizing: border-box;
   min-height: 100vh;
-  padding: 40px;
+  padding: spacing.$spacing-40;
   background: var(--ndwu-color-gray-5);
   color: var(--ndwu-color-gray-80);
   font-family: fonts.$font-family;
@@ -18,9 +21,9 @@
 .sb-introduction__header {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: spacing.$spacing-24;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: spacing.$spacing-40;
 }
 
 .sb-introduction__logo {
@@ -31,24 +34,24 @@
 .sb-introduction__heading {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: spacing.$spacing-8;
   align-items: flex-start;
 }
 
 .sb-introduction__title {
   margin: 0;
-  font-weight: 500;
+  font-weight: typography.$fontWeight-XL;
   font-size: 28px;
   line-height: 36px;
 }
 
 .sb-introduction__section + .sb-introduction__section {
-  margin-top: 32px;
+  margin-top: spacing.$spacing-32;
 }
 
 .sb-introduction__group {
-  margin: 0 0 16px;
-  font-weight: 500;
+  margin: 0 0 spacing.$spacing-16;
+  font-weight: typography.$fontWeight-XL;
   font-size: 18px;
   line-height: 24px;
 }
@@ -56,7 +59,7 @@
 .sb-introduction__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
+  gap: spacing.$spacing-16;
 }
 
 .sb-introduction__link {
@@ -74,8 +77,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ndwu-color-brand-50);
-    outline-offset: 2px;
+    @include mixins.focus-ring();
   }
 }
 
@@ -85,26 +87,26 @@
 
 .sb-introduction__card-head {
   display: flex;
-  gap: 8px;
+  gap: spacing.$spacing-8;
   justify-content: space-between;
   align-items: flex-start;
 }
 
 .sb-introduction__card-name {
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-weight: typography.$fontWeight-XL;
+  font-size: typography.$fontSize-medium;
+  line-height: typography.$lineHeight-medium;
 }
 
 .sb-introduction__card-description {
-  margin: 8px 0 0;
+  margin: spacing.$spacing-8 0 0;
   color: var(--ndwu-color-gray-60);
-  font-size: 14px;
-  line-height: 20px;
+  font-size: typography.$fontSize-H6;
+  line-height: typography.$lineHeight-H6;
 }
 
-@media (max-width: 599px) {
+@include mixins.mobile() {
   :host {
-    padding: 24px 16px;
+    padding: spacing.$spacing-24 spacing.$spacing-16;
   }
 }

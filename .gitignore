@@ -18,6 +18,7 @@ debug-storybook.log
 .vscode
 /.angular/cache
 /.sass-cache/
+/.sass-aliases/
 /.yarn/*
 !/.yarn/patches
 !/.yarn/plugins

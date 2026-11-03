@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ndw-ui-kit-charts",
+  "assets": [
+    "styles/**/*.scss",
+    "**/*.tokens.scss",
+    "LICENSE.txt",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "lib": {
+    "entryFile": "public-api.ts",
+    "styleIncludePaths": ["../../.sass-aliases/dist"]
+  }
+}

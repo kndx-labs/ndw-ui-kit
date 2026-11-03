@@ -108,7 +108,7 @@ component's inputs, restart Storybook. After `prepare-icons`, check `git status`
 | What | Where |
 |---|---|
 | Stories of a component | `<component-file-name>.stories.ts` next to the component in `src/lib`, e.g. `ndwu-button.stories.ts` |
-| Pages that don't belong to one component (`Foundations`, `Examples`) | `src/storybook/` |
+| Pages that don't belong to one component (`Introduction`, `Foundations`, `Examples`) | `src/storybook/` |
 | Storybook config, providers, decorators, shared helpers | `.storybook/`, described in [.storybook/README.md](.storybook/README.md) |
 
 Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` into the package.
@@ -125,7 +125,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 | `table` | `Table/<Name>` | `Table/Paginator` |
 | `widgets` | `Widgets/<Name>` | `Widgets/Schedule Editor` |
 | `aria`, `schedule-actions`, `l10n` | `Aria/<Name>`, `Schedule Actions/<Name>`, `L10n/<Name>` | |
-| `src/storybook/` | `Foundations/<Page>`, `Examples/<Name>` | |
+| `src/storybook/` | `Introduction` (home page), `Foundations/<Page>`, `Examples/<Name>` | |
+| `src/storybook/`, stories only embedded in MDX | `Hidden/<Name>` with tag `!dev` | `Hidden/Introduction` |
 
 ### Writing stories
 
@@ -166,6 +167,11 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   is not supported).
 - Dialogs and drawers opened through `NdwuModalService` are created from the root injector, so the Size toolbar doesn't
   reach them. In a story, pass the story component's injector: `openDialog(Content, {injector: inject(Injector)})`.
+- A component that is ready for review gets the `ready` tag: `tags: ['autodocs', 'ready']`. The sidebar tag filter
+  can include or exclude it.
+- A new component docs page gets a card in `src/storybook/introduction/introduction.cards.ts`: group (first title
+  segment), name, docs id (`<title in kebab case>--docs`, e.g. `core-button-button--docs`), a short plain-text summary
+  for the card (no markdown) and `ready` matching the tag.
 - Storybook-only components and directives use the `sb-` prefix.
 - Families without a pattern yet (CVA form controls, overlays, table, widgets): the first ticket of the family adds its
   pattern to this section.

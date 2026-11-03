@@ -323,6 +323,21 @@ module.exports = tseslint.config(
   },
   // Extra configuration for TS files in specific directories
   {
+    files: ['src/charts/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        ERROR,
+        {
+          paths: [{name: 'rxjs/Rx'}],
+          patterns: [{
+            group: ['**/lib/**', 'src/lib/**'],
+            message: 'Import from @ndw-ui-kit/core instead of core source paths.',
+          }],
+        },
+      ],
+    },
+  },
+  {
     files: ['src/lib/widgets/schedule-editor/**/*.ts'],
     rules: {
       // allowing `x` as a variable name makes sense for code that manipulates 2D coordinates

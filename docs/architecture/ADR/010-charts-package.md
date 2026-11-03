@@ -67,9 +67,11 @@ target.
 The consumer smoke test checks the package contract, not component
 behavior. It builds a fixture app in production mode against packed
 tarballs and verifies what only a consumer sees: tarball contents and
-`exports`, core staying a peer instead of being bundled, Sass imports of
-core resolving from `node_modules`, partial-compiled code linking in the
-consumer build, and typed template contexts reaching `strictTemplates`.
+`exports`, Sass imports of core resolving from `node_modules`,
+partial-compiled code linking in the consumer build, and typed template
+contexts reaching `strictTemplates`. Core stays a peer through the
+`peerDependencies` manifest check in artifact verification and a lint rule
+that forbids charts from importing core sources by path.
 Component behavior belongs to unit tests in the repository. The fixture
 keeps one representative per integration mechanism (theme, typed template,
 public subpath), not one usage per component, and a single negative build

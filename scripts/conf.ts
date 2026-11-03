@@ -29,6 +29,7 @@ export const SPRITE_ICONS_DIR: string = path.resolve(SCRIPTS_DATA_DIR, 'sprite-i
 export const SPRITE_PICTOGRAMS_DIR: string = path.resolve(SCRIPTS_DATA_DIR, 'sprite-pictograms');
 
 export const ROOT_DIR: string = path.resolve(SCRIPTS_DIR, '..');
+export const SASS_ALIASES_DIR: string = path.resolve(ROOT_DIR, '.sass-aliases');
 export const SRC_DIR: string = path.resolve(ROOT_DIR, 'src');
 export const SRC_LIB_ASSETS_DIR: string = path.resolve(SRC_DIR, 'lib/assets');
 

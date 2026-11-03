@@ -13,7 +13,7 @@
     "build": "yarn run build:core && yarn run build:charts",
     "build:core": "yarn run prepare-icons && yarn run prepare-pictograms && ng build --project ndw-ui-kit && tsx scripts/strip-dist-scss-comments.ts core",
     "build:charts": "yarn run prepare-sass-aliases && ng build --project ndw-ui-kit-charts && tsx scripts/strip-dist-scss-comments.ts charts",
-    "build-playground": "yarn run prepare-sass-aliases && yarn run build && yarn run merge-playground-i18n && npx ng build playground",
+    "build-playground": "yarn run build && yarn run merge-playground-i18n && npx ng build playground",
     "watch": "ng build --project ndw-ui-kit --watch --configuration development",
     "test": "yarn run prepare-sass-aliases && yarn run merge-playground-i18n && ng test playground",
     "fmt": "dprint fmt \"src/**/*.ts\" \"scripts/**/*.ts\"",

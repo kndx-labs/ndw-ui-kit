@@ -14,6 +14,9 @@ import {
 } from 'node:fs';
 import {execFileSync, spawnSync} from 'node:child_process';
 import {join, resolve, sep} from 'node:path';
+import {globSync} from 'fast-glob';
+import yargs from 'yargs';
+import {hideBin} from 'yargs/helpers';
 import {
   CHARTS_PACKAGE_NAME,
   CORE_PACKAGE_NAME,
@@ -29,25 +32,30 @@ const NODE_MODULES_DIR = join(ROOT_DIR, 'node_modules');
 const CHARTS_TOKEN = '--ndwu-heat-strip-level-0-bg';
 const CORE_TOKEN = '--ndwu-color-gray-70';
 
+const escapeRegExp = (value: string): string => {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
 const fail = (message: string): never => {
   throw new Error(message);
 };
 
-const parseArgs = (args: string[]): string | undefined => {
-  let coreTarball: string | undefined;
+const getCoreTarball = (): string | undefined => {
+  const argv = yargs(hideBin(process.argv))
+    .option('core-tarball', {
+      coerce: (tarball: string) => {
+        return resolve(tarball);
+      },
+      describe: 'Path to a local core package tarball.',
+      requiresArg: true,
+      type: 'string',
+    })
+    .strict()
+    .version(false)
+    .help()
+    .parseSync();
 
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index];
-
-    if (arg !== '--core-tarball' || coreTarball !== undefined || index + 1 >= args.length) {
-      fail('Usage: smoke-consumer [--core-tarball <path>]');
-    }
-
-    coreTarball = resolve(args[index + 1]);
-    index += 1;
-  }
-
-  return coreTarball;
+  return argv['core-tarball'];
 };
 
 const createDependencyLinks = (consumerNodeModules: string): void => {
@@ -105,14 +113,10 @@ const listCssFiles = (dir: string): string[] => {
     return [];
   }
 
-  return readdirSync(dir, {withFileTypes: true}).flatMap((entry) => {
-    const path = join(dir, entry.name);
-
-    if (entry.isDirectory()) {
-      return listCssFiles(path);
-    }
-
-    return entry.name.endsWith('.css') ? [path] : [];
+  return globSync('**/*.css', {
+    absolute: true,
+    cwd: dir,
+    dot: true,
   });
 };
 
@@ -130,8 +134,8 @@ const assertThemeDeclarations = (consumerDir: string): void => {
   const selectors = [':root', '.ndwu-theme-light', '.ndwu-theme-dark'];
 
   for (const selector of selectors) {
-    const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const escapedToken = CHARTS_TOKEN.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const escapedSelector = escapeRegExp(selector);
+    const escapedToken = escapeRegExp(CHARTS_TOKEN);
     const rulePattern = new RegExp(`${escapedSelector}[^{}]*\\{[^}]*${escapedToken}\\s*:`, 's');
 
     if (!rulePattern.test(css)) {
@@ -175,7 +179,7 @@ const main = (): void => {
   let tempDir: string | undefined;
 
   try {
-    const coreTarball = parseArgs(process.argv.slice(2));
+    const coreTarball = getCoreTarball();
 
     if (!existsSync(DIST_DIR) || !existsSync(DIST_CHARTS_DIR)) {
       fail('core and charts dist packages must exist; run "yarn build" first');

@@ -3,7 +3,8 @@
 import {existsSync, readFileSync, readdirSync} from 'node:fs';
 import {createRequire} from 'node:module';
 import {dirname, isAbsolute, join, relative, resolve, sep} from 'node:path';
-import semver from 'semver';
+import {globSync} from 'fast-glob';
+import * as semver from 'semver';
 import type * as Sass from 'sass';
 import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
@@ -16,7 +17,6 @@ import {
   DIST_SPRITE_ICONS_DIR,
   PACKAGE_ORDER,
   type PackageKey,
-  ROOT_DIR,
   SRC_CHARTS_PACKAGE_JSON,
 } from './conf';
 
@@ -51,24 +51,20 @@ const readPackageJson = (packageName: string, path: string): PackageJson => {
   }
 };
 
-const escapeRegExp = (value: string): string => {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-};
-
 const listFiles = (dir: string): string[] => {
   if (!existsSync(dir)) {
     return [];
   }
 
-  return readdirSync(dir, {withFileTypes: true}).flatMap((entry) => {
-    const path = join(dir, entry.name);
-
-    if (entry.isDirectory()) {
-      return listFiles(path);
-    }
-
-    return [path];
-  });
+  return globSync(
+    '**/*',
+    {
+      absolute: true,
+      cwd: dir,
+      dot: true,
+      onlyFiles: true,
+    },
+  );
 };
 
 const verifyCommon = (packageName: string, distDir: string): PackageJson => {
@@ -135,28 +131,6 @@ const verifyCore = (): number => {
   return svgFileCount;
 };
 
-const collectCoreImports = (files: string[]): Set<string> => {
-  const coreImports = new Set<string>();
-  const importPattern = new RegExp(
-    `(?:\\bfrom\\s*|\\bimport\\s*(?:\\(\\s*)?)(['"])(${escapeRegExp(CORE_PACKAGE_NAME)}(?:/[^'"]*)?)\\1`,
-    'g',
-  );
-
-  for (const file of files) {
-    if (!file.endsWith('.ts') || file.endsWith('.spec.ts')) {
-      continue;
-    }
-
-    const source = readFileSync(file, 'utf8');
-
-    for (const match of source.matchAll(importPattern)) {
-      coreImports.add(match[2]);
-    }
-  }
-
-  return coreImports;
-};
-
 const verifyChartsSass = (chartsDistDir: string): void => {
   const packageName = CHARTS_PACKAGE_NAME;
   const scssFiles = listFiles(chartsDistDir).filter((file) => file.endsWith('.scss'));
@@ -220,32 +194,6 @@ const verifyCharts = (): void => {
 
   if (distManifest.dependencies?.[CORE_PACKAGE_NAME]) {
     fail(packageName, `${CORE_PACKAGE_NAME} must be a peerDependency, not a dependency`);
-  }
-
-  const sourceFiles = listFiles(join(ROOT_DIR, 'src/charts')).filter((file) => file.endsWith('.ts'));
-  const coreImports = collectCoreImports(sourceFiles);
-
-  if (coreImports.size === 0) {
-    fail(packageName, `charts sources do not import anything from ${CORE_PACKAGE_NAME}`);
-  }
-
-  const bundleFile = join(DIST_CHARTS_DIR, 'fesm2022/ndw-ui-kit-charts.mjs');
-
-  if (!existsSync(bundleFile)) {
-    fail(packageName, `missing FESM bundle: ${bundleFile}`);
-  }
-
-  const bundle = readFileSync(bundleFile, 'utf8');
-
-  for (const specifier of coreImports) {
-    const importPattern = new RegExp(`\\bfrom\\s*(['"])${escapeRegExp(specifier)}\\1`);
-
-    if (!importPattern.test(bundle)) {
-      fail(
-        packageName,
-        `core import ${specifier} is missing from ${relative(ROOT_DIR, bundleFile)}; core may be bundled`,
-      );
-    }
   }
 
   verifyChartsSass(DIST_CHARTS_DIR);

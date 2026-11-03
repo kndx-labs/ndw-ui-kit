@@ -27,3 +27,12 @@
   color: var(--ndwu-color-gray-80);
   font: 14px / 20px Roboto, sans-serif;
 }
+
+.sbdocs-wrapper:has(sb-introduction) {
+  padding: 0;
+  background: var(--ndwu-color-gray-5);
+}
+
+.sbdocs-content:has(sb-introduction) {
+  max-width: none;
+}

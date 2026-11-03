@@ -22,6 +22,11 @@ const preview: Preview = {
     backgrounds: {value: 'surface'},
   },
   parameters: {
+    options: {
+      storySort: {
+        order: ['Introduction'],
+      },
+    },
     controls: {
       expanded: true,
       matchers: {

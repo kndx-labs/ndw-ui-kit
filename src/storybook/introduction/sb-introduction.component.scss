@@ -1,0 +1,110 @@
+@use 'styles/fonts';
+@use 'styles/radius';
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 40px;
+  background: var(--ndwu-color-gray-5);
+  color: var(--ndwu-color-gray-80);
+  font-family: fonts.$font-family;
+}
+
+:host-context(.ndwu-theme-dark) .sb-introduction__logo {
+  filter: invert(1);
+}
+
+.sb-introduction__header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.sb-introduction__logo {
+  width: auto;
+  height: 72px;
+}
+
+.sb-introduction__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.sb-introduction__title {
+  margin: 0;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 36px;
+}
+
+.sb-introduction__section + .sb-introduction__section {
+  margin-top: 32px;
+}
+
+.sb-introduction__group {
+  margin: 0 0 16px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.sb-introduction__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.sb-introduction__link {
+  display: block;
+  border-radius: radius.$radius-L;
+  color: inherit;
+  text-decoration: none;
+
+  ndwu-badge {
+    cursor: inherit;
+  }
+
+  &:hover .sb-introduction__card {
+    --ndwu-card-border-color: var(--ndwu-color-brand-50);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ndwu-color-brand-50);
+    outline-offset: 2px;
+  }
+}
+
+.sb-introduction__card {
+  height: 100%;
+}
+
+.sb-introduction__card-head {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.sb-introduction__card-name {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.sb-introduction__card-description {
+  margin: 8px 0 0;
+  color: var(--ndwu-color-gray-60);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+@media (max-width: 599px) {
+  :host {
+    padding: 24px 16px;
+  }
+}

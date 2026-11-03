@@ -10,10 +10,11 @@
     "types": []
   },
   "include": [
-    "src/**/*.ts"
+    "src/lib/**/*.ts"
   ],
   "exclude": [
     "**/*.spec.ts",
+    "**/*.stories.ts",
     "src/playground/**",
     "src/charts/**"
   ]

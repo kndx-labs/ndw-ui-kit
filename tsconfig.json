@@ -68,6 +68,9 @@
     },
     {
       "path": "./tsconfig.charts.json"
+    },
+    {
+      "path": "./.storybook/tsconfig.json"
     }
   ]
 }

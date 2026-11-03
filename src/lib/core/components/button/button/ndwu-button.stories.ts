@@ -105,6 +105,13 @@ export const Default: Story = {
   },
 };
 
+export const Loading: Story = {
+  args: {
+    label: 'Button',
+    loading: true,
+  },
+};
+
 export const Variants: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withRowLayout],

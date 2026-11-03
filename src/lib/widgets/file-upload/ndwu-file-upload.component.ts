@@ -26,7 +26,8 @@ import {
 import {NdwuFileDropzoneComponent} from './ndwu-file-dropzone.component';
 import {NdwuFileItemComponent} from './ndwu-file-item.component';
 import {NdwuFileUploadHeaderComponent} from './ndwu-file-upload-header.component';
-import type {NdwuFileInputValue, NdwuTranslationTexts} from './ndwu-file-upload.types';
+import {applyFileProgressUpdate, applyFileUploadAction, type NdwuFileUploadAction} from './ndwu-file-upload.transitions';
+import type {NdwuFileInputValue, NdwuFileProgressUpdate, NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 const COMPACT_WIDTH_THRESHOLD = 510;
 
@@ -143,6 +144,7 @@ export class NdwuFileUploadComponent implements OnInit {
 
   public readonly filesChange = output<NdwuFileInputValue[]>();
   public readonly uploadRequest = output<NdwuFileInputValue[]>();
+  public readonly cancelRequest = output<NdwuFileInputValue[]>();
   public readonly focused = output<void>();
   public readonly blurred = output<void>();
 
@@ -163,34 +165,40 @@ export class NdwuFileUploadComponent implements OnInit {
     return this.mergedTexts().validation?.tooLarge ?? 'File exceeds size limit';
   });
 
-  public readonly files = computed(() => this.fileList());
+  public readonly files = this.fileList.asReadonly();
 
-  private updateFiles(transform: (files: NdwuFileInputValue[]) => NdwuFileInputValue[]): void {
+  public setFiles(files: NdwuFileInputValue[] | null | undefined): void {
+    this.fileList.set([...(files ?? [])]);
+  }
+
+  public updateFileProgress(fileId: string, update: NdwuFileProgressUpdate): void {
     this.fileList.update(files => {
-      const updated = transform(files);
+      const target = files.find(f => f.id === fileId);
 
-      this.filesChange.emit(updated);
+      if (!target || target.status === 'canceled') {
+        return files;
+      }
 
-      return updated;
+      return files.map(f => (f === target ? applyFileProgressUpdate(f, update) : f));
     });
   }
 
-  public updateFileProgress(fileId: string, updates: Partial<NdwuFileInputValue>): void {
-    this.updateFiles(files =>
-      files.map(f => {
-        if (f.id !== fileId) {
-          return f;
-        }
+  private dispatch(action: NdwuFileUploadAction): void {
+    const current = this.fileList();
+    const {files, uploadRequests, cancelRequests} = applyFileUploadAction(current, action);
 
-        const merged = {...f, ...updates};
+    if (files !== current) {
+      this.fileList.set(files);
+      this.filesChange.emit(files);
+    }
 
-        if (f.status === 'error' && updates.status && updates.status !== 'error') {
-          delete (merged as Partial<NdwuFileInputValue>).error;
-        }
+    if (cancelRequests.length > 0) {
+      this.cancelRequest.emit(cancelRequests);
+    }
 
-        return merged;
-      })
-    );
+    if (uploadRequests.length > 0) {
+      this.uploadRequest.emit(uploadRequests);
+    }
   }
 
   constructor() {
@@ -207,8 +215,8 @@ export class NdwuFileUploadComponent implements OnInit {
   public ngOnInit(): void {
     const initial = this.initialFiles();
 
-    if (initial?.length > 0) {
-      this.fileList.set([...initial]);
+    if (initial.length > 0) {
+      this.setFiles(initial);
     }
   }
 
@@ -241,7 +249,6 @@ export class NdwuFileUploadComponent implements OnInit {
   public readonly hasFiles = computed(() => this.fileList().length > 0);
 
   protected onFilesSelected(fileList: File[]): void {
-    const currentFiles = this.fileList();
     const newFiles: NdwuFileInputValue[] = fileList.map(file => {
       return {
         id: uniqueId('file-'),
@@ -269,78 +276,26 @@ export class NdwuFileUploadComponent implements OnInit {
       });
     }
 
-    const finalFiles = this.multiple()
-      ? [...currentFiles, ...validFiles]
-      : validFiles.slice(0, 1);
-
-    this.updateFiles(() => finalFiles);
-
-    this.uploadRequest.emit(finalFiles.filter(f => f.status === 'queued'));
+    this.dispatch({type: 'add', files: validFiles, multiple: this.multiple()});
   }
 
   protected onFileRemove(fileId: string): void {
-    const currentFiles = this.fileList();
-    const updatedFiles = currentFiles.filter(f => f.id !== fileId);
-
-    this.updateFiles(() => updatedFiles);
+    this.dispatch({type: 'remove', fileId});
   }
 
   protected onFileRetry(fileId: string): void {
-    const currentFiles = this.fileList();
-    const updatedFiles = currentFiles.map(f => {
-      if (f.id === fileId && f.status === 'error') {
-        const {error: _, ...rest} = f;
-
-        return {...rest, status: 'queued' as const, progress: 0};
-      }
-
-      return f;
-    });
-
-    this.updateFiles(() => updatedFiles);
-
-    this.uploadRequest.emit(updatedFiles.filter(f => f.id === fileId));
+    this.dispatch({type: 'retry', fileId});
   }
 
   protected onFileCancel(fileId: string): void {
-    const currentFiles = this.fileList();
-    const updatedFiles = currentFiles.map(f => {
-      if (f.id === fileId && f.status === 'uploading') {
-        return {...f, status: 'canceled' as const};
-      }
-
-      return f;
-    });
-
-    this.updateFiles(() => updatedFiles);
+    this.dispatch({type: 'cancel', fileId});
   }
 
   protected onCancelAll(): void {
-    const currentFiles = this.fileList();
-    const updatedFiles = currentFiles.map(f => {
-      if (f.status === 'uploading' || f.status === 'queued') {
-        return {...f, status: 'canceled' as const};
-      }
-
-      return f;
-    });
-
-    this.updateFiles(() => updatedFiles);
+    this.dispatch({type: 'cancelAll'});
   }
 
   protected onRetryAll(): void {
-    const currentFiles = this.fileList();
-    const updatedFiles = currentFiles.map(f => {
-      if (f.status === 'error') {
-        const {error: _, ...rest} = f;
-
-        return {...rest, status: 'queued' as const, progress: 0};
-      }
-
-      return f;
-    });
-
-    this.updateFiles(() => updatedFiles);
-    this.uploadRequest.emit(updatedFiles.filter(f => f.status === 'queued'));
+    this.dispatch({type: 'retryAll'});
   }
 }

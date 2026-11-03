@@ -23,7 +23,8 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
     ├── story-args.ts                 SizeArg: the size arg of the NdwuSizeDirective host directive
     ├── arg-types.ts                  Shared argTypes: size, icon, outputs, native events
     ├── args-to-source.ts             "Show code" transform: argsToTemplate bindings -> literal attributes
-    └── story-layout.ts               Row and stack layout decorators, left out of "Show code"
+    ├── story-layout.ts               Row and stack layout decorators, left out of "Show code"
+    └── story-template.ts             Joins fixed story templates, one element per line
 ```
 
 Stories live next to their components: `src/lib/**/<component-file-name>.stories.ts`. The first model is
@@ -64,6 +65,7 @@ Imported by stories as `@sb/helpers/<file>`.
 | `arg-types.ts` | `sizeArgType(sizes)` (`inherit` = `undefined`, then the sizes the component supports), `iconArgType` (`none` = `null`), `outputArgType`, `eventArgType` | One definition for every component with a size, an icon or outputs. Not every component supports every size, so each story passes its own list. Compodoc's output docs are filtered out, so outputs and events are declared here |
 | `args-to-source.ts` | `argsSourceTransform`: `[variant]="variant"` → `variant="primary"`, drops event bindings, fills `{{ content }}` | "Show code" is what app developers copy, so it must be plain markup with the current values |
 | `story-layout.ts` | `withRowLayout`, `withStackLayout` | Decorators are left out of "Show code" (`excludeDecorators`), so the layout wrapper doesn't end up in the copied snippet |
+| `story-template.ts` | `lines(items)` joins templates of a fixed story, one element per line | One shared helper replaces a copy in every story file |
 
 ## Outside `.storybook/`
 

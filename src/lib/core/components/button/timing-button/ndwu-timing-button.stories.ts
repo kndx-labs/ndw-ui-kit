@@ -4,6 +4,7 @@ import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType, outputArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
 import {withRowLayout} from '@sb/helpers/story-layout';
+import {lines} from '@sb/helpers/story-template';
 
 type TimingButtonStoryArgs = NdwuTimingButtonComponent & SizeArg & {
   click: (event: MouseEvent) => void;
@@ -13,10 +14,6 @@ type Story = StoryObj<TimingButtonStoryArgs>;
 
 const SIZES: readonly NdwuSize[] = Object.values(NDWU_SIZE);
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
-
-const lines = (items: readonly string[]): string => {
-  return items.join('\n');
-};
 
 const meta: Meta<TimingButtonStoryArgs> = {
   title: 'Core/Button/Timing Button',

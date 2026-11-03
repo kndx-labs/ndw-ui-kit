@@ -11,6 +11,7 @@ import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
 import {withRowLayout} from '@sb/helpers/story-layout';
+import {lines} from '@sb/helpers/story-template';
 
 type IconButtonStoryArgs = NdwuIconButtonComponent & SizeArg & {
   ariaLabel: string;
@@ -44,10 +45,6 @@ const FLAT_ICONS: readonly FlatIconExample[] = [
   {icon: NDWU_ICON_NAME.CHECK_S, label: 'small'},
   {icon: NDWU_ICON_NAME.SEARCH_L, label: 'large'},
 ];
-
-const lines = (items: readonly string[]): string => {
-  return items.join('\n');
-};
 
 const meta: Meta<IconButtonStoryArgs> = {
   title: 'Core/Button/Icon Button',

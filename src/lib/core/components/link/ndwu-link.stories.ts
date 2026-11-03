@@ -4,6 +4,7 @@ import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType} from '@sb/helpers/arg-types';
 import {withRouter} from '@sb/decorators/with-router.decorator';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
+import {lines} from '@sb/helpers/story-template';
 
 type LinkStoryArgs = NdwuLinkComponent & {
   content: string;
@@ -13,10 +14,6 @@ type LinkStoryArgs = NdwuLinkComponent & {
 type Story = StoryObj<LinkStoryArgs>;
 
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
-
-const lines = (items: readonly string[]): string => {
-  return items.join('\n');
-};
 
 const meta: Meta<LinkStoryArgs> = {
   title: 'Core/Link',

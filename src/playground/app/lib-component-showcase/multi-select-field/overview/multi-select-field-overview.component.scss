@@ -28,3 +28,18 @@
   flex-direction: column;
   gap: 16px;
 }
+
+.option-template__label {
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.option-template__indicator {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}

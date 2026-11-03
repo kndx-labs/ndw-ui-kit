@@ -49,6 +49,13 @@ $close-btn-offset: 2px;
   min-width: 0;
 }
 
+.ndwu-multi-select-field__option-template {
+  display: flex;
+  gap: var(--ndwu-styled-option-gap);
+  align-items: center;
+  min-width: 0;
+}
+
 .ndwu-multi-select-field__panel-header {
   display: flex;
   gap: 8px;

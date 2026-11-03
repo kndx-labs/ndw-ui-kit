@@ -60,9 +60,9 @@ describe('NdwuStyledOptionComponent', () => {
 
     fixture.detectChanges();
 
-    const options = fixture.nativeElement.querySelectorAll('ndwu-styled-option') as NodeListOf<HTMLElement>;
+    const options = (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('ndwu-styled-option');
 
-    expect(options[0]!.classList).toContain('ndwu-styled-option--danger');
-    expect(options[1]!.classList).not.toContain('ndwu-styled-option--danger');
+    expect(options.item(0).classList).toContain('ndwu-styled-option--danger');
+    expect(options.item(1).classList).not.toContain('ndwu-styled-option--danger');
   });
 });

@@ -693,6 +693,32 @@ Use `maxVisibleOptions` to change how many option rows appear before the list sc
 />
 ```
 
+##### Custom option template
+
+Use `ndwuOptionTemplate` to replace option content with an icon, status marker, or other domain-specific UI. Import
+`NdwuOptionTemplateDirective` from `@ndw-ui-kit/core/form-field`. Bind the original options array to the directive so
+Angular can type `raw`:
+
+```html
+<ndwu-select-field [options]="environments" formControlName="environment">
+  <ng-template
+    [ndwuOptionTemplate]="environments"
+    let-raw="raw"
+    let-label="label"
+    let-selected="selected"
+    let-disabled="disabled"
+  >
+    <ndwu-icon [name]="raw.icon" aria-hidden="true" />
+    <span>{{ label }}</span>
+    <span class="status-dot" [style.backgroundColor]="raw.statusColor" aria-hidden="true"></span>
+  </ng-template>
+</ndwu-select-field>
+```
+
+The template context exposes `$implicit` (normalized option), `raw` (original item matched by value), localized `label`,
+`selected`, and `disabled`. In multi-select, the template replaces only the label; the checkbox remains. The consumer
+controls truncation for long custom content.
+
 Selectors can also be functions when you need computed values:
 
 ```typescript

@@ -64,15 +64,17 @@ describe('NdwuStyledListboxComponent', () => {
 
     fixture.detectChanges();
 
-    const listbox = fixture.nativeElement.querySelector('ndwu-styled-listbox') as HTMLElement;
+    const listbox = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('ndwu-styled-listbox');
 
-    expect(listbox.style.getPropertyValue('--ndwu-styled-listbox-max-height'))
+    expect(listbox?.style.getPropertyValue('--ndwu-styled-listbox-max-height'))
       .toBe('calc(5 * var(--ndwu-styled-option-height))');
   });
 
   it('leaves size default for null, zero, negative, and non-finite values', () => {
     const fixture = TestBed.createComponent(StyledListboxTestHostComponent);
-    const listbox = (): HTMLElement => fixture.nativeElement.querySelector('ndwu-styled-listbox') as HTMLElement;
+    const listbox = (): HTMLElement | null => {
+      return (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('ndwu-styled-listbox');
+    };
 
     fixture.detectChanges();
 
@@ -80,7 +82,7 @@ describe('NdwuStyledListboxComponent', () => {
       fixture.componentInstance.n.set(value);
       fixture.detectChanges();
 
-      expect(listbox().style.getPropertyValue('--ndwu-styled-listbox-max-height')).toBe('');
+      expect(listbox()?.style.getPropertyValue('--ndwu-styled-listbox-max-height')).toBe('');
     }
   });
 
@@ -91,8 +93,8 @@ describe('NdwuStyledListboxComponent', () => {
     fixture.componentInstance.n.set(null);
     fixture.detectChanges();
 
-    const listbox = fixture.nativeElement.querySelector('ndwu-styled-listbox') as HTMLElement;
+    const listbox = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('ndwu-styled-listbox');
 
-    expect(listbox.style.getPropertyValue('--ndwu-styled-listbox-max-height')).toBe('');
+    expect(listbox?.style.getPropertyValue('--ndwu-styled-listbox-max-height')).toBe('');
   });
 });

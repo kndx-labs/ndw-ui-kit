@@ -1,4 +1,17 @@
-import type {NdwuOption, NdwuOptionGroup} from '@ndw-ui-kit/core';
+import {NDWU_ICON_NAME, type NdwuIconName, type NdwuOption, type NdwuOptionGroup} from '@ndw-ui-kit/core';
+
+export interface OptionTemplateShowcaseOption {
+  value: string;
+  label: string;
+  icon: NdwuIconName;
+  statusColor: string;
+}
+
+export const OPTION_TEMPLATE_OPTIONS: OptionTemplateShowcaseOption[] = [
+  {value: 'production', label: 'Production', icon: NDWU_ICON_NAME.CHECK_S, statusColor: 'var(--ndwu-color-green-50)'},
+  {value: 'staging', label: 'Staging', icon: NDWU_ICON_NAME.WARNING_S, statusColor: 'var(--ndwu-color-yellow-50)'},
+  {value: 'development', label: 'Development', icon: NDWU_ICON_NAME.INFO_S, statusColor: 'var(--ndwu-color-violet-50)'},
+];
 
 export const COUNTRY_OPTIONS: NdwuOption[] = [
   {value: 'de', label: 'Germany'},

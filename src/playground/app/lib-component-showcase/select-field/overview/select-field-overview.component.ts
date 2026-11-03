@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NdwuButtonComponent, NdwuOption, NdwuOptionGroup} from '@ndw-ui-kit/core';
-import {NdwuSelectFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
+import {NDWU_SIZE, NdwuButtonComponent, NdwuIconComponent, NdwuOption, NdwuOptionGroup} from '@ndw-ui-kit/core';
+import {NdwuOptionTemplateDirective, NdwuSelectFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {
   CONTINENT_GROUPS,
@@ -9,6 +9,7 @@ import {
   COUNTRY_OPTIONS_GROUPED,
   COUNTRY_OPTIONS_LONG_LIST,
   COUNTRY_OPTIONS_WITH_HIDDEN,
+  OPTION_TEMPLATE_OPTIONS,
   USER_PROVIDED_LABEL_OPTIONS,
 } from '../../shared/select-showcase.data';
 
@@ -31,6 +32,8 @@ const DYNAMIC_OPTIONS_AUTO_INTERVAL_MS = 1500;
   imports: [
     ReactiveFormsModule,
     NdwuButtonComponent,
+    NdwuIconComponent,
+    NdwuOptionTemplateDirective,
     NdwuSelectFieldComponent,
     ShowcaseLayoutComponent,
   ],
@@ -48,6 +51,7 @@ export class SelectFieldOverviewComponent {
     {value: 'danger', label: 'Danger option', variant: 'danger'},
     {value: 'disabled-danger', label: 'Disabled danger option', variant: 'danger', disabled: true},
   ];
+  protected readonly optionTemplateOptions = OPTION_TEMPLATE_OPTIONS;
 
   protected readonly longLabelsOptionsList: NdwuOption[] = [
     {
@@ -75,6 +79,10 @@ export class SelectFieldOverviewComponent {
 
   protected readonly formDangerOption = new FormGroup({
     option: new FormControl(''),
+  });
+
+  protected readonly formOptionTemplate = new FormGroup({
+    environment: new FormControl(''),
   });
 
   protected readonly formHiddenOption = new FormGroup({

@@ -108,3 +108,20 @@ export function ndwuNormalizeOptions<T>(
     return normalized;
   });
 }
+
+export function ndwuMapRawOptionsByValue<T>(
+  items: readonly T[],
+  normalized: readonly NdwuOption[],
+): Map<string | number, T> {
+  const rawByValue = new Map<string | number, T>();
+
+  for (const [index, item] of items.entries()) {
+    const option = normalized[index];
+
+    if (option) {
+      rawByValue.set(option.value, item);
+    }
+  }
+
+  return rawByValue;
+}

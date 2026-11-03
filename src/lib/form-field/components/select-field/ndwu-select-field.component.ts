@@ -1,4 +1,14 @@
-import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input, viewChild} from '@angular/core';
+import {NgTemplateOutlet} from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  booleanAttribute,
+  computed,
+  contentChild,
+  inject,
+  input,
+  viewChild,
+} from '@angular/core';
 import {
   NDWU_ICON_NAME,
   NDWU_OPTION_CONFIG,
@@ -19,6 +29,7 @@ import {
   NdwuStyledGroupHeaderComponent,
   NdwuStyledListboxComponent,
   NdwuStyledOptionComponent,
+  ndwuMapRawOptionsByValue,
   ndwuNormalizeOptions,
   ndwuResolveOptionsAdapter,
 } from '@ndw-ui-kit/core';
@@ -32,6 +43,7 @@ import {NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
 import {type OptionRow, buildOptionRows} from '@ndw-ui-kit/core/utils';
 import {NdwuSelectFieldBase} from '../../classes/select-field-base.directive';
 import {NdwuHelperMessageComponent} from '../../parts/helper-message/ndwu-helper-message.component';
+import {NdwuOptionTemplateDirective} from './ndwu-option-template.directive';
 
 @Component({
   selector: 'ndwu-select-field',
@@ -39,8 +51,6 @@ import {NdwuHelperMessageComponent} from '../../parts/helper-message/ndwu-helper
   styleUrl: './ndwu-select-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NdwuLocalizeIfPipe,
-    NdwuLocalizePipe,
     NdwuComboboxDirective,
     NdwuComboboxInputDirective,
     NdwuComboboxPopoverBridgeDirective,
@@ -52,12 +62,15 @@ import {NdwuHelperMessageComponent} from '../../parts/helper-message/ndwu-helper
     NdwuHintDirective,
     NdwuIconButtonComponent,
     NdwuIconComponent,
+    NdwuLocalizeIfPipe,
+    NdwuLocalizePipe,
     NdwuPanelHeaderDirective,
     NdwuPopoverTriggerDirective,
     NdwuResizeObserverDirective,
     NdwuStyledGroupHeaderComponent,
     NdwuStyledListboxComponent,
     NdwuStyledOptionComponent,
+    NgTemplateOutlet,
   ],
   hostDirectives: [{
     directive: NdwuSizeDirective,
@@ -68,6 +81,7 @@ export class NdwuSelectFieldComponent<T = NdwuOption> extends NdwuSelectFieldBas
   implements NdwuControl {
   protected readonly ICON_NAME = NDWU_ICON_NAME;
   protected readonly diOptionConfig = inject(NDWU_OPTION_CONFIG, {optional: true}) ?? null;
+  protected readonly optionTemplate = contentChild(NdwuOptionTemplateDirective);
 
   protected readonly triggerResize = viewChild.required(NdwuResizeObserverDirective);
   protected readonly triggerWidth = computed(() => this.triggerResize().width());
@@ -95,6 +109,10 @@ export class NdwuSelectFieldComponent<T = NdwuOption> extends NdwuSelectFieldBas
       this.options(),
       ndwuResolveOptionsAdapter(this.optionAdapter(), this.diOptionConfig),
     );
+  });
+
+  protected readonly rawByValue = computed(() => {
+    return ndwuMapRawOptionsByValue(this.options(), this.normalizedOptions());
   });
 
   protected readonly renderRows = computed<OptionRow<NdwuOption>[]>(() => {

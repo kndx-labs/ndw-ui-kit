@@ -88,7 +88,22 @@
                   : null
               "
             >
-              {{ row.option.label | localizeIf: localizeLabels() }}
+              @if (optionTemplate(); as tpl) {
+                <span class="ndwu-select-field__option-template">
+                  <ng-container
+                    [ngTemplateOutlet]="tpl.templateRef"
+                    [ngTemplateOutletContext]="{
+                      $implicit: row.option,
+                      raw: rawByValue().get(row.option.value),
+                      label: (row.option.label | localizeIf: localizeLabels()),
+                      selected: row.option.value === inputValue,
+                      disabled: !!row.option.disabled,
+                    }"
+                  />
+                </span>
+              } @else {
+                {{ row.option.label | localizeIf: localizeLabels() }}
+              }
             </ndwu-styled-option>
           }
         }

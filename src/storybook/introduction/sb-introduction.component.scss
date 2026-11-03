@@ -12,7 +12,7 @@
 }
 
 :host-context(.ndwu-theme-dark) .sb-introduction__logo {
-  filter: invert(1);
+  filter: invert(1) hue-rotate(180deg);
 }
 
 .sb-introduction__header {

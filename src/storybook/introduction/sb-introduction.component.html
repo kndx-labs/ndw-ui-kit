@@ -22,6 +22,7 @@
           class="sb-introduction__link"
           target="_top"
           [href]="'./?path=/docs/' + card.docsId"
+          (click)="openDocs($event, card.docsId)"
         >
           <ndwu-card
             class="sb-introduction__card"

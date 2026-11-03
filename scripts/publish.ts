@@ -241,7 +241,8 @@ const main = async (): Promise<void> => {
     .help()
     .parseAsync();
 
-  const requested = argv.packages ?? [];
+  // The command builder's positional type does not reach parseAsync(); yargs validates `choices` at runtime
+  const requested: PackageKey[] = Array.isArray(argv.packages) ? argv.packages : [];
 
   if (requested.length === 0) {
     fail('select one or more packages: core, charts.');

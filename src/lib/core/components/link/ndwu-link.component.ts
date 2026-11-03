@@ -1,5 +1,14 @@
-import {ChangeDetectionStrategy, Component, booleanAttribute, computed, input} from '@angular/core';
-import {stopEventImmediately} from '@ndw-ui-kit/core/utils';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  booleanAttribute,
+  computed,
+  inject,
+  input,
+} from '@angular/core';
+import {blockClicksWhile} from '@ndw-ui-kit/core/utils';
 import {NDWU_ICON_NAME, NdwuIconName} from '../../../icon-names';
 import {NdwuIconComponent} from '../icon/ndwu-icon.component';
 
@@ -16,10 +25,12 @@ import {NdwuIconComponent} from '../icon/ndwu-icon.component';
     '[attr.target]': 'target()',
     '[attr.rel]': 'effectiveRel()',
     '[class]': 'hostClasses()',
-    '(click)': 'onClick($event)',
   },
 })
 export class NdwuLinkComponent {
+  private readonly el: ElementRef<HTMLElement> = inject(ElementRef);
+  private readonly destroyRef = inject(DestroyRef);
+
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly target = input<string | null>(null);
   public readonly rel = input<string | null>(null);
@@ -36,13 +47,8 @@ export class NdwuLinkComponent {
     return classes.join(' ');
   });
 
-  protected onClick(event: MouseEvent): void {
-    if (!this.disabled()) {
-      return;
-    }
-
-    // Blocks native navigation and listeners added after this one (e.g. RouterLink on the same element)
-    stopEventImmediately(event);
+  constructor() {
+    blockClicksWhile(this.el.nativeElement, this.disabled, this.destroyRef);
   }
 
   protected readonly effectiveRel = computed(() => {

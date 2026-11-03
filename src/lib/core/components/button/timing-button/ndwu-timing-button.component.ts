@@ -15,12 +15,12 @@ import {
 } from '@angular/core';
 
 import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {blockClicksWhile} from '@ndw-ui-kit/core/utils';
 import {NdwuIconName} from '../../../../icon-names';
 import {NDWU_SIZE} from '../../../../shared.types';
 import {NdwuSizeDirective} from '../../../directives';
 import {NdwuIconComponent} from '../../icon/ndwu-icon.component';
 import {NdwuSpokesLoaderComponent} from '../../spokes-loader/ndwu-spokes-loader.component';
-import {blockClickWhileLoading} from '../ndwu-button.utils';
 
 type TimerState = 'preloading' | 'active' | 'counting';
 
@@ -92,7 +92,7 @@ export class NdwuTimingButtonComponent implements OnInit {
   private elapsedMs = 0;
 
   constructor() {
-    blockClickWhileLoading(this.el.nativeElement, this.effectiveLoading, this.destroyRef);
+    blockClicksWhile(this.el.nativeElement, this.effectiveLoading, this.destroyRef);
 
     // `disabled` resets the countdown, `loading` pauses it
     effect(() => {

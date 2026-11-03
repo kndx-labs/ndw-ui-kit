@@ -148,6 +148,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `argsToTemplate` use the property name, the template needs the alias. Exclude them from `argsToTemplate` and bind the
   alias by hand: `argsToTemplate(args, {exclude: ['ariaLabel']})` plus `[aria-label]="ariaLabel"`.
 - Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `outputArgType`, `eventArgType`.
+- A story that needs the router uses `withRouter` from
+  `@sb/decorators/with-router.decorator`; it adds story-level `provideRouter`
+  and `provideLocationMocks`, and `sb-router-url` shows the current URL.
 - Descriptions go into `argTypes.<name>.description` in the story file, a one-sentence component intro into
   `parameters.docs.description.component`. Compodoc adds types and defaults of inputs.
 - Set every control's starting value in `meta.args` (e.g. `variant`, booleans `false`, `icon: null`), so the Controls

@@ -666,6 +666,18 @@ const countryAdapter: NdwuOptionAdapter<Country> = {
 />
 ```
 
+##### Maximum visible options
+
+Use `maxVisibleOptions` to change how many option rows appear before the list scrolls. It counts group headers too and is ignored in the mobile sheet. When omitted or `null`, the list keeps its size default (L: 9, XL: 8, XXL: 7).
+
+```html
+<ndwu-select-field
+  [options]="countries"
+  [maxVisibleOptions]="4"
+  formControlName="country"
+/>
+```
+
 Selectors can also be functions when you need computed values:
 
 ```typescript

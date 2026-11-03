@@ -65,6 +65,10 @@ export class SelectFieldOverviewComponent {
     country: new FormControl(''),
   });
 
+  protected readonly formMaxVisibleOptions = new FormGroup({
+    country: new FormControl(''),
+  });
+
   protected readonly formHiddenOption = new FormGroup({
     country: new FormControl('legacy-region'),
   });

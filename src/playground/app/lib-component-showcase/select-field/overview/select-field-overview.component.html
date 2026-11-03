@@ -16,6 +16,19 @@
     </div>
 
     <div class="state-section">
+      <h4>Max visible options</h4>
+      <form [formGroup]="formMaxVisibleOptions">
+        <ndwu-select-field
+          label="Country"
+          placeholder="Choose country"
+          [options]="countryOptionsLongList"
+          [maxVisibleOptions]="4"
+          formControlName="country"
+        />
+      </form>
+    </div>
+
+    <div class="state-section">
       <h4>Dynamic options</h4>
       <p class="state-section__hint">
         Panel height follows the option count. Clicking outside closes the panel,

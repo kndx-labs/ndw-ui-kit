@@ -73,6 +73,10 @@ export abstract class NdwuSelectFieldBase<T> extends NdwuFormFieldBase<T> implem
   // Should option labels be localized.
   public readonly localizeLabels = input(true, {transform: booleanAttribute});
 
+  // Max number of rows (options and group headers) visible before scrolling.
+  // Ignored in the mobile sheet. `null` keeps the size-specific default (L: 9, XL: 8, XXL: 7).
+  public readonly maxVisibleOptions = input<number | null>(null);
+
   public readonly groups = input<readonly NdwuOptionGroup[]>([]);
 
   public get id(): string {

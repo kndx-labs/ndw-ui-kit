@@ -13,7 +13,9 @@ import {basename, dirname, join, relative, resolve, sep} from 'node:path';
 import {glob} from 'fast-glob';
 import postcss from 'postcss';
 import postcssScss from 'postcss-scss';
-import {DIST_CHARTS_DIR, DIST_DIR, PACKAGE_SCOPE} from './conf';
+import yargs from 'yargs';
+import {hideBin} from 'yargs/helpers';
+import {DIST_CHARTS_DIR, DIST_DIR, PACKAGE_ORDER, PACKAGE_SCOPE, type PackageKey} from './conf';
 
 const URL_PATTERN = /^(['"])(.+?)\1/;
 
@@ -72,8 +74,9 @@ const rewriteImportsPlugin = (file: string, distDir: string): postcss.Plugin => 
   };
 };
 
-async function main(): Promise<void> {
-  for (const distDir of [DIST_DIR, DIST_CHARTS_DIR]) {
+async function main(packages: PackageKey[]): Promise<void> {
+  for (const packageKey of packages) {
+    const distDir = packageKey === 'core' ? DIST_DIR : DIST_CHARTS_DIR;
     const files = await glob('**/*.scss', {cwd: distDir, absolute: true});
 
     for (const file of files) {
@@ -91,7 +94,29 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((err: unknown) => {
-  process.stderr.write(String(err) + '\n');
-  process.exit(1);
-});
+void yargs(hideBin(process.argv))
+  .command(
+    '$0 <packages..>',
+    'Strip SCSS comments from selected package artifacts.',
+    (command) => {
+      return command.positional('packages', {
+        array: true,
+        choices: PACKAGE_ORDER,
+        describe: 'Package artifacts to process.',
+        type: 'string',
+      });
+    },
+    (argv) => {
+      const requestedPackages = new Set(argv.packages ?? []);
+      const selectedPackages = PACKAGE_ORDER.filter((key) => {
+        return requestedPackages.has(key);
+      });
+
+      void main(selectedPackages).catch((err: unknown) => {
+        process.stderr.write(String(err) + '\n');
+        process.exitCode = 1;
+      });
+    },
+  )
+  .strict()
+  .parse();

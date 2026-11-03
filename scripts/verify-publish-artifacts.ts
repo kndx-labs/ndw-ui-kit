@@ -5,6 +5,8 @@ import {createRequire} from 'node:module';
 import {dirname, isAbsolute, join, relative, resolve, sep} from 'node:path';
 import semver from 'semver';
 import type * as Sass from 'sass';
+import yargs from 'yargs';
+import {hideBin} from 'yargs/helpers';
 import {
   CHARTS_PACKAGE_NAME,
   CORE_PACKAGE_NAME,
@@ -12,11 +14,17 @@ import {
   DIST_CUSTOM_SPRITE_CLI_FILE,
   DIST_DIR,
   DIST_SPRITE_ICONS_DIR,
+  PACKAGE_ORDER,
+  type PackageKey,
   ROOT_DIR,
   SRC_CHARTS_PACKAGE_JSON,
 } from './conf';
 
 const {compile} = createRequire(require.resolve('@angular/build'))('sass') as typeof Sass;
+const PACKAGE_NAMES: Record<PackageKey, string> = {
+  core: CORE_PACKAGE_NAME,
+  charts: CHARTS_PACKAGE_NAME,
+};
 
 interface PackageJson {
   name?: string;
@@ -243,12 +251,39 @@ const verifyCharts = (): void => {
   verifyChartsSass(DIST_CHARTS_DIR);
 };
 
-const svgFileCount = verifyCore();
+const argv = yargs(hideBin(process.argv))
+  .option('packages', {
+    array: true,
+    choices: PACKAGE_ORDER,
+    default: [...PACKAGE_ORDER],
+    describe: 'Packages whose publish artifacts to verify.',
+    type: 'string',
+  })
+  .strict()
+  .parseSync();
 
-verifyCharts();
+const requestedPackages = new Set(argv.packages);
+const selectedPackages = PACKAGE_ORDER.filter((key) => {
+  return requestedPackages.has(key);
+});
 
-const verifiedPackages = [CORE_PACKAGE_NAME, CHARTS_PACKAGE_NAME].join(' and ');
+let svgFileCount: number | undefined;
 
-process.stdout.write(
-  `OK: publish artifacts are present for ${verifiedPackages} (${svgFileCount} sprite source SVGs).\n`,
-);
+for (const packageKey of selectedPackages) {
+  if (packageKey === 'core') {
+    svgFileCount = verifyCore();
+  } else {
+    verifyCharts();
+  }
+}
+
+const verifiedPackages = selectedPackages.map((key) => {
+  return PACKAGE_NAMES[key];
+}).join(' and ');
+let summary = `OK: publish artifacts are present for ${verifiedPackages}`;
+
+if (svgFileCount !== undefined) {
+  summary += ` (${svgFileCount} sprite source SVGs)`;
+}
+
+process.stdout.write(`${summary}.\n`);

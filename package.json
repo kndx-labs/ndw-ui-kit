@@ -10,7 +10,9 @@
     "start": "yarn run prepare-sass-aliases && yarn run merge-playground-i18n && ng serve",
     "playground:ngx-translate": "yarn run prepare-sass-aliases && yarn run merge-playground-i18n && ng serve playground --configuration ngx-translate",
     "playground:no-l10n": "yarn run prepare-sass-aliases && ng serve playground --configuration no-l10n",
-    "build": "yarn run prepare-sass-aliases && yarn run prepare-icons && yarn run prepare-pictograms && ng build --project ndw-ui-kit && ng build --project ndw-ui-kit-charts && tsx scripts/strip-dist-scss-comments.ts",
+    "build": "yarn run build:core && yarn run build:charts",
+    "build:core": "yarn run prepare-icons && yarn run prepare-pictograms && ng build --project ndw-ui-kit && tsx scripts/strip-dist-scss-comments.ts core",
+    "build:charts": "yarn run prepare-sass-aliases && ng build --project ndw-ui-kit-charts && tsx scripts/strip-dist-scss-comments.ts charts",
     "build-playground": "yarn run prepare-sass-aliases && yarn run build && yarn run merge-playground-i18n && npx ng build playground",
     "watch": "ng build --project ndw-ui-kit --watch --configuration development",
     "test": "yarn run prepare-sass-aliases && yarn run merge-playground-i18n && ng test playground",
@@ -31,6 +33,7 @@
     "emit-custom-sprite-cli": "tsx scripts/emit-custom-sprite-cli.ts",
     "copy-custom-sprite-sources": "tsx scripts/copy-custom-sprite-sources.ts",
     "verify:publish-artifacts": "tsx scripts/verify-publish-artifacts.ts",
+    "test:scripts": "vitest run --dir scripts",
     "build:to-publish": "yarn run build && yarn run emit-custom-sprite-cli && yarn run copy-custom-sprite-sources && yarn run verify:publish-artifacts && yarn run smoke:consumer",
     "smoke:consumer": "tsx scripts/smoke-consumer.ts",
     "publish:lib": "tsx scripts/publish.ts"

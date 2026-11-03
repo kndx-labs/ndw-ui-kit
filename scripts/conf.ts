@@ -35,12 +35,15 @@ export const SRC_LIB_ASSETS_DIR: string = path.resolve(SRC_DIR, 'lib/assets');
 export const PACKAGE_SCOPE = '@ndw-ui-kit';
 export const CORE_PACKAGE_NAME = `${PACKAGE_SCOPE}/core`;
 export const CHARTS_PACKAGE_NAME = `${PACKAGE_SCOPE}/charts`;
+export const PACKAGE_ORDER = ['core', 'charts'] as const;
+export type PackageKey = (typeof PACKAGE_ORDER)[number];
 
 export const DIST_ROOT_DIR: string = path.resolve(ROOT_DIR, 'dist');
 export const DIST_DIR: string = path.resolve(DIST_ROOT_DIR, 'ndw-ui-kit');
 export const DIST_CHARTS_DIR: string = path.resolve(DIST_ROOT_DIR, 'ndw-ui-kit-charts');
 // Scratch space for release checks (consumer smoke builds, registry tarballs); ignored with dist
 export const DIST_TEMP_DIR: string = path.resolve(DIST_ROOT_DIR, '.tmp');
+export const SRC_CORE_PACKAGE_JSON: string = path.resolve(SRC_DIR, 'lib/package.json');
 export const SRC_CHARTS_PACKAGE_JSON: string = path.resolve(SRC_DIR, 'charts/package.json');
 export const DIST_SPRITE_ICONS_DIR: string = path.resolve(DIST_DIR, 'assets/sprite-icons');
 export const DIST_CUSTOM_SPRITE_CLI_FILE: string = path.resolve(DIST_DIR, 'tools/build-custom-sprite.mjs');

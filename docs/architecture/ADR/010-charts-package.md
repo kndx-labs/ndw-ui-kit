@@ -57,11 +57,12 @@ aliases for that package name, targeting core source during development and
 the built core styles during charts packaging. Published Sass imports stay
 package-based.
 
-Publish packages only when explicitly selected, in core-then-charts order.
-Smoke-test charts with the core tarball consumers will receive: the local
-tarball when core is selected in the same release, otherwise the published
-core version's tarball. Suggest `v<version>` tags for core and
-`charts-v<version>` for charts. Do not add a charts watch target.
+Build, verify and smoke-test only the selected packages, in core-then-charts
+order. A charts-only release builds charts and runs the smoke test against the
+published core at the peer floor. A joint release uses the local core. The
+current core version must satisfy the charts peer range. Suggest `v<version>`
+tags for core and `charts-v<version>` for charts. Do not add a charts watch
+target.
 
 The consumer smoke test checks the package contract, not component
 behavior. It builds a fixture app in production mode against packed
@@ -86,7 +87,7 @@ a special case of `Heatmap`.
 
 ### Pros:
 
-- Charts can evolve and release independently while reusing core.
+- Charts has its own version and release cadence while reusing core.
 - Peer dependency keeps one shared core boundary for styles and
   dependency-injection tokens.
 - Separate token themes preserve package ownership and support nested
@@ -98,6 +99,8 @@ a special case of `Heatmap`.
 
 - Core and charts versions must be coordinated through the charts peer
   range; a core `0.x` minor can require a charts release.
+- A charts change that needs a new core API requires a core release first; a
+  charts-only release fails to build until that core version is available.
 - Development and package builds need separate resolution settings and
   generated Sass aliases.
 - Consumers must load core theme before charts theme.

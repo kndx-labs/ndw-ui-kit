@@ -175,18 +175,19 @@ yarn publish:lib <core|charts>... [--dry-run] [--allow-dirty]
 ```
 
 Packages publish in `core`, then `charts` order; their versions are
-independent. The release requires the `master` branch and a clean working
-tree unless `--allow-dirty` is passed. Each selected version must be
-unpublished. Charts requires a published core version (or core selected in
-the same run), and its core peer range must include the current core version.
-A core-only release warns if the charts peer range is outdated.
+independent. Each release builds and verifies only selected packages. A
+core-only release builds core; a joint release builds both and smoke-tests
+against local core; a charts-only release builds charts and smoke-tests against
+published core at the charts peer floor, which must be published. The current
+core version must satisfy the peer range. A core-only release warns if the
+charts peer range is outdated.
 
-The script runs `build:to-publish`, which builds both packages, verifies
-publish artifacts, and smoke-tests the consumer build against packed tarballs.
-For a charts-only release, it also smoke-tests charts against the published
-core tarball. It then runs `npm publish` (or `npm publish --dry-run`) for
-each selected package. Tag hints are `v<version>` for core and
-`charts-v<version>` for charts; the script does not create tags.
+The script checks the `master` branch and clean working tree unless
+`--allow-dirty` is passed, and requires selected versions to be unpublished.
+`--dry-run` runs `npm publish --dry-run` and prints no tag commands. After each
+real publish, it prints `git tag <tag> && git push origin <tag>`: core tags
+use `v<version>`, charts tags use `charts-v<version>`. The script does not
+create tags.
 
 > [!IMPORTANT]
 > Without `--dry-run`, this command publishes packages. Run a `--dry-run`
@@ -249,7 +250,7 @@ Publish pipeline:
 # Optional standalone consumer check after a build
 yarn run smoke:consumer
 
-# publish:lib runs build:to-publish automatically
+# publish:lib builds and checks selected packages
 yarn publish:lib core charts --dry-run
 yarn publish:lib core charts
 ```

@@ -2,8 +2,9 @@
 
 This README is for maintainers of this repository.
 
-For package usage examples and theming, see [src/lib/README.md](src/lib/README.md)
-and [src/charts/README.md](src/charts/README.md) (published with each package).
+For package usage examples, theming, icons, localization, etc., see
+[src/lib/README.md](src/lib/README.md) and
+[src/charts/README.md](src/charts/README.md) (published with each package).
 
 ## What this repository contains
 

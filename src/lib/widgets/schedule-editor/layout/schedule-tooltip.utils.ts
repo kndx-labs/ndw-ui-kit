@@ -1,4 +1,4 @@
-import {TOOLTIP_CURSOR_OFFSET, TOOLTIP_FLIPPED_GAP_PX} from '../ndwu-schedule-editor.constants';
+import {TOOLTIP_CURSOR_OFFSET, TOOLTIP_FLIPPED_GAP_PX} from '../schedule-editor.internal.constants';
 import {Offset, Size} from './schedule-layout.types';
 
 function placeOnAxis(anchor: number, size: number, bounds: number, offset: number): number {

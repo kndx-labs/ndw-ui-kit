@@ -181,7 +181,7 @@ const main = (): void => {
   const usedMembers = new Set<string>();
   const inferredValues = new Set<string>();
 
-  const htmlFiles = fg.sync('**/*.html', {cwd: SRC_LIB_DIR, absolute: true});
+  const htmlFiles = fg.sync('**/*.html', {cwd: SRC_LIB_DIR, absolute: true, ignore: ['**/*.stories.ts']});
 
   htmlFiles.forEach((filePath) => {
     const fileContent = readFileSync(filePath, 'utf-8');
@@ -189,7 +189,7 @@ const main = (): void => {
     extractMembersFromText(fileContent).forEach((member) => usedMembers.add(member));
   });
 
-  const tsFiles = fg.sync('**/*.ts', {cwd: SRC_LIB_DIR, absolute: true});
+  const tsFiles = fg.sync('**/*.ts', {cwd: SRC_LIB_DIR, absolute: true, ignore: ['**/*.stories.ts']});
 
   tsFiles.forEach((filePath) => {
     const result = collectFromTsSource(filePath);

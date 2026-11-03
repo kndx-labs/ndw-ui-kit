@@ -68,10 +68,21 @@ const meta: Meta<LinkStoryArgs> = {
     rel: null,
     content: 'Link',
   },
-  render: (args) => ({
-    props: args,
-    template: `<a ndwu-link href="#storybook-link" ${argsToTemplate(args, {exclude: ['content']})}>{{ content }}</a>`,
-  }),
+  render: (args) => {
+    const argsStr = argsToTemplate(args, {exclude: ['content']});
+
+    return {
+      props: args,
+      template: `
+        <a
+          ndwu-link
+          href="#storybook-link"
+          ${argsStr}
+        >
+          {{ content }}
+        </a>`,
+    };
+  },
 };
 
 export default meta;
@@ -80,30 +91,73 @@ export const Default: Story = {};
 
 export const External: Story = {
   parameters: FIXED_STORY_PARAMETERS,
-  render: () => ({
-    template: '<a ndwu-link href="https://example.com" external target="_blank">External link</a>',
-  }),
+  render: () => {
+    return {
+      template: `
+        <a
+          ndwu-link
+          href="https://example.com"
+          external
+          target="_blank"
+        >
+          External link
+        </a>`,
+    };
+  },
 };
 
 export const Disabled: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withRowLayout],
-  render: () => ({
-    template: lines([
-      '<a ndwu-link href="#storybook-disabled" disabled>Disabled link</a>',
-      '<a ndwu-link href="#storybook-disabled-external" external disabled>Disabled external link</a>',
-    ]),
-  }),
+  render: () => {
+    return {
+      template: lines([
+        `<a
+          ndwu-link
+          href="#storybook-disabled"
+          disabled
+        >
+          Disabled link
+        </a>`,
+        `<a
+          ndwu-link
+          href="#storybook-disabled-external"
+          external
+          disabled
+        >
+          Disabled external link
+        </a>`,
+      ]),
+    };
+  },
 };
 
 export const WithRouterLink: Story = {
   parameters: FIXED_STORY_PARAMETERS,
-  decorators: [...withRouter, withStackLayout],
-  render: () => ({
-    template: lines([
-      '<a ndwu-link routerLink="/settings">String path</a>',
-      '<a ndwu-link [routerLink]="[\'/settings\', \'network\']">Array path</a>',
-      '<a ndwu-link routerLink="/settings/disabled" disabled>Disabled</a>',
-    ]),
-  }),
+  decorators: [withStackLayout, ...withRouter],
+  render: () => {
+    return {
+      template: lines([
+        `<a
+          ndwu-link
+          routerLink="/settings"
+        >
+          String path
+        </a>`,
+        `<a
+          ndwu-link
+          [routerLink]="['/settings', 'network']"
+        >
+          Array path
+        </a>`,
+        `<a
+          ndwu-link
+          routerLink="/settings/disabled"
+          disabled
+        >
+          Disabled
+        </a>`,
+      ]),
+    };
+  },
 };

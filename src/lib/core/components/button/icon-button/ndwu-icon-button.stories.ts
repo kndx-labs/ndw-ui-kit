@@ -25,6 +25,11 @@ interface VariantExample {
   label: string;
 }
 
+interface FlatIconExample {
+  icon: NdwuIconName;
+  label: string;
+}
+
 const VARIANTS = Object.values(NDWU_ICON_BUTTON_VARIANT);
 const SIZES = [NDWU_SIZE.L, NDWU_SIZE.XL, NDWU_SIZE.XXL];
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
@@ -35,7 +40,10 @@ const VARIANT_EXAMPLES: readonly VariantExample[] = [
   {variant: NDWU_ICON_BUTTON_VARIANT.FLAT, icon: NDWU_ICON_NAME.SEARCH_L, label: 'Flat'},
 ];
 
-const FLAT_ICONS: readonly NdwuIconName[] = [NDWU_ICON_NAME.CHECK_S, NDWU_ICON_NAME.SEARCH_L];
+const FLAT_ICONS: readonly FlatIconExample[] = [
+  {icon: NDWU_ICON_NAME.CHECK_S, label: 'small'},
+  {icon: NDWU_ICON_NAME.SEARCH_L, label: 'large'},
+];
 
 const lines = (items: readonly string[]): string => {
   return items.join('\n');
@@ -88,12 +96,20 @@ const meta: Meta<IconButtonStoryArgs> = {
     size: undefined,
     ariaLabel: 'Add item',
   },
-  render: (args) => ({
-    props: args,
-    template: `<button ndwu-icon-button ${
-      argsToTemplate(args, {exclude: ['ariaLabel']})
-    } aria-label="${args.ariaLabel}"></button>`,
-  }),
+  render: (args) => {
+    const argsStr = argsToTemplate(args, {exclude: ['ariaLabel']});
+
+    return {
+      props: args,
+      template: `
+        <button
+          ndwu-icon-button
+          ${argsStr}
+          aria-label="${args.ariaLabel}"
+        >
+        </button>`,
+    };
+  },
 };
 
 export default meta;
@@ -103,49 +119,85 @@ export const Default: Story = {};
 export const Variants: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withRowLayout],
-  render: () => ({
-    template: lines(
-      VARIANT_EXAMPLES.map(({variant, icon, label}) => {
-        return `<button ndwu-icon-button variant="${variant}" icon="${icon}" aria-label="${label} icon button"></button>`;
-      }),
-    ),
-  }),
+  render: () => {
+    return {
+      template: lines(
+        VARIANT_EXAMPLES.map(({variant, icon, label}) => {
+          return `
+            <button
+              ndwu-icon-button
+              variant="${variant}"
+              icon="${icon}"
+              aria-label="${label} icon button"
+            >
+            </button>`;
+        }),
+      ),
+    };
+  },
 };
 
 export const Sizes: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withRowLayout],
-  render: () => ({
-    template: lines(
-      SIZES.map((size) => {
-        return `<button ndwu-icon-button variant="square" size="${size}" icon="${NDWU_ICON_NAME.ADD_S}" aria-label="${size} square icon button"></button>`;
-      }),
-    ),
-  }),
+  render: () => {
+    return {
+      template: lines(
+        SIZES.map((size) => {
+          return `
+            <button
+              ndwu-icon-button
+              variant="square"
+              size="${size}"
+              icon="${NDWU_ICON_NAME.ADD_S}"
+              aria-label="${size} square icon button"
+            >
+            </button>`;
+        }),
+      ),
+    };
+  },
 };
 
 export const FlatIconSizes: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withRowLayout],
-  render: () => ({
-    template: lines(
-      FLAT_ICONS.map((icon) => {
-        return `<button ndwu-icon-button variant="flat" icon="${icon}" aria-label="Flat ${
-          icon.endsWith('_S') ? 'small' : 'large'
-        } icon button"></button>`;
-      }),
-    ),
-  }),
+  render: () => {
+    return {
+      template: lines(
+        FLAT_ICONS.map(({icon, label}) => {
+          return `
+            <button
+              ndwu-icon-button
+              variant="flat"
+              icon="${icon}"
+              aria-label="Flat ${label} icon button"
+            >
+            </button>`;
+        }),
+      ),
+    };
+  },
 };
 
 export const Disabled: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withRowLayout],
-  render: () => ({
-    template: lines(
-      VARIANTS.map((variant) => {
-        return `<button ndwu-icon-button variant="${variant}" icon="${NDWU_ICON_NAME.ADD_S}" disabled aria-label="Disabled ${variant} icon button"></button>`;
-      }),
-    ),
-  }),
+  render: () => {
+    return {
+      template: lines(
+        VARIANTS.map((variant) => {
+          return `
+            <button
+              ndwu-icon-button
+              variant="${variant}"
+              icon="${NDWU_ICON_NAME.ADD_S}"
+              disabled
+              aria-label="Disabled ${variant} icon button"
+            >
+            </button>`;
+        }),
+      ),
+    };
+  },
 };

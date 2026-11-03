@@ -71,12 +71,20 @@ const meta: Meta<TimingButtonStoryArgs> = {
     loading: false,
     size: undefined,
   },
-  render: (args) => ({
-    props: args,
-    template: `<button ndwu-timing-button [duration]="${args.duration}" ${
-      argsToTemplate(args, {exclude: ['duration']})
-    }></button>`,
-  }),
+  render: (args) => {
+    const argsStr = argsToTemplate(args, {exclude: ['duration']});
+
+    return {
+      props: args,
+      template: `
+        <button
+          ndwu-timing-button
+          [duration]="${args.duration}"
+          ${argsStr}
+        >
+        </button>`,
+    };
+  },
 };
 
 export default meta;
@@ -85,37 +93,78 @@ export const Default: Story = {};
 
 export const Idle: Story = {
   parameters: FIXED_STORY_PARAMETERS,
-  render: () => ({
-    template: '<button ndwu-timing-button leftText="Confirm" rightText="s" [duration]="0"></button>',
-  }),
+  render: () => {
+    return {
+      template: `
+        <button
+          ndwu-timing-button
+          leftText="Confirm"
+          rightText="s"
+          [duration]="0"
+        >
+        </button>`,
+    };
+  },
 };
 
 export const States: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withRowLayout],
-  render: () => ({
-    template: lines([
-      '<button ndwu-timing-button leftText="Disabled" [duration]="0" [disabled]="true"></button>',
-      '<button ndwu-timing-button leftText="Loading" [duration]="0" [loading]="true"></button>',
-    ]),
-  }),
+  render: () => {
+    return {
+      template: lines([
+        `<button
+          ndwu-timing-button
+          leftText="Disabled"
+          [duration]="0"
+          [disabled]="true"
+        >
+        </button>`,
+        `<button
+          ndwu-timing-button
+          leftText="Loading"
+          [duration]="0"
+          [loading]="true"
+        >
+        </button>`,
+      ]),
+    };
+  },
 };
 
 export const Sizes: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withRowLayout],
-  render: () => ({
-    template: lines(
-      SIZES.map((size) => {
-        return `<button ndwu-timing-button size="${size}" leftText="Size ${size}" [duration]="0"></button>`;
-      }),
-    ),
-  }),
+  render: () => {
+    return {
+      template: lines(
+        SIZES.map((size) => {
+          return `
+            <button
+              ndwu-timing-button
+              size="${size}"
+              leftText="Size ${size}"
+              [duration]="0"
+            >
+            </button>`;
+        }),
+      ),
+    };
+  },
 };
 
 export const WithIcon: Story = {
   parameters: FIXED_STORY_PARAMETERS,
-  render: () => ({
-    template: `<button ndwu-timing-button icon="${NDWU_ICON_NAME.ADD_S}" [duration]="0" aria-label="Confirm"></button>`,
-  }),
+  render: () => {
+    return {
+      template: `
+        <button
+          ndwu-timing-button
+          icon="${NDWU_ICON_NAME.ADD_S}"
+          [duration]="0"
+          aria-label="Confirm"
+        >
+        </button>`,
+    };
+  },
 };

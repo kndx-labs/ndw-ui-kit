@@ -2,7 +2,7 @@ import {NDWU_ICON_NAME, NdwuLinkComponent} from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType} from '@sb/helpers/arg-types';
-import {withRouter} from '@sb/decorators/with-router.decorator';
+import {withRouter} from '@sb/helpers/story-router';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
 

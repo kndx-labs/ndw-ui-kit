@@ -39,7 +39,7 @@ const meta: Meta<TimingButtonStoryArgs> = {
     },
     duration: {
       control: 'number',
-      description: 'Countdown duration in seconds. Read once when the component initializes.',
+      description: 'Countdown duration in seconds. Read when the countdown starts, resumes after `loading`, or restarts after `disabled`; a change while counting applies only then.',
     },
     width: {
       description: 'CSS width of the button',

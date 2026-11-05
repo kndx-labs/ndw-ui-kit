@@ -11,6 +11,7 @@ import {
   inject,
   input,
   signal,
+  untracked,
   viewChild,
 } from '@angular/core';
 import {NDWU_SIZE, NdwuSize} from '../../../shared.types';
@@ -24,7 +25,6 @@ import {
 } from './ndwu-scrollbar.types';
 import {calculateThumbOffset, calculateThumbSize, convertTrackToScroll, hasOverflow} from './ndwu-scrollbar.geometry';
 import {NdwuScrollbarDragController} from './ndwu-scrollbar-drag.controller';
-import {NdwuScrollbarActivity} from './ndwu-scrollbar.activity';
 import {NdwuScrollbarContentObserver} from './ndwu-scrollbar.content-observer';
 import {NdwuFrameScheduler} from './ndwu-scrollbar.frame-scheduler';
 import {
@@ -36,8 +36,17 @@ import {
 } from './ndwu-scrollbar.dom';
 
 const MIN_THUMB_SIZE_PROPERTY = '--ndwu-scrollbar-min-thumb-size';
-const HIT_INSET_Y_PROPERTY = '--ndwu-scrollbar-hit-inset-y';
-const HIT_INSET_X_PROPERTY = '--ndwu-scrollbar-hit-inset-x';
+
+// How long the scrollbar counts as active after the last scroll or the end of a drag.
+const ACTIVITY_HIDE_DELAY_MS = 1000;
+
+// The thumb is dragged by any direct pointer; the track jumps to the clicked point only for a
+// mouse, because a touch on the track is far more likely a missed swipe than an aimed tap.
+const THUMB_POINTER_TYPES: readonly string[] = ['mouse', 'touch', 'pen'];
+const TRACK_POINTER_TYPES: readonly string[] = ['mouse'];
+const TOUCH_POINTER_TYPES: readonly string[] = ['touch', 'pen'];
+
+const COARSE_POINTER_QUERY = '(pointer: coarse)';
 
 const SCROLLABLE_Y_CLASS = 'ndwu-scrollbar--scrollable-y';
 const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
@@ -56,7 +65,8 @@ const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
     '[class.ndwu-scrollbar--dragging-y]': 'draggingAxis() === "y"',
     '[class.ndwu-scrollbar--dragging-x]': 'draggingAxis() === "x"',
     '[class.ndwu-scrollbar--auto-hide]': 'ndwuScrollbarAutoHide()',
-    '[class.ndwu-scrollbar--active]': 'activity.isActive()',
+    '[class.ndwu-scrollbar--active]': 'isActive()',
+    '[class.ndwu-scrollbar--touch]': 'isTouchPointer()',
     '[class.ndwu-scrollbar--axis-y]': 'ndwuScrollbarAxis() === "y"',
     '[class.ndwu-scrollbar--axis-x]': 'ndwuScrollbarAxis() === "x"',
     '[class.ndwu-scrollbar--axis-both]': 'ndwuScrollbarAxis() === "both"',
@@ -81,6 +91,8 @@ export class NdwuScrollbarComponent {
       pointerCoord: 'clientY',
       rectStart: 'top',
       thumbStyle: 'height',
+      trackEndStyle: 'right',
+      hitInsetProperty: '--ndwu-scrollbar-hit-inset-y',
       translateAxis: (v: number) => `translate3d(0, ${v}px, 0)`,
     },
     x: {
@@ -90,6 +102,8 @@ export class NdwuScrollbarComponent {
       pointerCoord: 'clientX',
       rectStart: 'left',
       thumbStyle: 'width',
+      trackEndStyle: 'bottom',
+      hitInsetProperty: '--ndwu-scrollbar-hit-inset-x',
       translateAxis: (v: number) => `translate3d(${v}px, 0, 0)`,
     },
   };
@@ -102,7 +116,7 @@ export class NdwuScrollbarComponent {
   public readonly ndwuScrollbarAxis = input<'x' | 'y' | 'both'>('both');
   public readonly ndwuScrollbarPrintable = input(true, {transform: booleanAttribute});
   public readonly ndwuScrollbarDisabled = input(false, {transform: booleanAttribute});
-  /** Hides chrome only with a coarse primary pointer; actual pointer type does not change presentation. */
+  /** Hides the tracks until the content is scrolled. Applies only under `(pointer: coarse)`. */
   public readonly ndwuScrollbarAutoHide = input(false, {transform: booleanAttribute});
   public readonly ndwuScrollbarPadding = input<NdwuScrollbarPadding>({});
   public readonly ndwuScrollbarContentPadding = input<NdwuScrollbarPadding>({});
@@ -110,6 +124,7 @@ export class NdwuScrollbarComponent {
   private readonly hostEl: HTMLElement = inject(ElementRef).nativeElement;
   private readonly doc: Document = this.hostEl.ownerDocument;
   private readonly destroyRef = inject(DestroyRef);
+  private readonly coarsePointerQuery = this.doc.defaultView?.matchMedia?.(COARSE_POINTER_QUERY);
 
   private readonly contentEl = viewChild.required<ElementRef<HTMLElement>>('contentEl');
   private readonly trackYEl = viewChild.required<ElementRef<HTMLElement>>('trackY');
@@ -117,10 +132,17 @@ export class NdwuScrollbarComponent {
   private readonly thumbYEl = viewChild.required<ElementRef<HTMLElement>>('thumbY');
   private readonly thumbXEl = viewChild.required<ElementRef<HTMLElement>>('thumbX');
 
-  protected readonly isDragging = signal(false);
   protected readonly draggingAxis = signal<NdwuScrollbarAxis | null>(null);
+  protected readonly isDragging = computed(() => {
+    return this.draggingAxis() !== null;
+  });
   protected readonly isViewInitialized = signal(false);
-  protected readonly activity = new NdwuScrollbarActivity();
+  // Active while dragging and for ACTIVITY_HIDE_DELAY_MS after the last scroll or drag end.
+  protected readonly isActive = signal(false);
+  // The last pointer pressed inside the host was touch or pen. Gates the wide touch target and
+  // lets touches on the track fall through to the content. Starts from the primary pointer, so
+  // the first touch on a phone already passes through.
+  protected readonly isTouchPointer = signal(this.coarsePointerQuery?.matches ?? false);
   protected readonly normalizedSize = computed(() => {
     return this.ndwuScrollbarSize() === NDWU_SIZE.XL ? NDWU_SIZE.XL : NDWU_SIZE.L;
   });
@@ -129,18 +151,13 @@ export class NdwuScrollbarComponent {
     this.doc,
     {
       move: (state, event) => this.onDragMove(state, event),
-      activeChange: (isActive) => {
-        this.isDragging.set(isActive);
+      activeChange: (state) => {
+        this.draggingAxis.set(state?.axis ?? null);
+        this.markActive();
 
-        if (isActive) {
-          this.activity.startDrag();
-
-          return;
+        if (state === null) {
+          this.schedulePositionUpdate();
         }
-
-        this.activity.endDrag();
-        this.draggingAxis.set(null);
-        this.schedulePositionUpdate();
       },
     },
   );
@@ -151,6 +168,8 @@ export class NdwuScrollbarComponent {
   private readonly trackSizes: Record<NdwuScrollbarAxis, number> = {x: 0, y: 0};
   private readonly frames = new NdwuFrameScheduler<'recalculate' | 'position'>();
   private contentObserver: NdwuScrollbarContentObserver | null = null;
+  private idleTimer: ReturnType<typeof setTimeout> | undefined;
+  private readonly hitInsets: Record<NdwuScrollbarAxis, string> = {x: '', y: ''};
 
   constructor() {
     this.destroyRef.onDestroy(() => this.cleanup());
@@ -173,9 +192,11 @@ export class NdwuScrollbarComponent {
       }
 
       if (isDisabled) {
-        this.dragController.end();
-        this.activity.reset();
-        this.releaseContentBoxSize();
+        untracked(() => {
+          this.dragController.end();
+          this.resetActivity();
+          this.releaseContentBoxSize();
+        });
 
         return;
       }
@@ -214,6 +235,8 @@ export class NdwuScrollbarComponent {
   private registerStaticListeners(content: HTMLElement): void {
     content.addEventListener('scroll', this.onScroll);
     this.hostEl.addEventListener('focus', this.onHostFocus);
+    // Capture phase: the thumb stops propagation of the pointerdown it claims.
+    this.hostEl.addEventListener('pointerdown', this.onHostPointerDown, true);
   }
 
   private observeContent(content: HTMLElement): void {
@@ -247,7 +270,7 @@ export class NdwuScrollbarComponent {
       return;
     }
 
-    this.activity.markScroll();
+    this.markActive();
 
     if (this.isDragging()) {
       return;
@@ -255,6 +278,45 @@ export class NdwuScrollbarComponent {
 
     this.schedulePositionUpdate();
   };
+
+  private readonly onHostPointerDown = (event: PointerEvent): void => {
+    this.isTouchPointer.set(TOUCH_POINTER_TYPES.includes(event.pointerType));
+  };
+
+  // `--active` matters only for the touch target and for auto-hide, so a mouse on a
+  // fine-pointer device never starts the timer.
+  private markActive(): void {
+    this.clearIdleTimer();
+
+    const isActivityShown = this.isTouchPointer() || (this.coarsePointerQuery?.matches ?? false);
+
+    if (!isActivityShown) {
+      this.isActive.set(false);
+
+      return;
+    }
+
+    this.isActive.set(true);
+
+    if (this.isDragging()) {
+      return;
+    }
+
+    this.idleTimer = setTimeout(() => {
+      this.idleTimer = undefined;
+      this.isActive.set(false);
+    }, ACTIVITY_HIDE_DELAY_MS);
+  }
+
+  private resetActivity(): void {
+    this.clearIdleTimer();
+    this.isActive.set(false);
+  }
+
+  private clearIdleTimer(): void {
+    clearTimeout(this.idleTimer);
+    this.idleTimer = undefined;
+  }
 
   private schedulePositionUpdate(): void {
     this.frames.schedule(
@@ -284,7 +346,7 @@ export class NdwuScrollbarComponent {
   }
 
   protected onThumbPointerDown(axis: NdwuScrollbarAxis, event: PointerEvent): void {
-    if (this.ndwuScrollbarDisabled() || !this.overflow[axis] || !this.claimPointer(event, true)) {
+    if (this.ndwuScrollbarDisabled() || !this.overflow[axis] || !this.claimPointer(event, THUMB_POINTER_TYPES)) {
       return;
     }
 
@@ -292,19 +354,17 @@ export class NdwuScrollbarComponent {
   }
 
   protected onTrackPointerDown(axis: NdwuScrollbarAxis, event: PointerEvent): void {
-    if (this.ndwuScrollbarDisabled() || !this.overflow[axis] || !this.claimPointer(event, false)) {
+    if (this.ndwuScrollbarDisabled() || !this.overflow[axis] || !this.claimPointer(event, TRACK_POINTER_TYPES)) {
       return;
     }
 
     this.startTrackClick(axis, event);
   }
 
-  private claimPointer(event: PointerEvent, allowDirectPointer: boolean): boolean {
-    const supportedPointer = allowDirectPointer
-      ? ['mouse', 'touch', 'pen'].includes(event.pointerType)
-      : event.pointerType === 'mouse';
+  private claimPointer(event: PointerEvent, pointerTypes: readonly string[]): boolean {
+    const isSupportedPointer = pointerTypes.includes(event.pointerType);
 
-    if (!supportedPointer || !event.isPrimary || event.button !== 0 || this.isDragging()) {
+    if (!isSupportedPointer || !event.isPrimary || event.button !== 0 || this.isDragging()) {
       return false;
     }
 
@@ -333,7 +393,6 @@ export class NdwuScrollbarComponent {
       pointerOffset: this.getPointerOffset(axis, event) - this.getRectStart(axis, thumbRect),
       trackStart: this.getRectStart(axis, trackRect),
     });
-    this.draggingAxis.set(axis);
   }
 
   private onDragMove(state: NdwuDragState, event: PointerEvent): void {
@@ -404,25 +463,40 @@ export class NdwuScrollbarComponent {
   // Measure the tracks themselves, not the host: padding and the other visible track shorten them.
   // Computed style preserves fractional pixels; clientWidth/clientHeight round them up and can
   // place the thumb end past the track end.
+  //
+  // The used distance from the track end to the host edge is also stored in px, so the touch
+  // target can reach the edge whatever unit the track padding uses (%, calc()). All reads go
+  // first: a style write between getComputedStyle() calls would force another style recalc.
   private measureTrackSizes(): void {
+    const hitInsets: Record<NdwuScrollbarAxis, string> = {x: '0px', y: '0px'};
+
     for (const axis of ['x', 'y'] as const) {
       if (!this.overflow[axis]) {
         this.trackSizes[axis] = 0;
-        this.hostEl.style.setProperty(axis === 'y' ? HIT_INSET_Y_PROPERTY : HIT_INSET_X_PROPERTY, '0px');
 
         continue;
       }
 
       const {track} = this.getAxisElements(axis);
-      const styleKey = this.getConfig(axis).thumbStyle;
+      const config = this.getConfig(axis);
       const usedStyle = getComputedStyle(track);
 
-      this.trackSizes[axis] = parseFloat(usedStyle[styleKey]) || 0;
-      this.hostEl.style.setProperty(
-        axis === 'y' ? HIT_INSET_Y_PROPERTY : HIT_INSET_X_PROPERTY,
-        `${parseFloat(axis === 'y' ? usedStyle.right : usedStyle.bottom) || 0}px`,
-      );
+      this.trackSizes[axis] = parseFloat(usedStyle[config.thumbStyle]) || 0;
+      hitInsets[axis] = `${parseFloat(usedStyle[config.trackEndStyle]) || 0}px`;
     }
+
+    for (const axis of ['x', 'y'] as const) {
+      this.applyHitInset(axis, hitInsets[axis]);
+    }
+  }
+
+  private applyHitInset(axis: NdwuScrollbarAxis, value: string): void {
+    if (this.hitInsets[axis] === value) {
+      return;
+    }
+
+    this.hitInsets[axis] = value;
+    this.hostEl.style.setProperty(this.getConfig(axis).hitInsetProperty, value);
   }
 
   // These classes show the tracks (and shorten one track when both are visible). The thumb is
@@ -434,14 +508,6 @@ export class NdwuScrollbarComponent {
 
     this.hostEl.classList.toggle(SCROLLABLE_Y_CLASS, isOverflowingY);
     this.hostEl.classList.toggle(SCROLLABLE_X_CLASS, isOverflowingX);
-
-    if (!isOverflowingY) {
-      this.hostEl.style.setProperty(HIT_INSET_Y_PROPERTY, '0px');
-    }
-
-    if (!isOverflowingX) {
-      this.hostEl.style.setProperty(HIT_INSET_X_PROPERTY, '0px');
-    }
   }
 
   private applyThumbSize(axis: NdwuScrollbarAxis, size: number): void {
@@ -515,8 +581,10 @@ export class NdwuScrollbarComponent {
 
     content?.removeEventListener('scroll', this.onScroll);
     this.hostEl.removeEventListener('focus', this.onHostFocus);
+    this.hostEl.removeEventListener('pointerdown', this.onHostPointerDown, true);
+    // After end(): ending a drag starts the idle timer.
     this.dragController.end();
-    this.activity.dispose();
+    this.clearIdleTimer();
 
     this.frames.cancelAll();
 

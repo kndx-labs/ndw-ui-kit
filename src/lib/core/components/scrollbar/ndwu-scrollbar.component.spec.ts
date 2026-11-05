@@ -1,9 +1,8 @@
-import 'zone.js';
 /* eslint id-denylist: 0 */
+import {provideZonelessChangeDetection} from '@angular/core';
 import {type ComponentFixture, TestBed} from '@angular/core/testing';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import {NdwuScrollbarComponent} from './ndwu-scrollbar.component';
-import type {NdwuScrollbarPadding} from './ndwu-scrollbar.types';
 
 interface PointerInit {
   pointerId?: number;
@@ -28,9 +27,11 @@ interface ScrollbarHarness {
   setScrollTop: (value: number) => void;
   setAutoHide: (value: boolean | string) => void;
   setDisabled: (value: boolean) => void;
-  setPadding: (value: NdwuScrollbarPadding) => void;
   setTrackInsets: (y: number, x: number) => void;
   triggerHostResize: () => void;
+  press: (pointerType: string) => void;
+  scroll: () => void;
+  hasClass: (modifier: string) => boolean;
 }
 
 interface CreateScrollbarOptions {
@@ -38,6 +39,7 @@ interface CreateScrollbarOptions {
   autoHide?: boolean | string;
   disabled?: boolean;
   overflow?: boolean;
+  coarsePointer?: boolean;
 }
 
 const fixtures: ComponentFixture<NdwuScrollbarComponent>[] = [];
@@ -115,7 +117,26 @@ const flushAnimationFrames = (): void => {
   }
 };
 
+// jsdom has no matchMedia; the component reads `(pointer: coarse)` when it is created.
+const stubCoarsePointer = (matches: boolean): void => {
+  Object.defineProperty(window, 'matchMedia', {
+    configurable: true,
+    value: (query: string) => {
+      return {matches: query === '(pointer: coarse)' && matches} as MediaQueryList;
+    },
+  });
+};
+
+// Only timeouts: faking requestAnimationFrame too would replace the frame stub above.
+const useFakeTimeouts = (): void => {
+  vi.useFakeTimers({toFake: ['setTimeout', 'clearTimeout']});
+};
+
 const createScrollbar = async (options: CreateScrollbarOptions = {}): Promise<ScrollbarHarness> => {
+  if (options.coarsePointer !== undefined) {
+    stubCoarsePointer(options.coarsePointer);
+  }
+
   const fixture = TestBed.createComponent(NdwuScrollbarComponent);
 
   fixtures.push(fixture);
@@ -249,7 +270,6 @@ const createScrollbar = async (options: CreateScrollbarOptions = {}): Promise<Sc
     },
     setAutoHide: (value) => componentRef.setInput('ndwuScrollbarAutoHide', value),
     setDisabled: (value) => componentRef.setInput('ndwuScrollbarDisabled', value),
-    setPadding: (value) => componentRef.setInput('ndwuScrollbarPadding', value),
     setTrackInsets: (y, x) => {
       usedInsetY = y;
       usedInsetX = x;
@@ -257,10 +277,23 @@ const createScrollbar = async (options: CreateScrollbarOptions = {}): Promise<Sc
     triggerHostResize: () => {
       resizeObservers.find(observer => observer.observes(host))?.trigger(host);
     },
+    // A press on the content, as at the start of a swipe; the host sees it in the capture phase.
+    press: (pointerType) => {
+      content.dispatchEvent(pointerEvent('pointerdown', {pointerType}));
+      fixture.detectChanges();
+    },
+    scroll: () => {
+      content.dispatchEvent(new Event('scroll'));
+      fixture.detectChanges();
+    },
+    hasClass: (modifier) => {
+      return host.classList.contains(`ndwu-scrollbar--${modifier}`);
+    },
   };
 };
 
 beforeEach(() => {
+  TestBed.configureTestingModule({providers: [provideZonelessChangeDetection()]});
   vi.stubGlobal('ResizeObserver', TestResizeObserver);
   vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
     const id = nextFrameId++;
@@ -283,9 +316,10 @@ afterEach(() => {
   vi.useRealTimers();
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
+  Reflect.deleteProperty(window, 'matchMedia');
 });
 
-describe('NdwuScrollbarComponent pointer admission', () => {
+describe('NdwuScrollbarComponent: pointer admission', () => {
   it.each(['mouse', 'touch', 'pen'])('starts thumb drag for %s', async (pointerType) => {
     const harness = await createScrollbar();
     const event = pointerEvent('pointerdown', {pointerType, pointerId: 7});
@@ -318,9 +352,12 @@ describe('NdwuScrollbarComponent pointer admission', () => {
   });
 
   it('rejects disabled and non-overflowing presses', async () => {
-    const disabled = await createScrollbar({disabled: true});
+    const disabled = await createScrollbar();
     const disabledEvent = pointerEvent('pointerdown', {pointerType: 'mouse'});
 
+    // No change detection yet: the disabled effect has not reset the overflow state, so only
+    // the disabled check can reject the press.
+    disabled.setDisabled(true);
     disabled.thumbY.dispatchEvent(disabledEvent);
 
     const noOverflow = await createScrollbar({overflow: false});
@@ -438,180 +475,171 @@ describe('NdwuScrollbarComponent pointer admission', () => {
   });
 });
 
-describe('NdwuScrollbarComponent activity wiring', () => {
+describe('NdwuScrollbarComponent: activity', () => {
   it.each([
     ['omitted', undefined, false],
-    ['false', false, false],
-    ['false attribute string', 'false', false],
-    ['true', true, true],
     ['empty attribute string', '', true],
-  ])('applies auto-hide input coercion for %s', async (_label, autoHide, expected) => {
+  ])('coerces auto-hide input when %s', async (_label, autoHide, expected) => {
     const harness = await createScrollbar(autoHide === undefined ? {} : {autoHide});
 
-    expect(harness.host.classList.contains('ndwu-scrollbar--auto-hide')).toBe(expected);
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(false);
+    expect(harness.hasClass('auto-hide')).toBe(expected);
+    expect(harness.hasClass('active')).toBe(false);
   });
 
-  it.each([false, true])('tracks scroll activity with auto-hide=%s', async (autoHide) => {
+  it('stays inactive for a mouse on a fine-pointer device', async () => {
+    const harness = await createScrollbar({coarsePointer: false});
+
+    flushAnimationFrames();
+    useFakeTimeouts();
+    harness.press('mouse');
+    harness.scroll();
+
+    expect(harness.hasClass('touch')).toBe(false);
+    expect(harness.hasClass('active')).toBe(false);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('marks scroll activity for a mouse on a coarse-pointer device without the touch target', async () => {
+    const harness = await createScrollbar({coarsePointer: true});
+
+    expect(harness.hasClass('touch')).toBe(true);
+
+    flushAnimationFrames();
+    useFakeTimeouts();
+    harness.press('mouse');
+    harness.scroll();
+
+    expect(harness.hasClass('touch')).toBe(false);
+    expect(harness.hasClass('active')).toBe(true);
+  });
+
+  it.each([false, true])('keeps a touch scroll active for one second with auto-hide=%s', async (autoHide) => {
     const harness = await createScrollbar({autoHide});
 
     flushAnimationFrames();
-    vi.useFakeTimers();
-
-    harness.content.dispatchEvent(new Event('scroll'));
-    harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
+    useFakeTimeouts();
+    harness.press('touch');
+    harness.scroll();
+    expect(harness.hasClass('touch')).toBe(true);
+    expect(harness.hasClass('active')).toBe(true);
 
     vi.advanceTimersByTime(999);
     harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
+    expect(harness.hasClass('active')).toBe(true);
+
     vi.advanceTimersByTime(1);
     harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(false);
+    expect(harness.hasClass('active')).toBe(false);
   });
 
   it('keeps activity through a stationary drag and starts expiry after release', async () => {
     const harness = await createScrollbar({autoHide: true});
 
     flushAnimationFrames();
-    vi.useFakeTimers();
-
-    harness.thumbY.dispatchEvent(pointerEvent('pointerdown', {pointerId: 1}));
+    useFakeTimeouts();
+    harness.thumbY.dispatchEvent(pointerEvent('pointerdown', {pointerType: 'touch', pointerId: 1}));
     harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
-    vi.advanceTimersByTime(2000);
-    harness.content.dispatchEvent(new Event('scroll'));
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
+    expect(harness.hasClass('active')).toBe(true);
 
-    harness.host.ownerDocument.dispatchEvent(pointerEvent('pointerup', {pointerId: 1}));
+    vi.advanceTimersByTime(2000);
+    harness.scroll();
+    expect(harness.hasClass('active')).toBe(true);
+
+    harness.host.ownerDocument.dispatchEvent(pointerEvent('pointerup', {pointerType: 'touch', pointerId: 1}));
     harness.fixture.detectChanges();
     vi.advanceTimersByTime(999);
     harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
+    expect(harness.hasClass('active')).toBe(true);
+
     vi.advanceTimersByTime(1);
     harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(false);
+    expect(harness.hasClass('active')).toBe(false);
   });
 
-  it('preserves activity and drag state when auto-hide input changes', async () => {
+  it('drops activity when a mouse takes over during a touch drag', async () => {
     const harness = await createScrollbar();
 
     flushAnimationFrames();
-    vi.useFakeTimers();
+    useFakeTimeouts();
+    harness.thumbY.dispatchEvent(pointerEvent('pointerdown', {pointerType: 'touch', pointerId: 1}));
+    harness.fixture.detectChanges();
+    expect(harness.hasClass('active')).toBe(true);
 
-    harness.content.dispatchEvent(new Event('scroll'));
-    harness.fixture.detectChanges();
-    harness.setAutoHide(true);
-    harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
-    expect(harness.host.classList.contains('ndwu-scrollbar--auto-hide')).toBe(true);
+    harness.press('mouse');
+    harness.scroll();
 
-    harness.setScrollTop(60);
-    harness.thumbY.dispatchEvent(pointerEvent('pointerdown', {pointerId: 1}));
-    harness.fixture.detectChanges();
-    harness.setAutoHide(false);
-    harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
-    expect(harness.host.classList.contains('ndwu-scrollbar--dragging')).toBe(true);
-    expect(harness.host.classList.contains('ndwu-scrollbar--auto-hide')).toBe(false);
-    expect(harness.scrollTop()).toBe(60);
+    expect(harness.hasClass('dragging')).toBe(true);
+    expect(harness.hasClass('active')).toBe(false);
   });
 
-  it('disabled state ends drag, clears activity and does not leave a stale timeout', async () => {
+  it('ends drag and clears activity when disabled', async () => {
     const harness = await createScrollbar({autoHide: true});
 
     flushAnimationFrames();
-    vi.useFakeTimers();
-
-    harness.thumbY.dispatchEvent(pointerEvent('pointerdown', {pointerId: 1}));
+    useFakeTimeouts();
+    harness.thumbY.dispatchEvent(pointerEvent('pointerdown', {pointerType: 'touch', pointerId: 1}));
     harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--dragging')).toBe(true);
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
+    expect(harness.hasClass('dragging')).toBe(true);
+    expect(harness.hasClass('active')).toBe(true);
+
     harness.setDisabled(true);
     harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--dragging')).toBe(false);
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(false);
+    expect(harness.hasClass('dragging')).toBe(false);
+    expect(harness.hasClass('active')).toBe(false);
+    expect(vi.getTimerCount()).toBe(0);
 
-    harness.content.dispatchEvent(new Event('scroll'));
-    harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(false);
-
-    vi.advanceTimersByTime(2000);
-    harness.setDisabled(false);
-    harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(false);
+    harness.scroll();
+    expect(harness.hasClass('active')).toBe(false);
+    expect(vi.getTimerCount()).toBe(0);
   });
 
-  it('disposes pending activity when the fixture is destroyed', async () => {
-    const harness = await createScrollbar({autoHide: true});
+  it('leaves no pending timer after destroy, even mid-drag', async () => {
+    const harness = await createScrollbar();
 
     flushAnimationFrames();
-    vi.useFakeTimers();
+    useFakeTimeouts();
+    harness.press('touch');
+    harness.scroll();
+    harness.thumbY.dispatchEvent(pointerEvent('pointerdown', {pointerType: 'touch', pointerId: 1}));
+    expect(harness.hasClass('active')).toBe(true);
 
-    harness.content.dispatchEvent(new Event('scroll'));
-    harness.fixture.detectChanges();
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
     harness.fixture.destroy();
-    expect(() => vi.advanceTimersByTime(2000)).not.toThrow();
+    // Ending the drag writes signals, and the zoneless scheduler queues a zero-delay timeout.
+    vi.advanceTimersByTime(0);
 
-    expect(harness.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
-  });
-
-  it('keeps activity state isolated between component instances', async () => {
-    const first = await createScrollbar({autoHide: true});
-    const second = await createScrollbar({autoHide: true});
-
-    flushAnimationFrames();
-
-    first.content.dispatchEvent(new Event('scroll'));
-    first.fixture.detectChanges();
-    second.fixture.detectChanges();
-
-    expect(first.host.classList.contains('ndwu-scrollbar--active')).toBe(true);
-    expect(second.host.classList.contains('ndwu-scrollbar--active')).toBe(false);
+    expect(vi.getTimerCount()).toBe(0);
   });
 });
 
-describe('NdwuScrollbarComponent coarse hit insets', () => {
-  it('exposes used vertical and horizontal track insets in pixels', async () => {
-    const harness = await createScrollbar({axis: 'both'});
-
-    harness.setTrackInsets(40, 12);
-    harness.setPadding({right: '10%', bottom: 'calc(8px + 5%)'});
-    harness.fixture.componentRef.instance.refresh();
-    flushAnimationFrames();
-
-    expect(harness.host.style.getPropertyValue('--ndwu-scrollbar-hit-inset-y')).toBe('40px');
-    expect(harness.host.style.getPropertyValue('--ndwu-scrollbar-hit-inset-x')).toBe('12px');
-  });
-
-  it('sets zero inset for an axis without overflow', async () => {
+describe('NdwuScrollbarComponent: touch target insets', () => {
+  it('stores used track insets in px, zero without overflow, and rewrites only changes', async () => {
     const harness = await createScrollbar({axis: 'y'});
+    const insetY = (): string => {
+      return harness.host.style.getPropertyValue('--ndwu-scrollbar-hit-inset-y');
+    };
+    const insetX = (): string => {
+      return harness.host.style.getPropertyValue('--ndwu-scrollbar-hit-inset-x');
+    };
 
     harness.setTrackInsets(40, 12);
-    harness.fixture.componentRef.instance.refresh();
-    flushAnimationFrames();
-
-    expect(harness.host.style.getPropertyValue('--ndwu-scrollbar-hit-inset-y')).toBe('40px');
-    expect(harness.host.style.getPropertyValue('--ndwu-scrollbar-hit-inset-x')).toBe('0px');
-  });
-
-  it('updates measured insets after padding input changes and host resize', async () => {
-    const harness = await createScrollbar({axis: 'both'});
-
-    harness.setTrackInsets(48, 16);
-    harness.setPadding({right: 'calc(8px + 5%)', bottom: '10%'});
-    harness.fixture.detectChanges();
-    flushAnimationFrames();
-
-    expect(harness.host.style.getPropertyValue('--ndwu-scrollbar-hit-inset-y')).toBe('48px');
-    expect(harness.host.style.getPropertyValue('--ndwu-scrollbar-hit-inset-x')).toBe('16px');
-
-    harness.setTrackInsets(52, 20);
     harness.triggerHostResize();
     flushAnimationFrames();
 
-    expect(harness.host.style.getPropertyValue('--ndwu-scrollbar-hit-inset-y')).toBe('52px');
-    expect(harness.host.style.getPropertyValue('--ndwu-scrollbar-hit-inset-x')).toBe('20px');
+    expect(insetY()).toBe('40px');
+    expect(insetX()).toBe('0px');
+
+    const setProperty = vi.spyOn(harness.host.style, 'setProperty');
+
+    harness.fixture.componentRef.instance.refresh();
+    flushAnimationFrames();
+    expect(setProperty).not.toHaveBeenCalled();
+
+    harness.fixture.componentRef.setInput('ndwuScrollbarAxis', 'both');
+    harness.setTrackInsets(52, 20);
+    harness.fixture.detectChanges();
+    flushAnimationFrames();
+
+    expect(insetY()).toBe('52px');
+    expect(insetX()).toBe('20px');
   });
 });

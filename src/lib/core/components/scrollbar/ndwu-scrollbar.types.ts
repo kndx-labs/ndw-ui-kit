@@ -27,6 +27,8 @@ export type NdwuAxisConfigEntry =
     readonly pointerCoord: 'clientY';
     readonly rectStart: 'top';
     readonly thumbStyle: 'height';
+    readonly trackEndStyle: 'right';
+    readonly hitInsetProperty: '--ndwu-scrollbar-hit-inset-y';
     readonly translateAxis: (v: number) => string;
   }
   | {
@@ -36,6 +38,8 @@ export type NdwuAxisConfigEntry =
     readonly pointerCoord: 'clientX';
     readonly rectStart: 'left';
     readonly thumbStyle: 'width';
+    readonly trackEndStyle: 'bottom';
+    readonly hitInsetProperty: '--ndwu-scrollbar-hit-inset-x';
     readonly translateAxis: (v: number) => string;
   };
 

@@ -2,7 +2,8 @@ import type {NdwuDragState} from './ndwu-scrollbar.types';
 
 export interface NdwuScrollbarDragHandlers {
   readonly move: (state: NdwuDragState, event: PointerEvent) => void;
-  readonly activeChange: (isActive: boolean) => void;
+  /** Receives the drag state when a drag starts and `null` when it ends. */
+  readonly activeChange: (state: NdwuDragState | null) => void;
 }
 
 /**
@@ -29,7 +30,7 @@ export class NdwuScrollbarDragController {
     this.doc.addEventListener('pointerup', this.onPointerEnd, true);
     this.doc.addEventListener('pointercancel', this.onPointerEnd, true);
 
-    this.handlers.activeChange(true);
+    this.handlers.activeChange(state);
   }
 
   public end(): void {
@@ -52,7 +53,7 @@ export class NdwuScrollbarDragController {
     this.state = null;
     this.thumb = null;
 
-    this.handlers.activeChange(false);
+    this.handlers.activeChange(null);
   }
 
   private readonly onPointerMove = (event: PointerEvent): void => {

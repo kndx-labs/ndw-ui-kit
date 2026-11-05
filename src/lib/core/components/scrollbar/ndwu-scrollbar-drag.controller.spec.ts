@@ -24,10 +24,10 @@ const setup = () => {
   const doc = new EventTarget();
   const thumb = new FakeThumb();
   const moves: Array<[NdwuDragState, PointerEvent]> = [];
-  const activeChanges: boolean[] = [];
+  const activeChanges: Array<NdwuDragState | null> = [];
   const controller = new NdwuScrollbarDragController(doc as Document, {
     move: (state, event) => moves.push([state, event]),
-    activeChange: (isActive) => activeChanges.push(isActive),
+    activeChange: (state) => activeChanges.push(state),
   });
   const start = (): void => {
     controller.start(pointerEvent('pointerdown', 1), thumb as unknown as HTMLElement, DRAG_STATE);
@@ -43,7 +43,7 @@ describe('NdwuScrollbarDragController: dragging', () => {
     start();
 
     expect(thumb.captured.has(1)).toBe(true);
-    expect(activeChanges).toEqual([true]);
+    expect(activeChanges).toEqual([DRAG_STATE]);
   });
 
   it('forwards moves of the dragging pointer with the drag state', () => {
@@ -77,7 +77,7 @@ describe('NdwuScrollbarDragController: ending', () => {
 
     expect(thumb.captured.has(1)).toBe(false);
     expect(moves).toEqual([]);
-    expect(activeChanges).toEqual([true, false]);
+    expect(activeChanges).toEqual([DRAG_STATE, null]);
   });
 
   it('keeps dragging when another pointer is released', () => {
@@ -86,7 +86,7 @@ describe('NdwuScrollbarDragController: ending', () => {
     start();
     doc.dispatchEvent(pointerEvent('pointerup', 2));
 
-    expect(activeChanges).toEqual([true]);
+    expect(activeChanges).toEqual([DRAG_STATE]);
   });
 
   it('ends the drag when cancelled from outside', () => {
@@ -98,7 +98,7 @@ describe('NdwuScrollbarDragController: ending', () => {
 
     expect(thumb.captured.has(1)).toBe(false);
     expect(moves).toEqual([]);
-    expect(activeChanges).toEqual([true, false]);
+    expect(activeChanges).toEqual([DRAG_STATE, null]);
   });
 
   it('ends the previous drag before starting a new one', () => {
@@ -107,6 +107,6 @@ describe('NdwuScrollbarDragController: ending', () => {
     start();
     start();
 
-    expect(activeChanges).toEqual([true, false, true]);
+    expect(activeChanges).toEqual([DRAG_STATE, null, DRAG_STATE]);
   });
 });

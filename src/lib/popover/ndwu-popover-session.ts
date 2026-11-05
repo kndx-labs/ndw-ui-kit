@@ -6,7 +6,7 @@ export type NdwuPopoverDismissReason = 'escape' | 'origin-click' | 'outside' | '
 export type NdwuPopoverCloseReason = NdwuPopoverDismissReason | 'explicit' | 'hover' | 'destroy' | 'error';
 
 export interface NdwuPopoverSessionRef {
-  isActive(): boolean;
+  readonly isActive: boolean;
   onFinish(cleanup: () => void): void;
   afterNextRender(fn: () => void): void;
   close(reason: NdwuPopoverDismissReason): void;
@@ -21,9 +21,9 @@ export interface NdwuPopoverFinishState {
 
 export class NdwuPopoverSession implements NdwuPopoverSessionRef {
   public readonly focusSnapshot: Element | null = document.activeElement;
+  public isActive = true;
+  public isOpened = false;
 
-  protected active = true;
-  protected opened = false;
   protected readonly cleanups: (() => void)[] = [];
   protected readonly timers = new Set<ReturnType<typeof setTimeout>>();
 
@@ -34,20 +34,8 @@ export class NdwuPopoverSession implements NdwuPopoverSessionRef {
     protected readonly notifyFinished: (session: NdwuPopoverSession, state: NdwuPopoverFinishState) => void,
   ) {}
 
-  public isActive(): boolean {
-    return this.active;
-  }
-
-  public markOpened(): void {
-    this.opened = true;
-  }
-
-  public wasOpened(): boolean {
-    return this.opened;
-  }
-
   public onFinish(cleanup: () => void): void {
-    if (!this.active) {
+    if (!this.isActive) {
       cleanup();
 
       return;
@@ -59,7 +47,7 @@ export class NdwuPopoverSession implements NdwuPopoverSessionRef {
   public afterNextRender(fn: () => void): void {
     const ref = afterNextRender(
       () => {
-        if (this.active) {
+        if (this.isActive) {
           fn();
         }
       },
@@ -70,7 +58,7 @@ export class NdwuPopoverSession implements NdwuPopoverSessionRef {
   }
 
   public setTimeout(fn: () => void, ms: number): () => void {
-    if (!this.active) {
+    if (!this.isActive) {
       return () => {};
     }
 
@@ -78,7 +66,7 @@ export class NdwuPopoverSession implements NdwuPopoverSessionRef {
       () => {
         this.timers.delete(id);
 
-        if (this.active) {
+        if (this.isActive) {
           fn();
         }
       },
@@ -98,11 +86,11 @@ export class NdwuPopoverSession implements NdwuPopoverSessionRef {
   }
 
   public finish(reason: NdwuPopoverCloseReason, focusOrigin?: boolean): void {
-    if (!this.active) {
+    if (!this.isActive) {
       return;
     }
 
-    this.active = false;
+    this.isActive = false;
 
     const focused = document.activeElement;
     const focusLost = focused === null || focused === document.body;

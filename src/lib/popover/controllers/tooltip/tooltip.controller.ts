@@ -75,7 +75,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
 
     this.attachPortal(overlayRef, config, this.injector);
 
-    if (!session.isActive()) {
+    if (!session.isActive) {
       return;
     }
 

@@ -1,6 +1,6 @@
 import type {NdwuPopoverSession} from './ndwu-popover-session';
 import type {NdwuPopoverTriggerType} from './ndwu-popover.types';
-import {registerOutsideDismiss} from './overlay-utils';
+import {dismissOnPointerOutside} from './overlay-utils';
 
 export interface NdwuPopoverInteractionCtx {
   isOpen: () => boolean;
@@ -111,22 +111,26 @@ export class NdwuPopoverInteractionController {
       this.registerOutsideClickClose(session);
     }
 
-    if (options.hoverBridge) {
-      session.afterNextRender(() => this.registerHoverBridge(session));
-    }
+    if (options.hoverBridge || options.focusout) {
+      session.afterNextRender(() => {
+        const overlay = this.ctx.getOverlayElement();
 
-    if (options.focusout) {
-      session.afterNextRender(() => this.registerFocusout(session));
+        if (!overlay?.isConnected) {
+          return;
+        }
+
+        if (options.hoverBridge) {
+          this.registerHoverBridge(session, overlay);
+        }
+
+        if (options.focusout) {
+          this.registerFocusout(session, overlay);
+        }
+      });
     }
   }
 
-  protected registerHoverBridge(session: NdwuPopoverSession): void {
-    const overlay = this.ctx.getOverlayElement();
-
-    if (!overlay?.isConnected) {
-      return;
-    }
-
+  protected registerHoverBridge(session: NdwuPopoverSession, overlay: HTMLElement): void {
     const onOverlayEnter = (): void => {
       this.hoveredOverlay = true;
       this.cancelScheduledHide();
@@ -145,13 +149,7 @@ export class NdwuPopoverInteractionController {
     });
   }
 
-  protected registerFocusout(session: NdwuPopoverSession): void {
-    const overlay = this.ctx.getOverlayElement();
-
-    if (!overlay?.isConnected) {
-      return;
-    }
-
+  protected registerFocusout(session: NdwuPopoverSession, overlay: HTMLElement): void {
     const onFocusOut = (event: FocusEvent): void => {
       const next = event.relatedTarget;
 
@@ -169,7 +167,7 @@ export class NdwuPopoverInteractionController {
   protected registerOutsideClickClose(session: NdwuPopoverSession): void {
     const trigger = this.ctx.getTriggerElement();
 
-    registerOutsideDismiss(
+    dismissOnPointerOutside(
       session,
       (target) => trigger.contains(target) || (this.ctx.getOverlayElement()?.contains(target) ?? false),
       () => this.ctx.dismissOutside(),

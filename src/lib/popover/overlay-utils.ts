@@ -108,7 +108,7 @@ export function registerOverlayScroll(overlayRef: OverlayRef): (() => void) | nu
   };
 }
 
-export function registerOutsideDismiss(
+export function dismissOnPointerOutside(
   session: Pick<NdwuPopoverSessionRef, 'onFinish'>,
   isInside: (target: Node) => boolean,
   dismiss: () => void,

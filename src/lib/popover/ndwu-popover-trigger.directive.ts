@@ -388,14 +388,14 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       throw error;
     }
 
-    if (!session.isActive()) {
+    if (!session.isActive) {
       return;
     }
 
-    session.markOpened();
+    session.isOpened = true;
     this.opened.emit();
 
-    if (!session.isActive()) {
+    if (!session.isActive) {
       return;
     }
 
@@ -458,7 +458,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       return;
     }
 
-    const emitClosed = session.wasOpened() && state.reason !== 'destroy';
+    const emitClosed = session.isOpened && state.reason !== 'destroy';
     const restore = this.shouldRestoreFocus(session, state);
 
     this.session = null;

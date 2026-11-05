@@ -44,7 +44,7 @@ export class NdwuDropdownController extends NdwuPopoverController {
     this.connectSession(overlayRef, session);
     this.attachPortal(overlayRef, config, this.injector);
 
-    if (!session.isActive()) {
+    if (!session.isActive) {
       return;
     }
 

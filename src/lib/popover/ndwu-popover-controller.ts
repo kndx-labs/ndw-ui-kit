@@ -5,7 +5,7 @@ import type {NdwuPopoverSessionRef} from './ndwu-popover-session';
 import {NDWU_POPOVER_CONTENT, NDWU_POPOVER_CONTEXT, NDWU_POPOVER_TRAP_FOCUS} from './ndwu-popover.tokens';
 import {ComponentPortal, TemplatePortal} from '@angular/cdk/portal';
 import {NdwuPopoverHostComponent} from './ndwu-popover-host.component';
-import {registerOutsideDismiss, registerOverlayScroll} from './overlay-utils';
+import {dismissOnPointerOutside, registerOverlayScroll} from './overlay-utils';
 
 export abstract class NdwuPopoverController {
   public readonly dismissesOnOutsideClick: boolean = false;
@@ -70,7 +70,7 @@ export abstract class NdwuPopoverController {
       return;
     }
 
-    registerOutsideDismiss(
+    dismissOnPointerOutside(
       session,
       (target) => pane.contains(target) || (origin?.contains(target) ?? false),
       () => session.close('outside'),

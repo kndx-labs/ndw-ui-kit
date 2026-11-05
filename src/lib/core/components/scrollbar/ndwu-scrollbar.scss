@@ -220,6 +220,19 @@
   border-radius: calc(var(--ndwu-scrollbar-drag-size) / 2);
 }
 
+// Forced colors paint every background as Canvas, so the thumb would vanish into the track.
+// Paint it in system colors, as native scrollbars do.
+@media (forced-colors: active) {
+  .ndwu-scrollbar__thumb {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+
+  :host(.ndwu-scrollbar--dragging) .ndwu-scrollbar__thumb {
+    background: Highlight;
+  }
+}
+
 // The last pointer pressed inside the host was touch or pen. A track press is mouse-only, so
 // touches on the track fall through to the content and scroll it; the thumb stays grabbable.
 :host(.ndwu-scrollbar--touch) {

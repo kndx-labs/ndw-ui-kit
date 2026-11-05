@@ -409,6 +409,8 @@ export class NdwuScrollbarComponent {
     this.contentEl().nativeElement.focus();
   };
 
+  // Tracks are siblings of content, so a wheel over one chains through the overflow:hidden host
+  // to the page. At an edge, leave it alone so it chains as it would from a native scroller.
   private readonly onTrackWheel = (event: WheelEvent): void => {
     if (event.ctrlKey) {
       return;
@@ -639,8 +641,8 @@ export class NdwuScrollbarComponent {
         content.setAttribute('tabindex', tabindex);
       }
 
-      // Keep focus forwarding while removing the host's extra tab stop. Read once: later host tabindex changes
-      // are not mirrored.
+      // Only content is a tab stop: with host as one too, Shift+Tab from content lands on host and
+      // onHostFocus sends focus straight back. Read once; later host tabindex changes are not mirrored.
       this.hostEl.setAttribute('tabindex', '-1');
     }
   }

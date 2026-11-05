@@ -13,6 +13,14 @@ interface PointerInit {
   clientY?: number;
 }
 
+interface WheelInit {
+  deltaX?: number;
+  deltaY?: number;
+  deltaMode?: number;
+  ctrlKey?: boolean;
+  shiftKey?: boolean;
+}
+
 interface ScrollbarHarness {
   fixture: ComponentFixture<NdwuScrollbarComponent>;
   host: HTMLElement;
@@ -24,6 +32,7 @@ interface ScrollbarHarness {
   captureY: ReturnType<typeof vi.fn>;
   captureX: ReturnType<typeof vi.fn>;
   scrollTop: () => number;
+  scrollLeft: () => number;
   setScrollTop: (value: number) => void;
   setAutoHide: (value: boolean | string) => void;
   setHideDelay: (value: number) => void;
@@ -42,6 +51,7 @@ interface CreateScrollbarOptions {
   disabled?: boolean;
   overflow?: boolean;
   coarsePointer?: boolean;
+  tabindex?: string;
 }
 
 const fixtures: ComponentFixture<NdwuScrollbarComponent>[] = [];
@@ -107,6 +117,14 @@ const pointerEvent = (type: string, init: PointerInit = {}): PointerEvent => {
   return event as PointerEvent;
 };
 
+const wheel = (target: HTMLElement, init: WheelInit = {}): WheelEvent => {
+  const event = new WheelEvent('wheel', {bubbles: true, cancelable: true, ...init});
+
+  target.dispatchEvent(event);
+
+  return event;
+};
+
 const flushAnimationFrames = (): void => {
   while (animationFrames.size > 0) {
     const callbacks = [...animationFrames.values()];
@@ -144,6 +162,10 @@ const createScrollbar = async (options: CreateScrollbarOptions = {}): Promise<Sc
   fixtures.push(fixture);
 
   const {componentRef} = fixture;
+
+  if (options.tabindex !== undefined) {
+    (fixture.nativeElement as HTMLElement).setAttribute('tabindex', options.tabindex);
+  }
 
   componentRef.setInput('ndwuScrollbarAxis', options.axis ?? 'y');
 
@@ -267,6 +289,7 @@ const createScrollbar = async (options: CreateScrollbarOptions = {}): Promise<Sc
     captureY,
     captureX,
     scrollTop: () => currentScrollTop,
+    scrollLeft: () => currentScrollLeft,
     setScrollTop: (value) => {
       currentScrollTop = value;
     },
@@ -295,6 +318,71 @@ const createScrollbar = async (options: CreateScrollbarOptions = {}): Promise<Sc
     },
   };
 };
+
+describe('NdwuScrollbarComponent: focus and wheel', () => {
+  it('keeps only content in the tab order when host has a tabindex', async () => {
+    const harness = await createScrollbar({tabindex: '0'});
+
+    expect(harness.content.getAttribute('tabindex')).toBe('0');
+    expect(harness.host.getAttribute('tabindex')).toBe('-1');
+
+    harness.host.focus();
+
+    expect(harness.host.ownerDocument.activeElement).toBe(harness.content);
+  });
+
+  it.each(['trackY', 'thumbY'] as const)('scrolls vertically for a wheel over %s', async (targetName) => {
+    const harness = await createScrollbar();
+    const event = wheel(harness[targetName], {deltaY: 40});
+
+    expect(harness.scrollTop()).toBe(40);
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('chains a forward wheel at the vertical end', async () => {
+    const harness = await createScrollbar();
+
+    harness.setScrollTop(400);
+
+    const event = wheel(harness.trackY, {deltaY: 40});
+
+    expect(harness.scrollTop()).toBe(400);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('chains a backward wheel at the vertical start', async () => {
+    const harness = await createScrollbar();
+    const event = wheel(harness.trackY, {deltaY: -40});
+
+    expect(harness.scrollTop()).toBe(0);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('leaves ctrl-wheel untouched', async () => {
+    const harness = await createScrollbar();
+    const event = wheel(harness.trackY, {deltaY: 40, ctrlKey: true});
+
+    expect(harness.scrollTop()).toBe(0);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('does not consume wheel input on an unconfigured axis', async () => {
+    const harness = await createScrollbar({axis: 'x'});
+    const event = wheel(harness.trackY, {deltaY: 40});
+
+    expect(harness.scrollTop()).toBe(0);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('maps shift-wheel on the horizontal track to horizontal scrolling', async () => {
+    const harness = await createScrollbar({axis: 'both'});
+    const event = wheel(harness.trackX, {deltaY: 40, shiftKey: true});
+
+    expect(harness.scrollLeft()).toBe(40);
+    expect(harness.scrollTop()).toBe(0);
+    expect(event.defaultPrevented).toBe(true);
+  });
+});
 
 beforeEach(() => {
   TestBed.configureTestingModule({providers: [provideZonelessChangeDetection()]});

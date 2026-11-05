@@ -24,7 +24,14 @@ import {
   type NdwuScrollbarAxis,
   type NdwuScrollbarPadding,
 } from './ndwu-scrollbar.types';
-import {calculateThumbOffset, calculateThumbSize, convertTrackToScroll, hasOverflow} from './ndwu-scrollbar.geometry';
+import {
+  calculateThumbOffset,
+  calculateThumbSize,
+  canScrollToward,
+  convertTrackToScroll,
+  hasOverflow,
+  resolveWheelDelta,
+} from './ndwu-scrollbar.geometry';
 import {NdwuScrollbarDragController} from './ndwu-scrollbar-drag.controller';
 import {NdwuScrollbarContentObserver} from './ndwu-scrollbar.content-observer';
 import {NdwuFrameScheduler} from './ndwu-scrollbar.frame-scheduler';
@@ -252,6 +259,8 @@ export class NdwuScrollbarComponent {
     this.hostEl.addEventListener('focus', this.onHostFocus);
     // Capture phase: the thumb stops propagation of the pointerdown it claims.
     this.hostEl.addEventListener('pointerdown', this.onHostPointerDown, true);
+    this.trackYEl().nativeElement.addEventListener('wheel', this.onTrackWheel, {passive: false});
+    this.trackXEl().nativeElement.addEventListener('wheel', this.onTrackWheel, {passive: false});
   }
 
   private observeContent(content: HTMLElement): void {
@@ -398,6 +407,42 @@ export class NdwuScrollbarComponent {
     }
 
     this.contentEl().nativeElement.focus();
+  };
+
+  private readonly onTrackWheel = (event: WheelEvent): void => {
+    if (event.ctrlKey) {
+      return;
+    }
+
+    let deltaX = event.deltaX;
+    let deltaY = event.deltaY;
+
+    if (event.shiftKey && event.deltaX === 0) {
+      deltaX = event.deltaY;
+      deltaY = 0;
+    }
+
+    const content = this.contentEl().nativeElement;
+    const metricsX = this.getAxisMetrics('x');
+    const metricsY = this.getAxisMetrics('y');
+    const pixelDeltaX = resolveWheelDelta(deltaX, event.deltaMode, metricsX.clientSize);
+    const pixelDeltaY = resolveWheelDelta(deltaY, event.deltaMode, metricsY.clientSize);
+    const canScrollX = this.overflow.x && canScrollToward(metricsX, pixelDeltaX);
+    const canScrollY = this.overflow.y && canScrollToward(metricsY, pixelDeltaY);
+
+    if (!canScrollX && !canScrollY) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (canScrollX) {
+      content.scrollLeft += pixelDeltaX;
+    }
+
+    if (canScrollY) {
+      content.scrollTop += pixelDeltaY;
+    }
   };
 
   private startDrag(axis: NdwuScrollbarAxis, event: PointerEvent): void {
@@ -589,8 +634,14 @@ export class NdwuScrollbarComponent {
   private syncFocusableContent(content: HTMLElement): void {
     const tabindex = this.hostEl.getAttribute('tabindex');
 
-    if (tabindex !== null && !content.hasAttribute('tabindex')) {
-      content.setAttribute('tabindex', tabindex);
+    if (tabindex !== null) {
+      if (!content.hasAttribute('tabindex')) {
+        content.setAttribute('tabindex', tabindex);
+      }
+
+      // Keep focus forwarding while removing the host's extra tab stop. Read once: later host tabindex changes
+      // are not mirrored.
+      this.hostEl.setAttribute('tabindex', '-1');
     }
   }
 
@@ -600,6 +651,8 @@ export class NdwuScrollbarComponent {
     content?.removeEventListener('scroll', this.onScroll);
     this.hostEl.removeEventListener('focus', this.onHostFocus);
     this.hostEl.removeEventListener('pointerdown', this.onHostPointerDown, true);
+    this.trackYEl()?.nativeElement.removeEventListener('wheel', this.onTrackWheel);
+    this.trackXEl()?.nativeElement.removeEventListener('wheel', this.onTrackWheel);
     // After end(): ending a drag starts the idle timer.
     this.dragController.end();
     this.clearIdleTimer();

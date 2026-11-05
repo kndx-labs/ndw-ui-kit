@@ -4,6 +4,10 @@ import type {NdwuAxisMetrics} from './ndwu-scrollbar.types';
 // by up to 1px: show an overflow that doesn't exist, or a maximum scroll offset the content
 // never reaches
 const ROUNDING_TOLERANCE = 1;
+const WHEEL_LINE_HEIGHT = 16;
+
+const WHEEL_DELTA_MODE_LINE = 1;
+const WHEEL_DELTA_MODE_PAGE = 2;
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
@@ -11,6 +15,28 @@ function clamp(value: number, min: number, max: number): number {
 
 export function hasOverflow(contentSize: number, clientSize: number): boolean {
   return contentSize - clientSize > ROUNDING_TOLERANCE;
+}
+
+export function resolveWheelDelta(delta: number, deltaMode: number, pageSize: number): number {
+  if (deltaMode === WHEEL_DELTA_MODE_LINE) {
+    return delta * WHEEL_LINE_HEIGHT;
+  }
+
+  if (deltaMode === WHEEL_DELTA_MODE_PAGE) {
+    return delta * pageSize;
+  }
+
+  return delta;
+}
+
+export function canScrollToward(metrics: NdwuAxisMetrics, delta: number): boolean {
+  if (delta < 0) {
+    return metrics.scrollOffset > 0;
+  }
+
+  const contentFree = metrics.contentSize - metrics.clientSize;
+
+  return delta > 0 && contentFree - metrics.scrollOffset >= ROUNDING_TOLERANCE;
 }
 
 // The thumb is never longer than the track, even if the track is shorter than the minimum.

@@ -21,7 +21,10 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
     ├── story-args.ts                 SizeArg: the size arg of the NdwuSizeDirective host directive
     ├── arg-types.ts                  Shared argTypes: size, icon, outputs, native events
     ├── args-to-source.ts             "Show code" transform: argsToTemplate bindings -> literal attributes
-    └── story-layout.ts               Row and stack layout decorators, left out of "Show code"
+    ├── story-layout.ts               Row and stack layout decorators, left out of "Show code"
+    ├── story-template.ts             Joins fixed story templates, one element per line
+    ├── router-url.component.ts       Wrapper that shows the current Router URL below a story
+    └── story-router.ts               Story-level Router providers, RouterLink import and URL wrapper
 ```
 
 Stories live next to their components: `src/lib/**/<component-file-name>.stories.ts`. The first model is
@@ -60,6 +63,9 @@ Imported by stories as `@sb/helpers/<file>`.
 | `arg-types.ts` | `sizeArgType(sizes)` (`inherit` = `undefined`, then the sizes the component supports), `iconArgType` (`none` = `null`), `outputArgType`, `eventArgType` | One definition for every component with a size, an icon or outputs. Not every component supports every size, so each story passes its own list. Compodoc's output docs are filtered out, so outputs and events are declared here |
 | `args-to-source.ts` | `argsSourceTransform`: `[variant]="variant"` → `variant="primary"`, drops event bindings, fills `{{ content }}` | "Show code" is what app developers copy, so it must be plain markup with the current values |
 | `story-layout.ts` | `withRowLayout`, `withStackLayout` | Decorators are left out of "Show code" (`excludeDecorators`), so the layout wrapper doesn't end up in the copied snippet |
+| `story-router.ts` | Adds story-level in-memory Router providers, imports `RouterLink` and wraps the story in `sb-router-url`; `withRouter` is an array of three decorators (`applicationConfig`, `moduleMetadata`, `componentWrapperDecorator`), spread with `decorators: [...withRouter]` | Router setup stays local to stories that need it; the wrapper is excluded from "Show code" |
+| `story-template.ts` | `lines(items)` joins templates of a fixed story, one element per line | One shared helper replaces a copy in every story file |
+| `router-url.component.ts` | Projects its content and shows the current Router URL in a `sb-note` paragraph | A router story makes navigation visible without changing the Storybook iframe URL |
 
 ## Outside `.storybook/`
 

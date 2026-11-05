@@ -9,6 +9,8 @@ const {fixupPluginRules} = require('@eslint/compat');
 const _import = require('eslint-plugin-import');
 const jsdoc = require('eslint-plugin-jsdoc');
 const preferArrow = require('eslint-plugin-prefer-arrow');
+const storybookModule = require('eslint-plugin-storybook');
+const storybook = storybookModule.default ?? storybookModule;
 
 const OFF = 'off';
 const WARN = 'warn';
@@ -323,6 +325,21 @@ module.exports = tseslint.config(
   },
   // Extra configuration for TS files in specific directories
   {
+    files: ['src/charts/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        ERROR,
+        {
+          paths: [{name: 'rxjs/Rx'}],
+          patterns: [{
+            group: ['**/lib/**', 'src/lib/**'],
+            message: 'Import from @ndw-ui-kit/core instead of core source paths.',
+          }],
+        },
+      ],
+    },
+  },
+  {
     files: ['src/lib/widgets/schedule-editor/**/*.ts'],
     rules: {
       // allowing `x` as a variable name makes sense for code that manipulates 2D coordinates
@@ -330,7 +347,15 @@ module.exports = tseslint.config(
     },
   },
   {
+    files: ['.storybook/**/*.ts', 'src/**/*.stories.ts'],
+    rules: {
+      '@angular-eslint/component-selector': [WARN, {type: 'element', prefix: ['sb'], style: 'kebab-case'}],
+      '@angular-eslint/directive-selector': [WARN, {type: ['attribute'], prefix: ['sb'], style: 'camelCase'}],
+    },
+  },
+  {
     files: ['scripts/**/*.ts'],
+    ignores: ['scripts/data/smoke-consumer/**/*.ts'],
 
     languageOptions: {
       globals: {
@@ -385,4 +410,5 @@ module.exports = tseslint.config(
       'max-lines-per-function': OFF,
     },
   },
+  ...storybook.configs['flat/recommended'],
 );

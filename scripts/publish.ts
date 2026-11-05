@@ -1,26 +1,43 @@
 #!/usr/bin/env tsx
 
 import {execFileSync} from 'node:child_process';
-import {readFileSync} from 'node:fs';
-import {resolve} from 'node:path';
+import {mkdirSync, mkdtempSync, readFileSync, rmSync} from 'node:fs';
+import {dirname, resolve} from 'node:path';
+import * as semver from 'semver';
 import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
-import {DIST_DIR, ROOT_DIR} from './conf';
+import {
+  CHARTS_PACKAGE_NAME,
+  CORE_PACKAGE_NAME,
+  DIST_CHARTS_DIR,
+  DIST_DIR,
+  DIST_TEMP_DIR,
+  PACKAGE_ORDER,
+  type PackageKey,
+  ROOT_DIR,
+  SRC_CHARTS_PACKAGE_JSON,
+  SRC_CORE_PACKAGE_JSON,
+} from './conf';
+import {type PackageInfo, type ReleaseCommands, runRelease} from './utils/release-pipeline';
 
-const SRC_PACKAGE_JSON = resolve(ROOT_DIR, 'src/lib/package.json');
-const DIST_PACKAGE_JSON = resolve(DIST_DIR, 'package.json');
+const DIST_CORE_PACKAGE_JSON = resolve(DIST_DIR, 'package.json');
+const DIST_CHARTS_PACKAGE_JSON = resolve(DIST_CHARTS_DIR, 'package.json');
 const RELEASE_BRANCH = 'master';
-const PACKAGE_SCOPE = '@ndw-ui-kit/';
 const SEMVER_RE = /^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/;
 
-interface PackageInfo {
+const PACKAGE_NAMES: Record<PackageKey, string> = {
+  core: CORE_PACKAGE_NAME,
+  charts: CHARTS_PACKAGE_NAME,
+};
+
+interface PackageManifest {
   name: string;
   version: string;
+  peerDependencies?: Record<string, unknown>;
 }
 
 const fail = (message: string): never => {
-  process.stderr.write(`Error: ${message}\n`);
-  process.exit(1);
+  throw new Error(message);
 };
 
 const run = (file: string, args: string[]): string => {
@@ -28,21 +45,36 @@ const run = (file: string, args: string[]): string => {
 };
 
 const runInherit = (file: string, args: string[]): void => {
-  execFileSync(file, args, {cwd: ROOT_DIR, stdio: 'inherit'});
+  execFileSync(file, args, {cwd: ROOT_DIR, env: process.env, stdio: 'inherit'});
 };
 
-const readPackageInfo = (path: string): PackageInfo => {
-  const {name, version} = JSON.parse(readFileSync(path, 'utf8')) as PackageInfo;
+const readManifest = (path: string): PackageManifest => {
+  return JSON.parse(readFileSync(path, 'utf8')) as PackageManifest;
+};
 
-  if (typeof name !== 'string' || !name.startsWith(PACKAGE_SCOPE)) {
-    fail(`${path}: package name must start with "${PACKAGE_SCOPE}", got ${JSON.stringify(name)}.`);
+const readPackageInfo = (key: PackageKey, sourcePath: string, distPath: string): PackageInfo => {
+  const {name, version} = readManifest(sourcePath);
+
+  const expectedName = PACKAGE_NAMES[key];
+
+  if (typeof name !== 'string' || name !== expectedName) {
+    fail(`${sourcePath}: expected package name "${expectedName}", got ${JSON.stringify(name)}.`);
   }
 
   if (typeof version !== 'string' || !SEMVER_RE.test(version)) {
-    fail(`${path}: invalid version ${JSON.stringify(version)}.`);
+    fail(`${sourcePath}: invalid version ${JSON.stringify(version)}.`);
   }
 
-  return {name, version};
+  const tag = key === 'core' ? `v${version}` : `charts-v${version}`;
+
+  return {key, name, version, sourcePath, distPath, tag};
+};
+
+const readPackages = (): Record<PackageKey, PackageInfo> => {
+  return {
+    core: readPackageInfo('core', SRC_CORE_PACKAGE_JSON, DIST_CORE_PACKAGE_JSON),
+    charts: readPackageInfo('charts', SRC_CHARTS_PACKAGE_JSON, DIST_CHARTS_PACKAGE_JSON),
+  };
 };
 
 const assertGitState = (allowDirty: boolean): void => {
@@ -71,7 +103,7 @@ const assertGitState = (allowDirty: boolean): void => {
   fail(`${problems.join('; ')}\nUse --allow-dirty to publish anyway.`);
 };
 
-const assertVersionUnpublished = ({name, version}: PackageInfo): void => {
+const isPublished = (name: string, version: string): boolean => {
   let published: string;
 
   try {
@@ -80,33 +112,120 @@ const assertVersionUnpublished = ({name, version}: PackageInfo): void => {
     const stderr = String((error as {stderr?: string}).stderr ?? '');
 
     if (stderr.includes('E404')) {
-      return;
+      return false;
     }
 
     return fail(`failed to check registry for ${name}@${version}:\n${stderr}`);
   }
 
-  // `npm view` prints nothing (exit 0) when the package exists but the version does not.
-  if (published !== '') {
-    fail(`${name}@${version} is already published. Bump the version in src/lib/package.json.`);
-  }
+  return published !== '';
 };
 
-const build = (expected: PackageInfo): void => {
-  runInherit('yarn', ['run', 'build:to-publish']);
+const assertPeerCompatibility = (packages: Record<PackageKey, PackageInfo>, selected: PackageInfo[]): string => {
+  const chartsManifest = readManifest(packages.charts.sourcePath);
+  const peerRangeValue = chartsManifest.peerDependencies?.[packages.core.name];
 
-  const built = readPackageInfo(DIST_PACKAGE_JSON);
+  if (typeof peerRangeValue !== 'string' || semver.validRange(peerRangeValue) === null) {
+    return fail(
+      `${packages.charts.name}: invalid ${packages.core.name} peer range ${JSON.stringify(peerRangeValue)}.`,
+    );
+  }
 
-  if (built.name !== expected.name || built.version !== expected.version) {
+  if (semver.satisfies(packages.core.version, peerRangeValue)) {
+    return peerRangeValue;
+  }
+
+  const message = `charts peer range ${peerRangeValue} excludes core ${packages.core.version}; charts needs a release`;
+
+  if (selected.some(({key}) => key === 'charts')) {
+    fail(`${message}.`);
+  }
+
+  process.stderr.write(`Warning: ${message}.\n`);
+
+  return peerRangeValue;
+};
+
+const assertDistMatchesSource = (pkg: PackageInfo): void => {
+  const dist = readManifest(pkg.distPath);
+
+  if (dist.name !== pkg.name || dist.version !== pkg.version) {
     fail(
-      `dist package (${built.name}@${built.version}) does not match source (${expected.name}@${expected.version}).`,
+      `dist package (${dist.name}@${dist.version}) does not match source (${pkg.name}@${pkg.version}).`,
     );
   }
 };
 
+const createReleaseCommands = (): ReleaseCommands => {
+  return {
+    yarn(args) {
+      runInherit('yarn', ['run', ...args]);
+    },
+    isPublished,
+    packRegistry(name, version, destination) {
+      let packed: string;
+
+      try {
+        packed = run('npm', ['pack', `${name}@${version}`, '--json', '--pack-destination', destination]);
+      } catch (error) {
+        const stderr = String((error as {stderr?: string}).stderr ?? '');
+
+        return fail(`failed to pack registry package ${name}@${version}:\n${stderr}`);
+      }
+
+      let tarballName: unknown;
+
+      try {
+        const packResult = JSON.parse(packed) as Array<{filename?: unknown}>;
+
+        tarballName = packResult[0]?.filename;
+      } catch {
+        return fail(`npm pack returned invalid JSON for ${name}@${version}.`);
+      }
+
+      if (typeof tarballName !== 'string') {
+        return fail(`npm pack did not return a tarball filename for ${name}@${version}.`);
+      }
+
+      return resolve(destination, tarballName);
+    },
+    extractCore(tarball) {
+      rmSync(DIST_DIR, {recursive: true, force: true});
+      mkdirSync(DIST_DIR, {recursive: true});
+      runInherit('tar', ['-xzf', tarball, '-C', DIST_DIR, '--strip-components=1']);
+    },
+    assertDistMatchesSource,
+    npmPublish(pkg, dryRun) {
+      const publishPath = dirname(pkg.distPath);
+      const publishArgs = dryRun ? ['publish', publishPath, '--dry-run'] : ['publish', publishPath];
+
+      runInherit('npm', publishArgs);
+    },
+    makeTempDir() {
+      mkdirSync(DIST_TEMP_DIR, {recursive: true});
+
+      return mkdtempSync(resolve(DIST_TEMP_DIR, 'publish-core-'));
+    },
+    removeDir(path) {
+      rmSync(path, {recursive: true, force: true});
+    },
+    log(line) {
+      process.stdout.write(`${line}\n`);
+    },
+  };
+};
+
 const main = async (): Promise<void> => {
   const argv = await yargs(hideBin(process.argv))
-    .usage('Usage: $0 [--dry-run] [--allow-dirty]')
+    .usage('Usage: $0 [core] [charts] [--dry-run] [--allow-dirty]')
+    .command('$0 [packages..]', 'Publish selected packages', (command) => {
+      return command.positional('packages', {
+        array: true,
+        choices: PACKAGE_ORDER,
+        describe: 'Packages to publish',
+        type: 'string',
+      });
+    })
     .option('dry-run', {
       type: 'boolean',
       default: false,
@@ -122,24 +241,28 @@ const main = async (): Promise<void> => {
     .help()
     .parseAsync();
 
-  const pkg = readPackageInfo(SRC_PACKAGE_JSON);
+  // The command builder's positional type does not reach parseAsync(); yargs validates `choices` at runtime
+  const requested: PackageKey[] = Array.isArray(argv.packages) ? argv.packages : [];
+
+  if (requested.length === 0) {
+    fail('select one or more packages: core, charts.');
+  }
+
+  const requestedSet = new Set(requested);
+  const selected = PACKAGE_ORDER.filter((key) => requestedSet.has(key));
+  const packages = readPackages();
+  const selectedPackages = selected.map((key) => packages[key]);
 
   assertGitState(argv.allowDirty);
-  assertVersionUnpublished(pkg);
-  build(pkg);
 
-  const publishArgs = argv.dryRun ? ['publish', DIST_DIR, '--dry-run'] : ['publish', DIST_DIR];
+  const peerRange = assertPeerCompatibility(packages, selectedPackages);
 
-  runInherit('npm', publishArgs);
-
-  if (!argv.dryRun) {
-    process.stdout.write(
-      `\nPublished ${pkg.name}@${pkg.version}. Tag the release:\n`
-        + `  git tag v${pkg.version} && git push origin v${pkg.version}\n`,
-    );
-  }
+  runRelease(selected, packages, peerRange, argv['dry-run'], createReleaseCommands());
 };
 
 main().catch((error: unknown) => {
-  fail(error instanceof Error ? error.message : String(error));
+  const message = error instanceof Error ? error.message : String(error);
+
+  process.stderr.write(`Error: ${message}\n`);
+  process.exitCode = 1;
 });

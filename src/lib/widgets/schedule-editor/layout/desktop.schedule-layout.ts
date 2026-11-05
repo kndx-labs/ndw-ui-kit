@@ -27,7 +27,7 @@ import {
   MIN_HOUR_LABEL_SHORT_WIDTH_PX,
   MIN_HOUR_LABEL_WIDTH_PX,
   SLOTS_PER_HOUR,
-} from '../ndwu-schedule-editor.constants';
+} from '../schedule-editor.internal.constants';
 
 export class DesktopScheduleLayout extends ScheduleLayout {
   public getGridBlock(params: GetGridBlockParams): ScheduleGridBlock | null {

@@ -185,6 +185,34 @@
   );
 }
 
+@media screen and (pointer: coarse) {
+  // Native mobile scrollbars overlay the content instead of reserving a gutter.
+  // The thumb draws over the content edge while it is visible.
+  :host(.ndwu-scrollbar--auto-hide) {
+    .ndwu-scrollbar__track {
+      background: transparent;
+    }
+
+    &.ndwu-scrollbar--scrollable-y {
+      &.ndwu-scrollbar--axis-both,
+      &.ndwu-scrollbar--axis-y {
+        .ndwu-scrollbar__content {
+          padding-inline-end: var(--ndwu-scrollbar-content-padding-right);
+        }
+      }
+    }
+
+    &.ndwu-scrollbar--scrollable-x {
+      &.ndwu-scrollbar--axis-both,
+      &.ndwu-scrollbar--axis-x {
+        .ndwu-scrollbar__content {
+          padding-block-end: var(--ndwu-scrollbar-content-padding-bottom);
+        }
+      }
+    }
+  }
+}
+
 // When both tracks are visible, shorten each so they don't overlap in the corner,
 // keeping the same padding as at the other ends.
 :host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--vertical,
@@ -230,6 +258,29 @@
 
   :host(.ndwu-scrollbar--dragging) .ndwu-scrollbar__thumb {
     background: Highlight;
+  }
+}
+
+// For a mouse, the hit zone spans the whole 12px default gutter rather than the 4px/6px track.
+// The content never draws there. A % padding-left/top resolves against the track, not the host,
+// so that side is narrower; default px values are exact.
+:host(:not(.ndwu-scrollbar--touch)) {
+  .ndwu-scrollbar__track--vertical::before,
+  .ndwu-scrollbar__track--vertical .ndwu-scrollbar__thumb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    right: calc(-1 * var(--ndwu-scrollbar-hit-inset-y, 0px));
+    left: calc(-1 * var(--ndwu-scrollbar-padding-left));
+  }
+
+  .ndwu-scrollbar__track--horizontal::before,
+  .ndwu-scrollbar__track--horizontal .ndwu-scrollbar__thumb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    top: calc(-1 * var(--ndwu-scrollbar-padding-top));
+    bottom: calc(-1 * var(--ndwu-scrollbar-hit-inset-x, 0px));
   }
 }
 

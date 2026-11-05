@@ -94,6 +94,10 @@ const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
     '[style.--ndwu-scrollbar-touch-target-size]': 'ndwuScrollbarTouchTargetSize()',
   },
 })
+/**
+ * Right-to-left layout is not supported: vertical tracks stay on the right.
+ * Negative RTL `scrollLeft` values are not handled.
+ */
 export class NdwuScrollbarComponent {
   private static readonly AXIS_CONFIG: Record<NdwuScrollbarAxis, NdwuAxisConfigEntry> = {
     y: {
@@ -128,7 +132,10 @@ export class NdwuScrollbarComponent {
   public readonly ndwuScrollbarAxis = input<'x' | 'y' | 'both'>('both');
   public readonly ndwuScrollbarPrintable = input(true, {transform: booleanAttribute});
   public readonly ndwuScrollbarDisabled = input(false, {transform: booleanAttribute});
-  /** Hides the tracks until the content is scrolled. Applies only under `(pointer: coarse)`. */
+  /**
+   * Hides the tracks until the content is scrolled. On coarse-pointer screens, tracks overlay
+   * content instead of reserving space.
+   */
   public readonly ndwuScrollbarAutoHide = input(false, {transform: booleanAttribute});
   public readonly ndwuScrollbarPadding = input<NdwuScrollbarPadding>({});
   public readonly ndwuScrollbarContentPadding = input<NdwuScrollbarPadding>({});

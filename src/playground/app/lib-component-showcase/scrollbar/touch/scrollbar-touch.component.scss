@@ -138,8 +138,8 @@
     }
   }
 
-  // The library gives the thumb's ::before a size only while the wide touch target is live
-  // (coarse pointer, during or right after a scroll), so this tint shows exactly that area.
+  // The thumb's ::before is the mouse hit zone on desktop from the start (no --touch class), and
+  // the live touch target after touch scrolling.
   &--show-target .ndwu-scrollbar__thumb::before {
     background: color-mix(in srgb, var(--ndwu-color-brand-50) 20%, transparent);
     outline: 1px dashed var(--ndwu-color-brand-50);

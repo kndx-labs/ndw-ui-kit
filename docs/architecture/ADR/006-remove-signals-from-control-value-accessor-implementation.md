@@ -99,3 +99,26 @@ for example through:
 2. Signal-backed `NdwuControl` properties. This reverses the decision of this ADR.
 
 That change is left to a follow-up task.
+
+## Addendum: widgets behind a field
+
+- Date: 2026-11-02
+
+`ndwu-file-upload-field` keeps its value in the plain `inputValue` field, but its widget
+(`ndwu-file-upload`) keeps the visible file list in its own signal. To follow `setValue()`,
+`patchValue()` and `reset()` after init, the field's `writeValue` forwards the value to the widget's
+`setFiles()`, which writes that signal.
+
+This amends the outcome line "`ControlValueAccessor` methods mutate zero signals &mdash; neither
+directly nor indirectly" with one exception. A CVA method may call a child widget's explicit
+setter when:
+
+1. the setter writes only state owned by the child widget;
+2. no CVA method reads that state back into the accessor's value (the widget's list reaches
+   `inputValue` only from user actions and progress updates, never from `writeValue`);
+3. the call runs inside `untracked()`, so a `setValue()` from a consumer `effect` neither tracks
+   the child query nor writes inside the reactive context.
+
+Binding the value to a widget input instead (a `linkedSignal` over it) avoids the write, but applies
+only on the next change detection: `setValue()` followed by a widget call in the same tick would
+work on the old list.

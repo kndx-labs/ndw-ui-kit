@@ -15,6 +15,7 @@
     (mouseleave)="onSvgMouseLeave()"
     (touchmove)="onPointerMove($event)"
     (touchend)="onPointerUp()"
+    (touchcancel)="onPointerCancel()"
   >
     <g>
       @for (line of gridLines(); track line.id) {

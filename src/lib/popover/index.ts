@@ -1,6 +1,7 @@
 export * from './controllers';
 export * from './mobile-scroll-lock.strategy';
 export * from './ndwu-popover-controller';
+export type {NdwuPopoverDismissReason, NdwuPopoverSessionRef} from './ndwu-popover-session';
 export * from './ndwu-popover-host.component';
 export * from './ndwu-popover-trigger.directive';
 export * from './ndwu-popover.tokens';

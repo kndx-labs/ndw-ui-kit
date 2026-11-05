@@ -6,4 +6,7 @@ $ndwu-scrollbar-tokens: (
   scrollbar-size-l: 4px,
   scrollbar-size-xl: 6px,
   scrollbar-min-thumb-size: 24px, // read by TS (px only); keep in sync with DEFAULT_MIN_THUMB_SIZE
+  scrollbar-drag-size: 8px,
+  scrollbar-touch-target-size: 44px,
+  scrollbar-touch-target-overhang: 10px,
 );

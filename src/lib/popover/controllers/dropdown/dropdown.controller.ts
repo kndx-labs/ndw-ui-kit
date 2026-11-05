@@ -1,12 +1,11 @@
-import {ElementRef, Injector, afterNextRender} from '@angular/core';
+import {ElementRef, Injector} from '@angular/core';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {type ConnectedOverlayPositionChange, Overlay, type OverlayRef} from '@angular/cdk/overlay';
-import {Subscription} from 'rxjs';
 import {NdwuPopoverController} from '../../ndwu-popover-controller';
+import type {NdwuPopoverSessionRef} from '../../ndwu-popover-session';
 import type {NdwuPopoverConfig} from '../../ndwu-popover.types';
 import {MobileScrollLockStrategy} from '../../mobile-scroll-lock.strategy';
 import {HANDSET_BREAKPOINT, applyThemeClass, detectThemeClass, normalizeClass} from '@ndw-ui-kit/core/utils';
-import {registerOverlayScroll} from '../../overlay-utils';
 
 const OFFSET_DROPDOWN = 4;
 const OFFSET_DROPUP = -12;
@@ -24,97 +23,34 @@ const ABOVE_PANEL_CLASS = `${DEFAULT_PANEL_CLASS}--above`;
  * from any origin element. Renders content via NdwuPopoverHostComponent.
  */
 export class NdwuDropdownController extends NdwuPopoverController {
-  protected positionChangesSubscription: Subscription | null = null;
-
-  // used for max-height when opening with originPoint; cleared on detach.
-  protected lastOriginRect: {top: number; bottom: number} | null = null;
-  // virtual origin element at cursor when using originPoint; removed on detach.
-  protected virtualOriginElement: HTMLElement | null = null;
-  // set to `true` when overlay was opened with originPoint (cursor context menu);
-  // used for 'click outside' detection
-  protected isOriginPointMode = false;
-
-  protected savedOverscrollBehavior = '';
+  public override readonly dismissesOnOutsideClick = true;
 
   constructor(
     protected readonly overlay: Overlay,
     protected readonly breakpointObserver: BreakpointObserver,
     protected readonly elementRef: ElementRef<HTMLElement>,
     protected readonly injector: Injector,
-    protected readonly onOverlayDetached: () => void,
   ) {
     super();
   }
 
-  public override open(config: NdwuPopoverConfig): void {
+  public override open(config: NdwuPopoverConfig, session: NdwuPopoverSessionRef): void {
     const isMobile = this.breakpointObserver.isMatched(HANDSET_BREAKPOINT);
 
-    this.overlayRef = isMobile
+    const overlayRef = isMobile
       ? this.createMobileOverlay(config)
       : this.createDesktopOverlay(config);
 
-    this.attachPortal(config, this.injector);
+    this.connectSession(overlayRef, session);
+    this.attachPortal(overlayRef, config, this.injector);
 
-    const themeClass = detectThemeClass(this.elementRef.nativeElement);
-
-    applyThemeClass(this.overlayRef.overlayElement, themeClass);
-
-    afterNextRender(
-      () => {
-        if (!this.overlayRef?.overlayElement?.isConnected) {
-          return;
-        }
-
-        if (!isMobile) {
-          this.lockOverscroll();
-          this.scrollUnregister = registerOverlayScroll(this.overlayRef) ?? null;
-        }
-
-        const disableOriginClickClose = config.closeOnOriginClick === false;
-
-        if (disableOriginClickClose) {
-          this.registerOutsideClickClose();
-        } else {
-          this.registerOriginClickClose();
-        }
-      },
-      {injector: this.injector},
-    );
-  }
-
-  public override close(options?: {focusOrigin?: boolean}): void {
-    if (this.overlayRef === null) {
+    if (!session.isActive) {
       return;
     }
 
-    const shouldFocusOrigin = options?.focusOrigin !== false;
+    applyThemeClass(overlayRef.overlayElement, detectThemeClass(this.elementRef.nativeElement));
 
-    this.dispose();
-
-    if (shouldFocusOrigin) {
-      this.elementRef.nativeElement.focus();
-    }
-  }
-
-  public override dispose(): void {
-    this.unregisterListeners();
-    this.overlayRef?.dispose();
-    this.virtualOriginElement?.remove();
-    this.virtualOriginElement = null;
-    this.isOriginPointMode = false;
-    this.overlayRef = null;
-  }
-
-  public override getOverlayElement(): HTMLElement | null {
-    return this.overlayRef?.overlayElement ?? null;
-  }
-
-  protected unregisterListeners(): void {
-    this.unlockOverscroll();
-    this.scrollUnregister?.();
-    this.unregisterPositionChanges();
-    this.unregisterOriginClickClose();
-    this.unregisterOutsideClickClose();
+    session.afterNextRender(() => this.registerDeferredListeners(overlayRef, config, session, isMobile));
   }
 
   protected createMobileOverlay(config: NdwuPopoverConfig): OverlayRef {
@@ -122,33 +58,14 @@ export class NdwuDropdownController extends NdwuPopoverController {
       .global()
       .bottom();
 
-    const scrollStrategy = new MobileScrollLockStrategy();
-    const panelClass = normalizeClass(config.panelClass, DEFAULT_PANEL_CLASS);
-
-    const overlayRef = this.overlay.create({
+    return this.overlay.create({
       positionStrategy,
-      scrollStrategy,
+      scrollStrategy: new MobileScrollLockStrategy(),
       hasBackdrop: true,
       backdropClass: [BACKDROP_BASE_CLASS, `${BACKDROP_BASE_CLASS}--sheet`, 'cdk-overlay-backdrop-noop-animation'],
-      panelClass,
+      panelClass: normalizeClass(config.panelClass, DEFAULT_PANEL_CLASS),
       width: '100%',
     });
-
-    overlayRef.detachments()
-      .subscribe(() => this.handleOverlayDetached());
-
-    overlayRef.backdropClick()
-      .subscribe(() => this.close());
-
-    overlayRef.keydownEvents()
-      .subscribe((event) => {
-        if (event.key === 'Escape') {
-          event.preventDefault();
-          this.close();
-        }
-      });
-
-    return overlayRef;
   }
 
   /**
@@ -213,24 +130,17 @@ export class NdwuDropdownController extends NdwuPopoverController {
   }
 
   protected createDesktopOverlay(config: NdwuPopoverConfig): OverlayRef {
-    this.isOriginPointMode = !!config.originPoint;
-
     const {positionStrategy, rect} = this.buildDesktopPositionStrategy(config);
-
-    this.lastOriginRect = {top: rect.top, bottom: rect.bottom};
-
-    const scrollStrategy = this.overlay.scrollStrategies.reposition();
     const originWidth = config.originPoint
       ? 0
       : this.elementRef.nativeElement.offsetWidth;
 
-    const panelClass = normalizeClass(config.panelClass, DEFAULT_PANEL_CLASS);
     const noBackdrop = config.closeOnOriginClick === false;
 
     const overlayRef = this.overlay.create({
       positionStrategy,
-      scrollStrategy,
-      panelClass,
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      panelClass: normalizeClass(config.panelClass, DEFAULT_PANEL_CLASS),
       hasBackdrop: !noBackdrop,
       ...(noBackdrop ? {} : {backdropClass: BACKDROP_BASE_CLASS}),
     });
@@ -239,41 +149,41 @@ export class NdwuDropdownController extends NdwuPopoverController {
       minWidth: Math.max(originWidth, config.minWidth ?? originWidth),
     });
 
-    this.positionChangesSubscription = positionStrategy.positionChanges.subscribe(
-      (change: ConnectedOverlayPositionChange) => {
-        this.applyDesktopOverlayMaxHeight(overlayRef, change);
-      },
+    positionStrategy.positionChanges.subscribe(
+      (change: ConnectedOverlayPositionChange) => this.applyDesktopOverlayMaxHeight(overlayRef, change, rect),
     );
-
-    this.attachDesktopOverlayListeners(overlayRef, noBackdrop);
 
     return overlayRef;
   }
 
-  protected attachDesktopOverlayListeners(overlayRef: OverlayRef, noBackdrop: boolean): void {
-    overlayRef.detachments()
-      .subscribe(() => this.handleOverlayDetached());
-
-    if (!noBackdrop) {
-      overlayRef.backdropClick()
-        .subscribe(() => this.close());
+  protected registerDeferredListeners(
+    overlayRef: OverlayRef,
+    config: NdwuPopoverConfig,
+    session: NdwuPopoverSessionRef,
+    isMobile: boolean,
+  ): void {
+    if (!overlayRef.overlayElement.isConnected) {
+      return;
     }
 
-    overlayRef.keydownEvents()
-      .subscribe((event) => {
-        if (event.key === 'Escape') {
-          event.preventDefault();
-          this.close();
-        }
-      });
+    if (!isMobile) {
+      this.lockOverscroll(session);
+      this.listenScroll(overlayRef, session);
+    }
+
+    if (config.closeOnOriginClick === false) {
+      this.listenOutside(overlayRef, session, config.originPoint ? null : this.elementRef.nativeElement);
+    } else {
+      this.registerOriginClickClose(overlayRef, session);
+    }
   }
 
   protected applyDesktopOverlayMaxHeight(
     overlayRef: OverlayRef,
     change: ConnectedOverlayPositionChange,
+    rect: {top: number; bottom: number},
   ): void {
     const pair = change.connectionPair;
-    const rect = this.lastOriginRect ?? this.elementRef.nativeElement.getBoundingClientRect();
     const isBelow = pair.originY === 'bottom' && pair.overlayY === 'top';
     const availableHeight = isBelow
       ? window.innerHeight - rect.bottom - VIEWPORT_MARGIN
@@ -286,121 +196,44 @@ export class NdwuDropdownController extends NdwuPopoverController {
     overlayRef.overlayElement.classList.toggle(ABOVE_PANEL_CLASS, !isBelow);
   }
 
-  protected handleOverlayDetached(): void {
-    this.unregisterListeners();
-
-    this.lastOriginRect = null;
-    this.virtualOriginElement?.remove();
-    this.virtualOriginElement = null;
-    this.isOriginPointMode = false;
-    this.overlayRef = null;
-
-    this.onOverlayDetached();
-  }
-
-  protected unregisterPositionChanges(): void {
-    this.positionChangesSubscription?.unsubscribe();
-    this.positionChangesSubscription = null;
-  }
-
-  protected registerOriginClickClose(): void {
-    if (!this.overlayRef?.overlayElement?.isConnected) {
-      return;
-    }
-
+  protected registerOriginClickClose(overlayRef: OverlayRef, session: NdwuPopoverSessionRef): void {
     const origin = this.elementRef.nativeElement;
-    const pane = this.overlayRef.overlayElement;
+    const pane = overlayRef.overlayElement;
 
     const handler = (event: MouseEvent): void => {
-      const target = event.target as Node;
+      const target = event.target;
 
-      if (!origin.contains(target)) {
-        return;
-      }
-
-      if (pane.contains(target)) {
+      if (!(target instanceof Node) || !origin.contains(target) || pane.contains(target)) {
         return;
       }
 
       event.stopImmediatePropagation();
       event.preventDefault();
-      this.close();
+      session.close('origin-click');
     };
 
     document.addEventListener('click', handler, true);
-
-    this.originClickUnregister = () => {
-      document.removeEventListener('click', handler, true);
-      this.originClickUnregister = null;
-    };
-  }
-
-  protected unregisterOriginClickClose(): void {
-    this.originClickUnregister?.();
-  }
-
-  protected registerOutsideClickClose(): void {
-    if (!this.overlayRef?.overlayElement?.isConnected) {
-      return;
-    }
-
-    const origin = this.elementRef.nativeElement;
-    const pane = this.overlayRef.overlayElement;
-    const isCursorOrigin = this.isOriginPointMode;
-
-    const handler = (event: MouseEvent): void => {
-      const target = event.target as Node;
-
-      if (pane.contains(target)) {
-        return;
-      }
-
-      if (!isCursorOrigin && origin.contains(target)) {
-        return;
-      }
-
-      this.close();
-    };
-
-    const eventTypes = ['click', 'pointerdown', 'contextmenu'] as const;
-
-    for (const eventType of eventTypes) {
-      document.addEventListener(eventType, handler as EventListener, true);
-    }
-
-    this.outsideClickUnregister = () => {
-      for (const eventType of eventTypes) {
-        document.removeEventListener(eventType, handler as EventListener, true);
-      }
-
-      this.outsideClickUnregister = null;
-    };
-  }
-
-  protected unregisterOutsideClickClose(): void {
-    this.outsideClickUnregister?.();
+    session.onFinish(() => document.removeEventListener('click', handler, true));
   }
 
   /*
    * Suppress elastic overscroll on document while a dropdown is open
    * to prevent panel positioning lag
    */
-  protected lockOverscroll(): void {
+  protected lockOverscroll(session: NdwuPopoverSessionRef): void {
     const html = document.documentElement;
+    const saved = html.style.overscrollBehavior;
 
-    this.savedOverscrollBehavior = html.style.overscrollBehavior;
     html.style.overscrollBehavior = 'none';
-  }
-
-  protected unlockOverscroll(): void {
-    document.documentElement.style.overscrollBehavior = this.savedOverscrollBehavior;
+    session.onFinish(() => {
+      html.style.overscrollBehavior = saved;
+    });
   }
 }
 
 export function ndwuCreateDropdownController(
   elementRef: ElementRef<HTMLElement>,
   injector: Injector,
-  onDetached: () => void,
 ): NdwuDropdownController {
   const overlay = injector.get(Overlay);
   const breakpointObserver = injector.get(BreakpointObserver);
@@ -410,6 +243,5 @@ export function ndwuCreateDropdownController(
     breakpointObserver,
     elementRef,
     injector,
-    onDetached,
   );
 }

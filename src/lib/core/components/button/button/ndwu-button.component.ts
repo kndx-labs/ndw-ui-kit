@@ -9,12 +9,12 @@ import {
   input,
 } from '@angular/core';
 import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
+import {blockClicksWhile} from '@ndw-ui-kit/core/utils';
 import {NDWU_SIZE, NdwuValues} from '../../../../shared.types';
 import {NdwuIconName} from '../../../../icon-names';
 import {NdwuSizeDirective} from '../../../directives';
 import {NdwuIconComponent} from '../../icon/ndwu-icon.component';
 import {NdwuSpokesLoaderComponent} from '../../spokes-loader/ndwu-spokes-loader.component';
-import {blockClickWhileLoading} from '../ndwu-button.utils';
 
 export const NDWU_BUTTON_VARIANT = {
   PRIMARY: 'primary',
@@ -68,7 +68,7 @@ export class NdwuButtonComponent {
   });
 
   constructor() {
-    blockClickWhileLoading(this.el.nativeElement, this.effectiveLoading, this.destroyRef);
+    blockClicksWhile(this.el.nativeElement, this.effectiveLoading, this.destroyRef);
   }
 
   protected readonly loaderParams = computed(() => {

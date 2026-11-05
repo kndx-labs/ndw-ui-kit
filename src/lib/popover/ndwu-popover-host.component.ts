@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, Component, Signal, ViewContainerRef, computed, inject, viewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Signal,
+  ViewContainerRef,
+  afterNextRender,
+  computed,
+  inject,
+  viewChild,
+} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {CdkPortalOutlet, ComponentPortal, TemplatePortal} from '@angular/cdk/portal';
 import {CdkTrapFocus} from '@angular/cdk/a11y';
@@ -27,6 +36,8 @@ import {NDWU_POPOVER_CONTENT, NDWU_POPOVER_CONTEXT, NDWU_POPOVER_TRAP_FOCUS} fro
 })
 export class NdwuPopoverHostComponent {
   protected readonly portalOutlet = viewChild.required(CdkPortalOutlet);
+
+  protected readonly focusTrap = viewChild.required(CdkTrapFocus);
 
   protected readonly content = inject(NDWU_POPOVER_CONTENT);
 
@@ -63,5 +74,11 @@ export class NdwuPopoverHostComponent {
       this.breakpointObserver.observe(HANDSET_BREAKPOINT).pipe(map((r) => r.matches)),
       {initialValue: false},
     );
+
+    afterNextRender(() => {
+      if (this.trapFocus) {
+        this.focusTrap().focusTrap.focusInitialElement();
+      }
+    });
   }
 }

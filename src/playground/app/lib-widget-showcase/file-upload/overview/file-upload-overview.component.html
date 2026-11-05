@@ -12,7 +12,7 @@
           [multiple]="false"
           [translationTexts]="translationTexts"
           (uploadRequest)="onUploadRequestSingle($event)"
-          (filesChange)="onFilesChangedSingle($event)"
+          (cancelRequest)="onCancelRequest($event)"
         />
       </div>
       <p class="size-readout">
@@ -60,13 +60,23 @@
             [maxSizeMB]="5"
             [translationTexts]="translationTexts"
             (uploadRequest)="onUploadRequestCva($event)"
-            (filesChange)="onFilesChangedCva($event)"
+            (cancelRequest)="onCancelRequest($event)"
           />
         </form>
       </div>
       <p class="size-readout">
         {{ 'file-upload-showcase.current-size' | localize }}:
         <strong>{{ cvaUploadRef.effectiveSize() }}</strong>
+      </p>
+      <div class="example-row">
+        <button type="button" (click)="setCvaValue()">Set value</button>
+        <button type="button" (click)="resetCvaForm()">Reset</button>
+        <button type="button" (click)="markCvaPristine()">Mark pristine</button>
+      </div>
+      <p class="size-readout">
+        dirty: <strong>{{ fileUploadCvaForm.dirty }}</strong>
+        &nbsp;|&nbsp;
+        value: <strong>{{ cvaStatuses() }}</strong>
       </p>
     </div>
 
@@ -129,7 +139,7 @@
           [maxSizeMB]="5"
           [translationTexts]="translationTexts"
           (uploadRequest)="onUploadRequestMultiple($event)"
-          (filesChange)="onFilesChangedMultiple($event)"
+          (cancelRequest)="onCancelRequest($event)"
         />
       </div>
       <p class="size-readout">

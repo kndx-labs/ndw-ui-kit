@@ -466,7 +466,7 @@ export class NdwuScrollbarComponent {
     this.scrollThumbTo(state.axis, pointerPosition - state.trackStart - state.pointerOffset);
   }
 
-  // Centers the thumb on the clicked point.
+  // Centers the thumb on the clicked point, then keeps dragging until release.
   private startTrackClick(axis: NdwuScrollbarAxis, event: PointerEvent): void {
     const {track} = this.getAxisElements(axis);
     const trackStart = this.getRectStart(axis, track.getBoundingClientRect());
@@ -474,6 +474,7 @@ export class NdwuScrollbarComponent {
     const pointerPosition = this.getPointerOffset(axis, event);
 
     this.scrollThumbTo(axis, pointerPosition - trackStart - (thumbSize / 2));
+    this.startDrag(axis, event);
   }
 
   // Scrolls the content so that the thumb starts at `thumbStart`, counted from the track start.

@@ -459,6 +459,38 @@ describe('NdwuScrollbarComponent: pointer admission', () => {
     expect(duringDrag.defaultPrevented).toBe(false);
   });
 
+  it('keeps dragging after a track click until pointerup', async () => {
+    const harness = await createScrollbar();
+    const pointerDownY = 150;
+    const pointerMoveY = 180;
+    const pointerId = 5;
+    const thumbRect = harness.thumbY.getBoundingClientRect();
+    const trackRect = harness.trackY.getBoundingClientRect();
+    const pointerOffset = pointerDownY - thumbRect.top;
+    const thumbStart = pointerMoveY - trackRect.top - pointerOffset;
+    const trackFree = trackRect.height - Number.parseFloat(harness.thumbY.style.height);
+    const contentFree = harness.content.scrollHeight - harness.content.clientHeight;
+    const expectedScrollTop = thumbStart / trackFree * contentFree;
+
+    harness.trackY.dispatchEvent(pointerEvent('pointerdown', {pointerId, clientY: pointerDownY}));
+    harness.host.ownerDocument.dispatchEvent(pointerEvent('pointermove', {pointerId, clientY: pointerMoveY}));
+    harness.fixture.detectChanges();
+
+    expect(harness.scrollTop()).toBeCloseTo(expectedScrollTop);
+    expect(harness.captureY).toHaveBeenCalledWith(pointerId);
+    expect(harness.hasClass('dragging')).toBe(true);
+
+    harness.host.ownerDocument.dispatchEvent(pointerEvent('pointerup', {pointerId}));
+    harness.fixture.detectChanges();
+
+    const releasedOffset = harness.scrollTop();
+
+    harness.host.ownerDocument.dispatchEvent(pointerEvent('pointermove', {pointerId, clientY: 190}));
+
+    expect(harness.hasClass('dragging')).toBe(false);
+    expect(harness.scrollTop()).toBe(releasedOffset);
+  });
+
   it.each(['pointerup', 'pointercancel'])('ends drag on %s and ignores later moves', async (endType) => {
     const harness = await createScrollbar();
 

@@ -40,6 +40,23 @@
       <p class="context-menu-target__text">Right-click here (DI token factory)</p>
     </div>
 
+    <p class="approach-label">
+      <strong>Click trigger with <code>[popoverCloseOnOriginClick]="false"</code></strong>
+      <br/>
+      Clicking the button again keeps the menu open. Escape or a click outside closes it.
+    </p>
+    <button
+      #clickTrigger
+      type="button"
+      [ndwuPopoverTrigger]="menuTpl"
+      [popoverContext]="clickMenuContext"
+      [popoverControllerFactory]="ndwuCreateDropdownController"
+      [popoverCloseOnOriginClick]="false"
+      [popoverMinWidth]="200"
+    >
+      Open menu
+    </button>
+
     <div class="context-menu-log">
       <div class="context-menu-log__header">
         <strong>Action log</strong>

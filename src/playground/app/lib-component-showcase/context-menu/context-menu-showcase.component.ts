@@ -40,8 +40,17 @@ export class ContextMenuShowcaseComponent {
 
   protected readonly inputBasedTriggerRef = viewChild('inputBasedTrigger', {read: NdwuPopoverTriggerDirective});
   protected readonly diBasedTriggerRef = viewChild('diBasedTrigger', {read: NdwuPopoverTriggerDirective});
+  protected readonly clickTriggerRef = viewChild('clickTrigger', {read: NdwuPopoverTriggerDirective});
   protected readonly menuTpl = viewChild<TemplateRef<ContextMenuContext>>('menuTpl');
   protected readonly actionLog = signal<string[]>([]);
+
+  protected readonly clickMenuContext: ContextMenuContext = {
+    close: () => this.clickTriggerRef()?.close(),
+    execute: (action) => {
+      this.logAction(action);
+      this.clickTriggerRef()?.close();
+    },
+  };
 
   protected onInputBasedContextMenu(event: MouseEvent): void {
     event.preventDefault();
@@ -84,7 +93,8 @@ export class ContextMenuShowcaseComponent {
     }
 
     const anyOpen = (this.inputBasedTriggerRef()?.isOpen() ?? false)
-      || (this.diBasedTriggerRef()?.isOpen() ?? false);
+      || (this.diBasedTriggerRef()?.isOpen() ?? false)
+      || (this.clickTriggerRef()?.isOpen() ?? false);
 
     if (anyOpen) {
       return;

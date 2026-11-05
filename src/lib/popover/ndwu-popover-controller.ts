@@ -1,25 +1,23 @@
 import {ElementRef, InjectionToken, Injector, type Provider, TemplateRef, signal} from '@angular/core';
-import {OverlayRef} from '@angular/cdk/overlay';
+import type {OverlayRef} from '@angular/cdk/overlay';
 import type {NdwuPopoverConfig, NdwuPopoverOrigin} from './ndwu-popover.types';
+import type {NdwuPopoverSessionRef} from './ndwu-popover-session';
 import {NDWU_POPOVER_CONTENT, NDWU_POPOVER_CONTEXT, NDWU_POPOVER_TRAP_FOCUS} from './ndwu-popover.tokens';
 import {ComponentPortal, TemplatePortal} from '@angular/cdk/portal';
 import {NdwuPopoverHostComponent} from './ndwu-popover-host.component';
+import {dismissOnPointerOutside, registerOverlayScroll} from './overlay-utils';
 
 export abstract class NdwuPopoverController {
+  public readonly dismissesOnOutsideClick: boolean = false;
+
   protected overlayRef: OverlayRef | null = null;
-  protected scrollUnregister: (() => void) | null = null;
-  protected originClickUnregister: (() => void) | null = null;
-  protected outsideClickUnregister: (() => void) | null = null;
 
-  public abstract open(config: NdwuPopoverConfig): void;
-  public abstract close(options?: {focusOrigin?: boolean}): void;
-  public abstract dispose(): void;
+  public abstract open(config: NdwuPopoverConfig, session: NdwuPopoverSessionRef): void;
 
-  /**
-   * Returns the CDK overlay pane element, or null if not open.
-   * Used by the trigger for hover bridging.
-   */
-  public abstract getOverlayElement(): HTMLElement | null;
+  /** Returns the CDK overlay pane element of the current open, or null. */
+  public getOverlayElement(): HTMLElement | null {
+    return this.overlayRef?.overlayElement ?? null;
+  }
 
   /**
    * Re-anchors the open overlay to another origin and recomputes its position without closing it.
@@ -27,7 +25,68 @@ export abstract class NdwuPopoverController {
    */
   public setOrigin(_origin: NdwuPopoverOrigin): void {}
 
+  protected connectSession(overlayRef: OverlayRef, session: NdwuPopoverSessionRef): void {
+    this.trackOverlay(overlayRef, session);
+    this.listenEscape(overlayRef, session);
+    this.listenBackdrop(overlayRef, session);
+  }
+
+  protected trackOverlay(overlayRef: OverlayRef, session: NdwuPopoverSessionRef): void {
+    this.overlayRef = overlayRef;
+
+    session.onFinish(() => {
+      overlayRef.dispose();
+
+      if (this.overlayRef === overlayRef) {
+        this.overlayRef = null;
+      }
+    });
+
+    overlayRef.detachments()
+      .subscribe(() => session.close('detached'));
+  }
+
+  protected listenEscape(overlayRef: OverlayRef, session: NdwuPopoverSessionRef): void {
+    overlayRef.keydownEvents()
+      .subscribe((event) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          session.close('escape');
+        }
+      });
+  }
+
+  protected listenBackdrop(overlayRef: OverlayRef, session: NdwuPopoverSessionRef): void {
+    if (overlayRef.getConfig().hasBackdrop) {
+      overlayRef.backdropClick()
+        .subscribe(() => session.close('outside'));
+    }
+  }
+
+  protected listenOutside(overlayRef: OverlayRef, session: NdwuPopoverSessionRef, origin: Element | null): void {
+    const pane = overlayRef.overlayElement;
+
+    if (!pane.isConnected) {
+      return;
+    }
+
+    dismissOnPointerOutside(
+      session,
+      (target) => pane.contains(target) || (origin?.contains(target) ?? false),
+      () => session.close('outside'),
+    );
+  }
+
+  protected listenScroll(overlayRef: OverlayRef, session: NdwuPopoverSessionRef): void {
+    const unregisterScroll = registerOverlayScroll(overlayRef);
+
+    if (unregisterScroll) {
+      session.onFinish(unregisterScroll);
+    }
+  }
+
   protected attachPortal(
+    overlayRef: OverlayRef,
     config: NdwuPopoverConfig,
     injector: Injector,
   ): void {
@@ -53,13 +112,7 @@ export abstract class NdwuPopoverController {
       portalInjector,
     );
 
-    if (!this.overlayRef) {
-      console.warn('[NdwuPopoverController]: "overlayRef" is null');
-
-      return;
-    }
-
-    const hostRef = this.overlayRef.attach(hostPortal);
+    const hostRef = overlayRef.attach(hostPortal);
     const content = config.content;
 
     // Level 2: Attach content into host's portal outlet
@@ -83,7 +136,6 @@ export abstract class NdwuPopoverController {
 export type NdwuPopoverControllerFactory = (
   elementRef: ElementRef<HTMLElement>,
   injector: Injector,
-  onDetached: () => void,
 ) => NdwuPopoverController;
 
 export const NDWU_POPOVER_CONTROLLER_FACTORY = new InjectionToken<NdwuPopoverControllerFactory>(

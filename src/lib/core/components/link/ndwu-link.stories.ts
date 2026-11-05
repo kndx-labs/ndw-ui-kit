@@ -94,7 +94,7 @@ export const External: Story = {
         <a
           ndwu-link
           href="https://example.com"
-          external
+          [external]="true"
           target="_blank"
         >
           External link
@@ -112,15 +112,15 @@ export const Disabled: Story = {
         `<a
           ndwu-link
           href="#storybook-disabled"
-          disabled
+          [disabled]="true"
         >
           Disabled link
         </a>`,
         `<a
           ndwu-link
           href="#storybook-disabled-external"
-          external
-          disabled
+          [external]="true"
+          [disabled]="true"
         >
           Disabled external link
         </a>`,
@@ -150,7 +150,7 @@ export const WithRouterLink: Story = {
         `<a
           ndwu-link
           routerLink="/settings/disabled"
-          disabled
+          [disabled]="true"
         >
           Disabled
         </a>`,

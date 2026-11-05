@@ -189,7 +189,7 @@ export const Disabled: Story = {
               ndwu-icon-button
               variant="${variant}"
               icon="${NDWU_ICON_NAME.ADD_S}"
-              disabled
+              [disabled]="true"
               aria-label="Disabled ${variant} icon button"
             >
             </button>`;

@@ -1,0 +1,245 @@
+<app-showcase-layout
+  lightTitleKey="common.themes.light"
+  darkTitleKey="common.themes.dark"
+>
+  <ng-template>
+    <div
+      class="scrollbar-touch"
+      [class.scrollbar-touch--show-target]="isTargetHighlighted()"
+    >
+      <div class="scrollbar-touch__section">
+        <h4>This device</h4>
+        <dl class="scrollbar-touch__env">
+          <dt>Primary pointer</dt>
+          <dd>
+            <code>{{ isCoarsePrimary() ? 'coarse' : 'fine' }}</code>
+            {{ isCoarsePrimary() ? '— autohide on' : '— autohide off' }}
+          </dd>
+          <dt>Any fine pointer</dt>
+          <dd><code>{{ hasAnyFinePointer() ? 'yes' : 'no' }}</code></dd>
+          <dt>Hover</dt>
+          <dd><code>{{ canHover() ? 'yes' : 'no' }}</code></dd>
+          <dt>Last pointer on this page</dt>
+          <dd><code>{{ lastPointerType() }}</code></dd>
+        </dl>
+        <p class="scrollbar-touch__note">
+          The touch target (44px by default) follows the last pointer pressed inside the scroll box:
+          after a touch or pen press it is on, after a mouse press it is off and track clicks work.
+          Autohide follows the primary pointer. The Try it controls set the touch target size and
+          hide delay for both demo boxes below. Check on a real phone or tablet; on desktop Chrome,
+          turn on the DevTools device toolbar and reload.
+        </p>
+      </div>
+
+      <div class="scrollbar-touch__section">
+        <h4>Try it</h4>
+
+        <div class="scrollbar-touch__controls">
+          <label>
+            <input
+              type="checkbox"
+              [checked]="isTargetHighlighted()"
+              (change)="toggleTargetHighlight()"
+            />
+            Highlight touch target
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              [checked]="isAutoHide()"
+              (change)="toggleAutoHide()"
+            />
+            <code>ndwuScrollbarAutoHide</code>
+          </label>
+          <label>
+            Touch target (px)
+            <input
+              type="number"
+              min="32"
+              max="80"
+              step="4"
+              [value]="touchTargetSizePx()"
+              (input)="updateTouchTargetSize($event)"
+            />
+          </label>
+          <label>
+            Hide delay (ms)
+            <input
+              type="number"
+              min="0"
+              max="5000"
+              step="100"
+              [value]="hideDelayMs()"
+              (input)="updateHideDelay($event)"
+            />
+          </label>
+        </div>
+
+        <ol class="scrollbar-touch__steps">
+          <li>
+            Swipe the list. A tinted strip appears around the thumb and disappears about a second
+            after scrolling stops.
+          </li>
+          <li>
+            Swipe again and, while the strip is visible, drag the thumb. The list follows the
+            finger and the thumb gets wider.
+          </li>
+          <li>
+            Wait for the strip to disappear, then tap a <b>Ping</b> button at the right edge.
+            <i>Last tap</i> must update: the scrollbar does not take taps at rest.
+          </li>
+          <li>
+            Turn on <code>ndwuScrollbarAutoHide</code>. The scrollbar is hidden until you scroll.
+            On a touch screen, rows get wider by the freed gutter.
+          </li>
+        </ol>
+
+        <p class="scrollbar-touch__status" aria-live="polite">
+          Last tap: <b>{{ lastTap() }}</b> · taps: {{ tapCount() }}
+        </p>
+
+        <div
+          class="scrollbar-touch__phone"
+          ndwuScrollbar
+          ndwuScrollbarAxis="y"
+          [ndwuScrollbarAutoHide]="isAutoHide()"
+          [ndwuScrollbarTouchTargetSize]="touchTargetSize()"
+          [ndwuScrollbarHideDelay]="hideDelayMs()"
+          tabindex="0"
+        >
+          @for (row of rows; track row) {
+            <div class="scrollbar-touch__row">
+              <span>Device {{ row }}</span>
+              <button
+                type="button"
+                (click)="registerTap('Ping ' + row)"
+              >
+                Ping
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="scrollbar-touch__section">
+        <h4>Both axes · XL</h4>
+        <p class="scrollbar-touch__note">
+          Same checks for the horizontal thumb. The trailing buttons sit under the vertical track.
+          Resize the box horizontally to change the overflow.
+        </p>
+        <div
+          class="scrollbar-touch__both"
+          ndwuScrollbar
+          ndwuScrollbarSize="XL"
+          ndwuScrollbarAxis="both"
+          [ndwuScrollbarAutoHide]="isAutoHide()"
+          [ndwuScrollbarTouchTargetSize]="touchTargetSize()"
+          [ndwuScrollbarHideDelay]="hideDelayMs()"
+          tabindex="0"
+        >
+          @for (row of rows; track row) {
+            <div class="scrollbar-touch__row scrollbar-touch__row--wide">
+              <span>Wide row {{ row }}</span>
+              <button
+                type="button"
+                (click)="registerTap('Wide ' + row)"
+              >
+                Ping
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="scrollbar-touch__section">
+        <h4>Track padding in pixels, percent and <code>calc()</code></h4>
+        <p class="scrollbar-touch__note">
+          The touch target reaches the host edge even when the track is inset. Resize each box by
+          its lower-right grip: the target follows the resolved track position.
+        </p>
+
+        <div class="scrollbar-touch__inset-grid">
+          <div>
+            <h5>Pixel padding · both axes · L</h5>
+            <div
+              class="scrollbar-touch__inset"
+              ndwuScrollbar
+              ndwuScrollbarAxis="both"
+              [ndwuScrollbarPadding]="pixelTrackPadding"
+              tabindex="0"
+            >
+              <div class="scrollbar-touch__inset-content">
+                Pixel padded content wide and tall enough to scroll on both axes.
+              </div>
+            </div>
+          </div>
+          <div>
+            <h5>Percent padding · vertical · XL</h5>
+            <div
+              class="scrollbar-touch__inset scrollbar-touch__inset--short"
+              ndwuScrollbar
+              ndwuScrollbarSize="XL"
+              ndwuScrollbarAxis="y"
+              [ndwuScrollbarPadding]="percentTrackPadding"
+              tabindex="0"
+            >
+              <div class="scrollbar-touch__inset-content">
+                Percent inset follows the host size while this short box is resized.
+              </div>
+            </div>
+          </div>
+          <div>
+            <h5><code>calc()</code> padding · horizontal · XL</h5>
+            <div
+              class="scrollbar-touch__inset"
+              ndwuScrollbar
+              ndwuScrollbarSize="XL"
+              ndwuScrollbarAxis="x"
+              [ndwuScrollbarPadding]="calcTrackPadding"
+              tabindex="0"
+            >
+              <div class="scrollbar-touch__inset-content">
+                Calculated inset content is wider than the box, so the horizontal thumb can move.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scrollbar-touch__section">
+        <h4>Nested scrollbars</h4>
+        <p class="scrollbar-touch__note">
+          Scroll the inner box, then the outer one. Only the scrolled box gets the wider target.
+        </p>
+        <div
+          class="scrollbar-touch__nested"
+          ndwuScrollbar
+          ndwuScrollbarAxis="y"
+          tabindex="0"
+        >
+          <p>Outer row above the nested box</p>
+          <div
+            class="scrollbar-touch__nested-inner"
+            ndwuScrollbar
+            ndwuScrollbarAxis="both"
+            ndwuScrollbarSize="XL"
+            tabindex="0"
+          >
+            <div class="scrollbar-touch__nested-content">
+              @for (row of rows; track row) {
+                <p>Inner row {{ row }}</p>
+              }
+            </div>
+          </div>
+          <p>Outer row below the nested box</p>
+          <button
+            type="button"
+            (click)="registerTap('Outer action')"
+          >
+            Outer action
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</app-showcase-layout>

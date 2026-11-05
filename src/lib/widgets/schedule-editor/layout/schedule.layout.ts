@@ -27,7 +27,7 @@ import {
   SLOTS_PER_HOUR,
   SLOT_RECT_CLASS,
   SLOT_RECT_SELECTED_CLASS,
-} from '../ndwu-schedule-editor.constants';
+} from '../schedule-editor.internal.constants';
 
 export abstract class ScheduleLayout {
   public abstract getGridBlock(params: GetGridBlockParams): ScheduleGridBlock | null;

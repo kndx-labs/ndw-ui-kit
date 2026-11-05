@@ -1,3 +1,5 @@
+@use 'styles/animations';
+
 /*
  * Turns the custom scrolling off: content grows freely, tracks are hidden, and the space
  * reserved for them is removed.
@@ -115,7 +117,6 @@
   display: none;
   border-radius: calc(var(--ndwu-scrollbar-size-local) / 2);
   background: var(--ndwu-scrollbar-track-color);
-  opacity: 1;
 
   &--vertical {
     top: var(--ndwu-scrollbar-padding-top);
@@ -135,38 +136,18 @@
 .ndwu-scrollbar__thumb {
   position: absolute;
   border-radius: calc(var(--ndwu-scrollbar-size-local) / 2);
-  background: transparent;
+  background: var(--ndwu-scrollbar-thumb-color);
   cursor: pointer;
-  /* stylelint-disable property-no-vendor-prefix */
-  -webkit-user-select: none;
-  /* stylelint-enable property-no-vendor-prefix */
   user-select: none;
-  /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- touch-action prevents native pan from cancelling thumb drags. */
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- keeps a native pan from cancelling a thumb drag. */
   touch-action: none;
   will-change: transform;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
 
-  &::before,
-  &::after {
+  // The touch target. It gets a size only while it is live, see `--touch` below.
+  &::before {
     position: absolute;
-    box-sizing: border-box;
-    /* stylelint-disable property-no-vendor-prefix */
-    -webkit-user-select: none;
-    /* stylelint-enable property-no-vendor-prefix */
-    user-select: none;
-    /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- touch-action prevents native pan from cancelling thumb drags. */
-    touch-action: none;
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  &::after {
-    content: '';
-    inset: 0;
-    border-radius: calc(var(--ndwu-scrollbar-size-local) / 2);
-    background: var(--ndwu-scrollbar-thumb-color);
-    pointer-events: none;
   }
 
   // The thumb length, including the --ndwu-scrollbar-min-thumb-size minimum, is set from TS.
@@ -224,19 +205,24 @@
   /* stylelint-enable plugin/no-unsupported-browser-features */
 }
 
-:host(.ndwu-scrollbar--dragging-y) .ndwu-scrollbar__track--vertical .ndwu-scrollbar__thumb::after {
+// A dragged thumb grows towards the content. TS sets only the thumb length inline.
+:host(.ndwu-scrollbar--dragging-y) .ndwu-scrollbar__track--vertical .ndwu-scrollbar__thumb {
   right: 0;
   left: auto;
-  width: 8px;
+  width: var(--ndwu-scrollbar-drag-size);
+  border-radius: calc(var(--ndwu-scrollbar-drag-size) / 2);
 }
 
-:host(.ndwu-scrollbar--dragging-x) .ndwu-scrollbar__track--horizontal .ndwu-scrollbar__thumb::after {
+:host(.ndwu-scrollbar--dragging-x) .ndwu-scrollbar__track--horizontal .ndwu-scrollbar__thumb {
   top: auto;
   bottom: 0;
-  height: 8px;
+  height: var(--ndwu-scrollbar-drag-size);
+  border-radius: calc(var(--ndwu-scrollbar-drag-size) / 2);
 }
 
-@media (pointer: coarse) {
+// The last pointer pressed inside the host was touch or pen. A track press is mouse-only, so
+// touches on the track fall through to the content and scroll it; the thumb stays grabbable.
+:host(.ndwu-scrollbar--touch) {
   .ndwu-scrollbar__track {
     pointer-events: none;
   }
@@ -244,49 +230,48 @@
   .ndwu-scrollbar__thumb {
     pointer-events: auto;
   }
+}
 
-  :host(.ndwu-scrollbar--active) .ndwu-scrollbar__track--vertical .ndwu-scrollbar__thumb::before,
-  :host(.ndwu-scrollbar--dragging) .ndwu-scrollbar__track--vertical .ndwu-scrollbar__thumb::before {
+// While and right after a scroll, the thumb gets a touch target of at least
+// --ndwu-scrollbar-touch-target-size that reaches the host edge across the track padding
+// (TS measures that distance into --ndwu-scrollbar-hit-inset-*). At rest the target is gone,
+// so taps next to the track reach the content.
+:host(.ndwu-scrollbar--touch.ndwu-scrollbar--active) {
+  .ndwu-scrollbar__track--vertical .ndwu-scrollbar__thumb::before {
     content: '';
-    top: -10px;
+    top: calc(-1 * var(--ndwu-scrollbar-touch-target-overhang));
     right: calc(-1 * var(--ndwu-scrollbar-hit-inset-y, 0px));
-    bottom: -10px;
+    bottom: calc(-1 * var(--ndwu-scrollbar-touch-target-overhang));
     /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- max() keeps narrow thumbs grabbable. */
-    width: max(44px, calc(100% + var(--ndwu-scrollbar-hit-inset-y, 0px)));
-    pointer-events: auto;
+    width: max(var(--ndwu-scrollbar-touch-target-size), calc(100% + var(--ndwu-scrollbar-hit-inset-y, 0px)));
   }
 
-  :host(.ndwu-scrollbar--active) .ndwu-scrollbar__track--horizontal .ndwu-scrollbar__thumb::before,
-  :host(.ndwu-scrollbar--dragging) .ndwu-scrollbar__track--horizontal .ndwu-scrollbar__thumb::before {
+  .ndwu-scrollbar__track--horizontal .ndwu-scrollbar__thumb::before {
     content: '';
-    right: -10px;
+    right: calc(-1 * var(--ndwu-scrollbar-touch-target-overhang));
     bottom: calc(-1 * var(--ndwu-scrollbar-hit-inset-x, 0px));
-    left: -10px;
+    left: calc(-1 * var(--ndwu-scrollbar-touch-target-overhang));
     /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- max() keeps narrow thumbs grabbable. */
-    height: max(44px, calc(100% + var(--ndwu-scrollbar-hit-inset-x, 0px)));
-    pointer-events: auto;
-  }
-
-  :host(.ndwu-scrollbar--auto-hide):not(.ndwu-scrollbar--active, .ndwu-scrollbar--dragging) .ndwu-scrollbar__track {
-    opacity: 0;
-    transition: opacity 150ms ease-out;
-  }
-
-  :host(.ndwu-scrollbar--auto-hide):not(.ndwu-scrollbar--active, .ndwu-scrollbar--dragging) .ndwu-scrollbar__thumb {
-    pointer-events: none;
+    height: max(var(--ndwu-scrollbar-touch-target-size), calc(100% + var(--ndwu-scrollbar-hit-inset-x, 0px)));
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  :host(.ndwu-scrollbar--auto-hide) .ndwu-scrollbar__track {
-    transition: none;
-  }
-}
+// On a touch-first screen auto-hide keeps the tracks hidden until the content is scrolled.
+// `screen` leaves them visible in print.
+:host(.ndwu-scrollbar--auto-hide:not(.ndwu-scrollbar--active)) {
+  @media screen and (pointer: coarse) {
+    .ndwu-scrollbar__track {
+      opacity: 0;
 
-@media print {
-  :host(.ndwu-scrollbar--auto-hide) .ndwu-scrollbar__track {
-    opacity: 1 !important;
-    transition: none;
+      @media (prefers-reduced-motion: no-preference) {
+        transition: opacity animations.$duration-default animations.$easing-default;
+      }
+    }
+
+    .ndwu-scrollbar__track,
+    .ndwu-scrollbar__thumb {
+      pointer-events: none;
+    }
   }
 }
 

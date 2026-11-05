@@ -62,6 +62,10 @@ const COARSE_POINTER_QUERY = '(pointer: coarse)';
 const SCROLLABLE_Y_CLASS = 'ndwu-scrollbar--scrollable-y';
 const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
 
+/**
+ * Right-to-left layout is not supported: vertical tracks stay on the right.
+ * Negative RTL `scrollLeft` values are not handled.
+ */
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: '[ndwuScrollbar]',
@@ -94,10 +98,6 @@ const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
     '[style.--ndwu-scrollbar-touch-target-size]': 'ndwuScrollbarTouchTargetSize()',
   },
 })
-/**
- * Right-to-left layout is not supported: vertical tracks stay on the right.
- * Negative RTL `scrollLeft` values are not handled.
- */
 export class NdwuScrollbarComponent {
   private static readonly AXIS_CONFIG: Record<NdwuScrollbarAxis, NdwuAxisConfigEntry> = {
     y: {
@@ -129,6 +129,7 @@ export class NdwuScrollbarComponent {
   }
 
   public readonly ndwuScrollbarSize = input<NdwuSize>(NDWU_SIZE.L);
+  /** Scrolling axis. Content overflowing on the other axis is clipped; use `both` to scroll it. */
   public readonly ndwuScrollbarAxis = input<'x' | 'y' | 'both'>('both');
   public readonly ndwuScrollbarPrintable = input(true, {transform: booleanAttribute});
   public readonly ndwuScrollbarDisabled = input(false, {transform: booleanAttribute});

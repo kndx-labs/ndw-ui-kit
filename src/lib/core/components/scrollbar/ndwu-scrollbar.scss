@@ -7,8 +7,8 @@
  * Always both axes: CSS can't keep one axis `visible` while the other scrolls
  * (`overflow-y: visible` next to `overflow-x: auto` becomes `auto` on both).
  *
- * The repeated class names make these selectors as specific as the axis selectors below;
- * to win, the blocks that include this mixin must also come after them in the file.
+ * The repeated content classes make these selectors more specific than the axis, gutter, and
+ * auto-hide overlay rules; blocks using this mixin also come later so passthrough wins.
  */
 @mixin passthrough-overflow {
   overflow: visible;
@@ -91,23 +91,13 @@
   /* stylelint-enable order/properties-order */
 }
 
-// The host itself never scrolls. CSS can't mix `visible` with another value per axis
-// (`overflow-y: hidden` next to `overflow-x: visible` becomes `auto` on both), so the host
-// keeps `overflow: hidden` on both axes.
-:host(.ndwu-scrollbar--axis-y) {
-  overflow-y: hidden;
-}
-
+// The axis input picks the scrolling axis; the other axis is clipped, as in a native box.
 :host(.ndwu-scrollbar--axis-y) .ndwu-scrollbar__content {
-  overflow-y: auto;
-}
-
-:host(.ndwu-scrollbar--axis-x) {
   overflow-x: hidden;
 }
 
 :host(.ndwu-scrollbar--axis-x) .ndwu-scrollbar__content {
-  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 // Tracks are inset from the host edges by --ndwu-scrollbar-padding-*.
@@ -161,25 +151,21 @@
   }
 }
 
-:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--vertical,
-:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-y .ndwu-scrollbar__track--vertical {
+:host(.ndwu-scrollbar--scrollable-y) .ndwu-scrollbar__track--vertical {
   display: block;
 }
 
-:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-both .ndwu-scrollbar__content,
-:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-y .ndwu-scrollbar__content {
+:host(.ndwu-scrollbar--scrollable-y) .ndwu-scrollbar__content {
   padding-inline-end: calc(
     var(--ndwu-scrollbar-padding-left) + var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-right) + var(--ndwu-scrollbar-content-padding-right)
   );
 }
 
-:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--horizontal,
-:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-x .ndwu-scrollbar__track--horizontal {
+:host(.ndwu-scrollbar--scrollable-x) .ndwu-scrollbar__track--horizontal {
   display: block;
 }
 
-:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-both .ndwu-scrollbar__content,
-:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-x .ndwu-scrollbar__content {
+:host(.ndwu-scrollbar--scrollable-x) .ndwu-scrollbar__content {
   padding-block-end: calc(
     var(--ndwu-scrollbar-padding-top) + var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-bottom) + var(--ndwu-scrollbar-content-padding-bottom)
   );
@@ -193,35 +179,23 @@
       background: transparent;
     }
 
-    &.ndwu-scrollbar--scrollable-y {
-      &.ndwu-scrollbar--axis-both,
-      &.ndwu-scrollbar--axis-y {
-        .ndwu-scrollbar__content {
-          padding-inline-end: var(--ndwu-scrollbar-content-padding-right);
-        }
-      }
+    &.ndwu-scrollbar--scrollable-y .ndwu-scrollbar__content {
+      padding-inline-end: var(--ndwu-scrollbar-content-padding-right);
     }
 
-    &.ndwu-scrollbar--scrollable-x {
-      &.ndwu-scrollbar--axis-both,
-      &.ndwu-scrollbar--axis-x {
-        .ndwu-scrollbar__content {
-          padding-block-end: var(--ndwu-scrollbar-content-padding-bottom);
-        }
-      }
+    &.ndwu-scrollbar--scrollable-x .ndwu-scrollbar__content {
+      padding-block-end: var(--ndwu-scrollbar-content-padding-bottom);
     }
   }
 }
 
 // When both tracks are visible, shorten each so they don't overlap in the corner,
 // keeping the same padding as at the other ends.
-:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--vertical,
-:host(.ndwu-scrollbar--scrollable-x).ndwu-scrollbar--axis-y .ndwu-scrollbar__track--vertical {
+:host(.ndwu-scrollbar--scrollable-x) .ndwu-scrollbar__track--vertical {
   bottom: calc(var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-bottom));
 }
 
-:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-both .ndwu-scrollbar__track--horizontal,
-:host(.ndwu-scrollbar--scrollable-y).ndwu-scrollbar--axis-x .ndwu-scrollbar__track--horizontal {
+:host(.ndwu-scrollbar--scrollable-y) .ndwu-scrollbar__track--horizontal {
   right: calc(var(--ndwu-scrollbar-size-local) + var(--ndwu-scrollbar-padding-right));
 }
 

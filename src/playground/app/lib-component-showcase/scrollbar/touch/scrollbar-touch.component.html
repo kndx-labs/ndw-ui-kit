@@ -13,7 +13,7 @@
           <dt>Primary pointer</dt>
           <dd>
             <code>{{ isCoarsePrimary() ? 'coarse' : 'fine' }}</code>
-            {{ isCoarsePrimary() ? '— touch features on' : '— 44px target and autohide off' }}
+            {{ isCoarsePrimary() ? '— autohide on' : '— autohide off' }}
           </dd>
           <dt>Any fine pointer</dt>
           <dd><code>{{ hasAnyFinePointer() ? 'yes' : 'no' }}</code></dd>
@@ -23,8 +23,10 @@
           <dd><code>{{ lastPointerType() }}</code></dd>
         </dl>
         <p class="scrollbar-touch__note">
-          Check on a real phone or tablet. On desktop Chrome, turn on the DevTools device toolbar
-          and reload: only then does <code>(pointer: coarse)</code> match.
+          The 44px touch target follows the last pointer pressed inside the scroll box: after a
+          touch or pen press it is on, after a mouse press it is off and track clicks work. Autohide
+          follows the primary pointer. Check on a real phone or tablet; on desktop Chrome, turn on
+          the DevTools device toolbar and reload.
         </p>
       </div>
 

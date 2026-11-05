@@ -1,4 +1,4 @@
-import type {NdwuAxisMetrics} from './ndwu-scrollbar.types';
+import type {NdwuAxisMetrics} from './ndwu-scrollbar.internal-types';
 
 // scrollHeight/clientHeight are rounded to integers, so with fractional sizes they can be off
 // by up to 1px: show an overflow that doesn't exist, or a maximum scroll offset the content

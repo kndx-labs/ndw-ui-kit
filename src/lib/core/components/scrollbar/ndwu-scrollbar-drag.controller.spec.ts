@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import type {NdwuDragState} from './ndwu-scrollbar.types';
+import type {NdwuDragState} from './ndwu-scrollbar.internal-types';
 import {NdwuScrollbarDragController} from './ndwu-scrollbar-drag.controller';
 
 class FakeThumb {

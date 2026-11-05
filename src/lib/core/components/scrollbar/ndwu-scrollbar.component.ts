@@ -16,14 +16,13 @@ import {
   viewChild,
 } from '@angular/core';
 import {NDWU_SIZE, NdwuSize} from '../../../shared.types';
-import {
-  type NdwuAxisConfigEntry,
-  type NdwuAxisElements,
-  type NdwuAxisMetrics,
-  type NdwuDragState,
-  type NdwuScrollbarAxis,
-  type NdwuScrollbarPadding,
-} from './ndwu-scrollbar.types';
+import type {
+  NdwuAxisElements,
+  NdwuAxisMetrics,
+  NdwuDragState,
+  NdwuScrollbarAxis,
+} from './ndwu-scrollbar.internal-types';
+import type {NdwuScrollbarPadding} from './ndwu-scrollbar.types';
 import {
   calculateThumbOffset,
   calculateThumbSize,
@@ -62,6 +61,31 @@ const COARSE_POINTER_QUERY = '(pointer: coarse)';
 const SCROLLABLE_Y_CLASS = 'ndwu-scrollbar--scrollable-y';
 const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
 
+const AXIS_CONFIG = {
+  y: {
+    contentSize: 'scrollHeight',
+    clientSize: 'clientHeight',
+    scrollOffset: 'scrollTop',
+    pointerCoord: 'clientY',
+    rectStart: 'top',
+    thumbStyle: 'height',
+    trackEndStyle: 'right',
+    hitInsetProperty: '--ndwu-scrollbar-hit-inset-y',
+    translateAxis: (v: number) => `translate3d(0, ${v}px, 0)`,
+  },
+  x: {
+    contentSize: 'scrollWidth',
+    clientSize: 'clientWidth',
+    scrollOffset: 'scrollLeft',
+    pointerCoord: 'clientX',
+    rectStart: 'left',
+    thumbStyle: 'width',
+    trackEndStyle: 'bottom',
+    hitInsetProperty: '--ndwu-scrollbar-hit-inset-x',
+    translateAxis: (v: number) => `translate3d(${v}px, 0, 0)`,
+  },
+} as const;
+
 /**
  * Right-to-left layout is not supported: vertical tracks stay on the right.
  * Negative RTL `scrollLeft` values are not handled.
@@ -99,35 +123,6 @@ const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
   },
 })
 export class NdwuScrollbarComponent {
-  private static readonly AXIS_CONFIG: Record<NdwuScrollbarAxis, NdwuAxisConfigEntry> = {
-    y: {
-      contentSize: 'scrollHeight',
-      clientSize: 'clientHeight',
-      scrollOffset: 'scrollTop',
-      pointerCoord: 'clientY',
-      rectStart: 'top',
-      thumbStyle: 'height',
-      trackEndStyle: 'right',
-      hitInsetProperty: '--ndwu-scrollbar-hit-inset-y',
-      translateAxis: (v: number) => `translate3d(0, ${v}px, 0)`,
-    },
-    x: {
-      contentSize: 'scrollWidth',
-      clientSize: 'clientWidth',
-      scrollOffset: 'scrollLeft',
-      pointerCoord: 'clientX',
-      rectStart: 'left',
-      thumbStyle: 'width',
-      trackEndStyle: 'bottom',
-      hitInsetProperty: '--ndwu-scrollbar-hit-inset-x',
-      translateAxis: (v: number) => `translate3d(${v}px, 0, 0)`,
-    },
-  };
-
-  private getConfig(axis: NdwuScrollbarAxis): NdwuAxisConfigEntry {
-    return NdwuScrollbarComponent.AXIS_CONFIG[axis];
-  }
-
   public readonly ndwuScrollbarSize = input<NdwuSize>(NDWU_SIZE.L);
   /** Scrolling axis. Content overflowing on the other axis is clipped; use `both` to scroll it. */
   public readonly ndwuScrollbarAxis = input<'x' | 'y' | 'both'>('both');
@@ -459,17 +454,18 @@ export class NdwuScrollbarComponent {
     const {track, thumb} = this.getAxisElements(axis);
     const thumbRect = thumb.getBoundingClientRect();
     const trackRect = track.getBoundingClientRect();
+    const config = AXIS_CONFIG[axis];
 
     this.dragController.start(event, thumb, {
       axis,
       pointerId: event.pointerId,
-      pointerOffset: this.getPointerOffset(axis, event) - this.getRectStart(axis, thumbRect),
-      trackStart: this.getRectStart(axis, trackRect),
+      pointerOffset: event[config.pointerCoord] - thumbRect[config.rectStart],
+      trackStart: trackRect[config.rectStart],
     });
   }
 
   private onDragMove(state: NdwuDragState, event: PointerEvent): void {
-    const pointerPosition = this.getPointerOffset(state.axis, event);
+    const pointerPosition = event[AXIS_CONFIG[state.axis].pointerCoord];
 
     this.scrollThumbTo(state.axis, pointerPosition - state.trackStart - state.pointerOffset);
   }
@@ -477,9 +473,10 @@ export class NdwuScrollbarComponent {
   // Centers the thumb on the clicked point, then keeps dragging until release.
   private startTrackClick(axis: NdwuScrollbarAxis, event: PointerEvent): void {
     const {track} = this.getAxisElements(axis);
-    const trackStart = this.getRectStart(axis, track.getBoundingClientRect());
+    const config = AXIS_CONFIG[axis];
+    const trackStart = track.getBoundingClientRect()[config.rectStart];
     const thumbSize = calculateThumbSize(this.getAxisMetrics(axis), this.minThumbSize);
-    const pointerPosition = this.getPointerOffset(axis, event);
+    const pointerPosition = event[config.pointerCoord];
 
     this.scrollThumbTo(axis, pointerPosition - trackStart - (thumbSize / 2));
     this.startDrag(axis, event);
@@ -490,7 +487,7 @@ export class NdwuScrollbarComponent {
   private scrollThumbTo(axis: NdwuScrollbarAxis, thumbStart: number): void {
     const metrics = this.getAxisMetrics(axis);
     const thumbSize = calculateThumbSize(metrics, this.minThumbSize);
-    const scrollOffsetKey = this.getConfig(axis).scrollOffset;
+    const scrollOffsetKey = AXIS_CONFIG[axis].scrollOffset;
 
     this.contentEl().nativeElement[scrollOffsetKey] = convertTrackToScroll(metrics, thumbSize, thumbStart);
 
@@ -552,7 +549,7 @@ export class NdwuScrollbarComponent {
       }
 
       const {track} = this.getAxisElements(axis);
-      const config = this.getConfig(axis);
+      const config = AXIS_CONFIG[axis];
       const usedStyle = getComputedStyle(track);
 
       this.trackSizes[axis] = parseFloat(usedStyle[config.thumbStyle]) || 0;
@@ -570,7 +567,7 @@ export class NdwuScrollbarComponent {
     }
 
     this.hitInsets[axis] = value;
-    this.hostEl.style.setProperty(this.getConfig(axis).hitInsetProperty, value);
+    this.hostEl.style.setProperty(AXIS_CONFIG[axis].hitInsetProperty, value);
   }
 
   // These classes show the tracks (and shorten one track when both are visible). The thumb is
@@ -586,7 +583,7 @@ export class NdwuScrollbarComponent {
 
   private applyThumbSize(axis: NdwuScrollbarAxis, size: number): void {
     const {thumb} = this.getAxisElements(axis);
-    const styleKey = this.getConfig(axis).thumbStyle;
+    const styleKey = AXIS_CONFIG[axis].thumbStyle;
 
     thumb.style[styleKey] = `${size}px`;
   }
@@ -619,12 +616,12 @@ export class NdwuScrollbarComponent {
   }
 
   private applyThumbTransform(axis: NdwuScrollbarAxis, offset: number): void {
-    this.getAxisElements(axis).thumb.style.transform = this.getConfig(axis).translateAxis(offset);
+    this.getAxisElements(axis).thumb.style.transform = AXIS_CONFIG[axis].translateAxis(offset);
   }
 
   private getAxisMetrics(axis: NdwuScrollbarAxis): NdwuAxisMetrics {
     const content = this.contentEl().nativeElement;
-    const config = this.getConfig(axis);
+    const config = AXIS_CONFIG[axis];
 
     return {
       contentSize: content[config.contentSize],
@@ -632,14 +629,6 @@ export class NdwuScrollbarComponent {
       scrollOffset: content[config.scrollOffset],
       trackSize: this.trackSizes[axis],
     };
-  }
-
-  private getPointerOffset(axis: NdwuScrollbarAxis, event: MouseEvent | PointerEvent): number {
-    return event[this.getConfig(axis).pointerCoord];
-  }
-
-  private getRectStart(axis: NdwuScrollbarAxis, rect: DOMRect): number {
-    return rect[this.getConfig(axis).rectStart];
   }
 
   private syncFocusableContent(content: HTMLElement): void {

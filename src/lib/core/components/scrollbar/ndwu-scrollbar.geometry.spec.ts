@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import type {NdwuAxisMetrics} from './ndwu-scrollbar.types';
+import type {NdwuAxisMetrics} from './ndwu-scrollbar.internal-types';
 import {
   calculateThumbOffset,
   calculateThumbSize,

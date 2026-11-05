@@ -1,4 +1,4 @@
-import type {NdwuDragState} from './ndwu-scrollbar.types';
+import type {NdwuDragState} from './ndwu-scrollbar.internal-types';
 
 export interface NdwuScrollbarDragHandlers {
   readonly move: (state: NdwuDragState, event: PointerEvent) => void;

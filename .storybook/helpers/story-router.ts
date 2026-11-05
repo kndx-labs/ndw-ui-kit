@@ -3,13 +3,8 @@ import {applicationConfig, componentWrapperDecorator, moduleMetadata} from '@sto
 import {RouterLink, provideRouter} from '@angular/router';
 import {SbRouterUrlComponent} from './router-url.component';
 
-const ROUTER_PROVIDERS = [
-  provideRouter([{path: '**', children: []}]),
-  provideLocationMocks(),
-];
-
 export const withRouter = [
-  applicationConfig({providers: ROUTER_PROVIDERS}),
+  applicationConfig({providers: [provideRouter([{path: '**', children: []}]), provideLocationMocks()]}),
   moduleMetadata({imports: [RouterLink, SbRouterUrlComponent]}),
   componentWrapperDecorator(SbRouterUrlComponent),
 ];

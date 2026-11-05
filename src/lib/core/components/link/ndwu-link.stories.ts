@@ -31,11 +31,9 @@ const meta: Meta<LinkStoryArgs> = {
   },
   argTypes: {
     disabled: {
-      control: 'boolean',
       description: 'Disables navigation, including `RouterLink`, and blocks consumer `(click)` handlers',
     },
     external: {
-      control: 'boolean',
       description: 'Shows the external-link icon',
     },
     icon: {

@@ -1,6 +1,7 @@
 import {
   NDWU_ICON_BUTTON_VARIANT,
   NDWU_ICON_NAME,
+  NDWU_ICON_NAMES,
   NDWU_SIZE,
   NdwuIconButtonComponent,
   type NdwuIconButtonVariant,
@@ -8,7 +9,7 @@ import {
 } from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
-import {eventArgType, iconArgType, sizeArgType} from '@sb/helpers/arg-types';
+import {eventArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
 import {withRowLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
@@ -63,8 +64,8 @@ const meta: Meta<IconButtonStoryArgs> = {
   },
   argTypes: {
     icon: {
-      ...iconArgType,
-      options: iconArgType.options?.filter((icon) => icon !== null) ?? [],
+      control: 'select',
+      options: NDWU_ICON_NAMES,
       description: 'Required icon displayed in the button',
     },
     variant: {

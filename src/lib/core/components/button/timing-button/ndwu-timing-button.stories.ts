@@ -1,4 +1,4 @@
-import {NDWU_ICON_NAME, NDWU_SIZE, type NdwuSize, NdwuTimingButtonComponent} from '@ndw-ui-kit/core';
+import {NDWU_ICON_NAME, NDWU_SIZE, NdwuTimingButtonComponent} from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType, outputArgType, sizeArgType} from '@sb/helpers/arg-types';
@@ -12,7 +12,7 @@ type TimingButtonStoryArgs = NdwuTimingButtonComponent & SizeArg & {
 
 type Story = StoryObj<TimingButtonStoryArgs>;
 
-const SIZES: readonly NdwuSize[] = Object.values(NDWU_SIZE);
+const SIZES = Object.values(NDWU_SIZE);
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
 
 const meta: Meta<TimingButtonStoryArgs> = {

@@ -33,6 +33,8 @@ export class ScrollbarTouchComponent {
 
   protected readonly isTargetHighlighted = signal(true);
   protected readonly isAutoHide = signal(false);
+  protected readonly touchTargetSizePx = signal(44);
+  protected readonly hideDelayMs = signal(1000);
   protected readonly lastTap = signal('none yet');
   protected readonly tapCount = signal(0);
 
@@ -71,6 +73,22 @@ export class ScrollbarTouchComponent {
 
   protected toggleAutoHide(): void {
     this.isAutoHide.update((isAutoHide) => !isAutoHide);
+  }
+
+  protected touchTargetSize(): string {
+    return `${this.touchTargetSizePx()}px`;
+  }
+
+  protected updateTouchTargetSize(event: Event): void {
+    const value = (event.target as HTMLInputElement).valueAsNumber;
+
+    this.touchTargetSizePx.set(Number.isFinite(value) ? value : 44);
+  }
+
+  protected updateHideDelay(event: Event): void {
+    const value = (event.target as HTMLInputElement).valueAsNumber;
+
+    this.hideDelayMs.set(Number.isFinite(value) ? value : 1000);
   }
 
   protected registerTap(label: string): void {

@@ -26,6 +26,8 @@ interface ScrollbarHarness {
   scrollTop: () => number;
   setScrollTop: (value: number) => void;
   setAutoHide: (value: boolean | string) => void;
+  setHideDelay: (value: number) => void;
+  setTouchTargetSize: (value: string | undefined) => void;
   setDisabled: (value: boolean) => void;
   setTrackInsets: (y: number, x: number) => void;
   triggerHostResize: () => void;
@@ -269,6 +271,8 @@ const createScrollbar = async (options: CreateScrollbarOptions = {}): Promise<Sc
       currentScrollTop = value;
     },
     setAutoHide: (value) => componentRef.setInput('ndwuScrollbarAutoHide', value),
+    setHideDelay: (value) => componentRef.setInput('ndwuScrollbarHideDelay', value),
+    setTouchTargetSize: (value) => componentRef.setInput('ndwuScrollbarTouchTargetSize', value),
     setDisabled: (value) => componentRef.setInput('ndwuScrollbarDisabled', value),
     setTrackInsets: (y, x) => {
       usedInsetY = y;
@@ -530,6 +534,34 @@ describe('NdwuScrollbarComponent: activity', () => {
     vi.advanceTimersByTime(1);
     harness.fixture.detectChanges();
     expect(harness.hasClass('active')).toBe(false);
+  });
+
+  it('uses the configured hide delay after touch scroll', async () => {
+    const harness = await createScrollbar();
+
+    harness.setHideDelay(300);
+    harness.fixture.detectChanges();
+    useFakeTimeouts();
+    harness.press('touch');
+    harness.scroll();
+    vi.advanceTimersByTime(299);
+    harness.fixture.detectChanges();
+    expect(harness.hasClass('active')).toBe(true);
+    vi.advanceTimersByTime(1);
+    harness.fixture.detectChanges();
+    expect(harness.hasClass('active')).toBe(false);
+  });
+
+  it('sets and removes the inline touch target size', async () => {
+    const harness = await createScrollbar();
+    const property = '--ndwu-scrollbar-touch-target-size';
+
+    harness.setTouchTargetSize('48px');
+    harness.fixture.detectChanges();
+    expect(harness.host.style.getPropertyValue(property)).toBe('48px');
+    harness.setTouchTargetSize(undefined);
+    harness.fixture.detectChanges();
+    expect(harness.host.style.getPropertyValue(property)).toBe('');
   });
 
   it('keeps activity through a stationary drag and starts expiry after release', async () => {

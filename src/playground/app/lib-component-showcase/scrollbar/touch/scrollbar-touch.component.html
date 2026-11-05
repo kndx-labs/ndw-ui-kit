@@ -23,10 +23,11 @@
           <dd><code>{{ lastPointerType() }}</code></dd>
         </dl>
         <p class="scrollbar-touch__note">
-          The 44px touch target follows the last pointer pressed inside the scroll box: after a
-          touch or pen press it is on, after a mouse press it is off and track clicks work. Autohide
-          follows the primary pointer. Check on a real phone or tablet; on desktop Chrome, turn on
-          the DevTools device toolbar and reload.
+          The touch target (44px by default) follows the last pointer pressed inside the scroll box:
+          after a touch or pen press it is on, after a mouse press it is off and track clicks work.
+          Autohide follows the primary pointer. The Try it controls set the touch target size and
+          hide delay for both demo boxes below. Check on a real phone or tablet; on desktop Chrome,
+          turn on the DevTools device toolbar and reload.
         </p>
       </div>
 
@@ -49,6 +50,28 @@
               (change)="toggleAutoHide()"
             />
             <code>ndwuScrollbarAutoHide</code>
+          </label>
+          <label>
+            Touch target (px)
+            <input
+              type="number"
+              min="32"
+              max="80"
+              step="4"
+              [value]="touchTargetSizePx()"
+              (input)="updateTouchTargetSize($event)"
+            />
+          </label>
+          <label>
+            Hide delay (ms)
+            <input
+              type="number"
+              min="0"
+              max="5000"
+              step="100"
+              [value]="hideDelayMs()"
+              (input)="updateHideDelay($event)"
+            />
           </label>
         </div>
 
@@ -79,6 +102,8 @@
           ndwuScrollbar
           ndwuScrollbarAxis="y"
           [ndwuScrollbarAutoHide]="isAutoHide()"
+          [ndwuScrollbarTouchTargetSize]="touchTargetSize()"
+          [ndwuScrollbarHideDelay]="hideDelayMs()"
           tabindex="0"
         >
           @for (row of rows; track row) {
@@ -107,6 +132,8 @@
           ndwuScrollbarSize="XL"
           ndwuScrollbarAxis="both"
           [ndwuScrollbarAutoHide]="isAutoHide()"
+          [ndwuScrollbarTouchTargetSize]="touchTargetSize()"
+          [ndwuScrollbarHideDelay]="hideDelayMs()"
           tabindex="0"
         >
           @for (row of rows; track row) {

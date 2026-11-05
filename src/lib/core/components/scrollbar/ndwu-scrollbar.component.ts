@@ -10,6 +10,7 @@ import {
   effect,
   inject,
   input,
+  numberAttribute,
   signal,
   untracked,
   viewChild,
@@ -37,8 +38,11 @@ import {
 
 const MIN_THUMB_SIZE_PROPERTY = '--ndwu-scrollbar-min-thumb-size';
 
-// How long the scrollbar counts as active after the last scroll or the end of a drag.
-const ACTIVITY_HIDE_DELAY_MS = 1000;
+const DEFAULT_HIDE_DELAY_MS = 1000;
+
+function transformHideDelay(value: unknown): number {
+  return numberAttribute(value, DEFAULT_HIDE_DELAY_MS);
+}
 
 // The thumb is dragged by any direct pointer; the track jumps to the clicked point only for a
 // mouse, because a touch on the track is far more likely a missed swipe than an aimed tap.
@@ -80,6 +84,7 @@ const SCROLLABLE_X_CLASS = 'ndwu-scrollbar--scrollable-x';
     '[style.--ndwu-scrollbar-content-padding-right]': 'ndwuScrollbarContentPadding().right',
     '[style.--ndwu-scrollbar-content-padding-top]': 'ndwuScrollbarContentPadding().top',
     '[style.--ndwu-scrollbar-content-padding-bottom]': 'ndwuScrollbarContentPadding().bottom',
+    '[style.--ndwu-scrollbar-touch-target-size]': 'ndwuScrollbarTouchTargetSize()',
   },
 })
 export class NdwuScrollbarComponent {
@@ -120,6 +125,16 @@ export class NdwuScrollbarComponent {
   public readonly ndwuScrollbarAutoHide = input(false, {transform: booleanAttribute});
   public readonly ndwuScrollbarPadding = input<NdwuScrollbarPadding>({});
   public readonly ndwuScrollbarContentPadding = input<NdwuScrollbarPadding>({});
+  /**
+   * Minimum cross size of the touch target around the thumb while it is active, as a CSS length.
+   * Defaults to the `--ndwu-scrollbar-touch-target-size` token (44px).
+   */
+  public readonly ndwuScrollbarTouchTargetSize = input<string | undefined>(undefined);
+  /**
+   * Milliseconds the scrollbar stays active after the last scroll or drag end: the touch target
+   * stays wide and auto-hidden tracks stay visible. Defaults to 1000.
+   */
+  public readonly ndwuScrollbarHideDelay = input(DEFAULT_HIDE_DELAY_MS, {transform: transformHideDelay});
 
   private readonly hostEl: HTMLElement = inject(ElementRef).nativeElement;
   private readonly doc: Document = this.hostEl.ownerDocument;
@@ -137,7 +152,7 @@ export class NdwuScrollbarComponent {
     return this.draggingAxis() !== null;
   });
   protected readonly isViewInitialized = signal(false);
-  // Active while dragging and for ACTIVITY_HIDE_DELAY_MS after the last scroll or drag end.
+  // Active while dragging and for ndwuScrollbarHideDelay() after the last scroll or drag end.
   protected readonly isActive = signal(false);
   // The last pointer pressed inside the host was touch or pen. Gates the wide touch target and
   // lets touches on the track fall through to the content. Starts from the primary pointer, so
@@ -302,10 +317,13 @@ export class NdwuScrollbarComponent {
       return;
     }
 
-    this.idleTimer = setTimeout(() => {
-      this.idleTimer = undefined;
-      this.isActive.set(false);
-    }, ACTIVITY_HIDE_DELAY_MS);
+    this.idleTimer = setTimeout(
+      () => {
+        this.idleTimer = undefined;
+        this.isActive.set(false);
+      },
+      this.ndwuScrollbarHideDelay(),
+    );
   }
 
   private resetActivity(): void {

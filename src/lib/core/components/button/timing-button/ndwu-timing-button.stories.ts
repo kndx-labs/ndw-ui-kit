@@ -97,7 +97,6 @@ export const Idle: Story = {
         <button
           ndwu-timing-button
           leftText="Confirm"
-          rightText="s"
           [duration]="0"
         >
         </button>`,

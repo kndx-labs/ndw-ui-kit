@@ -70,14 +70,15 @@ const meta: Meta<TimingButtonStoryArgs> = {
   },
   render: (args) => {
     const argsStr = argsToTemplate(args, {exclude: ['duration']});
+    const durationBinding = args.duration === null || args.duration === undefined ? '' : `[duration]="${args.duration}"`;
+    const templateArgs = [durationBinding, argsStr].filter(Boolean).join('\n          ');
 
     return {
       props: args,
       template: `
         <button
           ndwu-timing-button
-          [duration]="${args.duration}"
-          ${argsStr}
+          ${templateArgs}
         >
         </button>`,
     };

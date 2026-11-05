@@ -4,9 +4,10 @@
   [accept]="accept()"
   [maxSizeMB]="maxSizeMB()"
   [disabled]="isDisabled"
-  [initialFiles]="initialFiles()"
+  [initialFiles]="inputValue"
   [translationTexts]="translationTexts()"
   (filesChange)="onFilesChange($event)"
   (uploadRequest)="uploadRequest.emit($event)"
+  (cancelRequest)="cancelRequest.emit($event)"
   (blurred)="onBlur()"
 />

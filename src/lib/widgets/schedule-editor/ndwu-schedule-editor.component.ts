@@ -63,7 +63,7 @@ import {
   NOT_FULL_MODE_TEXT_OFFSET,
   OFFSETS_DESKTOP,
   OFFSETS_MOBILE,
-} from './ndwu-schedule-editor.constants';
+} from './schedule-editor.internal.constants';
 
 @Component({
   selector: 'ndwu-schedule-editor',
@@ -429,11 +429,16 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
     this.onPointerUp();
   };
 
+  private readonly onGlobalPointerCancel = (): void => {
+    this.onPointerCancel();
+  };
+
   private attachGlobalListeners(): void {
     const doc = this.elementRef.nativeElement.ownerDocument || document;
 
     doc.addEventListener('mouseup', this.onGlobalPointerUp);
     doc.addEventListener('touchend', this.onGlobalPointerUp);
+    doc.addEventListener('touchcancel', this.onGlobalPointerCancel);
   }
 
   private detachGlobalListeners(): void {
@@ -441,6 +446,7 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
 
     doc.removeEventListener('mouseup', this.onGlobalPointerUp);
     doc.removeEventListener('touchend', this.onGlobalPointerUp);
+    doc.removeEventListener('touchcancel', this.onGlobalPointerCancel);
   }
 
   protected onSlotPointerDown(event: MouseEvent | TouchEvent, slot: SlotRect): void {
@@ -490,6 +496,12 @@ export class NdwuScheduleEditorComponent implements OnDestroy {
     }
 
     this.finalizeDrag();
+  }
+
+  protected onPointerCancel(): void {
+    this.detachGlobalListeners();
+    this.dragState.set(null);
+    this.tooltip.set(null);
   }
 
   protected onSlotHover(event: MouseEvent, slot: SlotRect): void {

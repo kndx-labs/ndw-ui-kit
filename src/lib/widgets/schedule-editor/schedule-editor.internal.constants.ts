@@ -1,7 +1,7 @@
 import {NDWU_SCHEDULE_EDITOR_MODE, NdwuScheduleEditorMode} from './schedule-editor.types';
 import {Offset, ScheduleEditorCanvasSize, ScheduleEditorOffset} from './layout/schedule-layout.types';
 
-/* --------- Constants used only in this component, not exported from the library ------------- */
+/* --------- Constants shared by the schedule editor component, its layouts and utils, not exported from the library ------------- */
 
 export const SLOTS_PER_HOUR = 2;
 export const HOURS_IN_DAY = 24;

@@ -1,0 +1,26 @@
+@use '@ndw-ui-kit/core/styles/colors';
+@use '@ndw-ui-kit/core/styles/radius';
+
+$ndwu-heat-strip-tokens: (
+  heat-strip-level-0-bg: colors.$brand-30,
+  heat-strip-level-0-bg-hover: colors.$brand-40,
+  heat-strip-level-1-bg: colors.$brand-40,
+  heat-strip-level-1-bg-hover: colors.$brand-50,
+  heat-strip-level-2-bg: colors.$green-50,
+  heat-strip-level-2-bg-hover: colors.$green-60,
+  heat-strip-level-3-bg: colors.$yellow-50,
+  heat-strip-level-3-bg-hover: colors.$yellow-30,
+  heat-strip-level-4-bg: colors.$yellow-30,
+  heat-strip-level-4-bg-hover: colors.$yellow-40,
+  heat-strip-level-5-bg: colors.$red-50,
+  heat-strip-level-5-bg-hover: colors.$red-60,
+  heat-strip-no-data-bg: colors.$gray-10,
+  heat-strip-no-data-bg-hover: colors.$gray-15,
+  heat-strip-marker-color: colors.$gray-80,
+  heat-strip-border-color: colors.$gray-20,
+  heat-strip-axis-color: colors.$gray-50,
+  heat-strip-height: 64px,
+  heat-strip-radius: radius.$radius-L,
+  heat-strip-loading-opacity: 0.5,
+  heat-strip-cell-focus-ring: inset 0 0 0 2px #{colors.$brand-50},
+);

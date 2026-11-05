@@ -13,6 +13,8 @@ export interface NdwuFileInputValue {
   file?: File;
 }
 
+export type NdwuFileProgressUpdate = Partial<Pick<NdwuFileInputValue, 'progress' | 'status' | 'error' | 'isRetryable'>>;
+
 export interface NdwuTranslationTexts {
   status?: {
     uploading?: string;

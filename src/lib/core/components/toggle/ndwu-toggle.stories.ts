@@ -4,7 +4,7 @@ import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {outputArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {AriaArgs, SizeArg} from '@sb/helpers/story-args';
 import {withControlledArgs} from '@sb/helpers/story-controlled';
-import {SubmitArg, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
+import {SubmitArg, nativeFormTemplate, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
 
@@ -181,27 +181,22 @@ export const ExternalLabel: Story = {
 
 export const NativeForm: Story = {
   parameters: FIXED_STORY_PARAMETERS,
-  decorators: withNativeForm,
+  decorators: [...withNativeForm],
   argTypes: {submit: submitArgType},
   render: (args) => ({
     props: submitProps(args),
-    template: `<form (submit)="submit($event)">
-${
-      lines([
-        `<ndwu-toggle
+    template: nativeFormTemplate([
+      `<ndwu-toggle
   name="notifications"
   value="enabled"
   label="Enable notifications"
   secondaryText="name=&quot;notifications&quot;, value=&quot;enabled&quot;"
 />`,
-        `<ndwu-toggle
+      `<ndwu-toggle
   name="auto-save"
   label="Auto-save"
   secondaryText="name=&quot;auto-save&quot; without value: sends &quot;on&quot;"
 />`,
-        '<button ndwu-button type="submit" label="Submit"></button>',
-      ])
-    }
-</form>`,
+    ]),
   }),
 };

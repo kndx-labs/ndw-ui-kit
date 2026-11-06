@@ -5,9 +5,9 @@ import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {outputArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {AriaArgs, SizeArg} from '@sb/helpers/story-args';
 import {withControlledArgs} from '@sb/helpers/story-controlled';
-import {SubmitArg, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
+import {SubmitArg, nativeFormTemplate, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
-import {lines} from '@sb/helpers/story-template';
+import {group, lines} from '@sb/helpers/story-template';
 
 type CheckboxStoryArgs = NdwuCheckboxComponent & SizeArg & AriaArgs & SubmitArg;
 
@@ -36,10 +36,6 @@ const DISABLED_STATES: readonly CheckboxState[] = [
 
 const checkbox = ({label, bindings}: CheckboxState): string => {
   return `<ndwu-checkbox ${[`label="${label}"`, bindings].filter(Boolean).join(' ')} />`;
-};
-
-const group = (items: readonly string[]): string => {
-  return `<div>\n${lines(items)}\n</div>`;
 };
 
 const meta: Meta<CheckboxStoryArgs> = {
@@ -214,28 +210,23 @@ export const WithoutLabel: Story = {
 
 export const NativeForm: Story = {
   parameters: FIXED_STORY_PARAMETERS,
-  decorators: withNativeForm,
+  decorators: [...withNativeForm],
   argTypes: {submit: submitArgType},
   render: (args) => ({
     props: submitProps(args),
-    template: `<form (submit)="submit($event)">
-${
-      lines([
-        `<ndwu-checkbox
+    template: nativeFormTemplate([
+      `<ndwu-checkbox
   name="terms"
   value="accepted"
   required
   label="Accept terms and conditions"
   secondaryText="name=&quot;terms&quot;, value=&quot;accepted&quot;, required"
 />`,
-        `<ndwu-checkbox
+      `<ndwu-checkbox
   name="newsletter"
   label="Newsletter subscription"
   secondaryText="name=&quot;newsletter&quot; without value: sends &quot;on&quot;"
 />`,
-        '<button ndwu-button type="submit" label="Submit"></button>',
-      ])
-    }
-</form>`,
+    ]),
   }),
 };

@@ -166,8 +166,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   - fixed stories build a literal template from typed data in TS (`VARIANTS.map(...)`), without `@for` over props,
     props for constants or inline styles;
   - layout goes into a story decorator, which "Show code" leaves out: `withRowLayout` for one row, `withStackLayout`
-    for rows given as `<div>` groups (`@sb/helpers/story-layout`); a direct `<form>` child is stacked too
-    (`withNativeForm`).
+    for rows given as `<div>` groups (`@sb/helpers/story-layout`, `group` from `@sb/helpers/story-template`); a direct
+    `<form>` child is stacked too (`withNativeForm`).
 - Native DOM events: `eventArgType('<event>', '<description>')`. Outputs and `model()` change events:
   `outputArgType('<name>', '<description>')`. Compodoc's output docs are filtered out, so outputs are listed by hand.
 - Controlled form controls (`checked` / `checkedChange`, `value` / `valueChange`): `Default` gets
@@ -178,9 +178,10 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - Components the template uses besides `component:` (radio buttons in a group, a submit button) go into
   `moduleMetadata({imports: [...]})`; `subcomponents` only adds their ArgTypes tab. Their inputs get no controls, so
   fixed stories show them.
-- Native form stories: `decorators: withNativeForm`, `argTypes: {submit: submitArgType}`, `props: submitProps(args)`
-  and `<form (submit)="submit($event)">` (`@sb/helpers/story-form`). The handler keeps the page from navigating and logs
-  the form entries to Actions; native `required` validation still runs.
+- Native form stories: `decorators: [...withNativeForm]`, `argTypes: {submit: submitArgType}`,
+  `props: submitProps(args)` and `template: nativeFormTemplate([...fields])` (`@sb/helpers/story-form`), which wraps the
+  fields in `<form (submit)="submit($event)">` and adds the submit button. The handler keeps the page from navigating and
+  logs the form entries to Actions; native `required` validation still runs.
 - A story that shows wiring between components (`Core/Checkbox` `Indeterminate`) may keep state in `props` as signals.
   Their names must not match any arg, so `argsSourceTransform` leaves them alone.
 - Leave `size` unset so the toolbar applies. Don't pin a theme (no `globals.theme`; `parameters.themes.themeOverride`

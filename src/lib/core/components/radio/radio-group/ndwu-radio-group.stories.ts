@@ -4,7 +4,7 @@ import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {outputArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
 import {withControlledArgs} from '@sb/helpers/story-controlled';
-import {SubmitArg, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
+import {SubmitArg, nativeFormTemplate, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {withStackLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
 
@@ -25,7 +25,6 @@ interface RadioGroupExample {
 
 const SIZES = [NDWU_SIZE.L, NDWU_SIZE.XL, NDWU_SIZE.XXL];
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
-const OPTION_VALUES = ['option1', 'option2', 'option3'];
 const SECONDARY_TEXT = 'secondaryText="Additional text"';
 
 const DEFAULT_OPTIONS: readonly RadioOption[] = [
@@ -33,6 +32,8 @@ const DEFAULT_OPTIONS: readonly RadioOption[] = [
   {value: 'option2', label: 'Option 2'},
   {value: 'option3', label: 'Option 3', attributes: SECONDARY_TEXT},
 ];
+
+const OPTION_VALUES = DEFAULT_OPTIONS.map(({value}) => value);
 
 const STATE_EXAMPLES: readonly RadioGroupExample[] = [
   {
@@ -168,28 +169,19 @@ export const WithSecondaryText: Story = {
 
 export const NativeForm: Story = {
   parameters: FIXED_STORY_PARAMETERS,
-  decorators: withNativeForm,
+  decorators: [...withNativeForm],
   argTypes: {submit: submitArgType},
   render: (args) => ({
     props: submitProps(args),
-    template: `<form (submit)="submit($event)">
-${
-      lines([
-        radioGroup({
-          bindings: 'name="plan" required',
-          options: [
-            {
-              value: 'basic',
-              label: 'Basic',
-              attributes: 'id="radio-native-form-basic" aria-describedby="radio-native-form-basic-hint"',
-            },
-            {value: 'pro', label: 'Pro'},
-          ],
-        }),
-        '<span id="radio-native-form-basic-hint">The Basic option is described by this text through aria-describedby</span>',
-        '<button ndwu-button type="submit" label="Submit"></button>',
-      ])
-    }
-</form>`,
+    template: nativeFormTemplate([
+      radioGroup({
+        bindings: 'name="plan" required',
+        options: [
+          {value: 'basic', label: 'Basic', attributes: 'aria-describedby="radio-native-form-basic-hint"'},
+          {value: 'pro', label: 'Pro'},
+        ],
+      }),
+      '<span id="radio-native-form-basic-hint">The Basic option is described by this text through aria-describedby</span>',
+    ]),
   }),
 };

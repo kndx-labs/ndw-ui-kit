@@ -119,6 +119,7 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 |---|---|---|
 | `core` components | `Core/<Name>` | `Core/Badge`, `Core/Popover` |
 | `core` families | `Core/<Group>/<Name>` | `Core/Button/Button`, `Core/Modal/Dialog`, `Core/Dropdown/Autocomplete` |
+| `core` families documented on one page | `Core/<Group>` | `Core/Radio` (radio group with its radio buttons) |
 | `core/components/field-frame` | `Core/Form Field Frame` | |
 | `form-field` | `Form Field/<Name>` | `Form Field/Input Field` |
 | `popover` | `Popover API/<Name>` | |
@@ -145,15 +146,19 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `parameters.sizes` for components with the `NdwuSizeDirective` host directive (`inputs: ['ndwuSize: size']`), not for
   components with their own `size` input. A Size toolbar value outside `parameters.sizes` leaves the component at its
   default size and shows a "not supported" note.
-- Aliased inputs (`ariaLabel` → `aria-label`, `idInput` → `id`, `disabledInput` → `disabled`): story args and
-  `argsToTemplate` use the property name, the template needs the alias. Exclude them from `argsToTemplate` and bind the
-  alias by hand: `argsToTemplate(args, {exclude: ['ariaLabel']})` plus `[aria-label]="ariaLabel"`.
-- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `outputArgType`, `eventArgType`.
+- Compodoc names aliased inputs by their alias (`aria-label` for `ariaLabel`, `id` for `idInput`). Key their args by
+  the alias in `Extra`: `AriaArgs` from `@sb/helpers/story-args` when the component aliases `aria-label`,
+  `aria-labelledby` and `aria-describedby`, `Pick<AriaArgs, ...>` for a subset. Inputs without an alias keep their
+  property name (`ariaLabel`). In fixed stories write the alias as a plain attribute. Once a key is not an identifier
+  (`aria-*`), quote every key of `argTypes` / `args` (`quote-props`).
+- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `outputArgType`, `eventArgType`; the
+  form-only `submitArgType` lives in `@sb/helpers/story-form`.
 - A story that needs the router spreads `withRouter` from `@sb/helpers/story-router` in its `decorators` array:
   `decorators: [...withRouter]`. It adds story-level `provideRouter` and `provideLocationMocks`; `sb-router-url` shows
   the current URL.
 - Descriptions go into `argTypes.<name>.description` in the story file, a one-sentence component intro into
-  `parameters.docs.description.component`. Compodoc adds types and defaults of inputs.
+  `parameters.docs.description.component`. Compodoc adds types and defaults of inputs. A story's explanation goes into
+  `parameters.docs.description.story`, not into rendered text such as `secondaryText`, which "Show code" copies.
 - Set every control's starting value in `meta.args` (e.g. `variant`, booleans `false`, `icon: null`), so the Controls
   panel shows the current value instead of "Choose option...".
 - An arg reaches the template only if its argType has a `control` or an `action`; `control: false` removes it.
@@ -163,9 +168,27 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   - fixed stories build a literal template from typed data in TS (`VARIANTS.map(...)`), without `@for` over props,
     props for constants or inline styles;
   - layout goes into a story decorator, which "Show code" leaves out: `withRowLayout` for one row, `withStackLayout`
-    for rows given as `<div>` groups (`@sb/helpers/story-layout`).
+    for rows given as `<div>` groups (`@sb/helpers/story-layout`, `group` from `@sb/helpers/story-template`).
+- Literal ids in fixed stories follow `<component>-<story-kebab>-<part>` (`toggle-external-label-input`): all stories
+  render on one docs page, so an id must be unique there. `Default` uses generated ids.
 - Native DOM events: `eventArgType('<event>', '<description>')`. Outputs and `model()` change events:
   `outputArgType('<name>', '<description>')`. Compodoc's output docs are filtered out, so outputs are listed by hand.
+- Controlled inputs, whose new value the component reports through an output or a `model()` (`checked` /
+  `checkedChange`, `value` / `valueChange`, `selectedTabId` / `tabChange`): `Default` gets
+  `parameters: CONTROLLED_STORY_PARAMETERS` and `decorators: [withControlledArgs('<name>Change', (value) => ({...}))]`
+  (`@sb/helpers/story-controlled`), so a user change updates the arg and the Controls panel. The parameter keeps the
+  story out of the docs page's "Stories" list, where a second copy would update the Primary one. Hooks such as `useArgs` go in decorators, never in `render` (see
+  [.storybook/README.md](.storybook/README.md)). `toArgs` returns only keys that are in `meta.args` and never
+  `undefined`: either one changes the template and remounts the story. Fixed stories stay uncontrolled literals.
+- Components the template uses besides `component:` (radio buttons in a group, a submit button) go into
+  `moduleMetadata({imports: [...]})`; `subcomponents` only adds their ArgTypes tab. Their inputs get no controls, so
+  fixed stories show them.
+- Native form stories: `decorators: [...withNativeForm]`, `argTypes: {submit: submitArgType}`,
+  `props: submitProps(args)` and `template: nativeFormTemplate([...fields])` (`@sb/helpers/story-form`), which wraps the
+  fields in `<form (submit)="submit($event)">` and adds the submit button. The handler keeps the page from navigating and
+  logs the form entries to Actions; native `required` validation still runs.
+- A story that shows wiring between components (`Core/Checkbox` `Indeterminate`) may keep state in `props` as signals.
+  Their names must not match any arg, so `argsSourceTransform` leaves them alone.
 - Leave `size` unset so the toolbar applies. Don't pin a theme (no `globals.theme`; `parameters.themes.themeOverride`
   is not supported).
 - Dialogs and drawers opened through `NdwuModalService` are created from the root injector, so the Size toolbar doesn't
@@ -176,8 +199,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   segment), name, docs id (`<title in kebab case>--docs`, e.g. `core-button-button--docs`), a short plain-text summary
   for the card (no markdown) and `ready` matching the tag.
 - Storybook-only components and directives use the `sb-` prefix.
-- Families without a pattern yet (CVA form controls, overlays, table, widgets): the first ticket of the family adds its
-  pattern to this section.
+- Families without a pattern yet (`*-field` CVA wrappers, overlays, table, widgets): the first ticket of the family
+  adds its pattern to this section.
 
 ### Toolbar
 

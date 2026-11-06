@@ -15,8 +15,8 @@ export interface NdwuOptionTemplateContext<T = NdwuOption> {
   selector: 'ng-template[ndwuOptionTemplate]',
 })
 export class NdwuOptionTemplateDirective<T = NdwuOption> {
-  /** Used only to infer the template context type; the value is unused at runtime. */
-  public readonly ndwuOptionTemplate = input<readonly T[] | '' | undefined>(undefined);
+  /** Required. Used only to infer the template context type; the value is unused at runtime. */
+  public readonly ndwuOptionTemplate = input.required<readonly T[]>();
   public readonly templateRef = inject<TemplateRef<NdwuOptionTemplateContext<T>>>(TemplateRef);
 
   public static ngTemplateContextGuard<T>(

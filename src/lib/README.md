@@ -662,8 +662,8 @@ Autocomplete options can set `variant: 'danger'` directly. Both autocomplete com
 Autocomplete template context provides the normalized option through `$implicit`, the original `raw` item matched by
 value, displayed `label`, `disabled`, and `query`. `selected` is always `false`; other option templates leave `query`
 undefined. Import `NdwuOptionTemplateDirective` and `NdwuOptionLabelComponent` from `@ndw-ui-kit/core` and bind the
-original options array to type `raw`. Use `<ndwu-option-label>` for option text so it truncates with "…" on desktop and
-clamps to two lines in the mobile sheet.
+original options array to type `raw`; this binding is required. Use `<ndwu-option-label>` for option text so it
+truncates with "…" on desktop and clamps to two lines in the mobile sheet.
 
 ```typescript
 import {NdwuOptionAdapter} from '@ndw-ui-kit/core';
@@ -724,8 +724,8 @@ Use `maxVisibleOptions` to change how many option rows appear before the list sc
 ##### Custom option template
 
 Use `ndwuOptionTemplate` to replace option content with an icon, status marker, or other domain-specific UI. Import
-`NdwuOptionTemplateDirective` and `NdwuOptionLabelComponent` from `@ndw-ui-kit/core`. Bind the original options array to
-the directive so Angular can type `raw`:
+`NdwuOptionTemplateDirective` and `NdwuOptionLabelComponent` from `@ndw-ui-kit/core`. Binding the original options array
+to the directive is required so Angular can type `raw`:
 
 ```html
 <ndwu-select-field [options]="environments" formControlName="environment">

@@ -87,6 +87,34 @@
     </div>
 
     <div class="state-section">
+      <h4>Custom option template</h4>
+      <form [formGroup]="formOptionTemplate">
+        <ndwu-multi-select-field
+          label="Environments"
+          placeholder="Pick environments"
+          [options]="optionTemplateOptions"
+          formControlName="environments"
+        >
+          <ng-template
+            [ndwuOptionTemplate]="optionTemplateOptions"
+            let-raw="raw"
+            let-label="label"
+          >
+            @if (raw; as item) {
+              <ndwu-icon [name]="item.icon" aria-hidden="true" />
+            }
+            <ndwu-option-label>{{ label }}</ndwu-option-label>
+            <span
+              class="option-template__indicator"
+              [style.backgroundColor]="raw?.statusColor"
+              aria-hidden="true"
+            ></span>
+          </ng-template>
+        </ndwu-multi-select-field>
+      </form>
+    </div>
+
+    <div class="state-section">
       <h4>Non-localized labels</h4>
       <form [formGroup]="formNoLocalize">
         <ndwu-multi-select-field

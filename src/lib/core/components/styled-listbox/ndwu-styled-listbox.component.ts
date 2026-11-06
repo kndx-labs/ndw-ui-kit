@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, input} from '@angular/core';
 import {NdwuListboxDirective} from '@ndw-ui-kit/core/aria';
 import {NdwuSizeDirective} from '../../directives';
 
@@ -31,9 +31,19 @@ import {NdwuSizeDirective} from '../../directives';
   host: {
     'class': 'ndwu-styled-listbox',
     '[attr.data-size]': 'sizeSvc.effectiveSize()',
+    '[style.--ndwu-styled-listbox-max-height]': 'maxHeight()',
   },
 })
 export class NdwuStyledListboxComponent<V = unknown> {
   public readonly listbox = inject(NdwuListboxDirective<V>);
+  public readonly maxVisibleOptions = input<number | null>(null);
+
   protected readonly sizeSvc = inject(NdwuSizeDirective);
+  protected readonly maxHeight = computed<string | null>(() => {
+    const count = this.maxVisibleOptions();
+
+    return typeof count === 'number' && Number.isFinite(count) && count > 0
+      ? `calc(${count} * var(--ndwu-styled-option-height))`
+      : null;
+  });
 }

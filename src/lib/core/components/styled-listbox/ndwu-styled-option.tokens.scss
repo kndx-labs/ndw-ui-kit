@@ -3,6 +3,8 @@
 
 $ndwu-styled-option-tokens: (
   styled-option-text-color: colors.$gray-80,
+  styled-option-danger-text-color: colors.$red-50,
+  styled-option-danger-hover-bg: colors.$red-10,
   styled-option-hover-bg: colors.$gray-10,
   styled-option-active-bg: colors.$gray-0,
   styled-option-active-border-radius: radius.$radius-S,

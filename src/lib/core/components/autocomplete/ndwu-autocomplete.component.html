@@ -111,6 +111,7 @@
       @if (rows().length > 0) {
         <ndwu-styled-listbox
           [size]="dropdownSize()"
+          [maxVisibleOptions]="maxVisibleOptions()"
           [comboboxRef]="combobox()"
           selectionMode="explicit"
           [values]="[]"
@@ -129,9 +130,26 @@
                 [value]="row.option.value"
                 [label]="row.option.label"
                 [disabled]="!!row.option.disabled"
+                [variant]="row.option.variant ?? 'default'"
                 [attr.aria-describedby]="row.option.groupId ? groupHeaderId(row.option.groupId) : null"
               >
-                {{ row.option.label }}
+                @if (optionTemplate(); as tpl) {
+                  <span class="ndwu-autocomplete__option-template">
+                    <ng-container
+                      [ngTemplateOutlet]="tpl"
+                      [ngTemplateOutletContext]="{
+                        $implicit: row.option,
+                        raw: rawByValue().get(row.option.value),
+                        label: row.option.label,
+                        query: query(),
+                        selected: false,
+                        disabled: !!row.option.disabled,
+                      }"
+                    />
+                  </span>
+                } @else {
+                  {{ row.option.label }}
+                }
               </ndwu-styled-option>
             }
           }

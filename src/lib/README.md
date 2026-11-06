@@ -637,6 +637,34 @@ or domain arrays together with an `optionAdapter`.
 Autocomplete has no adapter: it accepts only `NdwuAutocompleteOption[]`,
 and the project-wide default adapter doesn't apply to it.
 
+Autocomplete options can set `variant: 'danger'` directly. Both autocomplete components also accept
+`maxVisibleOptions`; it limits visible rows on desktop and is ignored in the mobile sheet. Use
+`ndwuOptionTemplate` to render custom content and highlight the current trimmed query:
+
+```html
+<ndwu-autocomplete-field [options]="options" [maxVisibleOptions]="4">
+  <ng-template
+    [ndwuOptionTemplate]="options"
+    let-raw="raw"
+    let-label="label"
+    let-query="query"
+  >
+    <ndwu-icon
+      [name]="raw?.icon"
+      aria-hidden="true"
+    />
+    <ndwu-option-label>{{ label }}</ndwu-option-label>
+    <mark>{{ query }}</mark>
+  </ng-template>
+</ndwu-autocomplete-field>
+```
+
+Autocomplete template context provides the normalized option through `$implicit`, the original `raw` item matched by
+value, displayed `label`, `disabled`, and `query`. `selected` is always `false`; other option templates leave `query`
+undefined. Import `NdwuOptionTemplateDirective` and `NdwuOptionLabelComponent` from `@ndw-ui-kit/core` and bind the
+original options array to type `raw`; this binding is required. Use `<ndwu-option-label>` for option text so it
+truncates with "…" on desktop and clamps to two lines in the mobile sheet.
+
 ```typescript
 import {NdwuOptionAdapter} from '@ndw-ui-kit/core';
 
@@ -644,6 +672,7 @@ interface Country {
   code: string;
   name: string;
   isDisabled?: boolean;
+  isDanger?: boolean;
 }
 
 const countries: Country[] = [
@@ -658,6 +687,20 @@ const countryAdapter: NdwuOptionAdapter<Country> = {
 };
 ```
 
+##### Danger options
+
+Set `variant: 'danger'` on an `NdwuOption` to show destructive options in red. The default adapter reads
+`variant`; domain arrays can map it with a key or function selector. Danger options use the standard selected,
+active, and disabled backgrounds. An unselected, enabled danger option uses a pale red hover fill.
+
+```typescript
+const countryAdapter: NdwuOptionAdapter<Country> = {
+  value: 'code',
+  label: 'name',
+  variant: (country) => country.isDanger ? 'danger' : undefined,
+};
+```
+
 ```html
 <ndwu-select-field
   [options]="countries"
@@ -665,6 +708,51 @@ const countryAdapter: NdwuOptionAdapter<Country> = {
   formControlName="country"
 />
 ```
+
+##### Maximum visible options
+
+Use `maxVisibleOptions` to change how many option rows appear before the list scrolls. It counts group headers too and is ignored in the mobile sheet. When omitted or `null`, the list keeps its size default (L: 9, XL: 8, XXL: 7).
+
+```html
+<ndwu-select-field
+  [options]="countries"
+  [maxVisibleOptions]="4"
+  formControlName="country"
+/>
+```
+
+##### Custom option template
+
+Use `ndwuOptionTemplate` to replace option content with an icon, status marker, or other domain-specific UI. Import
+`NdwuOptionTemplateDirective` and `NdwuOptionLabelComponent` from `@ndw-ui-kit/core`. Binding the original options array
+to the directive is required so Angular can type `raw`:
+
+```html
+<ndwu-select-field [options]="environments" formControlName="environment">
+  <ng-template
+    [ndwuOptionTemplate]="environments"
+    let-raw="raw"
+    let-label="label"
+    let-selected="selected"
+    let-disabled="disabled"
+  >
+    <ndwu-icon
+      [name]="raw?.icon"
+      aria-hidden="true"
+    />
+    <ndwu-option-label>{{ label }}</ndwu-option-label>
+    <span
+      class="status-dot"
+      [style.backgroundColor]="raw?.statusColor"
+      aria-hidden="true"
+    ></span>
+  </ng-template>
+</ndwu-select-field>
+```
+
+The template context exposes `$implicit` (normalized option), `raw` (original item matched by value), localized `label`,
+`selected`, and `disabled`. In multi-select, the template replaces only the label; the checkbox remains. The consumer
+controls truncation for long custom content.
 
 Selectors can also be functions when you need computed values:
 

@@ -10,6 +10,7 @@ export const NDWU_DEFAULT_OPTION_ADAPTER: NdwuOptionAdapter<NdwuOption> = {
   value: 'value',
   label: 'label',
   secondaryText: 'secondaryText',
+  variant: 'variant',
   disabled: 'disabled',
   hidden: 'hidden',
   groupId: 'groupId',
@@ -72,6 +73,11 @@ export function ndwuNormalizeOptions<T>(
     const secondaryText = adapter.secondaryText
       ? resolve(item, adapter.secondaryText)
       : undefined;
+
+    const variant = adapter.variant
+      ? resolve(item, adapter.variant)
+      : undefined;
+
     const groupId = adapter.groupId
       ? resolve(item, adapter.groupId)
       : undefined;
@@ -91,10 +97,31 @@ export function ndwuNormalizeOptions<T>(
       normalized.secondaryText = secondaryText;
     }
 
+    if (variant !== undefined) {
+      normalized.variant = variant;
+    }
+
     if (groupId !== undefined) {
       normalized.groupId = groupId;
     }
 
     return normalized;
   });
+}
+
+export function ndwuMapRawOptionsByValue<T>(
+  items: readonly T[],
+  normalized: readonly NdwuOption[],
+): Map<string | number, T> {
+  const rawByValue = new Map<string | number, T>();
+
+  for (const [index, item] of items.entries()) {
+    const option = normalized[index];
+
+    if (option) {
+      rawByValue.set(option.value, item);
+    }
+  }
+
+  return rawByValue;
 }

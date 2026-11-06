@@ -26,6 +26,7 @@ import {
   NdwuIconComponent,
   type NdwuOption,
   type NdwuOptionAdapter,
+  NdwuOptionTemplateDirective,
   NdwuPanelFooterDirective,
   NdwuPanelHeaderDirective,
   NdwuResizeObserverDirective,
@@ -33,6 +34,7 @@ import {
   NdwuStyledGroupHeaderComponent,
   NdwuStyledListboxComponent,
   NdwuStyledOptionComponent,
+  ndwuMapRawOptionsByValue,
   ndwuNormalizeOptions,
   ndwuResolveOptionsAdapter,
 } from '@ndw-ui-kit/core';
@@ -57,8 +59,6 @@ import {NdwuSelectFieldBase} from '../../classes/select-field-base.directive';
   styleUrl: './ndwu-multi-select-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NdwuLocalizeIfPipe,
-    NdwuLocalizePipe,
     NdwuButtonBaseDirective,
     NdwuCheckboxComponent,
     NdwuComboboxDirective,
@@ -72,6 +72,8 @@ import {NdwuSelectFieldBase} from '../../classes/select-field-base.directive';
     NdwuHintDirective,
     NdwuIconButtonComponent,
     NdwuIconComponent,
+    NdwuLocalizeIfPipe,
+    NdwuLocalizePipe,
     NdwuPanelFooterDirective,
     NdwuPanelHeaderDirective,
     NdwuPopoverTriggerDirective,
@@ -90,6 +92,7 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends NdwuSelectFie
   implements NdwuControl {
   protected readonly ICON_NAME = NDWU_ICON_NAME;
   protected readonly displayTemplate = contentChild(NdwuMultiSelectDisplayDirective);
+  protected readonly optionTemplate = contentChild(NdwuOptionTemplateDirective);
   protected readonly diOptionConfig = inject(NDWU_OPTION_CONFIG, {optional: true}) ?? null;
 
   protected readonly triggerResize = viewChild.required(NdwuResizeObserverDirective);
@@ -125,20 +128,33 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends NdwuSelectFie
     );
   });
 
+  protected readonly rawByValue = computed(() => {
+    return ndwuMapRawOptionsByValue(this.options(), this.normalizedOptions());
+  });
+
   protected readonly renderRows = computed<OptionRow<NdwuOption>[]>(() => {
     return buildOptionRows(this.normalizedOptions(), this.groups());
   });
 
-  protected readonly allSelected = computed(() => {
-    const opts = this.normalizedOptions();
+  protected readonly interactiveOptionValues = computed(() => {
+    return this.normalizedOptions()
+      .filter((option) => !option.hidden && !option.disabled)
+      .map((option) => option.value);
+  });
 
-    return opts.length > 0 && this.pendingSelection().length === opts.length;
+  protected readonly allSelected = computed(() => {
+    const values = this.interactiveOptionValues();
+    const selectedValues = new Set(this.pendingSelection());
+
+    return values.length > 0 && values.every((value) => selectedValues.has(value));
   });
 
   protected readonly indeterminate = computed(() => {
-    const selectedCount = this.pendingSelection().length;
+    const values = this.interactiveOptionValues();
+    const selectedValues = new Set(this.pendingSelection());
+    const selectedCount = values.filter((value) => selectedValues.has(value)).length;
 
-    return selectedCount > 0 && selectedCount < this.normalizedOptions().length;
+    return selectedCount > 0 && selectedCount < values.length;
   });
 
   protected get displayText(): string {
@@ -171,16 +187,13 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends NdwuSelectFie
     const ids = this.inputValue ?? [];
     const normalized = this.normalizedOptions();
     const allOpts = this.options();
-    const selectedRaw: T[] = [];
+    const selectedRaw = normalized
+      .filter((option) => ids.includes(option.value))
+      .flatMap((option) => {
+        const rawOption = this.rawByValue().get(option.value);
 
-    for (let i = 0; i < normalized.length; i++) {
-      const norm = normalized[i];
-      const raw = allOpts[i];
-
-      if (norm && raw && ids.includes(norm.value)) {
-        selectedRaw.push(raw);
-      }
-    }
+        return rawOption === undefined ? [] : [rawOption];
+      });
 
     return {
       selectedValues: ids,
@@ -216,7 +229,12 @@ export class NdwuMultiSelectFieldComponent<T = NdwuOption> extends NdwuSelectFie
   }
 
   protected onSelectAllChange(checked: boolean): void {
-    const newSelection = checked ? this.normalizedOptions().map((o) => o.value) : [];
+    const currentSelection = this.pendingSelection();
+    const interactiveValues = this.interactiveOptionValues();
+    const interactiveValueSet = new Set(interactiveValues);
+    const newSelection = checked
+      ? [...currentSelection, ...interactiveValues.filter((value) => !currentSelection.includes(value))]
+      : currentSelection.filter((value) => !interactiveValueSet.has(value));
 
     this.onSelectionChange(newSelection);
   }

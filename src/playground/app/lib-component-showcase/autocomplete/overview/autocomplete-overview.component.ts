@@ -3,13 +3,18 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {debounceTime} from 'rxjs';
 import {
+  NDWU_ICON_NAME,
   NDWU_SIZE,
   NdwuAutocompleteComponent,
   type NdwuAutocompleteOption,
   NdwuFloatingLabelComponent,
   NdwuFormFieldComponent,
   NdwuHintDirective,
+  NdwuIconComponent,
+  type NdwuIconName,
   NdwuLinkComponent,
+  NdwuOptionLabelComponent,
+  NdwuOptionTemplateDirective,
 } from '@ndw-ui-kit/core';
 import {
   NdwuAutocompleteFieldComponent,
@@ -34,6 +39,9 @@ import {
   imports: [
     ReactiveFormsModule,
     NdwuLocalizePipe,
+    NdwuIconComponent,
+    NdwuOptionLabelComponent,
+    NdwuOptionTemplateDirective,
     NdwuAutocompleteComponent,
     NdwuAutocompleteFieldComponent,
     NdwuAutocompleteFooterDirective,
@@ -51,6 +59,14 @@ export class AutocompleteOverviewComponent implements OnInit {
   public readonly SIZE = NDWU_SIZE;
   public readonly cities = AUTOCOMPLETE_CITIES;
   public readonly options = AUTOCOMPLETE_OPTIONS;
+  public readonly customOptions: readonly (NdwuAutocompleteOption & {icon: NdwuIconName})[] = [
+    {value: 'de', label: 'Germany', icon: NDWU_ICON_NAME.ROUTER_S},
+    {value: 'fr', label: 'France', icon: NDWU_ICON_NAME.WARNING_S, variant: 'danger'},
+    {value: 'it', label: 'Italy', icon: NDWU_ICON_NAME.INFO_S},
+    {value: 'nl', label: 'Netherlands', icon: NDWU_ICON_NAME.ROUTER_S},
+    {value: 'dk', label: 'Denmark', icon: NDWU_ICON_NAME.INFO_S},
+    {value: 'jp', label: 'Japan', icon: NDWU_ICON_NAME.WARNING_S},
+  ];
   public readonly groups = AUTOCOMPLETE_GROUPS;
   public readonly knowledgeBaseSearchUrl = knowledgeBaseSearchUrl;
 
@@ -104,5 +120,22 @@ export class AutocompleteOverviewComponent implements OnInit {
     }
 
     return this.cities.filter((city) => city.label.toLowerCase().startsWith(normalized));
+  }
+
+  protected splitMatch(label: string, query?: string): {before: string; match: string; after: string} {
+    const trimmedQuery = query?.trim() ?? '';
+    const matchIndex = label.toLocaleLowerCase().indexOf(trimmedQuery.toLocaleLowerCase());
+
+    if (!trimmedQuery || matchIndex < 0) {
+      return {before: label, match: '', after: ''};
+    }
+
+    const matchEnd = matchIndex + trimmedQuery.length;
+
+    return {
+      before: label.slice(0, matchIndex),
+      match: label.slice(matchIndex, matchEnd),
+      after: label.slice(matchEnd),
+    };
   }
 }

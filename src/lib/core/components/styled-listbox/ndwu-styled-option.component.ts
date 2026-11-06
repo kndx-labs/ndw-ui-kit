@@ -1,5 +1,6 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, input} from '@angular/core';
 import {NdwuOptionDirective} from '@ndw-ui-kit/core/aria';
+import type {NdwuOptionVariant} from '../../../shared.types';
 
 @Component({
   selector: 'ndwu-styled-option',
@@ -11,6 +12,7 @@ import {NdwuOptionDirective} from '@ndw-ui-kit/core/aria';
     inputs: ['value', 'label', 'disabled'],
   }],
   host: {
+    '[class.ndwu-styled-option--danger]': 'variant() === "danger"',
     '[class.ndwu-styled-option--selected]': 'option.selected()',
     '[class.ndwu-styled-option--selected-first]': 'option.firstInSelectedGroup()',
     '[class.ndwu-styled-option--selected-last]': 'option.lastInSelectedGroup()',
@@ -19,5 +21,6 @@ import {NdwuOptionDirective} from '@ndw-ui-kit/core/aria';
   },
 })
 export class NdwuStyledOptionComponent<V = unknown> {
+  public readonly variant = input<NdwuOptionVariant>('default');
   public readonly option = inject(NdwuOptionDirective<V>);
 }

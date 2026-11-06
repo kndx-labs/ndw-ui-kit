@@ -28,3 +28,10 @@
   flex-direction: column;
   gap: 16px;
 }
+
+.option-template__indicator {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}

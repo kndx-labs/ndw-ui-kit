@@ -73,6 +73,12 @@
     }
   }
 
+  &.ndwu-styled-option--danger {
+    --ndwu-styled-option-hover-bg: var(--ndwu-styled-option-danger-hover-bg);
+
+    color: var(--ndwu-styled-option-danger-text-color);
+  }
+
   &.ndwu-styled-option--disabled,
   &.ndwu-styled-option--disabled:hover {
     background-color: var(--ndwu-styled-option-disabled-bg);

@@ -27,6 +27,8 @@
     [clearButtonAriaLabel]="clearButtonAriaLabel()"
     [closeButtonAriaLabel]="closeButtonAriaLabel()"
     [footer]="footerDirective()?.templateRef ?? null"
+    [optionTemplate]="optionTemplateDirective()?.templateRef ?? null"
+    [maxVisibleOptions]="maxVisibleOptions()"
     (valueChange)="onValueChange($event)"
     (optionSelected)="optionSelected.emit($event)"
     (blurred)="onBlur()"

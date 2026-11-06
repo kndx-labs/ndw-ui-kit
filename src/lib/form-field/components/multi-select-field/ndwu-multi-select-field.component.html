@@ -72,6 +72,7 @@
       }
       <ndwu-styled-listbox
         [size]="dropdownSize()"
+        [maxVisibleOptions]="maxVisibleOptions()"
         [comboboxRef]="combobox()"
         [multi]="true"
         selectionMode="explicit"
@@ -87,6 +88,8 @@
             <ndwu-styled-option
               [value]="row.option.value"
               [label]="row.option.label"
+              [disabled]="!!row.option.disabled"
+              [variant]="row.option.variant ?? 'default'"
               [attr.aria-describedby]="
                 row.option.groupId
                   ? groupHeaderId(row.option.groupId)
@@ -100,11 +103,27 @@
               >
                 <ndwu-checkbox
                   [checked]="isOptionSelected(row.option.value)"
+                  [disabled]="!!row.option.disabled"
                   [inputTabIndex]="-1"
                 />
               </span>
               <span class="ndwu-multi-select-field__option-label">
-                {{ row.option.label | localizeIf: localizeLabels() }}
+                @if (optionTemplate(); as tpl) {
+                  <span class="ndwu-multi-select-field__option-template">
+                    <ng-container
+                      [ngTemplateOutlet]="tpl.templateRef"
+                      [ngTemplateOutletContext]="{
+                        $implicit: row.option,
+                        raw: rawByValue().get(row.option.value),
+                        label: (row.option.label | localizeIf: localizeLabels()),
+                        selected: isOptionSelected(row.option.value),
+                        disabled: !!row.option.disabled,
+                      }"
+                    />
+                  </span>
+                } @else {
+                  {{ row.option.label | localizeIf: localizeLabels() }}
+                }
               </span>
             </ndwu-styled-option>
           }

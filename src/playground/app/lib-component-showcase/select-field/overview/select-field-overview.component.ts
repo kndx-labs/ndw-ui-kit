@@ -1,6 +1,14 @@
 import {ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NdwuButtonComponent, NdwuOption, NdwuOptionGroup} from '@ndw-ui-kit/core';
+import {
+  NDWU_SIZE,
+  NdwuButtonComponent,
+  NdwuIconComponent,
+  NdwuOption,
+  NdwuOptionGroup,
+  NdwuOptionLabelComponent,
+  NdwuOptionTemplateDirective,
+} from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
 import {ShowcaseLayoutComponent} from '@app/components';
 import {
@@ -9,6 +17,7 @@ import {
   COUNTRY_OPTIONS_GROUPED,
   COUNTRY_OPTIONS_LONG_LIST,
   COUNTRY_OPTIONS_WITH_HIDDEN,
+  OPTION_TEMPLATE_OPTIONS,
   USER_PROVIDED_LABEL_OPTIONS,
 } from '../../shared/select-showcase.data';
 
@@ -31,6 +40,9 @@ const DYNAMIC_OPTIONS_AUTO_INTERVAL_MS = 1500;
   imports: [
     ReactiveFormsModule,
     NdwuButtonComponent,
+    NdwuIconComponent,
+    NdwuOptionLabelComponent,
+    NdwuOptionTemplateDirective,
     NdwuSelectFieldComponent,
     ShowcaseLayoutComponent,
   ],
@@ -44,6 +56,11 @@ export class SelectFieldOverviewComponent {
   protected readonly countryOptionsGrouped = COUNTRY_OPTIONS_GROUPED;
   protected readonly continentGroups: NdwuOptionGroup[] = CONTINENT_GROUPS;
   protected readonly userProvidedLabelOptions = USER_PROVIDED_LABEL_OPTIONS;
+  protected readonly dangerOptions: NdwuOption[] = [
+    {value: 'danger', label: 'Danger option', variant: 'danger'},
+    {value: 'disabled-danger', label: 'Disabled danger option', variant: 'danger', disabled: true},
+  ];
+  protected readonly optionTemplateOptions = OPTION_TEMPLATE_OPTIONS;
 
   protected readonly longLabelsOptionsList: NdwuOption[] = [
     {
@@ -63,6 +80,18 @@ export class SelectFieldOverviewComponent {
 
   protected readonly formBasic = new FormGroup({
     country: new FormControl(''),
+  });
+
+  protected readonly formMaxVisibleOptions = new FormGroup({
+    country: new FormControl(''),
+  });
+
+  protected readonly formDangerOption = new FormGroup({
+    option: new FormControl(''),
+  });
+
+  protected readonly formOptionTemplate = new FormGroup({
+    environment: new FormControl(''),
   });
 
   protected readonly formHiddenOption = new FormGroup({

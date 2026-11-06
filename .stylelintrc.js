@@ -69,5 +69,17 @@ module.exports = {
         'order/order': null,
       },
     },
+    {
+      'files': ['.storybook/**/*.scss'],
+      'rules': {
+        'plugin/no-unsupported-browser-features': [
+          true,
+          {
+            'ignore': ['css-nesting', 'css3-cursors', 'css-has'],
+            'ignorePartialSupport': true,
+          },
+        ],
+      },
+    },
   ],
 };

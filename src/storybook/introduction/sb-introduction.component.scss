@@ -1,0 +1,113 @@
+@use 'styles/fonts';
+@use 'styles/mixins';
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: spacing.$spacing-40;
+  background: var(--ndwu-color-gray-5);
+  color: var(--ndwu-color-gray-80);
+  font-family: fonts.$font-family;
+}
+
+:host-context(.ndwu-theme-dark) .sb-introduction__logo {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.sb-introduction__header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing.$spacing-24;
+  align-items: center;
+  margin-bottom: spacing.$spacing-40;
+}
+
+.sb-introduction__logo {
+  width: auto;
+  height: 72px;
+}
+
+.sb-introduction__heading {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-8;
+  align-items: flex-start;
+}
+
+.sb-introduction__title {
+  margin: 0;
+  font-weight: typography.$fontWeight-XL;
+  font-size: 28px;
+  line-height: 36px;
+}
+
+.sb-introduction__section + .sb-introduction__section {
+  margin-top: spacing.$spacing-32;
+}
+
+.sb-introduction__group {
+  margin: 0 0 spacing.$spacing-16;
+  font-weight: typography.$fontWeight-XL;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.sb-introduction__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: spacing.$spacing-16;
+}
+
+.sb-introduction__link {
+  display: block;
+  border-radius: radius.$radius-L;
+  color: inherit;
+  text-decoration: none;
+
+  ndwu-badge {
+    cursor: inherit;
+  }
+
+  &:hover .sb-introduction__card {
+    --ndwu-card-border-color: var(--ndwu-color-brand-50);
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring();
+  }
+}
+
+.sb-introduction__card {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.sb-introduction__card-head {
+  display: flex;
+  gap: spacing.$spacing-8;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.sb-introduction__card-name {
+  font-weight: typography.$fontWeight-XL;
+  font-size: typography.$fontSize-medium;
+  line-height: typography.$lineHeight-medium;
+}
+
+.sb-introduction__card-description {
+  margin: spacing.$spacing-8 0 0;
+  color: var(--ndwu-color-gray-60);
+  font-size: typography.$fontSize-H6;
+  line-height: typography.$lineHeight-H6;
+}
+
+@include mixins.mobile() {
+  :host {
+    padding: spacing.$spacing-24 spacing.$spacing-16;
+  }
+}

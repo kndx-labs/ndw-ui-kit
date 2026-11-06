@@ -43,7 +43,7 @@ const group = (items: readonly string[]): string => {
 const meta: Meta<ButtonStoryArgs> = {
   title: 'Core/Button/Button',
   component: NdwuButtonComponent,
-  tags: ['autodocs'],
+  tags: ['autodocs', 'ready'],
   parameters: {
     sizes: SIZES,
     docs: {

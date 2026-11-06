@@ -6,7 +6,8 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 
 ```text
 .storybook/
-├── main.ts                           Storybook config: story glob, addons, framework, static assets
+├── main.ts                           Storybook config: story globs, addons, framework, static assets
+├── manager.ts                        Storybook UI branding: logo, title, brand colour
 ├── preview.ts                        Wires everything for every story: providers, decorators, toolbar globals, parameters
 ├── providers.ts                      Root providers of every story (icons, HttpClient)
 ├── styles.scss                       Global styles: kit theme and fonts, Storybook fixes, layout classes for stories
@@ -28,7 +29,8 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 ```
 
 Stories live next to their components: `src/lib/**/<component-file-name>.stories.ts`. The first model is
-`src/lib/core/components/button/button/ndwu-button.stories.ts`.
+`src/lib/core/components/button/button/ndwu-button.stories.ts`. Pages that don't belong to one component, such as the
+home page, live in `src/storybook/` (see [Home page](#home-page)).
 
 ## Files
 
@@ -36,10 +38,11 @@ Stories live next to their components: `src/lib/**/<component-file-name>.stories
 
 | File | What it does | Why it is built this way |
 |---|---|---|
-| `main.ts` | Story glob `src/lib/**/*.stories.ts`; addons docs, a11y, themes (a11y runs [axe](https://github.com/dequelabs/axe-core), an automated accessibility checker, on every story and lists the violations, such as low text contrast, in the Accessibility panel); serves `src/lib/assets` at `/assets`; telemetry off; `angularFilterNonInputControls` | Icons, pictograms and fonts use `assets/...` URLs, so the assets folder must be served at `/assets`. The filter keeps Compodoc's public non-input members out of the controls |
-| `preview.ts` | Registers the Compodoc JSON, `applicationConfig` with `STORYBOOK_PROVIDERS`, the decorators, the Size global, the `surface` background, `controls.expanded`, `docs.source.excludeDecorators`, a11y defaults | The only file Storybook loads for every story. It imports and registers; logic lives in `decorators/` and `helpers/` |
+| `main.ts` | Story globs `src/storybook/**/*.mdx`, `src/storybook/**/*.stories.ts`, `src/lib/**/*.stories.ts`; addons docs, a11y, themes (a11y runs [axe](https://github.com/dequelabs/axe-core), an automated accessibility checker, on every story and lists the violations, such as low text contrast, in the Accessibility panel); serves `src/lib/assets` at `/assets` and `src/storybook/assets` at `/sb-assets`; telemetry off; `angularFilterNonInputControls` | Icons, pictograms and fonts use `assets/...` URLs, so the assets folder must be served at `/assets`. The filter keeps Compodoc's public non-input members out of the controls |
+| `preview.ts` | Registers the Compodoc JSON, `applicationConfig` with `STORYBOOK_PROVIDERS`, the decorators, the Size global, the `surface` background, `controls.expanded`, `docs.source.excludeDecorators`, a11y defaults, `storySort` with `Introduction` first | The only file Storybook loads for every story. It imports and registers; logic lives in `decorators/` and `helpers/` |
+| `manager.ts` | `addons.setConfig` with a light theme: `brandTitle`, `brandImage: 'sb-assets/logo.svg'`, `colorSecondary` `#007bbe` (`--ndwu-color-brand-50`) | The manager UI is outside the preview iframe and doesn't load kit styles, so the brand colour is a literal. A relative image path keeps a sub-path deploy working |
 | `providers.ts` | `provideHttpClient()`, `provideNdwuAllIcons()` | Separate, so later providers (e.g. localization) are added here without touching `preview.ts`. Zoneless is not here: the builder flag `experimentalZoneless` adds the provider |
-| `styles.scss` | `@use 'styles/themes'` with font faces; `transition: none` on the canvas; `.sb-row`, `.sb-stack`, `.sb-note` | The theme as the playground uses it. The backgrounds addon animates the canvas colour change over 0.3s. In the dark theme, [axe](https://github.com/dequelabs/axe-core) (the accessibility checker of the a11y addon, see `main.ts`) could run during that animation, compare the text with the still-light background and report contrast errors that don't exist; `transition: none` removes the animation. The layout classes keep inline styles out of "Show code" |
+| `styles.scss` | `@use 'styles/themes'` with font faces; `transition: none` on the canvas; `.sb-row`, `.sb-stack`, `.sb-note`; `.sbdocs-wrapper` / `.sbdocs-content` `:has(sb-introduction)` rule | The theme as the playground uses it. The backgrounds addon animates the canvas colour change over 0.3s. In the dark theme, [axe](https://github.com/dequelabs/axe-core) (the accessibility checker of the a11y addon, see `main.ts`) could run during that animation, compare the text with the still-light background and report contrast errors that don't exist; `transition: none` removes the animation. The layout classes keep inline styles out of "Show code". The home page's docs frame is React DOM outside the component; the rule paints it with the kit surface and drops its padding and max-width so Dark covers the whole page |
 | `tsconfig.json` | Own TS project for `.storybook/**`, `src/lib/**/*.stories.ts`, `src/storybook/**`; kit entry-point aliases; `@sb/*` → `.storybook/*` | `tsconfig.lib.json` excludes stories, so they don't reach the package; this project lets ESLint (`projectService`) and the Storybook builder still type-check them |
 | `typings.d.ts` | Declares `*/documentation.json` | The file exists only after Compodoc ran; the declaration keeps `yarn lint:ts` green on a fresh clone |
 
@@ -67,6 +70,16 @@ Imported by stories as `@sb/helpers/<file>`.
 | `story-template.ts` | `lines(items)` joins templates of a fixed story, one element per line | One shared helper replaces a copy in every story file |
 | `router-url.component.ts` | Projects its content and shows the current Router URL in a `sb-note` paragraph | A router story makes navigation visible without changing the Storybook iframe URL |
 
+### Home page
+
+| File | What it does | Why it is built this way |
+|---|---|---|
+| `src/storybook/introduction/introduction.mdx` | Root docs page `Introduction`, first in the sidebar, opened at `/`; embeds the `Home` story | MDX can't render Angular components; `<Story of>` renders the Angular page inside it |
+| `src/storybook/introduction/introduction.stories.ts` | `Hidden/Introduction`, tag `!dev`; renders `<sb-introduction />` through `render` + `moduleMetadata` | Hidden from the sidebar but still in the index, so the MDX can embed it. A title other than `Introduction` keeps the MDX a single sidebar leaf. No `component:`, because Compodoc doesn't read `src/storybook` and would log "Component not found" |
+| `src/storybook/introduction/sb-introduction.component.*` | Logo, name, version from `src/lib/package.json`, cards made of `ndwu-card` and `ndwu-badge` | Kit components follow the Theme toolbar; explicit `size` keeps the Size toolbar off the page. Left click emits `NAVIGATE_URL` on the preview channel, like addon-docs MDX links, so toolbar globals survive; `href` + `target="_top"` keep middle-click and new tab. In Dark the logo gets `invert(1) hue-rotate(180deg)`, so its blue part stays blue |
+| `src/storybook/introduction/introduction.cards.ts` | `INTRODUCTION_CARDS`: group, name, docs id, description, ready | Hand-written: a new docs page adds its card |
+| `src/storybook/assets/logo.svg` | Logo for the home page and the manager | Lives outside `src/lib/assets`, which ships with the package |
+
 ## Outside `.storybook/`
 
 | File | Storybook part |
@@ -75,7 +88,8 @@ Imported by stories as `@sb/helpers/<file>`.
 | `package.json` | Scripts `storybook`, `build-storybook` (generate sprites first); `fmt`, `lint:ts-src`, `lint:styles` include `.storybook/`. Storybook packages, Compodoc, `@angular-devkit/build-angular` and its devkit peers pinned to the `@angular/build` / `@angular/cli` version, webpack pinned through `resolutions` |
 | `tsconfig.json` | References `.storybook/tsconfig.json` |
 | `tsconfig.lib.json` | Includes only `src/lib/**`, excludes `**/*.stories.ts` |
-| `eslint.config.js` | `eslint-plugin-storybook` flat recommended config |
+| `eslint.config.js` | `eslint-plugin-storybook` flat recommended config; the `sb-` selector override covers `.storybook/**/*.ts`, `src/**/*.stories.ts` and `src/storybook/**/*.ts` |
+| `.stylelintrc.js` | Override for `.storybook/**/*.scss`: `no-unsupported-browser-features` also ignores `css-has`, for the home page's docs-frame rule |
 | `scripts/collect-base-icon-usage.ts` | Ignores `*.stories.ts`, so icons used only in stories don't enter the core sprite |
 | `.gitignore` | `.storybook/documentation.json`, `debug-storybook.log` |
 

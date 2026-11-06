@@ -1,0 +1,48 @@
+<header class="sb-introduction__header">
+  <img
+    class="sb-introduction__logo"
+    src="sb-assets/logo.svg"
+    alt=""
+  >
+  <div class="sb-introduction__heading">
+    <h1 class="sb-introduction__title">NDW UI Kit</h1>
+    <ndwu-badge
+      tone="blue"
+      size="S"
+    >v{{ version }}</ndwu-badge>
+  </div>
+</header>
+
+@for (group of groups; track group.name) {
+  <section class="sb-introduction__section">
+    <h2 class="sb-introduction__group">{{ group.name }}</h2>
+    <div class="sb-introduction__grid">
+      @for (card of group.cards; track card.docsId) {
+        <a
+          class="sb-introduction__link"
+          target="_top"
+          [href]="'./?path=/docs/' + card.docsId"
+          (click)="openDocs($event, card.docsId)"
+        >
+          <ndwu-card
+            class="sb-introduction__card"
+            size="L"
+          >
+            <span class="sb-introduction__card-head">
+              <span class="sb-introduction__card-name">{{ card.name }}</span>
+              @if (card.ready) {
+                <ndwu-badge
+                  tone="positive"
+                  size="S"
+                >Ready</ndwu-badge>
+              }
+            </span>
+            @if (card.description) {
+              <p class="sb-introduction__card-description">{{ card.description }}</p>
+            }
+          </ndwu-card>
+        </a>
+      }
+    </div>
+  </section>
+}

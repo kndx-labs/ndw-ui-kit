@@ -66,6 +66,12 @@ class MultiSelectFieldSelectAllTestHostComponent {
   public readonly ctrl = new FormControl<string[]>([], {nonNullable: true});
 }
 
+const disabledOptionTestOptions: readonly MultiSelectOption[] = [
+  {value: 'a', label: 'A'},
+  {value: 'b', label: 'B', disabled: true},
+  {value: 'c', label: 'C'},
+];
+
 class TestResizeObserver implements ResizeObserver {
   constructor(_callback: ResizeObserverCallback) {}
 
@@ -214,6 +220,96 @@ describe('NdwuMultiSelectFieldComponent option template', () => {
     const secondCustomOption = [...document.body.querySelectorAll<HTMLElement>('.custom')].at(1);
 
     expect(secondCustomOption?.textContent?.trim()).toBe('bb|B|true');
+  });
+});
+
+describe('NdwuMultiSelectFieldComponent disabled option selection', () => {
+  beforeEach(() => {
+    vi.stubGlobal('ResizeObserver', TestResizeObserver);
+    vi.stubGlobal('matchMedia', createMatchMedia(false));
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: vi.fn(),
+    });
+
+    TestBed.configureTestingModule({
+      imports: [MultiSelectFieldSelectAllTestHostComponent],
+      providers: [provideZonelessChangeDetection()],
+    });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+
+    if (originalScrollIntoView) {
+      Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', originalScrollIntoView);
+    } else {
+      Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView');
+    }
+  });
+
+  it('does not change the value when the disabled option element is clicked', async () => {
+    const fixture = await createSelectAllFixture([], disabledOptionTestOptions);
+
+    const disabledOption = document.body.querySelectorAll<HTMLElement>('ndwu-styled-option').item(1);
+
+    disabledOption.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.ctrl.value).toEqual([]);
+  });
+
+  it('does not change the value when the disabled option label is clicked', async () => {
+    const fixture = await createSelectAllFixture([], disabledOptionTestOptions);
+
+    const disabledOptionLabel = document.body
+      .querySelectorAll<HTMLElement>('ndwu-styled-option')
+      .item(1)
+      .querySelector<HTMLElement>('.ndwu-multi-select-field__option-label');
+
+    if (!disabledOptionLabel) {
+      throw new Error('Disabled multi-select option label not found.');
+    }
+
+    disabledOptionLabel.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.ctrl.value).toEqual([]);
+  });
+
+  it('skips a disabled option with ArrowDown and selects the next enabled option with Enter', async () => {
+    const fixture = await createSelectAllFixture(['a'], disabledOptionTestOptions);
+
+    const trigger = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>(
+      '.ndwu-multi-select-field__trigger',
+    );
+    const [optionA, optionB, optionC] = [...document.body.querySelectorAll<HTMLElement>('ndwu-styled-option')];
+
+    if (!trigger || !optionA || !optionB || !optionC) {
+      throw new Error('Multi-select field trigger or options not found.');
+    }
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown', keyCode: 40, bubbles: true}));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(trigger.getAttribute('aria-activedescendant')).toBe(optionA.id);
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown', keyCode: 40, bubbles: true}));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(trigger.getAttribute('aria-activedescendant')).toBe(optionC.id);
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', bubbles: true}));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.ctrl.value).toEqual(['a', 'c']);
+    expect(fixture.componentInstance.ctrl.value).not.toContain('b');
   });
 });
 

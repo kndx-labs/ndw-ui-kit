@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, provideZonelessChangeDetection} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {type ComponentFixture, TestBed} from '@angular/core/testing';
-import {NdwuOptionTemplateDirective} from '@ndw-ui-kit/core';
+import {NdwuOptionTemplateDirective, type NdwuOption} from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent} from './ndwu-select-field.component';
 
 @Component({
@@ -13,9 +13,9 @@ import {NdwuSelectFieldComponent} from './ndwu-select-field.component';
   `,
 })
 class SelectFieldTestHostComponent {
-  public readonly opts = [
+  public opts: NdwuOption[] = [
     {value: 'a', label: 'A'},
-    {value: 'b', label: 'B', variant: 'danger' as const},
+    {value: 'b', label: 'B', variant: 'danger'},
     {value: 'c', label: 'C', disabled: true},
   ];
 
@@ -149,6 +149,96 @@ describe('NdwuSelectFieldComponent option state', () => {
     const options = document.body.querySelectorAll<HTMLElement>('ndwu-styled-option');
 
     expect(options.item(0).textContent?.trim()).toBe('A');
+  });
+});
+
+describe('NdwuSelectFieldComponent disabled option selection', () => {
+  beforeEach(() => {
+    vi.stubGlobal('ResizeObserver', TestResizeObserver);
+    vi.stubGlobal('matchMedia', createMatchMedia(false));
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: vi.fn(),
+    });
+
+    TestBed.configureTestingModule({
+      imports: [SelectFieldTestHostComponent],
+      providers: [provideZonelessChangeDetection()],
+    });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+
+    if (originalScrollIntoView) {
+      Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', originalScrollIntoView);
+    } else {
+      Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView');
+    }
+  });
+
+  it('keeps the current value and panel open when a disabled option is clicked', async () => {
+    const fixture = TestBed.createComponent(SelectFieldTestHostComponent);
+
+    fixture.componentInstance.opts = [
+      {value: 'a', label: 'A'},
+      {value: 'b', label: 'B', disabled: true},
+      {value: 'c', label: 'C'},
+    ];
+    fixture.detectChanges();
+    await openPanel(fixture);
+
+    const trigger = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('.ndwu-select-field__trigger');
+    const disabledOption = document.body.querySelectorAll<HTMLElement>('ndwu-styled-option').item(1);
+
+    if (!trigger) {
+      throw new Error('Select field trigger not found.');
+    }
+
+    disabledOption.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.ctrl.value).toBe('a');
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+  });
+
+  it('skips a disabled option with ArrowDown and selects the next enabled option with Enter', async () => {
+    const fixture = TestBed.createComponent(SelectFieldTestHostComponent);
+
+    fixture.componentInstance.opts = [
+      {value: 'a', label: 'A'},
+      {value: 'b', label: 'B', disabled: true},
+      {value: 'c', label: 'C'},
+    ];
+    fixture.detectChanges();
+    await openPanel(fixture);
+
+    const trigger = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('.ndwu-select-field__trigger');
+    const [optionA, optionB, optionC] = [...document.body.querySelectorAll<HTMLElement>('ndwu-styled-option')];
+
+    if (!trigger || !optionA || !optionB || !optionC) {
+      throw new Error('Select field trigger or options not found.');
+    }
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown', keyCode: 40, bubbles: true}));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(trigger.getAttribute('aria-activedescendant')).toBe(optionA.id);
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown', keyCode: 40, bubbles: true}));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(trigger.getAttribute('aria-activedescendant')).toBe(optionC.id);
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', bubbles: true}));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.ctrl.value).toBe('c');
   });
 });
 

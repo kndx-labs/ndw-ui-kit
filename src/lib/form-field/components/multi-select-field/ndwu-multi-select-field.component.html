@@ -103,6 +103,7 @@
               >
                 <ndwu-checkbox
                   [checked]="isOptionSelected(row.option.value)"
+                  [disabled]="!!row.option.disabled"
                   [inputTabIndex]="-1"
                 />
               </span>

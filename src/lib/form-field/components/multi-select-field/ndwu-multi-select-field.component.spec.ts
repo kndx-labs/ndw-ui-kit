@@ -243,6 +243,17 @@ describe('NdwuMultiSelectFieldComponent select all', () => {
     }
   });
 
+  it('disables the option checkbox when the option is disabled', async () => {
+    await createSelectAllFixture([]);
+
+    const options = [...document.body.querySelectorAll<HTMLElement>('ndwu-styled-option')];
+    const enabledOptionInput = options[0]?.querySelector<HTMLInputElement>('ndwu-checkbox input');
+    const disabledOptionInput = options[1]?.querySelector<HTMLInputElement>('ndwu-checkbox input');
+
+    expect(enabledOptionInput?.disabled).toBe(false);
+    expect(disabledOptionInput?.disabled).toBe(true);
+  });
+
   it('adds interactive values while preserving disabled selection and order', async () => {
     const fixture = await createSelectAllFixture(['c']);
     const selectAllInput = await setSelectAllChecked(fixture, true);

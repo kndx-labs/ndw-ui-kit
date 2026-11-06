@@ -57,7 +57,7 @@
             @if (raw; as item) {
               <ndwu-icon [name]="item.icon" aria-hidden="true" />
             }
-            <span class="option-template__label">{{ label }}</span>
+            <ndwu-option-label>{{ label }}</ndwu-option-label>
             <span
               class="option-template__indicator"
               [style.backgroundColor]="raw?.statusColor"

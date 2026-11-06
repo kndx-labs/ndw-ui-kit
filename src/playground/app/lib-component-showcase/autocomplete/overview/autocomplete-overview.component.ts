@@ -13,6 +13,7 @@ import {
   NdwuIconComponent,
   type NdwuIconName,
   NdwuLinkComponent,
+  NdwuOptionLabelComponent,
   NdwuOptionTemplateDirective,
 } from '@ndw-ui-kit/core';
 import {
@@ -39,6 +40,7 @@ import {
     ReactiveFormsModule,
     NdwuLocalizePipe,
     NdwuIconComponent,
+    NdwuOptionLabelComponent,
     NdwuOptionTemplateDirective,
     NdwuAutocompleteComponent,
     NdwuAutocompleteFieldComponent,

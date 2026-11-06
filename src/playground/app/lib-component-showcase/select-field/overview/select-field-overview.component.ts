@@ -6,6 +6,7 @@ import {
   NdwuIconComponent,
   NdwuOption,
   NdwuOptionGroup,
+  NdwuOptionLabelComponent,
   NdwuOptionTemplateDirective,
 } from '@ndw-ui-kit/core';
 import {NdwuSelectFieldComponent, NdwuValidators} from '@ndw-ui-kit/core/form-field';
@@ -40,6 +41,7 @@ const DYNAMIC_OPTIONS_AUTO_INTERVAL_MS = 1500;
     ReactiveFormsModule,
     NdwuButtonComponent,
     NdwuIconComponent,
+    NdwuOptionLabelComponent,
     NdwuOptionTemplateDirective,
     NdwuSelectFieldComponent,
     ShowcaseLayoutComponent,

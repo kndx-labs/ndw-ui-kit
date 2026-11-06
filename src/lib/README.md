@@ -649,8 +649,11 @@ Autocomplete options can set `variant: 'danger'` directly. Both autocomplete com
     let-label="label"
     let-query="query"
   >
-    <ndwu-icon [name]="raw?.icon" aria-hidden="true" />
-    <span>{{ label }}</span>
+    <ndwu-icon
+      [name]="raw?.icon"
+      aria-hidden="true"
+    />
+    <ndwu-option-label>{{ label }}</ndwu-option-label>
     <mark>{{ query }}</mark>
   </ng-template>
 </ndwu-autocomplete-field>
@@ -658,8 +661,9 @@ Autocomplete options can set `variant: 'danger'` directly. Both autocomplete com
 
 Autocomplete template context provides the normalized option through `$implicit`, the original `raw` item matched by
 value, displayed `label`, `disabled`, and `query`. `selected` is always `false`; other option templates leave `query`
-undefined. Import `NdwuOptionTemplateDirective` from `@ndw-ui-kit/core` and bind the original options array to type
-`raw`.
+undefined. Import `NdwuOptionTemplateDirective` and `NdwuOptionLabelComponent` from `@ndw-ui-kit/core` and bind the
+original options array to type `raw`. Use `<ndwu-option-label>` for option text so it truncates with "…" on desktop and
+clamps to two lines in the mobile sheet.
 
 ```typescript
 import {NdwuOptionAdapter} from '@ndw-ui-kit/core';
@@ -720,8 +724,8 @@ Use `maxVisibleOptions` to change how many option rows appear before the list sc
 ##### Custom option template
 
 Use `ndwuOptionTemplate` to replace option content with an icon, status marker, or other domain-specific UI. Import
-`NdwuOptionTemplateDirective` from `@ndw-ui-kit/core`. Bind the original options array to the directive so
-Angular can type `raw`:
+`NdwuOptionTemplateDirective` and `NdwuOptionLabelComponent` from `@ndw-ui-kit/core`. Bind the original options array to
+the directive so Angular can type `raw`:
 
 ```html
 <ndwu-select-field [options]="environments" formControlName="environment">
@@ -732,9 +736,16 @@ Angular can type `raw`:
     let-selected="selected"
     let-disabled="disabled"
   >
-    <ndwu-icon [name]="raw?.icon" aria-hidden="true" />
-    <span>{{ label }}</span>
-    <span class="status-dot" [style.backgroundColor]="raw?.statusColor" aria-hidden="true"></span>
+    <ndwu-icon
+      [name]="raw?.icon"
+      aria-hidden="true"
+    />
+    <ndwu-option-label>{{ label }}</ndwu-option-label>
+    <span
+      class="status-dot"
+      [style.backgroundColor]="raw?.statusColor"
+      aria-hidden="true"
+    ></span>
   </ng-template>
 </ndwu-select-field>
 ```

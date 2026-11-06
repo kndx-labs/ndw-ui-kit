@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  flex: 1 1 0;
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:host-context(.ndwu-dropdown-panel--sheet) {
+  display: -webkit-box;
+  overflow: hidden;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}

@@ -69,9 +69,9 @@
               <ndwu-icon [name]="icon" aria-hidden="true" />
             }
             @let match = splitMatch(label, query);
-            <span>
+            <ndwu-option-label>
               {{ match.before }}<span class="autocomplete-overview__query-match">{{ match.match }}</span>{{ match.after }}
-            </span>
+            </ndwu-option-label>
           </span>
         </ng-template>
       </ndwu-autocomplete-field>

@@ -1,6 +1,12 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NDWU_SIZE, NdwuIconComponent, NdwuOptionGroup, NdwuOptionTemplateDirective} from '@ndw-ui-kit/core';
+import {
+  NDWU_SIZE,
+  NdwuIconComponent,
+  NdwuOptionGroup,
+  NdwuOptionLabelComponent,
+  NdwuOptionTemplateDirective,
+} from '@ndw-ui-kit/core';
 import {
   NdwuMultiSelectDisplayDirective,
   NdwuMultiSelectFieldComponent,
@@ -24,6 +30,7 @@ import {
   imports: [
     ReactiveFormsModule,
     NdwuIconComponent,
+    NdwuOptionLabelComponent,
     NdwuMultiSelectDisplayDirective,
     NdwuMultiSelectFieldComponent,
     NdwuOptionTemplateDirective,

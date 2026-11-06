@@ -51,10 +51,10 @@ class SelectFieldOptionTemplateTestHostComponent {
   public readonly opts: readonly SelectOptionTemplateItem[] = [
     {value: 'h', label: 'H', code: 'hh', hidden: true},
     {value: 'a', label: 'A', code: 'aa'},
-    {value: 'b', label: 'B', code: 'bb'},
+    {value: 'b', label: 'B', code: 'zz'},
   ];
 
-  public readonly ctrl = new FormControl<string | number>('b');
+  public readonly ctrl = new FormControl<string | number>('a');
 }
 
 class TestResizeObserver implements ResizeObserver {
@@ -258,6 +258,7 @@ describe('NdwuSelectFieldComponent option template', () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
 
@@ -268,7 +269,7 @@ describe('NdwuSelectFieldComponent option template', () => {
     }
   });
 
-  it('provides normalized, raw, localized-label, and selected values while preserving typeahead', async () => {
+  it('provides normalized, raw, localized-label, and selected values while matching typeahead by label', async () => {
     const fixture = TestBed.createComponent(SelectFieldOptionTemplateTestHostComponent);
 
     fixture.detectChanges();
@@ -276,21 +277,34 @@ describe('NdwuSelectFieldComponent option template', () => {
 
     const customContent = [...document.body.querySelectorAll<HTMLElement>('.custom')];
 
-    expect(customContent.map((element) => element.textContent?.trim())).toEqual(['aa|A|false', 'bb|B|true']);
+    expect(customContent.map((element) => element.textContent?.trim())).toEqual(['aa|A|true', 'zz|B|false']);
 
     const trigger = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('.ndwu-select-field__trigger');
     const optionB = [...document.body.querySelectorAll<HTMLElement>('.custom')]
-      .find((content) => content.textContent?.startsWith('bb|'))
+      .find((content) => content.textContent?.startsWith('zz|'))
       ?.closest<HTMLElement>('ndwu-styled-option');
 
     if (!trigger || !optionB) {
       throw new Error('Select field trigger or option B not found.');
     }
 
+    expect(trigger.getAttribute('aria-activedescendant')).not.toBe(optionB.id);
+
+    vi.useFakeTimers();
+
+    const activeOptionBeforeTypeahead = trigger.getAttribute('aria-activedescendant');
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', {key: 'z', bubbles: true}));
+    fixture.detectChanges();
+
+    vi.advanceTimersByTime(201);
+    fixture.detectChanges();
+
+    expect(trigger.getAttribute('aria-activedescendant')).toBe(activeOptionBeforeTypeahead);
+
     trigger.dispatchEvent(new KeyboardEvent('keydown', {key: 'b', bubbles: true}));
     fixture.detectChanges();
-    await fixture.whenStable();
-    await new Promise((resolve) => setTimeout(resolve, 250));
+    vi.advanceTimersByTime(201);
     fixture.detectChanges();
 
     expect(trigger.getAttribute('aria-activedescendant')).toBe(optionB.id);

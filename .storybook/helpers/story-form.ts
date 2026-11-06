@@ -5,7 +5,7 @@ import {withStackLayout} from './story-layout';
 import {lines} from './story-template';
 
 export interface SubmitArg {
-  submit: (entries: Record<string, FormDataEntryValue>) => void;
+  submit: (entries: [string, FormDataEntryValue][]) => void;
 }
 
 const SUBMIT_BUTTON = '<button ndwu-button type="submit" label="Submit"></button>';
@@ -19,7 +19,7 @@ export const submitProps = (args: SubmitArg): {submit: (event: SubmitEvent) => v
   return {
     submit: (event: SubmitEvent) => {
       event.preventDefault();
-      args.submit(Object.fromEntries(new FormData(event.target as HTMLFormElement)));
+      args.submit([...new FormData(event.target as HTMLFormElement)]);
     },
   };
 };

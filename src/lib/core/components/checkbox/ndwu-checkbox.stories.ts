@@ -4,7 +4,7 @@ import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {outputArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {AriaArgs, SizeArg} from '@sb/helpers/story-args';
-import {withControlledArgs} from '@sb/helpers/story-controlled';
+import {CONTROLLED_STORY_PARAMETERS, withControlledArgs} from '@sb/helpers/story-controlled';
 import {SubmitArg, nativeFormTemplate, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
 import {group, lines} from '@sb/helpers/story-template';
@@ -13,30 +13,8 @@ type CheckboxStoryArgs = NdwuCheckboxComponent & SizeArg & AriaArgs & SubmitArg;
 
 type Story = StoryObj<CheckboxStoryArgs>;
 
-interface CheckboxState {
-  label: string;
-  bindings: string;
-}
-
 const SIZES = [NDWU_SIZE.L, NDWU_SIZE.XL, NDWU_SIZE.XXL];
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
-const CHILDREN = [1, 2, 3];
-
-const ENABLED_STATES: readonly CheckboxState[] = [
-  {label: 'Unchecked', bindings: ''},
-  {label: 'Checked', bindings: '[checked]="true"'},
-  {label: 'Indeterminate', bindings: '[indeterminate]="true"'},
-  {label: 'Invalid', bindings: '[invalid]="true"'},
-];
-
-const DISABLED_STATES: readonly CheckboxState[] = [
-  {label: 'Disabled', bindings: '[disabled]="true"'},
-  {label: 'Disabled checked', bindings: '[checked]="true" [disabled]="true"'},
-];
-
-const checkbox = ({label, bindings}: CheckboxState): string => {
-  return `<ndwu-checkbox ${[`label="${label}"`, bindings].filter(Boolean).join(' ')} />`;
-};
 
 const meta: Meta<CheckboxStoryArgs> = {
   title: 'Core/Checkbox',
@@ -71,7 +49,6 @@ const meta: Meta<CheckboxStoryArgs> = {
       description: 'Sets `required` on the native input for form validation',
     },
     'id': {
-      control: 'text',
       description: 'Id of the native input; a generated id is used when empty',
     },
     'name': {
@@ -99,11 +76,9 @@ const meta: Meta<CheckboxStoryArgs> = {
       description: '`tabindex` of the native input',
     },
     'label': {
-      control: 'text',
       description: 'Label text, passed through the `localize` pipe',
     },
     'secondaryText': {
-      control: 'text',
       description: 'Text under the label, passed through the `localize` pipe',
     },
     'size': sizeArgType(SIZES),
@@ -126,7 +101,6 @@ const meta: Meta<CheckboxStoryArgs> = {
     'inputTabIndex': null,
     'label': 'Accept terms and conditions',
     'secondaryText': 'By checking this box, you agree to our terms of service',
-    'size': undefined,
   },
   render: (args) => ({
     props: args,
@@ -137,6 +111,7 @@ const meta: Meta<CheckboxStoryArgs> = {
 export default meta;
 
 export const Default: Story = {
+  parameters: CONTROLLED_STORY_PARAMETERS,
   decorators: [withControlledArgs('checkedChange', (checked) => ({checked, indeterminate: false}))],
 };
 
@@ -155,8 +130,16 @@ export const States: Story = {
   decorators: [withStackLayout],
   render: () => ({
     template: lines([
-      group(ENABLED_STATES.map(checkbox)),
-      group(DISABLED_STATES.map(checkbox)),
+      group([
+        '<ndwu-checkbox label="Unchecked" />',
+        '<ndwu-checkbox label="Checked" [checked]="true" />',
+        '<ndwu-checkbox label="Indeterminate" [indeterminate]="true" />',
+        '<ndwu-checkbox label="Invalid" [invalid]="true" />',
+      ]),
+      group([
+        '<ndwu-checkbox label="Disabled" [disabled]="true" />',
+        '<ndwu-checkbox label="Disabled checked" [checked]="true" [disabled]="true" />',
+      ]),
     ]),
   }),
 };
@@ -187,11 +170,11 @@ export const Indeterminate: Story = {
   [indeterminate]="someChecked()"
   (checkedChange)="toggleAll($event)"
 />`,
-        group(
-          CHILDREN.map((n) =>
-            `<ndwu-checkbox label="Child task ${n}" [checked]="child${n}()" (checkedChange)="child${n}.set($event)" />`
-          ),
-        ),
+        group([
+          '<ndwu-checkbox label="Child task 1" [checked]="child1()" (checkedChange)="child1.set($event)" />',
+          '<ndwu-checkbox label="Child task 2" [checked]="child2()" (checkedChange)="child2.set($event)" />',
+          '<ndwu-checkbox label="Child task 3" [checked]="child3()" (checkedChange)="child3.set($event)" />',
+        ]),
       ]),
     };
   },
@@ -209,24 +192,22 @@ export const WithoutLabel: Story = {
 };
 
 export const NativeForm: Story = {
-  parameters: FIXED_STORY_PARAMETERS,
+  parameters: {
+    ...FIXED_STORY_PARAMETERS,
+    docs: {
+      description: {
+        story:
+          'Submit logs the form entries to Actions: `terms` is `required` and sends `accepted`; `newsletter` has no `value`, so it sends `on`.',
+      },
+    },
+  },
   decorators: [...withNativeForm],
   argTypes: {submit: submitArgType},
   render: (args) => ({
     props: submitProps(args),
     template: nativeFormTemplate([
-      `<ndwu-checkbox
-  name="terms"
-  value="accepted"
-  required
-  label="Accept terms and conditions"
-  secondaryText="name=&quot;terms&quot;, value=&quot;accepted&quot;, required"
-/>`,
-      `<ndwu-checkbox
-  name="newsletter"
-  label="Newsletter subscription"
-  secondaryText="name=&quot;newsletter&quot; without value: sends &quot;on&quot;"
-/>`,
+      '<ndwu-checkbox name="terms" value="accepted" required label="Accept terms and conditions" />',
+      '<ndwu-checkbox name="newsletter" label="Newsletter subscription" />',
     ]),
   }),
 };

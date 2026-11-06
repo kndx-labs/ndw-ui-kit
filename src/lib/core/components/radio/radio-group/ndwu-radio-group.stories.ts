@@ -3,7 +3,7 @@ import {Meta, StoryObj, argsToTemplate, moduleMetadata} from '@storybook/angular
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {outputArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
-import {withControlledArgs} from '@sb/helpers/story-controlled';
+import {CONTROLLED_STORY_PARAMETERS, withControlledArgs} from '@sb/helpers/story-controlled';
 import {SubmitArg, nativeFormTemplate, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {withStackLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
@@ -15,69 +15,24 @@ type Story = StoryObj<RadioStoryArgs>;
 interface RadioOption {
   value: string;
   label: string;
-  attributes?: string;
-}
-
-interface RadioGroupExample {
-  bindings: string;
-  options: readonly RadioOption[];
+  secondaryText?: string;
 }
 
 const SIZES = [NDWU_SIZE.L, NDWU_SIZE.XL, NDWU_SIZE.XXL];
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
-const SECONDARY_TEXT = 'secondaryText="Additional text"';
 
 const DEFAULT_OPTIONS: readonly RadioOption[] = [
   {value: 'option1', label: 'Option 1'},
   {value: 'option2', label: 'Option 2'},
-  {value: 'option3', label: 'Option 3', attributes: SECONDARY_TEXT},
+  {value: 'option3', label: 'Option 3', secondaryText: 'Additional text'},
 ];
 
 const OPTION_VALUES = DEFAULT_OPTIONS.map(({value}) => value);
 
-const STATE_EXAMPLES: readonly RadioGroupExample[] = [
-  {
-    bindings: 'value="option2"',
-    options: [
-      {value: 'option1', label: 'Option 1'},
-      {value: 'option2', label: 'Option 2, selected'},
-    ],
-  },
-  {
-    bindings: '[disabled]="true"',
-    options: [
-      {value: 'option1', label: 'Disabled option 1'},
-      {value: 'option2', label: 'Disabled option 2'},
-    ],
-  },
-  {
-    bindings: 'value="option2" [disabled]="true"',
-    options: [
-      {value: 'option1', label: 'Disabled option 1'},
-      {value: 'option2', label: 'Disabled option 2, selected'},
-    ],
-  },
-  {
-    bindings: '',
-    options: [
-      {value: 'option1', label: 'Option 1'},
-      {value: 'option2', label: 'Disabled option 2', attributes: '[disabled]="true"'},
-    ],
-  },
-];
+const radioButton = ({value, label, secondaryText}: RadioOption): string => {
+  const text = secondaryText ? ` secondaryText="${secondaryText}"` : '';
 
-const optionsWithText = (prefix: string): readonly RadioOption[] => {
-  return [1, 2].map((n) => ({value: `option${n}`, label: `${prefix} option ${n}`, attributes: SECONDARY_TEXT}));
-};
-
-const radioButton = ({value, label, attributes}: RadioOption): string => {
-  return `  <ndwu-radio-button ${[`value="${value}"`, `label="${label}"`, attributes].filter(Boolean).join(' ')} />`;
-};
-
-const radioGroup = ({bindings, options}: RadioGroupExample): string => {
-  const openTag = ['<ndwu-radio-group', bindings].filter(Boolean).join(' ');
-
-  return `${openTag}>\n${lines(options.map(radioButton))}\n</ndwu-radio-group>`;
+  return `  <ndwu-radio-button value="${value}" label="${label}"${text} />`;
 };
 
 const meta: Meta<RadioStoryArgs> = {
@@ -126,7 +81,6 @@ const meta: Meta<RadioStoryArgs> = {
     name: '',
     disabled: false,
     required: false,
-    size: undefined,
   },
   render: (args) => ({
     props: args,
@@ -139,6 +93,7 @@ const meta: Meta<RadioStoryArgs> = {
 export default meta;
 
 export const Default: Story = {
+  parameters: CONTROLLED_STORY_PARAMETERS,
   decorators: [withControlledArgs('valueChange', (value) => ({value}))],
 };
 
@@ -147,7 +102,12 @@ export const Sizes: Story = {
   decorators: [withStackLayout],
   render: () => ({
     template: lines(
-      SIZES.map((size) => radioGroup({bindings: `size="${size}"`, options: optionsWithText(`Size ${size}`)})),
+      SIZES.map((size) =>
+        `<ndwu-radio-group size="${size}">
+  <ndwu-radio-button value="option1" label="Size ${size} option 1" secondaryText="Additional text" />
+  <ndwu-radio-button value="option2" label="Size ${size} option 2" secondaryText="Additional text" />
+</ndwu-radio-group>`
+      ),
     ),
   }),
 };
@@ -156,14 +116,24 @@ export const States: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withStackLayout],
   render: () => ({
-    template: lines(STATE_EXAMPLES.map(radioGroup)),
-  }),
-};
-
-export const WithSecondaryText: Story = {
-  parameters: FIXED_STORY_PARAMETERS,
-  render: () => ({
-    template: radioGroup({bindings: '', options: optionsWithText('Plan')}),
+    template: lines([
+      `<ndwu-radio-group value="option2">
+  <ndwu-radio-button value="option1" label="Option 1" />
+  <ndwu-radio-button value="option2" label="Option 2, selected" />
+</ndwu-radio-group>`,
+      `<ndwu-radio-group [disabled]="true">
+  <ndwu-radio-button value="option1" label="Disabled option 1" secondaryText="Additional text" />
+  <ndwu-radio-button value="option2" label="Disabled option 2" secondaryText="Additional text" />
+</ndwu-radio-group>`,
+      `<ndwu-radio-group value="option2" [disabled]="true">
+  <ndwu-radio-button value="option1" label="Disabled option 1" />
+  <ndwu-radio-button value="option2" label="Disabled option 2, selected" />
+</ndwu-radio-group>`,
+      `<ndwu-radio-group>
+  <ndwu-radio-button value="option1" label="Option 1" />
+  <ndwu-radio-button value="option2" label="Disabled option 2" [disabled]="true" />
+</ndwu-radio-group>`,
+    ]),
   }),
 };
 
@@ -174,13 +144,10 @@ export const NativeForm: Story = {
   render: (args) => ({
     props: submitProps(args),
     template: nativeFormTemplate([
-      radioGroup({
-        bindings: 'name="plan" required',
-        options: [
-          {value: 'basic', label: 'Basic', attributes: 'aria-describedby="radio-native-form-basic-hint"'},
-          {value: 'pro', label: 'Pro'},
-        ],
-      }),
+      `<ndwu-radio-group name="plan" required>
+  <ndwu-radio-button value="basic" label="Basic" aria-describedby="radio-native-form-basic-hint" />
+  <ndwu-radio-button value="pro" label="Pro" />
+</ndwu-radio-group>`,
       '<span id="radio-native-form-basic-hint">The Basic option is described by this text through aria-describedby</span>',
     ]),
   }),

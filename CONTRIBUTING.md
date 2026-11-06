@@ -146,17 +146,19 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `parameters.sizes` for components with the `NdwuSizeDirective` host directive (`inputs: ['ndwuSize: size']`), not for
   components with their own `size` input. A Size toolbar value outside `parameters.sizes` leaves the component at its
   default size and shows a "not supported" note.
-- Compodoc names aliased inputs by their alias (`aria-label`, not `ariaLabel`). Key their args by the alias in `Extra`
-  (`AriaArgs` from `@sb/helpers/story-args` for `aria-label`, `aria-labelledby`, `aria-describedby`). `argsToTemplate`
-  binds them as `[aria-label]="this['aria-label']"`, and `argsSourceTransform` turns that into a literal attribute. In
-  fixed stories write the alias as a plain attribute. Quote every key of `argTypes` / `args` once an alias key is
-  present (`quote-props`).
-- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `outputArgType`, `eventArgType`.
+- Compodoc names aliased inputs by their alias (`aria-label` for `ariaLabel`, `id` for `idInput`). Key their args by
+  the alias in `Extra`: `AriaArgs` from `@sb/helpers/story-args` when the component aliases `aria-label`,
+  `aria-labelledby` and `aria-describedby`, `Pick<AriaArgs, ...>` for a subset. Inputs without an alias keep their
+  property name (`ariaLabel`). In fixed stories write the alias as a plain attribute. Once a key is not an identifier
+  (`aria-*`), quote every key of `argTypes` / `args` (`quote-props`).
+- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `outputArgType`, `eventArgType`; the
+  form-only `submitArgType` lives in `@sb/helpers/story-form`.
 - A story that needs the router spreads `withRouter` from `@sb/helpers/story-router` in its `decorators` array:
   `decorators: [...withRouter]`. It adds story-level `provideRouter` and `provideLocationMocks`; `sb-router-url` shows
   the current URL.
 - Descriptions go into `argTypes.<name>.description` in the story file, a one-sentence component intro into
-  `parameters.docs.description.component`. Compodoc adds types and defaults of inputs.
+  `parameters.docs.description.component`. Compodoc adds types and defaults of inputs. A story's explanation goes into
+  `parameters.docs.description.story`, not into rendered text such as `secondaryText`, which "Show code" copies.
 - Set every control's starting value in `meta.args` (e.g. `variant`, booleans `false`, `icon: null`), so the Controls
   panel shows the current value instead of "Choose option...".
 - An arg reaches the template only if its argType has a `control` or an `action`; `control: false` removes it.
@@ -166,15 +168,18 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   - fixed stories build a literal template from typed data in TS (`VARIANTS.map(...)`), without `@for` over props,
     props for constants or inline styles;
   - layout goes into a story decorator, which "Show code" leaves out: `withRowLayout` for one row, `withStackLayout`
-    for rows given as `<div>` groups (`@sb/helpers/story-layout`, `group` from `@sb/helpers/story-template`); a direct
-    `<form>` child is stacked too (`withNativeForm`).
+    for rows given as `<div>` groups (`@sb/helpers/story-layout`, `group` from `@sb/helpers/story-template`).
+- Literal ids in fixed stories follow `<component>-<story-kebab>-<part>` (`toggle-external-label-input`): all stories
+  render on one docs page, so an id must be unique there. `Default` uses generated ids.
 - Native DOM events: `eventArgType('<event>', '<description>')`. Outputs and `model()` change events:
   `outputArgType('<name>', '<description>')`. Compodoc's output docs are filtered out, so outputs are listed by hand.
-- Controlled form controls (`checked` / `checkedChange`, `value` / `valueChange`): `Default` gets
-  `decorators: [withControlledArgs('<output>', (value) => ({...}))]` (`@sb/helpers/story-controlled`), so a click
-  updates the arg and the Controls panel. Hooks such as `useArgs` go in decorators, never in `render`: "Show code"
-  calls `render` again outside the hooks context and the docs story fails. `toArgs` never sets an arg to `undefined`
-  (that remounts the story). Fixed stories stay uncontrolled literals.
+- Controlled inputs, whose new value the component reports through an output or a `model()` (`checked` /
+  `checkedChange`, `value` / `valueChange`, `selectedTabId` / `tabChange`): `Default` gets
+  `parameters: CONTROLLED_STORY_PARAMETERS` and `decorators: [withControlledArgs('<name>Change', (value) => ({...}))]`
+  (`@sb/helpers/story-controlled`), so a user change updates the arg and the Controls panel. The parameter keeps the
+  story out of the docs page's "Stories" list, where a second copy would update the Primary one. Hooks such as `useArgs` go in decorators, never in `render` (see
+  [.storybook/README.md](.storybook/README.md)). `toArgs` returns only keys that are in `meta.args` and never
+  `undefined`: either one changes the template and remounts the story. Fixed stories stay uncontrolled literals.
 - Components the template uses besides `component:` (radio buttons in a group, a submit button) go into
   `moduleMetadata({imports: [...]})`; `subcomponents` only adds their ArgTypes tab. Their inputs get no controls, so
   fixed stories show them.

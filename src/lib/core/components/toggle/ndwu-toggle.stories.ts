@@ -3,7 +3,7 @@ import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {outputArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {AriaArgs, SizeArg} from '@sb/helpers/story-args';
-import {withControlledArgs} from '@sb/helpers/story-controlled';
+import {CONTROLLED_STORY_PARAMETERS, withControlledArgs} from '@sb/helpers/story-controlled';
 import {SubmitArg, nativeFormTemplate, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
@@ -12,29 +12,9 @@ type ToggleStoryArgs = NdwuToggleComponent & SizeArg & AriaArgs & SubmitArg;
 
 type Story = StoryObj<ToggleStoryArgs>;
 
-interface ToggleExample {
-  label: string;
-  bindings: string;
-}
-
 const SIZES = [NDWU_SIZE.L, NDWU_SIZE.XL, NDWU_SIZE.XXL];
 const COLORS: readonly NdwuToggleColor[] = Object.values(NDWU_TOGGLE_COLOR);
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
-
-const COLOR_EXAMPLES: readonly ToggleExample[] = COLORS.flatMap((color) => [
-  {label: `Color ${color}`, bindings: `color="${color}"`},
-  {label: `Color ${color}, checked`, bindings: `color="${color}" [checked]="true"`},
-]);
-
-const STATE_EXAMPLES: readonly ToggleExample[] = [
-  {label: 'Checked', bindings: '[checked]="true"'},
-  {label: 'Disabled', bindings: '[disabled]="true"'},
-  {label: 'Disabled checked', bindings: '[checked]="true" [disabled]="true"'},
-];
-
-const toggle = ({label, bindings}: ToggleExample): string => {
-  return `<ndwu-toggle ${[`label="${label}"`, bindings].filter(Boolean).join(' ')} />`;
-};
 
 const meta: Meta<ToggleStoryArgs> = {
   title: 'Core/Toggle',
@@ -65,7 +45,6 @@ const meta: Meta<ToggleStoryArgs> = {
       description: 'Track colour when checked; unknown values fall back to `brand`',
     },
     'id': {
-      control: 'text',
       description: 'Id of the native input, for an external `<label for>`; a generated id is used when empty',
     },
     'name': {
@@ -89,11 +68,9 @@ const meta: Meta<ToggleStoryArgs> = {
       description: 'Id of the element that describes the toggle',
     },
     'label': {
-      control: 'text',
       description: 'Label text, passed through the `localize` pipe',
     },
     'secondaryText': {
-      control: 'text',
       description: 'Text under the label, passed through the `localize` pipe',
     },
     'size': sizeArgType(SIZES),
@@ -113,7 +90,6 @@ const meta: Meta<ToggleStoryArgs> = {
     'aria-describedby': null,
     'label': 'Enable notifications',
     'secondaryText': 'Receive updates about your account activity',
-    'size': undefined,
   },
   render: (args) => ({
     props: args,
@@ -124,6 +100,7 @@ const meta: Meta<ToggleStoryArgs> = {
 export default meta;
 
 export const Default: Story = {
+  parameters: CONTROLLED_STORY_PARAMETERS,
   decorators: [withControlledArgs('checkedChange', (checked) => ({checked}))],
 };
 
@@ -131,7 +108,12 @@ export const Colors: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withRowLayout],
   render: () => ({
-    template: lines(COLOR_EXAMPLES.map(toggle)),
+    template: lines(
+      COLORS.flatMap((color) => [
+        `<ndwu-toggle label="Color ${color}" color="${color}" />`,
+        `<ndwu-toggle label="Color ${color}, checked" color="${color}" [checked]="true" />`,
+      ]),
+    ),
   }),
 };
 
@@ -149,7 +131,11 @@ export const States: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withRowLayout],
   render: () => ({
-    template: lines(STATE_EXAMPLES.map(toggle)),
+    template: lines([
+      '<ndwu-toggle label="Checked" [checked]="true" />',
+      '<ndwu-toggle label="Disabled" [disabled]="true" />',
+      '<ndwu-toggle label="Disabled checked" [checked]="true" [disabled]="true" />',
+    ]),
   }),
 };
 
@@ -180,23 +166,22 @@ export const ExternalLabel: Story = {
 };
 
 export const NativeForm: Story = {
-  parameters: FIXED_STORY_PARAMETERS,
+  parameters: {
+    ...FIXED_STORY_PARAMETERS,
+    docs: {
+      description: {
+        story:
+          'Submit logs the form entries to Actions: `notifications` sends `enabled`; `auto-save` has no `value`, so it sends `on`.',
+      },
+    },
+  },
   decorators: [...withNativeForm],
   argTypes: {submit: submitArgType},
   render: (args) => ({
     props: submitProps(args),
     template: nativeFormTemplate([
-      `<ndwu-toggle
-  name="notifications"
-  value="enabled"
-  label="Enable notifications"
-  secondaryText="name=&quot;notifications&quot;, value=&quot;enabled&quot;"
-/>`,
-      `<ndwu-toggle
-  name="auto-save"
-  label="Auto-save"
-  secondaryText="name=&quot;auto-save&quot; without value: sends &quot;on&quot;"
-/>`,
+      '<ndwu-toggle name="notifications" value="enabled" label="Enable notifications" />',
+      '<ndwu-toggle name="auto-save" label="Auto-save" />',
     ]),
   }),
 };

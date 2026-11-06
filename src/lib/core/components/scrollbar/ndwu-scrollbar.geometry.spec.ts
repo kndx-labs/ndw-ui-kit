@@ -1,6 +1,13 @@
 import {describe, expect, it} from 'vitest';
-import type {NdwuAxisMetrics} from './ndwu-scrollbar.types';
-import {calculateThumbOffset, calculateThumbSize, convertTrackToScroll, hasOverflow} from './ndwu-scrollbar.geometry';
+import type {NdwuAxisMetrics} from './ndwu-scrollbar.internal-types';
+import {
+  calculateThumbOffset,
+  calculateThumbSize,
+  canScrollToward,
+  convertTrackToScroll,
+  hasOverflow,
+  resolveWheelDelta,
+} from './ndwu-scrollbar.geometry';
 
 const MIN_THUMB = 24;
 
@@ -13,6 +20,32 @@ const metrics = (overrides: Partial<NdwuAxisMetrics> = {}): NdwuAxisMetrics => {
     ...overrides,
   };
 };
+
+describe('resolveWheelDelta', () => {
+  it.each(
+    [
+      ['pixel', 0, 2],
+      ['line', 1, 32],
+      ['page', 2, 400],
+    ] as const,
+  )('converts %s deltas to pixels', (_mode, deltaMode, expected) => {
+    expect(resolveWheelDelta(2, deltaMode, 200)).toBe(expected);
+  });
+});
+
+describe('canScrollToward', () => {
+  it.each(
+    [
+      ['backward from start', metrics({scrollOffset: 0}), -1, false],
+      ['forward from start', metrics({scrollOffset: 0}), 1, true],
+      ['forward from middle', metrics({scrollOffset: 100}), 1, true],
+      ['forward from end', metrics({scrollOffset: 200}), 1, false],
+      ['forward within end tolerance', metrics({scrollOffset: 199.5}), 1, false],
+    ] as const,
+  )('%s', (_case, axisMetrics, delta, expected) => {
+    expect(canScrollToward(axisMetrics, delta)).toBe(expected);
+  });
+});
 
 describe('calculateThumbSize', () => {
   it('scales the thumb by the visible part of the content', () => {

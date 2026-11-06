@@ -5,7 +5,7 @@ import {
   type NdwuWeekDay,
 } from '../schedule-editor.types';
 import {NDWU_DAY_TO_NDM_DAY, NDWU_NDM_DAY_TO_DAY} from '../schedule-editor.constants';
-import {DAYS_IN_WEEK, MINUTES_IN_HOUR} from '../ndwu-schedule-editor.constants';
+import {DAYS_IN_WEEK, MINUTES_IN_HOUR} from '../schedule-editor.internal.constants';
 
 export const minutesToTime = (minutes: number): string => {
   const h = Math.floor(minutes / MINUTES_IN_HOUR);

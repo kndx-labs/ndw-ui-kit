@@ -35,4 +35,25 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Anchor link with disabled and external states.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Checkbox',
+    docsId: 'core-checkbox--docs',
+    description: 'Checkbox with label, secondary text and indeterminate state.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Radio',
+    docsId: 'core-radio--docs',
+    description: 'Radio group with options, sizes and disabled states.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Toggle',
+    docsId: 'core-toggle--docs',
+    description: 'Switch in brand or green colour.',
+    ready: false,
+  },
 ];

@@ -74,11 +74,9 @@
   }
 
   &.ndwu-styled-option--danger {
-    color: var(--ndwu-styled-option-danger-text-color);
-  }
+    --ndwu-styled-option-hover-bg: var(--ndwu-styled-option-danger-hover-bg);
 
-  &.ndwu-styled-option--danger:hover:not(.ndwu-styled-option--disabled, .ndwu-styled-option--selected) {
-    background-color: var(--ndwu-styled-option-danger-hover-bg);
+    color: var(--ndwu-styled-option-danger-text-color);
   }
 
   &.ndwu-styled-option--disabled,

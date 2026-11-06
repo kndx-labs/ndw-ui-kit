@@ -3,7 +3,7 @@ import {Meta, StoryObj, argsToTemplate, moduleMetadata} from '@storybook/angular
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {outputArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
-import {controlledProps} from '@sb/helpers/story-controlled';
+import {withControlledArgs} from '@sb/helpers/story-controlled';
 import {SubmitArg, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {withStackLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
@@ -128,7 +128,7 @@ const meta: Meta<RadioStoryArgs> = {
     size: undefined,
   },
   render: (args) => ({
-    props: controlledProps(args, 'valueChange', (value) => ({value})),
+    props: args,
     template: `<ndwu-radio-group ${argsToTemplate(args)}>\n${
       lines(DEFAULT_OPTIONS.map(radioButton))
     }\n</ndwu-radio-group>`,
@@ -137,7 +137,9 @@ const meta: Meta<RadioStoryArgs> = {
 
 export default meta;
 
-export const Default: Story = {};
+export const Default: Story = {
+  decorators: [withControlledArgs('valueChange', (value) => ({value}))],
+};
 
 export const Sizes: Story = {
   parameters: FIXED_STORY_PARAMETERS,

@@ -3,7 +3,7 @@ import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {outputArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {AriaArgs, SizeArg} from '@sb/helpers/story-args';
-import {controlledProps} from '@sb/helpers/story-controlled';
+import {withControlledArgs} from '@sb/helpers/story-controlled';
 import {SubmitArg, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
@@ -116,14 +116,16 @@ const meta: Meta<ToggleStoryArgs> = {
     'size': undefined,
   },
   render: (args) => ({
-    props: controlledProps(args, 'checkedChange', (checked) => ({checked})),
+    props: args,
     template: `<ndwu-toggle ${argsToTemplate(args)} />`,
   }),
 };
 
 export default meta;
 
-export const Default: Story = {};
+export const Default: Story = {
+  decorators: [withControlledArgs('checkedChange', (checked) => ({checked}))],
+};
 
 export const Colors: Story = {
   parameters: FIXED_STORY_PARAMETERS,

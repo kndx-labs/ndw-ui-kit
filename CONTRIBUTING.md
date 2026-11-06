@@ -170,10 +170,11 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
     (`withNativeForm`).
 - Native DOM events: `eventArgType('<event>', '<description>')`. Outputs and `model()` change events:
   `outputArgType('<name>', '<description>')`. Compodoc's output docs are filtered out, so outputs are listed by hand.
-- Controlled form controls (`checked` / `checkedChange`, `value` / `valueChange`): the `Default` render passes
-  `controlledProps(args, '<output>', (value) => ({...}))` (`@sb/helpers/story-controlled`) as `props`, so a click
-  updates the arg, the Controls panel and "Show code". `toArgs` never sets an arg to `undefined` (that remounts the
-  story). Fixed stories stay uncontrolled literals.
+- Controlled form controls (`checked` / `checkedChange`, `value` / `valueChange`): `Default` gets
+  `decorators: [withControlledArgs('<output>', (value) => ({...}))]` (`@sb/helpers/story-controlled`), so a click
+  updates the arg and the Controls panel. Hooks such as `useArgs` go in decorators, never in `render`: "Show code"
+  calls `render` again outside the hooks context and the docs story fails. `toArgs` never sets an arg to `undefined`
+  (that remounts the story). Fixed stories stay uncontrolled literals.
 - Components the template uses besides `component:` (radio buttons in a group, a submit button) go into
   `moduleMetadata({imports: [...]})`; `subcomponents` only adds their ArgTypes tab. Their inputs get no controls, so
   fixed stories show them.

@@ -19,6 +19,43 @@ class TestResizeObserver implements ResizeObserver {
   public disconnect(): void {}
 }
 
+class TestIntersectionObserver {
+  public static readonly instances: TestIntersectionObserver[] = [];
+  public readonly observedTargets = new Set<Element>();
+
+  constructor(private readonly callback: IntersectionObserverCallback) {
+    TestIntersectionObserver.instances.push(this);
+  }
+
+  public observe(target: Element): void {
+    this.observedTargets.add(target);
+  }
+
+  public unobserve(target: Element): void {
+    this.observedTargets.delete(target);
+  }
+
+  public disconnect(): void {
+    this.observedTargets.clear();
+  }
+
+  public report(target: Element, isIntersecting: boolean): void {
+    if (!this.observedTargets.has(target)) {
+      return;
+    }
+
+    const entry = {target, isIntersecting} as IntersectionObserverEntry;
+
+    this.callback([entry], this as unknown as IntersectionObserver);
+  }
+}
+
+function reportIntersection(target: Element, isIntersecting: boolean): void {
+  const observer = TestIntersectionObserver.instances.at(-1);
+
+  observer?.report(target, isIntersecting);
+}
+
 function createMatchMedia(matches: boolean): (query: string) => MediaQueryList {
   return (query) => {
     return {
@@ -99,7 +136,7 @@ function stripElement(fixture: ComponentFixture<NdwuHeatStripComponent>): HTMLEl
   return strip;
 }
 
-function cellElements(fixture: ComponentFixture<NdwuHeatStripComponent>): HTMLElement[] {
+function cellElements<T>(fixture: ComponentFixture<T>): HTMLElement[] {
   return Array.from(rootElement(fixture).querySelectorAll<HTMLElement>('.ndwu-heat-strip__cell'));
 }
 
@@ -137,7 +174,9 @@ function tooltipElement(): HTMLElement | null {
 describe('NdwuHeatStripComponent', () => {
   beforeEach(() => {
     vi.stubGlobal('ResizeObserver', TestResizeObserver);
+    vi.stubGlobal('IntersectionObserver', TestIntersectionObserver);
     vi.stubGlobal('matchMedia', createMatchMedia(false));
+    TestIntersectionObserver.instances.length = 0;
 
     TestBed.configureTestingModule({
       imports: [NdwuHeatStripComponent, HeatStripTooltipTestHostComponent, HeatStripUnboundTooltipTestHostComponent],
@@ -478,6 +517,49 @@ describe('NdwuHeatStripComponent', () => {
 
     expect(tooltipElement()?.textContent).toContain('1:b');
     expect(cells[0]?.hasAttribute('aria-describedby')).toBe(false);
+  });
+
+  it('closes tooltip and clears the active cell when its origin scrolls out of view', () => {
+    const fixture = createTooltipHost();
+    const activeCell = cellElements(fixture)[1];
+
+    if (activeCell === undefined) {
+      throw new Error('Expected active cell.');
+    }
+
+    activeCell.focus();
+    fixture.detectChanges();
+    reportIntersection(activeCell, false);
+    fixture.detectChanges();
+
+    expect(tooltipElement()).toBeNull();
+    expect(activeCell.classList.contains('ndwu-heat-strip__cell--active')).toBe(false);
+    expect(document.activeElement).toBe(activeCell);
+  });
+
+  it('watches the current tooltip target after focus moves between cells', () => {
+    const fixture = createTooltipHost();
+    const cells = cellElements(fixture);
+    const firstCell = cells[0];
+    const secondCell = cells[1];
+
+    if (firstCell === undefined || secondCell === undefined) {
+      throw new Error('Expected first two cells.');
+    }
+
+    firstCell.focus();
+    fixture.detectChanges();
+    firstCell.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight', bubbles: true}));
+    fixture.detectChanges();
+
+    reportIntersection(firstCell, false);
+    fixture.detectChanges();
+    expect(tooltipElement()).not.toBeNull();
+
+    reportIntersection(secondCell, false);
+    fixture.detectChanges();
+
+    expect(tooltipElement()).toBeNull();
   });
 
   it('closes tooltip on Escape without moving focus', () => {

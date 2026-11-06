@@ -14,4 +14,25 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Primary action control with variants and sizes.',
     ready: true,
   },
+  {
+    group: 'Core',
+    name: 'Icon Button',
+    docsId: 'core-button-icon-button--docs',
+    description: 'Icon-only button in square, round and flat variants.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Timing Button',
+    docsId: 'core-button-timing-button--docs',
+    description: 'Button with a countdown that ends on user click or timeout.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Link',
+    docsId: 'core-link--docs',
+    description: 'Anchor link with disabled and external states.',
+    ready: false,
+  },
 ];

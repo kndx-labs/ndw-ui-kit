@@ -1,9 +1,9 @@
 import {NDWU_SIZE, NdwuRadioButtonComponent, NdwuRadioGroupComponent} from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate, moduleMetadata} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
-import {outputArgType, sizeArgType} from '@sb/helpers/arg-types';
+import {booleanArgType, outputArgType, sizeArgType, textArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
-import {CONTROLLED_STORY_PARAMETERS, withControlledArgs} from '@sb/helpers/story-controlled';
+import {withControlledArgs} from '@sb/helpers/story-controlled';
 import {SubmitArg, nativeFormTemplate, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {withStackLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
@@ -62,16 +62,9 @@ const meta: Meta<RadioStoryArgs> = {
       options: ['', ...OPTION_VALUES],
       description: 'Value of the selected option; update it from `valueChange`',
     },
-    name: {
-      control: 'text',
-      description: 'Native `name` of every radio; a generated name is used when empty',
-    },
-    disabled: {
-      description: 'Disables every option',
-    },
-    required: {
-      description: 'Sets `required` on every native radio for form validation',
-    },
+    name: textArgType('Native `name` of every radio; a generated name is used when empty'),
+    disabled: booleanArgType('Disables every option'),
+    required: booleanArgType('Sets `required` on every native radio for form validation'),
     size: sizeArgType(SIZES),
     valueChange: outputArgType('valueChange', 'Emits the value of the option the user selects'),
     blurred: outputArgType('blurred', 'Emits when focus leaves the group'),
@@ -93,7 +86,6 @@ const meta: Meta<RadioStoryArgs> = {
 export default meta;
 
 export const Default: Story = {
-  parameters: CONTROLLED_STORY_PARAMETERS,
   decorators: [withControlledArgs('valueChange', (value) => ({value}))],
 };
 

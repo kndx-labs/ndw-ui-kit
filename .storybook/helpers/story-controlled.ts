@@ -1,11 +1,5 @@
-import {Args, Decorator, Parameters as StoryParameters} from '@storybook/angular';
+import {Args, Decorator} from '@storybook/angular';
 import {useArgs} from 'storybook/preview-api';
-
-export const CONTROLLED_STORY_PARAMETERS = {controlledArgs: true};
-
-export const isUncontrolledStory = ({parameters}: {parameters: StoryParameters}): boolean => {
-  return !parameters['controlledArgs'];
-};
 
 type Payload<T> = Parameters<Extract<T, (value: never) => void>>[0];
 
@@ -17,7 +11,11 @@ export const withControlledArgs = <TArgs extends Args, K extends OutputKey<TArgs
   output: K,
   toArgs: (value: Payload<TArgs[K]>) => Partial<TArgs>,
 ): Decorator<TArgs> => {
-  return (storyFn, {args}) => {
+  return (storyFn, {args, viewMode}) => {
+    if (viewMode === 'docs') {
+      return storyFn();
+    }
+
     const [, updateArgs] = useArgs<TArgs>();
     const original = args[output] as ((value: Payload<TArgs[K]>) => void) | undefined;
 

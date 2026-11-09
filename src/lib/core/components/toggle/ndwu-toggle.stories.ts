@@ -1,9 +1,9 @@
 import {NDWU_SIZE, NDWU_TOGGLE_COLOR, NdwuToggleColor, NdwuToggleComponent} from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
-import {outputArgType, sizeArgType} from '@sb/helpers/arg-types';
+import {booleanArgType, outputArgType, sizeArgType, textArgType} from '@sb/helpers/arg-types';
 import {AriaArgs, SizeArg} from '@sb/helpers/story-args';
-import {CONTROLLED_STORY_PARAMETERS, withControlledArgs} from '@sb/helpers/story-controlled';
+import {withControlledArgs} from '@sb/helpers/story-controlled';
 import {SubmitArg, nativeFormTemplate, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
@@ -33,46 +33,21 @@ const meta: Meta<ToggleStoryArgs> = {
     },
   },
   argTypes: {
-    'checked': {
-      description: 'Checked state; update it from `checkedChange`',
-    },
-    'disabled': {
-      description: 'Disables the toggle',
-    },
+    'checked': booleanArgType('Checked state; update it from `checkedChange`'),
+    'disabled': booleanArgType('Disables the toggle'),
     'color': {
       control: 'select',
       options: COLORS,
       description: 'Track colour when checked; unknown values fall back to `brand`',
     },
-    'id': {
-      description: 'Id of the native input, for an external `<label for>`; a generated id is used when empty',
-    },
-    'name': {
-      control: 'text',
-      description: 'Native `name`, sent with the form',
-    },
-    'value': {
-      control: 'text',
-      description: 'Native `value`, sent when checked; the browser sends `on` when unset',
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name when there is no visible label',
-    },
-    'aria-labelledby': {
-      control: 'text',
-      description: 'Id of the element that labels the toggle',
-    },
-    'aria-describedby': {
-      control: 'text',
-      description: 'Id of the element that describes the toggle',
-    },
-    'label': {
-      description: 'Label text, passed through the `localize` pipe',
-    },
-    'secondaryText': {
-      description: 'Text under the label, passed through the `localize` pipe',
-    },
+    'id': textArgType('Id of the native input, for an external `<label for>`; a generated id is used when empty'),
+    'name': textArgType('Native `name`, sent with the form'),
+    'value': textArgType('Native `value`, sent when checked; the browser sends `on` when unset'),
+    'aria-label': textArgType('Accessible name when there is no visible label'),
+    'aria-labelledby': textArgType('Id of the element that labels the toggle'),
+    'aria-describedby': textArgType('Id of the element that describes the toggle'),
+    'label': textArgType('Label text, passed through the `localize` pipe'),
+    'secondaryText': textArgType('Text under the label, passed through the `localize` pipe'),
     'size': sizeArgType(SIZES),
     'checkedChange': outputArgType('checkedChange', 'Emits the new checked state on user change'),
     'focused': outputArgType('focused', 'Emits when the native input gets focus'),
@@ -100,7 +75,6 @@ const meta: Meta<ToggleStoryArgs> = {
 export default meta;
 
 export const Default: Story = {
-  parameters: CONTROLLED_STORY_PARAMETERS,
   decorators: [withControlledArgs('checkedChange', (checked) => ({checked}))],
 };
 

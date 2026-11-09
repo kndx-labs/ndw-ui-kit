@@ -151,8 +151,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `aria-labelledby` and `aria-describedby`, `Pick<AriaArgs, ...>` for a subset. Inputs without an alias keep their
   property name (`ariaLabel`). In fixed stories write the alias as a plain attribute. Once a key is not an identifier
   (`aria-*`), quote every key of `argTypes` / `args` (`quote-props`).
-- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `outputArgType`, `eventArgType`; the
-  form-only `submitArgType` lives in `@sb/helpers/story-form`.
+- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `textArgType`, `booleanArgType`,
+  `outputArgType`, `eventArgType`; the form-only `submitArgType` lives in `@sb/helpers/story-form`.
 - A story that needs the router spreads `withRouter` from `@sb/helpers/story-router` in its `decorators` array:
   `decorators: [...withRouter]`. It adds story-level `provideRouter` and `provideLocationMocks`; `sb-router-url` shows
   the current URL.
@@ -175,11 +175,12 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `outputArgType('<name>', '<description>')`. Compodoc's output docs are filtered out, so outputs are listed by hand.
 - Controlled inputs, whose new value the component reports through an output or a `model()` (`checked` /
   `checkedChange`, `value` / `valueChange`, `selectedTabId` / `tabChange`): `Default` gets
-  `parameters: CONTROLLED_STORY_PARAMETERS` and `decorators: [withControlledArgs('<name>Change', (value) => ({...}))]`
-  (`@sb/helpers/story-controlled`), so a user change updates the arg and the Controls panel. The parameter keeps the
-  story out of the docs page's "Stories" list, where a second copy would update the Primary one. Hooks such as `useArgs` go in decorators, never in `render` (see
-  [.storybook/README.md](.storybook/README.md)). `toArgs` returns only keys that are in `meta.args` and never
-  `undefined`: either one changes the template and remounts the story. Fixed stories stay uncontrolled literals.
+  `decorators: [withControlledArgs('<name>Change', (value) => ({...}))]` (`@sb/helpers/story-controlled`), so a user
+  change updates the arg and the Controls panel. On the docs page the decorator does nothing: Storybook's Angular docs
+  renderer remounts the story on every args update, and the focused control would lose focus. Hooks such as `useArgs`
+  go in decorators, never in `render` (see [.storybook/README.md](.storybook/README.md)). `toArgs` returns only keys
+  that are in `meta.args` and never `undefined`: either one changes the template and remounts the story. Fixed stories
+  stay uncontrolled literals.
 - Components the template uses besides `component:` (radio buttons in a group, a submit button) go into
   `moduleMetadata({imports: [...]})`; `subcomponents` only adds their ArgTypes tab. Their inputs get no controls, so
   fixed stories show them.

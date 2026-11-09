@@ -3,7 +3,6 @@ import {Preview, applicationConfig} from '@storybook/angular';
 import {sizeGlobalType, sizeInitialGlobal, withSize, withSizeProviderImport} from './decorators/with-size.decorator';
 import {withTheme} from './decorators/with-theme.decorator';
 import docJson from './documentation.json';
-import {isUncontrolledStory} from './helpers/story-controlled';
 import {STORYBOOK_PROVIDERS} from './providers';
 
 setCompodocJson(docJson);
@@ -38,9 +37,6 @@ const preview: Preview = {
     docs: {
       source: {
         excludeDecorators: true,
-      },
-      stories: {
-        filter: isUncontrolledStory,
       },
     },
     a11y: {

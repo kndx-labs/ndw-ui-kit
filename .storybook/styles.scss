@@ -22,6 +22,13 @@
   gap: 16px;
 }
 
+.sb-stack > form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
 .sb-note {
   margin: 0 0 16px;
   color: var(--ndwu-color-gray-80);

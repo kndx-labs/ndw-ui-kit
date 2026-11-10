@@ -46,7 +46,7 @@ export const formControlArgs: FormControlArgs = {
 
 const createEntry = <T>(value: T, validators: ValidatorFn[]): StoryFormControlEntry => {
   return {
-    control: new FormControl<T>(value, {nonNullable: true, validators}) as FormControl<unknown>,
+    control: new FormControl<T>(value, {nonNullable: true, validators}),
     disabled: false,
     touched: false,
   };

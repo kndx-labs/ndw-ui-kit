@@ -78,7 +78,7 @@ const meta: Meta<PopoverTriggerStoryArgs> = {
     popoverMinWidth: {
       control: 'number',
       description:
-        'Minimum overlay width on desktop, in px; dropdown controller only (never below the host width). The popover-panel and tooltip controllers ignore it',
+        'Minimum width of the overlay pane on desktop, in px; dropdown controller only (never below the host width). The popover-panel and tooltip controllers ignore it. The pane lays its content out in a row, so content keeps its own width unless it sets one (the context menu sets `min-width` in CSS)',
     },
     popoverTrapFocus: booleanArgType('Keeps Tab inside the overlay and focuses its first focusable element'),
     popoverCloseOnOriginClick: booleanArgType(

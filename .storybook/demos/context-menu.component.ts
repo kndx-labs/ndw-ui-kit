@@ -12,8 +12,6 @@ interface SbContextMenuContext {
   execute: (action: SbContextMenuAction) => void;
 }
 
-const MENU_MIN_WIDTH = 200;
-
 export const CONTEXT_MENU_TEMPLATE = `<div
   #inputTarget
   class="target"
@@ -45,7 +43,6 @@ export const CONTEXT_MENU_TEMPLATE = `<div
   [popoverControllerFactory]="ndwuCreateDropdownController"
   [popoverCloseOnOriginClick]="false"
   [popoverTrapFocus]="true"
-  [popoverMinWidth]="200"
 ></button>
 <p class="sb-note" aria-live="polite">Last action: {{ lastAction() }}</p>
 <ng-template #menu let-execute="execute">
@@ -84,8 +81,10 @@ export const CONTEXT_MENU_TEMPLATE = `<div
     }
 
     .menu {
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
+      min-width: 200px;
       padding: 4px 0;
       border: 1px solid var(--ndwu-popover-border-color);
       border-radius: var(--ndwu-popover-border-radius);
@@ -140,7 +139,6 @@ export class SbContextMenuComponent {
     trigger.open({
       content: this.menuTemplate(),
       context,
-      minWidth: MENU_MIN_WIDTH,
       trapFocus: true,
       closeOnOriginClick: false,
       originPoint: {clientX: event.clientX, clientY: event.clientY},

@@ -206,11 +206,10 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   translations, so a default label shows its key.
 - A `*-field` over a core component (`ndwu-textarea-field` over `ndwu-textarea`) gets a short file: meta
   `parameters.controls.include` and `parameters.docs.controls.include` (one shared const; the docs Controls table
-  reads only the second) limited to the inputs the wrapper adds (`label`, `hint`, `ndwuRequired`) and
-  `disabled` / `touched`, so `Default` shows only those controls, plus fixed stories for an error after touched and
-  disabled through the control. Its
-  description links to the core page. A `*-field` without a core component (`ndwu-input-field`,
-  `ndwu-password-input-field`) gets full stories.
+  reads only the second) limited to the inputs the wrapper adds (`label`, `hint`, `ndwuRequired`) and `disabled` /
+  `touched`, so `Default` shows only those controls, plus fixed stories for an error after touched and disabled
+  through the control. Its description links to the core page. A `*-field` without a core component
+  (`ndwu-input-field`, `ndwu-password-input-field`) gets full stories.
 - A story that shows wiring between components (`Core/Checkbox` `Indeterminate`) may keep state in `props` as signals.
   Their names must not match any arg, so `argsSourceTransform` leaves them alone.
 - Leave `size` unset so the toolbar applies. Don't pin a theme (no `globals.theme`; `parameters.themes.themeOverride`

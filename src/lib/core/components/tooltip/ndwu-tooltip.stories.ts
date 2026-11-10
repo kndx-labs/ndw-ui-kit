@@ -235,7 +235,7 @@ export const FollowCursor: Story = {
       ...STRIP_DOCS,
       description: {
         story:
-          `The tooltip opens when the pointer enters the strip, follows it and shows the cell under it (\`tooltipOrigin\` is a viewport point). Keyboard focus anchors it to the focused cell instead. ${STRIP_HANDLERS_NOTE}`,
+          `The tooltip opens when the pointer enters the strip, follows it and shows the cell under it (\`tooltipOrigin\` is a viewport point). Keyboard focus or a click anchors it to that cell until focus leaves the strip. ${STRIP_HANDLERS_NOTE}`,
       },
     },
   },
@@ -247,15 +247,7 @@ export const FollowCursor: Story = {
 
 export const OpenedForAccessibility: Story = {
   tags: ['!autodocs'],
-  parameters: {
-    ...FIXED_STORY_PARAMETERS,
-    docs: {
-      description: {
-        story:
-          'A closed tooltip is not in the DOM. `play` hovers the trigger and waits for the tooltip, so the Accessibility panel checks its content.',
-      },
-    },
-  },
+  parameters: FIXED_STORY_PARAMETERS,
   render: () => ({
     template: HTML_TRIGGER,
   }),

@@ -200,8 +200,19 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   segment), name, docs id (`<title in kebab case>--docs`, e.g. `core-button-button--docs`), a short plain-text summary
   for the card (no markdown) and `ready` matching the tag.
 - Storybook-only components and directives use the `sb-` prefix.
-- Families without a pattern yet (`*-field` CVA wrappers, overlays, table, widgets): the first ticket of the family
-  adds its pattern to this section.
+- Overlays (tooltip, popover, dropdown): `component:` is the trigger directive, and `render` puts it on a host element
+  with `argsToTemplate` (`Core/Tooltip` uses `<button ndwu-button>`). Inputs that only make sense in wiring stories get
+  `control: false` and a description.
+- Overlay content is not in the DOM until it opens, and it renders in the CDK overlay container on `body`, outside the
+  story root. Add one story whose `play` opens it with `userEvent`, waits with `screen.findByRole(...)` (`screen`, not
+  `canvas`: the overlay is outside the canvas) and checks it with `expect(...).toBeVisible()`, all three from
+  `storybook/test`. The a11y addon runs axe on `body` after `play`, so the open content is checked. Tag the story
+  `!autodocs`: an open overlay would cover other stories on the docs page.
+- Wiring that needs a component class (one tooltip for many targets) goes into a story-only demo component in
+  `.storybook/demos/`, with an inline template exported as a constant; the story sets
+  `parameters.docs.source: {code: <TEMPLATE>, language: 'html'}` so "Show code" shows that template.
+- Families without a pattern yet (`*-field` CVA wrappers, table, widgets): the first ticket of the family adds its
+  pattern to this section.
 
 ### Toolbar
 
@@ -210,6 +221,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - **Size** (component default, S, L, XL, XXL) provides `NDWU_SIZE_TOKEN` around the story, like
   `ndwu-form-container`. Component default provides nothing; an explicit `size` arg wins. Modal dialogs and drawers
   get it only through `config.injector` (see above).
+- **Viewport** resizes the preview only. It doesn't emulate touch: behaviour that depends on
+  `(hover: none) and (pointer: coarse)` (a tooltip opens on tap) needs the browser's device mode with touch and a
+  reload of the preview.
 
 ### Accessibility
 

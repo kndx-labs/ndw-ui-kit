@@ -59,7 +59,8 @@ const meta: Meta<NdwuPopoverDirective> = {
     popoverCloseButtonAriaLabel: textArgType('Accessible name of the close button'),
     popoverButtons: {
       control: 'object',
-      description: 'Footer buttons `{label, primary?, onClick?}`; a click runs `onClick` and closes the popover',
+      description:
+        'Footer buttons `{label, primary?, onClick?}`; a click runs `onClick` and closes the popover. "Show code" omits them; write `[popoverButtons]="[...]"` yourself (see `RichContent`)',
     },
     popoverSide: {
       control: 'select',
@@ -78,7 +79,7 @@ const meta: Meta<NdwuPopoverDirective> = {
     },
     hideDelay: {
       control: false,
-      description: 'Delay before closing, in ms, for hover and focus triggers',
+      description: 'Delay before closing, in ms, for hover and focus triggers; default 150',
     },
     triggerOn: {
       control: false,
@@ -96,7 +97,7 @@ const meta: Meta<NdwuPopoverDirective> = {
   args: {
     ndwuPopover: 'This is a popover with helpful information about the feature.',
     popoverTitle: 'Help',
-    popoverShowHeader: true,
+    popoverShowHeader: false,
     popoverShowClose: true,
     popoverCloseButtonAriaLabel: 'Close',
     popoverButtons: [],
@@ -164,13 +165,13 @@ export const Positions: Story = {
   render: () => {
     return {
       template: lines(
-        SIDES.map((side) =>
-          group(
+        SIDES.map((side) => {
+          return group(
             ALIGNS.map((align) => {
               return `<button ndwu-button variant="secondary" label="${side} / ${align}" ndwuPopover="Popover on the ${side} side, ${align} aligned." popoverSide="${side}" popoverAlign="${align}"></button>`;
             }),
-          ),
-        ),
+          );
+        }),
       ),
     };
   },

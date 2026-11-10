@@ -100,7 +100,7 @@ const meta: Meta<PopoverTriggerStoryArgs> = {
     },
     popoverClass: {
       control: false,
-      description: 'CSS class(es) of the overlay pane; replaces the controller default',
+      description: 'CSS class(es) of the overlay pane; the bare trigger adds none by default',
     },
     opened: outputArgType('opened', 'Emits after the overlay opens'),
     closed: outputArgType('closed', 'Emits after the overlay closes'),
@@ -144,7 +144,7 @@ export const ContextMenu: Story = {
     docs: {
       description: {
         story:
-          'Right-click a target to open a menu at the pointer: `triggerOn="manual"` and `open()` with `originPoint`. The first target passes the factory through `[popoverControllerFactory]`; the second gets it from `NDWU_POPOVER_CONTROLLER_FACTORY` in the component `providers`, the path `hostDirectives` wrappers such as `ndwuTooltip` use, because a host can\'t bind the input of its host directive. The button opens the same menu on click, moves focus into it (`[popoverTrapFocus]="true"`) and stays open on a second click (`[popoverCloseOnOriginClick]="false"`); the directive adds no ARIA, so the button sets `aria-haspopup` and `aria-expanded` itself. Arrow keys, Home and End move between items, Tab cycles inside the menu; Escape closes. The class code (`open()`, `providers`, keyboard) is in `.storybook/demos/context-menu.component.ts`.',
+          'Right-click a target to open a menu at the pointer: `triggerOn="manual"` and `open()` with `originPoint`. The first target passes the factory through `[popoverControllerFactory]`; the second gets it from `NDWU_POPOVER_CONTROLLER_FACTORY` in the component `providers`, the path `hostDirectives` wrappers such as `ndwuTooltip` use, because a wrapper directive can\'t set an input of its own host directive. The button opens the same menu on click, moves focus into it (`[popoverTrapFocus]="true"`) and stays open on a second click (`[popoverCloseOnOriginClick]="false"`); the directive adds no ARIA, so the button sets `aria-haspopup` and `aria-expanded` itself. Arrow keys, Home and End move between items, Tab cycles inside the menu; Escape closes. The class code (`open()`, `providers`, keyboard) is in `.storybook/demos/context-menu.component.ts`.',
       },
       source: {
         code: CONTEXT_MENU_TEMPLATE,

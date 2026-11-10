@@ -126,7 +126,9 @@ export class SbContextMenuComponent {
   protected readonly lastAction = signal<SbContextMenuAction | 'none'>('none');
 
   protected readonly buttonMenuContext: SbContextMenuContext = {
-    execute: (action) => this.execute(action, this.buttonTrigger()),
+    execute: (action) => {
+      this.execute(action, this.buttonTrigger());
+    },
   };
 
   private readonly menuTemplate = viewChild.required<TemplateRef<SbContextMenuContext>>('menu');
@@ -134,7 +136,11 @@ export class SbContextMenuComponent {
   protected openAt(trigger: NdwuPopoverTriggerDirective, event: MouseEvent): void {
     event.preventDefault();
 
-    const context: SbContextMenuContext = {execute: (action) => this.execute(action, trigger)};
+    const context: SbContextMenuContext = {
+      execute: (action) => {
+        this.execute(action, trigger);
+      },
+    };
 
     trigger.open({
       content: this.menuTemplate(),

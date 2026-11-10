@@ -153,6 +153,12 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   (`aria-*`), quote every key of `argTypes` / `args` (`quote-props`).
 - Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `textArgType`, `booleanArgType`,
   `outputArgType`, `eventArgType`; the form-only `submitArgType` lives in `@sb/helpers/story-form`.
+- CSS tokens: list the component's public tokens as `CssTokenGroup`s (`@sb/helpers/css-tokens`) of Sass map keys
+  without `--ndwu-` (`{title: 'primary', keys: ['button-primary-bg', ...], textKeys: ['button-primary-focus-ring'],
+  if: {arg: 'variant', eq: 'primary'}}`), spread `...cssTokenArgTypes(groups)` into `meta.argTypes`, add
+  `CssTokenArgs` to the args type and pass `withoutCssTokens(args)` to `argsToTemplate` and `props`. Copy the keys from
+  `<component>.tokens.scss`, leave out keys marked `// TODO: remove legacy alias at next minor bump`, put non-color
+  values (`var(--ndwu-fx-*)`) into `textKeys`, and add by hand variables the component reads that no map defines.
 - A story that needs the router spreads `withRouter` from `@sb/helpers/story-router` in its `decorators` array:
   `decorators: [...withRouter]`. It adds story-level `provideRouter` and `provideLocationMocks`; `sb-router-url` shows
   the current URL.
@@ -160,7 +166,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `parameters.docs.description.component`. Compodoc adds types and defaults of inputs. A story's explanation goes into
   `parameters.docs.description.story`, not into rendered text such as `secondaryText`, which "Show code" copies.
 - Set every control's starting value in `meta.args` (e.g. `variant`, booleans `false`, `icon: null`), so the Controls
-  panel shows the current value instead of "Choose option...".
+  panel shows the current value instead of "Choose option...". CSS token args are the exception (see
+  [CSS tokens](#css-tokens)).
 - An arg reaches the template only if its argType has a `control` or an `action`; `control: false` removes it.
 - "Show code" is what app developers copy, so it must be plain markup:
   - stories with controls set `parameters.docs.source.transform: argsSourceTransform` (`@sb/helpers/args-to-source`),
@@ -210,6 +217,17 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - **Size** (component default, S, L, XL, XXL) provides `NDWU_SIZE_TOKEN` around the story, like
   `ndwu-form-container`. Component default provides nothing; an explicit `size` arg wins. Modal dialogs and drawers
   get it only through `config.injector` (see above).
+
+### CSS tokens
+
+The Controls panel lists a story's tokens under "css tokens", one subcategory per group; groups for other variants are
+hidden, and their overrides pause until that variant is selected again. A value set there (a color, or any CSS value
+typed into the field) overrides the token in both themes, overlays and modals included. Clear the field to inherit the
+theme value again ("not set" for tokens with no default); "Reset controls" clears all overrides. The current theme
+value is not shown, and an invalid value makes the component property fall back to its CSS default. Overrides belong
+to the story: another story or a docs page starts without them, and stories with controls disabled have none. Hex and
+`rgb()` / `hsl()` values are kept in the URL. Never give token args a value in `meta.args` or story `args` (an
+exception to "set every control's starting value"): a starting value would be an override.
 
 ### Accessibility
 

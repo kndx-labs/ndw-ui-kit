@@ -7,6 +7,7 @@ import {
   ndwuCreateTooltipController,
 } from '@ndw-ui-kit/core/popover';
 import {Meta, StoryObj, argsToTemplate, moduleMetadata} from '@storybook/angular';
+import {CONTEXT_MENU_TEMPLATE, SbContextMenuComponent} from '@sb/demos/context-menu.component';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {booleanArgType, outputArgType} from '@sb/helpers/arg-types';
 import {lines} from '@sb/helpers/story-template';
@@ -25,6 +26,8 @@ type PopoverTriggerStoryArgs = Omit<NdwuPopoverTriggerDirective, 'popoverControl
 };
 
 type Story = StoryObj<PopoverTriggerStoryArgs>;
+
+const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
 
 const CONTENT_TEMPLATE = `<ng-template #content>
   <div class="sb-overlay-panel">
@@ -134,3 +137,25 @@ const meta: Meta<PopoverTriggerStoryArgs> = {
 export default meta;
 
 export const Default: Story = {};
+
+export const ContextMenu: Story = {
+  parameters: {
+    ...FIXED_STORY_PARAMETERS,
+    docs: {
+      description: {
+        story:
+          'Right-click a target to open a menu at the pointer: `triggerOn="manual"` and `open()` with `originPoint`. The first target passes the factory through `[popoverControllerFactory]`; the second gets it from `NDWU_POPOVER_CONTROLLER_FACTORY` in the component `providers`, the path `hostDirectives` wrappers such as `ndwuTooltip` use, because a host can\'t bind the input of its host directive. The button opens the same menu on click, moves focus into it (`[popoverTrapFocus]="true"`) and stays open on a second click (`[popoverCloseOnOriginClick]="false"`); the directive adds no ARIA, so the button sets `aria-haspopup` and `aria-expanded` itself. Arrow keys, Home and End move between items, Tab cycles inside the menu; Escape closes. The class code (`open()`, `providers`, keyboard) is in `.storybook/demos/context-menu.component.ts`.',
+      },
+      source: {
+        code: CONTEXT_MENU_TEMPLATE,
+        language: 'html',
+      },
+    },
+  },
+  decorators: [moduleMetadata({imports: [SbContextMenuComponent]})],
+  render: () => {
+    return {
+      template: '<sb-context-menu />',
+    };
+  },
+};

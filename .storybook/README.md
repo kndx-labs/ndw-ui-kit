@@ -19,6 +19,7 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 │   ├── with-size.decorator.ts        Size toolbar: its items and the wrapper around the story
 │   └── size-provider.component.ts    Wrapper component that provides NDWU_SIZE_TOKEN from the toolbar
 ├── demos/
+│   └── context-menu.component.ts     Context menu demo for Popover API/Popover Trigger: two ways to pass a controller factory
 └── helpers/
     ├── story-args.ts                 SizeArg (host-directive size) and AriaArgs (alias-keyed ARIA args)
     ├── arg-types.ts                  Shared argTypes: size, icon, text, boolean, outputs, native events
@@ -82,6 +83,7 @@ Story-only components for wiring a story template can't hold (handlers, state). 
 
 | File | What it does | Why it is built this way |
 |---|---|---|
+| `context-menu.component.ts` | `sb-context-menu`: two right-click targets that open a `role="menu"` template at the pointer through `open()` with `originPoint` (one passes `[popoverControllerFactory]`, one gets the factory from `NDWU_POPOVER_CONTROLLER_FACTORY` in the component `providers`), a click trigger with `[popoverCloseOnOriginClick]="false"`, arrow-key focus in the menu and a "Last action" line; exports `CONTEXT_MENU_TEMPLATE` for `Popover API/Popover Trigger` `ContextMenu` | `NdwuPopoverTriggerDirective` has no `exportAs`, so `open()` and `close()` need a class (`viewChild` with `read`). The playground hotkeys (Ctrl+X/C/V/A, Delete) are left out: they are not popover behaviour and would swallow Ctrl+A / Ctrl+C in the preview |
 
 ### Home page
 

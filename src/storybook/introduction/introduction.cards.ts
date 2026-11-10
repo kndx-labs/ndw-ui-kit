@@ -56,4 +56,11 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Switch in brand or green colour.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Tooltip',
+    docsId: 'core-tooltip--docs',
+    description: 'Hint on hover or tap with text, HTML or template content.',
+    ready: false,
+  },
 ];

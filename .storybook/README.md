@@ -18,6 +18,7 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 │   ├── with-theme.decorator.ts       Theme toolbar: puts ndwu-theme-light / ndwu-theme-dark on body
 │   ├── with-size.decorator.ts        Size toolbar: its items and the wrapper around the story
 │   └── size-provider.component.ts    Wrapper component that provides NDWU_SIZE_TOKEN from the toolbar
+├── demos/
 └── helpers/
     ├── story-args.ts                 SizeArg (host-directive size) and AriaArgs (alias-keyed ARIA args)
     ├── arg-types.ts                  Shared argTypes: size, icon, text, boolean, outputs, native events
@@ -73,6 +74,14 @@ Imported by stories as `@sb/helpers/<file>`.
 | `story-router.ts` | Adds story-level in-memory Router providers, imports `RouterLink` and wraps the story in `sb-router-url`; `withRouter` is an array of three decorators (`applicationConfig`, `moduleMetadata`, `componentWrapperDecorator`), spread with `decorators: [...withRouter]` | Router setup stays local to stories that need it; the wrapper is excluded from "Show code" |
 | `story-template.ts` | `lines(items)` joins templates of a fixed story, one element per line; `group(items)` wraps them in a `<div>` row for `withStackLayout` | One shared helper replaces a copy in every story file |
 | `router-url.component.ts` | Projects its content and shows the current Router URL in a `sb-note` paragraph | A router story makes navigation visible without changing the Storybook iframe URL |
+
+### Demos
+
+Story-only components for wiring a story template can't hold (handlers, state). Imported by stories as
+`@sb/demos/<file>`.
+
+| File | What it does | Why it is built this way |
+|---|---|---|
 
 ### Home page
 

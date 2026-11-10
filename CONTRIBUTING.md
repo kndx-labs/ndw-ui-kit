@@ -122,7 +122,7 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 | `core` families documented on one page | `Core/<Group>` | `Core/Radio` (radio group with its radio buttons) |
 | `core/components/field-frame` | `Core/Form Field Frame` | |
 | `form-field` | `Form Field/<Name>` | `Form Field/Input Field` |
-| `popover` | `Popover API/<Name>` | |
+| `popover` | `Popover API/<Name>` | `Popover API/Popover Trigger` |
 | `table` | `Table/<Name>` | `Table/Paginator` |
 | `widgets` | `Widgets/<Name>` | `Widgets/Schedule Editor` |
 | `aria`, `schedule-actions`, `l10n` | `Aria/<Name>`, `Schedule Actions/<Name>`, `L10n/<Name>` | |
@@ -211,6 +211,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - Wiring that needs a component class (one tooltip for many targets) goes into a story-only demo component in
   `.storybook/demos/`, with an inline template exported as a constant; the story sets
   `parameters.docs.source: {code: <TEMPLATE>, language: 'html'}` so "Show code" shows that template.
+- Content opened through `ndwuPopoverTrigger` has no panel of its own; wrap story content in
+  `<div class="sb-overlay-panel">` (`.storybook/styles.scss`), which uses the popover tokens and follows the theme.
 - Families without a pattern yet (`*-field` CVA wrappers, table, widgets): the first ticket of the family adds its
   pattern to this section.
 

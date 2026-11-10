@@ -169,6 +169,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
     props for constants or inline styles;
   - layout goes into a story decorator, which "Show code" leaves out: `withRowLayout` for one row, `withStackLayout`
     for rows given as `<div>` groups (`@sb/helpers/story-layout`, `group` from `@sb/helpers/story-template`).
+    `withResizableLayout` puts the story into a 320 px high box the reader can resize, for a component whose sizing
+    needs a parent with a height (`Widgets/Schedule Editor` with `sizing="fill"`).
 - Literal ids in fixed stories follow `<component>-<story-kebab>-<part>` (`toggle-external-label-input`): all stories
   render on one docs page, so an id must be unique there. `Default` uses generated ids.
 - Native DOM events: `eventArgType('<event>', '<description>')`. Outputs and `model()` change events:
@@ -210,6 +212,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `touched`, so `Default` shows only those controls, plus fixed stories for an error after touched and disabled
   through the control. Its description links to the core page. A `*-field` without a core component
   (`ndwu-input-field`, `ndwu-password-input-field`) gets full stories.
+- A `*-field` over a widget that adds no inputs (`ndwu-schedule-editor-field` over `ndwu-schedule-editor`) gets a
+  short file with the widget's inputs as controls; when the control's disabled and error states have no visible
+  effect, it leaves out `disabled` / `touched` and the error and disabled stories.
 - A story that shows wiring between components (`Core/Checkbox` `Indeterminate`) may keep state in `props` as signals.
   Their names must not match any arg, so `argsSourceTransform` leaves them alone.
 - Leave `size` unset so the toolbar applies. Don't pin a theme (no `globals.theme`; `parameters.themes.themeOverride`
@@ -222,8 +227,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   segment), name, docs id (`<title in kebab case>--docs`, e.g. `core-button-button--docs`), a short plain-text summary
   for the card (no markdown) and `ready` matching the tag.
 - Storybook-only components and directives use the `sb-` prefix.
-- Families without a pattern yet (overlays, table, widgets): the first ticket of the family
-  adds its pattern to this section.
+- Widgets follow the same rules; they import from `@ndw-ui-kit/core/widgets` and use the title `Widgets/<Name>`
+  (`Widgets/Schedule Editor`).
+- Families without a pattern yet (overlays, table): the first ticket of the family adds its pattern to this section.
 
 ### Toolbar
 
@@ -232,6 +238,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - **Size** (component default, S, L, XL, XXL) provides `NDWU_SIZE_TOKEN` around the story, like
   `ndwu-form-container`. Component default provides nothing; an explicit `size` arg wins. Modal dialogs and drawers
   get it only through `config.injector` (see above).
+- **Viewport** (Storybook's own) resizes the canvas. Components that switch layout at `Breakpoints.Handset`
+  (`Widgets/Schedule Editor` with `forceLayout` unset) follow it. A story opens in a viewport with
+  `globals: {viewport: {value: '<key>', isRotated: false}}`. It does not apply on the docs page.
 
 ### Accessibility
 

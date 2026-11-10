@@ -2,8 +2,10 @@ import {setCompodocJson} from '@storybook/addon-docs/angular';
 import {Preview, applicationConfig} from '@storybook/angular';
 import {sizeGlobalType, sizeInitialGlobal, withSize, withSizeProviderImport} from './decorators/with-size.decorator';
 import {withTheme} from './decorators/with-theme.decorator';
+import {withCssTokens} from './decorators/with-css-tokens.decorator';
 import docJson from './documentation.json';
 import {STORYBOOK_PROVIDERS} from './providers';
+import {CSS_TOKEN_NAME_PATTERN} from './helpers/css-tokens';
 
 setCompodocJson(docJson);
 
@@ -12,6 +14,7 @@ const preview: Preview = {
     applicationConfig({providers: STORYBOOK_PROVIDERS}),
     withSizeProviderImport,
     withSize,
+    withCssTokens,
     withTheme,
   ],
   globalTypes: {
@@ -37,6 +40,9 @@ const preview: Preview = {
     docs: {
       source: {
         excludeDecorators: true,
+      },
+      controls: {
+        exclude: CSS_TOKEN_NAME_PATTERN,
       },
     },
     a11y: {

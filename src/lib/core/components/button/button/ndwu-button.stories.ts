@@ -9,11 +9,12 @@ import {
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType, sizeArgType} from '@sb/helpers/arg-types';
+import {CssTokenArgs, CssTokenGroup, cssTokenArgTypes, withoutCssTokens} from '@sb/helpers/css-tokens';
 import {SizeArg} from '@sb/helpers/story-args';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
 import {group, lines} from '@sb/helpers/story-template';
 
-type ButtonStoryArgs = NdwuButtonComponent & SizeArg & {
+type ButtonStoryArgs = NdwuButtonComponent & SizeArg & CssTokenArgs & {
   content: string;
   click: (event: MouseEvent) => void;
 };
@@ -29,6 +30,32 @@ interface IconButton {
 const VARIANTS = Object.values(NDWU_BUTTON_VARIANT);
 const SIZES = Object.values(NDWU_SIZE);
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
+
+const BUTTON_COLOR_TOKEN_SUFFIXES = [
+  'bg',
+  'border',
+  'text',
+  'icon-color',
+  'hover-bg',
+  'hover-border',
+  'active-bg',
+  'active-border',
+  'active-text',
+  'active-icon-color',
+  'focus-bg',
+  'focus-border',
+  'disabled-bg',
+  'disabled-border',
+  'disabled-text',
+  'disabled-icon-color',
+] as const;
+
+const CSS_TOKEN_GROUPS: readonly CssTokenGroup[] = VARIANTS.map((variant) => ({
+  title: variant,
+  keys: BUTTON_COLOR_TOKEN_SUFFIXES.map((suffix) => `button-${variant}-${suffix}`),
+  textKeys: [`button-${variant}-focus-ring`],
+  if: {arg: 'variant', eq: variant},
+}));
 
 const ICON_BUTTONS: readonly IconButton[] = [
   {variant: NDWU_BUTTON_VARIANT.PRIMARY, icon: NDWU_ICON_NAME.ADD_S, label: 'Primary'},
@@ -77,6 +104,7 @@ const meta: Meta<ButtonStoryArgs> = {
       table: {category: 'story'},
     },
     click: eventArgType('click', 'Native click event'),
+    ...cssTokenArgTypes(CSS_TOKEN_GROUPS),
   },
   args: {
     variant: NDWU_BUTTON_VARIANT.PRIMARY,
@@ -84,10 +112,15 @@ const meta: Meta<ButtonStoryArgs> = {
     loading: false,
     icon: null,
   },
-  render: (args) => ({
-    props: args,
-    template: `<button ndwu-button ${argsToTemplate(args, {exclude: ['content']})}>{{ content }}</button>`,
-  }),
+  render: (args) => {
+    const storyArgs = withoutCssTokens(args);
+    const argsStr = argsToTemplate(storyArgs, {exclude: ['content']});
+
+    return {
+      props: storyArgs,
+      template: `<button ndwu-button ${argsStr}>{{ content }}</button>`,
+    };
+  },
 };
 
 export default meta;

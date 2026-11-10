@@ -45,7 +45,7 @@ const meta: Meta<TextareaFieldStoryArgs> = {
     label: textArgType('Floating label text, passed through the `localize` pipe'),
     hint: textArgType('Helper text under the field; a validation error replaces it'),
     ndwuRequired: booleanArgType(
-      'Shows the required mark on the label; add a required validator to the control for validation',
+      'Shows the required mark on the label and sets `aria-required`; add a required validator to the control for validation',
     ),
     ...formControlArgTypes,
   },

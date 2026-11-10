@@ -33,7 +33,7 @@ type InputFieldStoryArgs = NdwuInputFieldComponent & SizeArg & FormControlArgs &
 type Story = StoryObj<InputFieldStoryArgs>;
 
 const SIZES = [NDWU_SIZE.L, NDWU_SIZE.XL, NDWU_SIZE.XXL];
-const TYPES = ['text', 'password'];
+const TYPES: readonly ('text' | 'password')[] = ['text', 'password'];
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
 const REQUIRED_EMAIL = NdwuValidators.required('Enter your email');
 const VALID_EMAIL = NdwuValidators.email('Enter a valid email');
@@ -47,7 +47,7 @@ const meta: Meta<InputFieldStoryArgs> = {
     docs: {
       description: {
         component:
-          'Text or password input with a floating label, a hint, a validation error and an optional right icon button, for reactive forms. Bind it with `formControl` or `formControlName`; the control sets the disabled state. Its parts, `ndwu-form-field` and `input[ndwuInput]`, can be used directly (see `Compound`).',
+          'Text or password input with a floating label, a hint, a validation error and an optional right icon button, for reactive forms. Bind it with `formControl` or `formControlName`; the control sets the value, the disabled state and the validity. Its parts, `ndwu-form-field` and `input[ndwuInput]`, can be used directly (see `Compound`).',
       },
       source: {
         transform: argsSourceTransform,

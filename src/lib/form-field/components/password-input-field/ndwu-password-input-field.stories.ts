@@ -69,7 +69,7 @@ const meta: Meta<PasswordInputFieldStoryArgs> = {
     docs: {
       description: {
         component:
-          'Password input with a show/hide button, a strength indicator and strength hints, for reactive forms. The app computes `strength`; `weak` shows the error style. Bind it with `formControl` or `formControlName`; the control sets the disabled state.',
+          'Password input with a show/hide button, a strength indicator and strength hints, for reactive forms. The app computes `strength`; `weak` shows the error style. Bind it with `formControl` or `formControlName`; the control sets the value, the disabled state and the validity.',
       },
       source: {
         transform: argsSourceTransform,
@@ -135,7 +135,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'The control is `new FormControl(\'MyStr0ngP@ss2024\', [NdwuValidators.required(\'Enter a password\')])`; clear the field to see the error.',
+          'The control is `new FormControl(\'MyStr0ngP@ss2024\', [NdwuValidators.required(\'Enter a password\')])`; clear the field to see the error. "Show code" leaves out the `strengthHintTexts` object; `Strength` shows its binding.',
       },
     },
   },

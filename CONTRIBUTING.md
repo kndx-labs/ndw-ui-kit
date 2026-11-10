@@ -204,10 +204,11 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   them out of the template: `argsToTemplate(args, {exclude: FORM_CONTROL_ARGS})`.
 - Validators get an English `errorLabel` (`NdwuValidators.required('Enter your email')`): Storybook has no
   translations, so a default label shows its key.
-- A `*-field` over a core component (`ndwu-textarea-field` over `ndwu-textarea`) gets a short file: `Default` with
+- A `*-field` over a core component (`ndwu-textarea-field` over `ndwu-textarea`) gets a short file: meta
   `parameters.controls.include` and `parameters.docs.controls.include` (one shared const; the docs Controls table
   reads only the second) limited to the inputs the wrapper adds (`label`, `hint`, `ndwuRequired`) and
-  `disabled` / `touched`, plus fixed stories for an error after touched and disabled through the control. Its
+  `disabled` / `touched`, so `Default` shows only those controls, plus fixed stories for an error after touched and
+  disabled through the control. Its
   description links to the core page. A `*-field` without a core component (`ndwu-input-field`,
   `ndwu-password-input-field`) gets full stories.
 - A story that shows wiring between components (`Core/Checkbox` `Indeterminate`) may keep state in `props` as signals.

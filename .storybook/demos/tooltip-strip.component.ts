@@ -70,7 +70,7 @@ export const TOOLTIP_STRIP_TEMPLATE = `<span
     }
 
     .strip-cell {
-      flex: 0 1 8px;
+      width: 8px;
       min-width: 2px;
       height: 24px;
       border-radius: 2px;

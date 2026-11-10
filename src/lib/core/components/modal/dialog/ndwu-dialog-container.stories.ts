@@ -321,6 +321,7 @@ export class TemplateDialogExampleComponent {
 }`;
 
 export const TemplateApi: Story = {
+  name: 'Template API',
   parameters: modalStoryParameters(
     TEMPLATE_API_SOURCE,
     '`openTemplate()` renders an `ng-template` in the dialog; the context gives `modalRef` and `data`. Slot directives work inside the template. The template needs `viewContainerRef`. `sb-modal-long-text` stands for your long content. Without a `title`, set `ariaLabel`.',
@@ -443,7 +444,7 @@ const SMALL_CONFIG: NdwuDialogConfig = {
 
 const NARROW_CONFIG: NdwuDialogConfig = {
   title: 'Narrow dialog',
-  description: 'Width constrained between 300px and 400px.',
+  description: 'Width 300px (max width 400px), height 200px.',
   width: '300px',
   maxWidth: '400px',
   height: '200px',
@@ -562,8 +563,8 @@ const openLoading: SbModalOpenFn = ({modal, injector}) => {
 };
 
 const LOADING_SOURCE = `const ref = this.modalService.openDialog(NdwuDialogContainerComponent, {
-  title: '${LOADING_TITLE}',
-  description: '${LOADING_DESCRIPTION}',
+  title: ${objectSource(LOADING_TITLE)},
+  description: ${objectSource(LOADING_DESCRIPTION)},
   isLoading: true,
   buttons: [
     {label: 'Close', result: null},
@@ -615,8 +616,8 @@ const openAsync: SbModalOpenFn = ({modal, injector}) => {
 const ASYNC_SOURCE = `const ref = this.modalService.openDialog(NdwuDialogContainerComponent, ${objectSource(ASYNC_CONFIG)});
 
 const timerId = setTimeout(() => {
-  ref.setTitle('${ASYNC_TITLE}');
-  ref.setDescription('${ASYNC_DESCRIPTION}');
+  ref.setTitle(${objectSource(ASYNC_TITLE)});
+  ref.setDescription(${objectSource(ASYNC_DESCRIPTION)});
 }, ${DELAY_MS});
 
 ref.afterClosed$.subscribe(() => clearTimeout(timerId));`;

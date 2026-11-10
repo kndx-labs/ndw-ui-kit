@@ -202,6 +202,7 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   with `code` from `modalSource(...)` (several calls: `modalSources(...)`), built from the config constant the story
   opens; `Default` builds it from args in `docs.source.transform`.
 - Modal content components live in `.storybook/demos/modal-*.component.ts`, shared by dialog and drawer stories.
+  Modal stories set no `component:`: the service creates the container, so the config argTypes are written by hand.
 - The modal `play` story clicks the opener and waits for `screen.findByRole('dialog', {name: '<title>'})`.
 - A component that is ready for review gets the `ready` tag: `tags: ['autodocs', 'ready']`. The sidebar tag filter
   can include or exclude it.

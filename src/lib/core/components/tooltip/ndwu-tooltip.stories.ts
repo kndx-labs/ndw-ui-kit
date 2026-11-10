@@ -245,7 +245,7 @@ export const FollowCursor: Story = {
   }),
 };
 
-export const OpenedForA11y: Story = {
+export const OpenedForAccessibility: Story = {
   tags: ['!autodocs'],
   parameters: {
     ...FIXED_STORY_PARAMETERS,

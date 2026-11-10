@@ -96,7 +96,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'The control is `new FormControl(value)`; the JSON below is `control.value`, updated after each drag. The field takes no disabled or error state from the control.',
+          'The control is `new FormControl(value)`; the JSON below is `control.value`, updated after each drag. The field shows no disabled or error state: the editor has no such inputs.',
       },
     },
   },

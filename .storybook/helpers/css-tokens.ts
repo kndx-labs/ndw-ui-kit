@@ -4,8 +4,9 @@ type ArgType = ArgTypes[string];
 
 type TokenControl = 'color' | 'text';
 
-export const CSS_TOKEN_PREFIX = '--ndwu-';
-export const CSS_TOKEN_NAME_PATTERN = /^--ndwu-/;
+const CSS_TOKEN_PREFIX = '--ndwu-';
+
+export const CSS_TOKEN_NAME_PATTERN = new RegExp(`^${CSS_TOKEN_PREFIX}`);
 
 const CSS_TOKENS_CATEGORY = 'css tokens';
 const CSS_TOKEN_DESCRIPTION = 'Empty: not overridden';

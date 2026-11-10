@@ -188,6 +188,28 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `props: submitProps(args)` and `template: nativeFormTemplate([...fields])` (`@sb/helpers/story-form`), which wraps the
   fields in `<form (submit)="submit($event)">` and adds the submit button. The handler keeps the page from navigating and
   logs the form entries to Actions; native `required` validation still runs.
+- `*-field` CVA wrappers are always bound to a `FormControl`: `decorators: [withFormControl]` (imports
+  `ReactiveFormsModule`), the control from `storyFormControl(key, {value, validators, disabled, touched})` in `props`,
+  and `[formControl]="control"` in the template (`@sb/helpers/story-form-control`). The key is the story id from the
+  render context (`render: (args, {id}) => ...`), or `` `${id}-<part>` `` for several fields in one story; the helper
+  creates the control once per key, so a typed value survives arg changes (reload the page after changing a control's
+  initial value or validators: the control survives HMR too). Don't name the prop `formControl`:
+  `argsSourceTransform` would turn `[formControl]="formControl"` into an attribute and drop it from "Show code". With
+  several fields in one story, name the props `<part>Control` (`errorControl`, `xlControl`). Exceptions are stories
+  that show another binding on purpose, such as `ngModel` or no form directive at all (`Form Field/Input Field`).
+- Put `withFormControl` on the meta only when every story of the file binds a form control. `ReactiveFormsModule` adds
+  `novalidate` to every `<form>`, which turns off native validation in a `withNativeForm` story.
+- In `Default` of a `*-field`, the story args `disabled` and `touched` (`formControlArgTypes`, `formControlArgs`) call
+  `disable()` / `enable()` and `markAsTouched()` / `markAsUntouched()` + `markAsPristine()` when they change. Keep
+  them out of the template: `argsToTemplate(args, {exclude: FORM_CONTROL_ARGS})`.
+- Validators get an English `errorLabel` (`NdwuValidators.required('Enter your email')`): Storybook has no
+  translations, so a default label shows its key.
+- A `*-field` over a core component (`ndwu-textarea-field` over `ndwu-textarea`) gets a short file: meta
+  `parameters.controls.include` and `parameters.docs.controls.include` (one shared const; the docs Controls table
+  reads only the second) limited to the inputs the wrapper adds (`label`, `hint`, `ndwuRequired`) and `disabled` /
+  `touched`, so `Default` shows only those controls, plus fixed stories for an error after touched and disabled
+  through the control. Its description links to the core page. A `*-field` without a core component
+  (`ndwu-input-field`, `ndwu-password-input-field`) gets full stories.
 - A story that shows wiring between components (`Core/Checkbox` `Indeterminate`) may keep state in `props` as signals.
   Their names must not match any arg, so `argsSourceTransform` leaves them alone.
 - Leave `size` unset so the toolbar applies. Don't pin a theme (no `globals.theme`; `parameters.themes.themeOverride`
@@ -200,7 +222,7 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   segment), name, docs id (`<title in kebab case>--docs`, e.g. `core-button-button--docs`), a short plain-text summary
   for the card (no markdown) and `ready` matching the tag.
 - Storybook-only components and directives use the `sb-` prefix.
-- Families without a pattern yet (`*-field` CVA wrappers, overlays, table, widgets): the first ticket of the family
+- Families without a pattern yet (overlays, table, widgets): the first ticket of the family
   adds its pattern to this section.
 
 ### Toolbar

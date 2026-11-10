@@ -35,6 +35,16 @@
   font: 14px / 20px Roboto, sans-serif;
 }
 
+.sb-overlay-panel {
+  box-sizing: border-box;
+  padding: 16px;
+  border: 1px solid var(--ndwu-popover-border-color);
+  border-radius: var(--ndwu-popover-border-radius);
+  background: var(--ndwu-popover-bg);
+  color: var(--ndwu-popover-text-color);
+  font: 14px / 20px Roboto, sans-serif;
+}
+
 .sbdocs-wrapper:has(sb-introduction) {
   padding: 0;
   background: var(--ndwu-color-gray-5);

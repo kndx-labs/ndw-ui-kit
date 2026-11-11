@@ -56,4 +56,11 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Switch in brand or green colour.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Spokes Loader',
+    docsId: 'core-spokes-loader--docs',
+    description: 'Small spinner of fading spokes for inline loading.',
+    ready: false,
+  },
 ];

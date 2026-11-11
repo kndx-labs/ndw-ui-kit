@@ -31,6 +31,7 @@ type Story = StoryObj<TagStoryArgs>;
 const STATUSES: readonly NdwuTagStatus[] = Object.values(NDWU_TAG_STATUS);
 const SIZES = [NDWU_SIZE.L, NDWU_SIZE.XL];
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
+const ICON = NDWU_ICON_NAME.MENU_DRAG_S;
 const FILTER_TAGS: readonly string[] = ['Router', 'Switch', 'Access point', 'Extender', 'Repeater'];
 
 const tag = (attributes: string): string => {
@@ -86,8 +87,9 @@ const meta: Meta<TagStoryArgs> = {
     ),
     size: {
       ...sizeArgType(SIZES),
-      description:
-        'Component size. `inherit` takes it from the Size toolbar or the nearest size provider, else `XL`. Under a size provider, `S` renders as `L` and `XXL` as `XL`; the Size toolbar previews only `L` and `XL`',
+      description: `${
+        sizeArgType(SIZES).description
+      }. Under a size provider, \`S\` renders as \`L\` and \`XXL\` as \`XL\`; the Size toolbar previews only \`L\` and \`XL\``,
     },
     selectedChange: outputArgType('selectedChange', 'Emits the new selected state when a selectable tag is clicked'),
     removed: outputArgType(
@@ -98,7 +100,7 @@ const meta: Meta<TagStoryArgs> = {
   },
   args: {
     status: NDWU_TAG_STATUS.DEFAULT,
-    icon: NDWU_ICON_NAME.MENU_DRAG_S,
+    icon: ICON,
     label: 'Tag name',
     selectable: true,
     selected: false,
@@ -146,7 +148,7 @@ export const WithIcon: Story = {
   decorators: [withRowLayout],
   render: () => ({
     template: lines([
-      tag(`icon="${NDWU_ICON_NAME.MENU_DRAG_S}" label="Tag name" [removable]="true"`),
+      tag(`icon="${ICON}" label="Tag name" [removable]="true"`),
       tag(`icon="${NDWU_ICON_NAME.ROUTER_S}" label="25"`),
     ]),
   }),
@@ -166,7 +168,7 @@ export const Disabled: Story = {
   render: () => ({
     template: lines([
       tag('label="Tag name" [removable]="true" [disabled]="true"'),
-      tag(`icon="${NDWU_ICON_NAME.MENU_DRAG_S}" label="Tag name" [removable]="true" [disabled]="true"`),
+      tag(`icon="${ICON}" label="Tag name" [removable]="true" [disabled]="true"`),
     ]),
   }),
 };

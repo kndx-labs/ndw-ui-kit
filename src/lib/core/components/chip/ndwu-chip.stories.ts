@@ -25,7 +25,7 @@ const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
 const ICON = NDWU_ICON_NAME.DOWNLOAD_S;
 
 const STATUS_ICONS: Readonly<Record<NdwuChipStatus, NdwuIconName>> = {
-  [NDWU_CHIP_STATUS.DEFAULT]: NDWU_ICON_NAME.DOWNLOAD_S,
+  [NDWU_CHIP_STATUS.DEFAULT]: ICON,
   [NDWU_CHIP_STATUS.POSITIVE]: NDWU_ICON_NAME.CHECK_S,
   [NDWU_CHIP_STATUS.NEGATIVE]: NDWU_ICON_NAME.CLOSE_S,
 };
@@ -78,8 +78,9 @@ const meta: Meta<ChipStoryArgs> = {
     ariaLabel: textArgType('Accessible name; required for an icon-only chip'),
     size: {
       ...sizeArgType(SIZES),
-      description:
-        'Component size. `inherit` takes it from the Size toolbar or the nearest size provider, else `XL`. Under a size provider, `S` renders as `L` and `XXL` as `XL`; the Size toolbar previews only `L` and `XL`',
+      description: `${
+        sizeArgType(SIZES).description
+      }. Under a size provider, \`S\` renders as \`L\` and \`XXL\` as \`XL\`; the Size toolbar previews only \`L\` and \`XL\``,
     },
     click: eventArgType('click', 'Native click event'),
   },

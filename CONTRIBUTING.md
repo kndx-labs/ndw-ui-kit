@@ -202,7 +202,7 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - A `Foundations/<Page>` page is an MDX file in `src/storybook/foundations/<topic>/` (one folder may hold several
   pages that share one `sb-` component) with the text in Markdown; interactive parts are `sb-` components embedded
   through a `Hidden/<Name>` story (`<Story of>`), like `Foundations/Icon Registry`. Kit controls on a Foundations page
-  set `size` explicitly, so the Size toolbar doesn't change the page (as on the home page). It gets a card in the
+  set `size` explicitly, so the Size toolbar doesn't change the page (as on the home page). The page gets a card in the
   `Foundations` group with `ready: false`.
 - Storybook-only components and directives use the `sb-` prefix.
 - Families without a pattern yet (`*-field` CVA wrappers, overlays, table, widgets): the first ticket of the family

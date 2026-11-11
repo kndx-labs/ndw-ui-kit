@@ -45,10 +45,14 @@ const meta: Meta<CardStoryArgs> = {
   args: {
     content: 'Card content goes here.',
   },
-  render: (args) => ({
-    props: args,
-    template: `<ndwu-card ${argsToTemplate(args, {exclude: ['content']})}>{{ content }}</ndwu-card>`,
-  }),
+  render: (args) => {
+    const argsStr = argsToTemplate(args, {exclude: ['content']});
+
+    return {
+      props: args,
+      template: `<ndwu-card${argsStr ? ` ${argsStr}` : ''}>{{ content }}</ndwu-card>`,
+    };
+  },
 };
 
 export default meta;

@@ -56,4 +56,18 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Switch in brand or green colour.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Tag',
+    docsId: 'core-tag--docs',
+    description: 'Compact status label that can be selected or removed.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Chip',
+    docsId: 'core-chip--docs',
+    description: 'Action chip with status colours, icon-only and loading states.',
+    ready: false,
+  },
 ];

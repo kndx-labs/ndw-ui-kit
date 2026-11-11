@@ -81,7 +81,8 @@ const meta: Meta<ProgressBarStoryArgs> = {
     mode: {
       control: 'select',
       options: MODES,
-      description: '`indeterminate` loops the fill and leaves out `aria-valuenow`; `value` and `max` are ignored',
+      description:
+        '`indeterminate` loops the fill and leaves out `aria-valuenow`; `value` and `max` don\'t change the fill',
     },
     size: sizeArgType(SIZES),
   },

@@ -51,7 +51,7 @@ const meta: Meta<NdwuNotificationComponent> = {
       description: 'Background colour and icon',
     },
     message: textArgType(
-      'Text, HTML or a translation key, passed through `localizeHtml`. A plain string is sanitized: tags stay, `style` attributes are removed. A key resolved by the app\'s `NdwuTranslationService`, or a `SafeHtml` value, is trusted',
+      'Text, HTML or a translation key, passed through `localizeHtml`. A plain string is sanitized: safe tags stay, `style` attributes and scripts are removed. A key resolved by the app\'s `NdwuTranslationService`, or a `SafeHtml` value, is trusted',
     ),
   },
   args: {

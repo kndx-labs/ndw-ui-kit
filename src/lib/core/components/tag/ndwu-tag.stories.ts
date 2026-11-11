@@ -37,7 +37,7 @@ const tag = (attributes: string): string => {
   return `<button ndwu-tag ${attributes}></button>`;
 };
 
-const storyDescription = (story: string): Story['parameters'] => {
+const storyDescription = (story: string): NonNullable<Story['parameters']> => {
   return {
     ...FIXED_STORY_PARAMETERS,
     docs: {

@@ -1,5 +1,6 @@
 import {
   NDWU_PICTOGRAM_NAME,
+  NDWU_PICTOGRAM_VARIANTS,
   NdwuAdaptivePictogramComponent,
   NdwuPictogramBaseName,
   NdwuPictogramName,
@@ -16,7 +17,11 @@ type AdaptivePictogramStoryArgs = NdwuAdaptivePictogramComponent & AdaptiveSizeA
 
 type Story = StoryObj<AdaptivePictogramStoryArgs>;
 
-const VARIANTS: readonly NdwuPictogramVariant[] = ['DEFAULT', 'INFO', 'SUCCESS', 'WARNING', 'DISABLED'];
+const isPictogramVariant = (key: string): key is NdwuPictogramVariant => {
+  return key in NDWU_PICTOGRAM_VARIANTS;
+};
+
+const VARIANTS: readonly NdwuPictogramVariant[] = Object.keys(NDWU_PICTOGRAM_VARIANTS).filter(isPictogramVariant);
 
 const PICTOGRAM_NAMES: readonly NdwuPictogramName[] = Object.values(NDWU_PICTOGRAM_NAME);
 

@@ -1,4 +1,10 @@
-import {NDWU_PICTOGRAM_NAME, NdwuPictogramComponent, NdwuPictogramName, NdwuPictogramVariant} from '@ndw-ui-kit/core';
+import {
+  NDWU_PICTOGRAM_NAME,
+  NDWU_PICTOGRAM_VARIANTS,
+  NdwuPictogramComponent,
+  NdwuPictogramName,
+  NdwuPictogramVariant,
+} from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {booleanArgType} from '@sb/helpers/arg-types';
@@ -14,7 +20,11 @@ interface ColorPair {
 
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
 
-const VARIANTS: readonly NdwuPictogramVariant[] = ['DEFAULT', 'INFO', 'SUCCESS', 'WARNING', 'DISABLED'];
+const isPictogramVariant = (key: string): key is NdwuPictogramVariant => {
+  return key in NDWU_PICTOGRAM_VARIANTS;
+};
+
+const VARIANTS: readonly NdwuPictogramVariant[] = Object.keys(NDWU_PICTOGRAM_VARIANTS).filter(isPictogramVariant);
 
 const PICTOGRAM_NAMES: readonly NdwuPictogramName[] = Object.values(NDWU_PICTOGRAM_NAME);
 

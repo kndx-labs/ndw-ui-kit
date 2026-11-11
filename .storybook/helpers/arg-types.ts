@@ -22,14 +22,6 @@ export const sizeArgType = (sizes: readonly NdwuSize[]): ArgType => {
   };
 };
 
-export const iconArgType: ArgType = {
-  control: {
-    type: 'select',
-    labels: {null: 'none'},
-  },
-  options: [null, ...NDWU_ICON_NAMES],
-};
-
 export const adaptiveSizeArgType = (description: string): ArgType => {
   return {
     control: 'select',
@@ -41,6 +33,14 @@ export const adaptiveSizeArgType = (description: string): ArgType => {
       defaultValue: {summary: 'unbound'},
     },
   };
+};
+
+export const iconArgType: ArgType = {
+  control: {
+    type: 'select',
+    labels: {null: 'none'},
+  },
+  options: [null, ...NDWU_ICON_NAMES],
 };
 
 export const textArgType = (description: string): ArgType => {

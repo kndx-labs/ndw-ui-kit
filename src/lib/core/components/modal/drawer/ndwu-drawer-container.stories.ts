@@ -313,6 +313,13 @@ ${methods}
 }`;
 };
 
+const templateExampleMarkup = (examples: readonly TemplateExample[]): string => {
+  return lines([
+    ...examples.map((example) => example.template),
+    ...examples.map((example) => modalOpener(example.label, example.method, example.ref)),
+  ]);
+};
+
 const TEMPLATE_DRAWER = `<ng-template #templateDrawer let-modalRef="modalRef">
   <div ndwuModalBody>
     <p>This drawer was opened with <code>openTemplate()</code> using <code>type: 'drawer'</code>.</p>
@@ -348,25 +355,27 @@ const SCROLLABLE_DRAWER_CONFIG: NdwuDrawerConfig = {
 const openTemplateDrawer = openTemplateDrawerWith(TEMPLATE_DRAWER_CONFIG);
 const openScrollableDrawer = openTemplateDrawerWith(SCROLLABLE_DRAWER_CONFIG);
 
+const TEMPLATE_API_EXAMPLES: readonly TemplateExample[] = [
+  {
+    ref: 'templateDrawer',
+    template: TEMPLATE_DRAWER,
+    label: 'Open template drawer',
+    method: 'openTemplateDrawer',
+    config: TEMPLATE_DRAWER_CONFIG,
+  },
+  {
+    ref: 'scrollableDrawer',
+    template: SCROLLABLE_DRAWER,
+    label: 'Open scrollable template drawer',
+    method: 'openScrollableDrawer',
+    config: SCROLLABLE_DRAWER_CONFIG,
+  },
+];
+
 const TEMPLATE_API_SOURCE = templateExampleSource(
   'TemplateDrawerExampleComponent',
   ['NdwuButtonComponent', 'NdwuModalActionsDirective', 'NdwuModalBodyDirective', 'NdwuModalFooterDirective'],
-  [
-    {
-      ref: 'templateDrawer',
-      template: TEMPLATE_DRAWER,
-      label: 'Open template drawer',
-      method: 'openTemplateDrawer',
-      config: TEMPLATE_DRAWER_CONFIG,
-    },
-    {
-      ref: 'scrollableDrawer',
-      template: SCROLLABLE_DRAWER,
-      label: 'Open scrollable template drawer',
-      method: 'openScrollableDrawer',
-      config: SCROLLABLE_DRAWER_CONFIG,
-    },
-  ],
+  TEMPLATE_API_EXAMPLES,
 );
 
 export const TemplateApi: Story = {
@@ -389,12 +398,7 @@ export const TemplateApi: Story = {
   ],
   render: (args) => ({
     props: {afterClosed: args.afterClosed, openTemplateDrawer, openScrollableDrawer},
-    template: lines([
-      TEMPLATE_DRAWER,
-      SCROLLABLE_DRAWER,
-      modalOpener('Open template drawer', 'openTemplateDrawer', 'templateDrawer'),
-      modalOpener('Open scrollable template drawer', 'openScrollableDrawer', 'scrollableDrawer'),
-    ]),
+    template: templateExampleMarkup(TEMPLATE_API_EXAMPLES),
   }),
 };
 
@@ -430,6 +434,16 @@ const HEADER_DRAWER_CONFIG: NdwuDrawerConfig = {
 
 const openHeaderDrawer = openTemplateDrawerWith(HEADER_DRAWER_CONFIG);
 
+const TEMPLATE_HEADER_EXAMPLES: readonly TemplateExample[] = [
+  {
+    ref: 'headerDrawer',
+    template: HEADER_DRAWER,
+    label: 'Open template drawer with custom header',
+    method: 'openHeaderDrawer',
+    config: HEADER_DRAWER_CONFIG,
+  },
+];
+
 const TEMPLATE_HEADER_SOURCE = templateExampleSource(
   'TemplateHeaderDrawerExampleComponent',
   [
@@ -439,15 +453,7 @@ const TEMPLATE_HEADER_SOURCE = templateExampleSource(
     'NdwuModalFooterDirective',
     'NdwuModalHeaderDirective',
   ],
-  [
-    {
-      ref: 'headerDrawer',
-      template: HEADER_DRAWER,
-      label: 'Open template drawer with custom header',
-      method: 'openHeaderDrawer',
-      config: HEADER_DRAWER_CONFIG,
-    },
-  ],
+  TEMPLATE_HEADER_EXAMPLES,
 );
 
 export const TemplateHeader: Story = {
@@ -468,10 +474,7 @@ export const TemplateHeader: Story = {
   ],
   render: (args) => ({
     props: {afterClosed: args.afterClosed, openHeaderDrawer},
-    template: lines([
-      HEADER_DRAWER,
-      modalOpener('Open template drawer with custom header', 'openHeaderDrawer', 'headerDrawer'),
-    ]),
+    template: templateExampleMarkup(TEMPLATE_HEADER_EXAMPLES),
   }),
 };
 

@@ -63,4 +63,11 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Small spinner of fading spokes for inline loading.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Router Loader',
+    docsId: 'core-router-loader--docs',
+    description: 'Animated router icon for page and section loading.',
+    ready: false,
+  },
 ];

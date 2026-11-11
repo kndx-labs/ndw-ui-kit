@@ -56,7 +56,7 @@ const ICON_TABS: readonly NdwuTabItem[] = [
 
 const NETWORK_TABS: readonly NdwuTabItem[] = [
   {id: 'tab1', label: 'Wi-Fi settings'},
-  {id: 'tab2', label: 'Lan configuration'},
+  {id: 'tab2', label: 'LAN configuration'},
   {id: 'tab3', label: 'Port forwarding', disabled: true},
   {id: 'tab4', label: 'Diagnostics'},
   {id: 'tab5', label: 'Security'},
@@ -195,7 +195,7 @@ const meta: Meta<TabsStoryArgs> = {
       table: ITEM_INPUTS_TABLE,
     },
     disabled: {
-      ...booleanArgType('First tab: can\'t be selected and is skipped by Tab; `tabChange` is not emitted for it'),
+      ...booleanArgType('First tab: can\'t be clicked or reached by Tab; `tabChange` is not emitted for it'),
       table: ITEM_INPUTS_TABLE,
     },
     tabChange: outputArgType(
@@ -242,7 +242,7 @@ export const DefaultVariant: Story = {
     docs: {
       description: {
         story:
-          'The default variant: tabs in a bar with a border and background. A tab can show a badge (gray when the tab is disabled) or an icon. The app keeps the selection: bind `selectedTabId` and set it from `tabChange`.',
+          'The default variant: tabs in a bar with a border and background. A tab can show a badge (gray when the tab is disabled) or an icon.',
       },
     },
   },
@@ -279,7 +279,7 @@ export const TabWidthModes: Story = {
     docs: {
       description: {
         story:
-          '`content` (default) fits each tab to its label. `fixed` gives every tab the same width: 64 px at L, 160 px at XL and XXL; a long label ends with an ellipsis. A tab\'s own `widthMode` overrides `tabWidthMode`: in the third row the second and fourth tabs are fixed.',
+          '`content` (default) fits each tab to its label. `fixed` gives every tab the same width: 64 px at L, 160 px at XL and XXL. A tab\'s own `widthMode` overrides `tabWidthMode`: in the third row the second and fourth tabs are fixed.',
       },
     },
   },

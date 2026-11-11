@@ -46,7 +46,7 @@ const meta: Meta<NdwuSpokesLoaderComponent> = {
       description: 'Gap from the outer edge to the spoke in px; empty = auto (8.65 % of `size`)',
     },
     autostart: booleanArgType(
-      'Starts the internal animation loop on init. The spokes animate through CSS either way, so the value has no visible effect',
+      'Starts the internal animation loop when `true`. The spokes animate through CSS either way, so the value has no visible effect',
     ),
     startAnimation: {table: {disable: true}},
     stopAnimation: {table: {disable: true}},

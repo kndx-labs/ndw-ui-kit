@@ -56,4 +56,32 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Switch in brand or green colour.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Icon',
+    docsId: 'core-icon-icon--docs',
+    description: 'SVG icon from the kit sprite, sized by its name and coloured by CSS color.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Adaptive Icon',
+    docsId: 'core-icon-adaptive-icon--docs',
+    description: 'Icon that switches between S and L by size flags.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Pictogram',
+    docsId: 'core-pictogram-pictogram--docs',
+    description: 'Two-colour illustration in five presets or custom colours.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Adaptive Pictogram',
+    docsId: 'core-pictogram-adaptive-pictogram--docs',
+    description: 'Pictogram that switches between L and XL by size flags.',
+    ready: false,
+  },
 ];

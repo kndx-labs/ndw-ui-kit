@@ -1,7 +1,10 @@
 import {NDWU_ICON_NAMES, NdwuSize} from '@ndw-ui-kit/core';
 import {ArgTypes} from '@storybook/angular';
+import {AdaptiveSizeMode} from './story-args';
 
 type ArgType = ArgTypes[string];
+
+const ADAPTIVE_SIZE_MODES: readonly AdaptiveSizeMode[] = ['unbound', 'viewport'];
 
 export const sizeArgType = (sizes: readonly NdwuSize[]): ArgType => {
   return {
@@ -25,6 +28,19 @@ export const iconArgType: ArgType = {
     labels: {null: 'none'},
   },
   options: [null, ...NDWU_ICON_NAMES],
+};
+
+export const adaptiveSizeArgType = (description: string): ArgType => {
+  return {
+    control: 'select',
+    options: ADAPTIVE_SIZE_MODES,
+    description,
+    table: {
+      category: 'inputs',
+      type: {summary: 'NdwuSizeFlags'},
+      defaultValue: {summary: 'unbound'},
+    },
+  };
 };
 
 export const textArgType = (description: string): ArgType => {

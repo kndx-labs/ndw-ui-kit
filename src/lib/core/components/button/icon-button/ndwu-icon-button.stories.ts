@@ -10,11 +10,12 @@ import {
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, sizeArgType} from '@sb/helpers/arg-types';
+import {CssTokenArgs, CssTokenGroup, cssTokenArgTypes, withoutCssTokens} from '@sb/helpers/css-tokens';
 import {SizeArg} from '@sb/helpers/story-args';
 import {withRowLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
 
-type IconButtonStoryArgs = NdwuIconButtonComponent & SizeArg & {
+type IconButtonStoryArgs = NdwuIconButtonComponent & SizeArg & CssTokenArgs & {
   ariaLabel: string;
   click: (event: MouseEvent) => void;
 };
@@ -35,6 +36,39 @@ interface FlatIconExample {
 const VARIANTS = Object.values(NDWU_ICON_BUTTON_VARIANT);
 const SIZES = [NDWU_SIZE.L, NDWU_SIZE.XL, NDWU_SIZE.XXL];
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
+
+const CSS_TOKEN_GROUPS: readonly CssTokenGroup[] = [
+  {
+    title: 'all variants',
+    keys: ['icon-button-focus-border', 'icon-button-focus-outline'],
+  },
+  {
+    title: 'square and round',
+    keys: [
+      'icon-button-icon',
+      'icon-button-bg',
+      'icon-button-border',
+      'icon-button-hover-bg',
+      'icon-button-active-bg',
+      'icon-button-disabled-bg',
+      'icon-button-disabled-border',
+      'icon-button-disabled-icon',
+    ],
+    if: {arg: 'variant', neq: NDWU_ICON_BUTTON_VARIANT.FLAT},
+  },
+  {
+    title: 'flat',
+    keys: [
+      'icon-button-flat-icon',
+      'icon-button-flat-hover-icon',
+      'icon-button-flat-focus-bg',
+      'icon-button-flat-focus-icon',
+      'icon-button-flat-active-icon',
+      'icon-button-flat-disabled-icon',
+    ],
+    if: {arg: 'variant', eq: NDWU_ICON_BUTTON_VARIANT.FLAT},
+  },
+];
 
 const VARIANT_EXAMPLES: readonly VariantExample[] = [
   {variant: NDWU_ICON_BUTTON_VARIANT.SQUARE, icon: NDWU_ICON_NAME.ADD_S, label: 'Square'},
@@ -86,6 +120,7 @@ const meta: Meta<IconButtonStoryArgs> = {
       table: {category: 'story'},
     },
     click: eventArgType('click', 'Native click event'),
+    ...cssTokenArgTypes(CSS_TOKEN_GROUPS),
   },
   args: {
     icon: NDWU_ICON_NAME.ADD_S,
@@ -95,10 +130,11 @@ const meta: Meta<IconButtonStoryArgs> = {
     ariaLabel: 'Add item',
   },
   render: (args) => {
-    const argsStr = argsToTemplate(args, {exclude: ['ariaLabel']});
+    const storyArgs = withoutCssTokens(args);
+    const argsStr = argsToTemplate(storyArgs, {exclude: ['ariaLabel']});
 
     return {
-      props: args,
+      props: storyArgs,
       template: `
         <button
           ndwu-icon-button

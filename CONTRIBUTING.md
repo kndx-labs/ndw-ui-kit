@@ -192,8 +192,18 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   Their names must not match any arg, so `argsSourceTransform` leaves them alone.
 - Leave `size` unset so the toolbar applies. Don't pin a theme (no `globals.theme`; `parameters.themes.themeOverride`
   is not supported).
-- Dialogs and drawers opened through `NdwuModalService` are created from the root injector, so the Size toolbar doesn't
-  reach them. In a story, pass the story component's injector: `openDialog(Content, {injector: inject(Injector)})`.
+- Dialogs and drawers open from code, so a story renders `modalOpener('<label>', 'openX')`, which is
+  `<sb-modal-opener label="..." [open]="openX" (closed)="afterClosed($event)" />` (`@sb/helpers/story-modal`; meta
+  `decorators: [withModalOpener]` and `argTypes: {afterClosed: afterClosedArgType}`). `openX` gets
+  `{modal, injector, viewContainerRef, template}` and returns the `NdwuModalRef`; the opener logs the `afterClosed$`
+  result to Actions. Pass `injector` into the config: modals are created from the root injector, so the Size toolbar
+  reaches them only through it. For `openTemplate`, pass the template variable as the third argument.
+- "Show code" of a modal story is the service call: fixed stories set `parameters: modalStoryParameters(code, story)`
+  with `code` from `modalSource(...)` (several calls: `modalSources(...)`), built from the config constant the story
+  opens; `Default` builds it from args in `docs.source.transform`.
+- Modal content components live in `.storybook/demos/modal-*.component.ts`, shared by dialog and drawer stories.
+  Modal stories set no `component:`: the service creates the container, so the config argTypes are written by hand.
+- The modal `play` story clicks the opener and waits for `screen.findByRole('dialog', {name: '<title>'})`.
 - A component that is ready for review gets the `ready` tag: `tags: ['autodocs', 'ready']`. The sidebar tag filter
   can include or exclude it.
 - A new component docs page gets a card in `src/storybook/introduction/introduction.cards.ts`: group (first title

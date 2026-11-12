@@ -56,4 +56,11 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Switch in brand or green colour.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Dialog',
+    docsId: 'core-modal-dialog--docs',
+    description: 'Modal dialog opened through NdwuModalService: alert, confirm, component or template content.',
+    ready: false,
+  },
 ];

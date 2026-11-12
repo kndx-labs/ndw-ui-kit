@@ -146,16 +146,26 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `parameters.sizes` for components with the `NdwuSizeDirective` host directive (`inputs: ['ndwuSize: size']`), not for
   components with their own `size` input. A Size toolbar value outside `parameters.sizes` leaves the component at its
   default size and shows a "not supported" note.
+- Components with the `NdwuAdaptiveSizeDirective` host directive (`inputs: ['ndwuAdaptiveSize: adaptiveSize']`): add
+  `AdaptiveSizeArg` (`@sb/helpers/story-args`), `adaptiveSizeArgType(<description>)` and `adaptiveSize: 'viewport'`
+  in `meta.args`. `render` excludes `adaptiveSize` from `argsToTemplate`, joins it with
+  `adaptiveSizeBinding(args.adaptiveSize)` through `.filter(Boolean).join(' ')` and passes
+  `sizeFlags: viewportSizeFlags(<wide size>, <handset size>)` (`@sb/helpers/story-viewport`) in `props`. Check the
+  sizes with the Viewport toolbar.
 - Compodoc names aliased inputs by their alias (`aria-label` for `ariaLabel`, `id` for `idInput`). Key their args by
   the alias in `Extra`: `AriaArgs` from `@sb/helpers/story-args` when the component aliases `aria-label`,
   `aria-labelledby` and `aria-describedby`, `Pick<AriaArgs, ...>` for a subset. Inputs without an alias keep their
   property name (`ariaLabel`). In fixed stories write the alias as a plain attribute. Once a key is not an identifier
   (`aria-*`), quote every key of `argTypes` / `args` (`quote-props`).
-- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `textArgType`, `booleanArgType`,
-  `outputArgType`, `eventArgType`; the form-only `submitArgType` lives in `@sb/helpers/story-form`.
+- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `adaptiveSizeArgType`, `iconArgType`, `textArgType`,
+  `booleanArgType`, `outputArgType`, `eventArgType`; the form-only `submitArgType` lives in `@sb/helpers/story-form`.
 - A story that needs the router spreads `withRouter` from `@sb/helpers/story-router` in its `decorators` array:
   `decorators: [...withRouter]`. It adds story-level `provideRouter` and `provideLocationMocks`; `sb-router-url` shows
   the current URL.
+- Inputs passed through `localizeHtml` (notification `message`, empty-state `header` / `description`, `ndwuTooltip`
+  content) sanitize a plain string (see "HTML in text inputs" in `src/lib/README.md`). To show trusted HTML, pass a
+  translation key and add `decorators: [withTranslations({'<key>': '<html>'})]` (`@sb/helpers/story-translations`);
+  show the HTML in the story description.
 - Descriptions go into `argTypes.<name>.description` in the story file, a one-sentence component intro into
   `parameters.docs.description.component`. Compodoc adds types and defaults of inputs. A story's explanation goes into
   `parameters.docs.description.story`, not into rendered text such as `secondaryText`, which "Show code" copies.
@@ -210,6 +220,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - **Size** (component default, S, L, XL, XXL) provides `NDWU_SIZE_TOKEN` around the story, like
   `ndwu-form-container`. Component default provides nothing; an explicit `size` arg wins. Modal dialogs and drawers
   get it only through `config.injector` (see above).
+- **Viewport** (Storybook's own) resizes the canvas. Adaptive stories with `adaptiveSize: viewport` switch size at
+  `Breakpoints.Handset`: Small and Large mobile are handset, Tablet and Desktop are not. It does not apply on the docs
+  page.
 
 ### Accessibility
 

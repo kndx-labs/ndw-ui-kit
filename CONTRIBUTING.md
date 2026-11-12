@@ -195,6 +195,10 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - Components the template uses besides `component:` (radio buttons in a group, a submit button) go into
   `moduleMetadata({imports: [...]})`; `subcomponents` only adds their ArgTypes tab. Their inputs get no controls, so
   fixed stories show them.
+- Components with projected content (empty-state actions): `Default` renders typical content as literal markup; fixed
+  stories show each content form (none, one, several); kit components in it go into `moduleMetadata` at meta level. In
+  `ndwu-empty-state`, don't wrap actions in `@if` / `@for`: their comment anchor counts as an action and keeps the
+  24 px gap.
 - Native form stories: `decorators: [...withNativeForm]`, `argTypes: {submit: submitArgType}`,
   `props: submitProps(args)` and `template: nativeFormTemplate([...fields])` (`@sb/helpers/story-form`), which wraps the
   fields in `<form (submit)="submit($event)">` and adds the submit button. The handler keeps the page from navigating and
@@ -211,8 +215,11 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   segment), name, docs id (`<title in kebab case>--docs`, e.g. `core-button-button--docs`), a short plain-text summary
   for the card (no markdown) and `ready` matching the tag.
 - Storybook-only components and directives use the `sb-` prefix.
-- Families without a pattern yet (`*-field` CVA wrappers, overlays, table, widgets): the first ticket of the family
-  adds its pattern to this section.
+- Widgets follow the same rules; they import from `@ndw-ui-kit/core/widgets` and use the title `Widgets/<Name>`
+  (`Widgets/Empty State`). When the component also has a `size` control, start `adaptiveSize` at `unbound`, so `size`
+  and the Size toolbar work on load.
+- Families without a pattern yet (`*-field` CVA wrappers, overlays, table): the first ticket of the family adds its
+  pattern to this section.
 
 ### Toolbar
 

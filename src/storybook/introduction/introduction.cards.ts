@@ -56,4 +56,11 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Switch in brand or green colour.',
     ready: false,
   },
+  {
+    group: 'Widgets',
+    name: 'Empty State',
+    docsId: 'widgets-empty-state--docs',
+    description: 'Pictogram with header, description and optional actions.',
+    ready: false,
+  },
 ];

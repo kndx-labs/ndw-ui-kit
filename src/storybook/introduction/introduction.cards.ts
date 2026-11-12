@@ -56,4 +56,18 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Switch in brand or green colour.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Popover',
+    docsId: 'core-popover--docs',
+    description: 'Panel opened on click with a title, text or template content and action buttons.',
+    ready: false,
+  },
+  {
+    group: 'Popover API',
+    name: 'Popover Trigger',
+    docsId: 'popover-api-popover-trigger--docs',
+    description: 'Directive that opens any content as a dropdown, popover panel or tooltip.',
+    ready: false,
+  },
 ];

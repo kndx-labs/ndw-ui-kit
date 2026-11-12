@@ -157,8 +157,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `aria-labelledby` and `aria-describedby`, `Pick<AriaArgs, ...>` for a subset. Inputs without an alias keep their
   property name (`ariaLabel`). In fixed stories write the alias as a plain attribute. Once a key is not an identifier
   (`aria-*`), quote every key of `argTypes` / `args` (`quote-props`).
-- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `adaptiveSizeArgType`, `iconArgType`, `textArgType`,
-  `booleanArgType`, `outputArgType`, `eventArgType`; the form-only `submitArgType` lives in `@sb/helpers/story-form`.
+- Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `adaptiveSizeArgType`, `iconArgType`,
+  `pictogramBaseNameArgType`, `pictogramVariantArgType`, `textArgType`, `booleanArgType`, `outputArgType`,
+  `eventArgType`; the form-only `submitArgType` lives in `@sb/helpers/story-form`.
 - A story that needs the router spreads `withRouter` from `@sb/helpers/story-router` in its `decorators` array:
   `decorators: [...withRouter]`. It adds story-level `provideRouter` and `provideLocationMocks`; `sb-router-url` shows
   the current URL.

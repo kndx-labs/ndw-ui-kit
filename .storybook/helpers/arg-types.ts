@@ -1,4 +1,12 @@
-import {NDWU_ICON_NAMES, NdwuSize} from '@ndw-ui-kit/core';
+import {
+  NDWU_ICON_NAMES,
+  NDWU_PICTOGRAM_NAME,
+  NDWU_PICTOGRAM_VARIANTS,
+  NdwuPictogramBaseName,
+  NdwuPictogramName,
+  NdwuPictogramVariant,
+  NdwuSize,
+} from '@ndw-ui-kit/core';
 import {ArgTypes} from '@storybook/angular';
 import {AdaptiveSizeMode} from './story-args';
 
@@ -41,6 +49,37 @@ export const iconArgType: ArgType = {
     labels: {null: 'none'},
   },
   options: [null, ...NDWU_ICON_NAMES],
+};
+
+const isPictogramVariant = (key: string): key is NdwuPictogramVariant => {
+  return key in NDWU_PICTOGRAM_VARIANTS;
+};
+
+export const PICTOGRAM_VARIANTS: readonly NdwuPictogramVariant[] = Object.keys(NDWU_PICTOGRAM_VARIANTS).filter(
+  isPictogramVariant,
+);
+
+const PICTOGRAM_NAMES: readonly NdwuPictogramName[] = Object.values(NDWU_PICTOGRAM_NAME);
+
+const PICTOGRAM_NAME_SET: ReadonlySet<string> = new Set(PICTOGRAM_NAMES);
+
+const isPictogramBaseName = (base: string): base is NdwuPictogramBaseName => {
+  return PICTOGRAM_NAME_SET.has(`${base}_L`) && PICTOGRAM_NAME_SET.has(`${base}_XL`);
+};
+
+export const PICTOGRAM_BASE_NAMES: readonly NdwuPictogramBaseName[] = PICTOGRAM_NAMES
+  .filter((name) => name.endsWith('_XL'))
+  .map((name) => name.slice(0, -3))
+  .filter(isPictogramBaseName);
+
+export const pictogramBaseNameArgType: ArgType = {
+  control: 'select',
+  options: PICTOGRAM_BASE_NAMES,
+};
+
+export const pictogramVariantArgType: ArgType = {
+  control: 'select',
+  options: PICTOGRAM_VARIANTS,
 };
 
 export const textArgType = (description: string): ArgType => {

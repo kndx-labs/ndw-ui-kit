@@ -156,6 +156,10 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - A story that needs the router spreads `withRouter` from `@sb/helpers/story-router` in its `decorators` array:
   `decorators: [...withRouter]`. It adds story-level `provideRouter` and `provideLocationMocks`; `sb-router-url` shows
   the current URL.
+- Inputs passed through `localizeHtml` (notification `message`, empty-state `header` / `description`, `ndwuTooltip`
+  content) sanitize a plain string (see "HTML in text inputs" in `src/lib/README.md`). To show trusted HTML, pass a
+  translation key and add `decorators: [withTranslations({'<key>': '<html>'})]` (`@sb/helpers/story-translations`);
+  show the HTML in the story description.
 - Descriptions go into `argTypes.<name>.description` in the story file, a one-sentence component intro into
   `parameters.docs.description.component`. Compodoc adds types and defaults of inputs. A story's explanation goes into
   `parameters.docs.description.story`, not into rendered text such as `secondaryText`, which "Show code" copies.
@@ -168,7 +172,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   - fixed stories build a literal template from typed data in TS (`VARIANTS.map(...)`), without `@for` over props,
     props for constants or inline styles;
   - layout goes into a story decorator, which "Show code" leaves out: `withRowLayout` for one row, `withStackLayout`
-    for rows given as `<div>` groups (`@sb/helpers/story-layout`, `group` from `@sb/helpers/story-template`).
+    for rows given as `<div>` groups, `withNarrowLayout` for a 200 px box that shows text wrapping
+    (`@sb/helpers/story-layout`, `group` from `@sb/helpers/story-template`).
 - Literal ids in fixed stories follow `<component>-<story-kebab>-<part>` (`toggle-external-label-input`): all stories
   render on one docs page, so an id must be unique there. `Default` uses generated ids.
 - Native DOM events: `eventArgType('<event>', '<description>')`. Outputs and `model()` change events:

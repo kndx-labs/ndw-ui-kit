@@ -95,7 +95,7 @@ const meta: Meta<EmptyStateStoryArgs> = {
     ),
     size: sizeArgType(SIZES),
     adaptiveSize: adaptiveSizeArgType(
-      'Size flags: a map of size to `Signal<boolean>`; the first true flag wins and beats `size` and the Size toolbar. Story values: `unbound` binds nothing; `viewport` binds XL on wide screens and L under `Breakpoints.Handset`',
+      'Size flags: a map of size to `Signal<boolean>`; the largest true flag wins (XXL, XL, L, S) and beats `size` and the Size toolbar. Story values: `unbound` binds nothing; `viewport` binds XL on wide screens and L under `Breakpoints.Handset`',
     ),
   },
   args: {
@@ -150,7 +150,7 @@ export const MultipleActions: Story = {
   render: () => ({
     template: emptyState(
       'pictogram="pictogram_connection1" header="Failed to upload the file" description="Please try again later"',
-      [CANCEL, RETRY],
+      DEFAULT_ACTIONS,
     ),
   }),
 };

@@ -18,6 +18,10 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 │   ├── with-theme.decorator.ts       Theme toolbar: puts ndwu-theme-light / ndwu-theme-dark on body
 │   ├── with-size.decorator.ts        Size toolbar: its items and the wrapper around the story
 │   └── size-provider.component.ts    Wrapper component that provides NDWU_SIZE_TOKEN from the toolbar
+├── demos/
+│   ├── modal-form.component.ts       Modal content: name and email form, closes with the form value
+│   ├── modal-custom-slots.component.ts  Modal content with *ndwuModalHeader and *ndwuModalFooter
+│   └── modal-long-text.component.ts  Long static text for scrollable modals
 └── helpers/
     ├── story-args.ts                 SizeArg (host-directive size) and AriaArgs (alias-keyed ARIA args)
     ├── arg-types.ts                  Shared argTypes: size, icon, text, boolean, outputs, native events
@@ -27,6 +31,8 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
     ├── story-form.ts                 Native form stories: submit handler, its argType, form template and decorators
     ├── story-template.ts             Joins fixed story templates, one element per line, and groups them in rows
     ├── router-url.component.ts       Wrapper that shows the current Router URL below a story
+    ├── modal-opener.component.ts     Button that opens a modal through NdwuModalService and reports its result
+    ├── story-modal.ts                Modal stories: afterClosed argType, opener template, "Show code" source
     └── story-router.ts               Story-level Router providers, RouterLink import and URL wrapper
 ```
 
@@ -73,6 +79,18 @@ Imported by stories as `@sb/helpers/<file>`.
 | `story-router.ts` | Adds story-level in-memory Router providers, imports `RouterLink` and wraps the story in `sb-router-url`; `withRouter` is an array of three decorators (`applicationConfig`, `moduleMetadata`, `componentWrapperDecorator`), spread with `decorators: [...withRouter]` | Router setup stays local to stories that need it; the wrapper is excluded from "Show code" |
 | `story-template.ts` | `lines(items)` joins templates of a fixed story, one element per line; `group(items)` wraps them in a `<div>` row for `withStackLayout` | One shared helper replaces a copy in every story file |
 | `router-url.component.ts` | Projects its content and shows the current Router URL in a `sb-note` paragraph | A router story makes navigation visible without changing the Storybook iframe URL |
+| `modal-opener.component.ts` | `sb-modal-opener`: an `ndwu-button` that calls the story's `open` function with `{modal, injector, viewContainerRef, template}` and emits the `afterClosed$` result as `closed`; closes the modals it opened when it is destroyed | A modal opens from code, not from a template, so a story can't render it. A component can inject `NdwuModalService`, its own element injector (inside `sb-size-provider`, so passing it as `config.injector` lets the Size toolbar reach the modal) and a `ViewContainerRef` for `openTemplate`. A function covers every call form: `alert`, `confirm`, `openDialog`, `openDrawer`, `openTemplate` and follow-up calls on the ref. Closing on destroy keeps a remounted story from leaving a dialog whose injector belongs to a destroyed view |
+| `story-modal.ts` | `afterClosedArgType` (`afterClosed` action, `AfterClosedArg`), `withModalOpener` (imports `sb-modal-opener`), `modalOpener(label, open, template?)` (the `<sb-modal-opener>` template of a story), `modalSources(...items)` (joins snippets with a blank line), `modalStoryParameters(code, story)` (fixed-story parameters: controls off, TS "Show code", story description), `modalSource(method, config, content?)` and `objectSource(value, indent)` (TS literal: single quotes, one entry per line, `undefined` and `''` left out) | The modal API is the service call, so "Show code" prints `this.modalService.<method>(...)` from the same config constant the story opens. Dialog and drawer stories share the opener template and the fixed-story parameters instead of copying them |
+
+### Demos
+
+Story-only components, imported by stories as `@sb/demos/<file>`.
+
+| File | What it does | Why it is built this way |
+|---|---|---|
+| `modal-form.component.ts` | `sb-modal-form`: two required `ndwu-input-field`s in `ndwu-form-container`, an `OK` button in `*ndwuModalFooter` that closes the modal with `{name, email}` | Content of the dialog and drawer form stories. No `size` on the form container, so the size from `config.injector` (Size toolbar) applies. A `.ts` under `src/lib` would enter the package |
+| `modal-custom-slots.component.ts` | `sb-modal-custom-slots`: custom header and footer through `*ndwuModalHeader` / `*ndwuModalFooter`; closes with `true` (Save) or `false` | Shows the component slot API in dialog and drawer stories |
+| `modal-long-text.component.ts` | `sb-modal-long-text`: static guide text with headings and lists | Storybook has no markdown pipe and doesn't serve the playground's `.md` asset; long enough to make the modal body scroll |
 
 ### Home page
 

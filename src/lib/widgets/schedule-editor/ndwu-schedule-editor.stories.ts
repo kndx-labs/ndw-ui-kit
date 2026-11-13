@@ -1,4 +1,4 @@
-import {computed, signal} from '@angular/core';
+import {WritableSignal, computed, signal} from '@angular/core';
 import {ndwuScheduleValueToActions} from '@ndw-ui-kit/core/schedule-actions';
 import {
   NDWU_DEFAULT_WEEK_DAYS,
@@ -56,6 +56,34 @@ const weekDaysLiteral = (weekDays: readonly NdwuWeekDay[]): string => {
   return `[${weekDays.map(({day, label}) => `{day: '${day}', label: '${label}'}`).join(', ')}]`;
 };
 
+const SAMPLE_VALUE_LITERAL = valueLiteral(SAMPLE_VALUE);
+
+const EDITABLE_BINDINGS = '[value]="schedule()" (valueChange)="onValueChange($event)"';
+
+interface EditableProps {
+  schedule: WritableSignal<NdwuScheduleValue>;
+  onValueChange: (value: NdwuScheduleValue) => void;
+}
+
+const editableProps = (
+  value: NdwuScheduleValue,
+  valueChange?: (value: NdwuScheduleValue) => void,
+): EditableProps => {
+  const schedule = signal(value);
+
+  return {
+    schedule,
+    onValueChange: (next: NdwuScheduleValue) => {
+      schedule.set(next);
+      valueChange?.(next);
+    },
+  };
+};
+
+const fixedSourceTransform: typeof argsSourceTransform = (code, context) => {
+  return argsSourceTransform(code, context).replace(EDITABLE_BINDINGS, `[value]="${SAMPLE_VALUE_LITERAL}"`);
+};
+
 const editorSourceTransform: typeof argsSourceTransform = (code, context) => {
   const value = context.args['value'] as NdwuScheduleValue;
   const weekDays = context.args['weekDays'] as NdwuWeekDay[];
@@ -66,8 +94,7 @@ const editorSourceTransform: typeof argsSourceTransform = (code, context) => {
   }
 
   return argsSourceTransform(code, context)
-    .replace(' [value]="schedule()"', '')
-    .replace(' (valueChange)="onValueChange($event)"', '')
+    .replace(` ${EDITABLE_BINDINGS}`, '')
     .replace(' />', `${bindings.join('')} />`);
 };
 
@@ -76,8 +103,6 @@ const withFillLayout: Decorator = (storyFn, context) => {
     ? withResizableLayout(storyFn, context)
     : storyFn();
 };
-
-const SAMPLE_VALUE_LITERAL = valueLiteral(SAMPLE_VALUE);
 
 const meta: Meta<NdwuScheduleEditorComponent> = {
   title: 'Widgets/Schedule Editor',
@@ -92,7 +117,7 @@ const meta: Meta<NdwuScheduleEditorComponent> = {
         ].join(' '),
       },
       source: {
-        transform: argsSourceTransform,
+        transform: fixedSourceTransform,
       },
     },
   },
@@ -175,22 +200,14 @@ export const Default: Story = {
     },
   },
   render: (args) => {
-    const schedule = signal(args.value);
+    const bindings = argsToTemplate(args, {exclude: ['value', 'valueChange']});
 
     return {
       props: {
         ...args,
-        schedule,
-        onValueChange: (value: NdwuScheduleValue) => {
-          schedule.set(value);
-          args.valueChange?.(value);
-        },
+        ...editableProps(args.value, args.valueChange),
       },
-      template: [
-        `<ndwu-schedule-editor ${argsToTemplate(args, {exclude: ['value', 'valueChange']})}`,
-        '[value]="schedule()"',
-        '(valueChange)="onValueChange($event)" />',
-      ].join(' '),
+      template: `<ndwu-schedule-editor ${bindings} ${EDITABLE_BINDINGS} />`,
     };
   },
 };
@@ -205,7 +222,8 @@ export const FullDesktop: Story = {
     },
   },
   render: () => ({
-    template: `<ndwu-schedule-editor forceLayout="desktop" mode="full" [value]="${SAMPLE_VALUE_LITERAL}" />`,
+    props: editableProps(SAMPLE_VALUE),
+    template: `<ndwu-schedule-editor forceLayout="desktop" mode="full" ${EDITABLE_BINDINGS} />`,
   }),
 };
 
@@ -219,11 +237,12 @@ export const FullDesktopSundayFirst: Story = {
     },
   },
   render: () => ({
+    props: editableProps(SAMPLE_VALUE),
     template: `<ndwu-schedule-editor
   forceLayout="desktop"
   mode="full"
   [weekDays]="${weekDaysLiteral(SUNDAY_FIRST_WEEK_DAYS)}"
-  [value]="${SAMPLE_VALUE_LITERAL}"
+  ${EDITABLE_BINDINGS}
 />`,
   }),
 };
@@ -247,7 +266,8 @@ export const FullMobile: Story = {
     },
   },
   render: () => ({
-    template: `<ndwu-schedule-editor forceLayout="mobile" mode="full" [value]="${SAMPLE_VALUE_LITERAL}" />`,
+    props: editableProps(SAMPLE_VALUE),
+    template: `<ndwu-schedule-editor forceLayout="mobile" mode="full" ${EDITABLE_BINDINGS} />`,
   }),
 };
 

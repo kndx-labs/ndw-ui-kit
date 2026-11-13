@@ -184,7 +184,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   go in decorators, never in `render` (see [.storybook/README.md](.storybook/README.md)). `toArgs` returns only keys
   that are in `meta.args` and never `undefined`: either one changes the template and remounts the story. Fixed stories
   stay uncontrolled literals. A component controlled only through its output (`Widgets/Schedule Editor`) also keeps
-  the value in a `signal` in `Default`'s `render`, so a drag stays on the docs page until a control changes.
+  the value in a `signal` in `render`, in `Default` and in the fixed stories that take input, so a drag stays on the
+  docs page (in `Default` until a control changes); a source transform puts the literal value back into "Show code".
 - Components the template uses besides `component:` (radio buttons in a group, a submit button) go into
   `moduleMetadata({imports: [...]})`; `subcomponents` only adds their ArgTypes tab. Their inputs get no controls, so
   fixed stories show them.

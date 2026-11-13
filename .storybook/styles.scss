@@ -8,6 +8,11 @@
   transition: none !important;
 }
 
+#storybook-root,
+.docs-story {
+  color: var(--ndwu-color-gray-80);
+}
+
 .sb-row,
 .sb-stack > div {
   display: flex;
@@ -27,6 +32,18 @@
   flex-direction: column;
   gap: 16px;
   align-items: flex-start;
+}
+
+.sb-box {
+  display: flex;
+  width: 160px;
+  height: 160px;
+  border: 1px dashed var(--ndwu-color-gray-30);
+}
+
+.sb-box > * {
+  width: 100%;
+  height: 100%;
 }
 
 .sb-note {

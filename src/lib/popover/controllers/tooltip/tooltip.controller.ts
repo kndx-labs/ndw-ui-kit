@@ -2,6 +2,7 @@ import {ElementRef, Injector} from '@angular/core';
 import {
   type ConnectedPosition,
   type FlexibleConnectedPositionStrategy,
+  type FlexibleConnectedPositionStrategyOrigin,
   Overlay,
   type OverlayRef,
 } from '@angular/cdk/overlay';
@@ -39,17 +40,29 @@ function buildPositions(preferred: NdwuTooltipPosition, align: NdwuPopoverAlign)
   return [...positions, ...sides.map((side) => buildConnectedPosition(side, 'center'))];
 }
 
+/** The element behind a connected origin, or null for a viewport point. */
+function originToElement(origin: FlexibleConnectedPositionStrategyOrigin): Element | null {
+  if (origin instanceof ElementRef) {
+    return origin.nativeElement instanceof Element ? origin.nativeElement : null;
+  }
+
+  return origin instanceof Element ? origin : null;
+}
+
 /**
  * Lightweight overlay controller for tooltips. Uses flexibleConnectedTo with preferred positions.
  * No backdrop, no mobile bottom-sheet — tooltips always float near the trigger.
  *
  * The overlay can be anchored to an external origin (`originElement`/`originPoint` in the config)
- * and re-anchored while open via `setOrigin()`, so one trigger can serve many targets.
+ * and re-anchored while open via `setOrigin()`, so one trigger can serve many targets. It closes,
+ * without moving focus, once its origin element is fully out of view.
  */
 export class NdwuTooltipController extends NdwuPopoverController {
   protected readonly breakpointObserver: BreakpointObserver;
 
   private positionStrategy: FlexibleConnectedPositionStrategy | null = null;
+  private visibilityObserver: IntersectionObserver | null = null;
+  private visibilityTarget: Element | null = null;
 
   constructor(
     protected readonly overlay: Overlay,
@@ -82,6 +95,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
     applyThemeClass(overlayRef.overlayElement, detectThemeClass(this.elementRef.nativeElement));
     this.listenScroll(overlayRef, session);
     this.observeOverlayResize(overlayRef, session);
+    this.observeOriginVisibility(resolveConnectedOrigin(config, this.elementRef), session);
   }
 
   public override setOrigin(origin: NdwuPopoverOrigin): void {
@@ -89,8 +103,11 @@ export class NdwuTooltipController extends NdwuPopoverController {
       return;
     }
 
-    this.positionStrategy.setOrigin(toConnectedOrigin(origin));
+    const connectedOrigin = toConnectedOrigin(origin);
+
+    this.positionStrategy.setOrigin(connectedOrigin);
     this.overlayRef.updatePosition();
+    this.retargetVisibility(originToElement(connectedOrigin));
   }
 
   protected createOverlay(config: NdwuPopoverConfig): {
@@ -145,6 +162,53 @@ export class NdwuTooltipController extends NdwuPopoverController {
 
     observer.observe(pane);
     session.onFinish(() => observer.disconnect());
+  }
+
+  /**
+   * `withPush(true)` keeps the pane in view after its origin scrolls away, leaving it over unrelated
+   * content. The default root also detects clipping by scroll containers without `cdkScrollable`.
+   */
+  private observeOriginVisibility(
+    origin: FlexibleConnectedPositionStrategyOrigin,
+    session: NdwuPopoverSessionRef,
+  ): void {
+    const observer = new IntersectionObserver((entries) => {
+      // Entries queued before re-anchoring may arrive after the observer switches targets.
+      const entry = entries.filter((item) => item.target === this.visibilityTarget).at(-1);
+
+      if (entry !== undefined && !entry.isIntersecting) {
+        session.close('origin-hidden');
+      }
+    });
+
+    this.visibilityObserver = observer;
+    this.retargetVisibility(originToElement(origin));
+
+    session.onFinish(() => {
+      observer.disconnect();
+
+      if (this.visibilityObserver === observer) {
+        this.visibilityObserver = null;
+        this.visibilityTarget = null;
+      }
+    });
+  }
+
+  /** A viewport point can't scroll away, so it leaves nothing to observe. */
+  private retargetVisibility(target: Element | null): void {
+    if (this.visibilityObserver === null) {
+      return;
+    }
+
+    if (this.visibilityTarget !== null) {
+      this.visibilityObserver.unobserve(this.visibilityTarget);
+    }
+
+    this.visibilityTarget = target;
+
+    if (target !== null) {
+      this.visibilityObserver.observe(target);
+    }
   }
 }
 

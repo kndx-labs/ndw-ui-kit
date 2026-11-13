@@ -56,4 +56,11 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Switch in brand or green colour.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Tabs',
+    docsId: 'core-tabs--docs',
+    description: 'Tab bar in default and bordered variants with icons, badges and horizontal scrolling.',
+    ready: false,
+  },
 ];

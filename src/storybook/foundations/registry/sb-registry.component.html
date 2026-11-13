@@ -1,0 +1,59 @@
+<div
+  class="sb-registry"
+  [class.sb-registry--pictogram]="kind() === 'pictogram'"
+>
+  <div class="sb-registry__toolbar">
+    <ndwu-input-field
+      class="sb-registry__filter"
+      size="XL"
+      label="Filter by name"
+      [ngModel]="query()"
+      (ngModelChange)="query.set($event)"
+      [rightIcon]="query() ? ICON_NAME.CLOSE_S : undefined"
+      (rightIconClicked)="clearQuery()"
+    />
+
+    <div
+      class="sb-registry__sizes"
+      role="group"
+      aria-label="Sizes"
+    >
+      @for (item of sizes(); track item.size) {
+        <ndwu-checkbox
+          size="XL"
+          [label]="item.label"
+          [checked]="!hiddenSizes().has(item.size)"
+          (checkedChange)="toggleSize(item.size, $event)"
+        />
+      }
+    </div>
+  </div>
+
+  <p
+    class="sb-registry__counter"
+    aria-live="polite"
+  >
+    Shown: {{ visibleEntries().length }} of {{ entries().length }}
+  </p>
+
+  @if (noSizes()) {
+    <p class="sb-registry__empty">Select at least one size</p>
+  } @else if (visibleEntries().length === 0) {
+    <p class="sb-registry__empty">No {{ source().noun }} match "{{ trimmedQuery() }}"</p>
+  } @else {
+    <ul class="sb-registry__grid">
+      @for (entry of visibleEntries(); track entry.name) {
+        <li class="sb-registry__cell">
+          <div class="sb-registry__preview">
+            @if (kind() === 'icon') {
+              <ndwu-icon [name]="entry.name" />
+            } @else {
+              <ndwu-pictogram [name]="entry.name" />
+            }
+          </div>
+          <span class="sb-registry__name">{{ entry.name }}</span>
+        </li>
+      }
+    </ul>
+  }
+</div>

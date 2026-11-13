@@ -32,7 +32,8 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 
 Stories live next to their components: `src/lib/**/<component-file-name>.stories.ts`. The first model is
 `src/lib/core/components/button/button/ndwu-button.stories.ts`. Pages that don't belong to one component, such as the
-home page, live in `src/storybook/` (see [Home page](#home-page)).
+home page and the Foundations pages, live in `src/storybook/` (see [Home page](#home-page),
+[Foundations pages](#foundations-pages)).
 
 ## Files
 
@@ -41,7 +42,7 @@ home page, live in `src/storybook/` (see [Home page](#home-page)).
 | File | What it does | Why it is built this way |
 |---|---|---|
 | `main.ts` | Story globs `src/storybook/**/*.mdx`, `src/storybook/**/*.stories.ts`, `src/lib/**/*.stories.ts`; addons docs, a11y, themes (a11y runs [axe](https://github.com/dequelabs/axe-core), an automated accessibility checker, on every story and lists the violations, such as low text contrast, in the Accessibility panel); serves `src/lib/assets` at `/assets` and `src/storybook/assets` at `/sb-assets`; telemetry off; `angularFilterNonInputControls` | Icons, pictograms and fonts use `assets/...` URLs, so the assets folder must be served at `/assets`. The filter keeps Compodoc's public non-input members out of the controls |
-| `preview.ts` | Registers the Compodoc JSON, `applicationConfig` with `STORYBOOK_PROVIDERS`, the decorators, the Size global, the `surface` background, `controls.expanded`, `docs.source.excludeDecorators`, a11y defaults, `storySort` with `Introduction` first | The only file Storybook loads for every story. It imports and registers; logic lives in `decorators/` and `helpers/` |
+| `preview.ts` | Registers the Compodoc JSON, `applicationConfig` with `STORYBOOK_PROVIDERS`, the decorators, the Size global, the `surface` background, `controls.expanded`, `docs.source.excludeDecorators`, a11y defaults, `storySort` with `Introduction`, then `Foundations`, first | The only file Storybook loads for every story. It imports and registers; logic lives in `decorators/` and `helpers/` |
 | `manager.ts` | `addons.setConfig` with a light theme: `brandTitle`, `brandImage: 'sb-assets/logo.svg'`, `colorSecondary` `#007bbe` (`--ndwu-color-brand-50`) | The manager UI is outside the preview iframe and doesn't load kit styles, so the brand colour is a literal. A relative image path keeps a sub-path deploy working |
 | `providers.ts` | `provideHttpClient()`, `provideNdwuAllIcons()` | Separate, so later providers (e.g. localization) are added here without touching `preview.ts`. Zoneless is not here: the builder flag `experimentalZoneless` adds the provider |
 | `styles.scss` | `@use 'styles/themes'` with font faces; `transition: none` on the canvas; `.sb-row`, `.sb-stack` (also stacks a direct `<form>` child), `.sb-note`; `.sbdocs-wrapper` / `.sbdocs-content` `:has(sb-introduction)` rule | The theme as the playground uses it. The backgrounds addon animates the canvas colour change over 0.3s. In the dark theme, [axe](https://github.com/dequelabs/axe-core) (the accessibility checker of the a11y addon, see `main.ts`) could run during that animation, compare the text with the still-light background and report contrast errors that don't exist; `transition: none` removes the animation. The layout classes keep inline styles out of "Show code". The home page's docs frame is React DOM outside the component; the rule paints it with the kit surface and drops its padding and max-width so Dark covers the whole page |
@@ -83,6 +84,14 @@ Imported by stories as `@sb/helpers/<file>`.
 | `src/storybook/introduction/sb-introduction.component.*` | Logo, name, version from `src/lib/package.json`, cards made of `ndwu-card` and `ndwu-badge` | Kit components follow the Theme toolbar; explicit `size` keeps the Size toolbar off the page. Left click emits `NAVIGATE_URL` on the preview channel, like addon-docs MDX links, so toolbar globals survive; `href` + `target="_top"` keep middle-click and new tab. In Dark the logo gets `invert(1) hue-rotate(180deg)`, so its blue part stays blue |
 | `src/storybook/introduction/introduction.cards.ts` | `INTRODUCTION_CARDS`: group, name, docs id, description, ready | Hand-written: a new docs page adds its card |
 | `src/storybook/assets/logo.svg` | Logo for the home page and the manager | Lives outside `src/lib/assets`, which ships with the package |
+
+### Foundations pages
+
+| File | What it does | Why it is built this way |
+|---|---|---|
+| `src/storybook/foundations/registry/icon-registry.mdx`, `pictogram-registry.mdx` | Docs pages `Foundations/Icon Registry` and `Foundations/Pictogram Registry`: heading, short usage text, embedded registry story | Same MDX + hidden story pattern as the home page; two pages so the pictograms are not buried under the icons |
+| `src/storybook/foundations/registry/registry.stories.ts` | `Hidden/Registry`, tag `!dev`; stories `Icons` and `Pictograms` render `<sb-registry kind="...">` | One CSF for both MDX pages; no `component:` (Compodoc doesn't read `src/storybook`) |
+| `src/storybook/foundations/registry/sb-registry.component.*` | Name filter (`ndwu-input-field`), size checkboxes from the name suffixes, counter, grid of real-size icons or pictograms with captions; names from `NDWU_ICON_NAMES` / `NDWU_PICTOGRAM_NAME` | Ported from the playground icon registry (NDWU-156). The whole registry is a themed kit card, because the MDX frame stays white in Dark; explicit `size="XL"` keeps the Size toolbar off; plain English texts, as Storybook has no l10n provider |
 
 ## Outside `.storybook/`
 

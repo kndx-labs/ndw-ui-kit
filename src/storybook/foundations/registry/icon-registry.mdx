@@ -1,0 +1,14 @@
+import {Meta, Story} from '@storybook/addon-docs/blocks';
+
+import * as RegistryStories from './registry.stories';
+
+<Meta title="Foundations/Icon Registry" />
+
+# Icon Registry
+
+Every icon of the kit with its name. Pass the name to `ndwu-icon` (`name="close_S"` or `NDWU_ICON_NAME.CLOSE_S`).
+The suffix sets the size: `_XS` 16 px, `_S` 20 px, `_L` 24 px, `_XL` 50 px.
+
+Filter by part of the name or by size. Icons use the text colour, so they follow the Theme toolbar.
+
+<Story of={RegistryStories.Icons} />

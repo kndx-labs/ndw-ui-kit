@@ -8,6 +8,20 @@ export interface IntroductionCard {
 
 export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
   {
+    group: 'Foundations',
+    name: 'Icon Registry',
+    docsId: 'foundations-icon-registry--docs',
+    description: 'Every icon with its name, filtered by name and size.',
+    ready: false,
+  },
+  {
+    group: 'Foundations',
+    name: 'Pictogram Registry',
+    docsId: 'foundations-pictogram-registry--docs',
+    description: 'Every pictogram with its name, filtered by name and size.',
+    ready: false,
+  },
+  {
     group: 'Core',
     name: 'Button',
     docsId: 'core-button-button--docs',

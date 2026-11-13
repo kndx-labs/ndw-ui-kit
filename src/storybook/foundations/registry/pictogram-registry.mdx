@@ -1,0 +1,14 @@
+import {Meta, Story} from '@storybook/addon-docs/blocks';
+
+import * as RegistryStories from './registry.stories';
+
+<Meta title="Foundations/Pictogram Registry" />
+
+# Pictogram Registry
+
+Every pictogram of the kit with its name. Pass the name to `ndwu-pictogram` (`name="pictogram_empty_L"` or
+`NDWU_PICTOGRAM_NAME.PICTOGRAM_EMPTY_L`). The suffix sets the size: `_L` 64 px, `_XL` 100 px.
+
+Filter by part of the name or by size. Pictograms show the `DEFAULT` colour preset.
+
+<Story of={RegistryStories.Pictograms} />

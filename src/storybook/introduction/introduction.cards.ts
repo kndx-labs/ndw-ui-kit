@@ -56,4 +56,11 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Switch in brand or green colour.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Accordion',
+    docsId: 'core-accordion--docs',
+    description: 'Expandable sections in single or multi mode with header actions and lazy content.',
+    ready: false,
+  },
 ];

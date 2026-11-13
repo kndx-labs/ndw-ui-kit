@@ -10,17 +10,10 @@ export interface FormControlArgs {
 export interface StoryFormControlOptions<T> {
   value: T;
   validators?: ValidatorFn[];
-  disabled?: boolean;
-  touched?: boolean;
 }
 
-interface StoryFormControlEntry {
-  control: FormControl<unknown>;
-  disabled: boolean;
-  touched: boolean;
-}
-
-const entries = new Map<string, StoryFormControlEntry>();
+const controls = new Map<string, FormControl<unknown>>();
+const appliedStates = new WeakMap<FormControl<unknown>, FormControlArgs>();
 
 export const FORM_CONTROL_ARGS: (keyof FormControlArgs)[] = ['disabled', 'touched'];
 
@@ -39,49 +32,50 @@ export const formControlArgTypes: ArgTypes<FormControlArgs> = {
   },
 };
 
-export const formControlArgs: FormControlArgs = {
+export const DEFAULT_FORM_CONTROL_ARGS: FormControlArgs = {
   disabled: false,
   touched: false,
 };
 
-const createEntry = <T>(value: T, validators: ValidatorFn[]): StoryFormControlEntry => {
-  return {
-    control: new FormControl<T>(value, {nonNullable: true, validators}),
-    disabled: false,
-    touched: false,
-  };
+export const getStoryFormControl = <T>(
+  key: string,
+  {value, validators = []}: StoryFormControlOptions<T>,
+): FormControl<T> => {
+  const control = controls.get(key) ?? new FormControl<T>(value, {nonNullable: true, validators});
+
+  controls.set(key, control);
+
+  return control as FormControl<T>;
 };
 
-export const storyFormControl = <T>(
-  key: string,
-  {value, validators = [], disabled = false, touched = false}: StoryFormControlOptions<T>,
-): FormControl<T> => {
-  const entry = entries.get(key) ?? createEntry(value, validators);
+export const setStoryFormControlState = (
+  control: FormControl<unknown>,
+  {disabled = false, touched = false}: Partial<FormControlArgs>,
+): void => {
+  const applied = appliedStates.get(control) ?? {disabled: false, touched: false};
 
-  entries.set(key, entry);
+  appliedStates.set(control, applied);
 
-  if (entry.disabled !== disabled) {
+  if (applied.disabled !== disabled) {
     if (disabled) {
-      entry.control.disable();
+      control.disable();
     } else {
-      entry.control.enable();
+      control.enable();
     }
 
-    entry.disabled = disabled;
+    applied.disabled = disabled;
   }
 
-  if (entry.touched !== touched) {
+  if (applied.touched !== touched) {
     if (touched) {
-      entry.control.markAsTouched();
+      control.markAsTouched();
     } else {
-      entry.control.markAsUntouched();
-      entry.control.markAsPristine();
+      control.markAsUntouched();
+      control.markAsPristine();
     }
 
-    entry.touched = touched;
+    applied.touched = touched;
   }
-
-  return entry.control as FormControl<T>;
 };
 
 export const withFormControl = moduleMetadata({imports: [ReactiveFormsModule]});

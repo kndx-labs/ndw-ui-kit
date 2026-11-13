@@ -1,4 +1,3 @@
-import {JsonPipe} from '@angular/common';
 import {NdwuScheduleEditorFieldComponent} from '@ndw-ui-kit/core/form-field';
 import {
   NDWU_DEFAULT_WEEK_DAYS,
@@ -8,11 +7,10 @@ import {
   NdwuScheduleInterval,
   NdwuScheduleValue,
 } from '@ndw-ui-kit/core/widgets';
-import {Meta, StoryObj, argsToTemplate, moduleMetadata} from '@storybook/angular';
+import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
-import {storyFormControl, withFormControl} from '@sb/helpers/story-form-control';
-import {withStackLayout} from '@sb/helpers/story-layout';
-import {lines} from '@sb/helpers/story-template';
+import {getStoryFormControl, withFormControl} from '@sb/helpers/story-form-control';
+import {withStackLayout, withValueOutput} from '@sb/helpers/story-layout';
 
 type Story = StoryObj<NdwuScheduleEditorFieldComponent>;
 
@@ -33,12 +31,15 @@ const meta: Meta<NdwuScheduleEditorFieldComponent> = {
   title: 'Form Field/Schedule Editor Field',
   component: NdwuScheduleEditorFieldComponent,
   tags: ['autodocs'],
-  decorators: [withFormControl, moduleMetadata({imports: [JsonPipe]}), withStackLayout],
+  decorators: [withFormControl, ...withValueOutput('control.value'), withStackLayout],
   parameters: {
     docs: {
       description: {
-        component:
-          '`ndwu-schedule-editor` as a form control: bind it with `formControl` or `formControlName`, the control holds the `NdwuScheduleValue`. The inputs are those of [Widgets/Schedule Editor](?path=/docs/widgets-schedule-editor--docs).',
+        component: [
+          '`ndwu-schedule-editor` as a form control: bind it with `formControl` or `formControlName`,',
+          'the control holds the `NdwuScheduleValue`.',
+          'The inputs are those of [Widgets/Schedule Editor](?path=/docs/widgets-schedule-editor--docs).',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -50,12 +51,17 @@ const meta: Meta<NdwuScheduleEditorFieldComponent> = {
       control: 'select',
       options: MODES,
       description: '`full`: grid with hours and day labels that takes drags; `thumbnail`: small read-only preview',
+      table: {defaultValue: {summary: 'full'}},
     },
     sizing: {
       control: 'select',
       options: FIELD_SIZINGS,
-      description:
-        '`scale`: fits the parent and keeps the ratio; `fixed`: canvas size in px. `fill` needs a parent with a height, see [Widgets/Schedule Editor](?path=/docs/widgets-schedule-editor--docs)',
+      description: [
+        '`scale`: fits the parent and keeps the ratio; `fixed`: canvas size in px.',
+        '`fill` needs a parent with a height,',
+        'see [Widgets/Schedule Editor](?path=/docs/widgets-schedule-editor--docs)',
+      ].join(' '),
+      table: {defaultValue: {summary: 'scale'}},
     },
     forceLayout: {
       control: {
@@ -63,8 +69,10 @@ const meta: Meta<NdwuScheduleEditorFieldComponent> = {
         labels: {null: 'auto'},
       },
       options: LAYOUTS,
-      description:
-        'Pins the layout. `auto` (`null`) picks mobile under `Breakpoints.Handset` (Viewport toolbar), else desktop',
+      description: [
+        'Pins the layout.',
+        '`auto` (`null`) picks mobile under `Breakpoints.Handset` (Viewport toolbar), else desktop',
+      ].join(' '),
     },
     weekDays: {
       control: 'object',
@@ -80,12 +88,9 @@ const meta: Meta<NdwuScheduleEditorFieldComponent> = {
   render: (args, {id}) => ({
     props: {
       ...args,
-      control: storyFormControl(id, {value: SAMPLE_VALUE}),
+      control: getStoryFormControl(id, {value: SAMPLE_VALUE}),
     },
-    template: lines([
-      `<ndwu-schedule-editor-field [formControl]="control" ${argsToTemplate(args)} />`,
-      '<pre>{{ control.value | json }}</pre>',
-    ]),
+    template: `<ndwu-schedule-editor-field [formControl]="control" ${argsToTemplate(args)} />`,
   }),
 };
 
@@ -95,8 +100,10 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'The control is `new FormControl(value)`; the JSON below is `control.value`, updated after each drag. The field shows no disabled or error state: the editor has no such inputs.',
+        story: [
+          'The control is `new FormControl(value)`; the JSON below is `control.value`, updated after each drag.',
+          'The field shows no disabled or error state: the editor has no such inputs.',
+        ].join(' '),
       },
     },
   },

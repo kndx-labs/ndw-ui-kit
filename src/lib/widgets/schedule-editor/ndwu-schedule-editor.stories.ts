@@ -1,4 +1,3 @@
-import {JsonPipe} from '@angular/common';
 import {computed, signal} from '@angular/core';
 import {ndwuScheduleValueToActions} from '@ndw-ui-kit/core/schedule-actions';
 import {
@@ -11,12 +10,11 @@ import {
   NdwuScheduleValue,
   NdwuWeekDay,
 } from '@ndw-ui-kit/core/widgets';
-import {Meta, StoryObj, argsToTemplate, moduleMetadata} from '@storybook/angular';
+import {Decorator, Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {outputArgType} from '@sb/helpers/arg-types';
 import {withControlledArgs} from '@sb/helpers/story-controlled';
-import {withResizableLayout, withStackLayout} from '@sb/helpers/story-layout';
-import {lines} from '@sb/helpers/story-template';
+import {withResizableLayout, withStackLayout, withValueOutput} from '@sb/helpers/story-layout';
 
 type Story = StoryObj<NdwuScheduleEditorComponent>;
 
@@ -58,6 +56,27 @@ const weekDaysLiteral = (weekDays: readonly NdwuWeekDay[]): string => {
   return `[${weekDays.map(({day, label}) => `{day: '${day}', label: '${label}'}`).join(', ')}]`;
 };
 
+const editorSourceTransform: typeof argsSourceTransform = (code, context) => {
+  const value = context.args['value'] as NdwuScheduleValue;
+  const weekDays = context.args['weekDays'] as NdwuWeekDay[];
+  const bindings = [` [value]="${valueLiteral(value)}"`];
+
+  if (weekDays !== NDWU_DEFAULT_WEEK_DAYS) {
+    bindings.push(` [weekDays]="${weekDaysLiteral(weekDays)}"`);
+  }
+
+  return argsSourceTransform(code, context)
+    .replace(' [value]="schedule()"', '')
+    .replace(' (valueChange)="onValueChange($event)"', '')
+    .replace(' />', `${bindings.join('')} />`);
+};
+
+const withFillLayout: Decorator = (storyFn, context) => {
+  return context.args['sizing'] === NDWU_SCHEDULE_EDITOR_SIZING.FILL
+    ? withResizableLayout(storyFn, context)
+    : storyFn();
+};
+
 const SAMPLE_VALUE_LITERAL = valueLiteral(SAMPLE_VALUE);
 
 const meta: Meta<NdwuScheduleEditorComponent> = {
@@ -67,8 +86,10 @@ const meta: Meta<NdwuScheduleEditorComponent> = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Weekly schedule grid: drag over the slots to add or remove 30-minute intervals; controlled through `value` and `valueChange`.',
+        component: [
+          'Weekly schedule grid: drag over the slots to add or remove 30-minute intervals;',
+          'controlled through `value` and `valueChange`.',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -78,19 +99,27 @@ const meta: Meta<NdwuScheduleEditorComponent> = {
   argTypes: {
     value: {
       control: 'object',
-      description:
-        'Schedule: day name → list of `[start, stop]` intervals in minutes from midnight. The editor keeps no value of its own: write the value from `valueChange` back',
+      description: [
+        'Schedule: day name → list of `[start, stop]` intervals in minutes from midnight.',
+        'The editor keeps no value of its own: write the value from `valueChange` back',
+      ].join(' '),
     },
     mode: {
       control: 'select',
       options: MODES,
       description: '`full`: grid with hours and day labels that takes drags; `thumbnail`: small read-only preview',
+      table: {defaultValue: {summary: 'full'}},
     },
     sizing: {
       control: 'select',
       options: SIZINGS,
-      description:
-        '`scale`: fits the parent and keeps the ratio; `fixed`: canvas size in px; `fill`: stretches to the parent, which needs a height. `fill` is not supported with `thumbnail`. Here the parent is the dashed box; drag its corner to resize it',
+      description: [
+        '`scale`: fits the parent and keeps the ratio; `fixed`: canvas size in px;',
+        '`fill`: stretches to the parent, which needs a height.',
+        '`fill` is not supported with `thumbnail`.',
+        'With `fill` the story puts the editor into a dashed box; drag its corner to resize it',
+      ].join(' '),
+      table: {defaultValue: {summary: 'scale'}},
     },
     forceLayout: {
       control: {
@@ -98,13 +127,18 @@ const meta: Meta<NdwuScheduleEditorComponent> = {
         labels: {null: 'auto'},
       },
       options: LAYOUTS,
-      description:
-        'Pins the layout. `auto` (`null`) picks mobile under `Breakpoints.Handset` (Viewport toolbar) or for a narrow `fill` parent, else desktop',
+      description: [
+        'Pins the layout.',
+        '`auto` (`null`) picks mobile under `Breakpoints.Handset` (Viewport toolbar)',
+        'or for a narrow `fill` parent, else desktop',
+      ].join(' '),
     },
     weekDays: {
       control: 'object',
-      description:
-        'Days in display order with their labels; the first entry is the first column (the first row on mobile). Labels are plain text: translate them in the app',
+      description: [
+        'Days in display order with their labels; the first entry is the first column (the first row on mobile).',
+        'Labels are plain text: translate them in the app',
+      ].join(' '),
     },
     valueChange: outputArgType('valueChange', 'Emits the new value after a drag'),
   },
@@ -124,14 +158,40 @@ const meta: Meta<NdwuScheduleEditorComponent> = {
 export default meta;
 
 export const Default: Story = {
-  decorators: [withControlledArgs('valueChange', (value) => ({value})), withResizableLayout],
+  decorators: [withControlledArgs('valueChange', (value) => ({value})), withFillLayout],
   parameters: {
     docs: {
       description: {
-        story:
-          'Drag over the grid to add time; start on a filled slot to remove it. On this story\'s own page the story writes `valueChange` back into `value`, as an app does; on the docs page a drag is only logged to Actions. To try drags on this page, use `ScheduleActions` below or [Form Field/Schedule Editor Field](?path=/docs/form-field-schedule-editor-field--docs). With `forceLayout` `auto`, switch the Viewport toolbar to a mobile size to get the mobile layout.',
+        story: [
+          'Drag over the grid to add time; start on a filled slot to remove it.',
+          'On this story\'s own page the story writes `valueChange` back into `value`, as an app does;',
+          'on the docs page a drag stays until you change a control, which remounts the story from the `value` arg.',
+          'With `forceLayout` `auto`, switch the Viewport toolbar to a mobile size to get the mobile layout.',
+        ].join(' '),
+      },
+      source: {
+        transform: editorSourceTransform,
       },
     },
+  },
+  render: (args) => {
+    const schedule = signal(args.value);
+
+    return {
+      props: {
+        ...args,
+        schedule,
+        onValueChange: (value: NdwuScheduleValue) => {
+          schedule.set(value);
+          args.valueChange?.(value);
+        },
+      },
+      template: [
+        `<ndwu-schedule-editor ${argsToTemplate(args, {exclude: ['value', 'valueChange']})}`,
+        '[value]="schedule()"',
+        '(valueChange)="onValueChange($event)" />',
+      ].join(' '),
+    };
   },
 };
 
@@ -176,8 +236,13 @@ export const FullMobile: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          '`forceLayout="mobile"` pins the mobile layout at any width; the story opens in the Large mobile viewport. Without `forceLayout` the editor switches to mobile under `Breakpoints.Handset`: try `Default` with `forceLayout` `auto` and the Viewport toolbar. The viewport does not apply on the docs page.',
+        story: [
+          '`forceLayout="mobile"` pins the mobile layout at any width;',
+          'the story opens in the Large mobile viewport.',
+          'Without `forceLayout` the editor switches to mobile under `Breakpoints.Handset`:',
+          'try `Default` with `forceLayout` `auto` and the Viewport toolbar.',
+          'The viewport does not apply on the docs page.',
+        ].join(' '),
       },
     },
   },
@@ -205,12 +270,20 @@ export const ScheduleActions: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          '`ndwuScheduleValueToActions(value, weekDays)` from `@ndw-ui-kit/core/schedule-actions` turns the editor value into V1 schedule actions: one `start` and one `stop` entry per time, with `hour`, `min` and `dow` (a day list, `0` = Sunday; `*` = every day). Pass the same `weekDays` as the editor: only those days are converted. `ndwuActionsToScheduleValue(actions, weekDays)` turns actions back into a value. The story keeps the value in a `schedule` signal and shows `actions = computed(() => ndwuScheduleValueToActions(schedule(), NDWU_DEFAULT_WEEK_DAYS))`; a drag updates the JSON, on the docs page too.',
+        story: [
+          '`ndwuScheduleValueToActions(value, weekDays)` from `@ndw-ui-kit/core/schedule-actions`',
+          'turns the editor value into V1 schedule actions: one `start` and one `stop` entry per time,',
+          'with `hour`, `min` and `dow` (a day list, `0` = Sunday; `*` = every day).',
+          'Pass the same `weekDays` as the editor: only those days are converted.',
+          '`ndwuActionsToScheduleValue(actions, weekDays)` turns actions back into a value.',
+          'The story keeps the value in a `schedule` signal and shows',
+          '`actions = computed(() => ndwuScheduleValueToActions(schedule(), NDWU_DEFAULT_WEEK_DAYS))`;',
+          'a drag updates the JSON, on the docs page too.',
+        ].join(' '),
       },
     },
   },
-  decorators: [moduleMetadata({imports: [JsonPipe]}), withStackLayout],
+  decorators: [...withValueOutput('actions()'), withStackLayout],
   render: () => {
     const schedule = signal(SAMPLE_VALUE);
 
@@ -219,15 +292,12 @@ export const ScheduleActions: Story = {
         schedule,
         actions: computed(() => ndwuScheduleValueToActions(schedule(), NDWU_DEFAULT_WEEK_DAYS)),
       },
-      template: lines([
-        `<ndwu-schedule-editor
+      template: `<ndwu-schedule-editor
   forceLayout="desktop"
   mode="full"
   [value]="schedule()"
   (valueChange)="schedule.set($event)"
 />`,
-        '<pre>{{ actions() | json }}</pre>',
-      ]),
     };
   },
 };

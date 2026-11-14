@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastModified": "2026-10-28T10:14:14.564Z",
+  "lastModified": "2026-11-13T15:16:45.680Z",
   "collections": [
     {
       "id": "VariableCollectionId:2385:3263",
@@ -45,8 +45,8 @@
         "VariableID:17522:2593",
         "VariableID:17522:2594",
         "VariableID:17573:1501",
-        "VariableID:17666:757",
         "VariableID:17752:14064",
+        "VariableID:17666:757",
         "VariableID:17666:760",
         "VariableID:17666:758",
         "VariableID:17666:759",
@@ -63,12 +63,12 @@
         "VariableID:17666:767",
         "VariableID:17666:768",
         "VariableID:17752:14063",
-        "VariableID:17758:14190",
         "VariableID:4078:3571",
+        "VariableID:17758:14190",
         "VariableID:4078:3814",
         "VariableID:4078:3815",
-        "VariableID:16855:2714",
         "VariableID:4078:3816",
+        "VariableID:16855:2714",
         "VariableID:16855:2715",
         "VariableID:6423:6569",
         "VariableID:4789:19993",
@@ -644,23 +644,6 @@
           "variableCollectionId": "VariableCollectionId:2385:3263"
         },
         {
-          "id": "VariableID:17666:757",
-          "name": "alias/surface/surface-XXL/surface-radius-xxl",
-          "description": "",
-          "key": "c2164cd7d59d15cfcc065a0c4fff0117669b1f51",
-          "resolvedType": "FLOAT",
-          "valuesByMode": {
-            "2385:0": 0,
-            "17738:0": 0
-          },
-          "scopes": [
-            "ALL_SCOPES"
-          ],
-          "hiddenFromPublishing": false,
-          "codeSyntax": {},
-          "variableCollectionId": "VariableCollectionId:2385:3263"
-        },
-        {
           "id": "VariableID:17752:14064",
           "name": "alias/form/form-L/form-control-padding-v-l",
           "description": "",
@@ -675,6 +658,23 @@
               "type": "VARIABLE_ALIAS",
               "id": "VariableID:4789:19996"
             }
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
+          "id": "VariableID:17666:757",
+          "name": "alias/surface/surface-XXL/surface-radius-xxl",
+          "description": "",
+          "key": "c2164cd7d59d15cfcc065a0c4fff0117669b1f51",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": 0,
+            "17738:0": 0
           },
           "scopes": [
             "ALL_SCOPES"
@@ -962,6 +962,23 @@
           "variableCollectionId": "VariableCollectionId:2385:3263"
         },
         {
+          "id": "VariableID:4078:3571",
+          "name": "global/radius/global-radius-S",
+          "description": "",
+          "key": "e6541cfacdc4668ebf9a3bc7143668642e39bd0a",
+          "resolvedType": "FLOAT",
+          "valuesByMode": {
+            "2385:0": 4,
+            "17738:0": 4
+          },
+          "scopes": [
+            "ALL_SCOPES"
+          ],
+          "hiddenFromPublishing": false,
+          "codeSyntax": {},
+          "variableCollectionId": "VariableCollectionId:2385:3263"
+        },
+        {
           "id": "VariableID:17758:14190",
           "name": "alias/form/form-L/form-control-spacing-v-l",
           "description": "",
@@ -976,23 +993,6 @@
               "type": "VARIABLE_ALIAS",
               "id": "VariableID:2436:3360"
             }
-          },
-          "scopes": [
-            "ALL_SCOPES"
-          ],
-          "hiddenFromPublishing": false,
-          "codeSyntax": {},
-          "variableCollectionId": "VariableCollectionId:2385:3263"
-        },
-        {
-          "id": "VariableID:4078:3571",
-          "name": "global/radius/global-radius-S",
-          "description": "",
-          "key": "e6541cfacdc4668ebf9a3bc7143668642e39bd0a",
-          "resolvedType": "FLOAT",
-          "valuesByMode": {
-            "2385:0": 4,
-            "17738:0": 4
           },
           "scopes": [
             "ALL_SCOPES"
@@ -1036,14 +1036,14 @@
           "variableCollectionId": "VariableCollectionId:2385:3263"
         },
         {
-          "id": "VariableID:16855:2714",
-          "name": "global/stroke/global-stroke-0",
+          "id": "VariableID:4078:3816",
+          "name": "global/radius/global-radius-XL",
           "description": "",
-          "key": "0a99ad12e324b5e508826f32e9fe3b673a72e06c",
+          "key": "313ebe8b4026d4f0f02131b1ada87a62403de60a",
           "resolvedType": "FLOAT",
           "valuesByMode": {
-            "2385:0": 0,
-            "17738:0": 0
+            "2385:0": 12,
+            "17738:0": 12
           },
           "scopes": [
             "ALL_SCOPES"
@@ -1053,14 +1053,14 @@
           "variableCollectionId": "VariableCollectionId:2385:3263"
         },
         {
-          "id": "VariableID:4078:3816",
-          "name": "global/radius/global-radius-XL",
+          "id": "VariableID:16855:2714",
+          "name": "global/stroke/global-stroke-0",
           "description": "",
-          "key": "313ebe8b4026d4f0f02131b1ada87a62403de60a",
+          "key": "0a99ad12e324b5e508826f32e9fe3b673a72e06c",
           "resolvedType": "FLOAT",
           "valuesByMode": {
-            "2385:0": 12,
-            "17738:0": 12
+            "2385:0": 0,
+            "17738:0": 0
           },
           "scopes": [
             "ALL_SCOPES"
@@ -2687,11 +2687,11 @@
           "valuesByMode": {
             "2919:0": {
               "type": "VARIABLE_ALIAS",
-              "id": "VariableID:3357:12590"
+              "id": "VariableID:2921:10635"
             },
             "2919:1": {
               "type": "VARIABLE_ALIAS",
-              "id": "VariableID:3357:12590"
+              "id": "VariableID:2921:10635"
             },
             "7737:1": {
               "r": 1,

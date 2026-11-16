@@ -55,7 +55,8 @@ function originToElement(origin: FlexibleConnectedPositionStrategyOrigin): Eleme
  *
  * The overlay can be anchored to an external origin (`originElement`/`originPoint` in the config)
  * and re-anchored while open via `setOrigin()`, so one trigger can serve many targets. It closes,
- * without moving focus, once its origin element is fully out of view.
+ * without moving focus, once its origin element, having been in view, is fully out of view. Closing
+ * works like Escape: the tooltip does not reopen when the origin returns.
  */
 export class NdwuTooltipController extends NdwuPopoverController {
   protected readonly breakpointObserver: BreakpointObserver;
@@ -63,6 +64,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
   private positionStrategy: FlexibleConnectedPositionStrategy | null = null;
   private visibilityObserver: IntersectionObserver | null = null;
   private visibilityTarget: Element | null = null;
+  private visibilityTargetSeen = false;
 
   constructor(
     protected readonly overlay: Overlay,
@@ -167,6 +169,8 @@ export class NdwuTooltipController extends NdwuPopoverController {
   /**
    * `withPush(true)` keeps the pane in view after its origin scrolls away, leaving it over unrelated
    * content. The default root also detects clipping by scroll containers without `cdkScrollable`.
+   * An origin that has not been in view yet keeps the tooltip open, for example while a smooth scroll
+   * brings it in.
    */
   private observeOriginVisibility(
     origin: FlexibleConnectedPositionStrategyOrigin,
@@ -174,10 +178,18 @@ export class NdwuTooltipController extends NdwuPopoverController {
   ): void {
     const observer = new IntersectionObserver((entries) => {
       // Entries queued before re-anchoring may arrive after the observer switches targets.
-      const entry = entries.filter((item) => item.target === this.visibilityTarget).at(-1);
+      for (const entry of entries) {
+        if (entry.target !== this.visibilityTarget) {
+          continue;
+        }
 
-      if (entry !== undefined && !entry.isIntersecting) {
-        session.close('origin-hidden');
+        if (entry.isIntersecting) {
+          this.visibilityTargetSeen = true;
+        } else if (this.visibilityTargetSeen) {
+          session.close('origin-hidden');
+
+          return;
+        }
       }
     });
 
@@ -190,6 +202,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
       if (this.visibilityObserver === observer) {
         this.visibilityObserver = null;
         this.visibilityTarget = null;
+        this.visibilityTargetSeen = false;
       }
     });
   }
@@ -204,6 +217,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
       this.visibilityObserver.unobserve(this.visibilityTarget);
     }
 
+    this.visibilityTargetSeen = false;
     this.visibilityTarget = target;
 
     if (target !== null) {

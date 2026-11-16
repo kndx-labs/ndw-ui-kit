@@ -53,8 +53,9 @@ function defaultTooltipTriggers(): NdwuPopoverTriggerType[] {
  * One trigger can serve many targets (e.g. cells of a chart): set `tooltipOrigin` to the active
  * target — the open tooltip follows it without closing — put `tooltipId` into the target's
  * `aria-describedby` and set `tooltipDescribeHost` to false. With roving focus, set
- * `tooltipRestoreFocus` to false so closing doesn't move focus back to the trigger. Read
- * `isOpen` to track visibility; the tooltip closes automatically when its origin leaves view.
+ * `tooltipRestoreFocus` to false so closing doesn't move focus back to the trigger. Read `isOpen` to
+ * track visibility. The tooltip closes when its origin, having been in view, leaves it, and does not
+ * reopen when the origin returns.
  */
 @Directive({
   selector: '[ndwuTooltip]',

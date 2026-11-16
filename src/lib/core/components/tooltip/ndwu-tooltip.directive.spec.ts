@@ -35,13 +35,19 @@ class TestIntersectionObserver {
   }
 
   public report(target: Element, isIntersecting: boolean): void {
+    this.reportMany(target, [isIntersecting]);
+  }
+
+  public reportMany(target: Element, isIntersectingValues: readonly boolean[]): void {
     if (!this.observedTargets.has(target)) {
       return;
     }
 
-    const entry = {target, isIntersecting} as IntersectionObserverEntry;
+    const entries = isIntersectingValues.map((isIntersecting) => {
+      return {target, isIntersecting} as IntersectionObserverEntry;
+    });
 
-    this.callback([entry], this as unknown as IntersectionObserver);
+    this.callback(entries, this as unknown as IntersectionObserver);
   }
 }
 
@@ -159,6 +165,7 @@ function closesWhenHostLeavesWithoutMovingFocus(): void {
 
   openTooltip(fixture);
   otherElement.focus();
+  reportIntersection(anchorElement, true);
   reportIntersection(anchorElement, false);
   fixture.detectChanges();
 
@@ -180,6 +187,7 @@ function tracksTooltipOriginInsteadOfHost(): void {
   fixture.detectChanges();
   expect(tooltipElement()).not.toBeNull();
 
+  reportIntersection(originElement, true);
   reportIntersection(originElement, false);
   fixture.detectChanges();
 
@@ -202,6 +210,7 @@ function doesNotRestoreFocusToHiddenHostFromPane(): void {
   tooltipButton.focus();
   expect(document.activeElement).toBe(tooltipButton);
 
+  reportIntersection(anchorElement, true);
   reportIntersection(anchorElement, false);
   fixture.detectChanges();
 
@@ -217,10 +226,68 @@ function emitsClosedWhenHostLeavesViewport(): void {
 
   trigger.closed.subscribe(closed);
   openTooltip(fixture);
+  reportIntersection(button(fixture, 'anchor'), true);
   reportIntersection(button(fixture, 'anchor'), false);
   fixture.detectChanges();
 
   expect(closed).toHaveBeenCalledTimes(1);
+}
+
+function staysOpenWhenOriginIsOutOfViewOnOpen(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+
+  openTooltip(fixture);
+  reportIntersection(anchorElement, false);
+  fixture.detectChanges();
+
+  expect(tooltipElement()).not.toBeNull();
+  expect(tooltipOpen(fixture)).toBe(true);
+}
+
+function closesAfterOriginIsSeenAndLeaves(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+
+  openTooltip(fixture);
+  reportIntersection(anchorElement, false);
+  reportIntersection(anchorElement, true);
+  reportIntersection(anchorElement, false);
+  fixture.detectChanges();
+
+  expect(tooltipElement()).toBeNull();
+  expect(tooltipOpen(fixture)).toBe(false);
+}
+
+function resetsSeenStateAfterOriginChanges(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+  const originElement = button(fixture, 'other');
+
+  openTooltip(fixture);
+  reportIntersection(anchorElement, true);
+  fixture.componentInstance.origin.set(originElement);
+  fixture.detectChanges();
+  reportIntersection(originElement, false);
+  fixture.detectChanges();
+
+  expect(tooltipElement()).not.toBeNull();
+  expect(tooltipOpen(fixture)).toBe(true);
+}
+
+function closesWhenOriginEntersAndLeavesInOneBatch(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+
+  openTooltip(fixture);
+
+  const observer = TestIntersectionObserver.instances.at(-1);
+
+  observer?.reportMany(anchorElement, [true, false]);
+  fixture.detectChanges();
+
+  expect(tooltipElement()).toBeNull();
+  expect(tooltipOpen(fixture)).toBe(false);
 }
 
 describe('NdwuTooltipDirective', () => {
@@ -250,4 +317,8 @@ describe('NdwuTooltipDirective', () => {
     doesNotRestoreFocusToHiddenHostFromPane,
   );
   it('emits closed when host leaves the viewport', emitsClosedWhenHostLeavesViewport);
+  it('stays open when origin is out of view on open', staysOpenWhenOriginIsOutOfViewOnOpen);
+  it('closes after origin is seen and leaves', closesAfterOriginIsSeenAndLeaves);
+  it('resets seen state after origin changes', resetsSeenStateAfterOriginChanges);
+  it('closes when origin enters and leaves in one batch', closesWhenOriginEntersAndLeavesInOneBatch);
 });

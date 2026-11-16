@@ -529,6 +529,7 @@ describe('NdwuHeatStripComponent', () => {
 
     activeCell.focus();
     fixture.detectChanges();
+    reportIntersection(activeCell, true);
     reportIntersection(activeCell, false);
     fixture.detectChanges();
 
@@ -552,10 +553,12 @@ describe('NdwuHeatStripComponent', () => {
     firstCell.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight', bubbles: true}));
     fixture.detectChanges();
 
+    reportIntersection(firstCell, true);
     reportIntersection(firstCell, false);
     fixture.detectChanges();
     expect(tooltipElement()).not.toBeNull();
 
+    reportIntersection(secondCell, true);
     reportIntersection(secondCell, false);
     fixture.detectChanges();
 

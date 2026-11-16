@@ -2,7 +2,7 @@ interface SourceContext {
   args: Record<string, unknown>;
 }
 
-const PROPERTY_BINDING = /\s\[(\w+)\]="\1"/g;
+const PROPERTY_BINDING = /\s\[([\w-]+)\]="(?:\1|this\['\1'\])"/g;
 const EVENT_BINDING = /\s\((\w+)\)="\1\(\$event\)"/g;
 const INTERPOLATION = /\{\{\s*(\w+)\s*\}\}/g;
 

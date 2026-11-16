@@ -27,6 +27,20 @@ export const iconArgType: ArgType = {
   options: [null, ...NDWU_ICON_NAMES],
 };
 
+export const textArgType = (description: string): ArgType => {
+  return {
+    control: 'text',
+    description,
+  };
+};
+
+export const booleanArgType = (description: string): ArgType => {
+  return {
+    control: 'boolean',
+    description,
+  };
+};
+
 export const outputArgType = (name: string, description: string): ArgType => {
   return {
     action: name,

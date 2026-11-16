@@ -11,7 +11,7 @@ import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
-import {lines} from '@sb/helpers/story-template';
+import {group, lines} from '@sb/helpers/story-template';
 
 type ButtonStoryArgs = NdwuButtonComponent & SizeArg & {
   content: string;
@@ -35,10 +35,6 @@ const ICON_BUTTONS: readonly IconButton[] = [
   {variant: NDWU_BUTTON_VARIANT.SECONDARY, icon: NDWU_ICON_NAME.CHECK_S, label: 'Secondary'},
   {variant: NDWU_BUTTON_VARIANT.TERTIARY, icon: NDWU_ICON_NAME.CHEVRON_RIGHT_S, label: 'Tertiary'},
 ];
-
-const group = (items: readonly string[]): string => {
-  return `<div>\n${lines(items)}\n</div>`;
-};
 
 const meta: Meta<ButtonStoryArgs> = {
   title: 'Core/Button/Button',

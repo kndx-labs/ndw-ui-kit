@@ -55,7 +55,8 @@ function defaultTooltipTriggers(): NdwuPopoverTriggerType[] {
  * `aria-describedby` and set `tooltipDescribeHost` to false. With roving focus, set
  * `tooltipRestoreFocus` to false so closing doesn't move focus back to the trigger. Read `isOpen` to
  * track visibility. The tooltip closes when its origin, having been in view, leaves it, and does not
- * reopen when the origin returns.
+ * reopen when the origin returns. Declare fixed headers and footers with `scroll-padding` on the root
+ * scroller (e.g. `html { scroll-padding-top: 64px; }`) so the tooltip closes when its origin goes under them.
  */
 @Directive({
   selector: '[ndwuTooltip]',

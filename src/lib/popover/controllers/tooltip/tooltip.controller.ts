@@ -18,6 +18,7 @@ import type {
   NdwuTooltipPosition,
 } from '../../ndwu-popover.types';
 import {VIEWPORT_MARGIN, buildConnectedPosition, resolveConnectedOrigin, toConnectedOrigin} from '../../overlay-utils';
+import {getScrollPaddingRootMargin} from './tooltip-root-margin';
 
 const MOBILE_VIEWPORT_MARGIN = 16;
 
@@ -109,7 +110,7 @@ export class NdwuTooltipController extends NdwuPopoverController {
 
     this.positionStrategy.setOrigin(connectedOrigin);
     this.overlayRef.updatePosition();
-    this.retargetVisibility(originToElement(connectedOrigin));
+    this.retargetVisibility(this.visibilityTargetForOrigin(connectedOrigin));
   }
 
   protected createOverlay(config: NdwuPopoverConfig): {
@@ -170,7 +171,10 @@ export class NdwuTooltipController extends NdwuPopoverController {
    * `withPush(true)` keeps the pane in view after its origin scrolls away, leaving it over unrelated
    * content. The default root also detects clipping by scroll containers without `cdkScrollable`.
    * An origin that has not been in view yet keeps the tooltip open, for example while a smooth scroll
-   * brings it in.
+   * brings it in. The observed viewport is reduced by root scroller `scroll-padding`, the usual place
+   * to declare a fixed header's or footer's size; an origin covered there counts as out of view. Other
+   * covering elements, including sticky headers inside nested scroll containers, are not detected. A
+   * point origin is tracked through the trigger host.
    */
   private observeOriginVisibility(
     origin: FlexibleConnectedPositionStrategyOrigin,
@@ -191,10 +195,12 @@ export class NdwuTooltipController extends NdwuPopoverController {
           return;
         }
       }
-    });
+    }, {rootMargin: getScrollPaddingRootMargin()});
 
     this.visibilityObserver = observer;
-    this.retargetVisibility(originToElement(origin));
+    this.visibilityTarget = null;
+    this.visibilityTargetSeen = false;
+    this.retargetVisibility(this.visibilityTargetForOrigin(origin));
 
     session.onFinish(() => {
       observer.disconnect();
@@ -207,9 +213,13 @@ export class NdwuTooltipController extends NdwuPopoverController {
     });
   }
 
-  /** A viewport point can't scroll away, so it leaves nothing to observe. */
-  private retargetVisibility(target: Element | null): void {
+  /** Retargeting the same element keeps its seen state. */
+  private retargetVisibility(target: Element): void {
     if (this.visibilityObserver === null) {
+      return;
+    }
+
+    if (target === this.visibilityTarget) {
       return;
     }
 
@@ -219,10 +229,18 @@ export class NdwuTooltipController extends NdwuPopoverController {
 
     this.visibilityTargetSeen = false;
     this.visibilityTarget = target;
+    this.visibilityObserver.observe(target);
+  }
 
-    if (target !== null) {
-      this.visibilityObserver.observe(target);
+  /** A viewport point stays fixed while content scrolls under it, so observe the trigger host instead. */
+  private visibilityTargetForOrigin(origin: FlexibleConnectedPositionStrategyOrigin): Element {
+    const originElement = originToElement(origin);
+
+    if (originElement !== null) {
+      return originElement;
     }
+
+    return this.elementRef.nativeElement;
   }
 }
 

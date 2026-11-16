@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, provideZonelessChangeDetection, signal} from '@angular/core';
 import {type ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
+import {type NdwuPopoverOrigin, NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
 import {NdwuTooltipDirective} from './ndwu-tooltip.directive';
 
 class TestResizeObserver implements ResizeObserver {
@@ -17,16 +17,25 @@ class TestResizeObserver implements ResizeObserver {
 class TestIntersectionObserver {
   public static readonly instances: TestIntersectionObserver[] = [];
   public readonly observedTargets = new Set<Element>();
+  public readonly observeCalls: Element[] = [];
+  public readonly unobserveCalls: Element[] = [];
+  public readonly options: IntersectionObserverInit | undefined;
 
-  constructor(private readonly callback: IntersectionObserverCallback) {
+  constructor(
+    private readonly callback: IntersectionObserverCallback,
+    options?: IntersectionObserverInit,
+  ) {
+    this.options = options;
     TestIntersectionObserver.instances.push(this);
   }
 
   public observe(target: Element): void {
+    this.observeCalls.push(target);
     this.observedTargets.add(target);
   }
 
   public unobserve(target: Element): void {
+    this.unobserveCalls.push(target);
     this.observedTargets.delete(target);
   }
 
@@ -89,7 +98,7 @@ function createMatchMedia(matches: boolean): (query: string) => MediaQueryList {
   `,
 })
 class TooltipTestHostComponent {
-  public readonly origin = signal<HTMLElement | null>(null);
+  public readonly origin = signal<NdwuPopoverOrigin | null>(null);
   public readonly tooltipRestoreFocus = signal(true);
 }
 
@@ -320,6 +329,148 @@ function closesWhenOriginEntersAndLeavesInOneBatch(): void {
   expect(tooltipOpen(fixture)).toBe(false);
 }
 
+function observesTriggerHostForPointOrigin(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+
+  openTooltip(fixture);
+  fixture.componentInstance.origin.set({clientX: 24, clientY: 48});
+  fixture.detectChanges();
+
+  const observer = TestIntersectionObserver.instances.at(-1);
+
+  expect(observer?.observedTargets.has(anchorElement)).toBe(true);
+
+  reportIntersection(anchorElement, true);
+  reportIntersection(anchorElement, false);
+  fixture.detectChanges();
+
+  expect(tooltipElement()).toBeNull();
+  expect(tooltipOpen(fixture)).toBe(false);
+}
+
+function observesTriggerHostForPointOriginOnOpen(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+
+  fixture.componentInstance.origin.set({clientX: 24, clientY: 48});
+  fixture.detectChanges();
+  openTooltip(fixture);
+
+  const observer = TestIntersectionObserver.instances.at(-1);
+
+  expect(observer?.observedTargets.has(anchorElement)).toBe(true);
+}
+
+function observesSameHostAfterCloseAndReopen(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+
+  openTooltip(fixture);
+  tooltipDirective(fixture).hide();
+  fixture.detectChanges();
+  openTooltip(fixture);
+
+  const observer = TestIntersectionObserver.instances.at(-1);
+
+  expect(observer?.observeCalls).toEqual([anchorElement]);
+
+  reportIntersection(anchorElement, true);
+  reportIntersection(anchorElement, false);
+  fixture.detectChanges();
+
+  expect(tooltipElement()).toBeNull();
+  expect(tooltipOpen(fixture)).toBe(false);
+}
+
+function keepsSeenStateWhenPointOriginChanges(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+
+  openTooltip(fixture);
+  fixture.componentInstance.origin.set({clientX: 24, clientY: 48});
+  fixture.detectChanges();
+  reportIntersection(anchorElement, true);
+
+  fixture.componentInstance.origin.set({clientX: 32, clientY: 64});
+  fixture.detectChanges();
+  reportIntersection(anchorElement, false);
+  fixture.detectChanges();
+
+  expect(tooltipElement()).toBeNull();
+  expect(tooltipOpen(fixture)).toBe(false);
+}
+
+function doesNotChurnHostObservationBetweenPointOrigins(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+
+  openTooltip(fixture);
+
+  const observer = TestIntersectionObserver.instances.at(-1);
+
+  fixture.componentInstance.origin.set({clientX: 24, clientY: 48});
+  fixture.detectChanges();
+  fixture.componentInstance.origin.set({clientX: 32, clientY: 64});
+  fixture.detectChanges();
+
+  expect(observer?.observeCalls).toEqual([anchorElement]);
+  expect(observer?.unobserveCalls).toEqual([]);
+}
+
+function observesTriggerHostAfterSwitchingFromElementToPoint(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+  const originElement = button(fixture, 'other');
+
+  openTooltip(fixture);
+  fixture.componentInstance.origin.set(originElement);
+  fixture.detectChanges();
+
+  const observer = TestIntersectionObserver.instances.at(-1);
+
+  expect(observer?.observedTargets.has(originElement)).toBe(true);
+  expect(observer?.observedTargets.has(anchorElement)).toBe(false);
+
+  fixture.componentInstance.origin.set({clientX: 24, clientY: 48});
+  fixture.detectChanges();
+
+  expect(observer?.observedTargets.has(originElement)).toBe(false);
+  expect(observer?.observedTargets.has(anchorElement)).toBe(true);
+}
+
+function readsScrollPaddingFromRootScrollerForRootMargin(): void {
+  const scrollingElement = document.scrollingElement ?? document.documentElement;
+  const originalGetComputedStyle = window.getComputedStyle.bind(window);
+  const getComputedStyleSpy = vi.spyOn(window, 'getComputedStyle').mockImplementation((element) => {
+    const computedStyle = originalGetComputedStyle(element);
+
+    if (element !== scrollingElement) {
+      return computedStyle;
+    }
+
+    Object.defineProperties(computedStyle, {
+      scrollPaddingTop: {value: '64px'},
+      scrollPaddingRight: {value: '0px'},
+      scrollPaddingBottom: {value: '10%'},
+      scrollPaddingLeft: {value: 'auto'},
+    });
+
+    return computedStyle;
+  });
+
+  openTooltip(createFixture());
+
+  expect(getComputedStyleSpy).toHaveBeenCalledWith(scrollingElement);
+  expect(TestIntersectionObserver.instances.at(-1)?.options?.rootMargin).toBe('-64px 0px -10% 0px');
+}
+
+function usesZeroRootMarginWithoutScrollPadding(): void {
+  openTooltip(createFixture());
+
+  expect(TestIntersectionObserver.instances.at(-1)?.options?.rootMargin).toBe('0px 0px 0px 0px');
+}
+
 describe('NdwuTooltipDirective', () => {
   beforeEach(() => {
     vi.stubGlobal('ResizeObserver', TestResizeObserver);
@@ -355,4 +506,15 @@ describe('NdwuTooltipDirective', () => {
   it('closes after origin is seen and leaves', closesAfterOriginIsSeenAndLeaves);
   it('resets seen state after origin changes', resetsSeenStateAfterOriginChanges);
   it('closes when origin enters and leaves in one batch', closesWhenOriginEntersAndLeavesInOneBatch);
+  it('observes trigger host for point origin', observesTriggerHostForPointOrigin);
+  it('observes trigger host for point origin on open', observesTriggerHostForPointOriginOnOpen);
+  it('observes the same host after close and reopen', observesSameHostAfterCloseAndReopen);
+  it('keeps seen state when point origin changes', keepsSeenStateWhenPointOriginChanges);
+  it('does not churn host observation between point origins', doesNotChurnHostObservationBetweenPointOrigins);
+  it(
+    'observes trigger host after switching from element origin to point origin',
+    observesTriggerHostAfterSwitchingFromElementToPoint,
+  );
+  it('reads root scroller scroll-padding for observer rootMargin', readsScrollPaddingFromRootScrollerForRootMargin);
+  it('uses zero rootMargin without scroll-padding', usesZeroRootMarginWithoutScrollPadding);
 });

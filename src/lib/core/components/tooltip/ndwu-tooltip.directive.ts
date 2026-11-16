@@ -111,7 +111,10 @@ export class NdwuTooltipDirective {
   public readonly tooltipOrigin = input<NdwuPopoverOrigin | null>(null);
   /** Whether the host gets `aria-describedby` pointing to the tooltip. */
   public readonly tooltipDescribeHost = input<boolean>(true);
-  /** Whether the tooltip may move focus back to the host when it closes (Escape, focus inside the tooltip). */
+  /**
+   * Whether the tooltip may move focus back to the host when it closes (Escape, focus inside the tooltip). After the
+   * origin leaves view, focus moves back without scrolling.
+   */
   public readonly tooltipRestoreFocus = input<boolean>(true);
 
   public readonly showDelay = input<number>(DEFAULT_SHOW_DELAY);

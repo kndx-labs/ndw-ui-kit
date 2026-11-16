@@ -460,13 +460,14 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
 
     const emitClosed = session.isOpened && state.reason !== 'destroy';
     const restore = this.shouldRestoreFocus(session, state);
+    const focusOptions: FocusOptions | undefined = state.reason === 'origin-hidden' ? {preventScroll: true} : undefined;
 
     this.session = null;
     this.interaction.cancelScheduledShow();
     this.isOpen.set(false);
 
     if (restore) {
-      this.restoreFocus(session.focusSnapshot);
+      this.restoreFocus(session.focusSnapshot, focusOptions);
     }
 
     if (emitClosed) {
@@ -491,7 +492,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
       case 'detached':
         return this.isFocusOrphaned(session, state);
       case 'origin-hidden':
-        return false;
+        return this.isFocusOrphaned(session, state);
       case 'destroy':
         return this.isFocusOrphaned(session, state) && this.elementRef.nativeElement.isConnected;
       case 'error':
@@ -514,17 +515,17 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
     return heldFocus || session.config.trapFocus === true;
   }
 
-  protected restoreFocus(snapshot: Element | null): void {
+  protected restoreFocus(snapshot: Element | null, options?: FocusOptions): void {
     const host = this.elementRef.nativeElement;
     const focusable = snapshot instanceof HTMLElement || snapshot instanceof SVGElement;
 
     this.restoringFocus = true;
 
     try {
-      host.focus();
+      host.focus(options);
 
       if (document.activeElement !== host && focusable && snapshot.isConnected) {
-        snapshot.focus();
+        snapshot.focus(options);
       }
     } finally {
       this.restoringFocus = false;

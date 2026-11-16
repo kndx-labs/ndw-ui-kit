@@ -78,6 +78,7 @@ function createMatchMedia(matches: boolean): (query: string) => MediaQueryList {
       id="anchor"
       [ndwuTooltip]="tooltipContent"
       [tooltipOrigin]="origin()"
+      [tooltipRestoreFocus]="tooltipRestoreFocus()"
       triggerOn="manual"
       #tooltip="ndwuTooltip"
     >Anchor</button>
@@ -89,6 +90,7 @@ function createMatchMedia(matches: boolean): (query: string) => MediaQueryList {
 })
 class TooltipTestHostComponent {
   public readonly origin = signal<HTMLElement | null>(null);
+  public readonly tooltipRestoreFocus = signal(true);
 }
 
 function createFixture(): ComponentFixture<TooltipTestHostComponent> {
@@ -195,9 +197,10 @@ function tracksTooltipOriginInsteadOfHost(): void {
   expect(tooltipOpen(fixture)).toBe(false);
 }
 
-function doesNotRestoreFocusToHiddenHostFromPane(): void {
+function restoresFocusToHiddenHostWithoutScrollingFromPane(): void {
   const fixture = createFixture();
   const anchorElement = button(fixture, 'anchor');
+  const focus = vi.spyOn(anchorElement, 'focus');
 
   openTooltip(fixture);
 
@@ -215,7 +218,34 @@ function doesNotRestoreFocusToHiddenHostFromPane(): void {
   fixture.detectChanges();
 
   expect(tooltipElement()).toBeNull();
-  expect(document.activeElement).not.toBe(anchorElement);
+  expect(document.activeElement).toBe(anchorElement);
+  expect(focus).toHaveBeenCalledWith({preventScroll: true});
+}
+
+function doesNotRestoreFocusToHiddenHostWhenDisabled(): void {
+  const fixture = createFixture();
+  const anchorElement = button(fixture, 'anchor');
+  const focus = vi.spyOn(anchorElement, 'focus');
+
+  fixture.componentInstance.tooltipRestoreFocus.set(false);
+  fixture.detectChanges();
+  openTooltip(fixture);
+
+  const tooltipButton = tooltipElement()?.querySelector('button');
+
+  if (!(tooltipButton instanceof HTMLButtonElement)) {
+    throw new Error('Tooltip button was not rendered.');
+  }
+
+  tooltipButton.focus();
+  expect(document.activeElement).toBe(tooltipButton);
+
+  reportIntersection(anchorElement, true);
+  reportIntersection(anchorElement, false);
+  fixture.detectChanges();
+
+  expect(tooltipElement()).toBeNull();
+  expect(focus).not.toHaveBeenCalled();
 }
 
 function emitsClosedWhenHostLeavesViewport(): void {
@@ -313,8 +343,12 @@ describe('NdwuTooltipDirective', () => {
   it('closes when its host leaves the viewport without moving focus', closesWhenHostLeavesWithoutMovingFocus);
   it('tracks tooltipOrigin instead of host after reanchoring', tracksTooltipOriginInsteadOfHost);
   it(
-    'does not restore focus to the hidden host when focus was inside tooltip',
-    doesNotRestoreFocusToHiddenHostFromPane,
+    'restores focus to the hidden host without scrolling when focus was inside tooltip',
+    restoresFocusToHiddenHostWithoutScrollingFromPane,
+  );
+  it(
+    'does not restore focus to the hidden host when restoration is disabled',
+    doesNotRestoreFocusToHiddenHostWhenDisabled,
   );
   it('emits closed when host leaves the viewport', emitsClosedWhenHostLeavesViewport);
   it('stays open when origin is out of view on open', staysOpenWhenOriginIsOutOfViewOnOpen);

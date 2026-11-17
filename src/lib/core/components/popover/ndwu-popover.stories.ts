@@ -67,31 +67,41 @@ const meta: Meta<NdwuPopoverDirective> = {
       options: SIDES,
       description:
         'Preferred side on desktop; falls back to the opposite side, then to the cross axis. A preview narrower than 600 px (portrait) or 960 px (landscape) gets a bottom sheet',
+      table: {defaultValue: {summary: '\'bottom\''}},
     },
     popoverAlign: {
       control: 'select',
       options: ALIGNS,
       description: 'Alignment along the side on desktop',
+      table: {defaultValue: {summary: '\'center\''}},
     },
     showDelay: {
       control: false,
       description: 'Delay before opening, in ms, for hover and focus triggers',
+      table: {defaultValue: {summary: '0'}},
     },
     hideDelay: {
       control: false,
-      description: 'Delay before closing, in ms, for hover and focus triggers; default 150',
+      description: 'Delay before closing, in ms, for hover and focus triggers',
+      table: {defaultValue: {summary: '150'}},
     },
     triggerOn: {
       control: false,
-      description: 'What opens the popover; default `click`. See Popover API/Popover Trigger',
+      description: 'What opens the popover. See Popover API/Popover Trigger',
+      table: {defaultValue: {summary: '\'click\''}},
     },
     popoverClass: {
       control: false,
-      description: 'CSS class(es) of the overlay pane; default `ndwu-popover`',
+      description: 'CSS class(es) of the overlay pane',
+      table: {defaultValue: {summary: '\'ndwu-popover\''}},
     },
     popoverTrapFocus: {
       control: false,
-      description: 'Keeps Tab inside the popover; default `true`',
+      description: 'Keeps Tab inside the popover',
+      table: {defaultValue: {summary: 'true'}},
+    },
+    getProviders: {
+      table: {disable: true},
     },
   },
   args: {

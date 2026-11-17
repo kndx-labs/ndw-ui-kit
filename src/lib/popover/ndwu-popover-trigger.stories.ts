@@ -66,21 +66,27 @@ const meta: Meta<PopoverTriggerStoryArgs> = {
       },
       options: [undefined, 'click', 'hover', 'focus'],
       description: 'What opens the overlay; `manual` opens it only through `open()` or `toggle()` (see `ContextMenu`)',
+      table: {defaultValue: {summary: '\'click\''}},
     },
     showDelay: {
       control: 'number',
       description: 'Delay before opening, in ms; hover and focus triggers only',
+      table: {defaultValue: {summary: '0'}},
     },
     hideDelay: {
       control: 'number',
       description: 'Delay before closing, in ms; hover and focus triggers only',
+      table: {defaultValue: {summary: '150'}},
     },
     popoverMinWidth: {
       control: 'number',
       description:
         'Minimum width of the overlay pane on desktop, in px; dropdown controller only (never below the host width). The popover-panel and tooltip controllers ignore it. The pane lays its content out in a row, so content keeps its own width unless it sets one (the context menu sets `min-width` in CSS)',
     },
-    popoverTrapFocus: booleanArgType('Keeps Tab inside the overlay and focuses its first focusable element'),
+    popoverTrapFocus: {
+      ...booleanArgType('Keeps Tab inside the overlay and focuses its first focusable element'),
+      table: {defaultValue: {summary: 'false'}},
+    },
     popoverCloseOnOriginClick: booleanArgType(
       'Click trigger: a pointer click on the host closes the overlay; Enter and Space still toggle. With the dropdown controller on desktop `false` also removes the backdrop. "Show code" omits `false`; write `[popoverCloseOnOriginClick]="false"` yourself',
     ),
@@ -88,7 +94,8 @@ const meta: Meta<PopoverTriggerStoryArgs> = {
     disabled: booleanArgType('Blocks opening; on `ndwu-button` the same binding also disables the button'),
     ndwuPopoverTrigger: {
       control: false,
-      description: 'Content: a template, a component class or a string',
+      description:
+        'Content: a template, a component class or a string. The stories wrap it in `.sb-overlay-panel`, a Storybook stand-in for your app\'s panel styles',
     },
     popoverContext: {
       control: false,
@@ -100,7 +107,8 @@ const meta: Meta<PopoverTriggerStoryArgs> = {
     },
     popoverClass: {
       control: false,
-      description: 'CSS class(es) of the overlay pane; the bare trigger adds none by default',
+      description: 'CSS class(es) of the overlay pane',
+      table: {defaultValue: {summary: 'none'}},
     },
     opened: outputArgType('opened', 'Emits after the overlay opens'),
     closed: outputArgType('closed', 'Emits after the overlay closes'),
@@ -143,8 +151,16 @@ export const ContextMenu: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'Right-click a target to open a menu at the pointer: `triggerOn="manual"` and `open()` with `originPoint`. The first target passes the factory through `[popoverControllerFactory]`; the second gets it from `NDWU_POPOVER_CONTROLLER_FACTORY` in the component `providers`, the path `hostDirectives` wrappers such as `ndwuTooltip` use, because a wrapper directive can\'t set an input of its own host directive. The button opens the same menu on click, moves focus into it (`[popoverTrapFocus]="true"`) and stays open on a second click (`[popoverCloseOnOriginClick]="false"`); the directive adds no ARIA, so the button sets `aria-haspopup` and `aria-expanded` itself. Arrow keys, Home and End move between items, Tab cycles inside the menu; Escape closes. The class code (`open()`, `providers`, keyboard) is in `.storybook/demos/context-menu.component.ts`.',
+        story: lines([
+          'Right-click a target, or focus it and press the ContextMenu key, to open a menu at the pointer: `triggerOn="manual"` and `open()` with `originPoint`.',
+          '',
+          '- **Factory input:** the first target passes the factory through `[popoverControllerFactory]`.',
+          '- **Factory token:** the second target gets it from `NDWU_POPOVER_CONTROLLER_FACTORY` in the component `providers`, the path `hostDirectives` wrappers such as `ndwuTooltip` use, because a wrapper directive can\'t set an input of its own host directive. The token covers the whole template; where both are set, the input wins.',
+          '- **Button:** opens the same menu on click, moves focus into it (`[popoverTrapFocus]="true"`) and stays open on a second click (`[popoverCloseOnOriginClick]="false"`). The directive adds no ARIA, so the button sets `aria-haspopup` and `aria-expanded` itself.',
+          '- **Keyboard:** Arrow keys, Home and End move between items, Tab cycles inside the menu, Escape closes.',
+          '',
+          'The class code (`open()`, `providers`, keyboard) is in `.storybook/demos/context-menu.component.ts`.',
+        ]),
       },
       source: {
         code: CONTEXT_MENU_TEMPLATE,

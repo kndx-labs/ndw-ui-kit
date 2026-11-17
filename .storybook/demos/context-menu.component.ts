@@ -15,6 +15,7 @@ interface SbContextMenuContext {
 export const CONTEXT_MENU_TEMPLATE = `<div
   #inputTarget
   class="target"
+  tabindex="0"
   ndwuPopoverTrigger
   triggerOn="manual"
   [popoverControllerFactory]="ndwuCreateDropdownController"
@@ -25,6 +26,7 @@ export const CONTEXT_MENU_TEMPLATE = `<div
 <div
   #tokenTarget
   class="target"
+  tabindex="0"
   ndwuPopoverTrigger
   triggerOn="manual"
   (contextmenu)="openAt(tokenTrigger(), $event)"
@@ -80,6 +82,11 @@ export const CONTEXT_MENU_TEMPLATE = `<div
       cursor: context-menu;
     }
 
+    .target:focus-visible {
+      outline: none;
+      box-shadow: var(--ndwu-fx-focused-default);
+    }
+
     .menu {
       box-sizing: border-box;
       display: flex;
@@ -95,14 +102,14 @@ export const CONTEXT_MENU_TEMPLATE = `<div
       padding: 8px 12px;
       border: none;
       background: none;
-      color: var(--ndwu-popover-text-color);
+      color: var(--ndwu-styled-option-text-color);
       font: 14px / 20px Roboto, sans-serif;
       text-align: left;
       cursor: pointer;
     }
 
     .menu-item:hover {
-      background: var(--ndwu-color-gray-5);
+      background: var(--ndwu-styled-option-hover-bg);
     }
 
     .menu-item:focus-visible {

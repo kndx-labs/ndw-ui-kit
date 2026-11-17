@@ -33,8 +33,14 @@ const meta: Meta<TextareaFieldStoryArgs> = {
     docs: {
       controls: WRAPPER_CONTROLS,
       description: {
-        component:
-          '`ndwu-textarea` with a floating label, a hint and a validation error, for reactive forms. Bind it with `formControl` or `formControlName`; the control sets the value, the disabled state and the validity. `placeholder`, `ariaLabel`, `readonly`, `loading`, `loadingLabel`, `resizable`, `resizeDirection` and `showLineNumbers` work as in [Core/Textarea](?path=/docs/core-textarea--docs), and content marked `ndwuTextareaActions` goes to the textarea\'s actions slot.',
+        component: [
+          '`ndwu-textarea` with a floating label, a hint and a validation error, for reactive forms.',
+          'Bind it with `formControl` or `formControlName`;',
+          'the control sets the value, the disabled state and the validity.',
+          '`placeholder`, `ariaLabel`, `readonly`, `loading`, `loadingLabel`, `resizable`, `resizeDirection`',
+          'and `showLineNumbers` work as in [Core/Textarea](?path=/docs/core-textarea--docs),',
+          'and content marked `ndwuTextareaActions` goes to the textarea\'s actions slot.',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -90,10 +96,23 @@ export const ValidationError: Story = {
       },
     },
   },
-  render: (_args, {id}) => ({
-    props: {control: storyFormControl(id, {value: '', validators: [REQUIRED], touched: true})},
-    template:
-      '<ndwu-textarea-field [formControl]="control" label="Comment" hint="Visible to the support team only" ndwuRequired />',
+  render: () => ({
+    props: {
+      control: storyFormControl(
+        'textarea-field-validation-error',
+        {
+          value: '',
+          validators: [REQUIRED],
+          touched: true,
+        },
+      ),
+    },
+    template: `<ndwu-textarea-field
+  [formControl]="control"
+  label="Comment"
+  hint="Visible to the support team only"
+  ndwuRequired
+/>`,
   }),
 };
 
@@ -106,8 +125,8 @@ export const Disabled: Story = {
       },
     },
   },
-  render: (_args, {id}) => ({
-    props: {control: storyFormControl(id, {value: 'This is a textarea', disabled: true})},
+  render: () => ({
+    props: {control: storyFormControl('textarea-field-disabled', {value: 'This is a textarea', disabled: true})},
     template: '<ndwu-textarea-field [formControl]="control" label="Comment" />',
   }),
 };

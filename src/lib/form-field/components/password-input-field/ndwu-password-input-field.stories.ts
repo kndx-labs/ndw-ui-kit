@@ -24,6 +24,7 @@ const STRENGTHS: readonly NdwuPasswordStrength[] = ['weak', 'average', 'strong']
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
 const SAMPLE_PASSWORD = 'MyStr0ngP@ss2024';
 const REQUIRED_PASSWORD = NdwuValidators.required('Enter a password');
+const MIN_LENGTH_PASSWORD = NdwuValidators.minLength(8, 'Use at least 8 characters');
 
 const STRENGTH_VALUES: Record<NdwuPasswordStrength, string> = {
   weak: 'abc',
@@ -48,11 +49,11 @@ const strengthOf = (password: string): NdwuPasswordStrength | null => {
     return null;
   }
 
-  if (password.length <= 4) {
+  if (password.length < 8) {
     return 'weak';
   }
 
-  if (password.length <= 8) {
+  if (password.length < 12) {
     return 'average';
   }
 
@@ -68,8 +69,12 @@ const meta: Meta<PasswordInputFieldStoryArgs> = {
     sizes: SIZES,
     docs: {
       description: {
-        component:
-          'Password input with a show/hide button, a strength indicator and strength hints, for reactive forms. The app computes `strength`; `weak` shows the error style. Bind it with `formControl` or `formControlName`; the control sets the value, the disabled state and the validity.',
+        component: [
+          'Password input with a show/hide button, a strength indicator and strength hints, for reactive forms.',
+          'The app computes `strength`; `weak` shows the error style.',
+          'Bind it with `formControl` or `formControlName`;',
+          'the control sets the value, the disabled state and the validity.',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -93,8 +98,10 @@ const meta: Meta<PasswordInputFieldStoryArgs> = {
     },
     strengthHintTexts: {
       control: 'object',
-      description:
-        'Hint per strength (`default` when `strength` is `null`); shown when `hint` is empty and the control is valid',
+      description: [
+        'Hint per strength (`default` when `strength` is `null`);',
+        'shown when `hint` is empty and the control is valid',
+      ].join(' '),
     },
     showPasswordIconLabel: textArgType('`aria-label` of the show-password button, passed through the `localize` pipe'),
     hidePasswordIconLabel: textArgType('`aria-label` of the hide-password button, passed through the `localize` pipe'),
@@ -134,8 +141,11 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'The control is `new FormControl(\'MyStr0ngP@ss2024\', [NdwuValidators.required(\'Enter a password\')])`; clear the field to see the error. "Show code" leaves out the `strengthHintTexts` object; `Strength` shows its binding.',
+        story: [
+          'The control is `new FormControl(\'MyStr0ngP@ss2024\', [NdwuValidators.required(\'Enter a password\')])`;',
+          'clear the field to see the error.',
+          '"Show code" leaves out the `strengthHintTexts` object; `Strength` shows its binding.',
+        ].join(' '),
       },
     },
   },
@@ -144,11 +154,11 @@ export const Default: Story = {
 export const Strength: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withStackLayout],
-  render: (_args, {id}) => ({
+  render: () => ({
     props: Object.fromEntries(
       STRENGTHS.map((strength) => [
         `${strength}Control`,
-        storyFormControl(`${id}-${strength}`, {value: STRENGTH_VALUES[strength]}),
+        storyFormControl(`password-input-field-strength-${strength}`, {value: STRENGTH_VALUES[strength]}),
       ]),
     ),
     template: lines(
@@ -165,22 +175,38 @@ export const Strength: Story = {
   }),
 };
 
-export const StrengthFromValue: Story = {
+export const StrengthWithValidation: Story = {
   parameters: {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'The story computes `strength` from the length: up to 4 characters `weak`, up to 8 `average`, longer `strong`. The rule belongs to the app.',
+        story: [
+          'The story computes `strength` from the length:',
+          'under 8 characters `weak`, under 12 `average`, longer `strong`.',
+          'The control has `NdwuValidators.required(\'Enter a password\')`',
+          'and `NdwuValidators.minLength(8, \'Use at least 8 characters\')`:',
+          'after input or blur a validation error replaces the strength hint, and `weak` keeps the error style.',
+          'The rule belongs to the app.',
+        ].join(' '),
       },
     },
   },
-  render: (_args, {id}) => ({
-    props: {control: storyFormControl(id, {value: ''}), strengthOf},
+  render: () => ({
+    props: {
+      control: storyFormControl(
+        'password-input-field-strength-with-validation',
+        {
+          value: '',
+          validators: [REQUIRED_PASSWORD, MIN_LENGTH_PASSWORD],
+        },
+      ),
+      strengthOf,
+    },
     template: `<ndwu-password-input-field
   [formControl]="control"
   label="Password"
   ${EYE_LABELS}
+  ndwuRequired
   [strength]="strengthOf(control.value)"
   [strengthHintTexts]="${HINT_TEXTS_BINDING}"
 />`,
@@ -190,11 +216,11 @@ export const StrengthFromValue: Story = {
 export const Sizes: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withStackLayout],
-  render: (_args, {id}) => ({
+  render: () => ({
     props: Object.fromEntries(
       SIZES.map((size) => [
         `${size.toLowerCase()}Control`,
-        storyFormControl(`${id}-${size}`, {value: SAMPLE_PASSWORD}),
+        storyFormControl(`password-input-field-sizes-${size}`, {value: SAMPLE_PASSWORD}),
       ]),
     ),
     template: lines(
@@ -210,20 +236,31 @@ export const States: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'Empty, required and touched, so the error replaces the hint; disabled through the control (`control.disable()`).',
+        story: [
+          'Empty, required and touched, so the error replaces the hint;',
+          'disabled through the control (`control.disable()`).',
+        ].join(' '),
       },
     },
   },
   decorators: [withStackLayout],
-  render: (_args, {id}) => ({
+  render: () => ({
     props: {
-      errorControl: storyFormControl(`${id}-error`, {
-        value: '',
-        validators: [REQUIRED_PASSWORD],
-        touched: true,
-      }),
-      disabledControl: storyFormControl(`${id}-disabled`, {value: SAMPLE_PASSWORD, disabled: true}),
+      errorControl: storyFormControl(
+        'password-input-field-states-error',
+        {
+          value: '',
+          validators: [REQUIRED_PASSWORD],
+          touched: true,
+        },
+      ),
+      disabledControl: storyFormControl(
+        'password-input-field-states-disabled',
+        {
+          value: SAMPLE_PASSWORD,
+          disabled: true,
+        },
+      ),
     },
     template: lines([
       `<ndwu-password-input-field [formControl]="errorControl" label="Password" ${EYE_LABELS} ndwuRequired />`,

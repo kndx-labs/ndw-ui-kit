@@ -46,8 +46,13 @@ const meta: Meta<InputFieldStoryArgs> = {
     sizes: SIZES,
     docs: {
       description: {
-        component:
-          'Text or password input with a floating label, a hint, a validation error and an optional right icon button, for reactive forms. Bind it with `formControl` or `formControlName`; the control sets the value, the disabled state and the validity. Its parts, `ndwu-form-field` and `input[ndwuInput]`, can be used directly (see `Compound`).',
+        component: [
+          'Text or password input with a floating label, a hint, a validation error',
+          'and an optional right icon button, for reactive forms.',
+          'Bind it with `formControl` or `formControlName`;',
+          'the control sets the value, the disabled state and the validity.',
+          'Its parts, `ndwu-form-field` and `input[ndwuInput]`, can be used directly (see `Compound`).',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -112,8 +117,10 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'The control is `new FormControl(\'\', [NdwuValidators.required(\'Enter your email\'), NdwuValidators.email(\'Enter a valid email\')])`.',
+        story: [
+          'The control is `new FormControl(\'\', [NdwuValidators.required(\'Enter your email\'),',
+          'NdwuValidators.email(\'Enter a valid email\')])`.',
+        ].join(' '),
       },
     },
   },
@@ -123,9 +130,17 @@ export const Default: Story = {
 export const Sizes: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withFormControl, withStackLayout],
-  render: (_args, {id}) => ({
+  render: () => ({
     props: Object.fromEntries(
-      SIZES.map((size) => [`${size.toLowerCase()}Control`, storyFormControl(`${id}-${size}`, {value: ''})]),
+      SIZES.map((size) => [
+        `${size.toLowerCase()}Control`,
+        storyFormControl(
+          `input-field-sizes-${size}`,
+          {
+            value: '',
+          },
+        ),
+      ]),
     ),
     template: lines(
       SIZES.map((size) =>
@@ -140,18 +155,27 @@ export const States: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'With a value; read-only; disabled through the control (`control.disable()`); empty, required and touched, so the error replaces the hint.',
+        story: [
+          'With a value; read-only; disabled through the control (`control.disable()`);',
+          'empty, required and touched, so the error replaces the hint.',
+        ].join(' '),
       },
     },
   },
   decorators: [withFormControl, withStackLayout],
-  render: (_args, {id}) => ({
+  render: () => ({
     props: {
-      filledControl: storyFormControl(`${id}-filled`, {value: 'Sample text'}),
-      readonlyControl: storyFormControl(`${id}-readonly`, {value: 'Sample text'}),
-      disabledControl: storyFormControl(`${id}-disabled`, {value: 'Sample text', disabled: true}),
-      errorControl: storyFormControl(`${id}-error`, {value: '', validators: [REQUIRED_EMAIL], touched: true}),
+      filledControl: storyFormControl('input-field-states-filled', {value: 'Sample text'}),
+      readonlyControl: storyFormControl('input-field-states-readonly', {value: 'Sample text'}),
+      disabledControl: storyFormControl('input-field-states-disabled', {value: 'Sample text', disabled: true}),
+      errorControl: storyFormControl(
+        'input-field-states-error',
+        {
+          value: '',
+          validators: [REQUIRED_EMAIL],
+          touched: true,
+        },
+      ),
     },
     template: lines([
       '<ndwu-input-field [formControl]="filledControl" label="With value" />',
@@ -165,8 +189,8 @@ export const States: Story = {
 export const Password: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withFormControl],
-  render: (_args, {id}) => ({
-    props: {control: storyFormControl(id, {value: 'MyStr0ngP@ss2024'})},
+  render: () => ({
+    props: {control: storyFormControl('input-field-password', {value: 'MyStr0ngP@ss2024'})},
     template: `<ndwu-input-field
   [formControl]="control"
   type="password"
@@ -183,16 +207,18 @@ export const RightIcon: Story = {
     a11y: {config: {rules: [{id: 'button-name', enabled: false}]}},
     docs: {
       description: {
-        story:
-          'Listen to `rightIconClicked` for the button: the second field clears its value on click. A `password` field ignores `rightIcon`.',
+        story: [
+          'Listen to `rightIconClicked` for the button: the second field clears its value on click.',
+          'A `password` field ignores `rightIcon`.',
+        ].join(' '),
       },
     },
   },
   decorators: [withFormControl, withStackLayout],
-  render: (_args, {id}) => ({
+  render: () => ({
     props: {
-      searchControl: storyFormControl(`${id}-search`, {value: ''}),
-      clearControl: storyFormControl(`${id}-clear`, {value: 'Sample text'}),
+      searchControl: storyFormControl('input-field-right-icon-search', {value: ''}),
+      clearControl: storyFormControl('input-field-right-icon-clear', {value: 'Sample text'}),
     },
     template: lines([
       `<ndwu-input-field [formControl]="searchControl" label="Search" placeholder="Enter a query" rightIcon="${NDWU_ICON_NAME.SEARCH_L}" />`,
@@ -206,8 +232,11 @@ export const Compound: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'The parts of `ndwu-input-field`: `ndwu-form-field` with a floating label, `input[ndwuInput]`, a suffix and a hint. `ndwuInput` reads the error and disabled state from the control.',
+        story: [
+          'The parts of `ndwu-input-field`: `ndwu-form-field` with a floating label,',
+          '`input[ndwuInput]`, a suffix and a hint.',
+          '`ndwuInput` reads the error and disabled state from the control.',
+        ].join(' '),
       },
     },
   },
@@ -225,8 +254,8 @@ export const Compound: Story = {
       ],
     }),
   ],
-  render: (_args, {id}) => ({
-    props: {control: storyFormControl(id, {value: ''})},
+  render: () => ({
+    props: {control: storyFormControl('input-field-compound', {value: ''})},
     template: `<ndwu-form-field>
   <ndwu-floating-label label="Search" />
   <input ndwuInput [formControl]="control" placeholder="Enter a query" />
@@ -241,8 +270,11 @@ export const NativeForm: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'Without Angular forms `ndwuInput` follows native validity: the `required` error shows after input or blur and clears on reset. Submit logs the form entries to Actions.',
+        story: [
+          'Without Angular forms `ndwuInput` follows native validity:',
+          'the `required` error shows after input or blur and clears on reset.',
+          'Submit logs the form entries to Actions.',
+        ].join(' '),
       },
     },
   },
@@ -268,8 +300,11 @@ export const AriaInvalid: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'Without Angular forms, `aria-invalid="true"` on `input[ndwuInput]` shows the error style at once, before any input. Use it when the app validates the value itself.',
+        story: [
+          'Without Angular forms, `aria-invalid="true"` on `input[ndwuInput]`',
+          'shows the error style at once, before any input.',
+          'Use it when the app validates the value itself.',
+        ].join(' '),
       },
     },
   },
@@ -287,8 +322,11 @@ export const AriaInvalidOverride: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'Without Angular forms, `[aria-invalid]="false"` overrides native validity: the input is `required` but stays valid after input or blur. With a form control the control\'s state wins.',
+        story: [
+          'Without Angular forms, `[aria-invalid]="false"` overrides native validity:',
+          'the input is `required` but stays valid after input or blur.',
+          'With a form control the control\'s state wins.',
+        ].join(' '),
       },
     },
   },
@@ -317,20 +355,5 @@ export const NgModel: Story = {
       '<ndwu-input-field label="Email" placeholder="name@example.com" [ngModel]="email()" (ngModelChange)="email.set($event)" />',
       '<output>Value: "{{ email() }}"</output>',
     ]),
-  }),
-};
-
-export const NoFormControl: Story = {
-  parameters: {
-    ...FIXED_STORY_PARAMETERS,
-    docs: {
-      description: {
-        story:
-          'Without `formControl`, `formControlName` or `ngModel` the field renders, but nothing reads its value, validates it or disables it. Bind a form control in app code.',
-      },
-    },
-  },
-  render: () => ({
-    template: '<ndwu-input-field label="Email" placeholder="name@example.com" hint="Used for sign-in" />',
   }),
 };

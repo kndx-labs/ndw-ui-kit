@@ -46,8 +46,11 @@ const meta: Meta<TextareaStoryArgs> = {
     sizes: SIZES,
     docs: {
       description: {
-        component:
-          'Multi-line text control with line numbers, an actions slot, a loading state and resize; controlled through `value` and `valueChange`. For a label and hint put it in `ndwu-form-field`, or use `ndwu-textarea-field` with a reactive form.',
+        component: [
+          'Multi-line text control with line numbers, an actions slot, a loading state and resize;',
+          'controlled through `value` and `valueChange`.',
+          'For a label and hint put it in `ndwu-form-field`, or use `ndwu-textarea-field` with a reactive form.',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -140,8 +143,10 @@ export const Actions: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'Buttons in `[ndwuTextareaActions]` sit in the top-right corner, and the text flows around them. Their click handlers are app code.',
+        story: [
+          'Buttons in `[ndwuTextareaActions]` sit in the top-right corner, and the text flows around them.',
+          'Their click handlers are app code.',
+        ].join(' '),
       },
     },
   },
@@ -175,8 +180,10 @@ export const InFormField: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          '`ndwu-form-field` adds a floating label and a hint around the textarea. In a reactive form use `ndwu-textarea-field`.',
+        story: [
+          '`ndwu-form-field` adds a floating label and a hint around the textarea.',
+          'In a reactive form use `ndwu-textarea-field`.',
+        ].join(' '),
       },
     },
   },

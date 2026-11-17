@@ -47,7 +47,8 @@ export const TOOLTIP_STRIP_TEMPLATE = `<span
       [attr.tabindex]="cell.index === focusedIndex() ? 0 : -1"
       [attr.aria-label]="cell.time"
       [attr.aria-describedby]="cell.index === focusedIndex() ? stripTooltip.tooltipId : null"
-      (focusin)="onCellFocusIn(cell, $event)"
+      (focusin)="activateCell(cell, $event)"
+      (click)="activateCell(cell, $event)"
     ></span>
   }
 </span>
@@ -63,6 +64,11 @@ export const TOOLTIP_STRIP_TEMPLATE = `<span
   selector: 'sb-tooltip-strip',
   template: TOOLTIP_STRIP_TEMPLATE,
   styles: `
+    :host {
+      display: block;
+      padding-top: 64px;
+    }
+
     .strip {
       display: inline-flex;
       gap: 2px;
@@ -78,7 +84,8 @@ export const TOOLTIP_STRIP_TEMPLATE = `<span
     }
 
     .strip-cell:focus-visible {
-      outline: 2px solid currentcolor;
+      opacity: 1 !important;
+      outline: 2px solid var(--ndwu-color-gray-100);
       outline-offset: 1px;
     }
   `,
@@ -123,7 +130,7 @@ export class SbTooltipStripComponent {
     }
   }
 
-  protected onCellFocusIn(cell: StripCell, event: FocusEvent): void {
+  protected activateCell(cell: StripCell, event: Event): void {
     this.hasFocusInStrip = true;
     this.focusedIndex.set(cell.index);
     this.tooltipCell.set(cell);

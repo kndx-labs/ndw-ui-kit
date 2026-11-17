@@ -200,7 +200,7 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   segment), name, docs id (`<title in kebab case>--docs`, e.g. `core-button-button--docs`), a short plain-text summary
   for the card (no markdown) and `ready` matching the tag.
 - Storybook-only components and directives use the `sb-` prefix.
-- Overlays (tooltip, popover, dropdown): `component:` is the trigger directive, and `render` puts it on a host element
+- Overlays (tooltip, popover trigger): `component:` is the trigger directive, and `render` puts it on a host element
   with `argsToTemplate` (`Core/Tooltip` uses `<button ndwu-button>`). Inputs that only make sense in wiring stories get
   `control: false` and a description.
 - Overlay content is not in the DOM until it opens, and it renders in the CDK overlay container on `body`, outside the

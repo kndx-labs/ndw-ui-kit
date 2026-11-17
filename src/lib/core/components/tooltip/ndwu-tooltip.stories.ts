@@ -27,8 +27,8 @@ const ALIGNS: readonly NdwuPopoverAlign[] = ['center', 'start', 'end'];
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
 
 const SHORT_TEXT = 'Shared with me';
-const LONG_TEXT = 'Copy hexadecimal value to clipboard Copy hexadecimal value to clipboard value to clipboard '
-  + 'value to clipboard value to clipboard value value';
+const LONG_TEXT = 'Copies the hexadecimal value to the clipboard. '
+  + 'Paste it into a colour field or a stylesheet to reuse this colour elsewhere.';
 const HTML_TEXT = 'Status: <b>online</b><br />Last seen: <i>2 minutes ago</i>';
 const ICON_TEXT = 'This icon provides additional information about the status.';
 
@@ -42,7 +42,8 @@ const STRIP_DOCS = {
   },
 };
 
-const STRIP_HANDLERS_NOTE = 'The handlers and signals live in `.storybook/demos/tooltip-strip.component.ts`.';
+const STRIP_HANDLERS_NOTE = 'The handlers, signals and styles live in '
+  + '[tooltip-strip.component.ts](https://github.com/kndx-labs/ndw-ui-kit/blob/master/.storybook/demos/tooltip-strip.component.ts).';
 
 const meta: Meta<TooltipStoryArgs> = {
   title: 'Core/Tooltip',
@@ -138,7 +139,7 @@ const meta: Meta<TooltipStoryArgs> = {
   },
   render: (args) => ({
     props: args,
-    template: `<button ndwu-button variant="secondary" label="Hover me" ${argsToTemplate(args)}></button>`,
+    template: `<button ndwu-button variant="secondary" label="Show hint" ${argsToTemplate(args)}></button>`,
   }),
 };
 
@@ -186,7 +187,7 @@ export const OnIcon: Story = {
     docs: {
       description: {
         story:
-          'On a device with touch and a mouse, a tap fires an emulated hover. It is ignored by default; `showOnTap` lets it open the tooltip.',
+          'On a device with touch and a mouse, a tap fires an emulated hover. It is ignored by default; `showOnTap` lets it open the tooltip. An icon is not focusable, so this serves mouse and touch only; put hints that keyboard users need on a focusable host, such as `ndwu-icon-button` with `aria-label`.',
       },
     },
   },

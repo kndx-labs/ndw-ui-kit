@@ -153,12 +153,11 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   (`aria-*`), quote every key of `argTypes` / `args` (`quote-props`).
 - Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `textArgType`, `booleanArgType`,
   `outputArgType`, `eventArgType`; the form-only `submitArgType` lives in `@sb/helpers/story-form`.
-- CSS tokens: list the component's public tokens as `CssTokenGroup`s (`@sb/helpers/css-tokens`) of Sass map keys
-  without `--ndwu-` (`{title: 'primary', keys: ['button-primary-bg', ...], if: {arg: 'variant', eq: 'primary'}}`),
-  spread `...cssTokenArgTypes(groups)` into `meta.argTypes`, add `CssTokenArgs` to the args type and pass
-  `withoutCssTokens(args)` to `argsToTemplate` and `props`. Copy the keys from `<component>.tokens.scss`, leave out
-  keys marked `// TODO: remove legacy alias at next minor bump`, and add by hand variables the component reads that no
-  map defines.
+- CSS tokens: list the component's public tokens as `CssTokenGroup`s (`@sb/addons/css-tokens/shared`) of Sass map
+  keys without `--ndwu-` (`{title: 'primary', keys: ['button-primary-bg', ...], if: {arg: 'variant', eq: 'primary'}}`)
+  and set `cssTokens: groups` in `meta.parameters`. The "CSS tokens" tab shows them on stories with Controls only.
+  Copy the keys from `<component>.tokens.scss`, leave out keys marked `// TODO: remove legacy alias at next minor bump`,
+  and add by hand variables the component reads that no map defines.
 - A story that needs the router spreads `withRouter` from `@sb/helpers/story-router` in its `decorators` array:
   `decorators: [...withRouter]`. It adds story-level `provideRouter` and `provideLocationMocks`; `sb-router-url` shows
   the current URL.
@@ -166,8 +165,7 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `parameters.docs.description.component`. Compodoc adds types and defaults of inputs. A story's explanation goes into
   `parameters.docs.description.story`, not into rendered text such as `secondaryText`, which "Show code" copies.
 - Set every control's starting value in `meta.args` (e.g. `variant`, booleans `false`, `icon: null`), so the Controls
-  panel shows the current value instead of "Choose option...". CSS token args are the exception (see
-  [CSS tokens](#css-tokens)).
+  panel shows the current value instead of "Choose option...".
 - An arg reaches the template only if its argType has a `control` or an `action`; `control: false` removes it.
 - "Show code" is what app developers copy, so it must be plain markup:
   - stories with controls set `parameters.docs.source.transform: argsSourceTransform` (`@sb/helpers/args-to-source`),
@@ -220,16 +218,17 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 
 ### CSS tokens
 
-The Controls panel lists a story's tokens under "css tokens", one subcategory per group; groups for other variants are
-hidden, and their overrides pause until that variant is selected again. A row starts as "Set string": click it, then
-type. Any CSS value typed into the field overrides the token in both themes, overlays and modals included. Clear the
-field to inherit the theme value again ("not set" for tokens with no default); "Reset controls" clears all overrides
-and returns the rows to "Set string". The Default column shows the token's value from the theme map
-(`var(--ndwu-color-*)`), not the resolved colour, and an invalid value makes the component property fall back to its
-CSS default. Overrides belong to the story: another story or a docs page starts without them, and stories with controls
-disabled have none. Hex, `rgb()` / `hsl()` and plain keywords such as `transparent` are kept in the URL, `var()` is
-not. Never give token args a value in `meta.args` or story `args` (an exception to "set every control's starting
-value"): a starting value would be an override.
+The "CSS tokens" tab next to Controls lists a story's tokens, one titled group per `CssTokenGroup`; groups for other
+variants are hidden, and their overrides pause until that variant is selected again. Each row shows the token's value
+from the theme map (Default, e.g. `var(--ndwu-color-brand-50)`), a swatch of the colour it resolves to in the current
+theme (Current), a colour picker with a text field (Value) and a reset button. Pick a colour or type any CSS value; it
+overrides the token in both themes, overlays and modals included. Clearing the field or the row's reset button removes
+the override; "Reset all" removes all of the story's overrides. Overrides belong to the story and the browser session:
+another story starts clean, coming back restores them, a reload clears them; they are not kept in the URL. An invalid
+value is applied as is, and properties that use the token fall back to `unset`; Current shows what the browser got.
+The picker does not understand `var(...)`: its own swatch stays transparent and its format toggle turns the value into
+black, so type `var(...)` values and read the colour from Current. It also drops the first `#` of a value that holds
+other text (`var(--x, #fff)`, `color-mix(...)`), so write colours inside such values as `rgb()`.
 
 ### Accessibility
 

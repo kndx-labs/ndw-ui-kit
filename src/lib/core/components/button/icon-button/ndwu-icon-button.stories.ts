@@ -8,14 +8,14 @@ import {
   type NdwuIconName,
 } from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
+import {type CssTokenGroup} from '@sb/addons/css-tokens/shared';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, sizeArgType} from '@sb/helpers/arg-types';
-import {CssTokenArgs, CssTokenGroup, cssTokenArgTypes, withoutCssTokens} from '@sb/helpers/css-tokens';
 import {SizeArg} from '@sb/helpers/story-args';
 import {withRowLayout} from '@sb/helpers/story-layout';
 import {lines} from '@sb/helpers/story-template';
 
-type IconButtonStoryArgs = NdwuIconButtonComponent & SizeArg & CssTokenArgs & {
+type IconButtonStoryArgs = NdwuIconButtonComponent & SizeArg & {
   ariaLabel: string;
   click: (event: MouseEvent) => void;
 };
@@ -87,6 +87,7 @@ const meta: Meta<IconButtonStoryArgs> = {
   tags: ['autodocs'],
   parameters: {
     sizes: SIZES,
+    cssTokens: CSS_TOKEN_GROUPS,
     docs: {
       description: {
         component: 'Icon-only button. Add a native `aria-label`; this component has no accessible-name input.',
@@ -120,7 +121,6 @@ const meta: Meta<IconButtonStoryArgs> = {
       table: {category: 'story'},
     },
     click: eventArgType('click', 'Native click event'),
-    ...cssTokenArgTypes(CSS_TOKEN_GROUPS),
   },
   args: {
     icon: NDWU_ICON_NAME.ADD_S,
@@ -130,11 +130,10 @@ const meta: Meta<IconButtonStoryArgs> = {
     ariaLabel: 'Add item',
   },
   render: (args) => {
-    const storyArgs = withoutCssTokens(args);
-    const argsStr = argsToTemplate(storyArgs, {exclude: ['ariaLabel']});
+    const argsStr = argsToTemplate(args, {exclude: ['ariaLabel']});
 
     return {
-      props: storyArgs,
+      props: args,
       template: `
         <button
           ndwu-icon-button

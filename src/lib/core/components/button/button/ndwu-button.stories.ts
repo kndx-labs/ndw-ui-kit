@@ -7,14 +7,14 @@ import {
   NdwuIconName,
 } from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
+import {type CssTokenGroup} from '@sb/addons/css-tokens/shared';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType, sizeArgType} from '@sb/helpers/arg-types';
-import {CssTokenArgs, CssTokenGroup, cssTokenArgTypes, withoutCssTokens} from '@sb/helpers/css-tokens';
 import {SizeArg} from '@sb/helpers/story-args';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
 import {group, lines} from '@sb/helpers/story-template';
 
-type ButtonStoryArgs = NdwuButtonComponent & SizeArg & CssTokenArgs & {
+type ButtonStoryArgs = NdwuButtonComponent & SizeArg & {
   content: string;
   click: (event: MouseEvent) => void;
 };
@@ -71,6 +71,7 @@ const meta: Meta<ButtonStoryArgs> = {
   tags: ['autodocs', 'ready'],
   parameters: {
     sizes: SIZES,
+    cssTokens: CSS_TOKEN_GROUPS,
     docs: {
       description: {
         component: 'Action button: `<button ndwu-button>` with a variant, an optional icon and a loading state.',
@@ -106,7 +107,6 @@ const meta: Meta<ButtonStoryArgs> = {
       table: {category: 'story'},
     },
     click: eventArgType('click', 'Native click event'),
-    ...cssTokenArgTypes(CSS_TOKEN_GROUPS),
   },
   args: {
     variant: NDWU_BUTTON_VARIANT.PRIMARY,
@@ -115,11 +115,10 @@ const meta: Meta<ButtonStoryArgs> = {
     icon: null,
   },
   render: (args) => {
-    const storyArgs = withoutCssTokens(args);
-    const argsStr = argsToTemplate(storyArgs, {exclude: ['content']});
+    const argsStr = argsToTemplate(args, {exclude: ['content']});
 
     return {
-      props: storyArgs,
+      props: args,
       template: `<button ndwu-button ${argsStr}>{{ content }}</button>`,
     };
   },

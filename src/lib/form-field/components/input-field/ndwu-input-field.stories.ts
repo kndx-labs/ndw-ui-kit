@@ -18,11 +18,12 @@ import {booleanArgType, outputArgType, sizeArgType, textArgType} from '@sb/helpe
 import {SizeArg} from '@sb/helpers/story-args';
 import {SubmitArg, nativeFormTemplate, submitArgType, submitProps, withNativeForm} from '@sb/helpers/story-form';
 import {
+  DEFAULT_FORM_CONTROL_ARGS,
   FORM_CONTROL_ARGS,
   FormControlArgs,
   formControlArgTypes,
-  formControlArgs,
-  storyFormControl,
+  getStoryFormControl,
+  setStoryFormControlState,
   withFormControl,
 } from '@sb/helpers/story-form-control';
 import {withStackLayout} from '@sb/helpers/story-layout';
@@ -95,20 +96,18 @@ const meta: Meta<InputFieldStoryArgs> = {
     readonly: false,
     showPasswordIconLabel: 'Show password',
     hidePasswordIconLabel: 'Hide password',
-    ...formControlArgs,
+    ...DEFAULT_FORM_CONTROL_ARGS,
   },
-  render: (args, {id}) => ({
-    props: {
-      ...args,
-      control: storyFormControl(id, {
-        value: '',
-        validators: [REQUIRED_EMAIL, VALID_EMAIL],
-        disabled: args.disabled,
-        touched: args.touched,
-      }),
-    },
-    template: `<ndwu-input-field [formControl]="control" ${argsToTemplate(args, {exclude: FORM_CONTROL_ARGS})} />`,
-  }),
+  render: (args, {id}) => {
+    const control = getStoryFormControl(id, {value: '', validators: [REQUIRED_EMAIL, VALID_EMAIL]});
+
+    setStoryFormControlState(control, args);
+
+    return {
+      props: {...args, control},
+      template: `<ndwu-input-field [formControl]="control" ${argsToTemplate(args, {exclude: FORM_CONTROL_ARGS})} />`,
+    };
+  },
 };
 
 export default meta;
@@ -134,12 +133,7 @@ export const Sizes: Story = {
     props: Object.fromEntries(
       SIZES.map((size) => [
         `${size.toLowerCase()}Control`,
-        storyFormControl(
-          `input-field-sizes-${size}`,
-          {
-            value: '',
-          },
-        ),
+        getStoryFormControl(`input-field-sizes-${size}`, {value: ''}),
       ]),
     ),
     template: lines(
@@ -163,34 +157,35 @@ export const States: Story = {
     },
   },
   decorators: [withFormControl, withStackLayout],
-  render: () => ({
-    props: {
-      filledControl: storyFormControl('input-field-states-filled', {value: 'Sample text'}),
-      readonlyControl: storyFormControl('input-field-states-readonly', {value: 'Sample text'}),
-      disabledControl: storyFormControl('input-field-states-disabled', {value: 'Sample text', disabled: true}),
-      errorControl: storyFormControl(
-        'input-field-states-error',
-        {
-          value: '',
-          validators: [REQUIRED_EMAIL],
-          touched: true,
-        },
-      ),
-    },
-    template: lines([
-      '<ndwu-input-field [formControl]="filledControl" label="With value" />',
-      '<ndwu-input-field [formControl]="readonlyControl" label="Read-only" hint="The value can be selected and copied" [readonly]="true" />',
-      '<ndwu-input-field [formControl]="disabledControl" label="Disabled" />',
-      '<ndwu-input-field [formControl]="errorControl" label="Email" hint="Used for sign-in" ndwuRequired />',
-    ]),
-  }),
+  render: () => {
+    const disabledControl = getStoryFormControl('input-field-states-disabled', {value: 'Sample text'});
+    const errorControl = getStoryFormControl('input-field-states-error', {value: '', validators: [REQUIRED_EMAIL]});
+
+    setStoryFormControlState(disabledControl, {disabled: true});
+    setStoryFormControlState(errorControl, {touched: true});
+
+    return {
+      props: {
+        filledControl: getStoryFormControl('input-field-states-filled', {value: 'Sample text'}),
+        readonlyControl: getStoryFormControl('input-field-states-readonly', {value: 'Sample text'}),
+        disabledControl,
+        errorControl,
+      },
+      template: lines([
+        '<ndwu-input-field [formControl]="filledControl" label="With value" />',
+        '<ndwu-input-field [formControl]="readonlyControl" label="Read-only" hint="The value can be selected and copied" [readonly]="true" />',
+        '<ndwu-input-field [formControl]="disabledControl" label="Disabled" />',
+        '<ndwu-input-field [formControl]="errorControl" label="Email" hint="Used for sign-in" ndwuRequired />',
+      ]),
+    };
+  },
 };
 
 export const Password: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   decorators: [withFormControl],
   render: () => ({
-    props: {control: storyFormControl('input-field-password', {value: 'MyStr0ngP@ss2024'})},
+    props: {control: getStoryFormControl('input-field-password', {value: 'MyStr0ngP@ss2024'})},
     template: `<ndwu-input-field
   [formControl]="control"
   type="password"
@@ -217,8 +212,8 @@ export const RightIcon: Story = {
   decorators: [withFormControl, withStackLayout],
   render: () => ({
     props: {
-      searchControl: storyFormControl('input-field-right-icon-search', {value: ''}),
-      clearControl: storyFormControl('input-field-right-icon-clear', {value: 'Sample text'}),
+      searchControl: getStoryFormControl('input-field-right-icon-search', {value: ''}),
+      clearControl: getStoryFormControl('input-field-right-icon-clear', {value: 'Sample text'}),
     },
     template: lines([
       `<ndwu-input-field [formControl]="searchControl" label="Search" placeholder="Enter a query" rightIcon="${NDWU_ICON_NAME.SEARCH_L}" />`,
@@ -255,7 +250,7 @@ export const Compound: Story = {
     }),
   ],
   render: () => ({
-    props: {control: storyFormControl('input-field-compound', {value: ''})},
+    props: {control: getStoryFormControl('input-field-compound', {value: ''})},
     template: `<ndwu-form-field>
   <ndwu-floating-label label="Search" />
   <input ndwuInput [formControl]="control" placeholder="Enter a query" />

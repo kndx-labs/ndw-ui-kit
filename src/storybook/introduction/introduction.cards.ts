@@ -84,4 +84,18 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Textarea with label, hint and validation for reactive forms.',
     ready: false,
   },
+  {
+    group: 'Form Field',
+    name: 'Schedule Editor Field',
+    docsId: 'form-field-schedule-editor-field--docs',
+    description: 'Schedule editor bound to a reactive form control.',
+    ready: false,
+  },
+  {
+    group: 'Widgets',
+    name: 'Schedule Editor',
+    docsId: 'widgets-schedule-editor--docs',
+    description: 'Weekly schedule grid with drag to add or remove time, full and thumbnail modes.',
+    ready: false,
+  },
 ];

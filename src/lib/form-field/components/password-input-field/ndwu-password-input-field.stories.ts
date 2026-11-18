@@ -5,11 +5,12 @@ import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {booleanArgType, sizeArgType, textArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
 import {
+  DEFAULT_FORM_CONTROL_ARGS,
   FORM_CONTROL_ARGS,
   FormControlArgs,
   formControlArgTypes,
-  formControlArgs,
-  storyFormControl,
+  getStoryFormControl,
+  setStoryFormControlState,
   withFormControl,
 } from '@sb/helpers/story-form-control';
 import {withStackLayout} from '@sb/helpers/story-layout';
@@ -117,22 +118,20 @@ const meta: Meta<PasswordInputFieldStoryArgs> = {
     strengthHintTexts: HINT_TEXTS,
     showPasswordIconLabel: 'Show password',
     hidePasswordIconLabel: 'Hide password',
-    ...formControlArgs,
+    ...DEFAULT_FORM_CONTROL_ARGS,
   },
-  render: (args, {id}) => ({
-    props: {
-      ...args,
-      control: storyFormControl(id, {
-        value: SAMPLE_PASSWORD,
-        validators: [REQUIRED_PASSWORD],
-        disabled: args.disabled,
-        touched: args.touched,
-      }),
-    },
-    template: `<ndwu-password-input-field [formControl]="control" ${
-      argsToTemplate(args, {exclude: FORM_CONTROL_ARGS})
-    } />`,
-  }),
+  render: (args, {id}) => {
+    const control = getStoryFormControl(id, {value: SAMPLE_PASSWORD, validators: [REQUIRED_PASSWORD]});
+
+    setStoryFormControlState(control, args);
+
+    return {
+      props: {...args, control},
+      template: `<ndwu-password-input-field [formControl]="control" ${
+        argsToTemplate(args, {exclude: FORM_CONTROL_ARGS})
+      } />`,
+    };
+  },
 };
 
 export default meta;
@@ -158,7 +157,7 @@ export const Strength: Story = {
     props: Object.fromEntries(
       STRENGTHS.map((strength) => [
         `${strength}Control`,
-        storyFormControl(`password-input-field-strength-${strength}`, {value: STRENGTH_VALUES[strength]}),
+        getStoryFormControl(`password-input-field-strength-${strength}`, {value: STRENGTH_VALUES[strength]}),
       ]),
     ),
     template: lines(
@@ -193,7 +192,7 @@ export const StrengthWithValidation: Story = {
   },
   render: () => ({
     props: {
-      control: storyFormControl(
+      control: getStoryFormControl(
         'password-input-field-strength-with-validation',
         {
           value: '',
@@ -220,7 +219,7 @@ export const Sizes: Story = {
     props: Object.fromEntries(
       SIZES.map((size) => [
         `${size.toLowerCase()}Control`,
-        storyFormControl(`password-input-field-sizes-${size}`, {value: SAMPLE_PASSWORD}),
+        getStoryFormControl(`password-input-field-sizes-${size}`, {value: SAMPLE_PASSWORD}),
       ]),
     ),
     template: lines(
@@ -244,27 +243,22 @@ export const States: Story = {
     },
   },
   decorators: [withStackLayout],
-  render: () => ({
-    props: {
-      errorControl: storyFormControl(
-        'password-input-field-states-error',
-        {
-          value: '',
-          validators: [REQUIRED_PASSWORD],
-          touched: true,
-        },
-      ),
-      disabledControl: storyFormControl(
-        'password-input-field-states-disabled',
-        {
-          value: SAMPLE_PASSWORD,
-          disabled: true,
-        },
-      ),
-    },
-    template: lines([
-      `<ndwu-password-input-field [formControl]="errorControl" label="Password" ${EYE_LABELS} ndwuRequired />`,
-      `<ndwu-password-input-field [formControl]="disabledControl" label="Disabled" ${EYE_LABELS} />`,
-    ]),
-  }),
+  render: () => {
+    const errorControl = getStoryFormControl(
+      'password-input-field-states-error',
+      {value: '', validators: [REQUIRED_PASSWORD]},
+    );
+    const disabledControl = getStoryFormControl('password-input-field-states-disabled', {value: SAMPLE_PASSWORD});
+
+    setStoryFormControlState(errorControl, {touched: true});
+    setStoryFormControlState(disabledControl, {disabled: true});
+
+    return {
+      props: {errorControl, disabledControl},
+      template: lines([
+        `<ndwu-password-input-field [formControl]="errorControl" label="Password" ${EYE_LABELS} ndwuRequired />`,
+        `<ndwu-password-input-field [formControl]="disabledControl" label="Disabled" ${EYE_LABELS} />`,
+      ]),
+    };
+  },
 };

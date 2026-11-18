@@ -194,8 +194,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   fields in `<form (submit)="submit($event)">` and adds the submit button. The handler keeps the page from navigating and
   logs the form entries to Actions; native `required` validation still runs.
 - `*-field` CVA wrappers are always bound to a `FormControl`: `decorators: [withFormControl]` (imports
-  `ReactiveFormsModule`), the control from `storyFormControl(key, {value, validators, disabled, touched})` in `props`,
-  and `[formControl]="control"` in the template (`@sb/helpers/story-form-control`). In the meta `render` the key is
+  `ReactiveFormsModule`), the control from `getStoryFormControl(key, {value, validators})` in `props`, and
+  `[formControl]="control"` in the template (`@sb/helpers/story-form-control`). In the meta `render` the key is
   the story id from the render context (`render: (args, {id}) => ...`); fixed stories take no render parameters and
   use a literal key, `'<component>-<story-kebab>'` or `'<component>-<story-kebab>-<part>'` for several fields (the
   same names as literal ids above), e.g. `'input-field-states-error'`. The helper creates the control once per key,
@@ -206,7 +206,8 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   purpose, such as `ngModel` (`Form Field/Input Field`).
 - Put `withFormControl` on the meta only when every story of the file binds a form control. `ReactiveFormsModule` adds
   `novalidate` to every `<form>`, which turns off native validation in a `withNativeForm` story.
-- In `Default` of a `*-field`, the story args `disabled` and `touched` (`formControlArgTypes`, `formControlArgs`) call
+- In `Default` of a `*-field`, the story args `disabled` and `touched` (`formControlArgTypes`,
+  `DEFAULT_FORM_CONTROL_ARGS`) go to `setStoryFormControlState(control, {disabled, touched})`, which calls
   `disable()` / `enable()` and `markAsTouched()` / `markAsUntouched()` + `markAsPristine()` when they change. Keep
   them out of the template: `argsToTemplate(args, {exclude: FORM_CONTROL_ARGS})`.
 - Validators get an English `errorLabel` (`NdwuValidators.required('Enter your email')`): Storybook has no

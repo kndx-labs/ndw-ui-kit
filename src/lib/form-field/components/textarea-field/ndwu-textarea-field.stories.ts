@@ -5,11 +5,12 @@ import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {booleanArgType, textArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
 import {
+  DEFAULT_FORM_CONTROL_ARGS,
   FORM_CONTROL_ARGS,
   FormControlArgs,
   formControlArgTypes,
-  formControlArgs,
-  storyFormControl,
+  getStoryFormControl,
+  setStoryFormControlState,
   withFormControl,
 } from '@sb/helpers/story-form-control';
 
@@ -59,20 +60,18 @@ const meta: Meta<TextareaFieldStoryArgs> = {
     label: 'Comment',
     hint: 'Visible to the support team only',
     ndwuRequired: true,
-    ...formControlArgs,
+    ...DEFAULT_FORM_CONTROL_ARGS,
   },
-  render: (args, {id}) => ({
-    props: {
-      ...args,
-      control: storyFormControl(id, {
-        value: '',
-        validators: [REQUIRED],
-        disabled: args.disabled,
-        touched: args.touched,
-      }),
-    },
-    template: `<ndwu-textarea-field [formControl]="control" ${argsToTemplate(args, {exclude: FORM_CONTROL_ARGS})} />`,
-  }),
+  render: (args, {id}) => {
+    const control = getStoryFormControl(id, {value: '', validators: [REQUIRED]});
+
+    setStoryFormControlState(control, args);
+
+    return {
+      props: {...args, control},
+      template: `<ndwu-textarea-field [formControl]="control" ${argsToTemplate(args, {exclude: FORM_CONTROL_ARGS})} />`,
+    };
+  },
 };
 
 export default meta;
@@ -96,24 +95,21 @@ export const ValidationError: Story = {
       },
     },
   },
-  render: () => ({
-    props: {
-      control: storyFormControl(
-        'textarea-field-validation-error',
-        {
-          value: '',
-          validators: [REQUIRED],
-          touched: true,
-        },
-      ),
-    },
-    template: `<ndwu-textarea-field
+  render: () => {
+    const control = getStoryFormControl('textarea-field-validation-error', {value: '', validators: [REQUIRED]});
+
+    setStoryFormControlState(control, {touched: true});
+
+    return {
+      props: {control},
+      template: `<ndwu-textarea-field
   [formControl]="control"
   label="Comment"
   hint="Visible to the support team only"
   ndwuRequired
 />`,
-  }),
+    };
+  },
 };
 
 export const Disabled: Story = {
@@ -125,8 +121,14 @@ export const Disabled: Story = {
       },
     },
   },
-  render: () => ({
-    props: {control: storyFormControl('textarea-field-disabled', {value: 'This is a textarea', disabled: true})},
-    template: '<ndwu-textarea-field [formControl]="control" label="Comment" />',
-  }),
+  render: () => {
+    const control = getStoryFormControl('textarea-field-disabled', {value: 'This is a textarea'});
+
+    setStoryFormControlState(control, {disabled: true});
+
+    return {
+      props: {control},
+      template: '<ndwu-textarea-field [formControl]="control" label="Comment" />',
+    };
+  },
 };

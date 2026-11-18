@@ -67,6 +67,10 @@ const changedConfig = (args: DrawerStoryArgs): NdwuDrawerConfig => {
   );
 };
 
+const kitDefault = (key: keyof NdwuDrawerConfig) => ({
+  defaultValue: {summary: objectSource(NDWU_DRAWER_CONFIG_DEFAULTS[key])},
+});
+
 const meta: Meta<DrawerStoryArgs> = {
   title: 'Core/Modal/Drawer',
   tags: ['autodocs'],
@@ -92,22 +96,41 @@ const meta: Meta<DrawerStoryArgs> = {
       options: DRAWER_SIZES,
       description:
         'Panel width: `XL` 700px (default), `XXL` 1200px. Not the size of the controls inside: they get it from `config.injector` (Size toolbar)',
+      table: kitDefault('size'),
     },
-    hasCloseButton: {control: 'boolean', description: 'Shows the close button in the header'},
+    hasCloseButton: {
+      control: 'boolean',
+      description: 'Shows the close button in the header',
+      table: kitDefault('hasCloseButton'),
+    },
     disableClose: {
       control: 'boolean',
       description: 'Escape and backdrop click do nothing; the close button is disabled',
+      table: kitDefault('disableClose'),
     },
-    trapFocus: {control: 'boolean', description: 'Keeps Tab inside the drawer'},
-    restoreFocus: {control: 'boolean', description: 'Returns focus to the opener after closing'},
-    isLoading: {control: 'boolean', description: 'Shows the spinner and sets `aria-busy`; change it with `setLoading()`'},
+    trapFocus: {control: 'boolean', description: 'Keeps Tab inside the drawer', table: kitDefault('trapFocus')},
+    restoreFocus: {
+      control: 'boolean',
+      description: 'Returns focus to the opener after closing',
+      table: kitDefault('restoreFocus'),
+    },
+    isLoading: {
+      control: 'boolean',
+      description: 'Shows the spinner and sets `aria-busy`; change it with `setLoading()`',
+      table: kitDefault('isLoading'),
+    },
     autoFocus: {
       control: {type: 'select', labels: {true: 'true', false: 'false'}},
       options: AUTO_FOCUS_OPTIONS,
       description:
         'Initial focus: `first-heading` (title), `first-tabbable`, `dialog` (the drawer element), `true` (`cdkFocusInitial` element, else first tabbable), `false` (drawer element)',
+      table: kitDefault('autoFocus'),
     },
-    closeButtonAriaLabel: {control: 'text', description: 'Accessible name of the close button'},
+    closeButtonAriaLabel: {
+      control: 'text',
+      description: 'Accessible name of the close button',
+      table: kitDefault('closeButtonAriaLabel'),
+    },
     ariaLabel: {
       control: 'text',
       description: 'Accessible name when there is no title (custom header or no header)',
@@ -116,7 +139,7 @@ const meta: Meta<DrawerStoryArgs> = {
     data: {control: false, description: 'Data for the content, injected with `NDWU_MODAL_DATA`'},
     id: {control: false, description: 'Modal id; generated when not set'},
     panelClass: {control: false, description: 'Class of the overlay pane'},
-    backdropClass: {control: false, description: 'Class of the backdrop'},
+    backdropClass: {control: false, description: 'Class of the backdrop', table: kitDefault('backdropClass')},
     theme: {control: false, description: 'Theme of the drawer; defaults to the theme class on `body`'},
     stackingOnMobile: {
       control: false,
@@ -382,7 +405,7 @@ export const TemplateApi: Story = {
   name: 'Template API',
   parameters: modalStoryParameters(
     TEMPLATE_API_SOURCE,
-    '`openTemplate()` with `type: \'drawer\'` renders an `ng-template` in the drawer; the context gives `modalRef` and `data`. `ndwuModalBody` and `*ndwuModalFooter` work inside the template. The template needs `viewContainerRef`. `sb-modal-long-text` stands for your long content. The scrollable drawer closes with `true` (Save) or `false`.',
+    '`openTemplate()` with `type: \'drawer\'` renders an `ng-template` in the drawer; the context gives `modalRef` and `data`. `ndwuModalBody` and `*ndwuModalFooter` work inside the template. The template needs `viewContainerRef`. `sb-modal-long-text` stands for your long content. `Close template drawer` and the × close with `undefined`; the scrollable drawer\'s Save closes with `true`, its Close with `false`.',
   ),
   decorators: [
     withRowLayout,

@@ -84,7 +84,8 @@ Imported by stories as `@sb/helpers/<file>`.
 
 ### Demos
 
-Story-only components, imported by stories as `@sb/demos/<file>`.
+Story-only components for wiring a story template can't hold (handlers, state). Imported by stories as
+`@sb/demos/<file>`.
 
 | File | What it does | Why it is built this way |
 |---|---|---|

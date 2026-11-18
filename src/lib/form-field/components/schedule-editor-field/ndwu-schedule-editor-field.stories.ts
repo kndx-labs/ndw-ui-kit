@@ -9,7 +9,7 @@ import {
 } from '@ndw-ui-kit/core/widgets';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
-import {getStoryFormControl, withFormControl} from '@sb/helpers/story-form-control';
+import {storyFormControl, withFormControl} from '@sb/helpers/story-form-control';
 import {withStackLayout, withValueOutput} from '@sb/helpers/story-layout';
 
 type Story = StoryObj<NdwuScheduleEditorFieldComponent>;
@@ -88,7 +88,7 @@ const meta: Meta<NdwuScheduleEditorFieldComponent> = {
   render: (args, {id}) => ({
     props: {
       ...args,
-      control: getStoryFormControl(id, {value: SAMPLE_VALUE}),
+      control: storyFormControl(id, {value: SAMPLE_VALUE}),
     },
     template: `<ndwu-schedule-editor-field [formControl]="control" ${argsToTemplate(args)} />`,
   }),

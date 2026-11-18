@@ -53,7 +53,10 @@ function defaultTooltipTriggers(): NdwuPopoverTriggerType[] {
  * One trigger can serve many targets (e.g. cells of a chart): set `tooltipOrigin` to the active
  * target — the open tooltip follows it without closing — put `tooltipId` into the target's
  * `aria-describedby` and set `tooltipDescribeHost` to false. With roving focus, set
- * `tooltipRestoreFocus` to false so closing doesn't move focus back to the trigger.
+ * `tooltipRestoreFocus` to false so closing doesn't move focus back to the trigger. Read `isOpen` to
+ * track visibility. The tooltip closes when its origin, having been in view, leaves it, and does not
+ * reopen when the origin returns. Declare fixed headers and footers with `scroll-padding` on the root
+ * scroller (e.g. `html { scroll-padding-top: 64px; }`) so the tooltip closes when its origin goes under them.
  */
 @Directive({
   selector: '[ndwuTooltip]',
@@ -99,6 +102,9 @@ export class NdwuTooltipDirective {
   private readonly trigger = inject(NdwuPopoverTriggerDirective);
   private readonly hostRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
+  /** False after every close, including Escape and origin out of view. */
+  public readonly isOpen = this.trigger.isOpen.asReadonly();
+
   public readonly ndwuTooltip = input.required<NdwuTooltipContent>();
   /** Value passed to a template `ndwuTooltip` as `$implicit`; the open tooltip re-renders on change. */
   public readonly tooltipContext = input<unknown>(undefined);
@@ -106,7 +112,10 @@ export class NdwuTooltipDirective {
   public readonly tooltipOrigin = input<NdwuPopoverOrigin | null>(null);
   /** Whether the host gets `aria-describedby` pointing to the tooltip. */
   public readonly tooltipDescribeHost = input<boolean>(true);
-  /** Whether the tooltip may move focus back to the host when it closes (Escape, focus inside the tooltip). */
+  /**
+   * Whether the tooltip may move focus back to the host when it closes (Escape, focus inside the tooltip). After the
+   * origin leaves view, focus moves back without scrolling.
+   */
   public readonly tooltipRestoreFocus = input<boolean>(true);
 
   public readonly showDelay = input<number>(DEFAULT_SHOW_DELAY);

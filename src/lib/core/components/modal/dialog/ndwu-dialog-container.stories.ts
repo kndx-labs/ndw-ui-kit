@@ -84,7 +84,7 @@ const meta: Meta<DialogStoryArgs> = {
         'Footer buttons: `label`, `variant`, `result` (closes with it) or `onClick(ref)` (does not close)',
     },
     width: {control: 'text', description: 'CSS width; empty = `auto`'},
-    minWidth: {control: 'text', description: 'CSS min width'},
+    minWidth: {control: 'text', description: 'CSS min width; empty = `300px`'},
     maxWidth: {control: 'text', description: 'CSS max width; empty = `90vw`'},
     height: {control: 'text', description: 'CSS height; empty = grows with the content'},
     minHeight: {control: 'text', description: 'CSS min height'},
@@ -411,7 +411,7 @@ export const Scrollable: Story = {
   ),
   render: (args) => ({
     props: {afterClosed: args.afterClosed, openScrollable},
-    template: modalOpener('View terms', 'openScrollable'),
+    template: modalOpener('Open long text', 'openScrollable'),
   }),
 };
 
@@ -436,17 +436,17 @@ export const AutoHeight: Story = {
 
 const SMALL_CONFIG: NdwuDialogConfig = {
   title: 'Small dialog',
-  description: 'This is a compact dialog: 250×150px',
+  description: 'Content 250×160px.',
   width: '250px',
-  height: '150px',
+  minWidth: '250px',
+  height: '160px',
   buttons: [CLOSE_BUTTON],
 };
 
 const NARROW_CONFIG: NdwuDialogConfig = {
   title: 'Narrow dialog',
-  description: 'Width 300px (max width 400px), height 200px.',
+  description: 'Width 300px, height 200px.',
   width: '300px',
-  maxWidth: '400px',
   height: '200px',
   buttons: [CLOSE_BUTTON],
 };
@@ -470,7 +470,7 @@ export const Sizes: Story = {
       modalSource('openDialog', NARROW_CONFIG, 'NdwuDialogContainerComponent'),
       modalSource('openDialog', WIDE_CONFIG, 'LongTextComponent'),
     ),
-    'Size fields take CSS lengths. On phones a dialog always takes the full screen.',
+    "Size fields take CSS lengths and set the content box: the dialog adds 24px padding left and right and 32px top and bottom, and `minWidth` defaults to 300px. On phones the dialog spans the full width at the bottom of the screen, as tall as its content; the size fields don't apply.",
   ),
   decorators: [withRowLayout],
   render: (args) => ({
@@ -557,7 +557,9 @@ const openLoading: SbModalOpenFn = ({modal, injector}) => {
     injector,
   });
 
-  setTimeout(() => ref.setLoading(false), DELAY_MS);
+  const timerId = setTimeout(() => ref.setLoading(false), DELAY_MS);
+
+  ref.afterClosed$.subscribe(() => clearTimeout(timerId));
 
   return ref;
 };
@@ -579,7 +581,9 @@ const LOADING_SOURCE = `const ref = this.modalService.openDialog(NdwuDialogConta
   ],
 });
 
-setTimeout(() => ref.setLoading(false), ${DELAY_MS});`;
+const timerId = setTimeout(() => ref.setLoading(false), ${DELAY_MS});
+
+ref.afterClosed$.subscribe(() => clearTimeout(timerId));`;
 
 export const LoadingState: Story = {
   parameters: modalStoryParameters(

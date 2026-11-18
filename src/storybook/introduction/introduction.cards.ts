@@ -56,4 +56,32 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     description: 'Switch in brand or green colour.',
     ready: false,
   },
+  {
+    group: 'Core',
+    name: 'Textarea',
+    docsId: 'core-textarea--docs',
+    description: 'Multi-line text with line numbers, actions, loading and resize.',
+    ready: false,
+  },
+  {
+    group: 'Form Field',
+    name: 'Input Field',
+    docsId: 'form-field-input-field--docs',
+    description: 'Text or password input with label, hint and validation for reactive forms.',
+    ready: false,
+  },
+  {
+    group: 'Form Field',
+    name: 'Password Input Field',
+    docsId: 'form-field-password-input-field--docs',
+    description: 'Password input with show/hide button and strength indicator.',
+    ready: false,
+  },
+  {
+    group: 'Form Field',
+    name: 'Textarea Field',
+    docsId: 'form-field-textarea-field--docs',
+    description: 'Textarea with label, hint and validation for reactive forms.',
+    ready: false,
+  },
 ];

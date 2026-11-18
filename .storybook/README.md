@@ -7,7 +7,7 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 ```text
 .storybook/
 ├── main.ts                           Storybook config: story globs, addons, framework, static assets
-├── manager.ts                        Storybook UI branding: logo, title, brand colour
+├── manager.ts                        Storybook UI branding: logo, title, brand colour; registers the CSS tokens panel
 ├── preview.ts                        Wires everything for every story: providers, decorators, toolbar globals, parameters
 ├── providers.ts                      Root providers of every story (icons, HttpClient)
 ├── styles.scss                       Global styles: kit theme and fonts, Storybook fixes, layout classes for stories
@@ -17,7 +17,14 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 ├── decorators/
 │   ├── with-theme.decorator.ts       Theme toolbar: puts ndwu-theme-light / ndwu-theme-dark on body
 │   ├── with-size.decorator.ts        Size toolbar: its items and the wrapper around the story
+│   ├── with-css-tokens.decorator.ts  CSS tokens panel, preview side: hands the rendered story to addons/css-tokens/preview.ts
 │   └── size-provider.component.ts    Wrapper component that provides NDWU_SIZE_TOKEN from the toolbar
+├── addons/
+│   └── css-tokens/
+│       ├── shared.ts                 Ids, channel events, types, group filter, override map helpers (no imports)
+│       ├── register.ts               Registers the "CSS tokens" panel in the manager
+│       ├── panel.ts                  Manager panel: rows, picker, reset, per-story session overrides
+│       └── preview.ts                Preview side: applies overrides in one !important rule, reports defaults and colours
 └── helpers/
     ├── story-args.ts                 SizeArg (host-directive size) and AriaArgs (alias-keyed ARIA args)
     ├── arg-types.ts                  Shared argTypes: size, icon, text, boolean, outputs, native events
@@ -43,7 +50,7 @@ home page, live in `src/storybook/` (see [Home page](#home-page)).
 |---|---|---|
 | `main.ts` | Story globs `src/storybook/**/*.mdx`, `src/storybook/**/*.stories.ts`, `src/lib/**/*.stories.ts`; addons docs, a11y, themes (a11y runs [axe](https://github.com/dequelabs/axe-core), an automated accessibility checker, on every story and lists the violations, such as low text contrast, in the Accessibility panel); serves `src/lib/assets` at `/assets` and `src/storybook/assets` at `/sb-assets`; telemetry off; `angularFilterNonInputControls` | Icons, pictograms and fonts use `assets/...` URLs, so the assets folder must be served at `/assets`. The filter keeps Compodoc's public non-input members out of the controls |
 | `preview.ts` | Registers the Compodoc JSON, `applicationConfig` with `STORYBOOK_PROVIDERS`, the decorators, the Size global, the `surface` background, `controls.expanded`, `docs.source.excludeDecorators`, a11y defaults, `storySort` with `Introduction` first | The only file Storybook loads for every story. It imports and registers; logic lives in `decorators/` and `helpers/` |
-| `manager.ts` | `addons.setConfig` with a light theme: `brandTitle`, `brandImage: 'sb-assets/logo.svg'`, `colorSecondary` `#007bbe` (`--ndwu-color-brand-50`) | The manager UI is outside the preview iframe and doesn't load kit styles, so the brand colour is a literal. A relative image path keeps a sub-path deploy working |
+| `manager.ts` | `addons.setConfig` with a light theme: `brandTitle`, `brandImage: 'sb-assets/logo.svg'`, `colorSecondary` `#007bbe` (`--ndwu-color-brand-50`); imports `./addons/css-tokens/register` | The manager UI is outside the preview iframe and doesn't load kit styles, so the brand colour is a literal. A relative image path keeps a sub-path deploy working |
 | `providers.ts` | `provideHttpClient()`, `provideNdwuAllIcons()` | Separate, so later providers (e.g. localization) are added here without touching `preview.ts`. Zoneless is not here: the builder flag `experimentalZoneless` adds the provider |
 | `styles.scss` | Kit theme with font faces, Storybook fixes and layout classes for stories; see [styles.scss](#stylesscss) | The theme as the playground uses it |
 | `tsconfig.json` | Own TS project for `.storybook/**`, `src/lib/**/*.stories.ts`, `src/storybook/**`; kit entry-point aliases; `@sb/*` → `.storybook/*` | `tsconfig.lib.json` excludes stories, so they don't reach the package; this project lets ESLint (`projectService`) and the Storybook builder still type-check them |
@@ -66,12 +73,13 @@ The layout classes keep inline styles out of "Show code".
 
 ### Decorators
 
-The order in `preview.ts` is `applicationConfig`, `withSizeProviderImport`, `withSize`, `withTheme`.
+The order in `preview.ts` is `applicationConfig`, `withSizeProviderImport`, `withSize`, `withCssTokens`, `withTheme`.
 
 | File | What it does | Why it is built this way |
 |---|---|---|
 | `with-theme.decorator.ts` | Reads the `theme` global (addon-themes toolbar) and sets the `ndwu-theme-*` class on `body` before the story renders; unknown values fall back to light | Popovers look up the theme on ancestors of the trigger, modals read `body`. The addon's own `withThemeByClassName` sets the class after render, so a dialog opened on story load had no theme |
 | `with-size.decorator.ts` | Size toolbar (`component default`, S, L, XL, XXL); for a size from the story's `parameters.sizes` wraps the story in `sb-size-provider`, for any other size shows a "not supported" note instead | Components read size through `NDWU_SIZE_TOKEN` (as inside `ndwu-form-container`), not through a class. `component default` adds no wrapper, so the component falls back to its own default (XL). Toolbar items are global and can't be hidden per story, so an unsupported size falls back to the default with a note |
+| `with-css-tokens.decorator.ts` | On every render passes the story id, its `parameters.cssTokens` groups, args and view mode to `addons/css-tokens/preview.ts` | The preview module keeps the last overrides from the panel, so a re-render (arg change, theme switch) re-applies them at once; the decorator only reports what is rendered |
 | `size-provider.component.ts` | `display: contents` component that provides `NDWU_SIZE_TOKEN` as `() => sbToolbarSize()` | The token is a signal getter, so S → L → XXL updates the running story without re-render. Dialogs from `NdwuModalService` use the root injector and get the size only with `{injector}` (CONTRIBUTING) |
 
 ### Helpers
@@ -91,6 +99,12 @@ Imported by stories as `@sb/helpers/<file>`.
 | `story-template.ts` | `lines(items)` joins templates of a fixed story, one element per line; `group(items)` wraps them in a `<div>` row for `withStackLayout` | One shared helper replaces a copy in every story file |
 | `router-url.component.ts` | Projects its content and shows the current Router URL in a `sb-note` paragraph | A router story makes navigation visible without changing the Storybook iframe URL |
 
+### Addons
+
+| File | What it does | Why it is built this way |
+|---|---|---|
+| `addons/css-tokens/*` | "CSS tokens" panel. `panel.ts` keeps overrides per story id in `useAddonState` (session only) and sends the story's map on change and on mount; `register.ts` re-sends it on `STORY_PREPARED`, also while the panel is hidden; `preview.ts` keeps the last map, writes the active groups' values into `<style id="sb-css-tokens">` (`:root, .ndwu-theme-light, .ndwu-theme-dark`, `!important`) and reports each token's `:root` text and its computed value on `body`. The tab is hidden by `disabled` when a story has no `cssTokens` or has Controls disabled | Our own panel instead of [storybook-addon-cssprops](https://github.com/ljcl/storybook-addon-cssprops): that addon writes values into `body`'s inline style, which loses to the theme classes and misses overlays, and needs defaults duplicated in parameters, and its picker has the same reset bug, hidden only by a page reload. `ColorControl` from `@storybook/addon-docs/blocks` is driven by panel state, so the Controls panel's reset bug (a used picker keeps the old value) does not apply; each row has a generation counter that drops a debounced change arriving after a reset. Files are `.ts` with `createElement`: the manager bundle uses the classic JSX transform and `.tsx` is outside the lint and format globs. Manager files use relative imports (the manager bundler ignores `paths`). `@types/react` 18.3 matches the manager's React. The channel handler lives on `globalThis`, so HMR replaces it instead of adding a second one |
+
 ### Home page
 
 | File | What it does | Why it is built this way |
@@ -106,7 +120,7 @@ Imported by stories as `@sb/helpers/<file>`.
 | File | Storybook part |
 |---|---|
 | `angular.json` | `storybook` and `build-storybook` targets on the `ndw-ui-kit` project: port 6006, no browser auto-open (`open: false`), `experimentalZoneless`, `styles` + `includePaths: ["src/lib"]` for kit SCSS aliases, Compodoc on `tsconfig.lib.json` with private/protected/internal members off, output `dist/storybook`. `browserTarget: "ndw-ui-kit:build"` is required by the builder (without it, `start-storybook` fails); `lint` covers `.storybook/**/*.ts` |
-| `package.json` | Scripts `storybook`, `build-storybook` (generate sprites first); `fmt`, `lint:ts-src`, `lint:styles` include `.storybook/`. Storybook packages, Compodoc, `@angular-devkit/build-angular` and its devkit peers pinned to the `@angular/build` / `@angular/cli` version, webpack pinned through `resolutions` |
+| `package.json` | Scripts `storybook`, `build-storybook` (generate sprites first); `fmt`, `lint:ts-src`, `lint:styles` include `.storybook/`. Storybook packages, Compodoc, `@angular-devkit/build-angular` and its devkit peers pinned to the `@angular/build` / `@angular/cli` version, webpack pinned through `resolutions`; `@types/react` `~18.3` for the manager panel (`.storybook/addons/css-tokens`) |
 | `tsconfig.json` | References `.storybook/tsconfig.json` |
 | `tsconfig.lib.json` | Includes only `src/lib/**`, excludes `**/*.stories.ts` |
 | `eslint.config.js` | `eslint-plugin-storybook` flat recommended config; the `sb-` selector override covers `.storybook/**/*.ts`, `src/**/*.stories.ts` and `src/storybook/**/*.ts` |

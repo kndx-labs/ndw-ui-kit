@@ -153,6 +153,11 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   (`aria-*`), quote every key of `argTypes` / `args` (`quote-props`).
 - Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `textArgType`, `booleanArgType`,
   `outputArgType`, `eventArgType`; the form-only `submitArgType` lives in `@sb/helpers/story-form`.
+- CSS tokens: list the component's public tokens as `CssTokenGroup`s (`@sb/addons/css-tokens/shared`) of Sass map
+  keys without `--ndwu-` (`{title: 'primary', keys: ['button-primary-bg', ...], if: {arg: 'variant', eq: 'primary'}}`)
+  and set `cssTokens: groups` in `meta.parameters`. The "CSS tokens" tab shows them on stories with Controls only.
+  Copy the keys from `<component>.tokens.scss`, leave out keys marked `// TODO: remove legacy alias at next minor bump`,
+  and add by hand variables the component reads that no map defines.
 - A story that needs the router spreads `withRouter` from `@sb/helpers/story-router` in its `decorators` array:
   `decorators: [...withRouter]`. It adds story-level `provideRouter` and `provideLocationMocks`; `sb-router-url` shows
   the current URL.
@@ -247,6 +252,20 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - **Viewport** (Storybook's own) resizes the canvas. Components that switch layout at `Breakpoints.Handset`
   (`Widgets/Schedule Editor` with `forceLayout` unset) follow it. A story opens in a viewport with
   `globals: {viewport: {value: '<key>', isRotated: false}}`. It does not apply on the docs page.
+
+### CSS tokens
+
+The "CSS tokens" tab next to Controls lists a story's tokens, one titled group per `CssTokenGroup`; groups for other
+variants are hidden, and their overrides pause until that variant is selected again. Each row shows the token's value
+from the theme map (Default, e.g. `var(--ndwu-color-brand-50)`), a swatch of the colour it resolves to in the current
+theme (Current), a colour picker with a text field (Value) and a reset button. Pick a colour or type any CSS value; it
+overrides the token in both themes, overlays and modals included. Clearing the field or the row's reset button removes
+the override; "Reset all" removes all of the story's overrides. Overrides belong to the story and the browser session:
+another story starts clean, coming back restores them, a reload clears them; they are not kept in the URL. An invalid
+value is applied as is, and properties that use the token fall back to `unset`; Current shows what the browser got.
+The picker does not understand `var(...)`: its own swatch stays transparent and its format toggle turns the value into
+black, so type `var(...)` values and read the colour from Current. It also drops the first `#` of a value that holds
+other text (`var(--x, #fff)`, `color-mix(...)`), so write colours inside such values as `rgb()`.
 
 ### Accessibility
 

@@ -17,7 +17,7 @@ import {
 import {NgTemplateOutlet} from '@angular/common';
 import {NdwuTooltipDirective} from '@ndw-ui-kit/core';
 import {NdwuLocalizePipe} from '@ndw-ui-kit/core/l10n';
-import {type NdwuPopoverOrigin, NdwuPopoverTriggerDirective} from '@ndw-ui-kit/core/popover';
+import type {NdwuPopoverOrigin} from '@ndw-ui-kit/core/popover';
 import {uniqueId} from '@ndw-ui-kit/core/utils';
 import {
   clampHeatStripIndex,
@@ -48,7 +48,6 @@ interface HeatStripLengthAndLoading {
   imports: [
     NdwuLocalizePipe,
     NdwuTooltipDirective,
-    NdwuPopoverTriggerDirective,
     NgTemplateOutlet,
   ],
 })
@@ -92,9 +91,8 @@ export class NdwuHeatStripComponent<T = unknown> {
   protected readonly stripRef = viewChild<ElementRef<HTMLElement>>('strip');
   protected readonly cellRefs = viewChildren<ElementRef<HTMLElement>>('cell');
   protected readonly tooltip = viewChild(NdwuTooltipDirective);
-  protected readonly popoverTrigger = viewChild(NdwuPopoverTriggerDirective);
   protected readonly tooltipIsOpen = computed(() => {
-    return this.popoverTrigger()?.isOpen() ?? false;
+    return this.tooltip()?.isOpen() ?? false;
   });
   protected readonly activeTooltipIndex = computed(() => {
     if (!this.tooltipIsOpen() || this.tooltipTemplate() === undefined) {
@@ -145,9 +143,7 @@ export class NdwuHeatStripComponent<T = unknown> {
     });
 
     effect((onCleanup) => {
-      const trigger = this.popoverTrigger();
-
-      if (!this.isTouchDevice || !trigger?.isOpen()) {
+      if (!this.isTouchDevice || !this.tooltipIsOpen()) {
         return;
       }
 

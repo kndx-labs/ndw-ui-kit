@@ -71,6 +71,13 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     ready: false,
   },
   {
+    group: 'Core',
+    name: 'Accordion',
+    docsId: 'core-accordion--docs',
+    description: 'Expandable sections in single or multi mode with header actions and lazy content.',
+    ready: false,
+  },
+  {
     group: 'Form Field',
     name: 'Input Field',
     docsId: 'form-field-input-field--docs',

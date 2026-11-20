@@ -5,6 +5,8 @@ export const withRowLayout = componentWrapperDecorator((story) => `<div class="s
 
 export const withStackLayout = componentWrapperDecorator((story) => `<div class="sb-stack">${story}</div>`);
 
+export const withBoxLayout = componentWrapperDecorator((story) => `<div class="sb-box">${story}</div>`);
+
 export const withResizableLayout = componentWrapperDecorator(
   (story) => `<div class="sb-resizable" tabindex="0">${story}</div>`,
 );

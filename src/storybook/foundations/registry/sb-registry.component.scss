@@ -1,0 +1,114 @@
+@use 'styles/fonts';
+@use 'styles/mixins';
+@use 'styles/radius';
+@use 'styles/spacing';
+@use 'styles/typography';
+
+:host {
+  display: block;
+}
+
+.sb-registry {
+  --sb-registry-preview: 56px;
+  --sb-registry-cell: 120px;
+
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-16;
+  padding: 20px;
+  border: 1px solid var(--ndwu-color-gray-20);
+  border-radius: radius.$radius-L;
+  background-color: var(--ndwu-color-gray-0);
+  color: var(--ndwu-color-gray-100);
+  font-family: fonts.$font-family;
+
+  &--pictogram {
+    --sb-registry-preview: 100px;
+    --sb-registry-cell: 140px;
+  }
+
+  &__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing.$spacing-16;
+    align-items: center;
+  }
+
+  &__filter {
+    flex: 1 1 240px;
+    max-width: 360px;
+  }
+
+  &__sizes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing.$spacing-16;
+  }
+
+  &__counter {
+    margin: 0;
+    color: var(--ndwu-color-gray-50);
+    font-size: typography.$fontSize-small;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--sb-registry-cell), 1fr));
+    gap: spacing.$spacing-12;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__cell {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-8;
+    align-items: center;
+    padding: spacing.$spacing-12;
+    border-radius: radius.$radius-S;
+    background-color: color-mix(in srgb, var(--ndwu-color-gray-100) 2%, transparent);
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--ndwu-color-gray-100) 5%, transparent);
+    }
+  }
+
+  &__preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--sb-registry-preview);
+    height: var(--sb-registry-preview);
+  }
+
+  &__name {
+    font-size: typography.$fontSize-xsmall;
+    text-align: center;
+    word-break: break-all;
+  }
+
+  &__empty {
+    margin: 0;
+    color: var(--ndwu-color-gray-50);
+    text-align: center;
+  }
+}
+
+@include mixins.mobile() {
+  .sb-registry {
+    padding: spacing.$spacing-16;
+  }
+
+  .sb-registry__toolbar {
+    flex-direction: column;
+    gap: spacing.$spacing-8;
+    align-items: stretch;
+  }
+
+  .sb-registry__filter {
+    flex: none;
+    max-width: none;
+  }
+}

@@ -91,7 +91,7 @@ Imported by stories as `@sb/helpers/<file>`.
 |---|---|---|
 | `src/storybook/foundations/registry/icon-registry.mdx`, `pictogram-registry.mdx` | Docs pages `Foundations/Icon Registry` and `Foundations/Pictogram Registry`: heading, short usage text, embedded registry story | Same MDX + hidden story pattern as the home page; two pages so the pictograms are not buried under the icons |
 | `src/storybook/foundations/registry/registry.stories.ts` | `Hidden/Registry`, tag `!dev`; stories `Icons` and `Pictograms` render `<sb-registry kind="...">` | One CSF for both MDX pages; no `component:` (Compodoc doesn't read `src/storybook`) |
-| `src/storybook/foundations/registry/sb-registry.component.*` | Name filter (`ndwu-input-field`), size checkboxes from the name suffixes, counter, grid of real-size icons or pictograms with captions; names from `NDWU_ICON_NAMES` / `NDWU_PICTOGRAM_NAME` | Ported from the playground icon registry (NDWU-156). The whole registry is a themed kit card, because the MDX frame stays white in Dark; explicit `size="XL"` keeps the Size toolbar off; plain English texts, as Storybook has no l10n provider |
+| `src/storybook/foundations/registry/sb-registry.component.*` | Name filter (`ndwu-input-field`), size checkboxes from the name suffixes, counter, grid of real-size icons or pictograms with captions; names from `NDWU_ICON_NAMES` / `NDWU_PICTOGRAM_NAME` | Ported from the playground icon registry. The whole registry is a themed kit card, because the MDX frame stays white in Dark; explicit `size="XL"` keeps the Size toolbar off; plain English texts, as Storybook has no l10n provider |
 
 ## Outside `.storybook/`
 

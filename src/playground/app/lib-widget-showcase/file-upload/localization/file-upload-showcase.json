@@ -18,8 +18,8 @@
     "cva-field-description": "Drop-in replacement for a file input bound to a reactive form control.",
     "custom-texts": "Custom Texts",
     "custom-texts-description": "The dropzone title and the Queued status are hidden with empty strings; the hint and button text are overridden.",
-    "custom-texts-hint": "Attach a configuration backup",
-    "custom-texts-browse": "Choose backup",
+    "custom-texts-hint": "Attach a document",
+    "custom-texts-browse": "Select document",
     "current-size": "Current size"
   }
 }

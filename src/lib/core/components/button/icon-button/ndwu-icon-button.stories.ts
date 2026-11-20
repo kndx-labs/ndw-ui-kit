@@ -8,6 +8,7 @@ import {
   type NdwuIconName,
 } from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
+import {type CssTokenGroup} from '@sb/addons/css-tokens/shared';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
@@ -36,6 +37,39 @@ const VARIANTS = Object.values(NDWU_ICON_BUTTON_VARIANT);
 const SIZES = [NDWU_SIZE.L, NDWU_SIZE.XL, NDWU_SIZE.XXL];
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
 
+const CSS_TOKEN_GROUPS: readonly CssTokenGroup[] = [
+  {
+    title: 'all variants',
+    keys: ['icon-button-focus-border', 'icon-button-focus-outline'],
+  },
+  {
+    title: 'square and round',
+    keys: [
+      'icon-button-icon',
+      'icon-button-bg',
+      'icon-button-border',
+      'icon-button-hover-bg',
+      'icon-button-active-bg',
+      'icon-button-disabled-bg',
+      'icon-button-disabled-border',
+      'icon-button-disabled-icon',
+    ],
+    if: {arg: 'variant', neq: NDWU_ICON_BUTTON_VARIANT.FLAT},
+  },
+  {
+    title: 'flat',
+    keys: [
+      'icon-button-flat-icon',
+      'icon-button-flat-hover-icon',
+      'icon-button-flat-focus-bg',
+      'icon-button-flat-focus-icon',
+      'icon-button-flat-active-icon',
+      'icon-button-flat-disabled-icon',
+    ],
+    if: {arg: 'variant', eq: NDWU_ICON_BUTTON_VARIANT.FLAT},
+  },
+];
+
 const VARIANT_EXAMPLES: readonly VariantExample[] = [
   {variant: NDWU_ICON_BUTTON_VARIANT.SQUARE, icon: NDWU_ICON_NAME.ADD_S, label: 'Square'},
   {variant: NDWU_ICON_BUTTON_VARIANT.ROUND, icon: NDWU_ICON_NAME.CHECK_S, label: 'Round'},
@@ -53,6 +87,7 @@ const meta: Meta<IconButtonStoryArgs> = {
   tags: ['autodocs'],
   parameters: {
     sizes: SIZES,
+    cssTokens: CSS_TOKEN_GROUPS,
     docs: {
       description: {
         component: 'Icon-only button. Add a native `aria-label`; this component has no accessible-name input.',

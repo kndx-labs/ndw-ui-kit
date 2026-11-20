@@ -16,6 +16,10 @@
     "disabled": "Deaktivierter Zustand",
     "cva-field": "Formularfeld (CVA)",
     "cva-field-description": "Ersatz für eine Dateieingabe, die an ein reaktives Formularsteuerelement gebunden ist.",
+    "custom-texts": "Eigene Texte",
+    "custom-texts-description": "Dropzone-Titel und Warteschlangenstatus werden mit leeren Zeichenketten ausgeblendet; Hinweistext und Schaltflächentext werden überschrieben.",
+    "custom-texts-hint": "Konfigurationssicherung anhängen",
+    "custom-texts-browse": "Sicherung auswählen",
     "current-size": "Aktuelle Größe"
   }
 }

@@ -153,6 +153,11 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   (`aria-*`), quote every key of `argTypes` / `args` (`quote-props`).
 - Shared argTypes live in `@sb/helpers/arg-types`: `sizeArgType`, `iconArgType`, `textArgType`, `booleanArgType`,
   `outputArgType`, `eventArgType`; the form-only `submitArgType` lives in `@sb/helpers/story-form`.
+- CSS tokens: list the component's public tokens as `CssTokenGroup`s (`@sb/addons/css-tokens/shared`) of Sass map
+  keys without `--ndwu-` (`{title: 'primary', keys: ['button-primary-bg', ...], if: {arg: 'variant', eq: 'primary'}}`)
+  and set `cssTokens: groups` in `meta.parameters`. The "CSS tokens" tab shows them on stories with Controls only.
+  Copy the keys from `<component>.tokens.scss`, leave out keys marked `// TODO: remove legacy alias at next minor bump`,
+  and add by hand variables the component reads that no map defines.
 - A story that needs the router spreads `withRouter` from `@sb/helpers/story-router` in its `decorators` array:
   `decorators: [...withRouter]`. It adds story-level `provideRouter` and `provideLocationMocks`; `sb-router-url` shows
   the current URL.
@@ -169,6 +174,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
     props for constants or inline styles;
   - layout goes into a story decorator, which "Show code" leaves out: `withRowLayout` for one row, `withStackLayout`
     for rows given as `<div>` groups (`@sb/helpers/story-layout`, `group` from `@sb/helpers/story-template`).
+    `withResizableLayout` puts the story into a 320 px high box the reader can resize, for a component whose size
+    depends on its parent (`Widgets/Schedule Editor` with `sizing="fill"`, which needs the box's height).
+    `withValueOutput(expression)` shows a JSON value under the story, outside Show code.
 - Literal ids in fixed stories follow `<component>-<story-kebab>-<part>` (`toggle-external-label-input`): all stories
   render on one docs page, so an id must be unique there. `Default` uses generated ids.
 - Native DOM events: `eventArgType('<event>', '<description>')`. Outputs and `model()` change events:
@@ -180,7 +188,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   renderer remounts the story on every args update, and the focused control would lose focus. Hooks such as `useArgs`
   go in decorators, never in `render` (see [.storybook/README.md](.storybook/README.md)). `toArgs` returns only keys
   that are in `meta.args` and never `undefined`: either one changes the template and remounts the story. Fixed stories
-  stay uncontrolled literals.
+  stay uncontrolled literals. A component controlled only through its output (`Widgets/Schedule Editor`) also keeps
+  the value in a `signal` in `render`, in `Default` and in the fixed stories that take input, so a drag stays on the
+  docs page (in `Default` until a control changes); a source transform puts the literal value back into "Show code".
 - Components the template uses besides `component:` (radio buttons in a group, a submit button) go into
   `moduleMetadata({imports: [...]})`; `subcomponents` only adds their ArgTypes tab. Their inputs get no controls, so
   fixed stories show them.
@@ -188,6 +198,34 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `props: submitProps(args)` and `template: nativeFormTemplate([...fields])` (`@sb/helpers/story-form`), which wraps the
   fields in `<form (submit)="submit($event)">` and adds the submit button. The handler keeps the page from navigating and
   logs the form entries to Actions; native `required` validation still runs.
+- `*-field` CVA wrappers are always bound to a `FormControl`: `decorators: [withFormControl]` (imports
+  `ReactiveFormsModule`), the control from `getStoryFormControl(key, {value, validators})` in `props`, and
+  `[formControl]="control"` in the template (`@sb/helpers/story-form-control`). In the meta `render` the key is
+  the story id from the render context (`render: (args, {id}) => ...`); fixed stories take no render parameters and
+  use a literal key, `'<component>-<story-kebab>'` or `'<component>-<story-kebab>-<part>'` for several fields (the
+  same names as literal ids above), e.g. `'input-field-states-error'`. The helper creates the control once per key,
+  so a typed value survives arg changes (reload the page after changing a control's initial value or validators: the
+  control survives HMR too). Don't name the prop `formControl`: `argsSourceTransform` would turn
+  `[formControl]="formControl"` into an attribute and drop it from "Show code". With several fields in one story,
+  name the props `<part>Control` (`errorControl`, `xlControl`). Exceptions are stories that show another binding on
+  purpose, such as `ngModel` (`Form Field/Input Field`).
+- Put `withFormControl` on the meta only when every story of the file binds a form control. `ReactiveFormsModule` adds
+  `novalidate` to every `<form>`, which turns off native validation in a `withNativeForm` story.
+- In `Default` of a `*-field`, the story args `disabled` and `touched` (`formControlArgTypes`,
+  `DEFAULT_FORM_CONTROL_ARGS`) go to `setStoryFormControlState(control, {disabled, touched})`, which calls
+  `disable()` / `enable()` and `markAsTouched()` / `markAsUntouched()` + `markAsPristine()` when they change. Keep
+  them out of the template: `argsToTemplate(args, {exclude: FORM_CONTROL_ARGS})`.
+- Validators get an English `errorLabel` (`NdwuValidators.required('Enter your email')`): Storybook has no
+  translations, so a default label shows its key.
+- A `*-field` over a core component (`ndwu-textarea-field` over `ndwu-textarea`) gets a short file: meta
+  `parameters.controls.include` and `parameters.docs.controls.include` (one shared const; the docs Controls table
+  reads only the second) limited to the inputs the wrapper adds (`label`, `hint`, `ndwuRequired`) and `disabled` /
+  `touched`, so `Default` shows only those controls, plus fixed stories for an error after touched and disabled
+  through the control. Its description links to the core page. A `*-field` without a core component
+  (`ndwu-input-field`, `ndwu-password-input-field`) gets full stories.
+- A `*-field` over a widget that adds no inputs (`ndwu-schedule-editor-field` over `ndwu-schedule-editor`) gets a
+  short file with the widget's inputs as controls; when the control's disabled and error states have no visible
+  effect, it leaves out `disabled` / `touched` and the error and disabled stories.
 - A story that shows wiring between components (`Core/Checkbox` `Indeterminate`) may keep state in `props` as signals.
   Their names must not match any arg, so `argsSourceTransform` leaves them alone.
 - Leave `size` unset so the toolbar applies. Don't pin a theme (no `globals.theme`; `parameters.themes.themeOverride`
@@ -205,8 +243,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   `canvas`: the overlay is outside the canvas) and checks it with `expect(...).toBeVisible()`, all three from
   `storybook/test`. The a11y addon runs axe on `body` after `play`, so the open content is checked. Tag the story
   `!autodocs`: an open overlay would cover other stories on the docs page.
-- Families without a pattern yet (`*-field` CVA wrappers, overlays, table, widgets): the first ticket of the family
-  adds its pattern to this section.
+- Widgets follow the same rules; they import from `@ndw-ui-kit/core/widgets` and use the title `Widgets/<Name>`
+  (`Widgets/Schedule Editor`).
+- Families without a pattern yet (overlays, table): the first PR of the family adds its pattern to this section.
 
 ### Toolbar
 
@@ -215,6 +254,23 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 - **Size** (component default, S, L, XL, XXL) provides `NDWU_SIZE_TOKEN` around the story, like
   `ndwu-form-container`. Component default provides nothing; an explicit `size` arg wins. Modal dialogs and drawers
   get it only through `config.injector` (see above).
+- **Viewport** (Storybook's own) resizes the canvas. Components that switch layout at `Breakpoints.Handset`
+  (`Widgets/Schedule Editor` with `forceLayout` unset) follow it. A story opens in a viewport with
+  `globals: {viewport: {value: '<key>', isRotated: false}}`. It does not apply on the docs page.
+
+### CSS tokens
+
+The "CSS tokens" tab next to Controls lists a story's tokens, one titled group per `CssTokenGroup`; groups for other
+variants are hidden, and their overrides pause until that variant is selected again. Each row shows the token's value
+from the theme map (Default, e.g. `var(--ndwu-color-brand-50)`), a swatch of the colour it resolves to in the current
+theme (Current), a colour picker with a text field (Value) and a reset button. Pick a colour or type any CSS value; it
+overrides the token in both themes, overlays and modals included. Clearing the field or the row's reset button removes
+the override; "Reset all" removes all of the story's overrides. Overrides belong to the story and the browser session:
+another story starts clean, coming back restores them, a reload clears them; they are not kept in the URL. An invalid
+value is applied as is, and properties that use the token fall back to `unset`; Current shows what the browser got.
+The picker does not understand `var(...)`: its own swatch stays transparent and its format toggle turns the value into
+black, so type `var(...)` values and read the colour from Current. It also drops the first `#` of a value that holds
+other text (`var(--x, #fff)`, `color-mix(...)`), so write colours inside such values as `rgb()`.
 
 ### Accessibility
 

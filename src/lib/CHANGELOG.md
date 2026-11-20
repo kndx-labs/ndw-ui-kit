@@ -1,3 +1,49 @@
+<a name="0.4.0"></a>
+# 0.4.0 (2026-11-13)
+
+### core/components
+| Commit       | Type      | Description                                                                                                                                                                                |
+| ------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [911f86d5e4] | feat      | add touch and pen support to scrollbar: thumb drag, a larger touch target while scrolling, overlay tracks on touch screens ([#65])                                                         |
+| [911f86d5e4] | refactor! | stop exporting `NdwuScrollbarAxis`, `NdwuAxisElements`, `NdwuAxisMetrics`, `NdwuDragState` and `NdwuAxisConfigEntry`: they were internal, only `NdwuScrollbarPadding` stays public ([#65]) |
+| [6b25d1707e] | fix       | stop `click` on a disabled link before `RouterLink` and consumer `(click)` handlers run ([#66])                                                                                            |
+| [4600918afb] | feat      | add custom option templates (`ndwuOptionTemplate`), `ndwu-option-label` and the `danger` option variant to select, multi-select and autocomplete ([#67])                                   |
+
+### lib
+| Commit       | Type      | Description                                                                                                    |
+| ------------ | --------- | -------------------------------------------------------------------------------------------------------------- |
+| [e45c36e1df] | refactor! | remove 11 device-model icons from `NDWU_ICON_NAME` and `NDWU_EXTRA_ICON_NAME`: the sprite no longer ships them |
+| [cc81beafb9] | refactor  | rename overlapping source folders; exports keep their names and entry points ([#61])                           |
+
+### popover
+| Commit       | Type | Description                                                                |
+| ------------ | ---- | -------------------------------------------------------------------------- |
+| [4619560944] | fix  | fix config merging, per-open cleanup and focus restore in popovers ([#64]) |
+
+### widgets
+| Commit       | Type | Description                                                                 |
+| ------------ | ---- | --------------------------------------------------------------------------- |
+| [4ed0c9404b] | fix  | fix form value sync and status transitions in file-upload ([#63])           |
+| [e3a03d5c77] | fix  | reset drag and tooltip in schedule-editor when a touch is cancelled ([#68]) |
+
+[911f86d5e4]: https://github.com/kndx-labs/ndw-ui-kit/commit/911f86d5e4c27278df798b70725d44caf8496d07
+[#65]: https://github.com/kndx-labs/ndw-ui-kit/pull/65
+[6b25d1707e]: https://github.com/kndx-labs/ndw-ui-kit/commit/6b25d1707e79b228989f2c21ea8deaa4b917f52c
+[#66]: https://github.com/kndx-labs/ndw-ui-kit/pull/66
+[4600918afb]: https://github.com/kndx-labs/ndw-ui-kit/commit/4600918afb10d27605dd0b457bd3f9b75a5b3035
+[#67]: https://github.com/kndx-labs/ndw-ui-kit/pull/67
+[e45c36e1df]: https://github.com/kndx-labs/ndw-ui-kit/commit/e45c36e1df196a5123d95b98f112f956288aadf1
+[cc81beafb9]: https://github.com/kndx-labs/ndw-ui-kit/commit/cc81beafb91b8fa8f3f2fc381c557929ec87a848
+[#61]: https://github.com/kndx-labs/ndw-ui-kit/pull/61
+[4619560944]: https://github.com/kndx-labs/ndw-ui-kit/commit/46195609446ab1aa9fa75b35c23da285a2ef6413
+[#64]: https://github.com/kndx-labs/ndw-ui-kit/pull/64
+[4ed0c9404b]: https://github.com/kndx-labs/ndw-ui-kit/commit/4ed0c9404bbe66467a7940c6e2b156e50259508b
+[#63]: https://github.com/kndx-labs/ndw-ui-kit/pull/63
+[e3a03d5c77]: https://github.com/kndx-labs/ndw-ui-kit/commit/e3a03d5c771d5e2c7f73d7f86ed0978d8967dae9
+[#68]: https://github.com/kndx-labs/ndw-ui-kit/pull/68
+
+<!-- CHANGELOG SPLIT MARKER -->
+
 <a name="0.3.2"></a>
 # 0.3.2 (2026-10-30)
 

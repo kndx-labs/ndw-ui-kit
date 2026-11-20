@@ -238,6 +238,11 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   segment), name, docs id (`<title in kebab case>--docs`, e.g. `core-button-button--docs`), a short plain-text summary
   for the card (no markdown) and `ready` matching the tag.
 - Storybook-only components and directives use the `sb-` prefix.
+- Overlay content is not in the DOM until it opens, and it renders in the CDK overlay container on `body`, outside the
+  story root. Add one story whose `play` opens it with `userEvent`, waits with `screen.findByRole(...)` (`screen`, not
+  `canvas`: the overlay is outside the canvas) and checks it with `expect(...).toBeVisible()`, all three from
+  `storybook/test`. The a11y addon runs axe on `body` after `play`, so the open content is checked. Tag the story
+  `!autodocs`: an open overlay would cover other stories on the docs page.
 - Widgets follow the same rules; they import from `@ndw-ui-kit/core/widgets` and use the title `Widgets/<Name>`
   (`Widgets/Schedule Editor`).
 - Families without a pattern yet (overlays, table): the first PR of the family adds its pattern to this section.

@@ -19,6 +19,8 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 │   ├── with-size.decorator.ts        Size toolbar: its items and the wrapper around the story
 │   ├── with-css-tokens.decorator.ts  CSS tokens panel, preview side: hands the rendered story to addons/css-tokens/preview.ts
 │   └── size-provider.component.ts    Wrapper component that provides NDWU_SIZE_TOKEN from the toolbar
+├── demos/
+│   └── tooltip-strip.component.ts    Core/Tooltip strip: one tooltip for 48 cells; exports its template
 ├── addons/
 │   └── css-tokens/
 │       ├── shared.ts                 Ids, channel events, types, group filter, override map helpers (no imports)
@@ -101,6 +103,15 @@ Imported by stories as `@sb/helpers/<file>`.
 | `story-template.ts` | `lines(items)` joins templates of a fixed story, one element per line; `group(items)` wraps them in a `<div>` row for `withStackLayout` | One shared helper replaces a copy in every story file |
 | `story-translations.ts` | `withTranslations(map)`: story-level `applicationConfig` that provides `NdwuTranslationService`; `instant` returns the map value or the key | Storybook has no translation service, so the default no-op one returns keys, `localizeHtml` passes every plain string on untrusted and `[innerHTML]` sanitizes it (inline `style` is removed). A story that shows trusted translated HTML needs a key that resolves. Story-level, so other stories keep raw keys |
 | `router-url.component.ts` | Projects its content and shows the current Router URL in a `sb-note` paragraph | A router story makes navigation visible without changing the Storybook iframe URL |
+
+### Demos
+
+Story-only components for wiring a story template can't hold (handlers, state). Imported by stories as
+`@sb/demos/<file>`.
+
+| File | What it does | Why it is built this way |
+|---|---|---|
+| `tooltip-strip.component.ts` | `sb-tooltip-strip`: 48 cells share one `ndwuTooltip` (`triggerOn="manual"`, `tooltipOrigin`, template content); `mode` `click` anchors it to the focused cell with arrow-key navigation, `pointer` follows the mouse. Exports `TOOLTIP_STRIP_TEMPLATE`, which the `Core/Tooltip` strip stories show in "Show code" | `src/lib` holds library code only: Compodoc and the core icon scan read every non-story `.ts` there, so the demo lives here. "Show code" of `<sb-tooltip-strip>` would show nothing useful; the exported template shows the bindings an app needs |
 
 ### Addons
 

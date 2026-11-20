@@ -9,3 +9,9 @@ export interface AriaArgs {
   'aria-labelledby': string | null;
   'aria-describedby': string | null;
 }
+
+export type AdaptiveSizeMode = 'unbound' | 'viewport';
+
+export interface AdaptiveSizeArg {
+  adaptiveSize: AdaptiveSizeMode;
+}

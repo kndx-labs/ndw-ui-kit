@@ -93,6 +93,13 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
   },
   {
     group: 'Widgets',
+    name: 'Empty State',
+    docsId: 'widgets-empty-state--docs',
+    description: 'Pictogram with header, description and optional actions.',
+    ready: false,
+  },
+  {
+    group: 'Widgets',
     name: 'Schedule Editor',
     docsId: 'widgets-schedule-editor--docs',
     description: 'Weekly schedule grid with drag to add or remove time, full and thumbnail modes.',

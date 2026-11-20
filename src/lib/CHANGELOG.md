@@ -42,9 +42,10 @@
 | [cc81beafb9] | refactor  | rename overlapping source folders; exports keep their names and entry points ([#61])                           |
 
 ### popover
-| Commit       | Type | Description                                                                |
-| ------------ | ---- | -------------------------------------------------------------------------- |
-| [4619560944] | fix  | fix config merging, per-open cleanup and focus restore in popovers ([#64]) |
+| Commit       | Type      | Description                                                                                                                                                                                                                                                                                                   |
+| ------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [4619560944] | fix       | fix config merging, per-open cleanup and focus restore in popovers ([#64])                                                                                                                                                                                                                                    |
+| [4619560944] | refactor! | rework popover controller API: drop `onDetached` from `NdwuPopoverControllerFactory` and controller constructors, `open()` takes a `NdwuPopoverSessionRef`, remove abstract `close()` and `dispose()`, `attachPortal()` takes `overlayRef` first; custom controllers handle close through the session ([#64]) |
 
 ### widgets
 | Commit       | Type | Description                                                                 |

@@ -107,6 +107,20 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
   },
   {
     group: 'Core',
+    name: 'Tag',
+    docsId: 'core-tag--docs',
+    description: 'Compact status label that can be selected or removed.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Chip',
+    docsId: 'core-chip--docs',
+    description: 'Action chip with status colours, icon-only and loading states.',
+    ready: false,
+  },
+  {
+    group: 'Core',
     name: 'Badge',
     docsId: 'core-badge--docs',
     description: 'Compact read-only label in eight tones with an optional icon.',

@@ -1,7 +1,7 @@
 import {Injector, afterNextRender} from '@angular/core';
 import type {NdwuPopoverConfig} from './ndwu-popover.types';
 
-export type NdwuPopoverDismissReason = 'escape' | 'origin-click' | 'outside' | 'detached';
+export type NdwuPopoverDismissReason = 'escape' | 'origin-click' | 'outside' | 'detached' | 'origin-hidden';
 
 export type NdwuPopoverCloseReason = NdwuPopoverDismissReason | 'explicit' | 'hover' | 'destroy' | 'error';
 

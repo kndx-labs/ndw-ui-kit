@@ -120,6 +120,20 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     ready: false,
   },
   {
+    group: 'Core',
+    name: 'Badge',
+    docsId: 'core-badge--docs',
+    description: 'Compact read-only label in eight tones with an optional icon.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Card',
+    docsId: 'core-card--docs',
+    description: 'Bordered container with padding in three sizes.',
+    ready: false,
+  },
+  {
     group: 'Form Field',
     name: 'Input Field',
     docsId: 'form-field-input-field--docs',

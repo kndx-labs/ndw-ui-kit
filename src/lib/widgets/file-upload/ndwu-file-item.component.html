@@ -35,11 +35,14 @@
         @if ((file().status === 'error' || file().status === 'warning') && file().error) {
           <span class="ndwu-file-item__error-text">{{ file().error | localize }}</span>
         } @else {
+          @let localizedStatus = statusText() | localize;
+
           <span class="ndwu-file-item__size">{{ formattedSize() }}</span>
-          <span class="ndwu-file-item__separator">·</span>
-          <span class="ndwu-file-item__status">
-            {{ statusText() | localize }}
-          </span>
+
+          @if (localizedStatus) {
+            <span class="ndwu-file-item__separator">·</span>
+            <span class="ndwu-file-item__status">{{ localizedStatus }}</span>
+          }
         }
       </div>
     </div>

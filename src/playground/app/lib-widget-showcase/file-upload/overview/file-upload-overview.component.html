@@ -81,6 +81,18 @@
     </div>
 
     <div class="state-section">
+      <h4>{{ 'file-upload-showcase.custom-texts' | localize }}</h4>
+      <p class="description">{{ 'file-upload-showcase.custom-texts-description' | localize }}</p>
+      <div class="example-row">
+        <ndwu-file-upload-field
+          [multiple]="false"
+          [translationTexts]="customTexts"
+          [formControl]="customTextsFormControl"
+        />
+      </div>
+    </div>
+
+    <div class="state-section">
       <h4>{{ 'file-upload-showcase.file-item-reference' | localize }}</h4>
       <p class="description">{{ 'file-upload-showcase.file-item-reference-description' | localize }}</p>
       <div class="reference-row">

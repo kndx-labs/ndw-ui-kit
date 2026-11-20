@@ -1,3 +1,29 @@
+<a name="0.5.0"></a>
+# 0.5.0 (2026-11-20)
+
+### core/components
+| Commit       | Type | Description                                                                                                                       |
+| ------------ | ---- | --------------------------------------------------------------------------------------------------------------------------------- |
+| [eb3cf82d68] | feat | close tooltip when its origin scrolls out of view, add `isOpen` to tooltip and the `origin-hidden` popover dismiss reason ([#70]) |
+
+### styles
+| Commit       | Type | Description                                                           |
+| ------------ | ---- | --------------------------------------------------------------------- |
+| [0e5572b4f5] | fix  | set `$tertiary-color-bg-disabled` to `gray-10` to match design tokens |
+
+### widgets
+| Commit       | Type | Description                                                                              |
+| ------------ | ---- | ---------------------------------------------------------------------------------------- |
+| [b716775f6e] | fix  | hide dropzone title and file item status in file-upload when their text is empty ([#88]) |
+
+[eb3cf82d68]: https://github.com/kndx-labs/ndw-ui-kit/commit/eb3cf82d6816e7f8537daaef9e0487272cb20b41
+[#70]: https://github.com/kndx-labs/ndw-ui-kit/pull/70
+[0e5572b4f5]: https://github.com/kndx-labs/ndw-ui-kit/commit/0e5572b4f510c02757c4b9a9317aa571763a17b6
+[b716775f6e]: https://github.com/kndx-labs/ndw-ui-kit/commit/b716775f6e66840c12c2421f06d674f28ce85588
+[#88]: https://github.com/kndx-labs/ndw-ui-kit/pull/88
+
+<!-- CHANGELOG SPLIT MARKER -->
+
 <a name="0.4.0"></a>
 # 0.4.0 (2026-11-13)
 
@@ -16,9 +42,10 @@
 | [cc81beafb9] | refactor  | rename overlapping source folders; exports keep their names and entry points ([#61])                           |
 
 ### popover
-| Commit       | Type | Description                                                                |
-| ------------ | ---- | -------------------------------------------------------------------------- |
-| [4619560944] | fix  | fix config merging, per-open cleanup and focus restore in popovers ([#64]) |
+| Commit       | Type      | Description                                                                                                                                                                                                                                                                                                   |
+| ------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [4619560944] | fix       | fix config merging, per-open cleanup and focus restore in popovers ([#64])                                                                                                                                                                                                                                    |
+| [4619560944] | refactor! | rework popover controller API: drop `onDetached` from `NdwuPopoverControllerFactory` and controller constructors, `open()` takes a `NdwuPopoverSessionRef`, remove abstract `close()` and `dispose()`, `attachPortal()` takes `overlayRef` first; custom controllers handle close through the session ([#64]) |
 
 ### widgets
 | Commit       | Type | Description                                                                 |

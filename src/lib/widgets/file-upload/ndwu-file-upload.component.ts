@@ -26,7 +26,11 @@ import {
 import {NdwuFileDropzoneComponent} from './ndwu-file-dropzone.component';
 import {NdwuFileItemComponent} from './ndwu-file-item.component';
 import {NdwuFileUploadHeaderComponent} from './ndwu-file-upload-header.component';
-import {applyFileProgressUpdate, applyFileUploadAction, type NdwuFileUploadAction} from './ndwu-file-upload.transitions';
+import {
+  type NdwuFileUploadAction,
+  applyFileProgressUpdate,
+  applyFileUploadAction,
+} from './ndwu-file-upload.transitions';
 import type {NdwuFileInputValue, NdwuFileProgressUpdate, NdwuTranslationTexts} from './ndwu-file-upload.types';
 
 const COMPACT_WIDTH_THRESHOLD = 510;
@@ -138,6 +142,8 @@ export class NdwuFileUploadComponent implements OnInit {
   public readonly maxSizeMB = input<number>(5);
   public readonly disabled = input(false, {transform: booleanAttribute});
   public readonly initialFiles = input<NdwuFileInputValue[]>([]);
+
+  // Empty `dropzone.title` or `status.*` text hides its element.
   public readonly translationTexts = input<NdwuTranslationTexts>();
 
   public readonly isCollapsed = signal(false);

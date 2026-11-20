@@ -85,6 +85,19 @@ export class FileUploadOverviewComponent implements OnDestroy {
     },
   };
 
+  public readonly customTexts: NdwuTranslationTexts = {
+    ...this.translationTexts,
+    dropzone: {
+      title: '',
+      hint: 'file-upload-showcase.custom-texts-hint',
+      browse: 'file-upload-showcase.custom-texts-browse',
+    },
+    status: {
+      ...this.translationTexts.status,
+      queued: '',
+    },
+  };
+
   public readonly fileItemFiles: NdwuFileInputValue[] = [
     {
       id: 'item-queued',
@@ -205,6 +218,8 @@ export class FileUploadOverviewComponent implements OnDestroy {
   public readonly fileUploadCvaForm = new FormGroup({
     files: new FormControl<NdwuFileInputValue[]>([], {nonNullable: true}),
   });
+
+  public readonly customTextsFormControl = new FormControl<NdwuFileInputValue[]>([], {nonNullable: true});
 
   protected readonly cvaValue = toSignal(this.fileUploadCvaForm.controls.files.valueChanges, {initialValue: []});
   protected readonly cvaStatuses = computed(() => {

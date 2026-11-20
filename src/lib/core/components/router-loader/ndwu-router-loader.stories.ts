@@ -18,8 +18,12 @@ const meta: Meta<NdwuRouterLoaderComponent> = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Animated router icon for page and section loading, in theme colours by default. With `ariaLabel` it is a `progressbar`; an empty `ariaLabel` hides it from assistive technologies. Not tied to Angular Router. Stops animating under `prefers-reduced-motion: reduce`.',
+        component: [
+          'Animated router icon for page and section loading, in theme colours by default.',
+          'With `ariaLabel` it is a `progressbar`; an empty `ariaLabel` hides it from assistive technologies.',
+          'Not tied to Angular Router.',
+          'Stops animating under `prefers-reduced-motion: reduce`.',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -34,8 +38,10 @@ const meta: Meta<NdwuRouterLoaderComponent> = {
     },
     firstColor: {
       control: 'color',
-      description:
-        'Antennas, frame and LEDs. Any CSS colour, e.g. `var(--ndwu-color-green-40)`; empty uses `--ndwu-router-loader-first-color`',
+      description: [
+        'Antennas, frame and LEDs.',
+        'Any CSS colour, e.g. `var(--ndwu-color-green-40)`; empty uses `--ndwu-router-loader-first-color`',
+      ].join(' '),
     },
     secondColor: {
       control: 'color',
@@ -43,13 +49,16 @@ const meta: Meta<NdwuRouterLoaderComponent> = {
     },
     duration: {
       control: {type: 'number', min: 500, max: 10000, step: 100},
-      description:
-        'One full cycle in ms; clamped to 500–10000 (the lower limit keeps the fades under three flashes per second)',
+      description: [
+        'One full cycle in ms; clamped to 500–10000',
+        '(the lower limit keeps the fades under three flashes per second)',
+      ].join(' '),
       table: {type: {summary: 'number'}, defaultValue: {summary: '1500'}},
     },
-    ariaLabel: textArgType(
-      'Accessible name, passed through the `localize` pipe; empty hides the loader from assistive technologies',
-    ),
+    ariaLabel: textArgType([
+      'Accessible name, passed through the `localize` pipe;',
+      'empty hides the loader from assistive technologies',
+    ].join(' ')),
   },
   args: {
     size: 'XL',
@@ -86,8 +95,11 @@ export const CustomColors: Story = {
     },
   },
   render: () => ({
-    template:
-      '<ndwu-router-loader size="L" firstColor="var(--ndwu-color-green-40)" secondColor="var(--ndwu-color-green-10)" />',
+    template: [
+      '<ndwu-router-loader size="L"',
+      'firstColor="var(--ndwu-color-green-40)"',
+      'secondColor="var(--ndwu-color-green-10)" />',
+    ].join(' '),
   }),
 };
 
@@ -111,8 +123,10 @@ export const HiddenFromAssistiveTech: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'With `ariaLabel=""` the SVG gets `aria-hidden="true"` and no `role`, so screen readers skip it. Use it next to visible text that already says what is loading, for example "Loading settings".',
+        story: [
+          'With `ariaLabel=""` the SVG gets `aria-hidden="true"` and no `role`, so screen readers skip it.',
+          'Use it next to visible text that already says what is loading, for example "Loading settings".',
+        ].join(' '),
       },
     },
   },

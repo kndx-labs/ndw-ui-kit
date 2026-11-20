@@ -12,8 +12,10 @@ const meta: Meta<NdwuSpokesLoaderComponent> = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Small spinner of fading spokes for inline loading states. Decorative: it has no role or accessible name, so put a text or a live region next to it.',
+        component: [
+          'Small spinner of fading spokes for inline loading states.',
+          'Decorative: it has no role or accessible name, so put a text or a live region next to it.',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -45,9 +47,10 @@ const meta: Meta<NdwuSpokesLoaderComponent> = {
       control: {type: 'number', min: 0, step: 0.5},
       description: 'Gap from the outer edge to the spoke in px; empty = auto (8.65 % of `size`)',
     },
-    autostart: booleanArgType(
-      'Starts the internal animation loop when `true`. The spokes animate through CSS either way, so the value has no visible effect',
-    ),
+    autostart: booleanArgType([
+      'Starts the internal animation loop when `true`.',
+      'The spokes animate through CSS either way, so the value has no visible effect',
+    ].join(' ')),
     startAnimation: {table: {disable: true}},
     stopAnimation: {table: {disable: true}},
   },

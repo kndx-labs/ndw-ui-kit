@@ -58,6 +58,20 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
   },
   {
     group: 'Core',
+    name: 'Notification',
+    docsId: 'core-notification--docs',
+    description: 'Inline message in info, success, warning and error variants.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Progress Bar',
+    docsId: 'core-progress-bar--docs',
+    description: 'Determinate or indeterminate progress in four colours.',
+    ready: false,
+  },
+  {
+    group: 'Core',
     name: 'Textarea',
     docsId: 'core-textarea--docs',
     description: 'Multi-line text with line numbers, actions, loading and resize.',

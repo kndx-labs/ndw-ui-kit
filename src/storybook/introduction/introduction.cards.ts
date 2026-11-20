@@ -106,6 +106,20 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     ready: false,
   },
   {
+    group: 'Core',
+    name: 'Tag',
+    docsId: 'core-tag--docs',
+    description: 'Compact status label that can be selected or removed.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Chip',
+    docsId: 'core-chip--docs',
+    description: 'Action chip with status colours, icon-only and loading states.',
+    ready: false,
+  },
+  {
     group: 'Form Field',
     name: 'Input Field',
     docsId: 'form-field-input-field--docs',

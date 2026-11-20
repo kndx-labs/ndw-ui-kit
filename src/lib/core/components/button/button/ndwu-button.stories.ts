@@ -7,6 +7,7 @@ import {
   NdwuIconName,
 } from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
+import {type CssTokenGroup} from '@sb/addons/css-tokens/shared';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType, sizeArgType} from '@sb/helpers/arg-types';
 import {SizeArg} from '@sb/helpers/story-args';
@@ -30,6 +31,34 @@ const VARIANTS = Object.values(NDWU_BUTTON_VARIANT);
 const SIZES = Object.values(NDWU_SIZE);
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
 
+const BUTTON_TOKEN_SUFFIXES = [
+  'bg',
+  'border',
+  'text',
+  'icon-color',
+  'hover-bg',
+  'hover-border',
+  'active-bg',
+  'active-border',
+  'active-text',
+  'active-icon-color',
+  'focus-bg',
+  'focus-border',
+  'focus-ring',
+  'disabled-bg',
+  'disabled-border',
+  'disabled-text',
+  'disabled-icon-color',
+] as const;
+
+const CSS_TOKEN_GROUPS: readonly CssTokenGroup[] = VARIANTS.map((variant) => {
+  return {
+    title: variant,
+    keys: BUTTON_TOKEN_SUFFIXES.map((suffix) => `button-${variant}-${suffix}`),
+    if: {arg: 'variant', eq: variant},
+  };
+});
+
 const ICON_BUTTONS: readonly IconButton[] = [
   {variant: NDWU_BUTTON_VARIANT.PRIMARY, icon: NDWU_ICON_NAME.ADD_S, label: 'Primary'},
   {variant: NDWU_BUTTON_VARIANT.SECONDARY, icon: NDWU_ICON_NAME.CHECK_S, label: 'Secondary'},
@@ -42,6 +71,7 @@ const meta: Meta<ButtonStoryArgs> = {
   tags: ['autodocs', 'ready'],
   parameters: {
     sizes: SIZES,
+    cssTokens: CSS_TOKEN_GROUPS,
     docs: {
       description: {
         component: 'Action button: `<button ndwu-button>` with a variant, an optional icon and a loading state.',
@@ -84,10 +114,14 @@ const meta: Meta<ButtonStoryArgs> = {
     loading: false,
     icon: null,
   },
-  render: (args) => ({
-    props: args,
-    template: `<button ndwu-button ${argsToTemplate(args, {exclude: ['content']})}>{{ content }}</button>`,
-  }),
+  render: (args) => {
+    const argsStr = argsToTemplate(args, {exclude: ['content']});
+
+    return {
+      props: args,
+      template: `<button ndwu-button ${argsStr}>{{ content }}</button>`,
+    };
+  },
 };
 
 export default meta;

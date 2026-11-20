@@ -64,6 +64,13 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     ready: false,
   },
   {
+    group: 'Core',
+    name: 'Tooltip',
+    docsId: 'core-tooltip--docs',
+    description: 'Hint on hover or tap with text, HTML or template content.',
+    ready: false,
+  },
+  {
     group: 'Form Field',
     name: 'Input Field',
     docsId: 'form-field-input-field--docs',

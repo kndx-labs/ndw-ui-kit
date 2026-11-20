@@ -55,8 +55,11 @@ const meta: Meta<TagStoryArgs> = {
     sizes: SIZES,
     docs: {
       description: {
-        component:
-          'Compact label on `<button ndwu-tag>` in seven statuses, with an optional icon, a selected state (`selectable`, `selected` / `selectedChange`) and a remove action (`removable`, `removed`).',
+        component: [
+          'Compact label on `<button ndwu-tag>` in seven statuses, with an optional icon,',
+          'a selected state (`selectable`, `selected` / `selectedChange`)',
+          'and a remove action (`removable`, `removed`).',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -73,28 +76,35 @@ const meta: Meta<TagStoryArgs> = {
       ...iconArgType,
       description: 'Icon shown before the label',
     },
-    label: textArgType(
-      'Label text, passed through the `localize` pipe and cut at about 18 characters. When empty, projected content is shown',
-    ),
+    label: textArgType([
+      'Label text, passed through the `localize` pipe and cut at about 18 characters.',
+      'When empty, projected content is shown',
+    ].join(' ')),
     selectable: booleanArgType('A click toggles `selected`; sets `aria-pressed`'),
     selected: booleanArgType('Selected state, shown only when `selectable`; update it from `selectedChange`'),
     removable: booleanArgType('Shows the close icon; a click on it, Delete or Backspace emits `removed`'),
     disabled: booleanArgType('Disables the tag'),
     maxWidth: textArgType('CSS max width of the whole tag, e.g. `120px`; replaces the 18-character label limit'),
     ariaLabel: textArgType('Accessible name; replaces the label and the remove label'),
-    removeLabel: textArgType(
-      'Visually hidden text after the label of a removable tag, passed through the `localize` pipe',
-    ),
+    removeLabel: textArgType([
+      'Visually hidden text after the label of a removable tag,',
+      'passed through the `localize` pipe',
+    ].join(' ')),
     size: {
       ...sizeArgType(SIZES),
-      description: `${
-        sizeArgType(SIZES).description
-      }. Under a size provider, \`S\` renders as \`L\` and \`XXL\` as \`XL\`; the Size toolbar previews only \`L\` and \`XL\``,
+      description: [
+        `${sizeArgType(SIZES).description}.`,
+        'Under a size provider, `S` renders as `L` and `XXL` as `XL`;',
+        'the Size toolbar previews only `L` and `XL`',
+      ].join(' '),
     },
     selectedChange: outputArgType('selectedChange', 'Emits the new selected state when a selectable tag is clicked'),
     removed: outputArgType(
       'removed',
-      'Emits on a click on the close icon or Delete / Backspace; the app removes the tag',
+      [
+        'Emits on a click on the close icon or Delete / Backspace;',
+        'the app removes the tag',
+      ].join(' '),
     ),
     click: eventArgType('click', 'Native click event; a click on the close icon does not reach it'),
   },
@@ -132,11 +142,12 @@ export const Statuses: Story = {
           STATUSES.map((status) => tag(`size="${size}" status="${status}" label="${status}" [removable]="true"`)),
         ),
         group(
-          STATUSES.map((status) =>
-            tag(
-              `size="${size}" status="${status}" label="${status}" [removable]="true" [selectable]="true" [selected]="true"`,
-            )
-          ),
+          STATUSES.map((status) => {
+            return tag([
+              `size="${size}" status="${status}" label="${status}"`,
+              '[removable]="true" [selectable]="true" [selected]="true"',
+            ].join(' '));
+          }),
         ),
       ]),
     ),
@@ -174,9 +185,10 @@ export const Disabled: Story = {
 };
 
 export const LongLabel: Story = {
-  parameters: storyDescription(
-    'The label is cut at about 18 characters (`18ch`) with an ellipsis. `maxWidth` replaces this limit.',
-  ),
+  parameters: storyDescription([
+    'The label is cut at about 18 characters (`18ch`) with an ellipsis.',
+    '`maxWidth` replaces this limit.',
+  ].join(' ')),
   decorators: [withRowLayout],
   render: () => ({
     template: tag('label="Very long tag name that gets cut" [removable]="true"'),
@@ -184,9 +196,10 @@ export const LongLabel: Story = {
 };
 
 export const ProjectedContent: Story = {
-  parameters: storyDescription(
-    'Without `label` the tag shows its projected content. `maxWidth` caps the whole tag instead of the 18-character label limit.',
-  ),
+  parameters: storyDescription([
+    'Without `label` the tag shows its projected content.',
+    '`maxWidth` caps the whole tag instead of the 18-character label limit.',
+  ].join(' ')),
   decorators: [withRowLayout],
   render: () => ({
     template: lines([
@@ -197,9 +210,11 @@ export const ProjectedContent: Story = {
 };
 
 export const Filter: Story = {
-  parameters: storyDescription(
-    'The app keeps the list and drops a tag on `removed`. Delete or Backspace on a focused tag removes it too, and focus moves to the next tag. Reset restores the list.',
-  ),
+  parameters: storyDescription([
+    'The app keeps the list and drops a tag on `removed`.',
+    'Delete or Backspace on a focused tag removes it too, and focus moves to the next tag.',
+    'Reset restores the list.',
+  ].join(' ')),
   decorators: [withRowLayout, moduleMetadata({imports: [NdwuButtonComponent]})],
   render: () => {
     const filterTags = signal(FILTER_TAGS);
@@ -207,8 +222,9 @@ export const Filter: Story = {
     return {
       props: {
         filterTags,
-        removeFilterTag: (removedTag: string) =>
-          filterTags.update((tags) => tags.filter((item) => item !== removedTag)),
+        removeFilterTag: (removedTag: string) => {
+          filterTags.update((tags) => tags.filter((item) => item !== removedTag));
+        },
         resetFilterTags: () => filterTags.set(FILTER_TAGS),
       },
       template: lines([

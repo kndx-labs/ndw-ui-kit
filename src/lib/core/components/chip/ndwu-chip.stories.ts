@@ -51,8 +51,10 @@ const meta: Meta<ChipStoryArgs> = {
     sizes: SIZES,
     docs: {
       description: {
-        component:
-          'Action chip on `<button ndwu-chip>` in three statuses, with an optional icon, an icon-only form and a loading state.',
+        component: [
+          'Action chip on `<button ndwu-chip>` in three statuses,',
+          'with an optional icon, an icon-only form and a loading state.',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -69,18 +71,21 @@ const meta: Meta<ChipStoryArgs> = {
       ...iconArgType,
       description: 'Icon shown before the label; replaced by a spinner while `loading`',
     },
-    label: textArgType(
-      'Label text, passed through the `localize` pipe. When empty, projected content is shown; an icon with no text makes the chip icon-only',
-    ),
+    label: textArgType([
+      'Label text, passed through the `localize` pipe.',
+      'When empty, projected content is shown; an icon with no text makes the chip icon-only',
+    ].join(' ')),
     disabled: booleanArgType('Disables the chip'),
     loading: booleanArgType('Shows a spinner instead of the icon, disables the button and sets `aria-busy`'),
     maxWidth: textArgType('CSS max width, e.g. `120px`; the label is cut with an ellipsis'),
     ariaLabel: textArgType('Accessible name; required for an icon-only chip'),
     size: {
       ...sizeArgType(SIZES),
-      description: `${
-        sizeArgType(SIZES).description
-      }. Under a size provider, \`S\` renders as \`L\` and \`XXL\` as \`XL\`; the Size toolbar previews only \`L\` and \`XL\``,
+      description: [
+        `${sizeArgType(SIZES).description}.`,
+        'Under a size provider, `S` renders as `L` and `XXL` as `XL`;',
+        'the Size toolbar previews only `L` and `XL`',
+      ].join(' '),
     },
     click: eventArgType('click', 'Native click event'),
   },
@@ -104,16 +109,19 @@ export default meta;
 export const Default: Story = {};
 
 export const Statuses: Story = {
-  parameters: storyDescription(
-    'Each status with an icon and a label, a label only, and an icon only. An icon-only chip needs `ariaLabel`.',
-  ),
+  parameters: storyDescription([
+    'Each status with an icon and a label, a label only, and an icon only.',
+    'An icon-only chip needs `ariaLabel`.',
+  ].join(' ')),
   decorators: [withStackLayout],
   render: () => ({
     template: lines([
       group(
         STATUSES.map((status) => chip(`status="${status}" icon="${STATUS_ICONS[status]}" label="${status} chip"`)),
       ),
-      group(STATUSES.map((status) => chip(`status="${status}" label="${status} chip"`))),
+      group(
+        STATUSES.map((status) => chip(`status="${status}" label="${status} chip"`)),
+      ),
       group(
         STATUSES.map((status) => chip(`status="${status}" icon="${STATUS_ICONS[status]}" ariaLabel="${status} chip"`)),
       ),
@@ -126,21 +134,22 @@ export const Sizes: Story = {
   decorators: [withStackLayout],
   render: () => ({
     template: lines(
-      SIZES.map((size) =>
-        group([
+      SIZES.map((size) => {
+        return group([
           chip(`size="${size}" icon="${ICON}" label="Size ${size}"`),
           chip(`size="${size}" label="Size ${size}"`),
           chip(`size="${size}" icon="${ICON}" ariaLabel="Size ${size}"`),
-        ])
-      ),
+        ]);
+      }),
     ),
   }),
 };
 
 export const Loading: Story = {
-  parameters: storyDescription(
-    '`loading` shows a spinner instead of the icon, disables the button and sets `aria-busy`.',
-  ),
+  parameters: storyDescription([
+    '`loading` shows a spinner instead of the icon,',
+    'disables the button and sets `aria-busy`.',
+  ].join(' ')),
   decorators: [withRowLayout],
   render: () => ({
     template: lines([
@@ -170,9 +179,10 @@ export const ProjectedContent: Story = {
 };
 
 export const Truncation: Story = {
-  parameters: storyDescription(
-    'A chip has no built-in label limit. `maxWidth` caps its width and the label ends with an ellipsis.',
-  ),
+  parameters: storyDescription([
+    'A chip has no built-in label limit.',
+    '`maxWidth` caps its width and the label ends with an ellipsis.',
+  ].join(' ')),
   decorators: [withRowLayout],
   render: () => ({
     template: lines([

@@ -25,7 +25,10 @@ const meta: Meta<BadgeStoryArgs> = {
     sizes: SIZES,
     docs: {
       description: {
-        component: 'Compact read-only label in eight tones, with an optional icon (L and XL) and truncation by `maxWidth`.',
+        component: [
+          'Compact read-only label in eight tones,',
+          'with an optional icon (L and XL) and truncation by `maxWidth`.',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -44,13 +47,19 @@ const meta: Meta<BadgeStoryArgs> = {
     },
     maxWidth: textArgType('CSS max width, e.g. `120px`; the text is cut with an ellipsis'),
     disabled: booleanArgType('Dims the badge; it is not interactive either way'),
-    ariaLabel: textArgType(
-      'Accessible name. The badge has no role, so screen readers usually read the text instead; keep the text meaningful',
-    ),
+    ariaLabel: textArgType([
+      'Accessible name.',
+      'The badge has no role, so screen readers usually read the text instead;',
+      'keep the text meaningful',
+    ].join(' ')),
     size: {
       ...sizeArgType(SIZES),
-      description:
-        'Component size. `inherit` takes it from the Size toolbar or the nearest size provider, else `XL`; the icon shows only at L and XL. An inherited `XXL` has no styles; the Size toolbar previews only S, L and XL',
+      description: [
+        'Component size.',
+        '`inherit` takes it from the Size toolbar or the nearest size provider, else `XL`;',
+        'the icon shows only at L and XL.',
+        'An inherited `XXL` has no styles; the Size toolbar previews only S, L and XL',
+      ].join(' '),
     },
     content: {
       control: 'text',
@@ -123,8 +132,10 @@ export const Numbers: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'Width follows the content: a single digit gives a near-round badge, longer numbers widen it. `ariaLabel` names what the number counts.',
+        story: [
+          'Width follows the content: a single digit gives a near-round badge, longer numbers widen it.',
+          '`ariaLabel` names what the number counts.',
+        ].join(' '),
       },
     },
   },

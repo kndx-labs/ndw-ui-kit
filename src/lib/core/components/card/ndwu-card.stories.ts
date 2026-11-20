@@ -33,8 +33,13 @@ const meta: Meta<CardStoryArgs> = {
   argTypes: {
     size: {
       ...sizeArgType(SIZES),
-      description:
-        'Component size: padding 16 / 24 / 32 px for L / XL / XXL. `inherit` takes it from the Size toolbar or the nearest size provider, else `XL`; an inherited `S` renders as `L`. The Size toolbar previews only L, XL and XXL; toolbar S shows the "not supported" note and the card stays at XL',
+      description: [
+        'Component size: padding 16 / 24 / 32 px for L / XL / XXL.',
+        '`inherit` takes it from the Size toolbar or the nearest size provider, else `XL`;',
+        'an inherited `S` renders as `L`.',
+        'The Size toolbar previews only L, XL and XXL;',
+        'toolbar S shows the "not supported" note and the card stays at XL',
+      ].join(' '),
     },
     content: {
       control: 'text',
@@ -64,8 +69,10 @@ export const WithTitle: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'The card has no title slot or title styles: put your own heading and text inside. The card sets the text colour and font family; sizes, weights and margins come from the app.',
+        story: [
+          'The card has no title slot or title styles: put your own heading and text inside.',
+          'The card sets the text colour and font family; sizes, weights and margins come from the app.',
+        ].join(' '),
       },
     },
   },

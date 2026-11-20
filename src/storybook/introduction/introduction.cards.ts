@@ -64,6 +64,13 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     ready: false,
   },
   {
+    group: 'Core',
+    name: 'Drawer',
+    docsId: 'core-modal-drawer--docs',
+    description: 'Side panel opened through NdwuModalService: component or template content, XL or XXL width.',
+    ready: false,
+  },
+  {
     group: 'Form Field',
     name: 'Input Field',
     docsId: 'form-field-input-field--docs',

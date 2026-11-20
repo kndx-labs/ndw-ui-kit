@@ -23,12 +23,18 @@ const VARIANT_EXAMPLES: readonly VariantExample[] = [
   {variant: NDWU_NOTIFICATION_VARIANT.ERROR, message: 'Error notification'},
 ];
 
-const LONG_TEXT =
-  'This is a very long notification message that contains important information and should wrap to multiple lines when placed in a narrow container with a fixed width of 200 pixels. It demonstrates how the text wraps correctly within the component boundaries.';
+const LONG_TEXT = [
+  'This is a very long notification message that contains important information and should wrap',
+  'to multiple lines when placed in a narrow container with a fixed width of 200 pixels.',
+  'It demonstrates how the text wraps correctly within the component boundaries.',
+].join(' ');
 const HTML_TEXT = 'This notification contains <b>bold text</b> and <em>inline HTML</em>.';
 const LED_HINT_KEY = 'setup.led-hint';
-const LED_HINT_HTML =
-  'Wait until the <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4caf50; position: relative; top: 1px;"></span> LED is lit and not blinking, then continue the setup.';
+const LED_HINT_HTML = [
+  'Wait until the <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%;',
+  'background: #4caf50; position: relative; top: 1px;"></span>',
+  'LED is lit and not blinking, then continue the setup.',
+].join(' ');
 
 const meta: Meta<NdwuNotificationComponent> = {
   title: 'Core/Notification',
@@ -50,9 +56,11 @@ const meta: Meta<NdwuNotificationComponent> = {
       options: VARIANTS,
       description: 'Background colour and icon',
     },
-    message: textArgType(
-      'Text, HTML or a translation key, passed through `localizeHtml`. A plain string is sanitized: safe tags stay, `style` attributes and scripts are removed. A key resolved by the app\'s `NdwuTranslationService`, or a `SafeHtml` value, is trusted',
-    ),
+    message: textArgType([
+      'Text, HTML or a translation key, passed through `localizeHtml`.',
+      'A plain string is sanitized: safe tags stay, `style` attributes and scripts are removed.',
+      'A key resolved by the app\'s `NdwuTranslationService`, or a `SafeHtml` value, is trusted',
+    ].join(' ')),
   },
   args: {
     variant: NDWU_NOTIFICATION_VARIANT.INFO,
@@ -98,8 +106,10 @@ export const HtmlMessage: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'A string that is not a translation key is inserted as HTML through Angular\'s sanitizer: tags such as `<b>`, `<em>` and links stay, `style` attributes and scripts are removed.',
+        story: [
+          'A string that is not a translation key is inserted as HTML through Angular\'s sanitizer:',
+          'tags such as `<b>`, `<em>` and links stay, `style` attributes and scripts are removed.',
+        ].join(' '),
       },
     },
   },
@@ -114,13 +124,19 @@ export const StyledHtmlMessage: Story = {
     docs: {
       description: {
         story: [
-          `\`message\` is the translation key \`${LED_HINT_KEY}\`. The app's \`NdwuTranslationService\` resolves it to:`,
+          [
+            `\`message\` is the translation key \`${LED_HINT_KEY}\`.`,
+            'The app\'s `NdwuTranslationService` resolves it to:',
+          ].join(' '),
           '',
           '```html',
           LED_HINT_HTML,
           '```',
           '',
-          '`localizeHtml` trusts translated HTML, so the inline `style` stays. A `SafeHtml` value works the same. Use it for app-owned texts only, never for user input.',
+          [
+            '`localizeHtml` trusts translated HTML, so the inline `style` stays.',
+            'A `SafeHtml` value works the same. Use it for app-owned texts only, never for user input.',
+          ].join(' '),
         ].join('\n'),
       },
     },

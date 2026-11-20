@@ -52,8 +52,10 @@ const meta: Meta<ProgressBarStoryArgs> = {
     sizes: SIZES,
     docs: {
       description: {
-        component:
-          'Horizontal bar with determinate progress (`value` of `max`) or an indeterminate loop; `label` gives it an accessible name.',
+        component: [
+          'Horizontal bar with determinate progress (`value` of `max`) or an indeterminate loop;',
+          '`label` gives it an accessible name.',
+        ].join(' '),
       },
       source: {
         transform: argsSourceTransform,
@@ -74,15 +76,19 @@ const meta: Meta<ProgressBarStoryArgs> = {
       options: COLORS,
       description: 'Fill colour; unknown values fall back to `primary`',
     },
-    label: textArgType(
-      'Accessible name (`aria-label`), not shown on screen; name what is progressing (for example `Upload progress`). Required: a progress bar without a name fails the a11y check',
-    ),
+    label: textArgType([
+      'Accessible name (`aria-label`), not shown on screen;',
+      'name what is progressing (for example `Upload progress`).',
+      'Required: a progress bar without a name fails the a11y check',
+    ].join(' ')),
     disabled: booleanArgType('Grey track and fill; sets `aria-disabled`'),
     mode: {
       control: 'select',
       options: MODES,
-      description:
-        '`indeterminate` loops the fill and leaves out `aria-valuenow`; `value` and `max` don\'t change the fill',
+      description: [
+        '`indeterminate` loops the fill and leaves out `aria-valuenow`;',
+        '`value` and `max` don\'t change the fill',
+      ].join(' '),
     },
     size: sizeArgType(SIZES),
   },
@@ -168,8 +174,10 @@ export const AnimatedValue: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story:
-          'The app updates `value`; the fill animates each change over 0.3 s. The button steps the bar to 100 % in 10 % steps; `start()` is story code.',
+        story: [
+          'The app updates `value`; the fill animates each change over 0.3 s.',
+          'The button steps the bar to 100 % in 10 % steps; `start()` is story code.',
+        ].join(' '),
       },
     },
   },
@@ -181,13 +189,17 @@ export const AnimatedValue: Story = {
     const start = (): void => {
       clearInterval(timer);
       progress.set(0);
-      timer = setInterval(() => {
-        progress.update((value) => Math.min(value + STEP, 100));
 
-        if (progress() === 100) {
-          clearInterval(timer);
-        }
-      }, STEP_MS);
+      timer = setInterval(
+        () => {
+          progress.update((value) => Math.min(value + STEP, 100));
+
+          if (progress() === 100) {
+            clearInterval(timer);
+          }
+        },
+        STEP_MS,
+      );
     };
 
     return {

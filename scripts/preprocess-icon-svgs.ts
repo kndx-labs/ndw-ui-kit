@@ -11,7 +11,7 @@ import {type SvgTransformResult, isPictogramFile, runSvgPreprocess} from './util
 
 const parseXML = promisify(parseString);
 
-const SVG_CHILD_ELEMENTS = ['path', 'circle', 'rect', 'ellipse', 'line', 'polygon', 'polyline', 'g'] as const;
+const SVG_CHILD_ELEMENTS = ['path', 'circle', 'rect', 'ellipse', 'line', 'polygon', 'polyline', 'g', 'use'] as const;
 
 /**
  * Recursively replace every fill/stroke color in the element tree with `toColor`.

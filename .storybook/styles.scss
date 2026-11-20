@@ -29,6 +29,18 @@
   align-items: flex-start;
 }
 
+.sb-stack > pre {
+  margin: 0;
+  color: var(--ndwu-color-gray-80);
+}
+
+.sb-resizable {
+  overflow: auto;
+  height: 320px;
+  border: 1px dashed var(--ndwu-color-gray-30);
+  resize: both;
+}
+
 .sb-note {
   margin: 0 0 16px;
   color: var(--ndwu-color-gray-80);

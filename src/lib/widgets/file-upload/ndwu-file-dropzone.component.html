@@ -5,15 +5,15 @@
   [tabindex]="disabled() ? '-1' : '0'"
   (keydown)="onKeydown($event)"
 >
-    <input
-      #fileInput
-      type="file"
-      class="ndwu-file-dropzone__input"
-      [accept]="accept()"
-      [multiple]="multiple()"
-      [disabled]="disabled()"
-      (change)="onInputChange($event)"
-    />
+  <input
+    #fileInput
+    type="file"
+    class="ndwu-file-dropzone__input"
+    [accept]="accept()"
+    [multiple]="multiple()"
+    [disabled]="disabled()"
+    (change)="onInputChange($event)"
+  />
 
   <div class="ndwu-file-dropzone__content">
     <ndwu-pictogram
@@ -23,7 +23,11 @@
     />
 
     <div class="ndwu-file-dropzone__instructions">
-      <span class="ndwu-file-dropzone__title">{{ effectiveTexts().title | localize }}</span>
+      @let localizedTitle = effectiveTexts().title | localize;
+
+      @if (localizedTitle) {
+        <span class="ndwu-file-dropzone__title">{{ localizedTitle }}</span>
+      }
 
       <span class="ndwu-file-dropzone__hint">{{ effectiveTexts().hint | localize }}</span>
     </div>

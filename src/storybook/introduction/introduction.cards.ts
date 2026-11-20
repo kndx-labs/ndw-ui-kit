@@ -58,6 +58,20 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
   },
   {
     group: 'Core',
+    name: 'Notification',
+    docsId: 'core-notification--docs',
+    description: 'Inline message in info, success, warning and error variants.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Progress Bar',
+    docsId: 'core-progress-bar--docs',
+    description: 'Determinate or indeterminate progress in four colours.',
+    ready: false,
+  },
+  {
+    group: 'Core',
     name: 'Textarea',
     docsId: 'core-textarea--docs',
     description: 'Multi-line text with line numbers, actions, loading and resize.',
@@ -75,6 +89,20 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     name: 'Accordion',
     docsId: 'core-accordion--docs',
     description: 'Expandable sections in single or multi mode with header actions and lazy content.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Spokes Loader',
+    docsId: 'core-spokes-loader--docs',
+    description: 'Small spinner of fading spokes for inline loading.',
+    ready: false,
+  },
+  {
+    group: 'Core',
+    name: 'Router Loader',
+    docsId: 'core-router-loader--docs',
+    description: 'Animated router icon for page and section loading.',
     ready: false,
   },
   {

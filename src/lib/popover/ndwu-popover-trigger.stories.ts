@@ -7,7 +7,8 @@ import {
   ndwuCreateTooltipController,
 } from '@ndw-ui-kit/core/popover';
 import {Meta, StoryObj, argsToTemplate, moduleMetadata} from '@storybook/angular';
-import {CONTEXT_MENU_TEMPLATE, SbContextMenuComponent} from '@sb/demos/context-menu.component';
+import {SbContextMenuComponent} from '@sb/demos/context-menu.component';
+import contextMenuTemplate from '@sb/demos/context-menu.component.html?raw';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {booleanArgType, outputArgType} from '@sb/helpers/arg-types';
 import {lines} from '@sb/helpers/story-template';
@@ -163,7 +164,7 @@ export const ContextMenu: Story = {
         ]),
       },
       source: {
-        code: CONTEXT_MENU_TEMPLATE,
+        code: contextMenuTemplate.trimEnd(),
         language: 'html',
       },
     },

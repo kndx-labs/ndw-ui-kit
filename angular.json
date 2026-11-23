@@ -35,7 +35,8 @@
             "lintFilePatterns": [
               "src/**/*.ts",
               "src/**/*.component.html",
-              ".storybook/**/*.ts"
+              ".storybook/**/*.ts",
+              ".storybook/**/*.component.html"
             ]
           }
         },

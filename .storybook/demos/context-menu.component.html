@@ -1,0 +1,44 @@
+<div
+  #inputTarget
+  class="target"
+  tabindex="0"
+  ndwuPopoverTrigger
+  triggerOn="manual"
+  [popoverControllerFactory]="ndwuCreateDropdownController"
+  (contextmenu)="openAt(inputTrigger(), $event)"
+>
+  Right-click here: the factory comes from the popoverControllerFactory input
+</div>
+<div
+  #tokenTarget
+  class="target"
+  tabindex="0"
+  ndwuPopoverTrigger
+  triggerOn="manual"
+  (contextmenu)="openAt(tokenTrigger(), $event)"
+>
+  Right-click here: the factory comes from the NDWU_POPOVER_CONTROLLER_FACTORY token
+</div>
+<button
+  #buttonTarget
+  ndwu-button
+  variant="secondary"
+  label="Open menu"
+  aria-haspopup="menu"
+  [attr.aria-expanded]="buttonTrigger().isOpen()"
+  [ndwuPopoverTrigger]="menu"
+  [popoverContext]="buttonMenuContext"
+  [popoverControllerFactory]="ndwuCreateDropdownController"
+  [popoverCloseOnOriginClick]="false"
+  [popoverTrapFocus]="true"
+></button>
+<p class="sb-note" aria-live="polite">Last action: {{ lastAction() }}</p>
+<ng-template #menu let-execute="execute">
+  <div class="menu" role="menu" aria-label="Edit" tabindex="-1" (keydown)="moveFocus($event)">
+    <button type="button" class="menu-item" role="menuitem" (click)="execute('Cut')">Cut</button>
+    <button type="button" class="menu-item" role="menuitem" (click)="execute('Copy')">Copy</button>
+    <button type="button" class="menu-item" role="menuitem" (click)="execute('Paste')">Paste</button>
+    <button type="button" class="menu-item" role="menuitem" (click)="execute('Select all')">Select all</button>
+    <button type="button" class="menu-item" role="menuitem" (click)="execute('Delete')">Delete</button>
+  </div>
+</ng-template>

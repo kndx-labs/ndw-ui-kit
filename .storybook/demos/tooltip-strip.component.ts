@@ -21,74 +21,10 @@ function toPoint(event: MouseEvent): NdwuPopoverOrigin {
   return {clientX: event.clientX, clientY: event.clientY};
 }
 
-export const TOOLTIP_STRIP_TEMPLATE = `<span
-  #stripTooltip="ndwuTooltip"
-  class="strip"
-  role="group"
-  aria-label="Load by half-hour"
-  [ndwuTooltip]="tooltipTpl"
-  [tooltipContext]="tooltipCell()"
-  [tooltipOrigin]="tooltipOrigin()"
-  [tooltipDescribeHost]="false"
-  [tooltipRestoreFocus]="false"
-  tooltipPosition="above"
-  triggerOn="manual"
-  (mouseenter)="onStripMouseEnter($event)"
-  (mousemove)="onStripMouseMove($event)"
-  (mouseleave)="onStripMouseLeave()"
-  (focusout)="onStripFocusOut($event)"
-  (keydown)="onStripKeydown($event)"
->
-  @for (cell of cells; track cell.index) {
-    <span
-      class="strip-cell"
-      role="img"
-      [style.opacity]="0.15 + cell.value / 120"
-      [attr.tabindex]="cell.index === focusedIndex() ? 0 : -1"
-      [attr.aria-label]="cell.time"
-      [attr.aria-describedby]="cell.index === focusedIndex() ? stripTooltip.tooltipId : null"
-      (focusin)="activateCell(cell, $event)"
-      (click)="activateCell(cell, $event)"
-    ></span>
-  }
-</span>
-
-<ng-template #tooltipTpl let-cell>
-  @if (cell) {
-    <strong>{{ cell.time }}</strong><br />
-    Load: {{ cell.value }}%
-  }
-</ng-template>`;
-
 @Component({
   selector: 'sb-tooltip-strip',
-  template: TOOLTIP_STRIP_TEMPLATE,
-  styles: `
-    :host {
-      display: block;
-      padding-top: 64px;
-    }
-
-    .strip {
-      display: inline-flex;
-      gap: 2px;
-      max-width: 100%;
-    }
-
-    .strip-cell {
-      width: 8px;
-      min-width: 2px;
-      height: 24px;
-      border-radius: 2px;
-      background: var(--ndwu-color-brand-50);
-    }
-
-    .strip-cell:focus-visible {
-      opacity: 1 !important;
-      outline: 2px solid var(--ndwu-color-gray-100);
-      outline-offset: 1px;
-    }
-  `,
+  templateUrl: './tooltip-strip.component.html',
+  styleUrl: './tooltip-strip.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NdwuTooltipDirective],
 })

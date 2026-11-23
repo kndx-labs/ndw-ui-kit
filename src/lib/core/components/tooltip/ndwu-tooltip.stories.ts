@@ -9,7 +9,8 @@ import {
 import type {NdwuPopoverTriggerType} from '@ndw-ui-kit/core/popover';
 import {Meta, StoryObj, argsToTemplate, moduleMetadata} from '@storybook/angular';
 import {expect, screen, userEvent} from 'storybook/test';
-import {SbTooltipStripComponent, TOOLTIP_STRIP_TEMPLATE} from '@sb/demos/tooltip-strip.component';
+import {SbTooltipStripComponent} from '@sb/demos/tooltip-strip.component';
+import tooltipStripTemplate from '@sb/demos/tooltip-strip.component.html?raw';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {booleanArgType, textArgType} from '@sb/helpers/arg-types';
 import {withRowLayout, withStackLayout} from '@sb/helpers/story-layout';
@@ -37,13 +38,16 @@ const HTML_TRIGGER =
 
 const STRIP_DOCS = {
   source: {
-    code: TOOLTIP_STRIP_TEMPLATE,
+    code: tooltipStripTemplate.replace(/^\s*<!-- eslint-.*-->\n/gm, '').trimEnd(),
     language: 'html',
   },
 };
 
-const STRIP_HANDLERS_NOTE = 'The handlers, signals and styles live in '
-  + '[tooltip-strip.component.ts](https://github.com/kndx-labs/ndw-ui-kit/blob/master/.storybook/demos/tooltip-strip.component.ts).';
+const STRIP_HANDLERS_NOTE = 'The handlers and signals live in '
+  + '[tooltip-strip.component.ts](https://github.com/kndx-labs/ndw-ui-kit/blob/master/.storybook/demos/tooltip-strip.component.ts), '
+  + 'the template and styles in '
+  + '[tooltip-strip.component.html](https://github.com/kndx-labs/ndw-ui-kit/blob/master/.storybook/demos/tooltip-strip.component.html) and '
+  + '[tooltip-strip.component.scss](https://github.com/kndx-labs/ndw-ui-kit/blob/master/.storybook/demos/tooltip-strip.component.scss).';
 
 const meta: Meta<TooltipStoryArgs> = {
   title: 'Core/Tooltip',

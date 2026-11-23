@@ -1,14 +1,12 @@
+/** Keeps the default class, removes empty strings and duplicates; use an empty default for no default class. */
 export const normalizeClass = (
-  classOrList: string | string[] | undefined,
-  fallbackClass: string,
+  classOrList: string | string[] | undefined | null,
+  defaultClass: string,
 ): string[] => {
-  if (classOrList === undefined || classOrList === null) {
-    return [fallbackClass];
-  }
+  const callerClasses = Array.isArray(classOrList) ? classOrList : [classOrList];
+  const classes = [defaultClass, ...callerClasses].filter((value): value is string => {
+    return typeof value === 'string' && value !== '';
+  });
 
-  if (Array.isArray(classOrList)) {
-    return classOrList.length > 0 ? classOrList : [fallbackClass];
-  }
-
-  return [classOrList];
+  return [...new Set(classes)];
 };

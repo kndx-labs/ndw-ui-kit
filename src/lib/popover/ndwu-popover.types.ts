@@ -28,7 +28,7 @@ export interface NdwuPopoverConfig {
   context?: unknown;
   /** DI providers for the overlay (options, callbacks, etc.). */
   providers?: Provider[];
-  /** Panel CSS class(es). */
+  /** Additional panel class(es), applied alongside the controller's kit panel class. */
   panelClass?: string | string[];
   /** Optional min width for desktop floating (default 0). */
   minWidth?: number;

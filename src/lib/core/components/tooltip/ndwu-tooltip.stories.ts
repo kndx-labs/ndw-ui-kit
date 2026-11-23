@@ -116,7 +116,7 @@ const meta: Meta<TooltipStoryArgs> = {
     },
     popoverClass: {
       control: false,
-      description: 'CSS class(es) of the overlay pane',
+      description: 'Additional CSS class(es) for the overlay pane, added alongside `ndwu-tooltip`',
       table: {defaultValue: {summary: '\'ndwu-tooltip\''}},
     },
     popoverTrapFocus: {

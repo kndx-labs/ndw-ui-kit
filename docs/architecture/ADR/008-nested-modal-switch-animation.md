@@ -1,6 +1,6 @@
 # 008 Nested modal switch animation (mobile)
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-08-17
 
 ## Context and Problem Statement

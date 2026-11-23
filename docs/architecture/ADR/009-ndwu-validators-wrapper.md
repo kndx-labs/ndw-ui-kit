@@ -1,6 +1,6 @@
 # 009 NdwuValidators: wrapper for built-in Angular validators
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-09-28
 - Issue(s): NDWU-33
 

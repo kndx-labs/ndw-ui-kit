@@ -65,6 +65,8 @@ repeat the same `assets` and `styles` entries in each build configuration you us
 }
 ```
 
+If the sprites are served from a directory other than `/assets/`, see [Sprite location](#sprite-location).
+
 The package exports `@ndw-ui-kit/core/styles/*` and `@ndw-ui-kit/core/assets/*`,
 so other bundlers (e.g. Vite) can import them by package name without extra
 `includePaths` or `loadPaths`:
@@ -331,6 +333,8 @@ uses that title as a fallback accessible name for modals with a custom header sl
 ### Icons
 
 By default, `<ndwu-icon>` uses only the core sprite (`ndw-ui-kit.sprite.svg`).
+Core-only apps that serve the sprite from another directory can configure
+`provideNdwuCoreIcons({basePath})`; see [Sprite location](#sprite-location).
 
 #### Additional icons (full catalog)
 
@@ -416,6 +420,60 @@ Pictograms are a separate set of ~10 two-colored icons used inside certain `@ndw
 components. Those icons are merged into an additional SVG sprite file (`ndw-ui-kit.pictogram.sprite.svg`)
 that should be included in your app's assets if you use any component that relies
 on pictograms (e.g., `NdwuEmptyStateComponent` from `@ndw-ui-kit/core/widgets`).
+
+#### Sprite location
+
+All kit sprites load from `assets/` by default. If your app serves them from a
+different directory, update the `assets` output and configure the matching
+`basePath`:
+
+```json5
+{
+  "assets": [
+    {
+      "glob": "ndw-ui-kit.sprite.svg",
+      "input": "node_modules/@ndw-ui-kit/core/assets",
+      "output": "/resources/my-theme/assets/"
+    },
+    {
+      "glob": "ndw-ui-kit.extra.sprite.svg",
+      "input": "node_modules/@ndw-ui-kit/core/assets",
+      "output": "/resources/my-theme/assets/"
+    },
+    {
+      "glob": "ndw-ui-kit.pictogram.sprite.svg",
+      "input": "node_modules/@ndw-ui-kit/core/assets",
+      "output": "/resources/my-theme/assets/"
+    }
+  ]
+}
+```
+
+Use the same directory with the sprite providers:
+
+```typescript
+import type {ApplicationConfig} from '@angular/core';
+import {provideNdwuAllIcons, provideNdwuPictograms} from '@ndw-ui-kit/core';
+
+const spriteBasePath = '/resources/my-theme/assets';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideNdwuAllIcons({basePath: spriteBasePath}),
+    provideNdwuPictograms({basePath: spriteBasePath}),
+  ],
+};
+```
+
+Use `provideNdwuCoreIcons` instead of `provideNdwuAllIcons` when the app needs
+only core icons. `provideNdwuCustomIcons` also accepts `basePath`; it moves only
+the kit core sprite, while its `path` remains the full path to the custom sprite.
+`provideNdwuCoreIcons`, `provideNdwuAllIcons` and `provideNdwuCustomIcons` set the same token,
+so use only one of them.
+
+`basePath` is a directory. Relative paths resolve against the document base URL
+(`<base href>`). SVG `<use>` loads external sprites only from the same origin,
+so cross-origin CDN URLs will not work.
 
 ### Router loader
 

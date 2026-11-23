@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, Component, booleanAttribute, computed, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input} from '@angular/core';
 import {extractPictogramDimsClass, pictogramNameTransform} from './ndwu-pictogram.helpers';
 import {NDWU_PICTOGRAM_VARIANTS, NdwuPictogramVariant} from '../../../pictogram-presets';
+import {NDWU_PICTOGRAM_SPRITE_CONFIG} from '../../tokens';
 
 @Component({
   selector: 'ndwu-pictogram',
@@ -10,13 +11,15 @@ import {NDWU_PICTOGRAM_VARIANTS, NdwuPictogramVariant} from '../../../pictogram-
   imports: [],
 })
 export class NdwuPictogramComponent {
+  private readonly pictogramSpriteConfig = inject(NDWU_PICTOGRAM_SPRITE_CONFIG);
+
   public readonly name = input.required({transform: pictogramNameTransform});
   public readonly stretched = input(false, {transform: booleanAttribute});
   public readonly variant = input<NdwuPictogramVariant>('DEFAULT');
   public readonly firstColor = input<string>('');
   public readonly secondColor = input<string>('');
 
-  protected readonly spriteRef = computed(() => `assets/ndw-ui-kit.pictogram.sprite.svg#${this.name()}`);
+  protected readonly spriteRef = computed(() => `${this.pictogramSpriteConfig.path}#${this.name()}`);
 
   protected readonly rootClass = computed(() => {
     if (this.stretched()) {

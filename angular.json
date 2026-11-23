@@ -12,7 +12,7 @@
       "projectType": "library",
       "root": "",
       "sourceRoot": "src/lib",
-      "prefix": "lib",
+      "prefix": "ndwu",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",

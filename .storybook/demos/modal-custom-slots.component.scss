@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  flex-grow: 1;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.title {
+  margin: 0;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: var(--ndwu-color-gray-60);
+}
+
+.content {
+  display: grid;
+  gap: 16px;
+}

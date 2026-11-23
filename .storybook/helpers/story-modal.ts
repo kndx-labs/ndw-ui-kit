@@ -7,8 +7,8 @@ export interface AfterClosedArg {
 
 export const afterClosedArgType: ArgTypes[string] = {
   action: 'afterClosed',
-  description:
-    'Result of `afterClosed$`: the value passed to `close()`, a button `result`, or `undefined` after Escape, a backdrop click or the close button',
+  // @dprint-ignore
+  description: 'Result of `afterClosed$`: the value passed to `close()`, a button `result`, or `undefined` after Escape, a backdrop click or the close button',
   table: {category: 'modal ref'},
 };
 

@@ -20,6 +20,18 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 │   ├── with-css-tokens.decorator.ts  CSS tokens panel, preview side: hands the rendered story to addons/css-tokens/preview.ts
 │   └── size-provider.component.ts    Wrapper component that provides NDWU_SIZE_TOKEN from the toolbar
 ├── demos/
+│   ├── modal-custom-slots.component.ts  Modal content with *ndwuModalHeader and *ndwuModalFooter
+│   ├── modal-custom-slots.component.html  Its template
+│   ├── modal-custom-slots.component.scss  Its styles
+│   ├── modal-form.component.ts       Modal content: name and email form, closes with the form value
+│   ├── modal-form.component.scss     Its styles
+│   ├── modal-growing.component.ts    Modal content that adds and removes rows
+│   ├── modal-growing.component.html  Its template
+│   ├── modal-growing.component.scss  Its styles
+│   ├── modal-initial-focus.component.ts  Modal footer whose button has cdkFocusInitial
+│   ├── modal-long-text.component.ts  Long static text for scrollable modals
+│   ├── modal-long-text.component.html  Its template
+│   ├── modal-long-text.component.scss  Its styles
 │   └── tooltip-strip.component.ts    Core/Tooltip strip: one tooltip for 48 cells; exports its template
 ├── addons/
 │   └── css-tokens/
@@ -27,12 +39,6 @@ How the Storybook setup of the kit is built. How to write stories: [CONTRIBUTING
 │       ├── register.ts               Registers the "CSS tokens" panel in the manager
 │       ├── panel.ts                  Manager panel: rows, picker, reset, per-story session overrides
 │       └── preview.ts                Preview side: applies overrides in one !important rule, reports defaults and colours
-├── demos/
-│   ├── modal-form.component.ts       Modal content: name and email form, closes with the form value
-│   ├── modal-custom-slots.component.ts  Modal content with *ndwuModalHeader and *ndwuModalFooter
-│   ├── modal-long-text.component.ts  Long static text for scrollable modals
-│   ├── modal-growing.component.ts    Modal content that adds and removes rows
-│   └── modal-initial-focus.component.ts  Modal footer whose button has cdkFocusInitial
 └── helpers/
     ├── story-args.ts                 SizeArg (host-directive size) and AriaArgs (alias-keyed ARIA args)
     ├── arg-types.ts                  Shared argTypes: size, icon, text, boolean, outputs, native events
@@ -121,19 +127,11 @@ Story-only components for wiring a story template can't hold (handlers, state). 
 
 | File | What it does | Why it is built this way |
 |---|---|---|
-| `modal-form.component.ts` | `sb-modal-form`: two required `ndwu-input-field`s in `ndwu-form-container`, an `OK` button in `*ndwuModalFooter` that closes the modal with `{name, email}` | Content of the dialog and drawer form stories. No `size` on the form container, so the size from `config.injector` (Size toolbar) applies. A `.ts` under `src/lib` would enter the package |
-| `modal-custom-slots.component.ts` | `sb-modal-custom-slots`: custom header and footer through `*ndwuModalHeader` / `*ndwuModalFooter`; closes with `true` (Save) or `false` | Shows the component slot API in dialog and drawer stories |
-| `modal-long-text.component.ts` | `sb-modal-long-text`: static guide text with headings and lists | Storybook has no markdown pipe and doesn't serve the playground's `.md` asset; long enough to make the modal body scroll |
-| `modal-growing.component.ts` | `sb-modal-growing`: buttons that add and remove rows, three at a time | Shows a dialog without a fixed height growing up to its max height |
+| `modal-custom-slots.component.ts` | `sb-modal-custom-slots`: custom header and footer through `*ndwuModalHeader` / `*ndwuModalFooter`; closes with `true` (Save) or `false`. Template and styles live in `modal-custom-slots.component.html` / `.scss` | Shows the component slot API in dialog and drawer stories |
+| `modal-form.component.ts` | `sb-modal-form`: two required `ndwu-input-field`s in `ndwu-form-container`, an `OK` button in `*ndwuModalFooter` that closes the modal with `{name, email}`. Styles live in `modal-form.component.scss`: the form container gets the margin and padding of the playground form dialog | Content of the dialog and drawer form stories. No `size` on the form container, so the size from `config.injector` (Size toolbar) applies. A `.ts` under `src/lib` would enter the package |
+| `modal-growing.component.ts` | `sb-modal-growing`: buttons that add and remove rows, three at a time. Template and styles live in `modal-growing.component.html` / `.scss` | Shows a dialog without a fixed height growing up to its max height |
 | `modal-initial-focus.component.ts` | `sb-modal-initial-focus`: a footer `Close` button with `cdkFocusInitial` | Shows `autoFocus: true` focusing the marked element |
-
-### Demos
-
-Story-only components for wiring a story template can't hold (handlers, state). Imported by stories as
-`@sb/demos/<file>`.
-
-| File | What it does | Why it is built this way |
-|---|---|---|
+| `modal-long-text.component.ts` | `sb-modal-long-text`: static guide text with headings and lists. Template and styles live in `modal-long-text.component.html` / `.scss` | Storybook has no markdown pipe and doesn't serve the playground's `.md` asset; long enough to make the modal body scroll |
 | `tooltip-strip.component.ts` | `sb-tooltip-strip`: 48 cells share one `ndwuTooltip` (`triggerOn="manual"`, `tooltipOrigin`, template content); `mode` `click` anchors it to the focused cell with arrow-key navigation, `pointer` follows the mouse. Exports `TOOLTIP_STRIP_TEMPLATE`, which the `Core/Tooltip` strip stories show in "Show code" | `src/lib` holds library code only: Compodoc and the core icon scan read every non-story `.ts` there, so the demo lives here. "Show code" of `<sb-tooltip-strip>` would show nothing useful; the exported template shows the bindings an app needs |
 
 ### Addons
@@ -156,7 +154,7 @@ Story-only components for wiring a story template can't hold (handlers, state). 
 
 | File | Storybook part |
 |---|---|
-| `angular.json` | `storybook` and `build-storybook` targets on the `ndw-ui-kit` project: port 6006, no browser auto-open (`open: false`), `experimentalZoneless`, `styles` + `includePaths: ["src/lib"]` for kit SCSS aliases, Compodoc on `tsconfig.lib.json` with private/protected/internal members off, output `dist/storybook`. `browserTarget: "ndw-ui-kit:build"` is required by the builder (without it, `start-storybook` fails); `lint` covers `.storybook/**/*.ts` |
+| `angular.json` | `storybook` and `build-storybook` targets on the `ndw-ui-kit` project: port 6006, no browser auto-open (`open: false`), `experimentalZoneless`, `styles` + `includePaths: ["src/lib"]` for kit SCSS aliases, Compodoc on `tsconfig.lib.json` with private/protected/internal members off, output `dist/storybook`. `browserTarget: "ndw-ui-kit:build"` is required by the builder (without it, `start-storybook` fails); `lint` covers `.storybook/**/*.ts` and `.storybook/**/*.component.html` |
 | `package.json` | Scripts `storybook`, `build-storybook` (generate sprites first); `fmt`, `lint:ts-src`, `lint:styles` include `.storybook/`. Storybook packages, Compodoc, `@angular-devkit/build-angular` and its devkit peers pinned to the `@angular/build` / `@angular/cli` version, webpack pinned through `resolutions`; `@types/react` `~18.3` for the manager panel (`.storybook/addons/css-tokens`) |
 | `tsconfig.json` | References `.storybook/tsconfig.json` |
 | `tsconfig.lib.json` | Includes only `src/lib/**`, excludes `**/*.stories.ts` |

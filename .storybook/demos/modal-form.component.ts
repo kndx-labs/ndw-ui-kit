@@ -18,7 +18,7 @@ export interface SbModalFormValue {
 @Component({
   selector: 'sb-modal-form',
   template: `
-    <ndwu-form-container [formGroup]="form">
+    <ndwu-form-container class="form" [formGroup]="form">
       <ndwu-input-field label="Name" ndwuRequired formControlName="name" />
       <ndwu-input-field label="Email" ndwuRequired formControlName="email" />
     </ndwu-form-container>
@@ -27,7 +27,7 @@ export interface SbModalFormValue {
       <button ndwu-button variant="primary" label="OK" [disabled]="form.invalid" (click)="submit()"></button>
     </div>
   `,
-  styles: ':host { display: block; }',
+  styleUrl: './modal-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NdwuButtonComponent,
@@ -42,14 +42,20 @@ export class SbModalFormComponent {
   private readonly modalRef = inject<NdwuModalRef<SbModalFormValue>>(NDWU_MODAL_REF);
 
   protected readonly form = new FormGroup({
-    name: new FormControl('', {
-      nonNullable: true,
-      validators: [NdwuValidators.required('Enter your name')],
-    }),
-    email: new FormControl('', {
-      nonNullable: true,
-      validators: [NdwuValidators.required('Enter your email'), NdwuValidators.email('Enter a valid email')],
-    }),
+    name: new FormControl(
+      '',
+      {
+        nonNullable: true,
+        validators: [NdwuValidators.required('Enter your name')],
+      },
+    ),
+    email: new FormControl(
+      '',
+      {
+        nonNullable: true,
+        validators: [NdwuValidators.required('Enter your email'), NdwuValidators.email('Enter a valid email')],
+      },
+    ),
   });
 
   protected submit(): void {

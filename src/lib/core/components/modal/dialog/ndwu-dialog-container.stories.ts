@@ -70,8 +70,8 @@ const meta: Meta<DialogStoryArgs> = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Modal dialog opened from code with `NdwuModalService`: `alert()`, `confirm()`, `openDialog()` with a component or `openTemplate()` with a template. The config sets the title, description, footer buttons, size and focus; `afterClosed$` emits the result. Content can replace the header and footer with `*ndwuModalHeader` / `*ndwuModalFooter`.',
+        // @dprint-ignore
+        component: 'Modal dialog opened from code with `NdwuModalService`: `alert()`, `confirm()`, `openDialog()` with a component or `openTemplate()` with a template. The config sets the title, description, footer buttons, size and focus; `afterClosed$` emits the result. Content can replace the header and footer with `*ndwuModalHeader` / `*ndwuModalFooter`.',
       },
     },
   },
@@ -80,8 +80,8 @@ const meta: Meta<DialogStoryArgs> = {
     description: {control: 'text', description: 'Text under the title; linked with `aria-describedby`'},
     buttons: {
       control: 'object',
-      description:
-        'Footer buttons: `label`, `variant`, `result` (closes with it) or `onClick(ref)` (does not close)',
+      // @dprint-ignore
+      description: 'Footer buttons: `label`, `variant`, `result` (closes with it) or `onClick(ref)` (does not close)',
     },
     width: {control: 'text', description: 'CSS width; empty = `auto`'},
     minWidth: {control: 'text', description: 'CSS min width; empty = `300px`'},
@@ -96,12 +96,15 @@ const meta: Meta<DialogStoryArgs> = {
     },
     trapFocus: {control: 'boolean', description: 'Keeps Tab inside the dialog'},
     restoreFocus: {control: 'boolean', description: 'Returns focus to the opener after closing'},
-    isLoading: {control: 'boolean', description: 'Shows the spinner and sets `aria-busy`; change it with `setLoading()`'},
+    isLoading: {
+      control: 'boolean',
+      description: 'Shows the spinner and sets `aria-busy`; change it with `setLoading()`',
+    },
     autoFocus: {
       control: {type: 'select', labels: {true: 'true', false: 'false'}},
       options: AUTO_FOCUS_OPTIONS,
-      description:
-        'Initial focus: `first-heading` (title), `first-tabbable`, `dialog` (the dialog element), `true` (`cdkFocusInitial` element, else first tabbable), `false` (dialog element)',
+      // @dprint-ignore
+      description: 'Initial focus: `first-heading` (title), `first-tabbable`, `dialog` (the dialog element), `true` (`cdkFocusInitial` element, else first tabbable), `false` (dialog element)',
     },
     closeButtonAriaLabel: {control: 'text', description: 'Accessible name of the close button'},
     ariaLabel: {
@@ -146,13 +149,15 @@ const meta: Meta<DialogStoryArgs> = {
     closeButtonAriaLabel: 'Close',
     ariaLabel: '',
   },
-  render: (args) => ({
-    props: {
-      afterClosed: args.afterClosed,
-      open: openDialogWith(NdwuDialogContainerComponent, dialogConfig(args)),
-    },
-    template: modalOpener('Open dialog', 'open'),
-  }),
+  render: (args) => {
+    return {
+      props: {
+        afterClosed: args.afterClosed,
+        open: openDialogWith(NdwuDialogContainerComponent, dialogConfig(args)),
+      },
+      template: modalOpener('Open dialog', 'open'),
+    };
+  },
 };
 
 export default meta;
@@ -193,10 +198,12 @@ export const AlertAndConfirm: Story = {
     'System dialogs: `alert()` closes with `undefined`, `confirm()` with `true` or `false` (`undefined` after Escape). Their configs have no `injector`, so their buttons keep the default size.',
   ),
   decorators: [withRowLayout],
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openAlert, openConfirm},
-    template: lines([modalOpener('Show alert', 'openAlert'), modalOpener('Delete item', 'openConfirm')]),
-  }),
+  render: (args) => {
+    return {
+      props: {afterClosed: args.afterClosed, openAlert, openConfirm},
+      template: lines([modalOpener('Show alert', 'openAlert'), modalOpener('Delete item', 'openConfirm')]),
+    };
+  },
 };
 
 const FORM_TITLE = 'Contact form';
@@ -219,10 +226,12 @@ export const WithForm: Story = {
     ),
     sizes: FIELD_SIZES,
   },
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openForm},
-    template: modalOpener('Open form dialog', 'openForm'),
-  }),
+  render: (args) => {
+    return {
+      props: {afterClosed: args.afterClosed, openForm},
+      template: modalOpener('Open form dialog', 'openForm'),
+    };
+  },
 };
 
 const SLOTS_TEMPLATE = `<ng-template #slotsDialog let-modalRef="modalRef">
@@ -267,6 +276,7 @@ const SCROLLABLE_TEMPLATE_CONFIG: NdwuDialogConfig = {
   height: '80vh',
 };
 
+// Builds the opener's open function: openTemplate() needs the template bound with [template] on sb-modal-opener and its ViewContainerRef
 const openTemplateWith = (config: NdwuDialogConfig): SbModalOpenFn => {
   return ({modal, injector, viewContainerRef, template}) => {
     if (template === null) {
@@ -280,6 +290,9 @@ const openTemplateWith = (config: NdwuDialogConfig): SbModalOpenFn => {
 const openSlots = openTemplateWith(SLOTS_CONFIG);
 const openScrollableTemplate = openTemplateWith(SCROLLABLE_TEMPLATE_CONFIG);
 
+// "Show code" of TemplateApi: a component source built from the same templates and configs the story renders.
+// Backticks are escaped because the component `template` is itself a template literal;
+// objectSource(config, 3) prints the config at the indent of `config:`.
 const TEMPLATE_API_SOURCE = `@Component({
   imports: [
     NdwuButtonComponent,
@@ -339,15 +352,17 @@ export const TemplateApi: Story = {
       ],
     }),
   ],
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openSlots, openScrollableTemplate},
-    template: lines([
-      SLOTS_TEMPLATE,
-      SCROLLABLE_TEMPLATE,
-      modalOpener('Open template dialog', 'openSlots', 'slotsDialog'),
-      modalOpener('Open scrollable template dialog', 'openScrollableTemplate', 'scrollableDialog'),
-    ]),
-  }),
+  render: (args) => {
+    return {
+      props: {afterClosed: args.afterClosed, openSlots, openScrollableTemplate},
+      template: lines([
+        SLOTS_TEMPLATE,
+        SCROLLABLE_TEMPLATE,
+        modalOpener('Open template dialog', 'openSlots', 'slotsDialog'),
+        modalOpener('Open scrollable template dialog', 'openScrollableTemplate', 'scrollableDialog'),
+      ]),
+    };
+  },
 };
 
 const CUSTOM_SLOTS_CONFIG: NdwuDialogConfig = {
@@ -362,12 +377,14 @@ const openCustomSlots = openDialogWith(SbModalCustomSlotsComponent, CUSTOM_SLOTS
 export const ComponentSlots: Story = {
   parameters: modalStoryParameters(
     modalSource('openDialog', CUSTOM_SLOTS_CONFIG, 'CustomSlotsComponent'),
-    '`*ndwuModalHeader` and `*ndwuModalFooter` in the content render in the container header and footer, outside the scrolling body. Set `ariaLabel` (or `ariaLabelledby`) when the default title is replaced. Closes with `true` (Save) or `false`. Content code: `.storybook/demos/modal-custom-slots.component.ts`.',
+    '`*ndwuModalHeader` and `*ndwuModalFooter` in the content render in the container header and footer, outside the scrolling body. Set `ariaLabel` (or `ariaLabelledby`) when the default title is replaced. Closes with `true` (Save) or `false`. Content code: `.storybook/demos/modal-custom-slots.component.ts` / `.html`.',
   ),
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openCustomSlots},
-    template: modalOpener('Open dialog with custom slots', 'openCustomSlots'),
-  }),
+  render: (args) => {
+    return {
+      props: {afterClosed: args.afterClosed, openCustomSlots},
+      template: modalOpener('Open dialog with custom slots', 'openCustomSlots'),
+    };
+  },
 };
 
 const USERS = [
@@ -390,10 +407,12 @@ export const ReturningResult: Story = {
     modalSource('openDialog', RESULT_CONFIG, 'NdwuDialogContainerComponent'),
     'A footer button with `result` closes the dialog with that value; `afterClosed$` emits it.',
   ),
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openResult},
-    template: modalOpener('Select a user', 'openResult'),
-  }),
+  render: (args) => {
+    return {
+      props: {afterClosed: args.afterClosed, openResult},
+      template: modalOpener('Select a user', 'openResult'),
+    };
+  },
 };
 
 const SCROLLABLE_CONFIG: NdwuDialogConfig = {
@@ -409,10 +428,12 @@ export const Scrollable: Story = {
     modalSource('openDialog', SCROLLABLE_CONFIG, 'LongTextComponent'),
     'Content taller than `maxHeight` (`90vh` by default) scrolls inside the body; the header and footer stay.',
   ),
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openScrollable},
-    template: modalOpener('Open long text', 'openScrollable'),
-  }),
+  render: (args) => {
+    return {
+      props: {afterClosed: args.afterClosed, openScrollable},
+      template: modalOpener('Open long text', 'openScrollable'),
+    };
+  },
 };
 
 const GROWING_CONFIG: NdwuDialogConfig = {
@@ -428,10 +449,12 @@ export const AutoHeight: Story = {
     modalSource('openDialog', GROWING_CONFIG, 'GrowingContentComponent'),
     'Without `height` the dialog grows with its content up to `maxHeight`, then the body scrolls.',
   ),
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openGrowing},
-    template: modalOpener('Open growing dialog', 'openGrowing'),
-  }),
+  render: (args) => {
+    return {
+      props: {afterClosed: args.afterClosed, openGrowing},
+      template: modalOpener('Open growing dialog', 'openGrowing'),
+    };
+  },
 };
 
 const SMALL_CONFIG: NdwuDialogConfig = {
@@ -470,17 +493,19 @@ export const Sizes: Story = {
       modalSource('openDialog', NARROW_CONFIG, 'NdwuDialogContainerComponent'),
       modalSource('openDialog', WIDE_CONFIG, 'LongTextComponent'),
     ),
-    "Size fields take CSS lengths and set the content box: the dialog adds 24px padding left and right and 32px top and bottom, and `minWidth` defaults to 300px. On phones the dialog spans the full width at the bottom of the screen, as tall as its content; the size fields don't apply.",
+    'Size fields take CSS lengths and set the content box: the dialog adds 24px padding left and right and 32px top and bottom, and `minWidth` defaults to 300px. On phones the dialog spans the full width at the bottom of the screen, as tall as its content; the size fields don\'t apply.',
   ),
   decorators: [withRowLayout],
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openSmall, openNarrow, openWide},
-    template: lines([
-      modalOpener('Small', 'openSmall'),
-      modalOpener('Narrow', 'openNarrow'),
-      modalOpener('Wide', 'openWide'),
-    ]),
-  }),
+  render: (args) => {
+    return {
+      props: {afterClosed: args.afterClosed, openSmall, openNarrow, openWide},
+      template: lines([
+        modalOpener('Small', 'openSmall'),
+        modalOpener('Narrow', 'openNarrow'),
+        modalOpener('Wide', 'openWide'),
+      ]),
+    };
+  },
 };
 
 const AUTO_FOCUS_HEADING_CONFIG: NdwuDialogConfig = {
@@ -526,15 +551,23 @@ export const FocusManagement: Story = {
     '`autoFocus` picks the first focus: the title (`first-heading`, default), the first tabbable element, or with `true` the element marked `cdkFocusInitial`. `trapFocus: false` lets Tab leave the dialog. `restoreFocus` returns focus to the opener. Content code of Custom focus: `.storybook/demos/modal-initial-focus.component.ts`.',
   ),
   decorators: [withRowLayout],
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openAutoFocusHeading, openNoFocusTrap, openFirstTabbable, openInitialFocus},
-    template: lines([
-      modalOpener('Auto focus on header (default)', 'openAutoFocusHeading'),
-      modalOpener('No focus trap', 'openNoFocusTrap'),
-      modalOpener('Auto focus on first tabbable', 'openFirstTabbable'),
-      modalOpener('Custom focus', 'openInitialFocus'),
-    ]),
-  }),
+  render: (args) => {
+    return {
+      props: {
+        afterClosed: args.afterClosed,
+        openAutoFocusHeading,
+        openNoFocusTrap,
+        openFirstTabbable,
+        openInitialFocus,
+      },
+      template: lines([
+        modalOpener('Auto focus on header (default)', 'openAutoFocusHeading'),
+        modalOpener('No focus trap', 'openNoFocusTrap'),
+        modalOpener('Auto focus on first tabbable', 'openFirstTabbable'),
+        modalOpener('Custom focus', 'openInitialFocus'),
+      ]),
+    };
+  },
 };
 
 const LOADING_TITLE = 'Loading state';
@@ -590,10 +623,12 @@ export const LoadingState: Story = {
     LOADING_SOURCE,
     '`isLoading` and `setLoading()` show the spinner and set `aria-busy`. A button with `onClick` runs it and does not close the dialog.',
   ),
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openLoading},
-    template: modalOpener('Simulate async', 'openLoading'),
-  }),
+  render: (args) => {
+    return {
+      props: {afterClosed: args.afterClosed, openLoading},
+      template: modalOpener('Simulate async', 'openLoading'),
+    };
+  },
 };
 
 const ASYNC_CONFIG: NdwuDialogConfig = {
@@ -617,7 +652,9 @@ const openAsync: SbModalOpenFn = ({modal, injector}) => {
   return ref;
 };
 
-const ASYNC_SOURCE = `const ref = this.modalService.openDialog(NdwuDialogContainerComponent, ${objectSource(ASYNC_CONFIG)});
+const ASYNC_SOURCE = `const ref = this.modalService.openDialog(NdwuDialogContainerComponent, ${
+  objectSource(ASYNC_CONFIG)
+});
 
 const timerId = setTimeout(() => {
   ref.setTitle(${objectSource(ASYNC_TITLE)});
@@ -631,10 +668,12 @@ export const AsyncTitleAndDescription: Story = {
     ASYNC_SOURCE,
     '`setTitle()` and `setDescription()` change the header of an open dialog, e.g. after data loads.',
   ),
-  render: (args) => ({
-    props: {afterClosed: args.afterClosed, openAsync},
-    template: modalOpener('Open async title/description dialog', 'openAsync'),
-  }),
+  render: (args) => {
+    return {
+      props: {afterClosed: args.afterClosed, openAsync},
+      template: modalOpener('Open async title/description dialog', 'openAsync'),
+    };
+  },
 };
 
 export const OpenedForAccessibility: Story = {

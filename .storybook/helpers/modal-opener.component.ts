@@ -48,7 +48,8 @@ export class SbModalOpenerComponent {
   }
 
   protected openModal(): void {
-    const ref = this.open()({
+    const open = this.open();
+    const ref = open({
       modal: this.modal,
       injector: this.injector,
       viewContainerRef: this.viewContainerRef,

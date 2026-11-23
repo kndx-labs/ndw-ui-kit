@@ -1,0 +1,12 @@
+@use 'styles/padding' as padding;
+@use 'styles/spacing' as spacing;
+
+:host {
+  display: block;
+}
+
+.form {
+  display: block;
+  margin: spacing.$spacing-4 0 spacing.$spacing-16;
+  padding: padding.$padding-2;
+}

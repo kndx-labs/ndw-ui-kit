@@ -78,7 +78,7 @@ export class NdwuPopoverTriggerDirective implements OnDestroy {
   /** Additional DI providers for overlay (template-driven). */
   public readonly popoverProviders = input<Provider[]>([]);
 
-  /** CSS class(es) for overlay pane. Fallback: trigger defaults token, then []. */
+  /** Additional CSS class(es) for overlay pane, added alongside the controller's kit panel class. Fallback: trigger defaults token, then []. */
   public readonly popoverClass = input<string | string[] | undefined>(undefined);
 
   /** Min width for desktop floating element. Default: 0. */

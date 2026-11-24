@@ -37,6 +37,7 @@ export interface NdwuModalBaseConfig<ModalData = unknown> {
   ariaLabel?: string;
   ariaLabelledby?: string;
   buttons?: readonly NdwuModalButton[];
+  /** Additional panel class(es), applied alongside the kit's dialog or drawer panel class. */
   panelClass?: string | string[];
   backdropClass?: string;
   disableClose?: boolean;

@@ -3,7 +3,7 @@ import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {textArgType} from '@sb/helpers/arg-types';
 import {withNarrowLayout, withStackLayout} from '@sb/helpers/story-layout';
-import {lines} from '@sb/helpers/story-template';
+import {dedent, lines} from '@sb/helpers/story-template';
 import {withTranslations} from '@sb/helpers/story-translations';
 
 type Story = StoryObj<NdwuNotificationComponent>;
@@ -98,10 +98,12 @@ export const Variants: Story = {
   render: () => ({
     template: lines(
       VARIANT_EXAMPLES.map(({variant, message}) => {
-        return `<ndwu-notification
+        return dedent(
+          `<ndwu-notification
                   variant="${variant}"
                   message="${message}"
-                />`;
+                />`,
+        );
       }),
     ),
   }),
@@ -113,11 +115,13 @@ export const WithHeader: Story = {
   render: () => ({
     template: lines(
       HEADER_VARIANT_EXAMPLES.map(({variant, header, message}) => {
-        return `<ndwu-notification
-                  variant="${variant}"
-                  header="${header}"
-                  message="${message}"
-                />`;
+        return dedent(
+          `<ndwu-notification
+                      variant="${variant}"
+                      header="${header}"
+                      message="${message}"
+                    />`,
+        );
       }),
     ),
   }),
@@ -135,10 +139,12 @@ export const LongText: Story = {
   },
   decorators: [withNarrowLayout],
   render: () => ({
-    template: `<ndwu-notification
+    template: dedent(
+      `<ndwu-notification
                 header="Important information"
                 message="${LONG_TEXT}"
               />`,
+    ),
   }),
 };
 

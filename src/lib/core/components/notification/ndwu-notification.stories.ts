@@ -13,6 +13,10 @@ interface VariantExample {
   message: string;
 }
 
+interface HeaderVariantExample extends VariantExample {
+  header: string;
+}
+
 const VARIANTS = Object.values(NDWU_NOTIFICATION_VARIANT);
 const FIXED_STORY_PARAMETERS = {controls: {disable: true}};
 
@@ -21,6 +25,13 @@ const VARIANT_EXAMPLES: readonly VariantExample[] = [
   {variant: NDWU_NOTIFICATION_VARIANT.SUCCESS, message: 'Success notification'},
   {variant: NDWU_NOTIFICATION_VARIANT.WARNING, message: 'Warning notification'},
   {variant: NDWU_NOTIFICATION_VARIANT.ERROR, message: 'Error notification'},
+];
+
+const HEADER_VARIANT_EXAMPLES: readonly HeaderVariantExample[] = [
+  {variant: NDWU_NOTIFICATION_VARIANT.INFO, header: 'Info header', message: 'Info notification'},
+  {variant: NDWU_NOTIFICATION_VARIANT.SUCCESS, header: 'Success header', message: 'Success notification'},
+  {variant: NDWU_NOTIFICATION_VARIANT.WARNING, header: 'Warning header', message: 'Warning notification'},
+  {variant: NDWU_NOTIFICATION_VARIANT.ERROR, header: 'Error header', message: 'Error notification'},
 ];
 
 const LONG_TEXT = [
@@ -43,7 +54,8 @@ const meta: Meta<NdwuNotificationComponent> = {
   parameters: {
     docs: {
       description: {
-        component: 'Inline message with a variant icon and background; `message` is text, HTML or a translation key.',
+        // @dprint-ignore
+        component: 'Inline message with a variant icon and background; optional `header` and `message` accept text, HTML or a translation key.',
       },
       source: {
         transform: argsSourceTransform,
@@ -56,14 +68,18 @@ const meta: Meta<NdwuNotificationComponent> = {
       options: VARIANTS,
       description: 'Background colour and icon',
     },
-    message: textArgType([
-      'Text, HTML or a translation key, passed through `localizeHtml`.',
-      'A plain string is sanitized: safe tags stay, `style` attributes and scripts are removed.',
-      'A key resolved by the app\'s `NdwuTranslationService`, or a `SafeHtml` value, is trusted',
-    ].join(' ')),
+    message: textArgType(
+      [
+        'Text, HTML or a translation key, passed through `localizeHtml`.',
+        'A plain string is sanitized: safe tags stay, `style` attributes and scripts are removed.',
+        'A key resolved by the app\'s `NdwuTranslationService`, or a `SafeHtml` value, is trusted',
+      ].join(' '),
+    ),
+    header: textArgType('Text, HTML or a translation key through `localizeHtml`; not rendered when empty.'),
   },
   args: {
     variant: NDWU_NOTIFICATION_VARIANT.INFO,
+    header: '',
     message: 'This is a notification message',
   },
   render: (args) => ({
@@ -81,7 +97,28 @@ export const Variants: Story = {
   decorators: [withStackLayout],
   render: () => ({
     template: lines(
-      VARIANT_EXAMPLES.map(({variant, message}) => `<ndwu-notification variant="${variant}" message="${message}" />`),
+      VARIANT_EXAMPLES.map(({variant, message}) => {
+        return `<ndwu-notification
+                  variant="${variant}"
+                  message="${message}"
+                />`;
+      }),
+    ),
+  }),
+};
+
+export const WithHeader: Story = {
+  parameters: FIXED_STORY_PARAMETERS,
+  decorators: [withStackLayout],
+  render: () => ({
+    template: lines(
+      HEADER_VARIANT_EXAMPLES.map(({variant, header, message}) => {
+        return `<ndwu-notification
+                  variant="${variant}"
+                  header="${header}"
+                  message="${message}"
+                />`;
+      }),
     ),
   }),
 };
@@ -91,13 +128,17 @@ export const LongText: Story = {
     ...FIXED_STORY_PARAMETERS,
     docs: {
       description: {
-        story: 'Long text wraps and the icon stays at the top. The 200 px box comes from the story layout.',
+        // @dprint-ignore
+        story: 'The header and long message wrap while the icon stays aligned at the top. The 200 px box comes from the story layout.',
       },
     },
   },
   decorators: [withNarrowLayout],
   render: () => ({
-    template: `<ndwu-notification message="${LONG_TEXT}" />`,
+    template: `<ndwu-notification
+                header="Important information"
+                message="${LONG_TEXT}"
+              />`,
   }),
 };
 

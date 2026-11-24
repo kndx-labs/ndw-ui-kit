@@ -3,9 +3,19 @@
     [name]="variantIcon()"
     class="ndwu-notification__icon"
   />
-  <span
-    class="ndwu-notification__message"
-    [innerHTML]="message() | localizeHtml"
-  >
-  </span>
+  <div class="ndwu-notification__content">
+    @if (header()) {
+      <span
+        class="ndwu-notification__header"
+        [innerHTML]="header() | localizeHtml"
+      >
+      </span>
+    }
+
+    <span
+      class="ndwu-notification__message"
+      [innerHTML]="message() | localizeHtml"
+    >
+    </span>
+  </div>
 </div>

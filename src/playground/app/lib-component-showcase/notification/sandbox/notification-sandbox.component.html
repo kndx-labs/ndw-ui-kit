@@ -27,6 +27,7 @@
       >
         <ndwu-notification
           [variant]="previewVariant"
+          [header]="previewHeader"
           [message]="previewMessage"
         />
       </div>
@@ -50,6 +51,21 @@
               <option [ngValue]="NOTIFICATION_VARIANT.WARNING">{{ 'notification-showcase.warning' | localize }}</option>
               <option [ngValue]="NOTIFICATION_VARIANT.ERROR">{{ 'notification-showcase.error' | localize }}</option>
             </select>
+          </div>
+
+          <div class="sandbox__control-row">
+            <label
+              class="sandbox__control-label"
+              for="sandbox-header"
+            >
+              {{ 'notification-showcase.sandbox.header' | localize }}
+            </label>
+            <input
+              id="sandbox-header"
+              class="sandbox__control-input"
+              type="text"
+              formControlName="header"
+            />
           </div>
 
           <div class="sandbox__control-row">

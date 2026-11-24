@@ -21,6 +21,15 @@
     </div>
 
     <div class="notification-section">
+      <h4>{{ 'notification-showcase.header-example' | localize }}</h4>
+      <ndwu-notification
+        [variant]="NOTIFICATION_VARIANT.INFO"
+        [header]="'notification-showcase.default-header' | localize"
+        [message]="'notification-showcase.default-message' | localize"
+      />
+    </div>
+
+    <div class="notification-section">
       <h4>{{ 'notification-showcase.long-text' | localize }}</h4>
       <div class="notification-short-width">
         <ndwu-notification

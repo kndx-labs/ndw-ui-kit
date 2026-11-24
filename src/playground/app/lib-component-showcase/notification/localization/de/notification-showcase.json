@@ -6,11 +6,14 @@
     },
     "sandbox": {
       "variant": "Variante",
+      "header": "Überschrift",
       "message": "Nachricht",
       "tokens": "Tokens",
       "inherit": "Vererben"
     },
     "variants": "Varianten",
+    "header-example": "Mit Überschrift",
+    "default-header": "Wichtige Information",
     "info": "Info-Benachrichtigung",
     "success": "Erfolgsbenachrichtigung",
     "warning": "Warnungsbenachrichtigung",

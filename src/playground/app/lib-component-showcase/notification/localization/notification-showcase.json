@@ -6,11 +6,14 @@
     },
     "sandbox": {
       "variant": "Variant",
+      "header": "Header",
       "message": "Message",
       "tokens": "Tokens",
       "inherit": "Inherit"
     },
     "variants": "Variants",
+    "header-example": "With a header",
+    "default-header": "Important information",
     "info": "Info notification",
     "success": "Success notification",
     "warning": "Warning notification",

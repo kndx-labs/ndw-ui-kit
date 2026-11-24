@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, booleanAttribute, computed, inject, input} from '@angular/core';
 import {NDWU_ICON_SPRITE_CONFIG} from '../../tokens';
+import {createCoreSpritePath} from '../../tokens/sprite-path';
 import {ensureAvailableIconName, extractDimsClass, iconNameTransform} from './ndwu-icon.helpers';
 
 @Component({
@@ -31,7 +32,7 @@ export class NdwuIconComponent {
     const iconName = this.effectiveName();
     const source = config.sources.find((entry) => entry.iconNames.includes(iconName));
 
-    return `${source?.path ?? config.sources[0]?.path ?? 'assets/ndw-ui-kit.sprite.svg'}#${iconName}`;
+    return `${source?.path ?? config.sources[0]?.path ?? createCoreSpritePath()}#${iconName}`;
   });
 
   protected readonly rootClass = computed(() => {

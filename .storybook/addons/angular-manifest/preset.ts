@@ -10,6 +10,7 @@ import {readEntryPoints, readPathAliases} from './entry-points.js';
 import {HostSelector, hostMarkup, parseSelectors, preferredSelector} from './selector.js';
 import {buildSnippet, readPath, storyPackages} from './snippet.js';
 import {StaticEvaluator, Unresolvable} from './static-eval.js';
+import {TypeSources} from './type-source.js';
 
 interface StoryManifest {
   id: string;
@@ -46,6 +47,7 @@ interface BuildContext {
   data: CompodocData;
   values: CompodocValues;
   evaluator: StaticEvaluator;
+  typeSources: TypeSources;
   entryPoints: Map<string, string>;
 }
 
@@ -174,7 +176,9 @@ const componentManifest = (
       selectors,
       hostFallback,
       values: context.values,
+      typeSources: context.typeSources,
       argTypes: readPath(meta, ['argTypes']),
+      importLine: null,
     }),
     stories: buildStories(entries, file, csf, meta, host, context),
   };
@@ -239,6 +243,7 @@ const isKitSelector = (selectors: HostSelector[]): boolean => {
 const apiOnlyManifest = (component: CompodocClass, entryPoint: string, context: BuildContext): ComponentManifest => {
   const id = `api-${entrySegment(entryPoint)}-${kebabName(component.name)}`;
   const path = `./${component.file}`;
+  const importLine = `import { ${component.name} } from '${entryPoint}';`;
 
   try {
     const summary = summarize(component.description) ?? component.name;
@@ -249,14 +254,16 @@ const apiOnlyManifest = (component: CompodocClass, entryPoint: string, context: 
       path,
       ...(component.description ? {description: component.description} : {}),
       summary: `${API_ONLY_PREFIX} ${summary}`,
-      import: `import { ${component.name} } from '${entryPoint}';`,
+      import: importLine,
       ...(component.deprecated === null ? {} : {jsDocTags: {deprecated: [component.deprecated]}}),
       apiDescription: buildApiDescription({
         component,
         selectors: parseSelectors(component.selector),
         hostFallback: 'div',
         values: context.values,
+        typeSources: context.typeSources,
         argTypes: undefined,
+        importLine,
       }),
       stories: [],
     };
@@ -298,7 +305,8 @@ const build = async (configDir: string, entries: StoryIndexEntry[]): Promise<Bui
 
   library.variable = (name) => values.variable(name);
 
-  const context: BuildContext = {rootDir, data, values, evaluator, entryPoints: readEntryPoints(configDir)};
+  const typeSources = new TypeSources(rootDir, data.typeFiles);
+  const context: BuildContext = {rootDir, data, values, evaluator, typeSources, entryPoints: readEntryPoints(configDir)};
   const groups = new Map<string, StoryIndexEntry[]>();
 
   for (const entry of entries) {
@@ -320,7 +328,7 @@ const build = async (configDir: string, entries: StoryIndexEntry[]): Promise<Bui
   const covered = new Set(Object.values(components).map((component) => component.name));
   const storyFiles = entries.map((entry) => resolve(rootDir, entry.importPath));
 
-  return {components: {...components, ...apiOnlyComponents(covered, context)}, files: [...new Set([compodocPath, ...storyFiles, ...evaluator.files])]};
+  return {components: {...components, ...apiOnlyComponents(covered, context)}, files: [...new Set([compodocPath, ...storyFiles, ...evaluator.files, ...typeSources.files])]};
 };
 
 const stamp = async (files: string[]): Promise<string> => {

@@ -2,14 +2,24 @@ import {CompodocClass, CompodocMember, CompodocValues, literal} from './compodoc
 import {HostSelector, describeSelector, hostMarkup, preferredSelector} from './selector.js';
 import {readPath} from './snippet.js';
 import {Unresolvable} from './static-eval.js';
+import {TypeSources} from './type-source.js';
 
 export interface ApiDescriptionInput {
   component: CompodocClass;
   selectors: HostSelector[];
   hostFallback: string;
   values: CompodocValues;
+  typeSources: TypeSources;
   argTypes: unknown;
+  importLine: string | null;
 }
+
+interface TypeReference {
+  name: string;
+  nested: boolean;
+}
+
+const MAX_REFERENCED_TYPES = 8;
 
 const FORM_CONTROL_NOTE = [
   '**Form control:** bind it with `[formControl]` / `formControlName` (ReactiveFormsModule)',
@@ -88,6 +98,49 @@ const typeBlock = (title: string, typeName: string, lines: string[]): string[] =
   return [`## ${title}`, '', '```ts', `export type ${typeName} = {`, ...lines, '};', '```', ''];
 };
 
+const typeNames = (code: string): string[] => {
+  return code.match(/\b[A-Z]\w*/g) ?? [];
+};
+
+const referencedTypes = ({typeSources, values}: ApiDescriptionInput, roots: string[]): string[] => {
+  const declarations: string[] = [];
+  const seen = new Set<string>();
+  const queue: TypeReference[] = roots.flatMap(typeNames).map((name) => ({name, nested: false}));
+
+  for (let next = queue.shift(); next && declarations.length < MAX_REFERENCED_TYPES; next = queue.shift()) {
+    const {name, nested} = next;
+
+    if (seen.has(name) || !typeSources.has(name)) {
+      continue;
+    }
+
+    seen.add(name);
+
+    const formatted = values.formatType(name);
+
+    if (formatted.note !== null) {
+      continue;
+    }
+
+    if (formatted.text !== name) {
+      if (nested) {
+        declarations.push(`export type ${name} = ${formatted.text};`);
+      }
+
+      continue;
+    }
+
+    const declaration = typeSources.declaration(name);
+
+    if (declaration) {
+      declarations.push(declaration);
+      queue.push(...typeNames(declaration).map((nestedName) => ({name: nestedName, nested: true})));
+    }
+  }
+
+  return declarations;
+};
+
 const usage = ({component, selectors, hostFallback}: ApiDescriptionInput): string | null => {
   const preferred = preferredSelector(selectors);
 
@@ -109,11 +162,21 @@ const usage = ({component, selectors, hostFallback}: ApiDescriptionInput): strin
 };
 
 export const buildApiDescription = (input: ApiDescriptionInput): string => {
-  const {component, selectors, hostFallback} = input;
+  const {component, selectors, hostFallback, typeSources, importLine} = input;
+  const typeParameters = typeSources.typeParameters(component.file, component.name) ?? '';
   const typeName = typeBaseName(component.name);
   const selector = describeSelector(selectors, hostFallback);
   const usageLine = usage(input);
+  const types = referencedTypes(input, [
+    typeParameters,
+    ...component.inputs.map((item) => item.type),
+    ...component.outputs.map((item) => item.type),
+  ]);
   const parts: string[] = [];
+
+  if (importLine) {
+    parts.push(`**Import:** \`${importLine}\``, '');
+  }
 
   if (selector) {
     parts.push(selector, '');
@@ -128,11 +191,15 @@ export const buildApiDescription = (input: ApiDescriptionInput): string => {
   }
 
   if (component.inputs.length > 0) {
-    parts.push(...typeBlock('Inputs', `${typeName}Inputs`, component.inputs.flatMap((item) => inputLines(item, input))));
+    parts.push(...typeBlock('Inputs', `${typeName}Inputs${typeParameters}`, component.inputs.flatMap((item) => inputLines(item, input))));
   }
 
   if (component.outputs.length > 0) {
-    parts.push(...typeBlock('Outputs', `${typeName}Outputs`, component.outputs.flatMap((item) => outputLines(item, input))));
+    parts.push(...typeBlock('Outputs', `${typeName}Outputs${typeParameters}`, component.outputs.flatMap((item) => outputLines(item, input))));
+  }
+
+  if (types.length > 0) {
+    parts.push('## Types', '', '```ts', types.join('\n\n'), '```', '');
   }
 
   return parts.join('\n').trim();

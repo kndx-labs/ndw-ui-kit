@@ -34,6 +34,7 @@ export interface CompodocData {
   classes: Map<string, CompodocClass>;
   variables: Map<string, CompodocVariable>;
   typeAliases: Map<string, string>;
+  typeFiles: Map<string, string>;
 }
 
 export interface FormattedType {
@@ -195,12 +196,18 @@ export const readCompodoc = async (path: string): Promise<CompodocData> => {
   }
 
   const typeAliases = new Map<string, string>();
+  const typeFiles = new Map<string, string>();
 
   for (const [name, raw] of byName(list(miscellaneous.typealiases))) {
     typeAliases.set(name, text(raw.rawtype));
+    typeFiles.set(name, text(raw.file));
   }
 
-  return {classes, variables, typeAliases};
+  for (const [name, raw] of byName(list(json.interfaces))) {
+    typeFiles.set(name, text(raw.file));
+  }
+
+  return {classes, variables, typeAliases, typeFiles};
 };
 
 export const literal = (value: unknown): string | null => {

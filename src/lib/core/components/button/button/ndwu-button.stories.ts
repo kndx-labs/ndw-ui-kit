@@ -217,6 +217,7 @@ const PRIMARY_XL_SPEC = {
 };
 
 export const DesignSpec: Story = {
+  tags: ['!autodocs'],
   parameters: FIXED_STORY_PARAMETERS,
   globals: {theme: 'light', size: NDWU_SIZE.XL},
   render: () => ({

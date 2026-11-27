@@ -6,6 +6,7 @@ import {withCssTokens} from './decorators/with-css-tokens.decorator';
 import {withLiveSource} from './decorators/with-live-source.decorator';
 import docJson from './documentation.json';
 import {STORYBOOK_PROVIDERS} from './providers';
+import {ThemedDocsContainer} from './theming/themed-docs-container';
 
 setCompodocJson(docJson);
 
@@ -39,6 +40,7 @@ const preview: Preview = {
       },
     },
     docs: {
+      container: ThemedDocsContainer,
       codePanel: true,
       source: {
         excludeDecorators: true,

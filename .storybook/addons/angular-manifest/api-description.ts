@@ -1,4 +1,4 @@
-import {CompodocClass, CompodocMember, CompodocValues, literal} from './compodoc.js';
+import {CompodocClass, CompodocMember, CompodocValues, literal, splitUnion} from './compodoc.js';
 import {HostSelector, describeSelector, hostMarkup, preferredSelector} from './selector.js';
 import {readPath} from './snippet.js';
 import {Unresolvable} from './static-eval.js';
@@ -141,21 +141,36 @@ const referencedTypes = ({typeSources, values}: ApiDescriptionInput, roots: stri
   return declarations;
 };
 
-const usage = ({component, selectors, hostFallback}: ApiDescriptionInput): string | null => {
+const isStringType = (type: string): boolean => {
+  const members = splitUnion(type).filter((member) => member !== 'null' && member !== 'undefined');
+
+  return members.length > 0 && members.every((member) => member === 'string' || /^(["']).*\1$/s.test(member));
+};
+
+const usage = ({component, selectors, hostFallback, values}: ApiDescriptionInput): string | null => {
   const preferred = preferredSelector(selectors);
 
   if (!preferred) {
     return null;
   }
 
-  const required = component.inputs.filter((input) => input.required).map((input) => input.name);
+  const required = new Map(
+    component.inputs
+      .filter((input) => input.required)
+      .map((input) => [input.name, isStringType(values.formatType(input.type || 'unknown').text)]),
+  );
+  const binding = (name: string, isString: boolean): string => (isString ? name : `[${name}]`);
   const host = {
     ...preferred,
-    attrs: preferred.attrs.map((attr) => ({...attr, value: attr.value || (required.includes(attr.name) ? '…' : '')})),
+    attrs: preferred.attrs.map((attr) => {
+      const isString = required.get(attr.name);
+
+      return attr.value || isString === undefined ? attr : {name: binding(attr.name, isString), value: '…'};
+    }),
   };
-  const extra = required
-    .filter((name) => !preferred.attrs.some((attr) => attr.name === name))
-    .map((name) => `${name}="…"`)
+  const extra = [...required]
+    .filter(([name]) => !preferred.attrs.some((attr) => attr.name === name))
+    .map(([name, isString]) => `${binding(name, isString)}="…"`)
     .join(' ');
 
   return `**Usage:** \`${hostMarkup(host, hostFallback, extra)}\``;

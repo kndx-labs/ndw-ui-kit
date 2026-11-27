@@ -39,6 +39,7 @@ interface ComponentsManifest {
 
 interface ManifestsOptions {
   configDir: string;
+  configType?: string;
   manifestEntries: IndexEntry[];
 }
 
@@ -191,14 +192,17 @@ const buildComponent = async (
 ): Promise<ComponentManifest | null> => {
   const [first] = entries;
   const file = resolve(context.rootDir, first.importPath);
-  const code = await readFile(file, 'utf8');
-  const componentName = loadCsf(code, {makeTitle: (title) => title, fileName: file}).parse().meta?.component;
-
-  if (!componentName) {
-    return null;
-  }
+  let componentName: string | undefined;
 
   try {
+    const code = await readFile(file, 'utf8');
+
+    componentName = loadCsf(code, {makeTitle: (title) => title, fileName: file}).parse().meta?.component;
+
+    if (!componentName) {
+      return null;
+    }
+
     const component = context.data.classes.get(componentName);
 
     if (!component) {
@@ -211,7 +215,7 @@ const buildComponent = async (
 
     logger.warn(`angular-manifest: ${id} failed: ${message}`);
 
-    return {id, name: componentName, path: first.importPath, error: {name, message}};
+    return {id, name: componentName ?? id, path: first.importPath, error: {name, message}};
   }
 };
 
@@ -366,9 +370,22 @@ const cachedBuild = async (configDir: string, entries: StoryIndexEntry[]): Promi
 
 export const experimental_manifests = async (
   existing: Record<string, unknown> | undefined,
-  {configDir, manifestEntries}: ManifestsOptions,
+  {configDir, configType, manifestEntries}: ManifestsOptions,
 ): Promise<Record<string, unknown>> => {
-  const {components} = await cachedBuild(configDir, manifestEntries.filter(isStory));
+  let components: Record<string, ComponentManifest>;
+
+  try {
+    ({components} = await cachedBuild(configDir, manifestEntries.filter(isStory)));
+  } catch (error) {
+    logger.error(`angular-manifest: manifest build failed: ${error instanceof Error ? error.message : String(error)}`);
+
+    if (configType === 'PRODUCTION') {
+      process.exitCode = 1;
+    }
+
+    throw error;
+  }
+
   const previous = (existing?.components as ComponentsManifest | undefined)?.components ?? {};
   const manifest: ComponentsManifest = {v: 0, components: {...previous, ...components}};
 

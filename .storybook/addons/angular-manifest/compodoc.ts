@@ -118,20 +118,42 @@ const isFormControl = (raw: Json, all: Map<string, Json>, depth = 0): boolean =>
   });
 };
 
-const hostDirectiveMembers = (raw: Json, directives: Map<string, Json>, key: 'inputs' | 'outputs'): CompodocMember[] => {
+const externalMember = (name: string, source: string): CompodocMember => {
+  return {
+    name,
+    type: 'unknown',
+    defaultValue: null,
+    required: false,
+    description: `Forwarded from \`${source}\` of an external host directive.`,
+    deprecated: null,
+  };
+};
+
+const hostDirectiveMembers =(raw: Json, directives: Map<string, Json>, key: 'inputs' | 'outputs'): CompodocMember[] => {
   const classKey = key === 'inputs' ? 'inputsClass' : 'outputsClass';
 
   return list(raw.hostDirectives).flatMap((host) => {
-    const directive = directives.get(text(host.name));
+    const hostName = text(host.name);
+    const directive = directives.get(hostName);
     const members = directive ? list(directive[classKey]).map(toMember) : [];
 
     return strings(host[key]).flatMap((mapping) => {
       const [inner = '', outer = inner] = mapping.split(':').map((part) => part.trim());
       const member = members.find((candidate) => candidate.name === inner);
 
-      return member ? [{...member, name: outer}] : [];
+      if (member) {
+        return [{...member, name: outer}];
+      }
+
+      return directive ? [] : [externalMember(outer, `${hostName}.${inner}`)];
     });
   });
+};
+
+const withModelOutputs = (outputs: CompodocMember[], inputs: CompodocMember[]): CompodocMember[] => {
+  const inputNames = new Set(inputs.map((input) => input.name));
+
+  return outputs.map((output) => (inputNames.has(output.name) ? {...output, name: `${output.name}Change`} : output));
 };
 
 const mergeMembers = (own: CompodocMember[], inherited: CompodocMember[]): CompodocMember[] => {
@@ -153,6 +175,8 @@ const toClass = (
   all: Map<string, Json>,
 ): CompodocClass => {
   const description = text(raw.rawdescription).trim() || htmlToText(text(raw.description));
+  const inputs = mergeMembers(list(raw.inputsClass).map(toMember), hostDirectiveMembers(raw, directives, 'inputs'));
+  const outputs = mergeMembers(list(raw.outputsClass).map(toMember), hostDirectiveMembers(raw, directives, 'outputs'));
 
   return {
     name: text(raw.name),
@@ -161,8 +185,8 @@ const toClass = (
     selector: text(raw.selector),
     description,
     deprecated: deprecation(raw),
-    inputs: mergeMembers(list(raw.inputsClass).map(toMember), hostDirectiveMembers(raw, directives, 'inputs')),
-    outputs: mergeMembers(list(raw.outputsClass).map(toMember), hostDirectiveMembers(raw, directives, 'outputs')),
+    inputs,
+    outputs: withModelOutputs(outputs, inputs),
     formControl: isFormControl(raw, all),
   };
 };
@@ -260,10 +284,21 @@ export class CompodocValues {
     private readonly rootDir: string,
   ) {
     const values = new Map<string, unknown>();
+    const pending = new Set<string>();
 
     this.scope = evaluator.createScope((name) => {
+      if (pending.has(name)) {
+        throw new Unresolvable(`circular Compodoc variable ${name}`);
+      }
+
       if (!values.has(name)) {
-        values.set(name, this.variable(name));
+        pending.add(name);
+
+        try {
+          values.set(name, this.variable(name));
+        } finally {
+          pending.delete(name);
+        }
       }
 
       return values.get(name);

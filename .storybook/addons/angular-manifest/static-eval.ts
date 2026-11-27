@@ -226,21 +226,27 @@ export class Scope {
   }
 
   public lookup(name: string): unknown {
-    const thunk = this.bindings.get(name);
+    const thunk = this.binding(name);
 
     if (thunk) {
       return thunk();
     }
 
-    if (this.parent) {
-      return this.parent.lookup(name);
-    }
+    const fallback = this.nearestFallback();
 
-    if (this.fallback) {
-      return this.fallback(name);
+    if (fallback) {
+      return fallback(name);
     }
 
     throw new Unresolvable(`identifier ${name}`);
+  }
+
+  private binding(name: string): Thunk | undefined {
+    return this.bindings.get(name) ?? this.parent?.binding(name);
+  }
+
+  private nearestFallback(): ((name: string) => unknown) | null {
+    return this.fallback ?? this.parent?.nearestFallback() ?? null;
   }
 }
 

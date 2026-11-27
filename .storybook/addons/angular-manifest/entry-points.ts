@@ -1,6 +1,7 @@
 import {existsSync, readFileSync, statSync} from 'node:fs';
 import {dirname, join, resolve} from 'node:path';
 import {parser, types as t} from 'storybook/internal/babel';
+import ts from 'typescript';
 
 const PACKAGE_PREFIX = '@ndw-ui-kit/';
 
@@ -61,8 +62,14 @@ const collectExports = (file: string, names: Set<string>, visited: Set<string>):
 };
 
 const readPaths = (configDir: string): Record<string, string> => {
-  const tsconfig: unknown = JSON.parse(readFileSync(join(configDir, 'tsconfig.json'), 'utf8'));
-  const compilerOptions = (tsconfig as {compilerOptions?: {baseUrl?: string; paths?: Record<string, string[]>}})
+  const path = join(configDir, 'tsconfig.json');
+  const {config, error} = ts.readConfigFile(path, (file) => ts.sys.readFile(file));
+
+  if (error) {
+    throw new Error(`${path}: ${ts.flattenDiagnosticMessageText(error.messageText, '\n')}`);
+  }
+
+  const compilerOptions = (config as {compilerOptions?: {baseUrl?: string; paths?: Record<string, string[]>}})
     .compilerOptions ?? {};
   const baseDir = resolve(configDir, compilerOptions.baseUrl ?? '.');
   const result: Record<string, string> = {};

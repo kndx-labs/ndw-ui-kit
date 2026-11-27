@@ -52,6 +52,7 @@ export class NotificationSandboxComponent extends SandboxBaseComponent {
 
   public readonly sandboxForm = new FormGroup({
     variant: new FormControl<NdwuNotificationVariant>(NDWU_NOTIFICATION_VARIANT.INFO, {nonNullable: true}),
+    header: new FormControl<string>('', {nonNullable: true}),
     message: new FormControl<string>('This is a notification message', {nonNullable: true}),
   });
 
@@ -78,6 +79,10 @@ export class NotificationSandboxComponent extends SandboxBaseComponent {
     return this.sandboxForm.controls.variant.value;
   }
 
+  public get previewHeader(): string {
+    return this.sandboxForm.controls.header.value;
+  }
+
   public get previewMessage(): string {
     return this.sandboxForm.controls.message.value;
   }
@@ -89,6 +94,7 @@ export class NotificationSandboxComponent extends SandboxBaseComponent {
   protected override getDefaultFormValues(): Record<string, unknown> {
     return {
       variant: NDWU_NOTIFICATION_VARIANT.INFO,
+      header: '',
       message: 'This is a notification message',
     };
   }

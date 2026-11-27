@@ -20,10 +20,24 @@
     flex-shrink: 0;
   }
 
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-4;
+    min-width: 0;
+  }
+
+  &__header {
+    color: var(--ndwu-notification-text);
+    font-weight: typography.$fontWeight-XL;
+    font-size: typography.$fontSize-H6;
+    line-height: typography.$lineHeight-H6;
+  }
+
   &__message {
     color: var(--ndwu-notification-text);
     font-size: typography.$fontSize-small;
-    line-height: 20px;
+    line-height: typography.$lineHeight-small;
   }
 
   &--info {

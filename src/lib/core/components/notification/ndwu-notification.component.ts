@@ -22,6 +22,7 @@ export type NdwuNotificationVariant = NdwuValues<typeof NDWU_NOTIFICATION_VARIAN
 })
 export class NdwuNotificationComponent {
   public readonly variant = input<NdwuNotificationVariant>(NDWU_NOTIFICATION_VARIANT.INFO);
+  public readonly header = input<NdwuLocalizableHtml>('');
   public readonly message = input<NdwuLocalizableHtml>('');
 
   protected readonly ICON_NAME = NDWU_ICON_NAME;

@@ -7,6 +7,7 @@ import {
   NdwuIconName,
 } from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
+import {expect} from 'storybook/test';
 import {type CssTokenGroup} from '@sb/addons/css-tokens/shared';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {eventArgType, iconArgType, sizeArgType} from '@sb/helpers/arg-types';
@@ -190,5 +191,55 @@ export const ProjectedContent: Story = {
   parameters: FIXED_STORY_PARAMETERS,
   args: {
     content: 'Projected content',
+  },
+};
+
+const PRIMARY_XL_SPEC = {
+  size: {
+    'height': '44px',
+    'padding-left': '16px',
+    'padding-right': '16px',
+    'border-radius': '8px',
+    'column-gap': '8px',
+  },
+  colors: {
+    'background-color': '#007bbe',
+    'border-top-color': '#007bbe',
+    'border-top-width': '1px',
+    'border-top-style': 'solid',
+    'color': '#ffffff',
+  },
+  typography: {
+    'font-size': '16px',
+    'font-weight': '400',
+    'line-height': '24px',
+  },
+};
+
+export const DesignSpec: Story = {
+  parameters: FIXED_STORY_PARAMETERS,
+  globals: {theme: 'light', size: NDWU_SIZE.XL},
+  render: () => ({
+    template: `<button ndwu-button variant="primary" size="XL" label="Button"></button>`,
+  }),
+  play: async ({canvas, step}) => {
+    const button = canvas.getByRole('button', {name: 'Button'});
+    const expectStyles = async (styles: Record<string, string>): Promise<void> => {
+      for (const [property, value] of Object.entries(styles)) {
+        await expect(button).toHaveStyle({[property]: value});
+      }
+    };
+
+    await step('Size and shape (height, horizontal padding, border radius, icon gap)', async () => {
+      await expectStyles(PRIMARY_XL_SPEC.size);
+    });
+
+    await step('Typography (font size, weight, line height)', async () => {
+      await expectStyles(PRIMARY_XL_SPEC.typography);
+    });
+
+    await step('Colors (background, border, text)', async () => {
+      await expectStyles(PRIMARY_XL_SPEC.colors);
+    });
   },
 };

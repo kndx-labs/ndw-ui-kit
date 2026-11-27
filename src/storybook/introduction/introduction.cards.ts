@@ -134,6 +134,13 @@ export const INTRODUCTION_CARDS: readonly IntroductionCard[] = [
     ready: false,
   },
   {
+    group: 'Core',
+    name: 'Dialog',
+    docsId: 'core-modal-dialog--docs',
+    description: 'Modal dialog opened through NdwuModalService: alert, confirm, component or template content.',
+    ready: false,
+  },
+  {
     group: 'Form Field',
     name: 'Input Field',
     docsId: 'form-field-input-field--docs',

@@ -230,8 +230,9 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
   Their names must not match any arg, so `argsSourceTransform` leaves them alone.
 - Leave `size` unset so the toolbar applies. Don't pin a theme (no `globals.theme`; `parameters.themes.themeOverride`
   is not supported).
-- Dialogs and drawers opened through `NdwuModalService` are created from the root injector, so the Size toolbar doesn't
-  reach them. In a story, pass the story component's injector: `openDialog(Content, {injector: inject(Injector)})`.
+- Dialogs and drawers open from a button: `modalOpener` from `@sb/helpers/story-modal` (see
+  [.storybook/README.md](.storybook/README.md)). Pass its `injector` into the config: modals are created from the
+  root injector, so the Size toolbar reaches them only through it.
 - A component that is ready for review gets the `ready` tag: `tags: ['autodocs', 'ready']`. The sidebar tag filter
   can include or exclude it.
 - A new component docs page gets a card in `src/storybook/introduction/introduction.cards.ts`: group (first title

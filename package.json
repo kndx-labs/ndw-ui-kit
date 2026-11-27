@@ -19,7 +19,7 @@
     "watch": "ng build --project ndw-ui-kit --watch --configuration development",
     "test": "yarn run prepare-sass-aliases && yarn run merge-playground-i18n && ng test playground",
     "fmt": "dprint fmt \"src/**/*.ts\" \"scripts/**/*.ts\" \".storybook/**/*.ts\"",
-    "lint:ts-src": "eslint --cache --cache-location .eslintcache-src \"src/**/*.ts\" \"src/**/*.component.html\" \".storybook/**/*.ts\"",
+    "lint:ts-src": "eslint --cache --cache-location .eslintcache-src \"src/**/*.ts\" \"src/**/*.component.html\" \".storybook/**/*.ts\" \".storybook/**/*.component.html\"",
     "lint:ts-scripts": "eslint --cache --cache-location .eslintcache-scripts \"scripts/**/*.ts\"",
     "lint:ts": "run-p -c \"lint:ts-src {@}\" \"lint:ts-scripts {@}\" --",
     "lint:styles": "stylelint 'src/**/*.scss' '.storybook/**/*.scss'",

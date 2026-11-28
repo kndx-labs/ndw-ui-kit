@@ -99,6 +99,7 @@ yarn build-storybook
 ```
 
 `yarn storybook` serves at <http://localhost:6006>; `yarn build-storybook` writes a static build to `dist/storybook`.
+The dev server also runs an MCP server for AI agents; how to connect one: the `Guides/AI Agents` page.
 Both generate the icon and pictogram sprites first. Compodoc reads the library once at start: after changing a
 component's inputs, restart Storybook. After `prepare-icons`, check `git status`: a change to
 `src/lib/icon-names.base.ts` means a lib file changed the core icon set (stories are not scanned).
@@ -108,7 +109,7 @@ component's inputs, restart Storybook. After `prepare-icons`, check `git status`
 | What | Where |
 |---|---|
 | Stories of a component | `<component-file-name>.stories.ts` next to the component in `src/lib`, e.g. `ndwu-button.stories.ts` |
-| Pages that don't belong to one component (`Introduction`, `Foundations`, `Examples`) | `src/storybook/` |
+| Pages that don't belong to one component (`Introduction`, `Guides`, `Foundations`, `Examples`) | `src/storybook/` |
 | Storybook config, providers, decorators, shared helpers | `.storybook/`, described in [.storybook/README.md](.storybook/README.md) |
 
 Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` into the package.
@@ -126,7 +127,7 @@ Stories get no `.scss` files: `ng-package.json` copies `*.scss` from `src/lib` i
 | `table` | `Table/<Name>` | `Table/Paginator` |
 | `widgets` | `Widgets/<Name>` | `Widgets/Schedule Editor` |
 | `aria`, `schedule-actions`, `l10n` | `Aria/<Name>`, `Schedule Actions/<Name>`, `L10n/<Name>` | |
-| `src/storybook/` | `Introduction` (home page), `Foundations/<Page>`, `Examples/<Name>` | |
+| `src/storybook/` | `Introduction` (home page), `Guides/<Page>`, `Foundations/<Page>`, `Examples/<Name>` | `Guides/AI Agents` |
 | `src/storybook/`, stories only embedded in MDX | `Hidden/<Name>` with tag `!dev` | `Hidden/Introduction` |
 
 ### Writing stories

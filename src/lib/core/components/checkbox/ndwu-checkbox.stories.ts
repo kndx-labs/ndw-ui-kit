@@ -1,6 +1,7 @@
 import {computed, signal} from '@angular/core';
 import {NDWU_SIZE, NdwuCheckboxComponent} from '@ndw-ui-kit/core';
 import {Meta, StoryObj, argsToTemplate} from '@storybook/angular';
+import {expect, fn, userEvent, within} from 'storybook/test';
 import {argsSourceTransform} from '@sb/helpers/args-to-source';
 import {booleanArgType, outputArgType, sizeArgType, textArgType} from '@sb/helpers/arg-types';
 import {AriaArgs, SizeArg} from '@sb/helpers/story-args';
@@ -178,4 +179,43 @@ export const NativeForm: Story = {
       '<ndwu-checkbox name="newsletter" label="Newsletter subscription" />',
     ]),
   }),
+};
+
+export const KeyboardAndClick: Story = {
+  parameters: FIXED_STORY_PARAMETERS,
+  decorators: [withStackLayout],
+  args: {checkedChange: fn()},
+  render: (args) => ({
+    props: {checkedChange: args.checkedChange},
+    template: lines([
+      '<ndwu-checkbox label="Interactive" (checkedChange)="checkedChange($event)" />',
+      '<ndwu-checkbox label="Disabled" [disabled]="true" />',
+    ]),
+  }),
+  play: async ({args, canvasElement, step}) => {
+    const canvas = within(canvasElement);
+    const checkbox = canvas.getByRole('checkbox', {name: 'Interactive'});
+    const disabledCheckbox = canvas.getByRole('checkbox', {name: 'Disabled'});
+
+    await step('Click checks the checkbox', async () => {
+      await expect(checkbox).not.toBeChecked();
+      await userEvent.click(checkbox);
+      await expect(checkbox).toBeChecked();
+      await expect(args.checkedChange).toHaveBeenLastCalledWith(true);
+    });
+
+    await step('Space unchecks the focused checkbox', async () => {
+      await expect(checkbox).toHaveFocus();
+      await userEvent.keyboard(' ');
+      await expect(checkbox).not.toBeChecked();
+      await expect(args.checkedChange).toHaveBeenLastCalledWith(false);
+    });
+
+    await step('Click does not change the disabled checkbox', async () => {
+      await expect(disabledCheckbox).toBeDisabled();
+      await userEvent.click(disabledCheckbox, {pointerEventsCheck: 0});
+      await expect(disabledCheckbox).not.toBeChecked();
+      await expect(args.checkedChange).toHaveBeenCalledTimes(2);
+    });
+  },
 };

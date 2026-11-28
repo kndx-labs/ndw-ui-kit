@@ -3,8 +3,10 @@ import {Preview, applicationConfig} from '@storybook/angular';
 import {sizeGlobalType, sizeInitialGlobal, withSize, withSizeProviderImport} from './decorators/with-size.decorator';
 import {withTheme} from './decorators/with-theme.decorator';
 import {withCssTokens} from './decorators/with-css-tokens.decorator';
+import {withLiveSource} from './decorators/with-live-source.decorator';
 import docJson from './documentation.json';
 import {STORYBOOK_PROVIDERS} from './providers';
+import {ThemedDocsContainer} from './theming/themed-docs-container';
 
 setCompodocJson(docJson);
 
@@ -15,6 +17,7 @@ const preview: Preview = {
     withSize,
     withCssTokens,
     withTheme,
+    withLiveSource,
   ],
   globalTypes: {
     ...sizeGlobalType,
@@ -26,7 +29,7 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        order: ['Introduction'],
+        order: ['Introduction', 'Guides'],
       },
     },
     controls: {
@@ -37,6 +40,8 @@ const preview: Preview = {
       },
     },
     docs: {
+      container: ThemedDocsContainer,
+      codePanel: true,
       source: {
         excludeDecorators: true,
       },

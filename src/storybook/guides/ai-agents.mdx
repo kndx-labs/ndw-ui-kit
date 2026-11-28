@@ -1,0 +1,128 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+
+<Meta title="Guides/AI Agents" />
+
+# AI agents (MCP)
+
+This Storybook runs an [MCP](https://modelcontextprotocol.io) server. An AI agent in any project, such as Claude Code,
+Cursor or GitHub Copilot, can ask it about the kit's components and build UI from them: it gets the real selectors,
+imports, inputs, outputs, types and story snippets, so it doesn't guess them or read the library sources.
+
+## 1. Start Storybook
+
+In the ndw-ui-kit repository:
+
+```shell
+yarn install
+yarn storybook
+```
+
+When Storybook prints `Storybook ready!`, the MCP server is at `http://localhost:6006/mcp`. Keep Storybook running
+while the agent works.
+
+- MCP works only on the dev server (`yarn storybook`). The static build (`yarn build-storybook`) and the published
+  Storybook serve files only and have no MCP server. Serving MCP from the published Storybook needs a server-side
+  `/mcp` endpoint on the hosting; the build already contains `manifests/components.json` for it.
+- If port 6006 is busy, Storybook picks another one: use the port it prints.
+- Compodoc reads the library once at start. After changing a component's inputs or outputs, restart Storybook, or the
+  agent gets the old API.
+
+## 2. Connect the agent
+
+Run or add this in the project where the agent works, not in ndw-ui-kit.
+
+**Claude Code:**
+
+```shell
+claude mcp add --transport http ndw-ui-kit http://localhost:6006/mcp
+```
+
+Add `--scope project` to save the server in the project's `.mcp.json` and share it with the team.
+
+**Cursor**, `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "ndw-ui-kit": {"url": "http://localhost:6006/mcp"}
+  }
+}
+```
+
+**VS Code (GitHub Copilot)**, `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "ndw-ui-kit": {"type": "http", "url": "http://localhost:6006/mcp"}
+  }
+}
+```
+
+**Other clients:** any MCP client with the Streamable HTTP transport, URL `http://localhost:6006/mcp`.
+
+Restart the agent session after adding the server.
+
+## 3. Check the connection
+
+- **In the agent.** Claude Code: run `/mcp`, the `ndw-ui-kit` server is `connected`. Cursor and VS Code list the server
+  with its tools in the MCP settings.
+- **Without an agent.** This request lists the tools:
+
+```shell
+curl -s -X POST http://localhost:6006/mcp \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+```
+
+This one returns the Button documentation, as the agent sees it:
+
+```shell
+curl -s -X POST http://localhost:6006/mcp \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"docs-show","arguments":{"id":"core-button-button"}}}'
+```
+
+The data behind the tools is [`/manifests/components.json`](http://localhost:6006/manifests/components.json).
+
+## 4. Ask the agent
+
+Name the server and the task. For example:
+
+```text
+Using the ndw-ui-kit MCP server, build a login form in Angular: email and password fields,
+a "Remember me" checkbox and a primary "Sign in" button. Use only ndw-ui-kit components.
+Look them up with docs-list and docs-show before writing code.
+```
+
+The project needs the kit packages (`@ndw-ui-kit/core` and the others the agent imports) and the kit theme, as for any
+other use of the kit.
+
+## Tools
+
+- `docs-list`: all components and docs pages with their IDs. Agents call it first.
+- `docs-show`: one component: selector, usage, import line, inputs, outputs, referenced types and the first stories.
+- `docs-show-story`: one story of a component with its code.
+- `stories-preview`: preview URLs of stories, also with custom args and globals such as `theme`.
+- `get-storybook-story-instructions`: how to write stories in this Storybook.
+- `stories-changed`, `stories-find-by-component`: stories affected by changed files. They need a builder with change
+  detection (Vite); this Storybook builds with webpack, so they return an error.
+
+## What to check in the result
+
+- The agent called `docs-list` and `docs-show` before writing code.
+- Selectors are the real ones, e.g. `<button ndwu-button>`, not `<ndwu-button>`.
+- Imports come from the kit entry points, e.g. `import {NdwuButtonComponent} from '@ndw-ui-kit/core';`.
+- Every input and output exists in `docs-show`; values of union inputs are from the listed ones.
+- Form fields are bound with `[formControl]` / `formControlName` or `[(ngModel)]`.
+- The code compiles and the UI looks like the stories.
+
+## Troubleshooting
+
+- **The agent has no ndw-ui-kit tools.** Storybook isn't running or runs on another port; check the URL and restart the
+  agent session.
+- **The agent uses an input that was removed or misses a new one.** Restart Storybook.
+- **A component is missing from `docs-list`.** Components without stories are listed with an `api-` prefix and have no
+  story snippets.

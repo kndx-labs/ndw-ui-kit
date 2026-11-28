@@ -7,9 +7,11 @@ const config: StorybookConfig = {
     '../src/lib/**/*.stories.ts',
   ],
   addons: [
+    './addons/angular-manifest/preset.ts',
     '@storybook/addon-docs',
     '@storybook/addon-a11y',
     '@storybook/addon-themes',
+    '@storybook/addon-mcp',
   ],
   framework: {
     name: '@storybook/angular',
@@ -24,6 +26,7 @@ const config: StorybookConfig = {
   },
   features: {
     angularFilterNonInputControls: true,
+    componentsManifest: true,
   },
 };
 

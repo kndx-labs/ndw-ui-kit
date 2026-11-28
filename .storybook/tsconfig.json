@@ -22,5 +22,8 @@
     "./**/*.ts",
     "../src/lib/**/*.stories.ts",
     "../src/storybook/**/*.ts"
+  ],
+  "exclude": [
+    "./addons/angular-manifest/**"
   ]
 }

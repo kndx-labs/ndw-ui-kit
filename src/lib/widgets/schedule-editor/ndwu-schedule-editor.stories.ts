@@ -87,11 +87,10 @@ const fixedSourceTransform: typeof argsSourceTransform = (code, context) => {
 const editorSourceTransform: typeof argsSourceTransform = (code, context) => {
   const value = context.args['value'] as NdwuScheduleValue;
   const weekDays = context.args['weekDays'] as NdwuWeekDay[];
-  const bindings = [` [value]="${valueLiteral(value)}"`];
-
-  if (weekDays !== NDWU_DEFAULT_WEEK_DAYS) {
-    bindings.push(` [weekDays]="${weekDaysLiteral(weekDays)}"`);
-  }
+  const bindings = [
+    ` [value]="${valueLiteral(value)}"`,
+    ...(weekDays === NDWU_DEFAULT_WEEK_DAYS ? [] : [` [weekDays]="${weekDaysLiteral(weekDays)}"`]),
+  ];
 
   return argsSourceTransform(code, context)
     .replace(` ${EDITABLE_BINDINGS}`, '')

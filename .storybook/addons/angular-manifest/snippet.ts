@@ -47,10 +47,23 @@ const argsToTemplate = callable((args: unknown, options: unknown = {}): string =
 
 const fn = callable(() => callable(() => undefined));
 
+const sourceTransform = callable((code: unknown, context: unknown): string => {
+  const {args, initialArgs} = asRecord(context);
+
+  if (typeof code !== 'string') {
+    throw new Unresolvable('string expected');
+  }
+
+  return argsSourceTransform(code, {args: asRecord(args), initialArgs: asRecord(initialArgs)});
+});
+
 const BUILTIN_PACKAGES: Record<string, Record<string, unknown>> = {
   '@storybook/angular': {argsToTemplate},
   'storybook/test': {fn},
+  '@sb/helpers/args-to-source': {argsSourceTransform: sourceTransform},
 };
+
+const TRANSFORM_PATH = ['parameters', 'docs', 'source', 'transform'];
 
 export const storyPackages = (library: (name: string) => unknown): PackageResolver => {
   return (source) => {
@@ -136,7 +149,22 @@ const renderTemplate = (render: unknown, args: Record<string, unknown>, context:
 export const buildSnippet = ({meta, story, context, hostMarkup}: SnippetInput): SnippetResult => {
   const initialArgs = resolvedEntries(readPath(meta, ['args']));
   const args = {...initialArgs, ...resolvedEntries(readPath(story, ['args']))};
+  const transform = readPath(story, TRANSFORM_PATH) ?? readPath(meta, TRANSFORM_PATH);
   const finish = (code: string): SnippetResult => {
+    if (transform !== undefined) {
+      try {
+        const result = invoke(transform, [code, {...context, args, initialArgs}]);
+
+        if (typeof result === 'string') {
+          return {snippet: tidy(result), reason: null};
+        }
+      } catch (error) {
+        if (!(error instanceof Unresolvable)) {
+          throw error;
+        }
+      }
+    }
+
     return {snippet: tidy(argsSourceTransform(code, {args, initialArgs})), reason: null};
   };
   const sourceCode = readPath(story, ['parameters', 'docs', 'source', 'code']);

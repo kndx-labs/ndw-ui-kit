@@ -118,7 +118,7 @@ const buildStories = (
   {evaluator}: BuildContext,
 ): StoryManifest[] => {
   return entries.map((entry) => {
-    const exportName = entry.exportName ?? Object.keys(csf._stories).find((key) => csf._stories[key]?.id === entry.id);
+    const exportName = entry.exportName ?? csf.indexInputs.find((input) => input.__id === entry.id)?.exportName;
     const story = exportName ? safeExport(evaluator, file, exportName) : {};
     const statement = exportName ? csf._storyStatements[exportName] : undefined;
     const description = stringAt(story, ['parameters', 'docs', 'description', 'story'])
@@ -160,7 +160,7 @@ const componentManifest = (
   const host = (extra: string) => (preferred ? hostMarkup(preferred, hostFallback, extra) : null);
   const description = stringAt(meta, ['parameters', 'docs', 'description', 'component'])
     ?? (component.description || extractDescription(csf._metaStatement) || undefined);
-  const rawPath = csf._rawComponentPath;
+  const rawPath = csf.indexInputs[0]?.rawComponentPath;
   const entryPoint = rawPath?.startsWith('@ndw-ui-kit/')
     ? rawPath
     : context.entryPoints.get(component.name) ?? DEFAULT_ENTRY_POINT;
@@ -335,10 +335,12 @@ const build = async (configDir: string, entries: StoryIndexEntry[]): Promise<Bui
   return {components: {...components, ...apiOnlyComponents(covered, context)}, files: [...new Set([compodocPath, ...storyFiles, ...evaluator.files, ...typeSources.files])]};
 };
 
-const stamp = async (files: string[]): Promise<string> => {
-  const times = await Promise.all(files.map((file) => stat(file).then(({mtimeMs}) => mtimeMs, () => -1)));
+const mtimes = (files: string[]): Promise<number[]> => {
+  return Promise.all(files.map((file) => stat(file).then(({mtimeMs}) => mtimeMs, () => -1)));
+};
 
-  return times.join(',');
+const stamp = async (files: string[]): Promise<string> => {
+  return (await mtimes(files)).join(',');
 };
 
 const cachedBuild = async (configDir: string, entries: StoryIndexEntry[]): Promise<BuildResult> => {
@@ -351,15 +353,23 @@ const cachedBuild = async (configDir: string, entries: StoryIndexEntry[]): Promi
     return cache.result;
   }
 
+  const startedAt = Date.now();
   const current: Cache = {ids, key: null, files: [], result: build(configDir, entries)};
 
   cache = current;
 
   try {
     const result = await current.result;
+    const times = await mtimes(result.files);
 
-    current.files = result.files;
-    current.key = await stamp(result.files);
+    if (times.some((time) => time >= startedAt)) {
+      if (cache === current) {
+        cache = null;
+      }
+    } else {
+      current.files = result.files;
+      current.key = times.join(',');
+    }
 
     return result;
   } catch (error) {

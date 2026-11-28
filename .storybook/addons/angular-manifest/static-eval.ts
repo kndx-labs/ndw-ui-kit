@@ -67,6 +67,10 @@ const memo = (thunk: Thunk): Thunk => {
   };
 };
 
+const errorMessage = (error: unknown): string => {
+  return error instanceof Error ? error.message : String(error);
+};
+
 const isObject = (value: unknown): value is Record<string, unknown> => {
   return typeof value === 'object' && value !== null;
 };
@@ -268,7 +272,15 @@ export class StaticEvaluator {
   }
 
   public evaluateCode(code: string, scope: Scope): unknown {
-    return this.evaluate(parser.parseExpression(code, {plugins: PARSER_PLUGINS}), scope);
+    let ast: t.Expression;
+
+    try {
+      ast = parser.parseExpression(code, {plugins: PARSER_PLUGINS});
+    } catch (error) {
+      throw new Unresolvable(`parse: ${errorMessage(error)}`);
+    }
+
+    return this.evaluate(ast, scope);
   }
 
   public exportValue(file: string, name: string): unknown {
@@ -695,10 +707,19 @@ export class StaticEvaluator {
       return cached;
     }
 
-    const ast = parser.parse(readFileSync(file, 'utf8'), {sourceType: 'module', plugins: PARSER_PLUGINS});
-    const record: ModuleRecord = {file, scope: new Scope(this.globals), exports: new Map(), reexports: []};
+    const code = readFileSync(file, 'utf8');
+    let ast: t.File;
 
     this.files.add(file);
+
+    try {
+      ast = parser.parse(code, {sourceType: 'module', plugins: PARSER_PLUGINS});
+    } catch (error) {
+      throw new Unresolvable(`parse ${file}: ${errorMessage(error)}`);
+    }
+
+    const record: ModuleRecord = {file, scope: new Scope(this.globals), exports: new Map(), reexports: []};
+
     this.modules.set(file, record);
 
     for (const statement of ast.program.body) {
